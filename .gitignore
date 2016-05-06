@@ -1,2 +1,5 @@
-./bitrix/*
-!./bitrix/templates/ag/*
+bitrix/*
+!bitrix/templates
+bitrix/templates/*
+!bitrix/templates/ag
+
