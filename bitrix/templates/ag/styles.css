@@ -1,0 +1,7 @@
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:300;src:local('Open Sans Light'), local('OpenSans-Light'), url(/bitrix/templates/ag/fonts/open_sans_light.ttf)}
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:400;src:local('Open Sans'), local('OpenSans'), url(/bitrix/templates/ag/fonts/open_sans_normal.ttf)}
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:600;src:local('Open Sans Semibold'), local('OpenSans-Semibold'), url(/bitrix/templates/ag/fonts/open_sans_600.ttf)}
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:700;src:local('Open Sans Bold'), local('OpenSans-Bold'), url(/bitrix/templates/ag/fonts/open_sans_700.ttf)}
+@font-face{font-family:'Open Sans';font-style:italic;font-weight:300;src:local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(/bitrix/templates/ag/fonts/open_sans_light-italic.ttf)}
+@font-face{font-family:'Open Sans';font-style:italic;font-weight:400;src:local('Open Sans Italic'), local('OpenSans-Italic'), url(/bitrix/templates/ag/fonts/open-sans_italic.ttf)}
+@font-face{font-family:'Open Sans';font-style:italic;font-weight:600;src:local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'), url(/bitrix/templates/ag/fonts/open-sans_semibold-italic.ttf)}
