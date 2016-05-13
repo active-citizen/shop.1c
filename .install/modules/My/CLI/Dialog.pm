@@ -1,29 +1,33 @@
 package CLI::Dialog;
 
-# Интерактивное заполнение массива опций
-sub interactive{
-    my $opts = shift or ();
-    my $input = "";
-    foreach my $key(keys %{$opts}){
-	print $key." [".$opts->{$key}."]:";
-	$input = <>;
-	chomp($input);
-	$opts{$key} = $input if $input;
-    }
-    
-    return $opts;
+
+# Вывод сообщения о фатальной ошибке
+sub FatalError{
+    my $error_text  =   shift;
+    print "\n".("="x80)."\n";
+    print <<EOFATALERROR
+    FATAL ERROR:
+    $error_text
+EOFATALERROR
+;
+    print ("="x80);
+    print "\n";
+    exit(1);
 }
 
 # Вывод справки
-sub show_help{
-print <<EOHELP
+sub ShowHelp{
+    print <<EOHELP
 Установщик магазина поощрений "Активный гражданин"
 
-    --verbose       болтливый режим
-    --help          помощь
-    --config=ФАЙЛ   задать конфиг для установки вручную (по умолчанию config.ini)
+    --help                  помощь
+    --verbose               болтливый режим
+    --config=ФАЙЛ           задать конфиг для установки вручную (по умолчанию config.ini)
+    --show-template-config  показать файл конфигурации с опциями по умолчанию   
 
 EOHELP
+;
+    exit(0);
 }
 
 
