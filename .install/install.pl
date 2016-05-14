@@ -6,6 +6,7 @@ use lib (dirname($0)."/modules/CPAN", dirname($0)."/modules/My");
 use Getopt::Long;
 use CLI::Dialog;
 use Conf;
+use Bitrix;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;
@@ -21,11 +22,12 @@ GetOptions (
     "show-template-config"  => \$ARG_SHOW_DEFAULT_CONFIG,
 );
 
-# Если вывод справки - печатаем её и выходим
+# Вывод помощи по ключу командной строки
 CLI::Dialog::ShowHelp()     if $ARG_HELP;
+# Вывод шаблонного конфига по ключу командной строки
 Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 
-
+# Получаем настройки
 my $conf = Conf->new($ARG_INI_FILE);
 CLI::Dialog::FatalError($conf->{error}) if $conf->{error};
 

@@ -19,6 +19,7 @@
 package Conf; 
 use strict;
 
+our $DATA;
 
     sub new{
         my ($class,$conffile) = @_;
@@ -126,7 +127,7 @@ branch = master
 
 [Hosting]
 
-db_port = 
+db_port = 3306 
 db_host = 
 db_user = 
 db_pass = 
