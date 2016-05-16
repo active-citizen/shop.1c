@@ -19,8 +19,6 @@
 package Conf; 
 use strict;
 
-our $DATA;
-
     sub new{
         my ($class,$conffile) = @_;
         # Имя файла пользовательсного конфига по умолчанию
@@ -93,7 +91,25 @@ our $DATA;
 Вывод текста шаблонного конфига для последующего формирования из него рабочего
 
 =cut
-    sub ShowDefaultConfig{
+    sub ShowTemplateConfig{
+        my $answer = '';
+        my $line = '';
+        my $programm = '';
+        my $path = '';
+        while(<DATA>){
+            $line = $_;
+            # Заполняем системные пути для ключей с whereis_
+            if($_=~m/^\s*whereis_(.*?)\s*\=.*$/){
+                $programm = $1;
+                $answer = `whereis $programm`;
+                chomp($answer);
+                $path = $1 if $answer=~m/^\s*$programm:\s*([\d\w\-\_\%\/\.\,\~]+)\s*.*$/gi;
+                print "whereis_$programm = $path \n";
+            }
+            else{
+                print $line;
+            }
+        }
         print join "", <DATA>;
         exit(0);
     }
@@ -109,6 +125,14 @@ __DATA__
 ################################################################################
 #  Конфигурационный файл установщика магазина поощрений Активный Гражданин
 ################################################################################
+[System]
+# Пути к необходимым для установки утилитам
+whereis_wget = 
+whereis_git = 
+whereis_tar= 
+whereis_gzip = 
+temp_dir = /tmp
+
 [Bitrix]
 
 # Прямая ссылка на архив дистрибутива Битрикса в формате tar.gz
