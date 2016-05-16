@@ -31,4 +31,5 @@ Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 my $conf = Conf->new($ARG_INI_FILE);
 CLI::Dialog::FatalError($conf->{error}) if $conf->{error};
 
-print $conf->Get("Git::repository_url");
+my $bitrix = Bitrix->new($conf, $ARG_VERBOSE);
+$bitrix->install();

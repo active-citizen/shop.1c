@@ -80,7 +80,7 @@ use strict;
 
 
 =cut
-    sub Get{
+    sub get{
         my ($self, $name) = @_;
         return $self->{data}->{$name};
     }
@@ -131,7 +131,7 @@ whereis_wget =
 whereis_git = 
 whereis_tar= 
 whereis_gzip = 
-temp_dir = /tmp
+temp_dir = tmp
 
 [Bitrix]
 
