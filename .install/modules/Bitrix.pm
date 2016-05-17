@@ -74,9 +74,9 @@ package Bitrix;
         print "[OK]\n";
     }
 
-=head3 clear()
+=head3 clearFiles()
 
-Очистка хостинга под новую установку
+Очистка корневого каталога сайта под новую установку
 
 =cut
     sub clearFiles{
@@ -94,7 +94,7 @@ package Bitrix;
             chomp($filename);
             next AAA if $filename eq '.' || $filename eq '..';
             # Не чистим элементы из @not_delete
-            next AAA if grep(/$filename/,@not_clear);
+            next AAA if grep /$filename/,@not_clear;
             $command = $self->{conf}->get("System::whereis_rm")." -fr ".$filename;
             print "\n".$command if $self->{verbose};
             CLI::Dialog::FatalError("Не могу удалить $filename") if `$command`;
@@ -102,5 +102,17 @@ package Bitrix;
         print "[Ok]\n";
         chdir(".install");
     }
+
+=head3 clearDatabase()
+
+Очистка базы данных сайта под новую установку
+
+=cut
+    sub clearDatabase{
+        my ($self) = @_;
+        
+    }
+
+
 
 1;

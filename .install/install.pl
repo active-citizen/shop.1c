@@ -1,10 +1,11 @@
 #!/usr/bin/perl
+chdir(dirname($0));
 use strict;
 use File::Basename;
-use lib (dirname($0)."/modules/CPAN", dirname($0)."/modules/My");
+use lib ("modules");
 
 use Getopt::Long;
-use CLI::Dialog;
+use Dialog;
 use Conf;
 use Bitrix;
 
