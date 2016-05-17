@@ -17,9 +17,9 @@
 
 =back
 =cut
-
-
 package Bitrix;
+
+use DBI;
 
     sub new{
         
@@ -44,6 +44,7 @@ package Bitrix;
         my ($self) = @_;
         #$self->downloadDist();
         $self->clearFiles();
+        $self->clearDatabase();
     }
     
 =head3 downloadDist()
@@ -97,7 +98,7 @@ package Bitrix;
             next AAA if grep /$filename/,@not_clear;
             $command = $self->{conf}->get("System::whereis_rm")." -fr ".$filename;
             print "\n".$command if $self->{verbose};
-            CLI::Dialog::FatalError("Не могу удалить $filename") if `$command`;
+            Dialog::FatalError("Не могу удалить $filename") if `$command`;
         }
         print "[Ok]\n";
         chdir(".install");
@@ -110,7 +111,29 @@ package Bitrix;
 =cut
     sub clearDatabase{
         my ($self) = @_;
-        
+
+        print "\nПодключение к БД " if $self->{verbose};
+        my $connection = 
+            "DBI:mysql:".
+            $self->{conf}->get("Hosting::db_name").":".
+            $self->{conf}->get("Hosting::db_host").":".
+            $self->{conf}->get("Hosting::db_port");
+        Dialog::FatalError("Не удаётся подключиться к БД с указанными в настройках параметрами") 
+            unless my $dbh =  DBI->connect(
+                $connection,
+                $self->{conf}->get("Hosting::db_user"),
+                $self->{conf}->get("Hosting::db_pass")
+            );
+            
+        my $stha = $dbh->prepare("SHOW TABLES;");
+        Dialog::FatalError($DBI::errstr) unless $stha->execute;
+        my $sql = '';
+        while(my $table=$stha->fetchrow_array){
+            $sql = "DROP TABLE `$table`;";
+            print $sql."\n" if $self->{verbose};
+            Dialog::FatalError($DBI::errstr) unless $dbh->do($sql);
+        }
+        print "[Ok]\n";
     }
 
 

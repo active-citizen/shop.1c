@@ -1,4 +1,4 @@
-package CLI::Dialog;
+package Dialog;
 
 
 # Вывод сообщения о фатальной ошибке

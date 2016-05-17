@@ -30,7 +30,7 @@ Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 
 # Получаем настройки
 my $conf = Conf->new($ARG_INI_FILE);
-CLI::Dialog::FatalError($conf->{error}) if $conf->{error};
+Dialog::FatalError($conf->{error}) if $conf->{error};
 
 my $bitrix = Bitrix->new($conf, $ARG_VERBOSE);
 $bitrix->install();
