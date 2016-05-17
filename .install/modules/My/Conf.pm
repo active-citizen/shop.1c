@@ -131,6 +131,7 @@ whereis_wget =
 whereis_git = 
 whereis_tar= 
 whereis_gzip = 
+whereis_rm = 
 temp_dir = tmp
 
 [Bitrix]

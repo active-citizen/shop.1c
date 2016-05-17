@@ -26,8 +26,8 @@ package Bitrix;
         my ($class, $conf, $verbose) = @_;
         
         my $self = {
-    	    "verbose"	=> $verbose,
-    	    "conf"	=> $conf
+    	    "verbose"	=>  $verbose,
+    	    "conf"	    =>  $conf
         };
         bless $self,$class;
         
@@ -42,7 +42,8 @@ package Bitrix;
     
     sub install{
         my ($self) = @_;
-        $self->downloadDist();
+        #$self->downloadDist();
+        $self->clearFiles();
     }
     
 =head3 downloadDist()
@@ -71,6 +72,35 @@ package Bitrix;
         # Тянем из PIPE данные, выводя их в болтливом режиме
         while(<WGET>){print $_ if $self->{verbose}; }
         print "[OK]\n";
+    }
+
+=head3 clear()
+
+Очистка хостинга под новую установку
+
+=cut
+    sub clearFiles{
+        my ($self) = @_;
+        # Список элементов корневого каталога, которые не надо чистить
+        @not_clear = qw(.install .git);
+
+        my $command = '';
+        print "Очистка корневого каталога сайта перед установкой ";
+        # Перечисляем каталоги, которые не надо удалять
+        chdir("..");
+        opendir(my $dd, ".");
+        my $filename = '';
+        AAA:while($filename = readdir($dd)){
+            chomp($filename);
+            next AAA if $filename eq '.' || $filename eq '..';
+            # Не чистим элементы из @not_delete
+            next AAA if grep(/$filename/,@not_clear);
+            $command = $self->{conf}->get("System::whereis_rm")." -fr ".$filename;
+            print "\n".$command if $self->{verbose};
+            CLI::Dialog::FatalError("Не могу удалить $filename") if `$command`;
+        }
+        print "[Ok]\n";
+        chdir(".install");
     }
 
 1;
