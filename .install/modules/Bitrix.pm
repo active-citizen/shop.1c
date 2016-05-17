@@ -42,9 +42,11 @@ use DBI;
     
     sub install{
         my ($self) = @_;
-        #$self->downloadDist();
+        $self->downloadDist();
         $self->clearFiles();
         $self->clearDatabase();
+        $self->unpack();
+        $self->checkDist();
     }
     
 =head3 downloadDist()
@@ -72,6 +74,10 @@ use DBI;
         open(WGET, "$command|");
         # Тянем из PIPE данные, выводя их в болтливом режиме
         while(<WGET>){print $_ if $self->{verbose}; }
+        Dialog::FatalError("Архив не скачан ") unless  
+            -e $self->{conf}->get("System::temp_dir")."/bitrix.tar.gz" 
+            &&
+            -s $self->{conf}->get("System::temp_dir")."/bitrix.tar.gz"; 
         print "[OK]\n";
     }
 
@@ -112,6 +118,7 @@ use DBI;
     sub clearDatabase{
         my ($self) = @_;
 
+        print "Очистка БД ";
         print "\nПодключение к БД " if $self->{verbose};
         my $connection = 
             "DBI:mysql:".
@@ -127,15 +134,89 @@ use DBI;
             
         my $stha = $dbh->prepare("SHOW TABLES;");
         Dialog::FatalError($DBI::errstr) unless $stha->execute;
+
         my $sql = '';
         while(my $table=$stha->fetchrow_array){
             $sql = "DROP TABLE `$table`;";
             print $sql."\n" if $self->{verbose};
             Dialog::FatalError($DBI::errstr) unless $dbh->do($sql);
         }
+
         print "[Ok]\n";
     }
 
+=head3 unpack()
+
+Распаковка скачанного архива Битрикс в корень сайта
+
+=cut
+    sub unpack{
+        my ($self) = @_;
+        
+        print "Распаковка архива с дистрибутивом Битрикс  ";
+        my $command = '';
+        $command = 
+            $self->{conf}->get("System::whereis_gzip")." -f -d -c ".
+            $self->{conf}->get("System::temp_dir")."/bitrix.tar.gz > ../bitrix.tar";
+        `$command`;
+        print "\n".$command if $self->{verbose};
+        
+        Dialog::FatalError("Не удалось распаковать архив с дитсрибутивом Битрикса") 
+            unless
+                -e "../bitrix.tar" 
+                &&
+                -s "../bitrix.tar"; 
+        chdir("..");
+        
+        $command = 
+            $self->{conf}->get("System::whereis_tar")." xf bitrix.tar";
+        print "\n".$command if $self->{verbose};
+        `$command`;
+        
+        `rm -fr bitrix.tar`;
+        chdir(".install");
+        print "[Ok]\n";
+    }
+
+=head3 checkDist()
+
+Проверка распакованного дистрибутива
+
+=cut
+    sub checkDist{
+        print "\nПроверка содержимого архива  ";
+        # Ожидаемое содержимое архива (для проверки распаковки)
+        my @archive_content = qw(
+            .access.php
+            bitrix
+            .git
+            .htaccess
+            index.php
+            .install
+            install.config
+            license.html
+            license.php
+            readme.html
+            readme.php
+            upload
+            web.config
+        );
+        
+        chdir("..");
+        my ($self) = @_;
+        # Проверка содержимого архива
+        my $fail_flag = 0;
+        foreach my $filename(@archive_content){
+            Dialog::FatalError("Путь <$filename> после распаковки не обнаружен")
+                unless -e $filename;
+        }
+        chdir(".install");
+        print "[Ok]\n";
+    }
+
+# FIXME
+# Удалять временный файл скачанного дистрибутива
+# Заменить rm на путь из конфига
 
 
 1;

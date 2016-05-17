@@ -96,14 +96,19 @@ use strict;
         my $line = '';
         my $programm = '';
         my $path = '';
+        my $default = '';
         while(<DATA>){
             $line = $_;
             # Заполняем системные пути для ключей с whereis_
-            if($_=~m/^\s*whereis_(.*?)\s*\=.*$/){
+            if($_=~m/^\s*whereis_(.*?)\s*\=\s*(.*)\s*.*$/){
                 $programm = $1;
+                $default = $2;
+                chomp($default);
+                # Пропускаем непустые значения
                 $answer = `whereis $programm`;
                 chomp($answer);
-                $path = $1 if $answer=~m/^\s*$programm:\s*([\d\w\-\_\%\/\.\,\~]+)\s*.*$/gi;
+                $path = $1 if $answer=~m/^\s*$programm:\s*([\d\w\-\_\%\/\.\,\~]+)\s*.*$/gi && !$default;
+                $path = $default if $default;
                 print "whereis_$programm = $path \n";
             }
             else{
@@ -129,7 +134,7 @@ __DATA__
 # Пути к необходимым для установки утилитам
 whereis_wget = 
 whereis_git = 
-whereis_tar= 
+whereis_tar= /bin/tar
 whereis_gzip = 
 whereis_rm = 
 temp_dir = tmp

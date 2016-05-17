@@ -24,7 +24,7 @@ GetOptions (
 );
 
 # Вывод помощи по ключу командной строки
-CLI::Dialog::ShowHelp()     if $ARG_HELP;
+Dialog::ShowHelp()     if $ARG_HELP;
 # Вывод шаблонного конфига по ключу командной строки
 Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 
