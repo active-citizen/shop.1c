@@ -67,15 +67,11 @@
     `servece memcached restart`
     
 - Пропишите в конце файла **bitrix/php_interface/dbconn.php** следующее
-`
-define("BX_CACHE_TYPE", "memcache");
 
-define("BX_CACHE_SID", $_SERVER["DOCUMENT_ROOT"]."#01");
-
-define("BX_MEMCACHE_HOST", "127.0.0.1");
-
-define("BX_MEMCACHE_PORT", "11211");
-`
+    define("BX_CACHE_TYPE", "memcache");
+    define("BX_CACHE_SID", $_SERVER["DOCUMENT_ROOT"]."#01");
+    define("BX_MEMCACHE_HOST", "127.0.0.1");
+    define("BX_MEMCACHE_PORT", "11211");
     
 ## Настройка MySQL
 
