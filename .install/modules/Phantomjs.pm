@@ -69,7 +69,7 @@ package Phantomjs;
             $value = $self->{conf}->get($key);
             $jscode=~s/\{\{$key\}\}/$value/gim;
         }
-        
+
         return $jscode;
     }
 
