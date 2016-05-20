@@ -134,9 +134,9 @@ __DATA__
 # Пути к необходимым для установки утилитам
 whereis_wget = 
 whereis_git = 
-whereis_tar= /bin/tar
-whereis_gzip = 
+whereis_unzip = 
 whereis_rm = 
+whereis_mv = 
 temp_dir = tmp
 
 [Bitrix]

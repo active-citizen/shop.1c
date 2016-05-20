@@ -61,7 +61,7 @@ use DBI;
         my $command = 
             $self->{conf}->get("System::whereis_wget").
             # Куда сохраняем скачанный архив
-            " -O ".$self->{conf}->get("System::temp_dir")."/bitrix.tar.gz".     
+            " -O ".$self->{conf}->get("System::temp_dir")."/bitrix.zip".     
             # Вывод ошибок в STDOUT
             " -o /dev/stdout ".                                                 
             # Процесс загрузки для болтливого режима
@@ -75,9 +75,9 @@ use DBI;
         # Тянем из PIPE данные, выводя их в болтливом режиме
         while(<WGET>){print $_ if $self->{verbose}; }
         Dialog::FatalError("Архив не скачан ") unless  
-            -e $self->{conf}->get("System::temp_dir")."/bitrix.tar.gz" 
+            -e $self->{conf}->get("System::temp_dir")."/bitrix.zip" 
             &&
-            -s $self->{conf}->get("System::temp_dir")."/bitrix.tar.gz"; 
+            -s $self->{conf}->get("System::temp_dir")."/bitrix.zip"; 
         print "[OK]\n";
     }
 
@@ -152,29 +152,22 @@ use DBI;
 =cut
     sub unpack{
         my ($self) = @_;
-        
         print "Распаковка архива с дистрибутивом Битрикс  ";
         my $command = '';
-        $command = 
-            $self->{conf}->get("System::whereis_gzip")." -f -d -c ".
-            $self->{conf}->get("System::temp_dir")."/bitrix.tar.gz > ../bitrix.tar";
+
+        $command = $self->{conf}->get("System::whereis_mv")." ".
+            $self->{conf}->get("System::temp_dir")."/bitrix.zip ..";
         `$command`;
-        print "\n".$command if $self->{verbose};
-        
-        Dialog::FatalError("Не удалось распаковать архив с дитсрибутивом Битрикса") 
-            unless
-                -e "../bitrix.tar" 
-                &&
-                -s "../bitrix.tar"; 
+
         chdir("..");
         
-        $command = 
-            $self->{conf}->get("System::whereis_tar")." xf bitrix.tar";
-        print "\n".$command if $self->{verbose};
+        $command = $self->{conf}->get("System::whereis_unzip")." bitrix.zip";
         `$command`;
+        print "\n".$command if $self->{verbose};
         
-        `rm -fr bitrix.tar`;
+
         chdir(".install");
+        
         print "[Ok]\n";
     }
 
