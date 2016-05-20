@@ -138,6 +138,7 @@ whereis_unzip =
 whereis_rm = 
 whereis_mv = 
 temp_dir = tmp
+phantonjs_path = bin/phantomjs
 
 [Bitrix]
 
@@ -162,3 +163,4 @@ db_host =
 db_user = 
 db_pass = 
 db_name =
+http = 

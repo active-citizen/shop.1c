@@ -4,10 +4,12 @@ use strict;
 use File::Basename;
 use lib ("modules");
 
+use DBI;
 use Getopt::Long;
 use Dialog;
 use Conf;
 use Bitrix;
+use Phantomjs;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;

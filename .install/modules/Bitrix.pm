@@ -6,6 +6,10 @@
 
 =head2 Методы
 
+=cut
+package Bitrix;
+
+
 =head3 new($conf, $verbose)
 
 =over 4
@@ -17,10 +21,6 @@
 
 =back
 =cut
-package Bitrix;
-
-use DBI;
-
     sub new{
         
         my ($class, $conf, $verbose) = @_;
@@ -42,11 +42,12 @@ use DBI;
     
     sub install{
         my ($self) = @_;
-        $self->downloadDist();
-        $self->clearFiles();
-        $self->clearDatabase();
-        $self->unpack();
-        $self->checkDist();
+#        $self->downloadDist();
+#        $self->clearFiles();
+#        $self->clearDatabase();
+#        $self->unpack();
+#        $self->checkDist();
+        $self->installFromBrowser();
     }
     
 =head3 downloadDist()
@@ -177,6 +178,7 @@ use DBI;
 
 =cut
     sub checkDist{
+        my ($self) = @_;
         print "\nПроверка содержимого архива  ";
         # Ожидаемое содержимое архива (для проверки распаковки)
         my @archive_content = qw(
@@ -196,7 +198,6 @@ use DBI;
         );
         
         chdir("..");
-        my ($self) = @_;
         # Проверка содержимого архива
         my $fail_flag = 0;
         foreach my $filename(@archive_content){
@@ -207,9 +208,17 @@ use DBI;
         print "[Ok]\n";
     }
 
-# FIXME
-# Удалять временный файл скачанного дистрибутива
-# Заменить rm на путь из конфига
+    
+=head3 installFromBrowser()
 
+Установка из браузера
 
+=cut
+    sub installFromBrowser{
+        my ($self) = @_;
+        $phantomjs=Phantomjs->new($self->{conf},$self->{verbose});
+        my $code = $phantomjs->generateJS();
+        print $code;
+    }
+    
 1;
