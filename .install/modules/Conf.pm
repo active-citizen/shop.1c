@@ -148,6 +148,18 @@ download_url = http://www.1c-bitrix.ru/download/business_encode_php5.tar.gz
 admin_login = admin
 # Пароль администратора Битрикс
 admin_password = 
+# Email администратора
+admin_email = 
+# Код пердустанавлеваемого решения (ID радиокнопки в установщике)
+# - id_radio_bitrix.sitecorporate:bitrix:corp_furniture
+# - id_radio_bitrix.sitecorporate:bitrix:corp_services
+# - id_radio_bitrix:demo
+# - id_radio_bitrix.sitecommunity:bitrix:demo_community
+# - id_radio_bitrix.sitepersonal:bitrix:demo_personal
+# - id_radio_bitrix.eshop:bitrix:eshop
+# - id_radio_bitrix.siteinfoportal:bitrix:infoportal
+solution_code = id_radio_bitrix.eshop:bitrix:eshop
+
 
 [Git]
 

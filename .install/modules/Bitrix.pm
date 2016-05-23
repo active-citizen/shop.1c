@@ -44,9 +44,9 @@ package Bitrix;
         my ($self) = @_;
 #        $self->downloadDist();
 #        $self->clearFiles();
-#        $self->clearDatabase();
 #        $self->unpack();
 #        $self->checkDist();
+        $self->clearDatabase();
         $self->installFromBrowser();
     }
     
@@ -218,7 +218,29 @@ package Bitrix;
         my ($self) = @_;
         $phantomjs=Phantomjs->new($self->{conf},$self->{verbose});
         my $code = $phantomjs->generateJS();
-        print $code;
+        
+        my $js_script = '';
+        $js_script = $self->{conf}->get("System::temp_dir")."/install.js";
+        
+        open(A, ">".$js_script);
+        print A $code;
+        close(A);
+        
+        Dialog::FatalError("Не удалось создать установочный скрипт $js_script")
+            unless -e $js_script;
+        
+
+        my $command = $self->{conf}->get("System::phantonjs_path")." ".$js_script;
+        
+        open(A, "$command|") or 
+            Dialog::FatalError("Не удалось запустить установочный скрипт через phantomjs");
+            
+        while(<A>){
+            print $_;
+            Dialog::FatalError("Ошибка выполнения js-установщика: ".$_)
+                if $_=~m/ERROR/;
+        }
+        
     }
     
 1;

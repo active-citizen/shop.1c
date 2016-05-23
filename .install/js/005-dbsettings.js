@@ -23,5 +23,4 @@
     ],
     "clicks":[],
     "final_click":'.wizard-next-button',
-    "render":"005.jpg"
 }

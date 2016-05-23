@@ -20,13 +20,15 @@ page.open('{{Hosting::http}}',function(){
 
 function do_action(act_num){
     // Выходим, если делать буольше ничего не надо
+    page.render("screens/step-"+act_num+'.start.png');
+    fs.write("screens/step-"+act_num+'.start.html',page.content);
     if(!datas[act_num])phantom.exit();
     
     do_it = datas[act_num];
     var loop=0;
+    /*verbose*/console.log("STEP: "+act_num);/*end verbose*/
 
     // Делаем скриншот до
-    if(do_it.render)page.render("screens/"+do_it.render);
     
     // Это отрабатывает после того, как страница после клика перезагрузится
     page.onLoadFinished = function(){
@@ -36,46 +38,57 @@ function do_action(act_num){
         if(do_it.loop_cond){
             script = 'function(){return '+do_it.loop_cond+";}";
             if(result = page.evaluateJavaScript(script)){
-                console.log("LOOP "+loop);
-                page.render("screens/"+do_it.render+'.loop.'+loop+'.png');
+                /*verbose*/console.log("LOOP "+loop);/*end verbose*/
                 loop++;
                 return true;
             }
         }
         
-        page.render("screens/"+do_it.render+'.after.png');
         page.onLoadFinished = function(){};
         do_action(act_num+1);
     }
+
+
+    // Проверка наличия блока с ошибками
+    var script = "function(){if (document.querySelector('.inst-note-block-red .inst-note-block-text') && document.querySelector('.inst-note-block-red').parentNode.parentNode.style['display']!='none')return document.querySelector('.inst-note-block-red .inst-note-block-text').innerHTML;}";
+    var result = '';
+    if(result = page.evaluateJavaScript(script)){
+        if(do_it.render)page.render("screens/"+act_num+'.png');
+        console.log("ERROR: "+result+"");
+        phantom.exit();
+    }
     
-    // Проверка стопа
+    
+    // Проверка стопа по условию
     if(do_it.stop_cond){
         var script = 'function(){return '+do_it.stop_cond+";}";
-        console.log("CHECKING: "+script);
+        /*verbose*/console.log("CHECKING: "+script);/*end verbose*/
         var result = '';
         if(result = page.evaluateJavaScript(script)){
-            console.log("ERROR ANSWER="+result+'!!!');
-            fs.write(error_flag_file,"Step "+act_num+', checking result = '+result, "w");
+            console.log("ERROR: "+result+' См. скриншоты');
             phantom.exit();
         }
     }
     
     // Заполняем поля, делаем клики
     for(i in do_it.clicks){
-        console.log("CLICK: "+do_it.clicks[i]);
+        /*verbose*/console.log("CLICK: "+do_it.clicks[i]);/*end verbose*/
+        page.evaluateJavaScript("function(){"+do_it.clicks[i]+"}");
+        /*
         page.evaluate(
             function(selector){
-                document.querySelector(selector).click();
+                if(document.querySelector(selector))document.querySelector(selector).click();
             }
             ,
             do_it.clicks[i]
         );
+        */
     }
     for(i in do_it.inputs){
-        console.log("INPUT: "+do_it.inputs[i].name+"="+do_it.inputs[i].value);
+        /*verbose*/console.log("INPUT: "+do_it.inputs[i].name+"="+do_it.inputs[i].value);/*end verbose*/
         page.evaluate(
             function(selector,value){
-                document.querySelector(selector).value = value;
+                if(document.querySelector(selector))document.querySelector(selector).value = value;
             }
             ,
             do_it.inputs[i].name
@@ -83,10 +96,13 @@ function do_action(act_num){
             do_it.inputs[i].value
         );
     }
+
+    page.render("screens/step-"+act_num+'.finish.png');
+    fs.write("screens/step-"+act_num+'.finish.html',page.content);
     
     // Делаем на странице финальный клик
     if(do_it.final_click){
-        console.log("FINALI-CLICK: "+do_it.final_click);
+        /*verbose*/console.log("FINALI-CLICK: "+do_it.final_click);/*end verbose*/
         page.evaluate(
             function(selector){
                 document.querySelector(selector).click();
@@ -94,6 +110,6 @@ function do_action(act_num){
             ,
             do_it.final_click
         );
-        if(do_it.render)page.render("screens/"+do_it.render+'.middle.png');
     }
 }
+

@@ -1,7 +1,7 @@
 {
     "inputs":[],
     "clicks":[
-        "document.querySelector('#agree_license_id').click();"
+        "document.querySelector('.inst-template-color').click();"
     ],
     "final_click":'.wizard-next-button',
-}
+} 

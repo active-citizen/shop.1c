@@ -42,10 +42,14 @@ package Phantomjs;
 =cut
     sub generateJS{
         my ($self) = @_;
+        
+        # Берём основу js-кода в шаблонном файле
         open(A,"js/template.js");
         my $jscode = join("",<A>);
         close(A);
         
+        # Формируем список фалов вида 001-*.js, 002-*.js и.т.д. для формирования 
+        # этапов установки
         opendir(my $dd,"js");
         my @scripts = ();
         AAA:while(my $filename = readdir($dd)){
@@ -54,21 +58,32 @@ package Phantomjs;
         }
         @scripts = sort @scripts;
         
+        # Формируем js-код этапов 
         my $datacode = '';
         foreach my $filename(@scripts){
             open(A,"js/".$filename);
-            $datacode .= "\ndatas.push(".join("",<A>).");";
+            $datacode .= "\n/* $filename */\ndatas.push(".join("",<A>).");";
             close(A);
         }
         $datacode .= "\n";
         
+        # Заменяем код
         $jscode=~s/{Install:data}/$datacode/gm;
-        
+
+        # Вставляем ключи из настроек
         my $value = "";
         foreach my $key($jscode=~m/\{\{(.*?)\}\}/gim){
             $value = $self->{conf}->get($key);
             $jscode=~s/\{\{$key\}\}/$value/gim;
         }
+        
+        # Убираем скриншоты
+        $jscode=~s|/\*screenshot\*/.*?/\*end screenshot\*/||gim
+            unless $self->{conf}->get("Bitrix::make_screenshots") eq 'yes';
+        
+        # Убираем болтливые режимы
+        $jscode=~s|/\*verbose\*/.*?/\*end verbose\*/||gim
+            unless $self->{verbose};
 
         return $jscode;
     }
