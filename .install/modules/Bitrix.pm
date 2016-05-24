@@ -42,10 +42,10 @@ package Bitrix;
     
     sub install{
         my ($self) = @_;
-#        $self->downloadDist();
-#        $self->clearFiles();
-#        $self->unpack();
-#        $self->checkDist();
+        $self->downloadDist();
+        $self->clearFiles();
+        $self->unpack();
+        $self->checkDist();
         $self->clearDatabase();
         $self->installFromBrowser();
     }

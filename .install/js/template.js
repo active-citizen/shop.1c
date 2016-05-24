@@ -57,6 +57,17 @@ function do_action(act_num){
         console.log("ERROR: "+result+"");
         phantom.exit();
     }
+
+    // Проверка наличия красной строчки
+    /*
+    var script = "function(){if (document.querySelector('p[style=\"color:red\"]'))return document.querySelector('p[style=\"color:red\"]').innerHTML;}";
+    var result = '';
+    if(result = page.evaluateJavaScript(script)){
+        if(do_it.render)page.render("screens/"+act_num+'.png');
+        console.log("ERROR: "+result+"");
+        phantom.exit();
+    }
+    */
     
     
     // Проверка стопа по условию

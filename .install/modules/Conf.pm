@@ -143,7 +143,7 @@ phantonjs_path = bin/phantomjs
 [Bitrix]
 
 # Прямая ссылка на архив дистрибутива Битрикса в формате tar.gz
-download_url = http://www.1c-bitrix.ru/download/business_encode_php5.tar.gz
+download_url = http://www.1c-bitrix.ru/download/business_encode_php5.zip
 # Имя пользователя админитратора Битрикс
 admin_login = admin
 # Пароль администратора Битрикс

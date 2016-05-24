@@ -24,6 +24,7 @@ sub ShowHelp{
     --verbose               болтливый режим
     --config=ФАЙЛ           задать конфиг для установки вручную (по умолчанию config.ini)
     --show-template-config  показать файл конфигурации с опциями по умолчанию   
+    --install-bitrix        установить Битрикс
 
 EOHELP
 ;
