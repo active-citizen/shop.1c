@@ -137,6 +137,7 @@ whereis_git =
 whereis_unzip = 
 whereis_rm = 
 whereis_mv = 
+whereis_rsync = 
 temp_dir = tmp
 phantonjs_path = bin/phantomjs
 
