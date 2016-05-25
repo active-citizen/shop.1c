@@ -5,4 +5,5 @@ bitrix/templates/*
 .install/config.ini
 .install/tmp/*
 !.install/tmp/README.txt
-
+.install/screens/*
+!.install/screens/README.md

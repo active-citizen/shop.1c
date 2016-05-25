@@ -1,6 +1,6 @@
 =encoding UTF-8
 
-=head1 Bitrix 
+=head1 Git 
 
 Класс для работы с Git
 
@@ -26,8 +26,10 @@ package Git;
         my ($class, $conf, $verbose) = @_;
         
         my $self = {
-    	    "verbose"	=>  $verbose,
-    	    "conf"	    =>  $conf
+    	    "verbose"	    =>  $verbose,
+    	    "conf"	        =>  $conf,
+            "last_commit"   =>  0,
+            "new_commit"    =>  0
         };
         bless $self,$class;
         
@@ -54,21 +56,20 @@ package Git;
         chdir("git");
         
         # Если репозиторий там уже есть - обновляем, если нет - клонируем
-        my $last_commit = '';
         if(my $git_version = $self->version()){
-            $last_commit = $self->last_commit();
+            $self->{last_commit} = $self->last_commit();
             $self->pull();
         }else{
             $self->clone();
         }
         Dialog::FatalError("Не удалось создать временный репозиторий") unless $self->version();
         $self->checkout($self->{conf}->get("Git::branch"));
-        my $new_commit = $self->last_commit();
+        $self->{new_commit} = $self->last_commit();
         
         # Синхронизируем файлы, если номер коммита обновился
-        $self->rsync() if $last_commit ne $new_commit;
+        $self->rsync() if $self->{new_commit} ne $self->{last_commit};
         chdir("../..");
-        return true if $last_commit ne $new_commit;
+        return true if $self->{last_commit} ne $self->{new_commit};
         return false;
     }
     
@@ -160,9 +161,7 @@ package Git;
 =cut
     sub rsync{
         my ($self) = @_;
-        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress ../../.. --exclude .install";
-        print $command;
-        die;
+        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ../../.. --exclude .install";
         open(A, "$command|");
         while(<A>){print $_ if $self->{verbose}};
         close(A);

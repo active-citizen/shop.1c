@@ -9,13 +9,14 @@ use Getopt::Long;
 use Dialog;
 use Conf;
 use Git;
+use Migration;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;
 my $ARG_HELP                    =   0;
 my $ARG_INI_FILE                =   '';
 my $ARG_SHOW_DEFAULT_CONFIG     =   0;
-my $SKIP_BITRIX_INSTALL         =   0;
+my $UNITTESTS                   =   0;
 
 # Получение аргументов командной строки и помещение их в соответствующие переменные
 GetOptions (
@@ -23,6 +24,7 @@ GetOptions (
     "help"                  => \$ARG_HELP,
     "config=s"	            => \$ARG_INI_FILE,
     "show-template-config"  => \$ARG_SHOW_DEFAULT_CONFIG,
+    "unittests"             => \$UNITTESTS,
 );
 
 # Вывод помощи по ключу командной строки
@@ -34,5 +36,13 @@ Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 my $conf = Conf->new($ARG_INI_FILE);
 Dialog::FatalError($conf->{error}) if $conf->{error};
 
+# Синхронизация кода из репозитория
+# и запуск миграций в случае обновления кода
 my $git = Git->new($conf, $ARG_VERBOSE);
 $git->sync();
+print "\n".$git->{last_commit}."<=>".$git->{new_commit}."\n";
+my $migration = Migration->new($conf, $ARG_VERBOSE);
+die;
+
+
+
