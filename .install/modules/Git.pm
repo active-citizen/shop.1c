@@ -52,6 +52,8 @@ use base Common;
         
         chdir($self->{conf}->get("System::temp_dir"));
         
+        die;
+        
         # Если каталог с временным git-репом не создан - создаём
         mkdir "git" unless -e "git";       
         # Входим в каталог
@@ -70,7 +72,7 @@ use base Common;
         
         # Синхронизируем файлы, если номер коммита обновился
         $self->rsync() if $self->{new_commit} ne $self->{last_commit};
-        chdir("../..");
+        chdir(dirname($0));
         return true if $self->{last_commit} ne $self->{new_commit};
         return false;
     }
@@ -91,7 +93,7 @@ use base Common;
 
 =head3 version()
 
-Получение версии Git (если он там есть)
+Получение версии Git текущего каталога(если он там есть)
 
 =cut
     sub version{
@@ -146,6 +148,18 @@ use base Common;
         my $command = $self->{conf}->get("System::whereis_git")." checkout $branch ";
         $self->shell($command);
     }
+
+=head3 revert
+
+Откат до указзаного коммита
+
+=cut
+    sub revert{
+        my ($self,$commit) = @_;
+        my $command = $self->{conf}->get("System::whereis_git")." revert $commit ";
+        $self->shell($command);
+    }
+    
     
 =head3 rsync()
 

@@ -105,7 +105,7 @@ package Bitrix;
             Dialog::FatalError("Не могу удалить $filename") if `$command`;
         }
         print "[Ok]\n";
-        chdir(".install");
+        chdir(dirname($0));
     }
 
 =head3 clearDatabase()
@@ -164,7 +164,7 @@ package Bitrix;
         print "\n".$command if $self->{verbose};
         
 
-        chdir(".install");
+        chdir(dirname($0));
         
         print "[Ok]\n";
     }
@@ -201,7 +201,7 @@ package Bitrix;
             Dialog::FatalError("Путь <$filename> после распаковки не обнаружен")
                 unless -e $filename;
         }
-        chdir(".install");
+        chdir(dirname($0));
         print "[Ok]\n";
     }
 

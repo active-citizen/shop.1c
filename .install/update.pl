@@ -1,9 +1,19 @@
 #!/usr/bin/perl
-chdir(dirname($0));
-use strict;
-use File::Basename;
-use lib ("modules");
 
+use strict;
+
+my $rel_path = $0;
+my $start_path = `pwd`;
+chomp($rel_path);chomp($start_path);
+my $base_path = `pwd`;
+chomp($base_path);
+
+print "|$base_path|";
+die;
+
+use lib ("$base_path modules");
+
+use File::Basename;
 use DBI;
 use Getopt::Long;
 use Dialog;
@@ -40,9 +50,16 @@ Dialog::FatalError($conf->{error}) if $conf->{error};
 # и запуск миграций в случае обновления кода
 my $git = Git->new($conf, $ARG_VERBOSE);
 $git->sync();
-print "\n".$git->{last_commit}."<=>".$git->{new_commit}."\n";
-my $migration = Migration->new($conf, $ARG_VERBOSE);
-die;
+
+
+$git->{last_commit} = "3215e42dd6a8259d979b354ddd3a3262492ac152";
+$git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
+
+if($git->{last_commit} ne $git->{new_commit}){
+    my $migration = Migration->new($conf, $ARG_VERBOSE);
+    $migration->execDiff($git->{last_commit},$git->{new_commit});
+}
+
 
 
 

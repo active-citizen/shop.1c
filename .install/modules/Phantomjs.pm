@@ -9,6 +9,8 @@
 =cut
 package Phantomjs;
 
+use base Common;
+
 =head3 new($conf, $verbose)
 
 =over 4

@@ -17,6 +17,9 @@
 =back
 =cut
 package Conf; 
+
+use base Common;
+
 use strict;
 
     sub new{
@@ -80,7 +83,18 @@ use strict;
 =cut
     sub get{
         my ($self, $name) = @_;
-        return $self->{data}->{$name};
+        my $value = $self->{data}->{$name};
+        
+        if($name eq "System::temp_dir"){
+            unless(-e $value){
+                Dialog::FatalError("Не могу создать временный каталог $value")
+                    unless mkdir($value);
+            }
+            
+            Dialog::FatalError("Не удалось создать временный каталог $value")
+                unless -e $value || -w $value;
+        }
+        return $value;
     }
 
 
@@ -97,6 +111,7 @@ use strict;
         my $default = '';
         while(<DATA>){
             $line = $_;
+            
             # Заполняем системные пути для ключей с whereis_
             if($_=~m/^\s*whereis_(.*?)\s*\=\s*(.*)\s*.*$/){
                 $programm = $1;
@@ -136,7 +151,7 @@ whereis_unzip =
 whereis_rm = 
 whereis_mv = 
 whereis_rsync = 
-temp_dir = tmp
+temp_dir = /tmp/.ag
 phantonjs_path = bin/phantomjs
 
 [Bitrix]

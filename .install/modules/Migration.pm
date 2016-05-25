@@ -33,16 +33,21 @@ use base Common;
         return $self;
     }
     
-=head3 execAllNew()
+=head3 execDiff()
 
 выполнение всех новых миграций между коммитами
 
 =cut
 
-    sub execAllNew{
-        my ($self) = @_;
+    sub execDiff{
+        my ($self,$last_commit, $new_commit) = @_;
+
+        chdir($self->{conf}->get("System::temp_dir")." git");
+        my $git = Git->new($self->{conf}, $self->{verbose});
+        $git->revert($last_commit);
+        $git->revert($new_commit);
         
-        chdir($self->{conf}->get("System::temp_dir"));
+        chdir(dirname($0));
     }
     
 
