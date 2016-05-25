@@ -9,6 +9,7 @@
 =cut
 package Git;
 
+use base Common;
 
 =head3 new($conf, $verbose)
 
@@ -24,13 +25,10 @@ package Git;
     sub new{
         
         my ($class, $conf, $verbose) = @_;
-        
-        my $self = {
-    	    "verbose"	    =>  $verbose,
-    	    "conf"	        =>  $conf,
-            "last_commit"   =>  0,
-            "new_commit"    =>  0
-        };
+
+        my $self = Common::new($class, $conf, $verbose);
+        $self->{"last_commit"}  = 0;
+        $self->{"new_commit"}   = 0;
         bless $self,$class;
         
         return $self;
@@ -47,6 +45,10 @@ package Git;
         my $command = '';
         
         print "Синхронизация из Git-репозитория\n";
+        
+        # Проверяем блокировку синхронизации
+        
+        # Ставим блокировку
         
         chdir($self->{conf}->get("System::temp_dir"));
         
@@ -83,9 +85,7 @@ package Git;
         my ($self) = @_;
         # Клонируем репозиторий
         my $command = $self->{conf}->get("System::whereis_git")." clone ".$self->{conf}->get("Git::repository_url")." .";
-        open(A, "$command|");
-        while(<A>){print $_ if $self->{verbose}};
-        close(A);
+        $self->shell($command);
     }
     
 
@@ -100,7 +100,9 @@ package Git;
         return 0 unless -e ".git";
         
         my $command = $self->{conf}->get("System::whereis_git")." --version ";
-        my $answer = `$command`;chomp($answer);
+
+        my $answer = $self->shell($command);
+        
         return $1 if $answer=~m/^git\s+version\s+(.*)$/;
         return 0;
     }
@@ -115,9 +117,7 @@ package Git;
         my ($self) = @_;
         # Забираем последние изменения
         my $command = $self->{conf}->get("System::whereis_git")." pull ";
-        open(A, "$command|");
-        while(<A>){print $_ if $self->{verbose}};
-        close(A);
+        $self->shell($command);
     }
     
 =head3 last_commit()
@@ -129,14 +129,9 @@ package Git;
         my ($self) = @_;
         my $command = $self->{conf}->get("System::whereis_git")." log ";
         my $hash = '';
-        open(A, "$command|");
-        AAA:while(<A>){
-            print $_ if $self->{verbose};
-            chomp($_);
-            $hash = $1 if ~m/^commit\s+([\d\w]+)\s*$/;
-            last AAA if $hash;
-        };
-        close(A);
+        my $answer = $self->shell($command,"no");
+        my $answer = (split("\n",$answer))[0];
+        $hash = $1 if $answer=~m/^commit\s+([\d\w]+)\s*$/;
         return $hash;
     }
 
@@ -149,9 +144,7 @@ package Git;
     sub checkout{
         my ($self,$branch) = @_;
         my $command = $self->{conf}->get("System::whereis_git")." checkout $branch ";
-        open(A, "$command|");
-        while(<A>){print $_ if $self->{verbose}};
-        close(A);
+        $self->shell($command);
     }
     
 =head3 rsync()
@@ -162,9 +155,7 @@ package Git;
     sub rsync{
         my ($self) = @_;
         my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ../../.. --exclude .install";
-        open(A, "$command|");
-        while(<A>){print $_ if $self->{verbose}};
-        close(A);
+        $self->shell($command);
     }
     
 1;

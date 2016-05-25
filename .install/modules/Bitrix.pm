@@ -25,10 +25,7 @@ package Bitrix;
         
         my ($class, $conf, $verbose) = @_;
         
-        my $self = {
-    	    "verbose"	=>  $verbose,
-    	    "conf"	    =>  $conf
-        };
+        my $self = Common->new($conf, $verbose);
         bless $self,$class;
         
         return $self;

@@ -25,10 +25,8 @@ use strict;
         $conffile = "./config.ini" unless $conffile;
         
         # Атрибуты класса
-        my $self = {
-            "error" =>  undef,
-            "data"  =>  {}
-        };
+        my $self = Common::new($class);
+        $self->{"data"} = {};
 
         # Проверка существовани пользовательского конфига
         unless(-e $conffile){

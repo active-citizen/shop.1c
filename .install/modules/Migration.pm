@@ -9,6 +9,8 @@
 =cut
 package Migration;
 
+use base Common;
+
 
 =head3 new($conf, $verbose)
 
@@ -25,22 +27,32 @@ package Migration;
         
         my ($class, $conf, $verbose) = @_;
         
-        my $self = {
-    	    "verbose"	=>  $verbose,
-    	    "conf"	    =>  $conf
-        };
+        my $self = Common::new($class, $conf, $verbose);
         bless $self,$class;
         
         return $self;
     }
+    
+=head3 execAllNew()
 
-=head3 sync()
+выполнение всех новых миграций между коммитами
 
-Синхронизация файлов из репозитория. Возвращает истину, если файлы были обновлены
+=cut
+
+    sub execAllNew{
+        my ($self) = @_;
+        
+        chdir($self->{conf}->get("System::temp_dir"));
+    }
+    
+
+=head3 diff()
+
+Получение списка файлов миграций между текущим коммитом и предыдущими
 
 =cut
     
-    sub sync{
+    sub diff{
         my ($self) = @_;
     }
     

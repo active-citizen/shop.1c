@@ -24,10 +24,7 @@ package Phantomjs;
         
         my ($class, $conf, $verbose) = @_;
         
-        my $self = {
-            "verbose"   =>  $verbose,
-            "conf"      =>  $conf
-        };
+        my $self = Common::new($class, $conf, $verbose);
         bless $self,$class;
         
         
