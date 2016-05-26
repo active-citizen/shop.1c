@@ -1,25 +1,28 @@
 #!/usr/bin/perl
 
 use strict;
+use File::Basename;
 
+# Определяем базовый каталог работы инсталлера
 my $rel_path = $0;
 my $start_path = `pwd`;
 chomp($rel_path);chomp($start_path);
-my $base_path = `pwd`;
-chomp($base_path);
+chdir($start_path);chdir(dirname($rel_path));
+my $base_path = `pwd`;chomp($base_path);
+chdir($base_path);
 
-print "|$base_path|";
-die;
+# ПУть к пользовательским модулям
+use lib ("modules");
 
-use lib ("$base_path modules");
-
-use File::Basename;
+# Подключение системных модулей
 use DBI;
 use Getopt::Long;
-use Dialog;
-use Conf;
-use Git;
-use Migration;
+
+# Подключение своих модулей
+require Dialog;
+require Conf;
+require Git;
+require Migration;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;
