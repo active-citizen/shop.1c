@@ -48,6 +48,7 @@ Dialog::ShowHelp()     if $ARG_HELP;
 # Вывод шаблонного конфига по ключу командной строки
 Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 
+#die("Update is locked") if Dialog::isLock();
 Dialog::setLock() unless Dialog::isLock();
 
 # Получаем настройки
@@ -60,7 +61,7 @@ $conf->set("System::base_path",$base_path);
 my $git = Git->new($conf, $ARG_VERBOSE);
 $git->sync();
 
-$git->{last_commit} = "3215e42dd6a8259d979b354ddd3a3262492ac152";
+$git->{last_commit} = "2f73d1ed14860dbb8e7899b5e4f2ab0f18aed3d9";
 $git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
 
 if($git->{last_commit} ne $git->{new_commit}){

@@ -25,7 +25,7 @@ sub setLock{
 
 # проверка блокировки
 sub isLock{
-    open(A,">locks/update");
+    open(A,"locks/update");
     my $islock = join ("",<A>);
     close(A);
     return $islock;

@@ -145,13 +145,33 @@ use base Common;
 
 =head3 revert
 
-Откат до указзаного коммита
+Вывод добавленных между коммитами файлов
+
+=over 4
+
+=item * B<$last_commit> - Ранний коммит
+
+=item * B<$new_commit> - поздний коммит
+
+=item * B<$pattern> - шаблон включаемых в список файлов
+
+=back
 
 =cut
-    sub reset{
-        my ($self,$commit) = @_;
-        my $command = $self->{conf}->get("System::whereis_git")." reset --hard $commit ";
-        $self->shell($command);
+    sub new_files{
+        my ($self,$last_commit, $new_commit, $pattern) = @_;
+        my $command = $self->{conf}->get("System::whereis_git")." diff --name-status $last_commit $new_commit";
+        my $output = $self->shell($command);
+        my @lines = split("\n", $output);
+        my @answer = ();
+        foreach(@lines){
+            push @answer,$1 if ~m/^A\s+(.*)$/;
+        }
+        
+        @answer = grep /$pattern/,@answer;
+        
+        print "|".$_."|$pattern|\n" foreach @answer;
+        die;
     }
     
     

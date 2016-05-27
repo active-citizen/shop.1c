@@ -61,14 +61,7 @@ use base Common;
         my $git = Git->new($self->{conf}, $self->{verbose});
         # Откатываем рек к состоянию первого
         chdir($self->{conf}->get("System::temp_dir")."/git");
-        $git->reset($last_commit);
-        die;
-        
-        # Получаем список миграций
-        
-        # Откатываем рек к состоянию последнего коммита
-        chdir($self->{conf}->get("System::temp_dir")." git");
-        $git->revert($new_commit);
+        $git->new_files($last_commit, $new_commit,"/\\.mig\$/");
     }
     
     
