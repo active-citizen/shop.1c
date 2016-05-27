@@ -68,7 +68,7 @@ use strict;
     }
 
 
-=head3 Get($parameter)
+=head3 get($parameter)
 
 Получение значения параметра из текстового конфига
 
@@ -97,6 +97,25 @@ use strict;
         return $value;
     }
 
+=head3 set($parameter,$value)
+
+Установка значения параметра
+
+=over 4
+
+=item * B<$parameter> - Название параметра в формате I<Секция::параметр>, 
+например I<Bitrix::admin_login>
+
+=item * B<$value> - значение параметра
+
+=back
+=cut
+    sub set{
+        my ($self, $name, $value) = @_;
+        $self->{data}->{$name} = $value;
+    }
+    
+    
 
 =head3 ShowTemplateConfig()
 
@@ -151,7 +170,7 @@ whereis_unzip =
 whereis_rm = 
 whereis_mv = 
 whereis_rsync = 
-temp_dir = /tmp/.ag
+temp_dir = 
 phantonjs_path = bin/phantomjs
 
 [Bitrix]

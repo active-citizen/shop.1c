@@ -42,12 +42,10 @@ use base Common;
     sub execDiff{
         my ($self,$last_commit, $new_commit) = @_;
 
-        chdir($self->{conf}->get("System::temp_dir")." git");
-        my $git = Git->new($self->{conf}, $self->{verbose});
-        $git->revert($last_commit);
-        $git->revert($new_commit);
+        $self->diff($last_commit, $new_commit);
         
         chdir(dirname($0));
+        
     }
     
 
@@ -58,7 +56,26 @@ use base Common;
 =cut
     
     sub diff{
-        my ($self) = @_;
+        my ($self,$last_commit, $new_commit) = @_;
+        
+        my $git = Git->new($self->{conf}, $self->{verbose});
+        # Откатываем рек к состоянию первого
+        chdir($self->{conf}->get("System::temp_dir")."/git");
+        $git->reset($last_commit);
+        die;
+        
+        # Получаем список миграций
+        
+        # Откатываем рек к состоянию последнего коммита
+        chdir($self->{conf}->get("System::temp_dir")." git");
+        $git->revert($new_commit);
     }
+    
+    
+    
+    
+    
+    
+    
     
 1;

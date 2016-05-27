@@ -46,13 +46,7 @@ use base Common;
         
         print "Синхронизация из Git-репозитория\n";
         
-        # Проверяем блокировку синхронизации
-        
-        # Ставим блокировку
-        
         chdir($self->{conf}->get("System::temp_dir"));
-        
-        die;
         
         # Если каталог с временным git-репом не создан - создаём
         mkdir "git" unless -e "git";       
@@ -72,7 +66,7 @@ use base Common;
         
         # Синхронизируем файлы, если номер коммита обновился
         $self->rsync() if $self->{new_commit} ne $self->{last_commit};
-        chdir(dirname($0));
+        chdir($self->{conf}->get("System::base_path"));
         return true if $self->{last_commit} ne $self->{new_commit};
         return false;
     }
@@ -154,9 +148,9 @@ use base Common;
 Откат до указзаного коммита
 
 =cut
-    sub revert{
+    sub reset{
         my ($self,$commit) = @_;
-        my $command = $self->{conf}->get("System::whereis_git")." revert $commit ";
+        my $command = $self->{conf}->get("System::whereis_git")." reset --hard $commit ";
         $self->shell($command);
     }
     
@@ -168,7 +162,7 @@ use base Common;
 =cut
     sub rsync{
         my ($self) = @_;
-        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ../../.. --exclude .install";
+        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ".$self->{conf}->get("System::base_path")."/.. --exclude .install";
         $self->shell($command);
     }
     

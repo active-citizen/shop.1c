@@ -12,7 +12,30 @@ EOFATALERROR
 ;
     print ("="x80);
     print "\n";
+    resetLock();
     exit(1);
+}
+
+# Постановка блокировки
+sub setLock{
+    open(A,">locks/update");
+    print A "1";
+    close(A);
+}
+
+# проверка блокировки
+sub isLock{
+    open(A,">locks/update");
+    my $islock = join ("",<A>);
+    close(A);
+    return $islock;
+}
+
+# Снятие блокировки
+sub resetLock{
+    open(A,">locks/update");
+    print A "";
+    close(A);
 }
 
 # Вывод справки
