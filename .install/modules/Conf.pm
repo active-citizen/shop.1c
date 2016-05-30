@@ -211,3 +211,20 @@ db_user =
 db_pass = 
 db_name =
 http = 
+
+[Report]
+# Каталог для отчетов
+folder = reports
+# Адресаты для получения отчетов
+receivers = andrey.inyutsin@altarix.ru
+
+
+[Mail]
+smtp_host = 
+smtp_port = 
+smtp_ssl = 
+smtp_login =
+smtp_password = 
+
+
+

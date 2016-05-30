@@ -27,6 +27,7 @@ require Conf;
 require Git;
 require Migration;
 require Unittests;
+require Report;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;
@@ -35,15 +36,19 @@ my $ARG_INI_FILE                =   '';
 my $ARG_SHOW_DEFAULT_CONFIG     =   0;
 my $UNITTESTS                   =   0;
 my $SYNC                        =   0;
+my $MAKEREPORT                  =   0;
+my $SENDREPORT                  =   0;
 
 # Получение аргументов командной строки и помещение их в соответствующие переменные
 GetOptions (
-    "verbose"  	            => \$ARG_VERBOSE,
-    "help"                  => \$ARG_HELP,
-    "config=s"	            => \$ARG_INI_FILE,
-    "show-template-config"  => \$ARG_SHOW_DEFAULT_CONFIG,
-    "unittests"             => \$UNITTESTS,
-    "sync"                  => \$SYNC
+    "verbose"  	            =>  \$ARG_VERBOSE,
+    "help"                  =>  \$ARG_HELP,
+    "config=s"	            =>  \$ARG_INI_FILE,
+    "show-template-config"  =>  \$ARG_SHOW_DEFAULT_CONFIG,
+    "unittests"             =>  \$UNITTESTS,
+    "sync"                  =>  \$SYNC,
+    "make-report"           =>  \$MAKEREPORT,
+    "send-report"           =>  \$SENDREPORT
 );
 
 # Вывод помощи по ключу командной строки
