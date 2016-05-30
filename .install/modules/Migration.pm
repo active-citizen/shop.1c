@@ -42,16 +42,22 @@ use base Common;
     sub execDiff{
         my ($self,$last_commit, $new_commit) = @_;
 
-        $self->diff($last_commit, $new_commit);
+        my @migrations = $self->diff($last_commit, $new_commit);
         
-        chdir(dirname($0));
+        chdir($self->{conf}->get("System::base_path")."/..");
         
+        foreach my $migration(@migrations){
+            $command = $self->{conf}->get("System::whereis_php")." $migration";
+            print $command."\n";
+        }
+        
+        chdir($self->{conf}->get("System::base_path"));
     }
     
 
 =head3 diff()
 
-Получение списка файлов миграций между текущим коммитом и предыдущими
+Получение списка добавленных файлов миграций между текущим коммитом и предыдущими
 
 =cut
     
@@ -59,9 +65,10 @@ use base Common;
         my ($self,$last_commit, $new_commit) = @_;
         
         my $git = Git->new($self->{conf}, $self->{verbose});
-        # Откатываем рек к состоянию первого
+        # Получаем список новых файлов между ревизиями по маске
         chdir($self->{conf}->get("System::temp_dir")."/git");
-        $git->new_files($last_commit, $new_commit,"/\\.mig\$/");
+        my @migrations = $git->new_files($last_commit, $new_commit,"\\.mig\$");
+        return @migrations;
     }
     
     

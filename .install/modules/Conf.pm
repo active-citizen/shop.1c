@@ -170,6 +170,7 @@ whereis_unzip =
 whereis_rm = 
 whereis_mv = 
 whereis_rsync = 
+whereis_php = 
 temp_dir = 
 phantonjs_path = bin/phantomjs
 

@@ -61,14 +61,15 @@ $conf->set("System::base_path",$base_path);
 my $git = Git->new($conf, $ARG_VERBOSE);
 $git->sync();
 
-$git->{last_commit} = "2f73d1ed14860dbb8e7899b5e4f2ab0f18aed3d9";
-$git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
+# тестовые коммиты для проверки
+#$git->{last_commit} = "2f73d1ed14860dbb8e7899b5e4f2ab0f18aed3d9";
+#$git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
 
 if($git->{last_commit} ne $git->{new_commit}){
     my $migration = Migration->new($conf, $ARG_VERBOSE);
     $migration->execDiff($git->{last_commit},$git->{new_commit});
 }
 
-Dialog::resersetLock();
+Dialog::resetLock();
 
 

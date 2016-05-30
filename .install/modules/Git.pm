@@ -167,11 +167,9 @@ use base Common;
         foreach(@lines){
             push @answer,$1 if ~m/^A\s+(.*)$/;
         }
-        
+
         @answer = grep /$pattern/,@answer;
-        
-        print "|".$_."|$pattern|\n" foreach @answer;
-        die;
+        return @answer;
     }
     
     
