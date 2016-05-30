@@ -173,6 +173,7 @@ whereis_rsync =
 whereis_php = 
 temp_dir = 
 phantonjs_path = bin/phantomjs
+phpunit_path = bin/phpunit
 
 [Bitrix]
 

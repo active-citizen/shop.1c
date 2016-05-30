@@ -5,8 +5,14 @@
 
 * Linux x86_64 (CentOS, RHEL, Debian)
 * Apache > 2.2
-* PHP > 5.3
+* PHP > 5.3 (php-fpm, cli)
+    * short_open_tag = 0
+    * mbstring.internal_encoding = UTF-8
+    * mbstring.func_overload = 2
+    * realpath_cache_size = 4096k
+    * pcre.recursion_limit = 10000
 * MySQL > 5.6
+    * sql_mode = ALLOW_INVALID_DATES
 * git
 * Perl > 5.20
     * модуль DBI
@@ -30,17 +36,17 @@
     `cd .install`
 - Создайте шаблонный файл конфигурации
 
-    `./install.pl --show-template-config > config.ini`
+    `./update.pl --show-template-config > config.ini`
 - Заполните все пустые параметры в **config.ini**
 - Параметр **branch** из секции **Git** нужно прописать в зависимости от того, из какой ветки нужно получить ПО
     * **master** - для последнего вышедшего релиза
     * **develop** - для версии разработчика
 - Запустите установщик 
-    `./install.pl`
+    `./update.pl`
 - Дождитесь завершения установки
 - Подробный ход процесса установки можно наблюдать, включив режим подробного отчета
 
-    `./install.pl --verbose`
+    `./update.pl --verbose`
 
 # Обновление
 
