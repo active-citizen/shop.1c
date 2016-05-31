@@ -7,7 +7,7 @@
 =head2 Методы
 
 =cut
-package Reports;
+package Report;
 
 use base Common;
 

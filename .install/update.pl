@@ -80,10 +80,14 @@ if($SYNC){
     }
 }
 
+my $report = Report->new($conf, $ARG_VERBOSE);
+
 if($UNITTESTS){
     my $unittests = Unittests->new($conf, $ARG_VERBOSE);
-    Dialog::FatalError("Некоторые модульные тесты провалены\n\n\n".$unittests->{error}) unless $unittests->go();
+    $unittests->go();
     
+    my $report = $unittests->report();
+    print $report;
 }
 
 

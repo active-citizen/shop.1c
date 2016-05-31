@@ -220,11 +220,11 @@ receivers = andrey.inyutsin@altarix.ru
 
 
 [Mail]
-smtp_host = 
-smtp_port = 
-smtp_ssl = 
-smtp_login =
-smtp_password = 
+smtp_host = localhost
+smtp_port = 465
+smtp_ssl = tsl
+smtp_login = username
+smtp_password = password
 
 
 

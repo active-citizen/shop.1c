@@ -27,23 +27,36 @@ use base Common;
         my ($class, $conf, $verbose) = @_;
 
         my $self = Common::new($class, $conf, $verbose);
-        $self->{total} = '';
+        $self->{ok} = ();
+        $self->{notok} = ();
+        $self->{failures} = ();
         bless $self,$class;
-        
         return $self;
     }
 
 =head3 go()
 
     Выполнение unit-тестов. Возвращает 1, если все пройдены успешно.
-    Возвращает 0, если какие-то тесты провалились и текст ошибки в $self->{error}
+    Возвращает 0, если какие-то тесты провалились
+    
+    Кроме того следующие аттрибуты класса содержат:
+
+=over 4
+
+=item * B<ok> - список пройденных тестов
+
+=item * B<notok> - список заваленных тестов
+
+=item * B<failures> - подробное описание заваленных тестов
+
+=back
+    
     
 =cut
     sub go{
         my ($self) = @_;
         
         my $command = $self->{conf}->get("System::phpunit_path")." --bootstrap bin/bootstrap.phpunit.php -v --tap ../.unittests";
-        
         
         my $result = $self->shell($command);
         
@@ -52,17 +65,64 @@ use base Common;
         my $open_flag = 0;
         my $line = '';
         my $total = '';
+        my $error = '';
         foreach $line(@lines){
             $open_flag = 1 if $line=~m/not ok \d+/;
-            $self->{error} .= $line."\n" if $open_flag;
+            $error .= $line."\n" if $open_flag;
+            push @{$self->{ok}}, $1 if $line=~m/^ok\s*\d+\s*\-\s*(.*)/i;
+            push @{$self->{notok}}, $1 if $line=~m/^not\s*ok\s*\d+\s*\-\s*Failure:\s*(.*)/i;
             if($line=~m/\.\.\./){
+                push @{$self->{failures}}, $error;
                 $open_flag = 0; 
+                $error = '';
             }
-            $self->{total} = $line;
+            
         }
-        return 0 if $self->{error};
+        
+        return 0 if scalar(@{$self->{failures}});
         return 1;
     }
+    
+=head3 report($type)
+    Создание отчета. Возвращает код отчета
+
+=over 4
+
+=item * B<$type> - формат отчета (md - по умолчанию) 
+
+=back
+
+=cut
+    sub report{
+        my ($self) = @_;
+        
+        my $code = '';
+        my $oks = scalar(@{$self->{ok}});
+        my $notoks = scalar(@{$self->{notok}});
+        
+        my $code    =   "\n# Unit-тестирование".($notoks?" (пройдено с ошибками)":"")."\n";
+        $code       .=  "\n* Неуспешных тестов тестов: ".int($notoks).";"; 
+        $code       .=  "\n* Успешных тестов: ".int($oks).";"; 
+        $code       .=  "\n";
+        my @lines = ();
+        
+        if(scalar(@{$self->{failures}})){
+            $code   .=  "\n## Подробно о неуспешных тестах\n";
+            foreach my $failure(@{$self->{failures}}){
+                @lines = split("\n",$failure);
+                chomp(@lines);
+                $code .="\n    > $_  " foreach @lines;
+                $code .="\n";
+            }
+        }
+
+        return $code;
+        
+    }
+    
+    
+
+    
     
     
 1;
