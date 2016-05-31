@@ -225,9 +225,11 @@ receivers = andrey.inyutsin@altarix.ru
 [Mail]
 smtp_host = localhost
 smtp_port = 465
-smtp_ssl = tsl
-smtp_login = username
+smtp_ssl = ssl
+smtp_username = username
 smtp_password = password
+from = from@example.com
+to = to@example.com
 
 
 

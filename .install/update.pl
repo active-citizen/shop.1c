@@ -91,7 +91,8 @@ if($UNITTESTS){
     $report->add($unittests->{report});
 }
 
-my $report_name = $report->create() if $MAKEREPORT;
+$report->create() if $MAKEREPORT;
+$report->send() if $SENDREPORT;
 
 
 Dialog::resetLock();

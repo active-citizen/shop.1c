@@ -9,6 +9,10 @@
 =cut
 package Report;
 use Time::localtime;
+use Email::Sender::Simple qw(sendmail);
+use Email::Sender::Transport::SMTP;
+use Email::Simple;
+use Email::Simple::Creator;
 
 use base Common;
 
@@ -77,6 +81,48 @@ use base Common;
         close(A);
         return $report_name;
     }
+
+=head3 send()
+
+    Отправка отчета по указанному адресу
+
+=cut
+    sub send{
+        my ($self) = @_;
+        
+        my $report_name = $self->create();
+        open(A,$report_name);
+        my $report_text = join "",<A>;
+        close(A);
+        
+        my $options = {};
+        $options->{debug}           = 1 if $self->{verbose};
+        $options->{host}            = $self->{conf}->get("Mail::smtp_host");
+        $options->{port}            = $self->{conf}->get("Mail::smtp_port");
+        $options->{sasl_username}   = $self->{conf}->get("Mail::smtp_username");
+        $options->{sasl_password}   = $self->{conf}->get("Mail::smtp_password");
+        $options->{ssl}             = $self->{conf}->get("Mail::smtp_ssl")  if $self->{verbose};
+        
+        
+        my $transport = Email::Sender::Transport::SMTP->new($options);
+        
+        my $email =  Email::Simple->create(
+            body=>$report_text,
+            
+            header  => [
+                ContentType    =>  "text/plain; charset=UTF-8;",
+                From            =>  $self->{conf}->get("Mail::from"),
+                Subject         =>  "Отчет"
+            ]
+        );
+        
+        sendmail($email,{
+            transport   =>  $transport,
+            from        =>  $self->{conf}->get("Mail::from"),
+            to          =>  $self->{conf}->get("Mail::to")    
+        });
+    }
+    
     
     
 1;
