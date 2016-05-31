@@ -28,6 +28,7 @@ package Common;
         my $self = {
             "verbose"       =>  $verbose,
             "conf"          =>  $conf,
+            "report"        =>  "",
             "error"         =>  undef
         };
         bless $self,$class;

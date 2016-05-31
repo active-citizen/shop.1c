@@ -18,6 +18,7 @@
     * модуль DBI
     * модуль Config::IniFiles
     * модуль Getopt::Long
+    * модуль Time::localtime
 * wget
 * gzip
 

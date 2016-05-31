@@ -86,10 +86,12 @@ if($UNITTESTS){
     my $unittests = Unittests->new($conf, $ARG_VERBOSE);
     $unittests->go();
     
-    my $report = $unittests->report();
-    print $report;
+    $unittests->report();
+    
+    $report->add($unittests->{report});
 }
 
+my $report_name = $report->create() if $MAKEREPORT;
 
 
 Dialog::resetLock();

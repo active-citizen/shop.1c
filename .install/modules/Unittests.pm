@@ -111,13 +111,13 @@ use base Common;
             foreach my $failure(@{$self->{failures}}){
                 @lines = split("\n",$failure);
                 chomp(@lines);
-                $code .="\n    > $_  " foreach @lines;
+                $code .="\n    $_  " foreach @lines;
                 $code .="\n";
             }
         }
 
+        $self->{report} = $code;
         return $code;
-        
     }
     
     
