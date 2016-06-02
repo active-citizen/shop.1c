@@ -70,7 +70,7 @@ use base Common;
         my $hour    = sprintf("%02d",localtime->hour());
         my $min     = sprintf("%02d",localtime->min());
         
-        my $path = $self->{conf}->get("Report::folder")."/$year-$mon-$day";
+        my $path = $self->{conf}->get("Report::folder")."/$year-$mon";
         mkdir($path) unless -e $path;
         Dialog::FatalError("Не моду создать каталог для отчетов $path") unless -e $path;
 
@@ -121,6 +121,8 @@ use base Common;
             from        =>  $self->{conf}->get("Mail::from"),
             to          =>  $self->{conf}->get("Mail::to")    
         });
+        
+        unlink($report_name);
     }
     
     

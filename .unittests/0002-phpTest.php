@@ -5,7 +5,7 @@
         *   Проверка основных настроек php
         */
         function testMbstringInternalEncoding(){
-            $this->assertEquals('UTF-80',ini_get("mbstring.internal_encoding"), "Проверка mbstring.internal_encoding");
+            $this->assertEquals('UTF-8',ini_get("mbstring.internal_encoding"), "Проверка mbstring.internal_encoding");
         }
         
         function testMbstringFuncOverload(){
@@ -13,7 +13,7 @@
         }
         
         function testPcreRecursionLimit(){
-            $this->assertEquals('100000',ini_get("pcre.recursion_limit"), "Проверка pcre.recursion_limit");
+            $this->assertEquals('10000',ini_get("pcre.recursion_limit"), "Проверка pcre.recursion_limit");
         }
         
         

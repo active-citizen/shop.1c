@@ -8,7 +8,7 @@
             global $DB;
             $res = $DB->Query("SHOW variables LIKE '%sql_mode%'");
             $data = $res->Fetch();
-            $this->assertEquals('ALLOW_INVALID_DATES0',$data['Value']);
+            $this->assertEquals('ALLOW_INVALID_DATES',$data['Value']);
         }
         
     }
