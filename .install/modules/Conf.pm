@@ -163,6 +163,7 @@ __DATA__
 #  Конфигурационный файл установщика магазина поощрений Активный Гражданин
 ################################################################################
 [Project]
+# Человекочитаемое название проекта
 name = 
 
 [System]
@@ -177,6 +178,7 @@ whereis_php =
 temp_dir = 
 phantonjs_path = bin/phantomjs
 phpunit_path = bin/phpunit
+pdepend_path = bin/pdepend
 
 [Bitrix]
 
@@ -230,6 +232,10 @@ smtp_username = username
 smtp_password = password
 from = from@example.com
 to = to@example.com
+
+[CodeQuality]
+
+file_extensions = php,mig
 
 
 

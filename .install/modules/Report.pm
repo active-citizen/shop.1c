@@ -8,6 +8,7 @@
 
 =cut
 package Report;
+
 use Time::localtime;
 use Email::Sender::Simple qw(sendmail);
 use Email::Sender::Transport::SMTP;

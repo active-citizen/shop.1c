@@ -26,8 +26,9 @@ require Dialog;
 require Conf;
 require Git;
 require Migration;
-require Unittests;
 require Report;
+require Unittests;
+require CodeQuality;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;
@@ -89,7 +90,10 @@ if($UNITTESTS){
     $unittests->report();
     
     $report->add($unittests->{report});
+    
 }
+my $codequality = CodeQuality->new($conf, $ARG_VERBOSE);
+$report->add($codequality->report());
 
 $report->create() if $MAKEREPORT;
 $report->send() if $SENDREPORT;
