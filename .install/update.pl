@@ -7,7 +7,6 @@ use File::Basename;
 my $rel_path = $0;      chomp($rel_path);
 my $start_path = `pwd`; chomp($start_path);
 
-
 chdir($start_path);chdir(dirname($rel_path));
 
 my $base_path = `pwd`;  chomp($base_path);
@@ -29,6 +28,8 @@ require Migration;
 require Report;
 require Unittests;
 require CodeQuality;
+require Bitrix;
+require Phantomjs;
 
 # Аргументы, получаемые из командной строки
 my $ARG_VERBOSE	                =   0;
@@ -39,12 +40,14 @@ my $UNITTESTS                   =   0;
 my $SYNC                        =   0;
 my $MAKEREPORT                  =   0;
 my $SENDREPORT                  =   0;
+my $BITRIX_INSTALL              =   0;
 
 # Получение аргументов командной строки и помещение их в соответствующие переменные
 GetOptions (
     "verbose"  	            =>  \$ARG_VERBOSE,
     "help"                  =>  \$ARG_HELP,
     "config=s"	            =>  \$ARG_INI_FILE,
+    "install-bitrix"        =>  \$BITRIX_INSTALL,
     "show-template-config"  =>  \$ARG_SHOW_DEFAULT_CONFIG,
     "unittests"             =>  \$UNITTESTS,
     "sync"                  =>  \$SYNC,
@@ -64,6 +67,12 @@ Dialog::setLock() unless Dialog::isLock();
 my $conf = Conf->new($ARG_INI_FILE);
 Dialog::FatalError($conf->{error}) if $conf->{error};
 $conf->set("System::base_path",$base_path);
+
+# Устанавливаем битрикс, если установка
+if($BITRIX_INSTALL){
+    my $bitrix = Bitrix->new($conf, $ARG_VERBOSE);
+    $bitrix->install();
+}
 
 # Синхронизация кода из репозитория
 # и запуск миграций в случае обновления кода
@@ -95,8 +104,8 @@ if($UNITTESTS){
 my $codequality = CodeQuality->new($conf, $ARG_VERBOSE);
 $report->add($codequality->report());
 
-$report->create() if $MAKEREPORT;
 $report->send() if $SENDREPORT;
+$report->create() if $MAKEREPORT;
 
 
 Dialog::resetLock();

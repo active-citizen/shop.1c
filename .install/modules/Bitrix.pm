@@ -8,6 +8,7 @@
 
 =cut
 package Bitrix;
+use base Common;
 
 
 =head3 new($conf, $verbose)
@@ -25,7 +26,7 @@ package Bitrix;
         
         my ($class, $conf, $verbose) = @_;
         
-        my $self = Common->new($conf, $verbose);
+        my $self = Common::new($class, $conf, $verbose);
         bless $self,$class;
         
         return $self;
@@ -92,7 +93,7 @@ package Bitrix;
         my $command = '';
         print "Очистка корневого каталога сайта перед установкой ";
         # Перечисляем каталоги, которые не надо удалять
-        chdir("..");
+        chdir($self->{conf}->get("System::base_path")."/..");
         opendir(my $dd, ".");
         my $filename = '';
         AAA:while($filename = readdir($dd)){
@@ -105,7 +106,7 @@ package Bitrix;
             Dialog::FatalError("Не могу удалить $filename") if `$command`;
         }
         print "[Ok]\n";
-        chdir(dirname($0));
+        chdir($self->{conf}->get("System::base_path"));
     }
 
 =head3 clearDatabase()
@@ -154,17 +155,17 @@ package Bitrix;
         my $command = '';
 
         $command = $self->{conf}->get("System::whereis_mv")." ".
-            $self->{conf}->get("System::temp_dir")."/bitrix.zip ..";
+            $self->{conf}->get("System::temp_dir")."/bitrix.zip ".$self->{conf}->get("System::base_path")."/..";
         `$command`;
 
-        chdir("..");
+        chdir($self->{conf}->get("System::base_path")."/..");
         
         $command = $self->{conf}->get("System::whereis_unzip")." bitrix.zip";
         `$command`;
         print "\n".$command if $self->{verbose};
         
 
-        chdir(dirname($0));
+        chdir($self->{conf}->get("System::base_path"));
         
         print "[Ok]\n";
     }
@@ -194,14 +195,14 @@ package Bitrix;
             web.config
         );
         
-        chdir("..");
+        chdir($self->{conf}->get("System::base_path")."/..");
         # Проверка содержимого архива
         my $fail_flag = 0;
         foreach my $filename(@archive_content){
             Dialog::FatalError("Путь <$filename> после распаковки не обнаружен")
                 unless -e $filename;
         }
-        chdir(dirname($0));
+        chdir($self->{conf}->get("System::base_path"));
         print "[Ok]\n";
     }
 
@@ -226,8 +227,7 @@ package Bitrix;
         Dialog::FatalError("Не удалось создать установочный скрипт $js_script")
             unless -e $js_script;
         
-
-        my $command = $self->{conf}->get("System::phantonjs_path")." ".$js_script;
+        my $command = $self->{conf}->get("System::phantonjs_path")." --cookies-file=".$self->{conf}->get("System::temp_dir")."/bitrix.cookie.txt ".$js_script;
         
         open(A, "$command|") or 
             Dialog::FatalError("Не удалось запустить установочный скрипт через phantomjs");

@@ -1,7 +1,7 @@
 var webPage = require('webpage');
 var page = webPage.create();
 var fs = require('fs');
-var error_flag_file = "tmp/pj_error";
+var error_flag_file = "{{System::temp_dir}}/pj_error";
 if(fs.exists(error_flag_file))
     fs.remove(error_flag_file);
 
@@ -20,8 +20,8 @@ page.open('{{Hosting::http}}',function(){
 
 function do_action(act_num){
     // Выходим, если делать буольше ничего не надо
-    page.render("screens/step-"+act_num+'.start.png');
-    fs.write("screens/step-"+act_num+'.start.html',page.content);
+    page.render("{{System::base_path}}/screens/step-"+act_num+'.start.png');
+    fs.write("{{System::base_path}}/screens/step-"+act_num+'.start.html',page.content);
     if(!datas[act_num])phantom.exit();
     
     do_it = datas[act_num];
@@ -53,7 +53,7 @@ function do_action(act_num){
     var script = "function(){if (document.querySelector('.inst-note-block-red .inst-note-block-text') && document.querySelector('.inst-note-block-red').parentNode.parentNode.style['display']!='none')return document.querySelector('.inst-note-block-red .inst-note-block-text').innerHTML;}";
     var result = '';
     if(result = page.evaluateJavaScript(script)){
-        if(do_it.render)page.render("screens/"+act_num+'.png');
+        if(do_it.render)page.render("{{System::base_path}}/screens/"+act_num+'.png');
         console.log("ERROR: "+result+"");
         phantom.exit();
     }
@@ -108,8 +108,8 @@ function do_action(act_num){
         );
     }
 
-    page.render("screens/step-"+act_num+'.finish.png');
-    fs.write("screens/step-"+act_num+'.finish.html',page.content);
+    page.render("{{System::base_path}}/screens/step-"+act_num+'.finish.png');
+    fs.write("{{System::base_path}}/screens/step-"+act_num+'.finish.html',page.content);
     
     // Делаем на странице финальный клик
     if(do_it.final_click){

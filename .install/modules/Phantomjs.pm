@@ -43,7 +43,7 @@ use base Common;
         my ($self) = @_;
         
         # Берём основу js-кода в шаблонном файле
-        open(A,"js/template.js");
+        open(A,$self->{conf}->get("System::base_path")."/js/template.js");
         my $jscode = join("",<A>);
         close(A);
         

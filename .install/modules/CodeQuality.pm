@@ -126,7 +126,7 @@ use Data::Dumper;
         push @{$self->{classes}}, $_ foreach @{$xml_tree->{package}->{class}};
         
         #Удаляем отчет pdepend в xml
-        #unlink($xml_file);
+        unlink($xml_file);
         
         my $report = "## По версии pdepend\n\n";
 
