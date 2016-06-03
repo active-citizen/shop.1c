@@ -179,6 +179,7 @@ temp_dir =
 phantonjs_path = bin/phantomjs
 phpunit_path = bin/phpunit
 pdepend_path = bin/pdepend
+phpmd_path = bin/phpmd
 
 [Bitrix]
 

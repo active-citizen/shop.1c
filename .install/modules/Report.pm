@@ -77,7 +77,7 @@ use base Common;
 
         my $report_name = $path."/report-$year-$mon-$day-$hour-$min.md";
         open(A,">$report_name") or Dialog::FatalError("Не моду создать файл отчета $report_name");
-        print A "Отчет по проекту <<".$self->{conf}->get("Project::name").">>\n===\n\n";
+        print A "Отчет по коду проекта <<".$self->{conf}->get("Project::name").">>\n===\n\n";
         print A $self->{data};
         close(A);
         return $report_name;
