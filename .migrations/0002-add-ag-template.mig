@@ -3,16 +3,46 @@
     
     
     class add_ag_template extends Migration{
-        function go(){
+        function Go(){
+            $template_name = "ag";
+            
+            
             // Получаем список сайтов
             $rsSites = CSite::GetList($by="sort", $order="desc", Array());
-            while ($arSite = $rsSites->Fetch())
-            {
-                echo "<pre>"; print_r($arSite); echo "</pre>\n";
+            // Берём первый
+            $this->data["site"] = $arSite = $rsSites->Fetch();
+            if(!$this->data["site"])return 0;
+            // Получаем его шаблоны
+            $rsTemplates = CSite::GetTemplateList($this->data["site"]["ID"]);
+            $this->data["templates"] = array();
+            $max_id = 0;
+            while($template = $rsTemplates->Fetch()){
+                $this->data["templates"][$template["TEMPLATE"]] = $template;
+                if($template["ID"]>$max_id)$max_id = $template["ID"];
             }
+
+            // Добавляем шаблон высокого приоритета без условий
+            $this->data["templates"]["ag"] = array(
+                "ID"        =>  $max_id,
+                "SITE_ID"   =>  $this->data["site"]["ID"],
+                "CONDITION" =>  "",
+                "SORT"      =>  1,
+                "TEMPLATE"  =>$template_name
+            );
+            $obSite = new CSite();
+            if($obSite->Update($this->data["site"]["ID"], array(
+                'ACTIVE' => "Y",
+                'TEMPLATE'=>$this->data["templates"]
+            )))return false;;                
+            
+            return true;
+
+        }
+        
+        function RollBack(){
         }
     }
     
     
 $migration = new add_ag_template();
-$migration->go();
+if(!$migration->Go())$migration->RollBack();

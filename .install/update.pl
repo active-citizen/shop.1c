@@ -83,6 +83,7 @@ if($BITRIX_INSTALL){
 # Синхронизация кода из репозитория
 # и запуск миграций в случае обновления кода
 my $git = Git->new($conf, $ARG_VERBOSE);
+my $migration = Migration->new($conf, $ARG_VERBOSE);
 if($SYNC){
     $git->sync() ;
 
@@ -91,11 +92,13 @@ if($SYNC){
     #$git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
 
     if($git->{last_commit} ne $git->{new_commit} && $MIGRATIONS eq 'all'){
-        my $migration = Migration->new($conf, $ARG_VERBOSE);
         $migration->execDiff($git->{last_commit},$git->{new_commit});
     }
 }
 
+if(!$SYNC && $MIGRATIONS=~m/([a-f0-9]+):([a-f0-9]+)/){
+    $migration->execDiff($1,$2);
+}
 
 
 

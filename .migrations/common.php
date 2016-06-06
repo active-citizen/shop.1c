@@ -2,6 +2,9 @@
 
 
 class Migration{
+    
+    protected $data = array();
+    
     function __construct(){
         // Подключение ядра 1С-Битрикс
         define ('NOT_CHECK_PERMISSIONS', true);
@@ -13,9 +16,22 @@ class Migration{
 
         // Искуственная авторизация в роли админа
         $_SESSION['SESS_AUTH']['USER_ID'] = 1;
+        
     }
     
-    protected FetalError($message){
+    /**
+     * Накат миграции
+    */
+    protected function Go(){
+    }
+
+    /**
+     * Откат миграции
+    */
+    protected function RollBack(){
+    }
+    
+    protected function FatalError($message){
     }
     
 }
