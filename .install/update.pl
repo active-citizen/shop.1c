@@ -39,6 +39,7 @@ my $ARG_SHOW_DEFAULT_CONFIG     =   0;
 my $UNITTESTS                   =   0;
 my $SYNC                        =   0;
 my $MAKEREPORT                  =   0;
+my $MIGRATIONS                  =   0;
 my $SENDREPORT                  =   0;
 my $BITRIX_INSTALL              =   0;
 
@@ -51,6 +52,7 @@ GetOptions (
     "show-template-config"  =>  \$ARG_SHOW_DEFAULT_CONFIG,
     "unittests"             =>  \$UNITTESTS,
     "sync"                  =>  \$SYNC,
+    "migrations=s"          =>  \$MIGRATIONS,
     "make-report"           =>  \$MAKEREPORT,
     "send-report"           =>  \$SENDREPORT
 );
@@ -68,6 +70,10 @@ my $conf = Conf->new($ARG_INI_FILE);
 Dialog::FatalError($conf->{error}) if $conf->{error};
 $conf->set("System::base_path",$base_path);
 
+Dialog::FatalError("Ключ --migration=a:b не доступен с ключом --sync") if $SYNC && $MIGRATIONS=~m/[a-f0-9]+:[a-f0-9]+/;
+Dialog::FatalError("Ключ --migration=all доступен только с ключом --sync") if !$SYNC && $MIGRATIONS eq 'all';
+
+
 # Устанавливаем битрикс, если установка
 if($BITRIX_INSTALL){
     my $bitrix = Bitrix->new($conf, $ARG_VERBOSE);
@@ -84,11 +90,14 @@ if($SYNC){
     #$git->{last_commit} = "2f73d1ed14860dbb8e7899b5e4f2ab0f18aed3d9";
     #$git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
 
-    if($git->{last_commit} ne $git->{new_commit}){
+    if($git->{last_commit} ne $git->{new_commit} && $MIGRATIONS eq 'all'){
         my $migration = Migration->new($conf, $ARG_VERBOSE);
         $migration->execDiff($git->{last_commit},$git->{new_commit});
     }
 }
+
+
+
 
 my $report = Report->new($conf, $ARG_VERBOSE);
 
@@ -101,11 +110,13 @@ if($UNITTESTS){
     $report->add($unittests->{report});
     
 }
-my $codequality = CodeQuality->new($conf, $ARG_VERBOSE);
-$report->add($codequality->report());
 
-$report->send() if $SENDREPORT;
-$report->create() if $MAKEREPORT;
+if($SENDREPORT || $MAKEREPORT){
+    my $codequality = CodeQuality->new($conf, $ARG_VERBOSE);
+    $report->add($codequality->report());
+    $report->send() if $SENDREPORT;
+    $report->create() if $MAKEREPORT;
+}
 
 
 Dialog::resetLock();

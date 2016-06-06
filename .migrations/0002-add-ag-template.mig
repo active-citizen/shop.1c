@@ -1,0 +1,18 @@
+<?php
+    require 'common.php';
+    
+    
+    class add_ag_template extends Migration{
+        function go(){
+            // Получаем список сайтов
+            $rsSites = CSite::GetList($by="sort", $order="desc", Array());
+            while ($arSite = $rsSites->Fetch())
+            {
+                echo "<pre>"; print_r($arSite); echo "</pre>\n";
+            }
+        }
+    }
+    
+    
+$migration = new add_ag_template();
+$migration->go();
