@@ -182,7 +182,6 @@ use base Common;
         my @archive_content = qw(
             .access.php
             bitrix
-            .git
             .htaccess
             index.php
             .install

@@ -19,6 +19,8 @@
     * модуль Config::IniFiles
     * модуль Getopt::Long
     * модуль Time::localtime
+    * модуль Email::Sender::Simple
+    * XML::Simple
 * wget
 * gzip
 
