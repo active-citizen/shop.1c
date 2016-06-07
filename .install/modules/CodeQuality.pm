@@ -134,7 +134,7 @@ use Data::Dumper;
         
         $report .=  "### Отношение строчек комментариев к исполняемому коду в файлах\n\n";
         $report .=  "Хорошим показателем является значение более 0.5. Если это не выполняется, то, скорее всего, ваш код недостаточно прокомеентирован.\n\n";
-        $report .= $self->metricaLine($_->{name},sprintf("%.3f", $_->{cloc}/$_->{eloc}),0.5,inf) foreach @{$self->{files}};
+        $report .= $self->metricaLine($_->{name},sprintf("%.3f", $_->{cloc}/$_->{eloc}),0.5,inf,1) foreach @{$self->{files}};
         $report .= "\n\n";
         
         my $subreport = '';

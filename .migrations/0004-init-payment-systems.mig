@@ -5,7 +5,7 @@
      * Установка платёжных систем. Активной остаётся только "внутренний счёт"
      */
     class init_payment_systems extends Migration{
-        function Go(){
+        function Run(){
          
             CModule::IncludeModule("sale");
             
@@ -31,4 +31,4 @@
     
     
 $payment_systems = new init_payment_systems();
-if(!$payment_systems->Go())$payment_systems->RollBack();
+if(!$payment_systems->Run())$payment_systems->RollBack();

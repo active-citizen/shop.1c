@@ -5,7 +5,7 @@
      * Добавление шаблона к основному сайту
      */
     class add_ag_template extends Migration{
-        function Go(){
+        function Run(){
             $template_name = "ag";
             
             
@@ -47,4 +47,4 @@
     
     
 $migration = new add_ag_template();
-if(!$migration->Go())$migration->RollBack();
+if(!$migration->Run())$migration->RollBack();

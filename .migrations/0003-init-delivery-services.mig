@@ -5,7 +5,7 @@
      * Установка служб доставки. Активной остаётся только "самовывоз"
      */
     class init_delivery_services extends Migration{
-        function Go(){
+        function Run(){
          
             CModule::IncludeModule("sale");
             
@@ -30,4 +30,4 @@
     
     
 $delivery = new init_delivery_services();
-if(!$delivery->Go())$delivery->RollBack();
+if(!$delivery->Run())$delivery->RollBack();

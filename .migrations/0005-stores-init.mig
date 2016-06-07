@@ -5,7 +5,7 @@
      * Установка первоначальных складов и подключение их к службе доставки "самовывоз"
      */
     class stores_init extends Migration{
-        function Go(){
+        function Run(){
             
             $storages = array();
             /*
@@ -88,4 +88,4 @@
     
     
 $stores = new stores_init();
-if(!$stores->Go())$stores->RollBack();
+if(!$stores->Run())$stores->RollBack();

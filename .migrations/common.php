@@ -23,7 +23,7 @@ class Migration{
      * Накат миграции
      * возвращает true, если миграция прошла успешно
     */
-    protected function Go(){
+    protected function Run(){
         return true;
     }
 
@@ -38,7 +38,7 @@ class Migration{
      */
     protected function FatalError($message = ''){
         echo "\n==============================================Миграция завершилась с ошибкой: $message\n==============================================\n"
-        die;
+        return false;
     }
     
 }
