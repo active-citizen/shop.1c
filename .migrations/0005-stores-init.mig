@@ -7,17 +7,8 @@
     class stores_init extends Migration{
         function Run(){
             
+            // В этот массив мы запомним все склады
             $storages = array();
-            /*
-            $storages[1] = array(
-                "ID"                => "1",
-                "ACTIVE"            => "Y",
-                "TITLE"             => "Склад",
-                "ADDRESS"           => "пр. Московский д. 51",
-                "ISSUING_CENTER"    => "Y",
-                "SHIPPING_CENTER"   => "Y"
-            );
-            */
             $storages_str = "
                 12|МФЦ района Тимирязевский| ул. Тимирязевская, д. 8, корп. 1
                 13|МФЦ района Лианозово| ул. Абрамцевская, д.3
@@ -31,61 +22,68 @@
                 21|МФЦ района Арбат| пер. Сивцев Вражек, д. 20            
             ";
             
+            // Разбиваем список на строки
             $lines = explode("\n",$storages_str);
+            // Проходимся по всем строкам списка
             foreach($lines as $line){
-                $line = trim($line);
-                if(!$line)continue;
+                $line = trim($line);if(!$line)continue;
+                // Получаем параметры склада из каждой строки (они разделены трубой)
                 list($ID,$TITLE,$ADDRESS) = explode("|", $line);
+                // Почистим от пробелов с концов
                 $ID = trim($ID);$TITLE = trim($TITLE);$ADDRESS = trim($ADDRESS);
+                // Сохраним в массиве строку с информацией о складе
                 $storages[$ID] = array(
                     "ID"        =>  $ID,
                     "ACTIVE"            => "Y",
+                    // Название
                     "TITLE"     =>  $TITLE,
+                    // Адрес
                     "ADDRESS"   =>  $ADDRESS,
                     "ISSUING_CENTER"    => "Y",
                     "SHIPPING_CENTER"   => "Y"
                 );
             }
             
+            // Подключим модуль "Каталог"
             CModule::IncludeModule("catalog");
             // Получаем список складов. Вставляем и обновляем те, которые в списке и делаем неактивными все, кроме тех, что из списка
             $dbResult = CCatalogStore::GetList();;
-            while($arResult = $dbResult->getNext()){
-                // Делаем неактивным склад не из списка
-                if(!isset($storages[$arResult["ID"]])){
-                    CCatalogStore::Update($arResult["ID"],array("ACTIVE"=>"N"));
-                    continue;
-                }
-            }
+            // делаем неактивными все склады не из списка
+            while($arResult = $dbResult->getNext())
+                if(!isset($storages[$arResult["ID"]]))CCatalogStore::Update($arResult["ID"],array("ACTIVE"=>"N"));
+                
+            
             
             // добавляем/обновляыем склады из списка
             $storages_list_for_delivery = array();
             foreach($storages as $ID=>$storage){
+                // Ищем склад с указанным ID на сайте
                 $dbResult = CCatalogStore::GetList(array(),array("ID"=>$ID));
                 $item = $dbResult->GetNext();
                 
-                if($item){
+                // Если склад уже добавлен - обновим
+                if($item)
                     CCatalogStore::Update($ID, $storage);
-                }
-                else{
+                // Если склад не добавлен - добавим
+                else
                     CCatalogStore::Add($storage);
-                }
+
                 $storages_list_for_delivery[] = $ID;
             }
             
             // Назначаем склады службе доставки "самовывоз" (ID=3)
             CModule::IncludeModule("sale");
+            // Занесём список складов доступных службе доставке (самовывоз в данном случае)
             CSaleDelivery::Update(3, array("STORE"=>serialize($storages_list_for_delivery)));
-            
             
             return true;
 
         }
         
-        function RollBack(){
-        }
     }
     
     
+// Запускаем миграцию    
 $stores = new stores_init();
+// Откатываем, если неудачно
 if(!$stores->Run())$stores->RollBack();
