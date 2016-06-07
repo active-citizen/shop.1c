@@ -1,0 +1,91 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Установка первоначальных складов и подключение их к службе доставки "самовывоз"
+     */
+    class stores_init extends Migration{
+        function Go(){
+            
+            $storages = array();
+            /*
+            $storages[1] = array(
+                "ID"                => "1",
+                "ACTIVE"            => "Y",
+                "TITLE"             => "Склад",
+                "ADDRESS"           => "пр. Московский д. 51",
+                "ISSUING_CENTER"    => "Y",
+                "SHIPPING_CENTER"   => "Y"
+            );
+            */
+            $storages_str = "
+                12|МФЦ района Тимирязевский| ул. Тимирязевская, д. 8, корп. 1
+                13|МФЦ района Лианозово| ул. Абрамцевская, д.3
+                14|МФЦ районов Северное Тушино и Южное Тушино| ул. Василия Петушкова д.13, корп.1
+                15|МФЦ района Тропарево-Никулино| Вернадского просп., 97, корп.3
+                16|МФЦ района Богородское и Метрогородок| ш. Открытое, 8
+                17|МФЦ района Академический| ул. Новочерёмушкинская, д. 23, корп. 5
+                18|МФЦ района Москворечье-Сабурово| Пролетарский просп., 18
+                19|МФЦ района Марьино| ул. Совхозная, 41
+                20|МФЦ района Красносельский| ул. Верхняя Красносельская, д.3, стр.2
+                21|МФЦ района Арбат| пер. Сивцев Вражек, д. 20            
+            ";
+            
+            $lines = explode("\n",$storages_str);
+            foreach($lines as $line){
+                $line = trim($line);
+                if(!$line)continue;
+                list($ID,$TITLE,$ADDRESS) = explode("|", $line);
+                $ID = trim($ID);$TITLE = trim($TITLE);$ADDRESS = trim($ADDRESS);
+                $storages[$ID] = array(
+                    "ID"        =>  $ID,
+                    "ACTIVE"            => "Y",
+                    "TITLE"     =>  $TITLE,
+                    "ADDRESS"   =>  $ADDRESS,
+                    "ISSUING_CENTER"    => "Y",
+                    "SHIPPING_CENTER"   => "Y"
+                );
+            }
+            
+            CModule::IncludeModule("catalog");
+            // Получаем список складов. Вставляем и обновляем те, которые в списке и делаем неактивными все, кроме тех, что из списка
+            $dbResult = CCatalogStore::GetList();;
+            while($arResult = $dbResult->getNext()){
+                // Делаем неактивным склад не из списка
+                if(!isset($storages[$arResult["ID"]])){
+                    CCatalogStore::Update($arResult["ID"],array("ACTIVE"=>"N"));
+                    continue;
+                }
+            }
+            
+            // добавляем/обновляыем склады из списка
+            $storages_list_for_delivery = array();
+            foreach($storages as $ID=>$storage){
+                $dbResult = CCatalogStore::GetList(array(),array("ID"=>$ID));
+                $item = $dbResult->GetNext();
+                
+                if($item){
+                    CCatalogStore::Update($ID, $storage);
+                }
+                else{
+                    CCatalogStore::Add($storage);
+                }
+                $storages_list_for_delivery[] = $ID;
+            }
+            
+            // Назначаем склады службе доставки "самовывоз" (ID=3)
+            CModule::IncludeModule("sale");
+            CSaleDelivery::Update(3, array("STORE"=>serialize($storages_list_for_delivery)));
+            
+            
+            return true;
+
+        }
+        
+        function RollBack(){
+        }
+    }
+    
+    
+$stores = new stores_init();
+if(!$stores->Go())$stores->RollBack();

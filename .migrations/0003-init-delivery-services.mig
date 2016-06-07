@@ -14,11 +14,11 @@
             $dbResult = CSaleDelivery::GetList();
             $need_id = 0;
             while($arResult = $dbResult->getNext()){
-                if($arResult["NAME"]=='Самовывоз')$need_id = $arResult["ID"];
-                CSaleDelivery::Update($arResult["ID"], array("ACTIVE"=>"N"));
+                CSaleDelivery::Update($arResult["ID"], array("ACTIVE"=>$arResult["ID"]==3?"Y":"N"));
+                print_r($arResult);
             }
             // А самовывоз делаем активным
-                CSaleDelivery::Update($need_id, array("ACTIVE"=>"Y"));
+            CSaleDelivery::Update($need_id, array("ACTIVE"=>"Y"));
             
             return true;
 
