@@ -47,8 +47,9 @@ use base Common;
         chdir($self->{conf}->get("System::base_path")."/..");
         
         foreach my $migration(@migrations){
+	    print "Запускаю миграцию $migration\n";
             $command = $self->{conf}->get("System::whereis_php")." $migration";
-            print $command."\n";
+	    $self->shell($command);
         }
         
         chdir($self->{conf}->get("System::base_path"));

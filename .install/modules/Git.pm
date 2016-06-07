@@ -180,7 +180,8 @@ use base Common;
 =cut
     sub rsync{
         my ($self) = @_;
-        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ".$self->{conf}->get("System::base_path")."/.. --exclude .install";
+#        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ".$self->{conf}->get("System::base_path")."/.. --exclude .install";
+        my $command = $self->{conf}->get("System::whereis_rsync")." -av --progress . ".$self->{conf}->get("System::base_path")."/..";
         $self->shell($command);
     }
     
