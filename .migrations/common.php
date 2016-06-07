@@ -21,8 +21,10 @@ class Migration{
     
     /**
      * Накат миграции
+     * возвращает true, если миграция прошла успешно
     */
     protected function Go(){
+        return true;
     }
 
     /**
@@ -31,7 +33,12 @@ class Migration{
     protected function RollBack(){
     }
     
-    protected function FatalError($message){
+    /**
+     * Останов миграции при ошибке
+     */
+    protected function FatalError($message = ''){
+        echo "\n==============================================Миграция завершилась с ошибкой: $message\n==============================================\n"
+        die;
     }
     
 }
