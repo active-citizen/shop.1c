@@ -5,9 +5,12 @@
      * Добавление шаблона к основному сайту
      */
     class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
         function Run(){
+            // Имя шаблона для сайта 
             $template_name = "ag";
-            
             
             // Получаем список сайтов
             $rsSites = CSite::GetList($by="sort", $order="desc", Array());
@@ -16,22 +19,28 @@
             if(!$this->data["site"])return 0;
             // Получаем его шаблоны
             $rsTemplates = CSite::GetTemplateList($this->data["site"]["ID"]);
+
             $this->data["templates"] = array();
             $max_id = 0;
+            // Для каждого шаблона основного сайта
             while($template = $rsTemplates->Fetch()){
+                // Запоминаем параметры шаблона
                 $this->data["templates"][$template["TEMPLATE"]] = $template;
                 if($template["ID"]>$max_id)$max_id = $template["ID"];
             }
 
-            // Добавляем шаблон высокого приоритета без условий
+            // Добавляем к списку имеющихся шаблонов шаблон высокого приоритета без условий
             $this->data["templates"]["ag"] = array(
-                "ID"        =>  $max_id,
+                "ID"        =>  $max_id+1,
                 "SITE_ID"   =>  $this->data["site"]["ID"],
                 "CONDITION" =>  "",
+                // Сортировка - ставим первым
                 "SORT"      =>  1,
+                // Имя нового шаблона
                 "TEMPLATE"  =>$template_name
             );
             $obSite = new CSite();
+            // Обновляем список шаблонов для сайта
             if($obSite->Update($this->data["site"]["ID"], array(
                 'ACTIVE' => "Y",
                 'TEMPLATE'=>$this->data["templates"]
@@ -40,11 +49,9 @@
             return true;
 
         }
-        
-        function RollBack(){
-        }
     }
     
-    
+// Запускаем миграцию    
 $migration = new add_ag_template();
+// Откатываем, если неудачно
 if(!$migration->Run())$migration->RollBack();
