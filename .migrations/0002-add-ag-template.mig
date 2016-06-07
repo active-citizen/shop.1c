@@ -1,7 +1,9 @@
 <?php
     require 'common.php';
     
-    
+    /**
+     * Добавление шаблона к основному сайту
+     */
     class add_ag_template extends Migration{
         function Go(){
             $template_name = "ag";
