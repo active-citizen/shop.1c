@@ -1,24 +1,20 @@
 #!/usr/bin/perl
 
+# Подключение системных модулей
 use strict;
 use File::Basename;
+use DBI;
+use Getopt::Long;
 
-# Определяем базовый каталог работы инсталлера
+# Определяем базовый каталог работы инсталлера и переходим в него
 my $rel_path = $0;      chomp($rel_path);
 my $start_path = `pwd`; chomp($start_path);
-
-chdir($start_path);chdir(dirname($rel_path));
-
+chdir($start_path);     chdir(dirname($rel_path));
 my $base_path = `pwd`;  chomp($base_path);
-
 chdir($base_path);
 
 # ПУть к пользовательским модулям
 use lib ("modules");
-
-# Подключение системных модулей
-use DBI;
-use Getopt::Long;
 
 # Подключение своих модулей
 require Dialog;
@@ -42,6 +38,8 @@ my $MAKEREPORT                  =   0;
 my $MIGRATIONS                  =   0;
 my $SENDREPORT                  =   0;
 my $BITRIX_INSTALL              =   0;
+my $SHOWQUALITY                 =   0;
+my $FORCEUNLOCK                 =   0;
 
 # Получение аргументов командной строки и помещение их в соответствующие переменные
 GetOptions (
@@ -54,7 +52,9 @@ GetOptions (
     "sync"                  =>  \$SYNC,
     "migrations=s"          =>  \$MIGRATIONS,
     "make-report"           =>  \$MAKEREPORT,
-    "send-report"           =>  \$SENDREPORT
+    "send-report"           =>  \$SENDREPORT,
+    "show-quality"          =>  \$SHOWQUALITY,
+    "force-unlock"          =>  \$FORCEUNLOCK,
 );
 
 # Вывод помощи по ключу командной строки
@@ -62,7 +62,10 @@ Dialog::ShowHelp()     if $ARG_HELP;
 # Вывод шаблонного конфига по ключу командной строки
 Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 
-#die("Update is locked") if Dialog::isLock();
+# Стоп, если один экземпляр уже выполняется
+Dialog::FatalError("Работа скрипта заблокирована. 
+    Он уже выполняется или предыдущее выполнение закончилось аварийно.
+    Вы можете снять блокировку, запустив скрипт с ключом --force-unlock",!$FORCEUNLOCK) if Dialog::isLock();
 Dialog::setLock() unless Dialog::isLock();
 
 # Получаем настройки
@@ -91,37 +94,36 @@ if($SYNC){
     #$git->{last_commit} = "2f73d1ed14860dbb8e7899b5e4f2ab0f18aed3d9";
     #$git->{new_commit}  = "95b883cffa6fe7d2a61a6aa9ee0ea3cee1e2fc7e";
 
-    if($git->{last_commit} ne $git->{new_commit} && $MIGRATIONS eq 'all'){
-        $migration->execDiff($git->{last_commit},$git->{new_commit});
-    }
+    # Запустить миграции между коммитами если предыдущий коммит отличается от текущего и --migration=all
+    $migration->execDiff($git->{last_commit},$git->{new_commit}) if $git->{last_commit} ne $git->{new_commit} && $MIGRATIONS eq 'all';
 }
 
-if(!$SYNC && $MIGRATIONS=~m/([a-f0-9]+):([a-f0-9]+)/){
-    $migration->execDiff($1,$2);
-}
-
-
+# Если нет ключа --sync и указаны начальный и конечный коммит - выполнить миграции между ними
+$migration->execDiff($1,$2) if !$SYNC && $MIGRATIONS=~m/([a-f0-9]+):([a-f0-9]+)/;
 
 my $report = Report->new($conf, $ARG_VERBOSE);
 
+# Запустить модульные тесты если --unittests 
 if($UNITTESTS){
     my $unittests = Unittests->new($conf, $ARG_VERBOSE);
+    # Запустить тесты
     $unittests->go();
-    
-    $unittests->report();
-    
-    $report->add($unittests->{report});
-    
+    # Сгенерить и добавить модульные тесты в отчет, если --make-report или --seng-report
+    $unittests->report() if $SENDREPORT || $MAKEREPORT;
+    $report->add($unittests->{report}) if $SENDREPORT || $MAKEREPORT;
 }
 
-if($SENDREPORT || $MAKEREPORT){
-    my $codequality = CodeQuality->new($conf, $ARG_VERBOSE);
-    $report->add($codequality->report());
-    $report->send() if $SENDREPORT;
-    $report->create() if $MAKEREPORT;
-}
+my $codequality = CodeQuality->new($conf, $ARG_VERBOSE);
+$report->add($codequality->report()) if $SENDREPORT || $MAKEREPORT;
+# Формируем и/или посылаем отчет если --make-report или --seng-report
+$report->send() if $SENDREPORT;
+$report->create() if $MAKEREPORT;
 
+# Показать отчет по коду, если --show-report
+print "\n".("="x30)." ОТЧЕТ ПО КАЧЕСТВУ КОДА ".("="x30)."\n".$codequality->report(1)."\n".("="x80)."\n" 
+    if $SHOWQUALITY;
 
+# Снимаем блокировку
 Dialog::resetLock();
 
 

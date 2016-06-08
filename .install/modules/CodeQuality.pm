@@ -39,20 +39,61 @@ use Data::Dumper;
 
 
     
-=head3 report($type)
+=head3 report($current_code)
 
-Получить отчет о качестве кода. Отчет делается только для php-файлов
+Получить отчет о качестве кода. Отчет делается для файлов в репозитории
+=over 4
+
+
+=item * B<$current_code> - флаг "отчет по текущему коду"
+
+
+=back
 
 =cut 
 
     sub report{
-        my ($self) = @_;
+        my ($self, 
+            $current_code # Сделать отчет по текущему коду, а не коду в
+        ) = @_;
+        
+        my $code_dir = $self->{conf}->get("System::temp_dir")."/git";
+        my $new_code_dir = $self->{conf}->get("System::temp_dir")."/current";
+        # Для текущего кода, а не репозитория
+        if($current_code){
+            # Получаем список файлов из репозитория
+            my $rep_dir = $code_dir;
+            my $command = $self->{conf}->get("System::whereis_find")." $code_dir";
+            my @lines = split ("\n",$self->shell($command));
+            chomp(@lines);
+            my @codefiles = ();
+            AAA:foreach my $line(@lines){
+                next AAA if $line=~m|/\.git| || !-f $line;
+                $line=~s|$rep_dir||;
+                my $to_file = $new_code_dir."/".$line;
+                # Создаём каталог
+                my @to_path = split("/",$to_file);
+                my $to_path_item = '';
+                for(my $i=0;$i<scalar(@to_path)-1;$i++){
+                    $to_path_item .= "/".$to_path[$i];
+                    mkdir($to_path_item);
+                }
+                
+                $command = 
+                    $self->{conf}->get("System::whereis_rsync")." -r ".
+                    $self->{conf}->get("System::base_path")."/..$line ".
+                    $to_file;
+                $self->shell($command);
+            }
+            $code_dir = $new_code_dir;
+        }
+        
         
         my $report = "\n\n# Отчет по качеству кода\n\n";
         
-        $report .= $self->pDependReport();
+        $report .= $self->pDependReport($code_dir);
         
-        $report .= $self->phpMDReport();
+        $report .= $self->phpMDReport($code_dir);
         
         return $report;
         
@@ -66,17 +107,14 @@ use Data::Dumper;
 =cut 
     
     sub phpMDReport{
-        my ($self) = @_;
+        my ($self,$root_dir) = @_;
         my $command = $self->{conf}->get("System::phpmd_path")
-            ." ".$self->{conf}->get("System::temp_dir")."/git"
-            ." text codesize,unusedcode,naming,design,cleancode";
+            ." ".$root_dir." text codesize,unusedcode,naming,design,cleancode";
 
         my $answer = $self->shell($command);
         
         my @lines = split("\n",$answer);
         chomp(@lines);
-        my $root_dir = $self->{conf}->get("System::temp_dir")."/git/";
-
 
         my $report = "## По версии phpmd\n\n";
         $report .= "Замечания по коду\n\n";
@@ -101,13 +139,13 @@ use Data::Dumper;
 
 =cut 
     sub pDependReport{
-        my ($self) = @_;
+        my ($self,$root_dir) = @_;
         my $xml_file = $self->{conf}->get("System::temp_dir")."/pdepend.xml";
         # Формируем 
         my $command = $self->{conf}->get("System::pdepend_path")
             ." --summary-xml=".$xml_file
             ." --suffix=".$self->{conf}->get("CodeQuality::file_extensions")
-            ." ".$self->{conf}->get("System::temp_dir")."/git";
+            ." ".$root_dir;
             
         $self->shell($command);
         Dialog::FatalError("Ошибка создания отчета pdepend") unless -e $xml_file;
@@ -133,8 +171,8 @@ use Data::Dumper;
         my $metrica = 0;
         
         $report .=  "### Отношение строчек комментариев к исполняемому коду в файлах\n\n";
-        $report .=  "Хорошим показателем является значение более 0.5. Если это не выполняется, то, скорее всего, ваш код недостаточно прокомеентирован.\n\n";
-        $report .= $self->metricaLine($_->{name},sprintf("%.3f", $_->{cloc}/$_->{eloc}),0.5,inf,1) foreach @{$self->{files}};
+        $report .=  "Хорошим показателем является значение более 0.33. Если это не выполняется, то, скорее всего, ваш код недостаточно прокомеентирован.\n\n";
+        $report .= $self->metricaLine($_->{name},sprintf("%.3f", $_->{cloc}/$_->{eloc}),0.3,inf,1) foreach @{$self->{files}};
         $report .= "\n\n";
         
         my $subreport = '';

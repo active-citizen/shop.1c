@@ -170,6 +170,7 @@ name =
 # Пути к необходимым для установки утилитам
 whereis_wget = 
 whereis_git = 
+whereis_find = 
 whereis_unzip = 
 whereis_rm = 
 whereis_mv = 
