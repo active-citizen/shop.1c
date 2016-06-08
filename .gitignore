@@ -2,6 +2,7 @@ bitrix/*
 !bitrix/templates
 bitrix/templates/*
 !bitrix/templates/ag
+!bitrix/templates/.default/components/bitrix/catalog/ag
 .install/config.ini
 .install/tmp/*
 !.install/tmp/README.txt

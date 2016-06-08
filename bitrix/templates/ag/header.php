@@ -40,6 +40,7 @@
 </head>
 
     <body>
+        <?$APPLICATION->ShowPanel()?>
         <div class="wrapper">
             <header class="header">
                 <div class="headerControll">
