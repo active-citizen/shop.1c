@@ -65,7 +65,7 @@ Conf::ShowTemplateConfig()  if $ARG_SHOW_DEFAULT_CONFIG;
 # Стоп, если один экземпляр уже выполняется
 Dialog::FatalError("Работа скрипта заблокирована. 
     Он уже выполняется или предыдущее выполнение закончилось аварийно.
-    Вы можете снять блокировку, запустив скрипт с ключом --force-unlock",!$FORCEUNLOCK) if Dialog::isLock();
+    Вы можете снять блокировку, запустив скрипт с ключом --force-unlock",!$FORCEUNLOCK) if Dialog::isLock() || !$FORCEUNLOCK;
 Dialog::setLock() unless Dialog::isLock();
 
 # Получаем настройки

@@ -37,7 +37,7 @@ class Migration{
      * Останов миграции при ошибке
      */
     protected function FatalError($message = ''){
-        echo "\n==============================================Миграция завершилась с ошибкой: $message\n==============================================\n"
+        echo $message;
         return false;
     }
     

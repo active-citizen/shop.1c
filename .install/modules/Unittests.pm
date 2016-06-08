@@ -117,6 +117,7 @@ use base Common;
         }
 
         $self->{report} = $code;
+        
         return $code;
     }
     
