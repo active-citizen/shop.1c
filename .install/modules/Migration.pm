@@ -43,6 +43,8 @@ use base Common;
         my ($self,$last_commit, $new_commit) = @_;
 
         my @migrations = $self->diff($last_commit, $new_commit);
+        # Удаляем повторяющиеся элементы 
+        @migrations=grep{!$hash{$_}++} @migrations;
         
         chdir($self->{conf}->get("System::base_path")."/..");
         
