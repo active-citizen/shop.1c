@@ -5,3 +5,34 @@
 @font-face{font-family:'Open Sans';font-style:italic;font-weight:300;src:local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(/bitrix/templates/ag/fonts/open_sans_light-italic.ttf)}
 @font-face{font-family:'Open Sans';font-style:italic;font-weight:400;src:local('Open Sans Italic'), local('OpenSans-Italic'), url(/bitrix/templates/ag/fonts/open-sans_italic.ttf)}
 @font-face{font-family:'Open Sans';font-style:italic;font-weight:600;src:local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'), url(/bitrix/templates/ag/fonts/open-sans_semibold-italic.ttf)}
+
+
+div.ag-section-top{
+    margin-bottom: 30px;
+}
+
+div.ag-section-top a.bx_catalog_tile_img{
+    width: 300px;
+    height: 300px;
+    margin: 10px;
+    padding-top: 200px;
+    font-size: 20px;
+    color: #0EB0A0;
+    text-align: center;
+    background-size: auto 200px;
+    background-position: 50% 0%;
+    border: 1px transparent solid;
+    line-height: 1.2;
+}
+
+div.ag-section-top a.bx_catalog_tile_img div{
+    position: absolute;
+    bottom: -18px;
+}
+
+
+div.ag-section-top h2.bx_catalog_tile_title a{
+    color: #444;
+    font-size: 24px;
+    font-weight: bold;
+}

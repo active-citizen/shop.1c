@@ -1,4 +1,5 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<?
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -64,7 +65,6 @@ if ('Y' == $arParams['SHOW_PARENT_NAME'] && 0 < $arResult['SECTION']['ID'])
 if (0 < $arResult["SECTIONS_COUNT"])
 {
 ?>
-<ul class="<? echo $arCurView['LIST']; ?>">
 <?
 	switch ($arParams['VIEW_MODE'])
 	{
@@ -145,23 +145,21 @@ if (0 < $arResult["SECTIONS_COUNT"])
 							: $arSection["NAME"]
 						)
 					);
-				?><li id="<? echo $this->GetEditAreaId($arSection['ID']); ?>">
+				?><div class="ag-section-top" id="<? echo $this->GetEditAreaId($arSection['ID']); ?>">
+				<h2 class="bx_catalog_tile_title"><a href="<? echo $arSection['SECTION_PAGE_URL']; ?>"><? echo $arSection['NAME']; ?></a><?
+                    if ($arParams["COUNT_ELEMENTS"])
+                    {
+                        ?> <span>(<? echo $arSection['ELEMENT_CNT']; ?>)</span><?
+                    }
+                    ?></h2>
 				<a
 					href="<? echo $arSection['SECTION_PAGE_URL']; ?>"
 					class="bx_catalog_tile_img"
 					style="background-image:url('<? echo $arSection['PICTURE']['SRC']; ?>');"
 					title="<? echo $arSection['PICTURE']['TITLE']; ?>"
-					> </a><?
-				if ('Y' != $arParams['HIDE_SECTION_NAME'])
-				{
-					?><h2 class="bx_catalog_tile_title"><a href="<? echo $arSection['SECTION_PAGE_URL']; ?>"><? echo $arSection['NAME']; ?></a><?
-					if ($arParams["COUNT_ELEMENTS"])
-					{
-						?> <span>(<? echo $arSection['ELEMENT_CNT']; ?>)</span><?
-					}
-				?></h2><?
-				}
-				?></li><?
+					> Все поощрения раздела "<? echo $arSection['NAME']; ?>"</a><?
+					?><?
+				?></div><?
 			}
 			unset($arSection);
 			break;
@@ -217,7 +215,6 @@ if (0 < $arResult["SECTIONS_COUNT"])
 			break;
 	}
 ?>
-</ul>
 <?
 	echo ('LINE' != $arParams['VIEW_MODE'] ? '<div style="clear: both;"></div>' : '');
 }
