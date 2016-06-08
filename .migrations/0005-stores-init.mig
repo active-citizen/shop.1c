@@ -78,7 +78,7 @@
             CSaleDelivery::Update(3, array("STORE"=>serialize($storages_list_for_delivery)));
             
             return true;
-
+        }
         
     }
     
