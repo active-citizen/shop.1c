@@ -98,7 +98,7 @@
                    href="/catalog/">Поощрения</a></li>
                         <li><a class="link_2 "
                    href="/orders/">История заказов</a></li>
-            <li><a class="link_2  "
+            <li><a class="link_2 <? if(preg_match("#^/points/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
                    href="/points/">Мои баллы</a></li>
                         <li><a class="link_2 <? if(preg_match("#^/rules/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
                    href="/rules/">Правила</a></li>

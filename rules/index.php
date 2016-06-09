@@ -3,9 +3,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Правила");
 ?>
 
-
-
-        <!-- Блоки товаров -->
         <div class="chopItemsGroups mb80">
             <div class="rule_description">
                 <p class="shop_rule_text">

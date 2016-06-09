@@ -82,3 +82,12 @@ div.ag-section-top h2.bx_catalog_tile_title a{
 .shop_rule_text{
     margin-bottom: 20px;
 }
+
+.myPointsBox_2{
+    padding-bottom: 30px;
+}
+
+.myPointsBox_2 h3{
+    margin: 0px;
+    font-weight: bold;
+}
