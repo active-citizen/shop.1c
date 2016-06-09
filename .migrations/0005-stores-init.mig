@@ -10,16 +10,16 @@
             // В этот массив мы запомним все склады
             $storages = array();
             $storages_str = "
-                12|МФЦ района Тимирязевский| ул. Тимирязевская, д. 8, корп. 1
-                13|МФЦ района Лианозово| ул. Абрамцевская, д.3
-                14|МФЦ районов Северное Тушино и Южное Тушино| ул. Василия Петушкова д.13, корп.1
-                15|МФЦ района Тропарево-Никулино| Вернадского просп., 97, корп.3
-                16|МФЦ района Богородское и Метрогородок| ш. Открытое, 8
-                17|МФЦ района Академический| ул. Новочерёмушкинская, д. 23, корп. 5
-                18|МФЦ района Москворечье-Сабурово| Пролетарский просп., 18
-                19|МФЦ района Марьино| ул. Совхозная, 41
-                20|МФЦ района Красносельский| ул. Верхняя Красносельская, д.3, стр.2
-                21|МФЦ района Арбат| пер. Сивцев Вражек, д. 20            
+                12|МФЦ района Тимирязевский| ул. Тимирязевская, д. 8, корп. 1|55.810663|37.570968|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/
+                13|МФЦ района Лианозово| ул. Абрамцевская, д.3|55.894879|37.573052|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_lianozovo/
+                14|МФЦ районов Северное Тушино и Южное Тушино| ул. Василия Петушкова д.13, корп.1|55.838096|37.401537|http://md.mos.ru/find-your-dcp/structure/mfts_rayonov_severnoe_i_yuzhnoe_tushino/|
+                15|МФЦ района Тропарево-Никулино| Вернадского просп., 97, корп.3|55.667122|37.490245|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_troparevo_nikulino/
+                16|МФЦ района Богородское и Метрогородок| ш. Открытое, 8|55.811513|37.733446|http://md.mos.ru/find-your-dcp/structure/mfts_rayonov_bogorodskoe_i_metrogorodok/
+                17|МФЦ района Академический| ул. Новочерёмушкинская, д. 23, корп. 5|55.680722|37.580131|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_akademicheskiy/
+                18|МФЦ района Москворечье-Сабурово| Пролетарский просп., 18|55.634105|37.65699|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_moskvoreche_saburovo/
+                19|МФЦ района Марьино| ул. Совхозная, 41|55.674575|37.760225|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_marino/
+                20|МФЦ района Красносельский| ул. Верхняя Красносельская, д.3, стр.2|55.785979|37.660521|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_krasnoselskiy/
+                21|МФЦ района Арбат| пер. Сивцев Вражек, д. 20|55.747819|37.59392|http://md.mos.ru/find-your-dcp/structure/mfts_rayona_arbat/
             ";
             
             // Разбиваем список на строки
@@ -28,7 +28,7 @@
             foreach($lines as $line){
                 $line = trim($line);if(!$line)continue;
                 // Получаем параметры склада из каждой строки (они разделены трубой)
-                list($ID,$TITLE,$ADDRESS) = explode("|", $line);
+                list($ID,$TITLE,$ADDRESS,$GPS_N,$GPS_S,$URL) = explode("|", $line);
                 // Почистим от пробелов с концов
                 $ID = trim($ID);$TITLE = trim($TITLE);$ADDRESS = trim($ADDRESS);
                 // Сохраним в массиве строку с информацией о складе
@@ -40,6 +40,12 @@
                     "TITLE"     =>  $TITLE,
                     // Адрес
                     "ADDRESS"   =>  $ADDRESS,
+                    // Широта
+                    "GPS_N"   =>  $GPS_N,
+                    // Долгота
+                    "GPS_S"   =>  $GPS_S,
+                    // Адрес сайта
+                    "DESCRIPTION"   =>  $URL,
                     "ISSUING_CENTER"    => "Y",
                     "SHIPPING_CENTER"   => "Y"
                 );
@@ -48,7 +54,7 @@
             // Подключим модуль "Каталог"
             CModule::IncludeModule("catalog");
             // Получаем список складов. Вставляем и обновляем те, которые в списке и делаем неактивными все, кроме тех, что из списка
-            $dbResult = CCatalogStore::GetList();;
+            $dbResult = CCatalogStore::GetList();
             // делаем неактивными все склады не из списка
             while($arResult = $dbResult->getNext())
                 if(!isset($storages[$arResult["ID"]]))CCatalogStore::Update($arResult["ID"],array("ACTIVE"=>"N"));
@@ -68,6 +74,7 @@
                 // Если склад не добавлен - добавим
                 else
                     CCatalogStore::Add($storage);
+                
 
                 $storages_list_for_delivery[] = $ID;
             }

@@ -94,14 +94,14 @@
     <div class="contentShopMain">
         <div class="userMenuShop">
         <ul>
-            <li><a class="link_2 active_2"
-                   href="/catalog">Поощрения</a></li>
+            <li><a class="link_2 <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/catalog/">Поощрения</a></li>
                         <li><a class="link_2 "
-                   href="/orders">История заказов</a></li>
-            <li><a class="link_2 "
-                   href="/points">Мои баллы</a></li>
-                        <li><a class="link_2 "
-                   href="/rules">Правила</a></li>
+                   href="/orders/">История заказов</a></li>
+            <li><a class="link_2  "
+                   href="/points/">Мои баллы</a></li>
+                        <li><a class="link_2 <? if(preg_match("#^/rules/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/rules/">Правила</a></li>
         </ul>
     </div>
 
