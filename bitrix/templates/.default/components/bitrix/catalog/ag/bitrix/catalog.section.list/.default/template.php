@@ -152,6 +152,66 @@ if (0 < $arResult["SECTIONS_COUNT"])
                         ?> <span>(<? echo $arSection['ELEMENT_CNT']; ?>)</span><?
                     }
                     ?></h2>
+                <?
+                // Получаем ID подраздела самого нижнего уровня
+                $Filter = array("IBLOCK_ID"=>2,"ACTIVE"=>"Y","SECTION_ID"=>$arSection['ID']);
+                $subSection = $arSection;
+                $ress = CIBlockSection::GetList(array(),$Filter,false,array("nTopCount"=>1),array());
+                while($arr = $ress->GetNext()){
+                    $Filter = array("IBLOCK_ID"=>2,"ACTIVE"=>"Y","SECTION_ID"=>$arr['ID']);
+                    $ress = CIBlockSection::GetList(array(),$Filter,false,array("nTopCount"=>1),array());
+                    $subSection = $arr;
+                }
+
+                // Фильтр для выборки товаров раздела
+                $Filter = array("IBLOCK_ID"=>2,"ACTIVE"=>"Y","SECTION_ID"=>$subSection['ID']);
+                // Формируем запрос на выборку товаров
+                $ress = CIBlockElement::GetList(array(),$Filter,false,array("nTopCount"=>2),array());
+                // Выбираем следующйи товар
+                while($item=$ress->GetNext()){
+                    
+                    // Получаем любое торговое предложение товара
+                    $Offers = CCatalogSKU::getOffersList($item["ID"],2);
+                    $Offer = array_pop($Offers); $Offer = array_pop($Offer);
+
+                    // Если торговые предложения есть - берём его цену
+                    $price = isset($Offer["ID"]) && intval($Offer["ID"])?CPrice::GetBasePrice($Offer["ID"]):array();
+                    $item["PRICE"] = "";
+                    if(isset($price["PRICE"]))$item["PRICE"] = $price["PRICE"];
+                    
+                    // получаем изображение товара
+                    $picture = CFile::GetByID($item["DETAIL_PICTURE"]);
+                    $picture = $picture->GetNext(); $item["PICTURE_SRC"] = '';
+                    if(isset($picture['FILE_NAME']))$item["PICTURE_SRC"] = "/upload/".$picture['SUBDIR']."/".$picture['FILE_NAME'];
+                    
+                    // Получаем информацию о продукте
+                    $product = CCatalogProduct::GetByID($Offer["ID"]);
+                    // Чтобы взять из него единицу измерения
+                    $measure = ''; $item["MEASURE"] = '';
+                    if($product["MEASURE"] && intval($product["MEASURE"])){
+                        $ress = CCatalogMeasure::getList(array(),array("ID"=>$product["MEASURE"]),false,array("nTopCount"=>2));
+                        $measure = $ress->GetNext();
+                        $item["MEASURE"] = $measure["MEASURE_TITLE"];
+                    }
+                    ?>
+                    
+                    
+                    <a href="<? echo $item['DETAIL_PAGE_URL']; ?>"
+                    class="ag-goods-tizer"
+                    title="<? echo $item['NAME']; ?>"
+                    > 
+                        <div class="ag-goods-picture" <? if($item['PICTURE_SRC']){?>style="background-image:url('<? echo $item['PICTURE_SRC']; ?>');"<? }?>>
+                            <? if($item["PRICE"]){?><div class="ag-good-price"><? echo round($item["PRICE"])?> баллов</div><? }?>
+                        </div>
+                        <? echo $item['NAME']; ?>
+                        <? if($item["MEASURE"]){?><div class="ad-goods-measure">1 <? echo mb_strtolower($item["MEASURE"])?></div><? }?>
+                    </a>                    
+                    <?
+                }
+                
+                
+                
+                ?>
 				<a
 					href="<? echo $arSection['SECTION_PAGE_URL']; ?>"
 					class="bx_catalog_tile_img"

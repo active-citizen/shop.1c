@@ -9,10 +9,11 @@
 
 div.ag-section-top{
     margin-bottom: 30px;
+    clear: both;
 }
 
 div.ag-section-top a.bx_catalog_tile_img{
-    width: 300px;
+    width: 200px;
     height: 300px;
     margin: 10px;
     padding-top: 200px;
@@ -23,7 +24,49 @@ div.ag-section-top a.bx_catalog_tile_img{
     background-position: 50% 0%;
     border: 1px transparent solid;
     line-height: 1.2;
+    float: left;
 }
+
+a.ag-goods-tizer{
+    width: 221px;
+    height: 300px;
+    line-height: 1.2;
+    font-size: 20px;
+    color: #0EB0A0;
+    float: left;
+    margin: 20px 100px 100px 0px;
+    text-align: left;
+}
+    a.ag-goods-tizer div.ad-goods-measure{
+        color: #444;
+        text-align: left;
+        font-size: 14px;
+        margin: 10px 0px 0px 0px;
+    }
+
+div.ag-goods-picture{
+    width: 221px;
+    height: 221px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50% 50%;
+    position: relative;
+    margin: 0px 0px 20px 0px;
+}
+
+    div.ag-goods-picture div.ag-good-price{
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        height: 46px;
+        background-color: #000;
+        opacity: 0.6;
+        text-align: center;
+        color: #FFF;
+        padding-top: 10px;
+        font-size: 26px;
+    }
 
 div.ag-section-top a.bx_catalog_tile_img div{
     position: absolute;
@@ -33,6 +76,5 @@ div.ag-section-top a.bx_catalog_tile_img div{
 
 div.ag-section-top h2.bx_catalog_tile_title a{
     color: #444;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 32px;
 }
