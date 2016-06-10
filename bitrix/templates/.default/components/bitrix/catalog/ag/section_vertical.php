@@ -297,7 +297,8 @@ if ($isFilter || $isSidebar):?>
 	$GLOBALS['CATALOG_CURRENT_SECTION_ID'] = $intSectionID;
 	unset($basketAction);
 
-	if (ModuleManager::isModuleInstalled("sale"))
+	// Отключаем лидеров продаж
+	if (0 && ModuleManager::isModuleInstalled("sale"))
 	{
 		if (!empty($arRecomData))
 		{
