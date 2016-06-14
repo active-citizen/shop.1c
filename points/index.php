@@ -22,7 +22,7 @@ $APPLICATION->SetTitle("Мои баллы");
        ?><tr>
             <td><? echo $arResult["TIMESTAMP_X"];?></td>
             <td>
-                <h3><? echo $arResult["DEBIT"]=="Y"?"Начисление":"Покупка"?></h3>
+                <h3><? echo $arResult["DEBIT"]=="Y"?"Начисление":"Списание"?></h3>
                 <? 
                     switch($arResult["DESCRIPTION"]){
                         case 'MANUAL':
@@ -30,6 +30,9 @@ $APPLICATION->SetTitle("Мои баллы");
                         break;
                         case 'ORDER_PAY':
                             echo 'Списано за заказ №<a href="/orders/detail/'.$arResult["ORDER_ID"].'/">'.$arResult["ORDER_ID"]."</a>";
+                        break;
+                        case 'ORDER_UNPAY':
+                            echo 'Отмена заказа №<a href="/orders/detail/'.$arResult["ORDER_ID"].'/">'.$arResult["ORDER_ID"]."</a>";
                         break;
                     }
                 

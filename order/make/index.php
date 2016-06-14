@@ -1,9 +1,9 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы");
-?><?$APPLICATION->IncludeComponent("bitrix:sale.order.ajax", "", array(
+?><?$APPLICATION->IncludeComponent("bitrix:sale.order.ajax", "ag", array(
 	"PAY_FROM_ACCOUNT" => "Y",
-    "DELIVERY_TO_PAYSYSTEM"=>"d2p",
+    "DELIVERY_TO_PAYSYSTEM"=>"p2d",
     "ONLY_FULL_PAY_FROM_ACCOUNT"=>"Y",
 	"COUNT_DELIVERY_TAX" => "N",
 	"COUNT_DISCOUNT_4_ALL_QUANTITY" => "N",

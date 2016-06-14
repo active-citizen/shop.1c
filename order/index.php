@@ -1,12 +1,12 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы");
-?><?$APPLICATION->IncludeComponent("bitrix:sale.personal.order", "", array(
+?><?$APPLICATION->IncludeComponent("ag:sale.personal.order", "", array(
     "SEF_MODE" => "Y",
-    "SEF_FOLDER" => "/orders/",
+    "SEF_FOLDER" => "/order/",
     "ORDERS_PER_PAGE" => "10",
-    "PATH_TO_PAYMENT" => "/orders/payment/",
-    "PATH_TO_BASKET" => "/personal/cart/",
+    "PATH_TO_PAYMENT" => "/order/payment/",
+    "PATH_TO_BASKET" => "/cart/",
     "SET_TITLE" => "Y",
     "SAVE_IN_SESSION" => "N",
     "NAV_TEMPLATE" => "arrows",
