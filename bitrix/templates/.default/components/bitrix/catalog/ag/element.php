@@ -57,7 +57,7 @@ $isSidebar = ($arParams["SIDEBAR_DETAIL_SHOW"] == "Y" && isset($arParams["SIDEBA
 		"SHOW_404" => $arParams["SHOW_404"],
 		"FILE_404" => $arParams["FILE_404"],
 		"PRICE_CODE" => $arParams["PRICE_CODE"],
-		"USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
+		 "USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
 		"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
 		"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
 		"PRICE_VAT_SHOW_VALUE" => $arParams["PRICE_VAT_SHOW_VALUE"],

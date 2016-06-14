@@ -1,17 +1,17 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Корзина");
-?><?$APPLICATION->IncludeComponent(
+?><? $APPLICATION->IncludeComponent(
 	"bitrix:sale.basket.basket", 
 	".default", 
 	array(
 		"COUNT_DISCOUNT_4_ALL_QUANTITY" => "N",
 		"COLUMNS_LIST" => array(
 			0 => "NAME",
-			1 => "DISCOUNT",
+//			1 => "DISCOUNT",
 			2 => "PROPS",
 			3 => "DELETE",
-			4 => "DELAY",
+//			4 => "DELAY",
 			5 => "PRICE",
 			6 => "QUANTITY",
 			7 => "SUM",
@@ -21,7 +21,7 @@ $APPLICATION->SetTitle("Корзина");
 		"AJAX_OPTION_STYLE" => "Y",
 		"AJAX_OPTION_HISTORY" => "N",
 		"PATH_TO_ORDER" => "/personal/order/make/",
-		"HIDE_COUPON" => "N",
+		"HIDE_COUPON" => "Y",
 		"QUANTITY_FLOAT" => "N",
 		"PRICE_VAT_SHOW_VALUE" => "Y",
 		"TEMPLATE_THEME" => "site",
@@ -36,7 +36,7 @@ $APPLICATION->SetTitle("Корзина");
 		"USE_PREPAYMENT" => "N",
 		"AUTO_CALCULATION" => "Y",
 		"ACTION_VARIABLE" => "basketAction",
-		"USE_GIFTS" => "Y",
+		"USE_GIFTS" => "N",
 		"GIFTS_PLACE" => "BOTTOM",
 		"GIFTS_BLOCK_TITLE" => "Выберите один из подарков",
 		"GIFTS_HIDE_BLOCK_TITLE" => "N",
