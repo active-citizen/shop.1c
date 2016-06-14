@@ -48,13 +48,18 @@
                 "FULL_NAME"=>"Балл",
                 // Строковый формат валюты
                 "FORMAT_STRING"=>"# б.",
-                "LID"=>"ru"
+                // Язык
+                "LID"=>"ru",
+                // Число знаков после запятой
+                "DECIMALS"=>0,
+                // Код валюте (BAL)
+                "CURRENCY"=>$currency_code
             );
             
             // Если валюты Балл нет - добавляем
             if(!isset($currencies[$currency_code])){
                 CCurrency::Add($main_info);
-                CCurrencyLang::Update($currency_code, "ru", $aux_info);            
+                CCurrencyLang::Add($aux_info);            
             }
             // Иначе - обновляем 
             else{
