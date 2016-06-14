@@ -105,6 +105,7 @@ if ($bUseAccountNumber)
 		$ID = $arOrder["ID"];
 }
 
+
 if (!$arOrder)
 {
 	$dbOrder = CSaleOrder::GetList(
@@ -129,12 +130,12 @@ if ($arOrder)
 		"URL_TO_DETAIL" => CComponentEngine::MakePathFromTemplate($arParams["PATH_TO_DETAIL"], Array("ID" => urlencode(urlencode($arOrder["ACCOUNT_NUMBER"])))),
 		"URL_TO_LIST" => $arParams["PATH_TO_LIST"],
 	);
-
 	if (!($arOrder["CANCELED"]!="Y" && $arOrder["STATUS_ID"]!="F" && $arOrder["PAYED"]!="Y"))
 		$arResult["ERROR_MESSAGE"] = GetMessage("SPOC_CANCEL_ORDER");
 }
 else
 	$arResult["ERROR_MESSAGE"] = str_replace("#ID#", $ID, GetMessage("SPOC_NO_ORDER"));
+
 
 if (!empty($errors) && is_array($errors))
 {
