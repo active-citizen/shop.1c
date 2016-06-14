@@ -9,7 +9,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"IBLOCK_ID" => "2",
 		"TEMPLATE_THEME" => "site",
 		"HIDE_NOT_AVAILABLE" => "N",
-		"BASKET_URL" => "/personal/cart/",
+		"BASKET_URL" => "/cart/",
 		"ACTION_VARIABLE" => "action",
 		"PRODUCT_ID_VARIABLE" => "id",
 		"SECTION_ID_VARIABLE" => "SECTION_ID",
