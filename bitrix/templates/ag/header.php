@@ -94,19 +94,34 @@
     <div class="contentShopMain">
         <div class="userMenuShop">
         <ul>
-            <li><a class="link_2 <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
-                   href="/catalog/">Поощрения</a></li>
-                        <li><a class="link_2 <? if(preg_match("#^/order/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
-                   href="/order/">История заказов</a></li>
-            <li><a class="link_2 <? if(preg_match("#^/points/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+            <li>
+                <a class="link_2 <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/catalog/">Поощрения</a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/order/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/order/">История заказов</a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/points/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
                    href="/points/">Мои баллы(<? 
                    CModule::IncludeModule("sale");
                    $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
                    $account = $res->GetNext();
                    if($account["CURRENT_BUDGET"])echo round($account["CURRENT_BUDGET"]);
-                   ?>)</a></li>
-                        <li><a class="link_2 <? if(preg_match("#^/rules/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
-                   href="/rules/">Правила</a></li>
+                   ?>)
+                   </a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/rules/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/rules/">Правила
+                </a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/news/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/news/">Новости
+                </a>
+            </li>
         </ul>
     </div>
 
