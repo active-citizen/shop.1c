@@ -135,3 +135,5 @@ if($arParams["SHOW_TOP_ELEMENTS"]!="N")
 );?><?
 	unset($basketAction);
 }
+?>
+<?include("sidemenu.php"); ?>

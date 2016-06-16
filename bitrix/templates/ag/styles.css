@@ -9,7 +9,7 @@
 
 div.ag-section-top{
     margin-bottom: 30px;
-    clear: both;
+    clear: left;
 }
 
 div.ag-section-top a.bx_catalog_tile_img{
@@ -34,7 +34,7 @@ a.ag-goods-tizer{
     font-size: 20px;
     color: #0EB0A0;
     float: left;
-    margin: 20px 100px 100px 0px;
+    margin: 20px 50px 100px 0px;
     text-align: left;
 }
     a.ag-goods-tizer div.ad-goods-measure{
@@ -91,3 +91,32 @@ div.ag-section-top h2.bx_catalog_tile_title a{
     margin: 0px;
     font-weight: bold;
 }
+
+div.ag-right-block{
+    width: 150px;
+    border-left: 1px #CCC solid;
+    border-right: 1px #CCC solid;
+    padding: 10px;
+    min-height: 300px;
+    float: right;
+    margin-top: 0px;
+}
+    div.ag-right-block div.bx_catalog_item{
+        width: 98% !important;
+    }
+
+    div.ag-right-block h4{
+        text-align: center;
+        background-color: #EEE;
+    }
+    
+.bx_catalog_tile{
+    float: left;
+}
+
+div.contentShopMain>div.row{
+}
+
+
+
+

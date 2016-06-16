@@ -142,6 +142,7 @@ if ($isFilter || $isSidebar):?>
 			?>
 		</div>
 		<div class="col-xs-12">
+                <?include("sidemenu.php"); ?>
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:catalog.section.list",
 		"",
