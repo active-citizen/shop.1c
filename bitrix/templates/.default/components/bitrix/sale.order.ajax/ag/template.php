@@ -1,7 +1,7 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-
 use Bitrix\Main\Localization\Loc;
 
+include($_SERVER["DOCUMENT_ROOT"]."/include/check_store.php");
 /**
  * @var array $arParams
  * @var array $arResult
@@ -132,6 +132,11 @@ elseif ($arParams["DISABLE_BASKET_REDIRECT"] == 'Y' && $arResult["SHOW_EMPTY_BAS
 else:
 	$hideDelivery = empty($arResult["DELIVERY"]);
 ?>
+<? if(!$stores){?>
+<h2 style="color:red;">Нет ни одного склада, на котором бы были в наличии все выбранные товары. Заказ невозможен.</h2>
+<? }?>
+
+
 <form action="<?=$APPLICATION->GetCurPage();?>" method="POST" name="ORDER_FORM" id="bx-soa-order-form" enctype="multipart/form-data">
 <?=bitrix_sessid_post()?>
 <?
@@ -280,12 +285,17 @@ if (strlen($arResult["PREPAY_ADIT_FIELDS"]) > 0)
 			</div>
 		<? endif ?>
 
+		<? if($stores){?>
 		<!--	ORDER SAVE BLOCK	-->
 		<div id="bx-soa-orderSave" class="hidden-xs">
 			<a href="javascript:void(0)" style="margin: 10px 0" class="pull-right btn btn-default btn-lg">
 				<?=$arParams['MESS_ORDER']?>
 			</a>
 		</div>
+		<? }else{?>
+        <div id="bx-soa-orderSave" class="hidden-xs">
+        </div>
+        <? } ?>
 
 		<div style="display: none;">
 			<div id='bx-soa-basket-hidden' class="bx-soa-section"></div>
@@ -294,7 +304,9 @@ if (strlen($arResult["PREPAY_ADIT_FIELDS"]) > 0)
 			-->
 			<div id='bx-soa-paysystem-hidden' class="bx-soa-section"></div>
 			<div id='bx-soa-delivery-hidden' class="bx-soa-section"></div>
+			<? if($stores){?>
 			<div id='bx-soa-pickup-hidden' class="bx-soa-section"></div>
+            <? }?>
 			<div id="bx-soa-properties-hidden" class="bx-soa-section"></div>
 			<div id="bx-soa-auth-hidden" class="bx-soa-section">
 				<div class="bx-soa-section-content container-fluid reg"></div>

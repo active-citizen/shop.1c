@@ -29,10 +29,10 @@ $APPLICATION->SetTitle("Мои баллы");
                             echo "Внесено вручную";
                         break;
                         case 'ORDER_PAY':
-                            echo 'Списано за заказ №<a href="/orders/detail/'.$arResult["ORDER_ID"].'/">'.$arResult["ORDER_ID"]."</a>";
+                            echo 'Списано за заказ №<a href="/order/detail/'.$arResult["ORDER_ID"].'/">'.$arResult["ORDER_ID"]."</a>";
                         break;
                         case 'ORDER_UNPAY':
-                            echo 'Отмена заказа №<a href="/orders/detail/'.$arResult["ORDER_ID"].'/">'.$arResult["ORDER_ID"]."</a>";
+                            echo 'Отмена заказа №<a href="/order/detail/'.$arResult["ORDER_ID"].'/">'.$arResult["ORDER_ID"]."</a>";
                         break;
                     }
                 

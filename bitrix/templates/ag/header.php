@@ -36,6 +36,7 @@
     
     <link rel="apple-touch-icon" href="http://ag.mos.ru/images/apple-touch-icon.png">
     <script type="text/javascript" src="http://ag.mos.ru/assets/script-0-m_MdmsNGFKrhf9d74r4gFA.js"></script>
+    <script type="text/javascript" src="/bitrix/templates/ag/scripts.js"></script>
 
 </head>
 
@@ -99,7 +100,11 @@
                    href="/catalog/">Поощрения</a>
             </li>
             <li>
-                <a class="link_2 <? if(preg_match("#^/order/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                <a class="link_2 <? if(preg_match("#^/cart/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/cart/">Корзина</a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/order/$#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
                    href="/order/">История заказов</a>
             </li>
             <li>
