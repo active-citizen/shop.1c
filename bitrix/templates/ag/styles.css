@@ -117,6 +117,27 @@ div.ag-right-block{
 div.contentShopMain>div.row{
 }
 
+div.ag-basket-store-exists-title{
+    font-weight: bold;
+    margin: 20px 0px 0px 0px;
+    border-bottom: 1px #AAA solid;
+}
+
+table.ag-basket-store-exists-table{
+    width: 100%;
+}
+    table.ag-basket-store-exists-table th{
+        font-weight: normal;
+        border-bottom: 1px #AAA solid;
+        text-align: center;
+    }
 
 
+    table.ag-basket-store-exists-table .mfc{
+    }
+
+    table.ag-basket-store-exists-table td.amount{
+        width: 100px;
+        text-align: center;
+    }
 

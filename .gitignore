@@ -1,4 +1,12 @@
 bitrix/*
+upload/*
+desktop_app/*
+eshop_app/*
+auth/*
+login/*
+about/*
+images/*
+store/*
 !bitrix/templates
 bitrix/templates/*
 !bitrix/templates/ag
@@ -8,3 +16,5 @@ bitrix/templates/*
 !.install/tmp/README.txt
 .install/screens/*
 !.install/screens/README.md
+include/*
+!include/check_store.php

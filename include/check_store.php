@@ -14,9 +14,11 @@ foreach($tradeOffers as $offerId=>$quantity){
         if(!isset($stores[$store["STORE_ID"]]))$stores[$store["STORE_ID"]] = array();
         // Запоминаем в складе количество товара, если этого количества достаточно
         if($store["AMOUNT"]>=$tradeOffers[$store["PRODUCT_ID"]])$stores[$store["STORE_ID"]][$store["PRODUCT_ID"]] = $store["AMOUNT"];
-            
     }
 }
+
+
 // Оставляем только те склады, на которых есть все торговые предложения
 foreach($stores as $store_id=>$offers)
     if(count($stores[$store_id])<count($tradeOffers))unset($stores[$store_id]);
+

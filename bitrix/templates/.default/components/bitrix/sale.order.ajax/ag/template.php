@@ -28,6 +28,10 @@ if (!empty($arParams['TEMPLATE_THEME']))
 		$arParams['TEMPLATE_THEME'] = 'blue';
 }
 
+// Оставляем только те склады, на которых всё есть
+foreach($arResult["JS_DATA"]["STORE_LIST"] as $store_id=>$store)if(!isset($stores[$store_id]))unset($arResult["JS_DATA"]["STORE_LIST"][$store_id]);
+
+
 $arParams["ALLOW_USER_PROFILES"] = $arParams["ALLOW_USER_PROFILES"] == "Y" ? "Y" : "N";
 $arParams["SKIP_USELESS_BLOCK"] = $arParams["SKIP_USELESS_BLOCK"] == "N" ? "N" : "Y";
 if (!isset($arParams['SHOW_ORDER_BUTTON']))
@@ -109,6 +113,7 @@ switch (LANGUAGE_ID)
 	default:
 		$locale = 'en-US'; break;
 }
+
 
 $this->addExternalCss('/bitrix/css/main/bootstrap.css');
 $this->addExternalCss('/bitrix/components/bitrix/sale.location.selector.search/templates/.default/style.css');
