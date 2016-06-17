@@ -25,10 +25,10 @@ $arUrlRewrite = array(
         "PATH" => "/order/index.php",
     ),
 	array(
-		"CONDITION" => "#^/store/#",
+		"CONDITION" => "#^/rules/stores/#",
 		"RULE" => "",
 		"ID" => "bitrix:catalog.store",
-		"PATH" => "/store/index.php",
+		"PATH" => "/rules/stores/index.php",
 	),
 	array(
 		"CONDITION" => "#^/news/#",

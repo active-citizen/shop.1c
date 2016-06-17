@@ -141,3 +141,12 @@ table.ag-basket-store-exists-table{
         text-align: center;
     }
 
+div.ag-second-menu{
+    border-bottom: 1px #CCC solid;
+    padding: 10px;
+}
+    
+    
+    div.ag-second-menu a{
+        margin: 0px 30px;
+    }

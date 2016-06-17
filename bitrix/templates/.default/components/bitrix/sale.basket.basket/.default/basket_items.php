@@ -212,7 +212,10 @@ if ($normalCount > 0):
 																		data-element="<?=$arItem["ID"]?>"
 																		data-property="<?=$arProp["CODE"]?>"
 																		>
+																		<!--
 																		<a href="javascript:void(0)" class="cnt"><span class="cnt_item" style="background-image:url(<?=$arSkuValue["PICT"]["SRC"];?>)"></span></a>
+																		-->
+																		<a href="?offer=<?= $arItem["ID"];?>" class="cnt"><span class="cnt_item" style="background-image:url(<?=$arSkuValue["PICT"]["SRC"];?>)"></span></a>
 																	</li>
 																<?
 																endforeach;
@@ -229,7 +232,6 @@ if ($normalCount > 0):
 											else:
 											?>
 												<div class="bx_item_detail_size_small_noadaptive <?=$full?>">
-
 													<span class="bx_item_section_name_gray">
 														<?=$arProp["NAME"]?>:
 													</span>
@@ -258,7 +260,10 @@ if ($normalCount > 0):
 																		data-element="<?=$arItem["ID"]?>"
 																		data-property="<?=$arProp["CODE"]?>"
 																		>
+																		<!-- 
 																		<a href="javascript:void(0)" class="cnt"><?=$arSkuValue["NAME"]?></a>
+																		-->
+																		<a href="?offer=<?= $arItem["ID"];?>" class="cnt"><?=$arSkuValue["NAME"]?></a>
 																	</li>
 																<?
 																endforeach;
@@ -297,6 +302,7 @@ if ($normalCount > 0):
 								<td class="custom">
 									<span><?=$arHeader["name"]; ?>:</span>
 									<div class="centered">
+                                        <a name="offer<?= $arItem["ID"]?>"><h2></h2></a>
 										<table cellspacing="0" cellpadding="0" class="counter">
 											<tr>
 												<td>
@@ -333,8 +339,12 @@ if ($normalCount > 0):
 												?>
 													<td id="basket_quantity_control">
 														<div class="basket_quantity_control">
+                                                            <!-- 
 															<a href="javascript:void(0);" class="plus" onclick="setQuantity(<?=$arItem["ID"]?>, <?=$arItem["MEASURE_RATIO"]?>, 'up', <?=$useFloatQuantityJS?>);"></a>
 															<a href="javascript:void(0);" class="minus" onclick="setQuantity(<?=$arItem["ID"]?>, <?=$arItem["MEASURE_RATIO"]?>, 'down', <?=$useFloatQuantityJS?>);"></a>
+															-->
+                                                            <a href="?offer=<?= $arItem["ID"];?>" class="plus" onclick="setQuantity(<?=$arItem["ID"]?>, <?=$arItem["MEASURE_RATIO"]?>, 'up', <?=$useFloatQuantityJS?>);"></a>
+                                                            <a href="?offer=<?= $arItem["ID"];?>" class="minus" onclick="setQuantity(<?=$arItem["ID"]?>, <?=$arItem["MEASURE_RATIO"]?>, 'down', <?=$useFloatQuantityJS?>);"></a>
 														</div>
 													</td>
 												<?

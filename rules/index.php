@@ -1,6 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Правила");
+include("menu.php")
 ?>
 
         <div class="chopItemsGroups mb80">

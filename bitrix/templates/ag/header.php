@@ -64,7 +64,12 @@
                                     </li>
                                     <li class=""><a href="/catalog"
                                            class="link active">Магазин поощрений</a>
-                                        <span id="current_points">32</span>
+                                        <span id="current_points"><? 
+                   CModule::IncludeModule("sale");
+                   $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
+                   $account = $res->GetNext();
+                   if($account["CURRENT_BUDGET"])echo round($account["CURRENT_BUDGET"]);
+                   ?></span>
                                     </li>
                                     <li><a href="http://ag.mos.ru/site/news"
                                            class="link ">Новости</a>
@@ -109,12 +114,7 @@
             </li>
             <li>
                 <a class="link_2 <? if(preg_match("#^/points/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
-                   href="/points/">Мои баллы(<? 
-                   CModule::IncludeModule("sale");
-                   $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
-                   $account = $res->GetNext();
-                   if($account["CURRENT_BUDGET"])echo round($account["CURRENT_BUDGET"]);
-                   ?>)
+                   href="/points/">Мои баллы
                    </a>
             </li>
             <li>
