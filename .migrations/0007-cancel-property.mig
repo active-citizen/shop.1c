@@ -1,0 +1,51 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление доаолнительного свойства инфоблоку товаров - возможность отмены заказа
+     */
+    class cancel_property extends Migration{
+        function Run(){
+            
+            //Код валюты балл
+            $currency_code = "BAL";
+            
+            
+            // Получаем полный список валют
+            CModule::IncludeModule("iblock");
+
+            // Проверяем наличие свойства
+            $res = CIBlockProperty::GetByID("CANCEL_ABILITY",false,"clothes");
+            if($res->GetNext())return true;
+            
+            
+            $arFields = Array(
+                "NAME" => "Возможность отмены",
+                "ACTIVE" => "Y",
+                "SORT" => "1500",
+                "CODE" => "CANCEL_ABILITY",
+                "PROPERTY_TYPE" => "L",
+                "IBLOCK_ID" => 2
+            );
+            $arFields["VALUES"][] = array(
+                "VALUE" => "Да",
+                "DEF" => "Y",
+                "SORT" => "100"
+            );
+            
+            $ibp = new CIBlockProperty;
+            if(!$PropID = $ibp->Add($arFields)){
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$cancel_property = new cancel_property();
+// Откатываем, если неудачно
+if(!$cancel_property->Run())$cancel_property->RollBack();

@@ -219,7 +219,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"SECTION_ADD_TO_BASKET_ACTION" => "ADD",
 		"DETAIL_ADD_TO_BASKET_ACTION" => array(
 			0 => "BUY",
-            1 => "ADD"
 		),
 		"DETAIL_SHOW_BASIS_PRICE" => "Y",
 		"SECTIONS_HIDE_SECTION_NAME" => "N",

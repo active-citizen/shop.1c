@@ -6,7 +6,7 @@ if(isset($_GET["offer"]) && intval($_GET["offer"])){
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Корзина");
 ?><? $APPLICATION->IncludeComponent(
-	"bitrix:sale.basket.basket", 
+	"ag:sale.basket.basket", 
 	".default", 
 	array(
 		"COUNT_DISCOUNT_4_ALL_QUANTITY" => "N",

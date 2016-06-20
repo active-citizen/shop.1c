@@ -30,7 +30,7 @@ $isSidebar = ($arParams["SIDEBAR_DETAIL_SHOW"] == "Y" && isset($arParams["SIDEBA
 <div class="row">
 	<div class="<?=($isSidebar ? "col-md-9 col-sm-8" : "col-xs-12")?>">
 <?$ElementID = $APPLICATION->IncludeComponent(
-	"bitrix:catalog.element",
+	"ag:catalog.element",
 	"",
 	array(
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
