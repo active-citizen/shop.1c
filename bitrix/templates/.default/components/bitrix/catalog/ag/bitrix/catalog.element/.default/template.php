@@ -617,7 +617,7 @@ else
             
             
             <a href="" class="bx_big bx_bt_button bx_cart_ag"><span></span><? echo $buyBtnMessage; ?> </a>
-			<a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a>
+			<!-- <a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a> -->
 <?
 	}
 	if ($showAddBtn)
