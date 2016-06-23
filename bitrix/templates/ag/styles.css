@@ -279,4 +279,21 @@ div.ag-second-menu{
     font-weight: bold;
     width: 100px;
 }
+
+#order-process-done{
+    position: fixed;
+    width: 150px;
+    height: 25px;
+    top: 50%;
+    left: 50%;
+    margin: 100px 0px 0px -30px;
+    border: 1px #AAA solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-color: #EEE;
+    text-align: center;
+    color: #444;
+    background-color: #6e9700;
+}
     

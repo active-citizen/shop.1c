@@ -611,11 +611,12 @@ else
                     <div id="sess_id" style="display:none;"></div>
                     <div class="close-button ">Отменить</div>
                     <div class="ok-button adm-btn-save">Заказать</div>
+                    <div id="order-process-done" style="display:none">Загрузка...</div>
                 </div>
             </div>
             <!-- END: окно заказа -->
             
-            
+            <div id="order-process" style="display: none;">Загрузка...</div>
             <a href="" class="bx_big bx_bt_button bx_cart_ag"><span></span><? echo $buyBtnMessage; ?> </a>
 			<!-- <a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a> -->
 <?

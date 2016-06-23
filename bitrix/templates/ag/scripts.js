@@ -36,10 +36,13 @@ $(document).ready(function(){
         var profile = {};
         var product = {};
         var store = {};
+        $('#order-process').css('display','block');
+        $('.bx_cart_ag').css('display','none');
         $.get(get_profile_url,function(data){
             var answer = JSON.parse(data);
             if(!answer.profile){
                 ag_ci_rise_error('Ошибка запроса профиля, склада, товара:'+answer.error);
+                $('#bx_cart_ag').css('display','block');
                 return false;
             }
             profile = answer.profile; 
@@ -48,9 +51,13 @@ $(document).ready(function(){
     console.log(profile);
             if(!profile.ID){
                 ag_ci_rise_error('Ошибка получения профиля');
+                $('#order-process').css('display','none');
+                $('.bx_cart_ag').css('display','block');
                 return false;
             }
             // Выводим окно подтверждения заказа
+            $('.bx_cart_ag').css('display','block');
+            $('#order-process').css('display','none');
             ag_ci_rise_confirm(profile,store,product);
         });
         
@@ -74,6 +81,8 @@ $(document).ready(function(){
         var add_basket_url = "?action=BUY&id="+offer_id+"&ajax_basket=Y";
 
         // добавляем в корзину
+        $('#order-process-done').css('display','block');
+        $('.ok-button').css('display','none');
         $.get(
             add_basket_url,
             function(data){
@@ -84,27 +93,29 @@ $(document).ready(function(){
                     return false;
                 }
                 
-                    var postdata = {
-                        "sessid":           $('.catalog_item_confirm_message .ag-window #sess_id').html(),
-                        "action":           "saveOrderAjax",
-                        "location_type":    "code",
-                        "BUYER_STORE":      $('.catalog_item_confirm_message .ag-window #store_id').html(),
-                        "DELIVERY_ID":      3,
-                        "save":             "Y",
-                    }
-                    $.post(
-                        "/order/make/",
-                        postdata,
-                        function(data){
-                            var answer = JSON.parse(data);
-                            if(answer.order.REDIRECT_URL){
-                                document.location.href=answer.order.REDIRECT_URL;
-                            }
-                            else{
-                                ag_ci_rise_error(answer.order.ERROR.MAIN);
-                            }
+                var postdata = {
+                    "sessid":           $('.catalog_item_confirm_message .ag-window #sess_id').html(),
+                    "action":           "saveOrderAjax",
+                    "location_type":    "code",
+                    "BUYER_STORE":      $('.catalog_item_confirm_message .ag-window #store_id').html(),
+                    "DELIVERY_ID":      3,
+                    "save":             "Y",
+                }
+                $.post(
+                    "/order/make/",
+                    postdata,
+                    function(data){
+                        var answer = JSON.parse(data);
+                        if(answer.order.REDIRECT_URL){
+                            document.location.href=answer.order.REDIRECT_URL;
                         }
-                    );
+                        else{
+                            $('#order-process-done').css('display','none');
+                            $('.ok-button').css('display','block');
+                            ag_ci_rise_error(answer.order.ERROR.MAIN);
+                        }
+                    }
+                );
             }
         );
         return false;
