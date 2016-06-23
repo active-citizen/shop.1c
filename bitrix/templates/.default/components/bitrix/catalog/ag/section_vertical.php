@@ -3,6 +3,7 @@
 use Bitrix\Main\Loader,
 	Bitrix\Main\ModuleManager;
 
+    
 if ($isFilter || $isSidebar):?>
 <div class="col-md-3 col-sm-4 col-sm-push-8 col-md-push-9 hidden-xs">
 	<?if ($isFilter):?>

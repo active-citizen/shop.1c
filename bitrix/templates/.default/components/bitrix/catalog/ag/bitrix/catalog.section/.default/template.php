@@ -178,7 +178,6 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
         $measure = $ress->GetNext();
         $arItem["MEASURE"] = $measure["MEASURE_TITLE"];
     }
-    
     ?>
         <a href="<? echo $arItem['DETAIL_PAGE_URL']; ?>"
         class="ag-goods-tizer"

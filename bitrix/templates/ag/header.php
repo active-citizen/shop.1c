@@ -105,10 +105,6 @@
                    href="/catalog/">Поощрения</a>
             </li>
             <li>
-                <a class="link_2 <? if(preg_match("#^/cart/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
-                   href="/cart/">Корзина</a>
-            </li>
-            <li>
                 <a class="link_2 <? if(preg_match("#^/order/$#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
                    href="/order/">История заказов</a>
             </li>

@@ -26,6 +26,8 @@ $templateData = array(
 );
 unset($currencyList, $templateLibrary);
 
+
+
 $strMainID = $this->GetEditAreaId($arResult['ID']);
 $arItemIDs = array(
 	'ID' => $strMainID,
@@ -212,6 +214,8 @@ if ($arResult['SHOW_SLIDER'])
 		</div>
 		<div class="bx_rt">
 <?
+
+
 $useBrands = ('Y' == $arParams['BRAND_USE']);
 $useVoteRating = ('Y' == $arParams['USE_VOTE_RATING']);
 if ($useBrands || $useVoteRating)
@@ -449,6 +453,26 @@ else
 {
 	$canBuy = $arResult['CAN_BUY'];
 }
+
+
+        ?><?$APPLICATION->IncludeComponent("bitrix:catalog.store.amount", ".default", array(
+            "ELEMENT_ID" => $arResult["ID"],
+            "STORE_PATH" => $arParams['STORE_PATH'],
+            "CACHE_TYPE" => "A",
+            "CACHE_TIME" => "36000",
+            "MAIN_TITLE" => "Наличие в пунктах выдачи",
+            "USE_MIN_AMOUNT" =>  $arParams['USE_MIN_AMOUNT'],
+            "MIN_AMOUNT" => $arParams['MIN_AMOUNT'],
+            "STORES" => $arParams['STORES'],
+            "SHOW_EMPTY_STORE" => $arParams['SHOW_EMPTY_STORE'],
+            "SHOW_GENERAL_STORE_INFORMATION" => $arParams['SHOW_GENERAL_STORE_INFORMATION'],
+            "USER_FIELDS" => $arParams['USER_FIELDS'],
+            "FIELDS" => $arParams['FIELDS']
+        ),
+        $component,
+        array("HIDE_ICONS" => "Y")
+    );?><?
+
 $buyBtnMessage = ($arParams['MESS_BTN_BUY'] != '' ? $arParams['MESS_BTN_BUY'] : GetMessage('CT_BCE_CATALOG_BUY'));
 $addToBasketBtnMessage = ($arParams['MESS_BTN_ADD_TO_BASKET'] != '' ? $arParams['MESS_BTN_ADD_TO_BASKET'] : GetMessage('CT_BCE_CATALOG_ADD'));
 $notAvailableMessage = ($arParams['MESS_NOT_AVAILABLE'] != '' ? $arParams['MESS_NOT_AVAILABLE'] : GetMessageJS('CT_BCE_CATALOG_NOT_AVAILABLE'));
@@ -550,6 +574,49 @@ else
 	if ($showBuyBtn)
 	{
 ?>
+            <!-- BEGIN: окно ошибки-->
+            <div class="catalog_item_error_message" style="display:none;">
+                <div class="ag-smooth">
+                </div>
+                <div class="ag-window">
+                    <div class="title">Ошибка</div>
+                    <div class="message">
+                        Сообщение об ошибке
+                    </div>
+                    <div class="close-button">Закрыть</div>
+                </div>
+            </div>
+            <!-- END: окно ошибки-->
+
+            <!-- BEGIN: окно заказа -->
+            <div class="catalog_item_confirm_message" style="display:none;">
+                <div class="ag-smooth">
+                </div>
+                <div class="ag-window">
+                    <div class="title">Подтверждение заказа</div>
+                    <div class="message">
+                        <table>
+                            <tr>
+                                <td class="key">Позиция</td>
+                                <td class="val" id="offer"></td>
+                            </tr>
+                            <tr>
+                                <td class="key">Пункт выдачи</td>
+                                <td class="val" id="store"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="offer_id" style="display:none;"></div>
+                    <div id="store_id" style="display:none;"></div>
+                    <div id="sess_id" style="display:none;"></div>
+                    <div class="close-button ">Отменить</div>
+                    <div class="ok-button adm-btn-save">Заказать</div>
+                </div>
+            </div>
+            <!-- END: окно заказа -->
+            
+            
+            <a href="" class="bx_big bx_bt_button bx_cart_ag"><span></span><? echo $buyBtnMessage; ?> </a>
 			<a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a>
 <?
 	}

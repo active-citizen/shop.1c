@@ -150,3 +150,133 @@ div.ag-second-menu{
     div.ag-second-menu a{
         margin: 0px 30px;
     }
+
+.ag-smooth{
+    position: fixed;
+    z-index: 9998;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: black;
+    opacity: 0.4;
+}
+
+
+
+.ag-window{
+    background-color: #FFDDDD;
+    border: 1px #FAA solid;
+    padding: 10px;
+    color: #F44;
+    margin: 5px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    position: fixed;
+    width: 400px;
+    height: 250px;
+    top: 50%;
+    left: 50%;
+    margin: -180px 0px 0px -200px;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+
+.catalog_item_confirm_message .ag-window{
+    background-color: #FFF;
+    border: 1px #DDD solid;
+    width: 600px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    margin: -250px 0px 0px -300px;
+}
+
+.ag-window .message{
+    color: black;
+    height: 170px;
+    padding: 5px;
+    overflow: auto;
+    text-align: center;
+}
+
+
+.catalog_item_error_message .ag-window .close-button{
+    position: fixed;
+    width: 200px;
+    height: 25px;
+    top: 50%;
+    left: 50%;
+    margin: 30px 0px 0px -100px;
+    border: 1px #AAA solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-color: #EEE;
+    text-align: center;
+    color: #444;
+    cursor: pointer;
+}
+
+.catalog_item_confirm_message .ag-window .close-button{
+    position: fixed;
+    width: 150px;
+    height: 25px;
+    top: 50%;
+    left: 50%;
+    margin: 100px 0px 0px 130px;
+    border: 1px #AAA solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-color: #EEE;
+    text-align: center;
+    color: #444;
+    cursor: pointer;
+}
+.catalog_item_confirm_message .ag-window .ok-button{
+    position: fixed;
+    width: 150px;
+    height: 25px;
+    top: 50%;
+    left: 50%;
+    margin: 100px 0px 0px -30px;
+    border: 1px #AAA solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-color: #EEE;
+    text-align: center;
+    color: #444;
+    cursor: pointer;
+    background-color: #9ec710;
+}
+
+
+
+.catalog_item_error_message .ag-window .title{
+    font-size: 16px;
+    text-align: center;
+}
+
+.catalog_item_confirm_message .ag-window .title{
+    font-size: 16px;
+    text-align: center;
+    color: green;
+}
+
+.catalog_item_confirm_message .ag-window td{
+    vertical-align: top;
+    padding: 20px;
+}
+
+
+.catalog_item_confirm_message .ag-window .key{
+    font-weight: bold;
+    width: 100px;
+}
+    

@@ -30,7 +30,7 @@ $isSidebar = ($arParams["SIDEBAR_DETAIL_SHOW"] == "Y" && isset($arParams["SIDEBA
 <div class="row">
 	<div class="<?=($isSidebar ? "col-md-9 col-sm-8" : "col-xs-12")?>">
 <?$ElementID = $APPLICATION->IncludeComponent(
-	"ag:catalog.element",
+	"bitrix:catalog.element",
 	"",
 	array(
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
@@ -146,6 +146,22 @@ $isSidebar = ($arParams["SIDEBAR_DETAIL_SHOW"] == "Y" && isset($arParams["SIDEBA
 
 		"GIFTS_MAIN_PRODUCT_DETAIL_PAGE_ELEMENT_COUNT" => $arParams['GIFTS_MAIN_PRODUCT_DETAIL_PAGE_ELEMENT_COUNT'],
 		"GIFTS_MAIN_PRODUCT_DETAIL_BLOCK_TITLE" => $arParams['GIFTS_MAIN_PRODUCT_DETAIL_BLOCK_TITLE'],
+        
+        // Для передачи списку складов
+            "ELEMENT_ID" => $arResult["ID"],
+            "STORE_PATH" => $arParams['STORE_PATH'],
+            "CACHE_TYPE" => "A",
+            "CACHE_TIME" => "36000",
+            "MAIN_TITLE" => $arParams['MAIN_TITLE'],
+            "USE_MIN_AMOUNT" =>  $arParams['USE_MIN_AMOUNT'],
+            "MIN_AMOUNT" => $arParams['MIN_AMOUNT'],
+            "STORES" => $arParams['STORES'],
+            "SHOW_EMPTY_STORE" => $arParams['SHOW_EMPTY_STORE'],
+            "SHOW_GENERAL_STORE_INFORMATION" => $arParams['SHOW_GENERAL_STORE_INFORMATION'],
+            "USER_FIELDS" => $arParams['USER_FIELDS'],
+            "FIELDS" => $arParams['FIELDS'],
+        
+        
 	),
 	$component
 );?><?
@@ -153,26 +169,6 @@ $GLOBALS["CATALOG_CURRENT_ELEMENT_ID"] = $ElementID;
 unset($basketAction);
 if ($ElementID > 0)
 {
-	if($arParams["USE_STORE"] == "Y" && ModuleManager::isModuleInstalled("catalog"))
-	{
-		?><?$APPLICATION->IncludeComponent("bitrix:catalog.store.amount", ".default", array(
-			"ELEMENT_ID" => $ElementID,
-			"STORE_PATH" => $arParams['STORE_PATH'],
-			"CACHE_TYPE" => "A",
-			"CACHE_TIME" => "36000",
-			"MAIN_TITLE" => $arParams['MAIN_TITLE'],
-			"USE_MIN_AMOUNT" =>  $arParams['USE_MIN_AMOUNT'],
-			"MIN_AMOUNT" => $arParams['MIN_AMOUNT'],
-			"STORES" => $arParams['STORES'],
-			"SHOW_EMPTY_STORE" => $arParams['SHOW_EMPTY_STORE'],
-			"SHOW_GENERAL_STORE_INFORMATION" => $arParams['SHOW_GENERAL_STORE_INFORMATION'],
-			"USER_FIELDS" => $arParams['USER_FIELDS'],
-			"FIELDS" => $arParams['FIELDS']
-		),
-		$component,
-		array("HIDE_ICONS" => "Y")
-	);?><?
-	}
 
 	$arRecomData = array();
 	$recomCacheID = array('IBLOCK_ID' => $arParams['IBLOCK_ID']);

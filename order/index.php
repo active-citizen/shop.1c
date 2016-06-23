@@ -1,4 +1,5 @@
 <?
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы");
 ?><?$APPLICATION->IncludeComponent("ag:sale.personal.order", "", array(

@@ -220,7 +220,7 @@ if (isset($_REQUEST[$arParams["ACTION_VARIABLE"]]) && isset($_REQUEST[$arParams[
 		if (Loader::includeModule("sale") && Loader::includeModule("catalog"))
 		{
             // Чистим корзину перед добавлением
-            CSaleBasket::DeleteAll(CSaleBasket::GetBasketUserID());
+            // CSaleBasket::DeleteAll(CSaleBasket::GetBasketUserID());
 			$addByAjax = isset($_REQUEST['ajax_basket']) && $_REQUEST['ajax_basket'] === 'Y';
 			if ($addByAjax)
 				CUtil::JSPostUnescape();

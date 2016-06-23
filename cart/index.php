@@ -1,8 +1,5 @@
 <?
-if(isset($_GET["offer"]) && intval($_GET["offer"])){
-    header("Location: /cart/#offer".$_GET["offer"]);
-    die;
-}
+
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Корзина");
 ?><? $APPLICATION->IncludeComponent(

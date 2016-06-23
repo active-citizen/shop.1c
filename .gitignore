@@ -11,6 +11,7 @@ store/*
 bitrix/templates/*
 !bitrix/templates/ag
 !bitrix/templates/.default
+!bitrix/components/ag
 .install/config.ini
 .install/tmp/*
 !.install/tmp/README.txt
