@@ -11,6 +11,10 @@ global $USER;
 if(!$USER->IsAuthorized()){
     $answer["error"] = "Not Authorized";
 }
+elseif(isset($_GET["clear_basket"])){
+    CModule::IncludeModule('sale');
+    CSaleBasket::DeleteAll(CUser::GetID());    
+}
 else{
     if(!isset($_GET["offer_id"]) || !$offer_id = intval($_GET["offer_id"])){
         $answer["error"] = "Offer ID is not defined";
@@ -24,6 +28,7 @@ else{
         
         // Получаем информацию по складу
         CModule::IncludeModule('catalog');
+        CModule::IncludeModule('sale');
         $res = CCatalogStore::GetList(array(),array("ID"=>$store_id),false,array("nTopCount"=>1));
         $answer["store"] = $res->GetNext();
 
@@ -31,6 +36,8 @@ else{
         $res = CCatalogProduct::GetList(array(),array("ID"=>$offer_id),false,array("nTopCount"=>1));
         $product = $res->GetNext();
         $answer["product"] = $product;
+        $answer["price"] = CCatalogProduct::GetOptimalPrice($offer_id);
+        $answer["account"] = CSaleUserAccount::GetByUserID(CUser::GetID(),"RUB");
     }
 }
 

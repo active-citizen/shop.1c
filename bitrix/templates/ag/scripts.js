@@ -36,10 +36,13 @@ $(document).ready(function(){
         var profile = {};
         var product = {};
         var store = {};
+        var price = {};
+        var account = {};
         $('#order-process').css('display','block');
         $('.bx_cart_ag').css('display','none');
         $.get(get_profile_url,function(data){
             var answer = JSON.parse(data);
+            console.log(answer);
             if(!answer.profile){
                 ag_ci_rise_error('Ошибка запроса профиля, склада, товара:'+answer.error);
                 $('#bx_cart_ag').css('display','block');
@@ -48,13 +51,21 @@ $(document).ready(function(){
             profile = answer.profile; 
             product = answer.product; 
             store = answer.store;
-    console.log(profile);
+            price = answer.price;
+            account = answer.account;
             if(!profile.ID){
                 ag_ci_rise_error('Ошибка получения профиля');
                 $('#order-process').css('display','none');
                 $('.bx_cart_ag').css('display','block');
                 return false;
             }
+            if(price.DISCOUNT_PRICE > account.CURRENT_BUDGET){
+                ag_ci_rise_error('На счету недостаточно средств для заказа');
+                $('#order-process').css('display','none');
+                $('.bx_cart_ag').css('display','block');
+                return false;
+            }
+            
             // Выводим окно подтверждения заказа
             $('.bx_cart_ag').css('display','block');
             $('#order-process').css('display','none');
@@ -100,6 +111,10 @@ $(document).ready(function(){
                     "BUYER_STORE":      $('.catalog_item_confirm_message .ag-window #store_id').html(),
                     "DELIVERY_ID":      3,
                     "save":             "Y",
+                    "ORDER_PROP_1":     $('.catalog_item_confirm_message .ag-window #ag-name').html(),
+                    "ORDER_PROP_2":     $('.catalog_item_confirm_message .ag-window #ag-email').html(),
+                    "ORDER_PROP_3":     $('.catalog_item_confirm_message .ag-window #ag-phone').html(),
+                    "ORDER_PROP_7":     $('.catalog_item_confirm_message .ag-window #ag-address').html(),
                 }
                 $.post(
                     "/order/make/",
@@ -110,9 +125,20 @@ $(document).ready(function(){
                             document.location.href=answer.order.REDIRECT_URL;
                         }
                         else{
-                            $('#order-process-done').css('display','none');
-                            $('.ok-button').css('display','block');
-                            ag_ci_rise_error(answer.order.ERROR.MAIN);
+                            // Чистим корзину, если заказ неудачен
+                            $.get(
+                                "/order/order.ajax.php?clear_basket",
+                                function(){
+                                    $('#order-process-done').css('display','none');
+                                    $('.ok-button').css('display','block');
+                                    var error_text = '';
+                                    for(i in answer.order.ERROR){
+                                        error_text += i+": "+answer.order.ERROR[i];
+                                    }
+                                    $('.catalog_item_confirm_message').fadeOut('fast');
+                                    ag_ci_rise_error(error_text);
+                                }
+                            );
                         }
                     }
                 );
@@ -142,6 +168,11 @@ function ag_ci_rise_confirm(profile,store,product){
     $('.catalog_item_confirm_message .ag-window #offer_id').html(product.ID);
     $('.catalog_item_confirm_message .ag-window #store_id').html(store.ID);
     $('.catalog_item_confirm_message .ag-window #sess_id').html(profile.SESSID);
+    
+    $('.catalog_item_confirm_message .ag-window #ag-name').html(profile.NAME);
+    $('.catalog_item_confirm_message .ag-window #ag-email').html(profile.EMAIL);
+    $('.catalog_item_confirm_message .ag-window #ag-phone').html(profile.PERSONAL_PHONE?profile.PERSONAL_PHONE:"-");
+    
     $('.catalog_item_confirm_message .ag-window .message').html();
     $('.catalog_item_confirm_message').fadeIn('fast');
 }

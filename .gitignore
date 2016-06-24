@@ -12,6 +12,7 @@ bitrix/templates/*
 !bitrix/templates/ag
 !bitrix/templates/.default
 !bitrix/components/ag
+!bitrix/.settings.php
 .install/config.ini
 .install/tmp/*
 !.install/tmp/README.txt

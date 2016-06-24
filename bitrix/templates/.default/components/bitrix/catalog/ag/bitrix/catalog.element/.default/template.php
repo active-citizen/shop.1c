@@ -609,6 +609,13 @@ else
                     <div id="offer_id" style="display:none;"></div>
                     <div id="store_id" style="display:none;"></div>
                     <div id="sess_id" style="display:none;"></div>
+
+                    <div id="ag-name" style="display:none;"></div>
+                    <div id="ag-email" style="display:none;"></div>
+                    <div id="ag-phone" style="display:none;"></div>
+                    <div id="ag-address" style="display:none;">Со склада</div>
+                    
+                    
                     <div class="close-button ">Отменить</div>
                     <div class="ok-button adm-btn-save">Заказать</div>
                     <div id="order-process-done" style="display:none">Загрузка...</div>
@@ -618,7 +625,7 @@ else
             
             <div id="order-process" style="display: none;">Загрузка...</div>
             <a href="" class="bx_big bx_bt_button bx_cart_ag"><span></span><? echo $buyBtnMessage; ?> </a>
-			<!-- <a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a> -->
+            <!-- <a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a> -->
 <?
 	}
 	if ($showAddBtn)
