@@ -15,6 +15,23 @@ elseif(isset($_GET["clear_basket"])){
     CModule::IncludeModule('sale');
     CSaleBasket::DeleteAll(CUser::GetID());    
 }
+elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
+    // Проверить принадлежит ли заказ пользователю
+    CModule::IncludeModule('sale');
+    $order = CSaleOrder::GetByID($order_id);
+    if(!isset($order["USER_ID"])){
+        $answer = array("error"=>"Нет заказа с ID=$order_id");
+    }
+    elseif(isset($order["USER_ID"]) && $order["USER_ID"]!=CUser::GetID()){
+        $answer = array("error"=>"Это заказ другого пользователя");
+    }
+    elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID()){
+        ;
+        if(!CSaleOrder::PayOrder($order_id,"N",true) || !CSaleOrder::CancelOrder($order_id,"Y","Передумал")){
+            $answer["error"] .= "Заказ не был отменён.";
+        }
+    }
+}
 else{
     if(!isset($_GET["offer_id"]) || !$offer_id = intval($_GET["offer_id"])){
         $answer["error"] = "Offer ID is not defined";
