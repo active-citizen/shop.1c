@@ -77,22 +77,10 @@
 								<td>
 									<strong><?=GetMessage('SPOL_PAY_SUM')?>:</strong> <?=$order["ORDER"]["FORMATED_PRICE"]?> <br />
 
-									<strong><?=GetMessage('SPOL_PAYED')?>:</strong> <?=GetMessage('SPOL_'.($order["ORDER"]["PAYED"] == "Y" ? 'YES' : 'NO'))?> <br />
-
-									<? // PAY SYSTEM ?>
+                                    <? // PAY SYSTEM ?>
 									<? $paySystemList = array();?>
 									<?foreach($order["PAYMENT"] as $payment):?>
 										<?$paySystemList[] = $arResult['INFO']['PAY_SYSTEM'][$payment['PAY_SYSTEM_ID']]['NAME'];?>
-									<?endforeach;?>
-
-									<?if(!empty($paySystemList)):?>
-										<strong><?=GetMessage('SPOL_PAYSYSTEM')?>:</strong> <?=implode(', ', $paySystemList)?> <br />
-									<?endif?>
-
-									<? // DELIVERY SYSTEM ?>
-									<? $deliveryServiceList = array(); ?>
-									<?foreach ($order['SHIPMENT'] as $shipment):?>
-										<? $deliveryServiceList[] = $arResult['INFO']['DELIVERY'][$shipment['DELIVERY_ID']]['NAME'];?>
 									<?endforeach;?>
 
 									<?if(!empty($deliveryServiceList)):?>
