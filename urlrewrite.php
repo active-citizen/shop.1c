@@ -36,6 +36,12 @@ $arUrlRewrite = array(
 		"ID" => "bitrix:news",
 		"PATH" => "/news/index.php",
 	),
+    array(
+        "CONDITION" => "#^/points/#",
+        "RULE" => "",
+        "ID" => "ag:points",
+        "PATH" => "/points/index.php",
+    ),
 );
 
 ?>

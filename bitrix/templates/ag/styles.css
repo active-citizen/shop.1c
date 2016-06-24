@@ -290,4 +290,15 @@ div.ag-second-menu{
     text-align: center;
     color: #444;
 }
+
+div.point-dibit-type-menu{margin-bottom: 20px;}
+
+    .point-dibit-type-menu a{
+        margin: 0px 50px;
+    }
+
+    .point-dibit-type-menu a.active{
+        margin: 0px 50px !important;
+    }
+
     
