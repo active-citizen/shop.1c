@@ -16,6 +16,7 @@ elseif(isset($_GET["clear_basket"])){
     CSaleBasket::DeleteAll(CUser::GetID());    
 }
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
+    sleep(3);
     // Проверить принадлежит ли заказ пользователю
     CModule::IncludeModule('sale');
     $order = CSaleOrder::GetByID($order_id);

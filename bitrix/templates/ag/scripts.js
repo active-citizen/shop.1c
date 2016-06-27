@@ -176,3 +176,16 @@ function ag_ci_rise_confirm(profile,store,product){
     $('.catalog_item_confirm_message .ag-window .message').html();
     $('.catalog_item_confirm_message').fadeIn('fast');
 }
+
+function order_cancel(order_id,obj){
+    $(obj).css('display','none');
+    $('#ag-cancel-loader-'+order_id).css('display','inline-block');
+    $.get("/order/order.ajax.php?cancel="+order_id,function(){
+        document.location.href='/order/';
+        $(obj).css('display','inline-block');
+        $('#ag-cancel-loader-'+order_id).css('display','none');
+    })
+    return false;
+}
+
+

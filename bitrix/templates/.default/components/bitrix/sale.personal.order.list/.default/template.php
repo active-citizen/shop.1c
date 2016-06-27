@@ -113,10 +113,25 @@
 									<div class="bx_my_order_status <?=$arResult["INFO"]["STATUS"][$key]['COLOR']?><?/*yellow*/ /*red*/ /*green*/ /*gray*/?>"><?=$arResult["INFO"]["STATUS"][$key]["NAME"]?></div>
 
 									<?if($order["ORDER"]["CANCELED"] != "Y"):?>
-										<a href="<?=$order["ORDER"]["URL_TO_CANCEL"]?>" style="min-width:140px"class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_CANCEL_ORDER')?></a>
+									<!-- 
+										<a href="<?=$order["ORDER"]["URL_TO_CANCEL"]?>" style="min-width:140px" 
+                                        class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_CANCEL_ORDER')?></a>
+                                    -->
+                                        <? if($order["ORDER"]["STATUS_ID"]=='N'):?>
+                                        <a href="#" onclick="return order_cancel(<?=$order["ORDER"]["ID"]?>,this);" style="min-width:140px" 
+                                        id="ag-order-<?=$order["ORDER"]["ID"]?>" class="bx_big bx_bt_button_type_2 bx_cart bx_order_action ag-cancel-button">
+                                            <?=GetMessage('SPOL_CANCEL_ORDER')?>
+                                        </a>
+                                        <a href="#" onclick="return false;" id="ag-cancel-loader-<?=$order["ORDER"]["ID"]?>" class="ag-button-loader"
+                                        style="display:none;"
+                                        >
+                                            Загрузка...
+                                        </a>
+                                        <?endif?>
 									<?endif?>
 
-									<a href="<?=$order["ORDER"]["URL_TO_COPY"]?>" style="min-width:140px"class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_REPEAT_ORDER')?></a>
+
+									<a href="<?=$order["ORDER"]["URL_TO_COPY"]?>" style="min-width:140px" class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_REPEAT_ORDER')?></a>
 								</td>
 							</tr>
 						</tbody>
