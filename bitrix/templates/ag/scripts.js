@@ -182,8 +182,8 @@ function order_cancel(order_id,obj){
     $('#ag-cancel-loader-'+order_id).css('display','inline-block');
     $.get("/order/order.ajax.php?cancel="+order_id,function(){
         document.location.href='/order/';
-        $(obj).css('display','inline-block');
-        $('#ag-cancel-loader-'+order_id).css('display','none');
+//        $(obj).css('display','inline-block');
+//        $('#ag-cancel-loader-'+order_id).css('display','none');
     })
     return false;
 }
