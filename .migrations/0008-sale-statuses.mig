@@ -1,0 +1,62 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Редактирование названий статувос заказов
+     */
+    class sale_statuses extends Migration{
+        function Run(){
+            
+            $statuses = array(
+                "N" => array(
+                    array(
+                        "ID"    =>  "N",
+                        "LID"   =>  "ru",
+                        "NAME"  =>  "Принят, ожидается получение",
+                        "DESCRIPTION"=>"Принят, ожидается получение"
+                    ),
+                    array(
+                        "ID"    =>  "N",
+                        "LID"   =>  "en",
+                        "NAME"  =>  "Принят, ожидается получение",
+                        "DESCRIPTION"=>"Принят, ожидается получение"
+                    )
+                ),
+                "F" => array(
+                    array(
+                        "ID"    =>  "F",
+                        "LID"   =>  "ru",
+                        "NAME"  =>  "Заказ получен",
+                        "DESCRIPTION"=>"Заказ получен"
+                    ),
+                    array(
+                        "ID"    =>  "F",
+                        "LID"   =>  "en",
+                        "NAME"  =>  "Заказ получен",
+                        "DESCRIPTION"=>"Заказ получен"
+                    )
+                )
+            );
+
+            CModule::IncludeModule("sale");
+            foreach($statuses as $status=>$lang){
+                CSaleStatus::Update(
+                    $status,
+                    array(
+                        "ID"    =>  $status,
+                        "SORT"  =>  100,
+                        "LANG"  =>  $lang
+                    )
+                );
+            }
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$sale_statuses = new sale_statuses();
+// Откатываем, если неудачно
+if(!$sale_statuses->Run())$sale_statuses->RollBack();

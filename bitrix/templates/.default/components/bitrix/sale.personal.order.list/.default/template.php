@@ -25,17 +25,11 @@
 
 		<?$nothing = !isset($_REQUEST["filter_history"]) && !isset($_REQUEST["show_all"]);?>
 
-		<?if($nothing || isset($_REQUEST["filter_history"])):?>
-			<a class="bx_mo_link" href="<?=$arResult["CURRENT_PAGE"]?>?show_all=Y"><?=GetMessage('SPOL_ORDERS_ALL')?></a>
-		<?endif?>
+			<a class="bx_mo_link <?if(isset($_GET['show_all'])):?>active<?endif?>" href="<?=$arResult["CURRENT_PAGE"]?>?show_all=Y"><?=GetMessage('SPOL_ORDERS_ALL')?></a>
 
-		<?if($_REQUEST["filter_history"] == 'Y' || $_REQUEST["show_all"] == 'Y'):?>
-			<a class="bx_mo_link" href="<?=$arResult["CURRENT_PAGE"]?>?filter_history=N"><?=GetMessage('SPOL_CUR_ORDERS')?></a>
-		<?endif?>
+			<a class="bx_mo_link <?if(isset($_GET['filter_history']) && $_GET['filter_history']=='N'):?>active<?endif?>" href="<?=$arResult["CURRENT_PAGE"]?>?filter_history=N"><?=GetMessage('SPOL_CUR_ORDERS')?></a>
 
-		<?if($nothing || $_REQUEST["filter_history"] == 'N' || $_REQUEST["show_all"] == 'Y'):?>
-			<a class="bx_mo_link" href="<?=$arResult["CURRENT_PAGE"]?>?filter_history=Y"><?=GetMessage('SPOL_ORDERS_HISTORY')?></a>
-		<?endif?>
+			<a class="bx_mo_link <?if(isset($_GET['filter_history']) && $_GET['filter_history']=='Y'):?>active<?endif?>" href="<?=$arResult["CURRENT_PAGE"]?>?filter_history=Y"><?=GetMessage('SPOL_ORDERS_HISTORY')?></a>
 
 	</div>
 
