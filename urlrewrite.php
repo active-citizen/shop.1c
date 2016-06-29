@@ -6,11 +6,17 @@ $arUrlRewrite = array(
 		"ID" => "",
 		"PATH" => "/bitrix/services/ymarket/index.php",
 	),
+    array(
+        "CONDITION" => "#^/catalog/$#",
+        "RULE" => "",
+        "ID" => "bitrix:catalog",
+        "PATH" => "/catalog/index.php",
+    ),
 	array(
 		"CONDITION" => "#^/catalog/#",
 		"RULE" => "",
 		"ID" => "bitrix:catalog",
-		"PATH" => "/catalog/index.php",
+		"PATH" => "/catalog/catalog.php",
 	),
 	array(
 		"CONDITION" => "#^/order/#",

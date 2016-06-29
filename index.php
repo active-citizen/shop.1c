@@ -1,35 +1,12 @@
 <?
-header("Location: /catalog/");
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
+header("Location: /catalog/");
+die;
 ?>
-<?if (IsModuleInstalled("advertising")):?>
-<?$APPLICATION->IncludeComponent(
-	"bitrix:advertising.banner",
-	"bootstrap",
-	array(
-		"COMPONENT_TEMPLATE" => "bootstrap",
-		"TYPE" => "MAIN",
-		"NOINDEX" => "Y",
-		"QUANTITY" => "3",
-		"BS_EFFECT" => "fade",
-		"BS_CYCLING" => "N",
-		"BS_WRAP" => "Y",
-		"BS_PAUSE" => "Y",
-		"BS_KEYBOARD" => "Y",
-		"BS_ARROW_NAV" => "Y",
-		"BS_BULLET_NAV" => "Y",
-		"BS_HIDE_FOR_TABLETS" => "N",
-		"BS_HIDE_FOR_PHONES" => "Y",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "36000000",
-	),
-	false
-);?>
-<?endif?>
 
-<h2>Тренды сезона</h2>
-<?$APPLICATION->IncludeComponent(
+
+<?/*$APPLICATION->IncludeComponent(
 	"bitrix:catalog.section",
 	".default",
 	array(
@@ -38,7 +15,7 @@ $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
 		"BASKET_URL" => "/personal/cart/",
 		"COMPONENT_TEMPLATE" => "",
 		"IBLOCK_TYPE" => "catalog",
-		"SECTION_ID" => $_REQUEST["SECTION_ID"],
+		"SECTION_ID" => 0,
 		"SECTION_CODE" => "",
 		"SECTION_USER_FIELDS" => array(
 			0 => "",
@@ -96,10 +73,10 @@ $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
 		"DETAIL_URL" => "",
 		"SECTION_ID_VARIABLE" => "SECTION_ID",
 		"SEF_MODE" => "N",
-		"AJAX_MODE" => "N",
+		"AJAX_MODE" => "Y",
 		"AJAX_OPTION_JUMP" => "N",
 		"AJAX_OPTION_STYLE" => "Y",
-		"AJAX_OPTION_HISTORY" => "N",
+		"AJAX_OPTION_HISTORY" => "Y",
 		"AJAX_OPTION_ADDITIONAL" => "",
 		"CACHE_TYPE" => "A",
 		"CACHE_TIME" => "36000000",
@@ -151,5 +128,5 @@ $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
 		"MESSAGE_404" => ""
 	),
 	false
-);?>
+);*/?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -10,7 +10,6 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
-
 $this->setFrameMode(true);
 ?>
 <?
@@ -169,32 +168,6 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 	if (isset($arItem['MIN_PRICE']) || isset($arItem['RATIO_PRICE']))
 		$minPrice = (isset($arItem['RATIO_PRICE']) ? $arItem['RATIO_PRICE'] : $arItem['MIN_PRICE']);
 
-    //////////////////// Кастомизация вывода товаров в разделе
-    /*
-    // Получаем полное название единицы измерения
-    $arItem["MEASURE"] = '';
-    if(isset($arItem["OFFERS"][0]["CATALOG_MEASURE"]) && $messureId = intval($arItem["OFFERS"][0]["CATALOG_MEASURE"])){
-        $ress = CCatalogMeasure::getList(array(),array("ID"=>$messureId,false,array("nTopCount"=>2)));
-        $measure = $ress->GetNext();
-        $arItem["MEASURE"] = $measure["MEASURE_TITLE"];
-    }
-    ?>
-        <a href="<? echo $arItem['DETAIL_PAGE_URL']; ?>"
-        class="ag-goods-tizer"
-        title="<? echo $arItem['NAME']; ?>"
-        > 
-            <div class="ag-goods-picture" <? if($arItem['PREVIEW_PICTURE']['SRC']){?>style="background-image:url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>');"<? }?>>
-                <? if($minPrice["VALUE"]){?><div class="ag-good-price"><? echo round($minPrice["VALUE"])?> баллов</div><? }?>
-            </div>
-            <? echo $arItem['NAME']; ?>
-            <? if($arItem["MEASURE"]){?><div class="ad-goods-measure">1 <? echo mb_strtolower($arItem["MEASURE"])?></div><? }?>
-        </a>                    
-    <?
-    continue;
-    */
-    //////////////////// Конец: Кастомизация вывода товаров в разделе
-    
-    
 	?><div class="<? echo ($arItem['SECOND_PICT'] ? 'bx_catalog_item double' : 'bx_catalog_item'); ?>"><div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
 		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><?
 	if ('Y' == $arParams['SHOW_DISCOUNT_PERCENT'])
