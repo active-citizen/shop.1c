@@ -1,5 +1,28 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+
+    // Получаем список банеров
+    CModule::IncludeModule("iblock");
+    $res = CIBlockElement::GetList(array(),array("ACTIVE"=>"Y","IBLOCK_CODE"=>"baners_on_main",),false,false);
+    $BANERS = array();
+    while($baner = $res->getNext()){
+        $BANERS[$baner["ID"]] = $baner;
+        $BANERS[$baner["ID"]]["PROPERTIES"] = array();
+        $res1 = CIBlockElement::GetProperty($baner["IBLOCK_ID"],$baner["ID"]);
+        while($prop = $res1->getNext()){
+            if($prop["PROPERTY_TYPE"]=='F')$prop["URL"] = CFile::GetPath($prop["VALUE"]);
+            $BANERS[$baner["ID"]]["PROPERTIES"][$prop["CODE"]] = $prop;
+        }
+    }
+    
+    $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"WANTS"));
+    $IWANTS = array();
+    while($iwant = $res->getNext())$IWANTS[$iwant["ID"]]=$iwant;
+    
+    $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"INTERESTS"));
+    $INTERESTS = array();
+    while($interest = $res->getNext())$INTERESTS[$interest["ID"]]=$interest;
+    
 ?>
 
 
@@ -13,18 +36,35 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                     data-nav="dots"
                     data-navPosition="bottom"
                     data-dotColor="red"
-                    
                     data-transition="slide"
                     data-transitionduration="500"
+                    data-arrows = "false"
                 >
-                    <div data-img="/bitrix/templates/agnew/i/test-images/01.jpg"><a href="/1.html"></a></div>
-                    <div data-img="/bitrix/templates/agnew/i/test-images/02.jpg"><a href="/2.html"></a></div>
-                    <div data-img="/bitrix/templates/agnew/i/test-images/03.png"><a href="/3.html"></a></div>
+                <?foreach($BANERS as $baner):?>
+                    <div data-img="<?= $baner["PROPERTIES"]["BANER_PICTURE"]["URL"]?>">
+                        <div class="ag-baner-name"><?= $baner["NAME"]?></div>
+                        <div class="ag-baner-desc"><?= $baner["PROPERTIES"]["BANER_DESC"]["VALUE"]?></div>
+                        <a href="<?= $baner["PROPERTIES"]["BANER_URL"]["VALUE"]?>">
+                        </a>
+                    </div>
+                <?endforeach?>
                 </div>
             </div>
     
             <div class="ad-main-filter">
                 <div class="title">Что выбрать</div>
+                <select>
+                    <option value="0">--Хочу--</option>
+                    <?foreach($IWANTS as $iwant):?>
+                    <option value="<?= $iwant["ID"]?>"><?= $iwant["VALUE"]?></option>    
+                    <?endforeach?>
+                </select>
+                <select>
+                    <option value="0">--Интересуюсь--</option>
+                    <?foreach($INTERESTS as $interest):?>
+                    <option value="<?= $interest["ID"]?>"><?= $interest["VALUE"]?></option>    
+                    <?endforeach?>
+                </select>
             </div>
     
             <div class="ag-section-title">
@@ -34,7 +74,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 <?
     global $arrFilter;
     $arrFilter = array();
-    $arrFilter["PROPERTY_10"] = 'Бангладеш "Уфиням"';
+    //$arrFilter["PROPERTY_10"] = 'Бангладеш "Уфиням"';
     $APPLICATION->IncludeComponent(
     "bitrix:catalog.section",
     ".default",
@@ -45,7 +85,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
         "BASKET_URL" => "/personal/cart/",
         "COMPONENT_TEMPLATE" => "",
         "IBLOCK_TYPE" => "catalog",
-        "SECTION_ID" => 10,
+        "SECTION_ID" => 0,
         "SECTION_CODE" => "",
         "SECTION_USER_FIELDS" => array(
             0 => "",

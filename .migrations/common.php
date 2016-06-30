@@ -4,6 +4,7 @@
 class Migration{
     
     protected $data = array();
+    protected $error = '';
     
     function __construct(){
         // Подключение ядра 1С-Битрикс
@@ -31,6 +32,7 @@ class Migration{
      * Откат миграции
     */
     protected function RollBack(){
+        
     }
     
     /**

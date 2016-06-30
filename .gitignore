@@ -10,6 +10,7 @@ store/*
 !bitrix/templates
 bitrix/templates/*
 !bitrix/templates/ag
+!bitrix/templates/agnew
 !bitrix/templates/.default
 !bitrix/components/ag
 !bitrix/.settings.php

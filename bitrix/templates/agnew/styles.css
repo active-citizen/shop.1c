@@ -1,0 +1,174 @@
+body{
+    background-color: #f1f1f1;
+    font-size: 14px;
+}
+
+div.ag2-wrap{
+    min-height: 100%;
+    margin: 0px auto;
+    min-width: 768px;
+    width: 80%;
+    
+}
+
+    div.ag2-wrap div.ag-section-title{
+        background-color: #0eb0a0;
+        margin: 1% 0px 1% 0px;
+        min-height: 24px;
+        padding: 3px;
+        color: white;
+        clear: left;
+    }
+
+
+    div.ag2-wrap div.ad-main-filter{
+        background-color: #0eb0a0;
+        width: 100%;
+        height: 200px;
+        margin-top: 10px;
+    }
+        div.ag2-wrap div.ad-main-filter div.title{
+            font-size: 22px;
+            color: #e30276;
+            text-align: center;
+            padding: 10px 10px;
+        }
+    
+
+    div.ag2-wrap div.ag-baners{
+        height: 300px;
+        border: 1px #DDD solid;
+        position: relative;
+    }
+
+        div.ag2-wrap div.ag-baners a{
+            top: 0px;
+            left: 40px;
+            right: 40px;
+            bottom: 20px;
+            display: block;
+            height: 299px;
+            position: absolute;
+            z-index: 1010;
+        }
+
+
+        div.ag2-wrap div.ag-baners .fotorama__nav-wrap{
+            margin-top: -30px;
+        }
+        div.ag2-wrap div.ag-baners .fotorama__dot{
+            width: 17px;
+            height: 17px;
+            border-radius: 8px;
+            background-color: white;
+        }
+    
+        div.ag2-wrap div.ag-baners div.ag-baner-name{
+            position: absolute;
+            top: 150px;
+            left: 10%;
+            right: 70%;
+            padding: 10px;
+            border: 1px black solid;
+            font-size: 20px;
+            background-color: white;
+            z-index: 1000;
+            border-radius: 8px;
+            text-align: center;
+        }
+        div.ag2-wrap div.ag-baners div.ag-baner-desc{
+            position: absolute;
+            top: 195px;
+            left: 11%;
+            right: 48%;
+            padding: 10px;
+            border: 1px black solid;
+            font-size: 14px;
+            background-color: yellow;
+            z-index: 1001;
+            height: 70px;
+            border-radius: 8px;
+        }
+        
+
+    div.ag2-wrap div.ag2-header{
+        min-height: 100px;
+        width: 100%;
+    }
+        
+        div.ag2-wrap div.ag2-header div.ag2-top-part{
+            border-bottom: 1px #888 solid;
+            margin: 10px 0px;
+            vertical-align: top;
+            min-height: 60px;
+            text-align: right;
+        }
+        
+            div.ag2-wrap div.ag2-header div.ag2-top-part a.ag2-logo{
+                min-width: 250px;
+                min-height: 50px;
+                float: left;
+                background-image: url(/bitrix/templates/agnew/i/common/logo.png);
+                
+            }
+            
+            div.ag2-wrap div.ag2-header div.ag2-top-part a.ag2-menu-item{
+                margin: 10px 20px;
+                text-decoration: underline;
+                color: #888;
+                white-space: nowrap;
+                font-size: 18px;
+            }
+            
+            div.ag2-wrap div.ag2-header div.ag2-top-part a.ag2-menu-item:hover{
+                text-decoration: none;
+            }
+
+            div.ag2-wrap div.ag2-header div.ag2-top-part a.profile{
+                margin-left: 70px;
+                color: blue;
+            }
+
+
+        div.ag2-wrap div.ag2-header div.ag2-bottom-part{
+        }
+        
+            div.ag2-wrap div.ag2-header div.ag2-bottom-part div.ag-catalog-menu{
+                background-color: #0eb0a0;
+                margin: 20px 150px 20px 0px;
+                text-align: left;
+                min-height: 26px;
+                padding: 2px;
+            }
+
+                div.ag2-wrap div.ag2-header div.ag2-bottom-part div.ag-catalog-menu a{
+                    color: white;
+                    margin: 0px 10px;
+                    font-weight: bold;
+                    font-size: 16px;
+                    padding: 3px;
+                    border-radius: 2px;
+                    white-space: nowrap;
+                }
+
+                div.ag2-wrap div.ag2-header div.ag2-bottom-part div.ag-catalog-menu a.active{
+                    background-color: #f1f1f1;
+                    color: black;
+                }
+                
+                
+            div.ag2-wrap div.ag2-header div.ag2-bottom-part div.ad-search-form{
+                float: right;
+                width: 140px;
+                display: table-cell;
+                vertical-align: middle;
+            }
+            
+                div.ag2-wrap div.ag2-header div.ag2-bottom-part div.ad-search-form input{
+                    height: 26px;
+                    text-align: center;
+                    width: 140px;
+                    margin: auto;
+                }
+                
+            
