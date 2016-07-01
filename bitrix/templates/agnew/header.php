@@ -12,7 +12,9 @@
     $APPLICATION->SetAdditionalCSS("/bitrix/css/main/bootstrap.css");                                                                                                                       
     $APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
     ?>
+    <link rel="stylesheet" href="/bitrix/templates/agnew/css/jquery-ui.css">
     <link rel="stylesheet" href="/bitrix/templates/agnew/css/fotorama.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="/bitrix/templates/agnew/ag-styles.css" />
     <title><?$APPLICATION->ShowTitle()?></title>
 
 </head>

@@ -19,12 +19,23 @@ div.ag2-wrap{
         color: white;
         clear: left;
     }
+    
+        div.ag2-wrap div.ag-section-title a{
+            font-size: 14px;
+            color: white;
+        }
 
 
+        div.ag2-wrap div.ag-section-title a.radio-active{
+            font-size: 18px;
+            font-weight: bold;
+        }
+            
+            
     div.ag2-wrap div.ad-main-filter{
         background-color: #0eb0a0;
         width: 100%;
-        height: 200px;
+        height: 220px;
         margin-top: 10px;
     }
         div.ag2-wrap div.ad-main-filter div.title{
@@ -33,7 +44,100 @@ div.ag2-wrap{
             text-align: center;
             padding: 10px 10px;
         }
-    
+
+        div.ag2-wrap div.ad-main-filter div.slogan{
+            font-size: 14px;
+            color: yellow;
+            text-align: center;
+            margin: 0px 10px 10px 0px;
+        }
+        
+        div.ag2-wrap div.ad-main-filter div.ag-filter-params{
+            width: 750px;
+            margin: 0px auto;
+            text-align: center;
+            clear: both;
+        }
+
+            div.ag2-wrap div.ad-main-filter label{
+                width: 80px;
+                height: 100px;
+                display: inline-block;
+                opacity: 0.5;
+                background-position: 50% 0px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                padding-top: 75px;
+                margin: 0px 5px;
+                cursor: pointer;
+                color: #e30276;
+            }
+
+            div.ag2-wrap div.ad-main-filter label:hover{
+                opacity: 0.8;
+            }
+            
+            div.ag2-wrap div.ad-main-filter label.radio-active{
+                opacity: 1;
+            }
+            
+                div.ag2-wrap div.ad-main-filter label input{
+                    display: none;
+                }
+            
+            
+        
+            div.ag2-wrap div.ad-main-filter div.ag-filter-params div.ag-filter-param{
+                float: left;
+                margin: 5px 2px;
+                height: 28px;
+                padding-top: 0px;
+            }
+
+                div.ag2-wrap div.ad-main-filter div.ag-filter-params div.ag-filter-param .ui-selectmenu-text{
+                    background-color: #f76b05;
+                    height: 26px;
+                    color: #c11534;
+                    border: 1px #f76b05 solid;
+                    padding-top: 2px;
+                    font-size: 14px;
+                }
+
+                div.ag2-wrap div.ad-main-filter div.ag-filter-params div.ag-filter-param .ag-label{
+                    padding-top: 2px;
+                    font-size: 14px;
+                }
+                
+            div.ag2-wrap div.ad-main-filter div.ag-filter-params #ag-show{
+                background-color: #ec0079;
+                padding: 5px;
+                border-radius: 5px;
+                font-size: 14px;
+                color: white;
+                width: 110px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            div.ag2-wrap div.ad-main-filter div.ag-filter-params #ag-balls-cont{
+                background-color: #f76b05;
+                color: #c11534;
+                border-radius: 5px;
+                padding: 0px 10px 0px 0px;
+                font-size: 14px;
+            }
+
+            div.ag2-wrap div.ad-main-filter div.ag-filter-params #ag-balls-cont input{
+                background-color: transparent;
+                color: #c11534;
+                width: 50px;
+                border: 1px transparent solid;
+                border-radius: 5px;
+                text-align: right;
+                margin: 3px 0px;
+            }
+            
+        
 
     div.ag2-wrap div.ag-baners{
         height: 300px;
@@ -171,4 +275,7 @@ div.ag2-wrap{
                     margin: auto;
                 }
                 
-            
+
+                
+
+                

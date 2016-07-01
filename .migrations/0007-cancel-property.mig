@@ -28,7 +28,7 @@
                 "IBLOCK_ID" => 2
             );
             $arFields["VALUES"][] = array(
-                "VALUE" => "Да",
+                "VALUE" => "да",
                 "DEF" => "Y",
                 "SORT" => "100"
             );

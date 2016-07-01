@@ -23,6 +23,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     $INTERESTS = array();
     while($interest = $res->getNext())$INTERESTS[$interest["ID"]]=$interest;
     
+    $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"TYPES"));
+    $TYPES = array();
+    while($type = $res->getNext())$TYPES[$type["ID"]]=$type;
 ?>
 
 
@@ -50,31 +53,125 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                 <?endforeach?>
                 </div>
             </div>
-    
+
+            <a name="products"><h1></h1></a>
             <div class="ad-main-filter">
-                <div class="title">Что выбрать</div>
-                <select>
-                    <option value="0">--Хочу--</option>
-                    <?foreach($IWANTS as $iwant):?>
-                    <option value="<?= $iwant["ID"]?>"><?= $iwant["VALUE"]?></option>    
+                <div class="title">Что выбрать?</div>
+                <div class="slogan">Подбери поощрение своей мечты, попробуй новый сервис &laquo;Что выбрать?&raquo;</div>
+                <div class="ag-filter-params">
+                    <!-- 
+                    <select name="type" id="ag-type" class="ag-filter-param">
+                        <option value="0">--Тип--</option>
+                        <?foreach($TYPES as $type):?>
+                        <option value="<?= $type["ID"]?>"<?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> selected<?endif?>><?= $type["VALUE"]?></option>    
+                        <?endforeach?>
+                    </select>
+                    -->
+                    <div class="ag-filter-param">
+                        <select name="iwant" id="ag-iwant">
+                            <option value="0">-Хочу-</option>
+                            <?foreach($IWANTS as $iwant):?>
+                            <option value="<?= $iwant["ID"]?>"<?if(isset($_REQUEST["filter_iwant"]) && $_REQUEST["filter_iwant"]==$iwant["ID"]):?> selected<?endif?>><?= $iwant["VALUE"]?></option>    
+                            <?endforeach?>
+                        </select>
+                    </div>
+                    <div class="ag-filter-param"></div>
+                    <div class="ag-filter-param">
+                        <select name="interest" id="ag-interest">
+                            <option value="0">-Интересуюсь-</option>
+                            <?foreach($INTERESTS as $interest):?>
+                            <option value="<?= $interest["ID"]?>"<?if(isset($_REQUEST["filter_interest"]) && $_REQUEST["filter_interest"]==$interest["ID"]):?> selected<?endif?>><?= $interest["VALUE"]?></option>    
+                            <?endforeach?>
+                        </select>
+                    </div>
+                    <div class="ag-filter-param"></div>
+                    <div class="ag-filter-param"><div class="ag-label">В пределах</div></div>
+                    <div class="ag-filter-param"></div>
+                    <div class="ag-filter-param" id="ag-balls-cont">
+                        <input type="text" name="balls" id="ag-balls" value="<?= (intval($_REQUEST["filter_balls"])?$_REQUEST["filter_balls"]:1500) ?>">
+                        баллов
+                    </div>
+                    <div class="ag-filter-param"></div>
+                    <div id="ag-show" class="ag-filter-param">Попробовать</div>
+                </div>
+                <div class="ag-filter-params">
+                    <label>
+                        <input type="radio" name="ag-types" value="0" checked>
+                        Все<br/>
+                    </label>
+                    <?foreach($TYPES as $type):?>
+                    <label style="background-image:url(/bitrix/templates/agnew/i/activities/<?= md5($type["VALUE"])?>.png);"<?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> class="radio-active"<?endif?>>
+                        <input type="radio" name="ag-types" value="<?= $type["ID"];?>"<?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> checked<?endif?>>
+                        <?= $type["VALUE"];?>
+                    </label>
                     <?endforeach?>
-                </select>
-                <select>
-                    <option value="0">--Интересуюсь--</option>
-                    <?foreach($INTERESTS as $interest):?>
-                    <option value="<?= $interest["ID"]?>"><?= $interest["VALUE"]?></option>    
-                    <?endforeach?>
-                </select>
+                </div>
+                <input type="hidden" id="ag-flag" name="ag-flag" value="<?= !isset($_REQUEST["flag"])?"all":htmlspecialchars(($_REQUEST["flag"]))?>">
             </div>
     
+            <?
+                $GETARRAY = $_REQUEST;
+                if(isset($GETARRAY["flag"]))unset($GETARRAY["flag"]);
+                if(isset($GETARRAY["PAGEN_1"]))unset($GETARRAY["PAGEN_1"]);
+                $BASEURL = array();
+                foreach($GETARRAY as $key=>$value)$BASEURL[] = "$key=$value";
+                $BASEURL="?".implode("&",$BASEURL);
+                if(!isset($_REQUEST["flag"]) || !trim($_REQUEST["flag"]))$_REQUEST["flag"] = 'all';
+            ?>
             <div class="ag-section-title">
-                Все товары
+                <a href="<?= $BASEURL?>&flag=all#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='all'):?> class="radio-active"<?endif?>>Все товары</a>
+                |
+                <a href="<?= $BASEURL?>&flag=actions#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='actions'):?> class="radio-active"<?endif?>>Акции</a>
+                |
+                <a href="<?= $BASEURL?>&flag=news#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='news'):?> class="radio-active"<?endif?>>Новые поступления</a>
+                |
+                <a href="<?= $BASEURL?>&flag=populars#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='populars'):?> class="radio-active"<?endif?>>Популярные</a>
             </div>
 
 <?
     global $arrFilter;
     $arrFilter = array();
-    //$arrFilter["PROPERTY_10"] = 'Бангладеш "Уфиням"';
+    
+    // Составляем справочник флагов
+    $ENUMS = array();
+    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>2));
+    while($data = $res->getNext()){
+        $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
+        if(!isset($ENUMS[$data["PROPERTY_CODE"]]))$ENUMS[$data["PROPERTY_CODE"]] = array();
+        $ENUMS[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
+    }
+    
+    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='news'){
+        $arrFilter["PROPERTY_NEWPRODUCT"] = $ENUMS['NEWPRODUCT']["да"];
+    }
+    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='actions'){
+        $arrFilter["PROPERTY_SPECIALOFFER"] = $ENUMS['SPECIALOFFER']["да"];
+    }
+    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='populars'){
+        $arrFilter["PROPERTY_SALELEADER"] = $ENUMS['SALELEADER']["да"];
+    }
+
+    if(isset($_REQUEST['filter_iwant']) && $iwant = intval($_REQUEST['filter_iwant'])){
+        $arrFilter["PROPERTY_WANTS"] = $iwant;
+    }
+
+    if(isset($_REQUEST['filter_type']) && $type = intval($_REQUEST['filter_type'])){
+        $arrFilter["PROPERTY_TYPES"] = $type;
+    }
+    
+    if(isset($_REQUEST['filter_interest']) && $interest = intval($_REQUEST['filter_interest'])){
+        $arrFilter["PROPERTY_INTERESTS"] = $interest;
+    }
+
+    if(isset($_REQUEST['filter_balls']) && $balls = intval($_REQUEST['filter_balls'])){
+        $arrFilter["<=CATALOG_PRICE_1"] = $balls;
+    }
+    
+    
+//    echo "<pre>";
+//    print_r($ENUMS);
+//    echo "</pre>";
+    
     $APPLICATION->IncludeComponent(
     "bitrix:catalog.section",
     ".default",
