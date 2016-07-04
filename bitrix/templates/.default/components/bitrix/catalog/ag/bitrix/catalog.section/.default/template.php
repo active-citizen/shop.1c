@@ -32,7 +32,7 @@ if (!empty($arResult['ITEMS']))
 	unset($currencyList, $templateLibrary);
 
 	$skuTemplate = array();
-	if (!empty($arResult['SKU_PROPS']))
+	if (0 && !empty($arResult['SKU_PROPS']))
 	{
 		foreach ($arResult['SKU_PROPS'] as $arProp)
 		{
@@ -284,6 +284,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 			}
 			?>
 		<div id="<? echo $arItemIDs['BASKET_ACTIONS']; ?>" class="bx_catalog_item_controls_blocktwo">
+            <!-- 
 			<a id="<? echo $arItemIDs['BUY_LINK']; ?>" class="bx_bt_button bx_medium" href="javascript:void(0)" rel="nofollow"><?
 			if ($arParams['ADD_TO_BASKET_ACTION'] == 'BUY')
 			{
@@ -294,6 +295,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 				echo ('' != $arParams['MESS_BTN_ADD_TO_BASKET'] ? $arParams['MESS_BTN_ADD_TO_BASKET'] : GetMessage('CT_BCS_TPL_MESS_BTN_ADD_TO_BASKET'));
 			}
 			?></a>
+			-->
 		</div>
 			<?
 			if ($arParams['DISPLAY_COMPARE'])
@@ -490,6 +492,7 @@ var <? echo $strObName; ?> = new JCCatalogSection(<? echo CUtil::PhpToJSObject($
 			echo ('' != $arParams['MESS_NOT_AVAILABLE'] ? $arParams['MESS_NOT_AVAILABLE'] : GetMessage('CT_BCS_TPL_MESS_PRODUCT_NOT_AVAILABLE'));
 		?></span></div>
 		<div id="<? echo $arItemIDs['BASKET_ACTIONS']; ?>" class="bx_catalog_item_controls_blocktwo" style="display: <? echo ($canBuy ? '' : 'none'); ?>;">
+            <!--
 			<a id="<? echo $arItemIDs['BUY_LINK']; ?>" class="bx_bt_button bx_medium" href="javascript:void(0)" rel="nofollow"><?
 			if ($arParams['ADD_TO_BASKET_ACTION'] == 'BUY')
 			{
@@ -500,6 +503,7 @@ var <? echo $strObName; ?> = new JCCatalogSection(<? echo CUtil::PhpToJSObject($
 				echo ('' != $arParams['MESS_BTN_ADD_TO_BASKET'] ? $arParams['MESS_BTN_ADD_TO_BASKET'] : GetMessage('CT_BCS_TPL_MESS_BTN_ADD_TO_BASKET'));
 			}
 			?></a>
+			-->
 		</div>
 		<?
 	if ($arParams['DISPLAY_COMPARE'])

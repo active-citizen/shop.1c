@@ -11,8 +11,7 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-?>
-<?
+
 if (!empty($arResult['ITEMS']))
 {
 	$templateLibrary = array('popup');
@@ -31,7 +30,8 @@ if (!empty($arResult['ITEMS']))
 	unset($currencyList, $templateLibrary);
 
 	$skuTemplate = array();
-	if (!empty($arResult['SKU_PROPS']))
+	// Не выводим свойства товара
+	if (0 && !empty($arResult['SKU_PROPS']))
 	{
 		foreach ($arResult['SKU_PROPS'] as $arProp)
 		{
@@ -120,6 +120,7 @@ if (!empty($arResult['ITEMS']))
 <? } ?>
 <div class="bx_catalog_list_home col<? echo $arParams['LINE_ELEMENT_COUNT']; ?> <? echo $templateData['TEMPLATE_CLASS']; ?>">
 	<?
+
 foreach ($arResult['ITEMS'] as $key => $arItem)
 {
 	$this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'], $strElementEdit);
@@ -168,6 +169,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 	if (isset($arItem['MIN_PRICE']) || isset($arItem['RATIO_PRICE']))
 		$minPrice = (isset($arItem['RATIO_PRICE']) ? $arItem['RATIO_PRICE'] : $arItem['MIN_PRICE']);
 
+    
 	?><div class="<? echo ($arItem['SECOND_PICT'] ? 'bx_catalog_item double' : 'bx_catalog_item'); ?>"><div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
 		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><?
 	if ('Y' == $arParams['SHOW_DISCOUNT_PERCENT'])
@@ -228,11 +230,11 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 		}
 		else
 		{
-			echo $minPrice['PRINT_DISCOUNT_VALUE'];
+			echo str_replace("руб.","б.",$minPrice['PRINT_DISCOUNT_VALUE']);
 		}
 		if ('Y' == $arParams['SHOW_OLD_PRICE'] && $minPrice['DISCOUNT_VALUE'] < $minPrice['VALUE'])
 		{
-			?> <span><? echo $minPrice['PRINT_VALUE']; ?></span><?
+			?> <span><? echo str_replace("руб.","б.",$minPrice['PRINT_VALUE']); ?></span><?
 		}
 	}
 	unset($minPrice);
@@ -256,6 +258,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 			<?
 			}
 			?>
+        <!-- 
 		<div id="<? echo $arItemIDs['BASKET_ACTIONS']; ?>" class="bx_catalog_item_controls_blocktwo">
 			<a id="<? echo $arItemIDs['BUY_LINK']; ?>" class="bx_bt_button bx_medium" href="javascript:void(0)" rel="nofollow"><?
 			if ($arParams['ADD_TO_BASKET_ACTION'] == 'BUY')
@@ -268,6 +271,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 			}
 			?></a>
 		</div>
+		-->
 			<?
 			if ($arParams['DISPLAY_COMPARE'])
 			{
@@ -462,6 +466,7 @@ var <? echo $strObName; ?> = new JCCatalogSection(<? echo CUtil::PhpToJSObject($
 		<div id="<? echo $arItemIDs['NOT_AVAILABLE_MESS']; ?>" class="bx_catalog_item_controls_blockone" style="display: <? echo ($canBuy ? 'none' : ''); ?>;"><span class="bx_notavailable"><?
 			echo ('' != $arParams['MESS_NOT_AVAILABLE'] ? $arParams['MESS_NOT_AVAILABLE'] : GetMessage('CT_BCS_TPL_MESS_PRODUCT_NOT_AVAILABLE'));
 		?></span></div>
+		<!-- 
 		<div id="<? echo $arItemIDs['BASKET_ACTIONS']; ?>" class="bx_catalog_item_controls_blocktwo" style="display: <? echo ($canBuy ? '' : 'none'); ?>;">
 			<a id="<? echo $arItemIDs['BUY_LINK']; ?>" class="bx_bt_button bx_medium" href="javascript:void(0)" rel="nofollow"><?
 			if ($arParams['ADD_TO_BASKET_ACTION'] == 'BUY')
@@ -474,6 +479,7 @@ var <? echo $strObName; ?> = new JCCatalogSection(<? echo CUtil::PhpToJSObject($
 			}
 			?></a>
 		</div>
+		-->
 		<?
 	if ($arParams['DISPLAY_COMPARE'])
 	{
