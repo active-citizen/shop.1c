@@ -275,7 +275,51 @@ div.ag2-wrap{
                     margin: auto;
                 }
                 
+div.ag-product-wish{
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    width: 50px;
+    z-index: 9999;
+    height: 40px;
+    padding-top: 20px;
+    text-align: center;
+    color: red;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    cursor: pointer;
+    opacity: 0.5;
+}
 
+
+div.ag-product-mark{
+    position: absolute;
+    top: 50px;
+    right: 12px;
+    width: 24px;
+    z-index: 9999;
+    height: 40px;
+    padding-top: 20px;
+    text-align: center;
+    color: red;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    cursor: pointer;
+    opacity: 0.5;
+    background-image: url(/bitrix/templates/agnew/i/common/mark.png); 
+}
+
+
+div.ag-product-wish:hover{
+    opacity: 1;
+}
+
+    .wish-on{
+        background-image: url(/bitrix/templates/agnew/i/common/wish-on.png); 
+    }
+
+    .wish-off{
+        background-image: url(/bitrix/templates/agnew/i/common/wish-off.png); 
+    }
                 
-
                 
