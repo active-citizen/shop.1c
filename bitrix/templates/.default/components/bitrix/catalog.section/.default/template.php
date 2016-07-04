@@ -174,7 +174,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 	
         <div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
         <div class="ag-product-wish <?= $arItem['mywish']?"wish-on":"wish-off"?>" title="Добавить в мои желания"><?= intval(rand(50,1000)/*$arItem['wishes']*/);?></div>
-        <div class="ag-product-mark" title="Оценка поощрения" style="right: 20px;background-position: 6px 0%;"></div>
+        <div class="ag-product-mark" title="Оценка поощрения" style="right: 10px;background-position: 6px 0%;"></div>
     
 		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><?
 	if ('Y' == $arParams['SHOW_DISCOUNT_PERCENT'])

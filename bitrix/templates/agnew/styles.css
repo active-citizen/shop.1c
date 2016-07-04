@@ -278,7 +278,7 @@ div.ag2-wrap{
 div.ag-product-wish{
     position: absolute;
     top: 10px;
-    right: 0px;
+    right: -10px;
     width: 50px;
     z-index: 9999;
     height: 40px;
@@ -292,10 +292,15 @@ div.ag-product-wish{
 }
 
 
+    div.ag-product-wish:hover{
+        opacity: 1;
+    }
+
+
 div.ag-product-mark{
     position: absolute;
     top: 50px;
-    right: 12px;
+    right: -12px;
     width: 24px;
     z-index: 9999;
     height: 40px;
@@ -309,10 +314,10 @@ div.ag-product-mark{
     background-image: url(/bitrix/templates/agnew/i/common/mark.png); 
 }
 
+    div.ag-product-mark:hover{
+        opacity: 1;
+    }
 
-div.ag-product-wish:hover{
-    opacity: 1;
-}
 
     .wish-on{
         background-image: url(/bitrix/templates/agnew/i/common/wish-on.png); 
