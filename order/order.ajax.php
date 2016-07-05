@@ -52,6 +52,7 @@ elseif(isset($_GET["wish"])){
     $res = CIBlockElement::GetList(array(),$arFields,false);
     $elementId = $res->GetNext();
     
+    
     // Если надо добавить, но уже есть
     if($act=='on' && $elementId){
         $answer = array("error"=>"Желание этого товара этим пользователем уже добавлено");
