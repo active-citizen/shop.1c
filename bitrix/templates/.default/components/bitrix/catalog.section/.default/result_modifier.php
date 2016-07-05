@@ -501,3 +501,31 @@ if (!empty($arResult['ITEMS']))
 		}
 	}
 }
+
+// Добавление желаний и оценок
+foreach($arResult["ITEMS"] as $item_id=>$item){
+    // Входит ли товар с писок моих желаний
+    $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_USER"=>CUser::GetID(),"PROPERTY_WISH_PRODUCT"=>$item["ID"]);
+    $res = CIBlockElement::GetList(array(),$arFilter,false, array("nTopCount"=>1));
+    $arResult["ITEMS"][$item_id]["mywish"] = $res->SelectedRowsCount();
+    
+    // Сколько у товара всего желающих
+    $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_PRODUCT"=>$item["ID"]);
+    $res = CIBlockElement::GetList(array(),$arFilter,false, array());
+    $arResult["ITEMS"][$item_id]["wishes"] = $res->SelectedRowsCount();
+
+    
+    // Средняя оценка товара
+    $arFilter = array("IBLOCK_CODE"=>"marks", "PROPERTY_MARK_PRODUCT"=>$item["ID"]);
+    $arGroups = array("PROPERTY_MARK");
+    $res = CIBlockElement::GetList(array(),$arFilter,false, array(),array("PROPERTY_MARK"));
+    $counter = 0;
+    $sum = 0;
+    while($row = $res->GetNext()){
+        $counter++;
+        $sum+=$row["PROPERTY_MARK_VALUE"];
+    }
+
+    $arResult["ITEMS"][$item_id]["mark"] = ($counter?($sum/$counter):0)/5;
+}
+

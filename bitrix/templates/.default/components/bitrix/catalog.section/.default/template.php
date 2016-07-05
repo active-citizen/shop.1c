@@ -173,8 +173,10 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 	?><div class="<? echo ($arItem['SECOND_PICT'] ? 'bx_catalog_item double' : 'bx_catalog_item'); ?>">
 	
         <div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
-        <div class="ag-product-wish <?= $arItem['mywish']?"wish-on":"wish-off"?>" title="Добавить в мои желания"><?= intval(rand(50,1000)/*$arItem['wishes']*/);?></div>
-        <div class="ag-product-mark" title="Оценка поощрения" style="right: 10px;background-position: 6px 0%;"></div>
+        <div class="ag-product-wish <?= $arItem['mywish']?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arItem['ID']?>" onclick="return mywish(this)"><?= $arItem['wishes'];?></div>
+        <? if($arItem["mark"]):?>
+        <div class="ag-product-mark" style="right: <?= round(4+24*(1-$arItem["mark"]))?>px;background-position: <?= round(24*(1-$arItem["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$arItem["mark"],1)?>" productid="<?= $arItem['ID']?>"></div>
+        <? endif ?>
     
 		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><?
 	if ('Y' == $arParams['SHOW_DISCOUNT_PERCENT'])

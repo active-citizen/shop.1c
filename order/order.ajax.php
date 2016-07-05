@@ -15,6 +15,93 @@ elseif(isset($_GET["clear_basket"])){
     CModule::IncludeModule('sale');
     CSaleBasket::DeleteAll(CUser::GetID());    
 }
+elseif(isset($_GET["wish"])){
+    $act =  $_GET["wish"]=='on'?'on':'off';
+    
+    CModule::IncludeModule('iblock');
+    // Проверяем есть ли такой товар
+    $productId = isset($_GET["productid"])?intval($_GET["productid"]):0;
+    
+    $userId = CUser::GetID();
+    if(!$productId){
+        $answer = array("error"=>"Не указан ID товара");
+        echo json_encode($answer);
+        die;
+    }
+    if(!$userId){
+        $answer = array("error"=>"Не указан ID пользователя");
+        echo json_encode($answer);
+        die;
+    }
+    
+    $arFields = array("ID"=>$productId,"IBLOCK_CODE"=>"clothes");
+    $res = CIBlockElement::GetList(array(),$arFields,false);
+    if(!$res->GetNext()){
+        $answer = array("error"=>"Товар с ID=$productId не существует");
+        echo json_encode($answer);
+        die;
+    }
+    
+    // Узнаём ID инфоблока
+    $res = CIBlock::GetList(array(),array("CODE"=>"whishes"));
+    $iblock = $res->GetNext();
+    
+
+    $arFields = array("IBLOCK_ID"=>$iblock["ID"],"NAME"=>$productId."_".$userId);
+    // Ишем желание с этими условиями
+    $res = CIBlockElement::GetList(array(),$arFields,false);
+    $elementId = $res->GetNext();
+    
+    // Если надо добавить, но уже есть
+    if($act=='on' && $elementId){
+        $answer = array("error"=>"Желание этого товара этим пользователем уже добавлено");
+        echo json_encode($answer);
+        die;
+    }
+    // Если надо удалить, но нечего
+    elseif($act=='off' && !$elementId){
+        $answer = array("error"=>"Желание этого товара этим пользователем не добавлено");
+        echo json_encode($answer);
+        die;
+    }
+    
+    $iblockObj = new CIBlockElement;
+    // Добавление
+    if($act=='on' && $elementId = $iblockObj->Add($arFields)){
+        // Устанавливаем свойства
+        CIBlockElement::SetPropertyValues($elementId,$iblock["ID"],array("WISH_USER"=>$userId,"WISH_PRODUCT"=>$productId));
+    }
+    // Удалить
+    elseif($act=='off'){
+        $iblockObj->Delete($elementId["ID"]);
+    }
+    // Сообщить об ошибке
+    else{
+        $answer["error"] = $iblock->LAST_ERROR;
+    }
+    
+    // Получаем актуальное число вишей, если нет ошибок
+    if(!$answer["error"]){
+        $res = CIBlockElement::GetList(array(),array(
+            "IBLOCK_ID"=>$iblock["ID"],
+            "PROPERTY_WISH_PRODUCT"=>$productId
+        ),false);
+        
+        $answer["wishes"] = $res->SelectedRowsCount();
+    }
+    
+    // Перердаем классы для удаления и переключения
+    if($act=='on'){
+        $answer["addclass"] = 'wish-on';
+        $answer["removeclass"] = 'wish-off';;
+    }
+    elseif($act=='off'){
+        $answer["addclass"] = 'wish-off';
+        $answer["removeclass"] = 'wish-on';;
+    }
+
+    
+}
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     // Проверить принадлежит ли заказ пользователю
     CModule::IncludeModule('sale');

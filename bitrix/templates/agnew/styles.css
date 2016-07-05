@@ -296,6 +296,22 @@ div.ag-product-wish{
         opacity: 1;
     }
 
+.wish-loader{
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    width: 50px;
+    z-index: 9999;
+    height: 40px;
+    padding-top: 20px;
+    text-align: center;
+    color: red;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    cursor: pointer;
+    opacity: 0.5;
+    background-image: url(/bitrix/templates/agnew/i/common/ajax-loader.gif); 
+}
 
 div.ag-product-mark{
     position: absolute;
@@ -326,5 +342,4 @@ div.ag-product-mark{
     .wish-off{
         background-image: url(/bitrix/templates/agnew/i/common/wish-off.png); 
     }
-                
-                
+

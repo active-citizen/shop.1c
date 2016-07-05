@@ -1,5 +1,11 @@
 $(document).ready(function(){
     
+    
+    $('.ag-product-mark').click(function(){
+        var product_id = $(this).attr("productid");
+    });
+
+    
     $('#ag-interest').selectmenu({width:180});
     $('#ag-iwant').selectmenu({width:180});
     
@@ -213,5 +219,37 @@ function order_cancel(order_id,obj){
     })
     return false;
 }
+
+function mywish(object){
+    var obj = $(object);
+    var product_id = obj.attr("productid");
+    var url = "/order/order.ajax.php?wish=";
+    if(obj.hasClass('wish-on'))
+        url += 'off';
+    else
+        url += 'on';
+    
+    url += '&productid='+product_id;
+    
+    obj.attr("class",'wish-loader');
+    $.get(
+        url,
+        function(data){
+            var answer = JSON.parse(data);
+            if(!answer.error){
+                obj.removeClass('wish-loader');
+                obj.html(answer.wishes);
+                obj.addClass(answer.addclass);
+                obj.addClass('ag-product-wish');
+            }
+            else{
+                obj.removeClass('wish-loader');
+                alert(answer.error);
+            }
+        }
+    );
+}
+
+
 
 
