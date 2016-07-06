@@ -51,7 +51,9 @@
                 
                 <div class="ag2-bottom-part">
                     <div class="ad-search-form">
-                        <input type="text" name="searchtext" placeholder="Поиск">
+                        <form action="/search/">
+                            <input type="text" name="q" placeholder="Поиск" value="<?= isset($_REQUEST["q"])?htmlspecialchars($_REQUEST["q"]):''?>">
+                        </form>
                     </div>
                     <div class="ag-catalog-menu">
                         <?php foreach($SECTIONS as $section):?>
