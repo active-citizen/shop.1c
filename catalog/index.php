@@ -85,23 +85,23 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                         </select>
                     </div>
                     <div class="ag-filter-param"></div>
-                    <div class="ag-filter-param"><div class="ag-label">В пределах</div></div>
+                    <!-- <div class="ag-filter-param"><div class="ag-label">В пределах</div></div> -->
                     <div class="ag-filter-param"></div>
                     <div class="ag-filter-param" id="ag-balls-cont">
                         <input type="text" name="balls" id="ag-balls" value="<?= (intval($_REQUEST["filter_balls"])?$_REQUEST["filter_balls"]:1500) ?>">
                         баллов
                     </div>
                     <div class="ag-filter-param"></div>
-                    <div id="ag-show" class="ag-filter-param">Попробовать</div>
+                    <!-- <div id="ag-show" class="ag-filter-param">Попробовать</div> -->
                 </div>
                 <div class="ag-filter-params">
-                    <label>
-                        <input type="radio" name="ag-types" value="0" checked>
-                        Все<br/>
-                    </label>
+                    <input type="hidden" id="ag-types" name="ag-types" value="">
                     <?foreach($TYPES as $type):?>
-                    <label style="background-image:url(/bitrix/templates/agnew/i/activities/<?= md5($type["VALUE"])?>.png);"<?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> class="radio-active"<?endif?>>
-                        <input type="radio" name="ag-types" value="<?= $type["ID"];?>"<?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> checked<?endif?>>
+                    <label 
+                        style="background-image:url(/bitrix/templates/agnew/i/activities/<?= md5($type["VALUE"])?>.png);"
+                        <?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> class="radio-active"<?endif?>
+                        rel="<?= $type["ID"]?>"
+                    >
                         <?= $type["VALUE"];?>
                     </label>
                     <?endforeach?>
@@ -119,13 +119,13 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                 if(!isset($_REQUEST["flag"]) || !trim($_REQUEST["flag"]))$_REQUEST["flag"] = 'all';
             ?>
             <div class="ag-section-title">
-                <a href="<?= $BASEURL?>&flag=all#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='all'):?> class="radio-active"<?endif?>>Все товары</a>
+                <a href="#" rel="all" class="filter-flag">Все товары</a>
                 |
-                <a href="<?= $BASEURL?>&flag=actions#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='actions'):?> class="radio-active"<?endif?>>Акции</a>
+                <a href="#" rel="actions" class="filter-flag">Акции</a>
                 |
-                <a href="<?= $BASEURL?>&flag=news#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='news'):?> class="radio-active"<?endif?>>Новые поступления</a>
+                <a href="#" rel="news" class="filter-flag">Новые поступления</a>
                 |
-                <a href="<?= $BASEURL?>&flag=populars#products"<?if(isset($_REQUEST["flag"]) && $_REQUEST["flag"]=='populars'):?> class="radio-active"<?endif?>>Популярные</a>
+                <a href="#" rel="populars" class="filter-flag">Популярные</a>
             </div>
 
 <?
@@ -172,6 +172,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 //    print_r($ENUMS);
 //    echo "</pre>";
     
+    /*
     $APPLICATION->IncludeComponent(
     "bitrix:catalog.section",
     ".default",
@@ -296,7 +297,12 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
         "USE_SALE_BESTSELLERS"=>"Y"
     ),
     false
-);?>
+);
+*/
+
+?>
+
+<div class="catalog-ajax-block catalog-ajax-block-loader"></div>
 
 
 

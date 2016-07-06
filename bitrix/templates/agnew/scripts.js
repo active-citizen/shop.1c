@@ -1,17 +1,70 @@
+var scrollProcess = 0;
+
 $(document).ready(function(){
     
     
-    $('.ag-product-mark').click(function(){
-        var product_id = $(this).attr("productid");
-    });
+    if($('.catalog-ajax-block')){
+        var hash = document.location.hash;
+        hash = hash.replace(/#/,"");
+        $('.catalog-ajax-block').load("/catalog/index.ajax.php?"+hash,function(){$('.catalog-ajax-block').removeClass('catalog-ajax-block-loader');});
+    }
+    
+    if($('.ad-main-filter')){
+        var hash = document.location.hash;
+        hash = hash.replace(/#/,"");
+        var parameters_array = hash.split("&");
+        
+        parameters = {};
+        for(i in parameters_array){
+            tmp = parameters_array[i].split("=");
+            parameters[tmp[0]] = tmp[1];
+        }
+        
+        $('#ag-iwant').val(parameters.filter_iwant);
+        $('#ag-interest').val(parameters.filter_interest);
+        $('#ag-balls').val(parameters.filter_balls);
+        $('#ag-flag').val(parameters.flag);
+        $('#ag-types').val(parameters.filter_type);
+        
+        $('.filter-flag').each(function(){if($(this).attr("rel")==parameters.flag)$(this).addClass('radio-active')});
+        
+        if(!parameters.flag){
+            $('.filter-flag[rel="all"]').addClass('radio-active;');
+            $('#ag-flag').val('all');
+        }
+        
+        var types = $('#ag-types').val().split(',');
+        for(i in types)
+            $('.ag-filter-params label[rel="'+types[i]+'"]').addClass('radio-active');
+        
+    }
+    
+    
+    $('.ag-product-mark').click(function(){var product_id = $(this).attr("productid");});
 
     
-    $('#ag-interest').selectmenu({width:180});
-    $('#ag-iwant').selectmenu({width:180});
+    $('#ag-interest').selectmenu({
+        width:180,
+        change: function(){ag_filter();}
+    });
+    $('#ag-iwant').selectmenu({
+        width:180,
+        change: function(){ag_filter();}
+    });
     
-    $('input[name="ag-types"]').change(function(){
-        $('.ag-filter-params label').removeClass('radio-active');
-        $(this).parent().addClass("radio-active");
+    $('.ag-filter-params label').click(function(){
+        if(!$(this).hasClass("radio-active")){
+            $(this).addClass("radio-active");
+        }
+        else{
+            $(this).removeClass("radio-active");
+        }
+        var types = Array();
+        $('.ag-filter-params label').each(function(){
+            if($(this).hasClass("radio-active"))types.push($(this).attr("rel"));
+        })
+        $('#ag-types').val(types.join(','));
+        ag_filter();
     });
 
     $('div.ag2-wrap div.ag-section-title input[name="ag-flags"]').change(function(){
@@ -90,11 +143,6 @@ $(document).ready(function(){
             $('#order-process').css('display','none');
             ag_ci_rise_confirm(profile,store,product);
         });
-        
-        
-        
-        return false;
-        
         
         return false;
     });
@@ -175,19 +223,34 @@ $(document).ready(function(){
     });
     
     
-    $('.ag-filter-params #ag-show').click(function(){
-        var type = $('input[name="ag-types"]:checked').val()?$('input[name="ag-types"]:checked').val():0;
-        var iwant = $('#ag-iwant').val()?$('#ag-iwant').val():0;
-        var interest = $('#ag-interest').val()?$('#ag-interest').val():0;
-        var balls = $('#ag-balls').val()?$('#ag-balls').val():0;
-        var flag = $('#ag-flag').val()?$('#ag-flag').val():'all';
-
-        var url = "?"+"filter_type="+type+"&filter_iwant="+iwant+"&filter_interest="+interest+"&filter_balls="+balls+'&flag='+flag+'#products';
-        document.location.href=url;
+    //$('.ag-filter-params #ag-show').click(function(){ag_filter();});
+    $('#ag-balls').change(function(){ag_filter();});
+    
+    $('.filter-flag').click(function(){
+        $('.filter-flag').removeClass('radio-active');
+        $(this).addClass('radio-active');
+        $('#ag-flag').val($(this).attr('rel'));
+        ag_filter();
+        return false;
     });
     
-    
 });
+
+function next_page(query_string){
+    $('.catalog-ajax-block .next-page').last().html('');
+    $('.catalog-ajax-block .next-page').last().addClass('catalog-ajax-block-loader');
+    // Конец промотки
+    if(!query_string)return false;
+    $.get(
+        "/catalog/index.ajax.php?"+query_string,
+        function(data){
+            $('.catalog-ajax-block .next-page').remove();
+            $('.catalog-ajax-block').append(data);
+            scrollProcess = 0;
+        }
+    );
+    return false;
+}
 
 function ag_ci_rise_error(text){
     $('.catalog_item_error_message .ag-window .message').html(text);
@@ -251,5 +314,17 @@ function mywish(object){
 }
 
 
+function ag_filter(){
+    $('.catalog-ajax-block').last().addClass('catalog-ajax-block-loader');
+    var type = $('#ag-types').val()?$('#ag-types').val():0;
+    var iwant = $('#ag-iwant').val()?$('#ag-iwant').val():0;
+    var interest = $('#ag-interest').val()?$('#ag-interest').val():0;
+    var balls = $('#ag-balls').val()?$('#ag-balls').val():0;
+    var flag = $('#ag-flag').val()?$('#ag-flag').val():'all';
 
+    var uri = "filter_type="+type+"&filter_iwant="+iwant+"&filter_interest="+interest+"&filter_balls="+balls+'&flag='+flag;
+    var url = "/catalog/index.ajax.php?"+uri;
+    document.location.hash = uri;
+    $('.catalog-ajax-block').load(url,function(){$('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');});
+}
 

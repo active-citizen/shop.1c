@@ -53,7 +53,7 @@ div.ag2-wrap{
         }
         
         div.ag2-wrap div.ad-main-filter div.ag-filter-params{
-            width: 750px;
+            width: 500px;
             margin: 0px auto;
             text-align: center;
             clear: both;
@@ -342,4 +342,45 @@ div.ag-product-mark{
     .wish-off{
         background-image: url(/bitrix/templates/agnew/i/common/wish-off.png); 
     }
+
+div.catalog-ajax-block{
+    text-align: center;
+    min-height: 300px;
+}
+    
+    div.catalog-ajax-block div.ag-main-product{
+        width: 250px;
+        height: 250px;
+        border: 1px #DDD solid;
+        position: relative;
+        background-color: white;
+        margin: 5px;
+        display: inline-table;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: 50% 50%;
+    }
+
+    div.catalog-ajax-block div.ag-main-product a{
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 30px;
+    }
+    
+.next-page{
+    clear: both;
+    text-align: center;
+    display: block;
+    margin-bottom: 30px;
+}
+
+
+.catalog-ajax-block-loader{
+    min-height: 20px;
+    background-repeat: no-repeat;
+    background-position: 50% 0%;
+    background-image: url(/bitrix/templates/agnew/i/common/ajax-loader.gif); 
+}
 
