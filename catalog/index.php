@@ -107,6 +107,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                     <?endforeach?>
                 </div>
                 <input type="hidden" id="ag-flag" name="ag-flag" value="<?= !isset($_REQUEST["flag"])?"all":htmlspecialchars(($_REQUEST["flag"]))?>">
+                <input type="hidden" id="ag-sorting" name="ag-sorting" value="<?= !isset($_REQUEST["sorting"])?"price-asc":htmlspecialchars(($_REQUEST["sorting"]))?>">
             </div>
     
             <?
@@ -126,6 +127,14 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                 <a href="#" rel="news" class="filter-flag">Новые поступления</a>
                 |
                 <a href="#" rel="populars" class="filter-flag">Популярные</a>
+                <div style="float: right;">
+                    Сначала:&nbsp;&nbsp;&nbsp;
+                    <a href="#" rel="price-asc" class="sorting-flag">Дешевые</a>
+                    |
+                    <a href="#" rel="price-desc" class="sorting-flag">Дорогие</a>
+                    |
+                    <a href="#" rel="rating-desc" class="sorting-flag">Популярные</a>
+                </div>
             </div>
 
 <?
@@ -303,6 +312,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 ?>
 
 <div class="catalog-ajax-block catalog-ajax-block-loader"></div>
+<p id="back-top"><a href="#top"><span></span>&#9650; Вверх &#9650;</a></p>
 
 
 

@@ -38,6 +38,7 @@
                 <div class="ag2-top-part">
                     <a class="ag2-logo" alt="Логотип" href="/"></a>
                     <a href="/catalog/" class="ag2-menu-item" >Каталог</a>
+                    <a href="/order/" class="ag2-menu-item" >Мои заказы</a>
                     <a href="/points/" class="ag2-menu-item" >Мои баллы</a>
                     <a href="/wishes/" class="ag2-menu-item" >Мои желания</a>
                     <a href="/rules/" class="ag2-menu-item" >Мои правила</a>

@@ -24,6 +24,12 @@
                             "SITE_ID"=>"s1",
                             "CODE"=>"clothes",
                             "PROPERTIES"=>array(
+                                "RATING" =>array(
+                                    "NAME"=>"Рейтинг",
+                                    "PROPERTY_TYPE" =>"N",
+                                    "MULTIPLE"      =>"N",
+                                    "VALUES"=>array()
+                                ),
                                 "INTERESTS" =>array(
                                     "NAME"=>"Интересуюсь",
                                     "PROPERTY_TYPE" =>"L",

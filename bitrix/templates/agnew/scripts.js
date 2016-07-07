@@ -2,7 +2,22 @@ var scrollProcess = 0;
 
 $(document).ready(function(){
     
-    
+    $("#back-top").hide();
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 630) {
+            $('#back-top').fadeIn();
+        } else {
+            $('#back-top').fadeOut();
+        }
+    });
+
+    $('#back-top a').click(function () {
+        $('body,html').animate({
+            scrollTop: 630
+        }, 800);
+        return false;
+    });
+        
     if($('.catalog-ajax-block')){
         var hash = document.location.hash;
         hash = hash.replace(/#/,"");
@@ -20,17 +35,25 @@ $(document).ready(function(){
             parameters[tmp[0]] = tmp[1];
         }
         
-        $('#ag-iwant').val(parameters.filter_iwant);
-        $('#ag-interest').val(parameters.filter_interest);
-        $('#ag-balls').val(parameters.filter_balls);
-        $('#ag-flag').val(parameters.flag);
-        $('#ag-types').val(parameters.filter_type);
+        if(parameters.filter_iwant)$('#ag-iwant').val(parameters.filter_iwant);
+        if(parameters.filter_interest)$('#ag-interest').val(parameters.filter_interest);
+        if(parameters.filter_balls)$('#ag-balls').val(parameters.filter_balls);
+        if(parameters.flag)$('#ag-flag').val(parameters.flag);
+        if(parameters.sorting)$('#ag-sorting').val(parameters.sorting);
+        if(parameters.filter_type)$('#ag-types').val(parameters.filter_type);
         
         $('.filter-flag').each(function(){if($(this).attr("rel")==parameters.flag)$(this).addClass('radio-active')});
+        $('.sorting-flag').each(function(){if($(this).attr("rel")==parameters.sorting)$(this).addClass('radio-active')});
         
         if(!parameters.flag){
-            $('.filter-flag[rel="all"]').addClass('radio-active;');
+            $('.filter-flag[rel="all"]').addClass('radio-active');
             $('#ag-flag').val('all');
+        }
+        
+        
+        if(!parameters.sorting){
+            $('.sorting-flag[rel="price-asc"]').addClass('radio-active');
+            $('#ag-sorting').val('price-asc');
         }
         
         var types = $('#ag-types').val().split(',');
@@ -233,6 +256,15 @@ $(document).ready(function(){
         ag_filter();
         return false;
     });
+
+    $('.sorting-flag').click(function(){
+        $('.sorting-flag').removeClass('radio-active');
+        $(this).addClass('radio-active');
+        $('#ag-sorting').val($(this).attr('rel'));
+        ag_filter();
+        return false;
+    });
+
     
 });
 
@@ -247,6 +279,9 @@ function next_page(query_string){
             $('.catalog-ajax-block .next-page').remove();
             $('.catalog-ajax-block').append(data);
             scrollProcess = 0;
+            $('body,html').animate({
+                scrollTop: $('body').height()
+            }, 1600);
         }
     );
     return false;
@@ -321,10 +356,17 @@ function ag_filter(){
     var interest = $('#ag-interest').val()?$('#ag-interest').val():0;
     var balls = $('#ag-balls').val()?$('#ag-balls').val():0;
     var flag = $('#ag-flag').val()?$('#ag-flag').val():'all';
+    var sorting = $('#ag-sorting').val()?$('#ag-sorting').val():'all';
 
-    var uri = "filter_type="+type+"&filter_iwant="+iwant+"&filter_interest="+interest+"&filter_balls="+balls+'&flag='+flag;
+    var uri = "filter_type="+type+"&filter_iwant="+iwant+"&filter_interest="+interest+"&filter_balls="+balls+'&flag='+flag+'&sorting='+sorting;
     var url = "/catalog/index.ajax.php?"+uri;
     document.location.hash = uri;
-    $('.catalog-ajax-block').load(url,function(){$('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');});
+    $('.catalog-ajax-block').load(url,function(){
+        $('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');
+        $('body,html').animate({
+            scrollTop: 630
+        }, 800);
+
+    });
 }
 

@@ -34,7 +34,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"SET_STATUS_404" => "Y",
 		"DETAIL_DISPLAY_NAME" => "N",
 		"USE_ELEMENT_COUNTER" => "Y",
-		"USE_FILTER" => "Y",
+		"USE_FILTER" => "N",
 		"FILTER_NAME" => "",
 		"FILTER_VIEW_MODE" => "VERTICAL",
 		"FILTER_FIELD_CODE" => array(

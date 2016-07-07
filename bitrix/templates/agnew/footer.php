@@ -6,6 +6,6 @@
         <script src="/bitrix/templates/agnew/js/jquery.min.js"></script>
         <script src="/bitrix/templates/agnew/js/jquery-ui.js"></script>
         <script src="/bitrix/templates/agnew/js/fotorama.js"></script>
-<script type="text/javascript" src="/bitrix/templates/agnew/scripts.js"></script>
+        <script type="text/javascript" src="/bitrix/templates/agnew/scripts.js"></script>
     </body>
 </html>

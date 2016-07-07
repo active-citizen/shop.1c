@@ -516,16 +516,11 @@ foreach($arResult["ITEMS"] as $item_id=>$item){
 
     
     // Средняя оценка товара
-    $arFilter = array("IBLOCK_CODE"=>"marks", "PROPERTY_MARK_PRODUCT"=>$item["ID"]);
-    $arGroups = array("PROPERTY_MARK");
-    $res = CIBlockElement::GetList(array(),$arFilter,false, array(),array("PROPERTY_MARK"));
-    $counter = 0;
-    $sum = 0;
-    while($row = $res->GetNext()){
-        $counter++;
-        $sum+=$row["PROPERTY_MARK_VALUE"];
-    }
+    $arFilter = array("IBLOCK_CODE"=>"clothes", "ID"=>$item["ID"]);
+    $arGroups = array();
+    $res = CIBlockElement::GetList(array(),$arFilter,false, array(),array("PROPERTY_RATING"));
+    $row = $res->GetNext();
 
-    $arResult["ITEMS"][$item_id]["mark"] = ($counter?($sum/$counter):0)/5;
+    $arResult["ITEMS"][$item_id]["mark"] = $row["PROPERTY_RATING_VALUE"];
 }
 
