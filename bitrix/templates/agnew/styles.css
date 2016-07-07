@@ -476,3 +476,73 @@ div.catalog-ajax-block{
 .bx_catalog_item_images{
     margin-bottom: 30px;
 }
+
+.point-dibit-type-menu .active{
+    background-color: #0eb0a0;
+    color: white;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    transition: 1s;
+    line-height: 30px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.points_pagination a.active{
+    background-color: #0eb0a0;
+    color: white;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    transition: 1s;
+    line-height: 30px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.myPointsBox_2{
+}
+
+    .myPointsBox_2 tr:hover{
+        background-color: #E8E8E8;
+    }
+
+
+    .myPointsBox_2 h3{
+        font-size: 18px;
+    }
+
+    .myPointsBox_2 table{
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .myPointsBox_2 td{
+        padding: 8px;
+        border-bottom: 1px #DDD solid !important;
+    }
+    
+    .myPointsBox_2 th{
+        background-color: #666;
+        color: white;
+        text-align: center;
+    }
+
+    .myPointsBox_2 td.date{
+        text-align: center;
+    }
+
+    .myPointsBox_2 td.balls{
+        text-align: right;
+    }
+
+        .myPointsBox_2 td.balls .actPoint{
+            color: green;
+        }
+    
+        .myPointsBox_2 td.balls .spentPoints{
+            color: red;
+        }
+
+    

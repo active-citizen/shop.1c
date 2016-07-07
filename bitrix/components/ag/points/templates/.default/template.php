@@ -32,7 +32,7 @@
                     }    
                 ?>/<?= ($offset/$arParams["RECORDS_ON_PAGE"]+1)?>/"><?= $pagenum?></a>
             <? }else{?>
-                <?= $pagenum;?>
+                <a class="active"><?= $pagenum;?></a>
             <? }?>
         <?endforeach;?>
     </div>
@@ -48,7 +48,7 @@
             <th>Баллы</th>
         </tr>
         <?foreach($arResult["RECORDS"] as $record):?><tr>
-            <td><? echo $record["TIMESTAMP_X"];?></td>
+            <td class="date"><? echo $record["TIMESTAMP_X"];?></td>
             <td>
                 <h3><? echo $record["DEBIT"]=="Y"?"Начисление":"Списание"?></h3>
                 <? 
@@ -66,9 +66,9 @@
                 
                 ?>
             </td>
-            <td>
+            <td class="balls">
                 <span data-point="0" class="cr <? echo $record["DEBIT"]=="Y"?"actPoint":"spentPoints"?>">
-                    <? echo ($record["DEBIT"]=="Y"?"":"-").round($record["AMOUNT"]);?>
+                    <? echo ($record["DEBIT"]=="Y"?"":"-").number_format($record["AMOUNT"],0,","," ");?>
                 </span>
             </td>
         </tr>
@@ -95,7 +95,7 @@
                     }    
                 ?>/<?= ($offset/$arParams["RECORDS_ON_PAGE"]+1)?>/"><?= $pagenum?></a>
             <? }else{?>
-                <?= $pagenum;?>
+                <a class="active"><?= $pagenum;?></a>
             <? }?>
         <?endforeach;?>
     </div>
