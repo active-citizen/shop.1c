@@ -188,10 +188,38 @@
                         "NAME"  =>  "Посещение музея техники Apple",
                         "CODE"  =>  "prod19",
                         "IBLOCK_SECTION_ID"    => "muzei",
-                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=992",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=684",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  1200,
-                            "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",)
+                            "MINIMUM_PRICE" =>  700,
+                            "MORE_PHOTO"    =>  array("prod19_01.jpg","prod19_02.jpg")
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение музея М.А. Булгакова",
+                        "CODE"  =>  "prod20",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=241",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  7467,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "«Классный журнал» электронная подписка на детский журнал",
+                        "CODE"  =>  "prod21",
+                        "IBLOCK_SECTION_ID"    => "deti",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=13791",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  500,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Кидзания, дети 7-14 лет, вт-пт 10-20ч",
+                        "CODE"  =>  "prod22",
+                        "IBLOCK_SECTION_ID"    => "deti",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1370",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1500,
+                            "MORE_PHOTO"    =>  array("prod22_01.jpg","prod22_02.jpg","prod22_03.jpg",)
                         )
                     ),
                 )
