@@ -1,0 +1,351 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление шаблона к основному сайту
+     */
+    class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+ 
+            $data = array(
+                "sections"=>array(
+                    array("NAME"  =>  "Развлечения","CODE"  =>  "razvlecheniya","PICTURE"=>"all_raznoe.jpg"),
+                    array("NAME"  =>  "Дети","CODE"  =>  "deti","PICTURE"=>"Detyam_ag.png"),
+                    array("NAME"  =>  "Спорт","CODE"  =>  "sport","PICTURE"=>"sport.jpg"),
+                    array("NAME"  =>  "Музеи","CODE"  =>  "muzei","PICTURE"=>"all_museum.jpg"),
+                    array("NAME"  =>  "Транспорт","CODE"  =>  "transport","PICTURE"=>"trans_msk.png"),
+                    array("NAME"  =>  "Сувениры","CODE"  =>  "suveniri","PICTURE"=>"all_souvenir.jpg"),
+                ),
+                "products"=>array(
+                    array(
+                        "NAME"  =>  "Бесплатный час в тайм-кофейне Jeffrey's Coffee",
+                        "CODE"  =>  "prod01",
+                        "IBLOCK_SECTION_ID"    => "razvlecheniya",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=996",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  750,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Абонемент ХК \"Спартак\" сезон 2016/2017",
+                        "CODE"  =>  "prod02",
+                        "IBLOCK_SECTION_ID"    => "sport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1398",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  5000,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Зонт белый",
+                        "CODE"  =>  "prod03",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=956",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1730,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Обложка для студенческого билета",
+                        "CODE"  =>  "prod04",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=939",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1030,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Чехол для Samsung Galaxy S3",
+                        "CODE"  =>  "prod05",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=988",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Салфетка для телефона",
+                        "CODE"  =>  "prod06",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=938",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  300,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Чехол для HTC One M7",
+                        "CODE"  =>  "prod07",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=991",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Свитшот белый M",
+                        "CODE"  =>  "prod08",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=959 http://ag.mos.ru/catalog/item?item_id=958 http://ag.mos.ru/catalog/item?item_id=964 http://ag.mos.ru/catalog/item?item_id=960 http://ag.mos.ru/catalog/item?item_id=961 http://ag.mos.ru/catalog/item?item_id=963 ",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  2250,
+                            "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Набор для записей с символикой проекта желтый",
+                        "CODE"  =>  "prod09",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=899 http://ag.mos.ru/catalog/item?item_id=900 http://ag.mos.ru/catalog/item?item_id=885 http://ag.mos.ru/catalog/item?item_id=894",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  864
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Обложка для паспорта с символикой проекта",
+                        "CODE"  =>  "prod10",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=128",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  333
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Значок",
+                        "CODE"  =>  "prod11",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=936",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  580
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Wi-Fi в метро без рекламы",
+                        "CODE"  =>  "prod12",
+                        "IBLOCK_SECTION_ID"    => "transport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1399",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  400
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Пополнение карты «Тройка»",
+                        "CODE"  =>  "prod13",
+                        "IBLOCK_SECTION_ID"    => "transport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1104",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1708
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Парковочное пространство",
+                        "CODE"  =>  "prod14",
+                        "IBLOCK_SECTION_ID"    => "transport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=132",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  667
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение музея Вадима Сидура",
+                        "CODE"  =>  "prod15",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1397",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  350
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение Центра Современного Искусства М`АРС",
+                        "CODE"  =>  "prod16",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=992",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                            "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",)
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Музей археологии Москвы",
+                        "CODE"  =>  "prod17",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=330",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  667,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Музей Английское подворье",
+                        "CODE"  =>  "prod18",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=331",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  667,
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение музея техники Apple",
+                        "CODE"  =>  "prod19",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=992",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                            "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",)
+                        )
+                    ),
+                )
+            );
+            
+
+            CModule::IncludeModule("iblock");
+            CModule::IncludeModule("catalog");
+            
+            // Очищаем документы-проводки
+            $res = CCatalogDocs::getList(array(),array(),false,false,array());
+            while($doc=$res->GetNext()){
+                CCatalogDocs::Update($doc["ID"],array("STATUS"=>"N"));
+                if(!CCatalogDocs::delete($doc["ID"])){
+                    print_r($doc);
+                    echo "Error!!!";
+                }
+            }
+            
+            // Узнаём ID инфоблока товарных предложений
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $iblock = $res->GetNext();
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
+            $resIB = new CIBlockElement;
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    print_r($resIB);
+                }
+            }
+            
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+            $iblock = $res->GetNext();
+            $CatalogIblockId = $iblock["ID"];
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array());
+            $resIB = new CIBlockElement;
+            // Сносим элементы каталога
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    print_r($resIB);
+                    echo "Error!!!";
+                }
+            }
+
+            // Сносим разделы каталога
+            $res = CIBlockSection::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,array("ID"));
+            $resIB = new CIBlockSection;
+            while($section = $res->GetNext()){
+                if(!$resIB->Delete($section["ID"])){
+                    print_r($resIB);
+                    echo "Error!!!";
+                }
+            }
+            
+            // Сносим желания
+            $res = CIBlock::GetList(array(),array("CODE"=>"whishes"));
+            $iblock = $res->GetNext();
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
+            $resIB = new CIBlockElement;
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    print_r($resIB);
+                }
+            }
+            
+            // Сносим оценки
+            $res = CIBlock::GetList(array(),array("CODE"=>"marks"));
+            $iblock = $res->GetNext();
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
+            $resIB = new CIBlockElement;
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    echo "Error!!!";
+                    print_r($resIB);
+                }
+            }
+            
+            ////////////////////////////////////////////////////////////////////////////////
+            
+            // Добавляем разделы каталога
+            $resSection = new CIBlockSection;
+            foreach($data["sections"] as $section){
+                $section["IBLOCK_ID"] = $CatalogIblockId;
+                $section["IBLOCK_SECTION_ID"] = 0;
+                $section["SORT"] = 500;
+                
+                $section["PICTURE"] = array(
+                    "name" => $section["PICTURE"],
+                    "size" => "размер",
+                    "tmp_name" => realpath(dirname(__FILE__))."/files/sections/".$section["PICTURE"],
+                    "type" => "image/jpeg",
+                    "del" => "Y",
+                    "MODULE_ID" => "catalog"
+                );
+                if(!$resSection->Add($section)){
+                    echo "Error!!!";
+                    print_r($resSection);
+                }
+            }
+            
+            // Добавляем товары
+            $resElement = new CIBlockElement;
+            foreach($data["products"] as $product){
+                $product["SITE_ID"] = 's1';
+                $product["IBLOCK_ID"] = $CatalogIblockId;
+                $product["DETAIL_TEXT"] = file_get_contents(realpath(dirname(__FILE__))."/files/products/".$product["CODE"].".html");
+                $product["PREVIEW_TEXT"] = file_get_contents(realpath(dirname(__FILE__))."/files/products/".$product["CODE"].".html");
+                $res = CIBlockSection::GetList(array(),array("IBLOCK_ID"=>$CatalogIblockId,"CODE"=>$product["IBLOCK_SECTION_ID"]),false,array("nTopCount"=>1),array("ID"));
+                $arrSection = $res->GetNext();
+                $product["IBLOCK_SECTION_ID"] = $arrSection["ID"];
+                $product["SECTION_ID"] = $arrSection["ID"];
+                $product["PREVIEW_TEXT_TYPE"] = 'html';
+                $product["DETAIL_TEXT_TYPE"] = 'html';
+                
+                $picturePath = realpath(dirname(__FILE__))."/files/products/".$product["CODE"].".jpg";
+                $product["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
+                $product["DETAIL_PICTURE"] = CFile::MakeFileArray($picturePath);
+                
+                if(!$id = $resElement->Add($product)){
+                    print_r($resSection);
+                    continue;
+                }
+
+                if(!isset($product["PROPERTIES"]["MORE_PHOTO"]))$product["PROPERTIES"]["MORE_PHOTO"] = $picturePath;
+                
+                foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
+                    if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
+                        $arrFile = array();
+                        foreach($prop_value as $img)
+                            $arrFile[] = array("VALUE"=>CFile::MakeFileArray(realpath(dirname(__FILE__))."/files/products/".$img),"DESCRIPTION"=>"");
+                        
+                        CIBlockElement::SetPropertyValuesEx($id, $CatalogIblockId, array('MORE_PHOTO' => $arrFile));
+                    }
+                    elseif($prop_code=='MORE_PHOTO' && !is_array($prop_value)){
+                        $product["PROPERTIES"]["MORE_PHOTO"] = CFile::MakeFileArray($prop_value);
+                        CIBlockElement::SetPropertyValueCode($id,$prop_code,$prop_value);
+                    }
+                    else{
+                        CIBlockElement::SetPropertyValueCode($id,$prop_code,$prop_value);
+                    }
+                }
+                
+            }
+            
+            
+            
+            die;
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$migration = new add_ag_template();
+// Откатываем, если неудачно
+if(!$migration->Run())$migration->RollBack();

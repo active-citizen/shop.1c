@@ -16,7 +16,8 @@ class Migration{
         require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
 
         // Искуственная авторизация в роли админа
-        $_SESSION['SESS_AUTH']['USER_ID'] = 1;
+        $user = new CUser;
+        $user->Authorize(1);
         
     }
     
