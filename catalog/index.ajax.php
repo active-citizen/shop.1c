@@ -77,7 +77,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     }
     $arrFilter["ACTIVE"] = 'Y';
     
-    
     // Узнаём ID инфоблока
     $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
     $iblock = $res->GetNext();

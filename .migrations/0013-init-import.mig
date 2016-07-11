@@ -10,6 +10,26 @@
         */
         function Run(){
  
+            
+            CModule::IncludeModule("iblock");
+            // Узнаём ID инфоблока товарных предложений
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $iblock = $res->GetNext();
+            $OfferIblockId = $iblock["ID"];
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+            $iblock = $res->GetNext();
+            $CatalogIblockId = $iblock["ID"];
+
+            // Составляем справочник флагов
+            $ENUM = array();
+            $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>$CatalogIblockId));
+            while($data = $res->getNext()){
+                $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
+                if(!isset($ENUM[$data["PROPERTY_CODE"]]))$ENUM[$data["PROPERTY_CODE"]] = array();
+                $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
+            }
+            
             $data = array(
                 "stores"=>array(
                     array(
@@ -85,6 +105,8 @@
                     array("NAME"  =>  "Транспорт","CODE"  =>  "transport","PICTURE"=>"trans_msk.png"),
                     array("NAME"  =>  "Сувениры","CODE"  =>  "suveniri","PICTURE"=>"all_souvenir.jpg"),
                 ),
+                "index"=>array(
+                ),
                 "products"=>array(
                     array(
                         "NAME"  =>  "Бесплатный час в тайм-кофейне Jeffrey's Coffee",
@@ -93,12 +115,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=996",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  750,
-                            "TYPES"     =>  44,
-                            "WANTS"     =>  39,
-                            "INTERESTS" =>  21,
-                            "NEWPRODUCT"=>  1,
-                            "SALELEADER"=>  2,
-                            "SPECIALOFFER"=> 3
+                            "TYPES"     =>  $ENUM["TYPES"]["Отдохни"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развлечься"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Гастрономией"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
                         ),
                         "OFFERS" => array(
                             array(
@@ -119,11 +141,11 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1398",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  5000,
-                            "TYPES"     =>  43,
-                            "WANTS"     =>  37,
-                            "INTERESTS" =>  27,
+                            "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
+                            "WANTS"     =>  $ENUM["WANTS"]["На мероприятие"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Спортом"],
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
@@ -141,12 +163,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=956",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1730,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
-                            "INTERESTS" =>  18,
+                            "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  2,
-                            "SPECIALOFFER"=> 3
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -169,12 +191,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=939",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1030,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
-                            "NEWPRODUCT"=>  1,
-                            "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 3
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -195,12 +217,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=988",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1200,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 3
+                            "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -225,8 +247,8 @@
                             "WANTS"     =>  0,
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 3
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -248,12 +270,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=991",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1200,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 3
+                            "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -275,11 +297,11 @@
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  2250,
                             "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg"),
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
-                            "INTERESTS" =>  18,
-                            "NEWPRODUCT"=>  1,
-                            "SALELEADER"=>  0,
+                            "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Модой"],
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
@@ -397,12 +419,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=899 http://ag.mos.ru/catalog/item?item_id=900 http://ag.mos.ru/catalog/item?item_id=885 http://ag.mos.ru/catalog/item?item_id=894",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  864,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
-                            "INTERESTS" =>  24,
+                            "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  1,
-                            "SPECIALOFFER"=> 0
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -438,12 +460,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=128",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  333,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
-                            "NEWPRODUCT"=>  1,
-                            "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 3
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -465,11 +487,11 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=936",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  580,
-                            "TYPES"     =>  46,
-                            "WANTS"     =>  36,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
                         ),
                         "OFFERS"    =>  array(
@@ -492,12 +514,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1104",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1708,
-                            "TYPES"     =>  43,
-                            "WANTS"     =>  42,
+                            "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Кататься"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 0
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -517,12 +539,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=132",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  667,
-                            "TYPES"     =>  43,
-                            "WANTS"     =>  42,
+                            "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Кататься"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 0
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
                         ),
                         "OFFERS"    =>  array(
                             array(
@@ -542,10 +564,10 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1397",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  350,
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  41,
-                            "INTERESTS" =>  25,
-                            "NEWPRODUCT"=>  1,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
                         ),
@@ -568,10 +590,11 @@
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1200,
                             "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",),
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  41,
-                            "INTERESTS" =>  25,
-                            "NEWPRODUCT"=>  0,
+                            "TYPES"     =>  $ENUM["TYPES"][""],
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
                         )
@@ -583,10 +606,10 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=330",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  667,
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  41,
-                            "INTERESTS" =>  31,
-                            "NEWPRODUCT"=>  1,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Историей"],
+                            "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
                         )
@@ -598,9 +621,9 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=331",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  667,
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  41,
-                            "INTERESTS" =>  31,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Историей"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -614,12 +637,12 @@
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  700,
                             "MORE_PHOTO"    =>  array("prod19_01.jpg","prod19_02.jpg"),
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  41,
-                            "INTERESTS" =>  24,
-                            "NEWPRODUCT"=>  0,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Технологиями"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 1
+                            "SPECIALOFFER"=> 0
                         )
                     ),
                     array(
@@ -629,11 +652,11 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=241",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  7467,
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  41,
-                            "INTERESTS" =>  32,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  2,
+                            "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
                         )
                     ),
@@ -644,12 +667,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=13791",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  500,
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  40,
+                            "TYPES"     =>  $ENUM["TYPES"]["Отдохни"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  2,
-                            "SPECIALOFFER"=> 0
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
                         )
                     ),
                     array(
@@ -660,19 +683,17 @@
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1500,
                             "MORE_PHOTO"    =>  array("prod22_01.jpg","prod22_02.jpg","prod22_03.jpg",),
-                            "TYPES"     =>  45,
-                            "WANTS"     =>  40,
-                            "INTERESTS" =>  33,
-                            "NEWPRODUCT"=>  0,
-                            "SALELEADER"=>  0,
-                            "SPECIALOFFER"=> 3
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Физиологией"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
                         )
                     ),
                 )
             );
-            
 
-            CModule::IncludeModule("iblock");
             CModule::IncludeModule("catalog");
             
             // Очищаем документы-проводки
@@ -685,10 +706,6 @@
                 }
             }
             
-            // Узнаём ID инфоблока товарных предложений
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
-            $iblock = $res->GetNext();
-            $OfferIblockId = $iblock["ID"];
             $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
             $resIB = new CIBlockElement;
             while($element = $res->GetNext()){
@@ -697,10 +714,6 @@
                 }
             }
             
-            // Узнаём ID инфоблока каталога
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
-            $iblock = $res->GetNext();
-            $CatalogIblockId = $iblock["ID"];
             $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array());
             $resIB = new CIBlockElement;
             // Сносим элементы каталога
@@ -711,6 +724,7 @@
                 }
             }
 
+                
             // Сносим разделы каталога
             $res = CIBlockSection::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,array("ID"));
             $resIB = new CIBlockSection;
