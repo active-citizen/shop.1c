@@ -11,6 +11,72 @@
         function Run(){
  
             $data = array(
+                "stores"=>array(
+                    array(
+                        "ID"            =>  1,
+                        "TITLE"         =>  'Jeffrey\'s Coffee',
+                        "ADDRESS"       =>  '1) ул. Маросейка 15; 2) Староконюшенный пер. 45,; 3)пер. Старокирочный 16/2<br/>',
+                        "DESCRIPRION"   =>  '',
+                        "SCHEDULE"      =>  'В будни с 9.00 до 19.00, выходные с 10.00 до 20.00',
+                        "PHONE"         =>  '8(495)623-8777'
+                    ),
+                    array(
+                        "ID"            =>  2,
+                        "TITLE"         =>  'АНО «Народная команда – ХК «Спартак»',
+                        "ADDRESS"       =>  'ЛД Сокольники, Москва, Сокольнический Вал, дом 1 б.',
+                        "DESCRIPRION"   =>  'www.spartak.ru',
+                        "SCHEDULE"      =>  'В кассах с 4 августа 2016г. до 20 августа 2016г., пн-вс С 12:00 до 18:00',
+                        "PHONE"         =>  '8(495)623-8777'
+                    ),
+                    array(
+                        "ID"            =>  3,
+                        "TITLE"         =>  'МФЦ района Тимирязевский',
+                        "ADDRESS"       =>  'ул. Тимирязевская, д. 8, корп. 1',
+                        "DESCRIPRION"   =>  'http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/',
+                        "SCHEDULE"      =>  'ПН–ВС с 08:00 до 20:00',
+                        "PHONE"         =>  '+7 (495) 777-77-77'
+                    ),
+                    array(
+                        "ID"            =>  4,
+                        "TITLE"         =>  'МФЦ района Лианозово',
+                        "ADDRESS"       =>  'ул. Абрамцевская, д.3',
+                        "DESCRIPRION"   =>  'http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/',
+                        "SCHEDULE"      =>  'ПН–ВС с 08:00 до 20:00',
+                        "PHONE"         =>  '+7 (495) 777-77-77'
+                    ),
+                    array(
+                        "ID"            =>  5,
+                        "TITLE"         =>  'МФЦ районов Северное Тушино и Южное Тушино',
+                        "ADDRESS"       =>  'ул. Василия Петушкова д.13, корп.1',
+                        "DESCRIPRION"   =>  'http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/',
+                        "SCHEDULE"      =>  'ПН–ВС с 08:00 до 20:00',
+                        "PHONE"         =>  '+7 (495) 777-77-77'
+                    ),
+                    array(
+                        "ID"            =>  6,
+                        "TITLE"         =>  'ГУП Московский Метрополитен',
+                        "ADDRESS"       =>  'ул. Василия Петушкова д.13, корп.1',
+                        "DESCRIPRION"   =>  'http://troika.mos.ru',
+                        "SCHEDULE"      =>  '',
+                        "PHONE"         =>  '8 (495) 688-02-61, 3210 (для звонков с мобильного)'
+                    ),
+                    array(
+                        "ID"            =>  7,
+                        "TITLE"         =>  'Приложение "Парковки"',
+                        "ADDRESS"       =>  '',
+                        "DESCRIPRION"   =>  'http://parking.mos.ru/',
+                        "SCHEDULE"      =>  '',
+                        "PHONE"         =>  '8 (495) 539-22-99'
+                    ),
+                    array(
+                        "ID"            =>  8,
+                        "TITLE"         =>  'Музейно-выставочное объединение «Манеж»',
+                        "ADDRESS"       =>  'Технический центр "Алмаз", Новогиреевская ул., 37a, Москва',
+                        "DESCRIPRION"   =>  'http://www.moscowmanege.ru/',
+                        "SCHEDULE"      =>  '',
+                        "PHONE"         =>  ''
+                    ),
+                ),
                 "sections"=>array(
                     array("NAME"  =>  "Развлечения","CODE"  =>  "razvlecheniya","PICTURE"=>"all_raznoe.jpg"),
                     array("NAME"  =>  "Дети","CODE"  =>  "deti","PICTURE"=>"Detyam_ag.png"),
@@ -27,6 +93,23 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=996",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  750,
+                            "TYPES"     =>  44,
+                            "WANTS"     =>  39,
+                            "INTERESTS" =>  21,
+                            "NEWPRODUCT"=>  1,
+                            "SALELEADER"=>  2,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS" => array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "SIZES_CLOTHES"=>"XL"
+                                ),
+                                "STORES"=>array(
+                                    "1"=>50
+                                )
+                            )
                         )
                     ),
                     array(
@@ -36,6 +119,19 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1398",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  5000,
+                            "TYPES"     =>  43,
+                            "WANTS"     =>  37,
+                            "INTERESTS" =>  27,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "STORES"=>array(
+                                    "2"=>200
+                                )
+                            )
                         )
                     ),
                     array(
@@ -45,6 +141,25 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=956",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1730,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  18,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  2,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white"
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "4"=>35,
+                                    "5"=>105,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -54,6 +169,23 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=939",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1030,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  1,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "5"=>105,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -63,6 +195,23 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=988",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1200,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "4"=>50,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -72,6 +221,24 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=938",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  300,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  0,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "4"=>50,
+                                    "5"=>30,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -81,25 +248,187 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=991",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1200,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "4"=>50,
+                                    "5"=>130,
+                                )
+                            )
                         )
                     ),
                     array(
-                        "NAME"  =>  "Свитшот белый M",
+                        "NAME"  =>  "Свитшот",
                         "CODE"  =>  "prod08",
                         "IBLOCK_SECTION_ID"    => "suveniri",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=959 http://ag.mos.ru/catalog/item?item_id=958 http://ag.mos.ru/catalog/item?item_id=964 http://ag.mos.ru/catalog/item?item_id=960 http://ag.mos.ru/catalog/item?item_id=961 http://ag.mos.ru/catalog/item?item_id=963 ",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  2250,
-                            "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                            "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg"),
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  18,
+                            "NEWPRODUCT"=>  1,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>11,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>120,
+                                    "4"=>0,
+                                    "5"=>30,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>12,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>30,
+                                    "4"=>105,
+                                    "5"=>0,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>13,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>15,
+                                    "4"=>40,
+                                    "5"=>50,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>14,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>110,
+                                    "4"=>150,
+                                    "5"=>0,
+                                )
+                            ),
+                            
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>11,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>120,
+                                    "4"=>0,
+                                    "5"=>30,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>12,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>30,
+                                    "4"=>105,
+                                    "5"=>0,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>13,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>15,
+                                    "4"=>40,
+                                    "5"=>50,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>14,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>110,
+                                    "4"=>150,
+                                    "5"=>0,
+                                )
+                            ),
                         )
                     ),
                     array(
-                        "NAME"  =>  "Набор для записей с символикой проекта желтый",
+                        "NAME"  =>  "Набор для записей с символикой проекта",
                         "CODE"  =>  "prod09",
                         "IBLOCK_SECTION_ID"    => "suveniri",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=899 http://ag.mos.ru/catalog/item?item_id=900 http://ag.mos.ru/catalog/item?item_id=885 http://ag.mos.ru/catalog/item?item_id=894",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  864
+                            "MINIMUM_PRICE" =>  864,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  24,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  1,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "MORE_PHOTO"    =>  array("prod09.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>120,
+                                    "4"=>50,
+                                    "5"=>10,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"pink",
+                                    "MORE_PHOTO"    =>  array("prod09_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>5,
+                                    "4"=>5,
+                                    "5"=>30,
+                                )
+                            ),
                         )
                     ),
                     array(
@@ -108,7 +437,25 @@
                         "IBLOCK_SECTION_ID"    => "suveniri",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=128",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  333
+                            "MINIMUM_PRICE" =>  333,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  1,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 3
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>1,
+                                    "4"=>50,
+                                    "5"=>130,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -117,16 +464,25 @@
                         "IBLOCK_SECTION_ID"    => "suveniri",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=936",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  580
-                        )
-                    ),
-                    array(
-                        "NAME"  =>  "Wi-Fi в метро без рекламы",
-                        "CODE"  =>  "prod12",
-                        "IBLOCK_SECTION_ID"    => "transport",
-                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1399",
-                        "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  400
+                            "MINIMUM_PRICE" =>  580,
+                            "TYPES"     =>  46,
+                            "WANTS"     =>  36,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>50,
+                                    "4"=>5,
+                                    "5"=>130,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -135,7 +491,23 @@
                         "IBLOCK_SECTION_ID"    => "transport",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1104",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  1708
+                            "MINIMUM_PRICE" =>  1708,
+                            "TYPES"     =>  43,
+                            "WANTS"     =>  42,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "6"=>50,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -144,7 +516,23 @@
                         "IBLOCK_SECTION_ID"    => "transport",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=132",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  667
+                            "MINIMUM_PRICE" =>  667,
+                            "TYPES"     =>  43,
+                            "WANTS"     =>  42,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "7"=>130,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -153,7 +541,23 @@
                         "IBLOCK_SECTION_ID"    => "muzei",
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1397",
                         "PROPERTIES" =>array(
-                            "MINIMUM_PRICE" =>  350
+                            "MINIMUM_PRICE" =>  350,
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  41,
+                            "INTERESTS" =>  25,
+                            "NEWPRODUCT"=>  1,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "8"=>130,
+                                )
+                            )
                         )
                     ),
                     array(
@@ -163,7 +567,13 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=992",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1200,
-                            "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",)
+                            "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",),
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  41,
+                            "INTERESTS" =>  25,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
                         )
                     ),
                     array(
@@ -173,6 +583,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=330",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  667,
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  41,
+                            "INTERESTS" =>  31,
+                            "NEWPRODUCT"=>  1,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
                         )
                     ),
                     array(
@@ -182,6 +598,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=331",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  667,
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  41,
+                            "INTERESTS" =>  31,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
                         )
                     ),
                     array(
@@ -191,7 +613,13 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=684",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  700,
-                            "MORE_PHOTO"    =>  array("prod19_01.jpg","prod19_02.jpg")
+                            "MORE_PHOTO"    =>  array("prod19_01.jpg","prod19_02.jpg"),
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  41,
+                            "INTERESTS" =>  24,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 1
                         )
                     ),
                     array(
@@ -201,6 +629,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=241",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  7467,
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  41,
+                            "INTERESTS" =>  32,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  2,
+                            "SPECIALOFFER"=> 0
                         )
                     ),
                     array(
@@ -210,6 +644,12 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=13791",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  500,
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  40,
+                            "INTERESTS" =>  0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  2,
+                            "SPECIALOFFER"=> 0
                         )
                     ),
                     array(
@@ -219,7 +659,13 @@
                         "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1370",
                         "PROPERTIES" =>array(
                             "MINIMUM_PRICE" =>  1500,
-                            "MORE_PHOTO"    =>  array("prod22_01.jpg","prod22_02.jpg","prod22_03.jpg",)
+                            "MORE_PHOTO"    =>  array("prod22_01.jpg","prod22_02.jpg","prod22_03.jpg",),
+                            "TYPES"     =>  45,
+                            "WANTS"     =>  40,
+                            "INTERESTS" =>  33,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 3
                         )
                     ),
                 )
@@ -242,6 +688,7 @@
             // Узнаём ID инфоблока товарных предложений
             $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
             $iblock = $res->GetNext();
+            $OfferIblockId = $iblock["ID"];
             $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
             $resIB = new CIBlockElement;
             while($element = $res->GetNext()){
@@ -297,6 +744,18 @@
                 }
             }
             
+            // Удаляем склады
+            $res = CCatalogStore::GetList();
+            while($store = $res->GetNext()){
+                if(!CCatalogStore::Delete(
+                    $store["ID"]
+                )){
+                    echo "Error!!!";
+                    print_r($res);
+                }
+            }
+            
+            
             ////////////////////////////////////////////////////////////////////////////////
             
             // Добавляем разделы каталога
@@ -318,6 +777,14 @@
                     echo "Error!!!";
                     print_r($resSection);
                 }
+            }
+            
+            // Добавляем склады
+            foreach($data["stores"] as $store){
+                $store["ACTIVE"]= 'Y';
+                $store["ISSUING_CENTER"]= 'Y';
+                $store["SHIPPING_CENTER"]= 'Y';
+                CCatalogStore::Add($store);
             }
             
             // Добавляем товары
@@ -362,6 +829,85 @@
                     }
                 }
                 
+                
+                if(!isset($product["OFFERS"]) || !is_array($product["OFFERS"]))$product["OFFERS"] = array(array());
+                
+                foreach($product["OFFERS"] as $offer){
+                    $offerFields = array(
+                        "IBLOCK_ID"         =>  $OfferIblockId,
+                        "NAME"              =>  (isset($offer["NAME"]) && $offer["NAME"]?$offer["NAME"]:$product["NAME"]),
+                        "PRICE"             =>  (isset($offer["PRICE"]) && $offer["PRICE"]?$offer["PRICE"]:$product["PROPERTIES"]["MINIMUM_PRICE"]),
+                        "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
+                        "PREVIEW_TEXT"      =>  $product["PREVIEW_TEXT"],
+                        "PREVIEW_TEXT_TYPE" =>  $product["PREVIEW_TEXT_TYPE"],
+                        "PREVIEW_PICTURE"   =>  (isset($offer["PREVIEW_PICTURE"]) && $offer["PREVIEW_PICTURE"]? CFile::MakeFileArray($offer["PREVIEW_PICTURE"]):$product["PREVIEW_PICTURE"]),
+                        "DETAIL_PICTURE"    =>  (isset($offer["DETAIL_PICTURE"]) && $offer["DETAIL_PICTURE"]? CFile::MakeFileArray($offer["DETAIL_PICTURE"]):$product["DETAIL_PICTURE"]),
+                    );
+
+                    if(!isset($offer["PROPERTIES"]) || !is_array($offer["PROPERTIES"]))$offer["PROPERTIES"] = array();
+                    $offerId = $resElement->Add($offerFields);
+                    
+                    
+                    $offer["PROPERTIES"]["CML2_LINK"] = $id;
+                    $offer["PROPERTIES"]["PRICE"] = $offerFields["PRICE"];
+                    foreach($offer["PROPERTIES"] as $prop_code=>$prop_value){
+                        if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
+                            $arrFile = array();
+                            foreach($prop_value as $img)
+                                $arrFile[] = array("VALUE"=>CFile::MakeFileArray(realpath(dirname(__FILE__))."/files/products/".$img),"DESCRIPTION"=>"");
+                            
+                            CIBlockElement::SetPropertyValuesEx($offerId, $OfferIblockId, array('MORE_PHOTO' => $arrFile));
+                        }
+                        elseif($prop_code=='PRICE' && !is_array($prop_value)){
+                            if(!$priceId = CPrice::Add(array(
+                                "PRODUCT_ID"=>$offerId,
+                                "CATALOG_GROUP_ID"=>1,
+                                "PRICE"=>$prop_value,
+                                "CURRENCY"=>"BAL",
+                            ),true)){
+                                echo "error!";
+                            }
+                        }
+                        elseif($prop_code=='MORE_PHOTO' && !is_array($prop_value)){
+                            $prop_value = CFile::MakeFileArray($prop_value);
+                            CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value);
+                        }
+                        elseif($prop_code=='CML2_LINK' && is_array($prop_value)){
+                            if(!CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value)){
+                                echo "Failed";
+                            }
+                            else{
+                                echo "Success";
+                            }
+                        }
+                        else{
+                            CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value);
+                        }
+                    }
+
+                    $resCatalogStoreProduct = new CCatalogStoreProduct;
+                    $totalAmount = 0;
+                    foreach($offer["STORES"] as $storeId=>$storeAmount){
+                        $arFields = array(
+                            "PRODUCT_ID"=>$offerId,
+                            "STORE_ID"=>$storeId,
+                            "AMOUNT"=>$storeAmount
+                        );
+                        if(!$resCatalogStoreProduct->Add($arFields)){
+                            echo "Error!: ".print_r($resCatalogStoreProduct,1);
+                            die;
+                        }
+                        $totalAmount+=$storeAmount;
+                    }
+
+                    CCatalogProduct::Add(array(
+                        "ID"=>$offerId,
+                        "QUANTITY"=>$totalAmount,
+                        "QUANTITY_TRACE"=>"Y",
+                        "CAN_BUY_ZERO"=>"N",
+                    ));
+
+                }
             }
             
             

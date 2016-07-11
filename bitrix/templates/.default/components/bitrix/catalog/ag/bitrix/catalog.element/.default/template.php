@@ -223,7 +223,7 @@ if ($useBrands || $useVoteRating)
 ?>
 	<div class="bx_optionblock">
 <?
-	if ($useVoteRating)
+	if (0 && $useVoteRating)
 	{
 		?><?$APPLICATION->IncludeComponent(
 			"bitrix:iblock.vote",
@@ -467,7 +467,7 @@ else
             "SHOW_EMPTY_STORE" => $arParams['SHOW_EMPTY_STORE'],
             "SHOW_GENERAL_STORE_INFORMATION" => $arParams['SHOW_GENERAL_STORE_INFORMATION'],
             "USER_FIELDS" => $arParams['USER_FIELDS'],
-            "FIELDS" => $arParams['FIELDS']
+            "FIELDS" => array_merge($arParams['FIELDS'])
         ),
         $component,
         array("HIDE_ICONS" => "Y")
@@ -623,6 +623,12 @@ else
             </div>
             <!-- END: окно заказа -->
             
+            <hr/>
+            <div class="ag-amount-button">-</div>
+            <div class="ag-amount"><span class="real">1</span><span class="visible">200</span></div>
+            <div class="ag-amount-button">+</div>
+            Парковочных баллов
+            <hr/>
             <div id="order-process" style="display: none;">Загрузка...</div>
             <a href="" class="bx_big bx_bt_button bx_cart_ag"><span></span><? echo $buyBtnMessage; ?> </a>
             <!-- <a href="javascript:void(0);" class="bx_big bx_bt_button bx_cart" id="<? echo $arItemIDs['BUY_LINK']; ?>"><span></span><? echo $buyBtnMessage; ?></a> -->
@@ -636,7 +642,7 @@ else
 	}
 ?>
 		</span>
-		<span id="<? echo $arItemIDs['NOT_AVAILABLE_MESS']; ?>" class="bx_notavailable" style="display: <? echo (!$canBuy ? '' : 'none'); ?>;"><? echo $notAvailableMessage; ?></span>
+		<span id="<? echo $arItemIDs['NOT_AVAILABLE_MESS']; ?>" class="bx_notavailable" style="display: <? echo (!$canBuy ? '' : 'none'); ?>;">Сообщить о поступлении</span>
 <?
 	if ($arParams['DISPLAY_COMPARE'] || $showSubscribeBtn)
 	{

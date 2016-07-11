@@ -18,6 +18,16 @@ $(document).ready(function(){
         return false;
     });
         
+    $('#c_store_amount li label').click(function(){
+        var storage_id = 0;
+        $('#c_store_amount li').removeClass('active');
+        $('.ag-store-detail').hide();
+        $(this).find("input").each(function(){if(this.checked)storage_id = $(this).val();})
+        $('#agst-'+storage_id).show();
+        $(this).parent().addClass('active');
+    });
+    
+        
     if($('.catalog-ajax-block')){
         var hash = document.location.hash;
         hash = hash.replace(/#/,"");
@@ -113,11 +123,11 @@ $(document).ready(function(){
         var store_id = 0;
         var default_store_id = 0;
         var stores_count = 0;
-        $('#c_store_amount li').each(function(){
+        $('#c_store_amount li input').each(function(){
             if($(this).css('display')!='none'){
-                default_store_id = $(this).find('input').val();
+                default_store_id = $(this).val();
                 stores_count++;
-                if($(this).find('input').attr('checked')=='checked')store_id = $(this).find('input').val();
+                if(this.checked)store_id = $(this).val();
             }
         });
         // Если центр выдачи один - его и назначаем
@@ -179,7 +189,7 @@ $(document).ready(function(){
             return false;
         }
         
-        var add_basket_url = "?action=BUY&id="+offer_id+"&ajax_basket=Y";
+        var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity=1";
 
         // добавляем в корзину
         $('#order-process-done').css('display','block');
@@ -194,20 +204,6 @@ $(document).ready(function(){
                     return false;
                 }
                 
-                var postdata = {
-                    "sessid":           $('.catalog_item_confirm_message .ag-window #sess_id').html(),
-                    "action":           "saveOrderAjax",
-                    "location_type":    "code",
-                    "BUYER_STORE":      $('.catalog_item_confirm_message .ag-window #store_id').html(),
-                    "DELIVERY_ID":      3,
-                    "save":             "Y",
-                    "ORDER_PROP_1":     $('.catalog_item_confirm_message .ag-window #ag-name').html(),
-                    "ORDER_PROP_2":     $('.catalog_item_confirm_message .ag-window #ag-email').html(),
-                    "ORDER_PROP_3":     $('.catalog_item_confirm_message .ag-window #ag-phone').html(),
-                    "ORDER_PROP_7":     $('.catalog_item_confirm_message .ag-window #ag-address').html(),
-                }
-
-
                 $.get(
                     "/order/order.ajax.php?add_order=Y",
                     function(data){
@@ -234,6 +230,22 @@ $(document).ready(function(){
                     }
                 );
                 /*
+
+                var postdata = {
+                    "sessid":           $('.catalog_item_confirm_message .ag-window #sess_id').html(),
+                    "action":           "saveOrderAjax",
+                    "location_type":    "code",
+                    "BUYER_STORE":      $('.catalog_item_confirm_message .ag-window #store_id').html(),
+                    "DELIVERY_ID":      3,
+                    "save":             "Y",
+                    "ORDER_PROP_1":     $('.catalog_item_confirm_message .ag-window #ag-name').html(),
+                    "ORDER_PROP_2":     $('.catalog_item_confirm_message .ag-window #ag-email').html(),
+                    "ORDER_PROP_3":     $('.catalog_item_confirm_message .ag-window #ag-phone').html(),
+                    "ORDER_PROP_7":     $('.catalog_item_confirm_message .ag-window #ag-address').html(),
+                }
+
+
+
                 $.post(
                     "/order/make/",
                     postdata,

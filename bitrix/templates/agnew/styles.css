@@ -545,4 +545,56 @@ div.catalog-ajax-block{
             color: red;
         }
 
-    
+.ag-stores-title{
+    font-size: 16px;
+}
+
+ul#c_store_amount li{
+    border: 1px #DDD solid;
+    display: inline-table;
+    padding: 5px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    margin: 5px;
+    cursor: pointer;
+}
+ul#c_store_amount li label{
+    cursor: pointer;
+}
+ul#c_store_amount li:hover{
+    background-color: #EEE;
+    cursor: pointer;
+}
+
+ul#c_store_amount li.active{
+    background-color: #DDD;
+}
+
+
+.ag-store-detail{
+    display: none;
+}
+
+.ag-amount-button{
+    width: 24px;
+    height: 24px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    display: inline-table;
+    border: 1px #AAA solid;
+    font-size: 24px;
+    text-align: center;
+    padding: 2px;
+    cursor: pointer;
+    margin: 0px 5px;
+}
+
+div.ag-amount{
+    display: inline-table;
+    border: 1px #AAA solid;
+    width: 50px;
+    margin-top: -5px;
+}
+div.ag-amount span.real{
+    display: none;
+}

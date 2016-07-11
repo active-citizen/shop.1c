@@ -11,6 +11,64 @@ global $USER;
 if(!$USER->IsAuthorized()){
     $answer["error"] = "Not Authorized";
 }
+elseif(isset($_GET["add_to_basket"])){
+    CModule::IncludeModule('sale');
+    CModule::IncludeModule('catalog');
+    CModule::IncludeModule('price');
+    CModule::IncludeModule('iblock');
+    $res = CCatalogProduct::GetList(array(),array("ID"=>intval($_GET['id'])),false,array("nTopCount"=>1));
+    $product = $res->GetNext();
+    if(!$product){
+        echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Товар не найден"));
+        die;
+    }
+    $price = CPrice::GetBasePrice($product["ID"]);
+    if(!$price){
+        echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Нет цены"));
+        die;
+    }
+    
+    $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+    $iblock = $res->GetNext();
+    $OfferIblockId = $iblock["ID"];
+    
+    $res = CIBlockElement::GetProperty($OfferIblockId,$product["ID"]);
+    
+    $props = array();
+    while($prop = $res->GetNext()){
+        if($prop["CODE"]=='CML2_LINK')continue;
+        if($prop["CODE"]=='MORE_PHOTO')continue;
+        if(!$prop["VALUE"])continue;
+        if($prop["PROPERTY_TYPE"]=='E')$prop["VALUE"] = $prop["VALUE"];
+        if($prop["PROPERTY_TYPE"]=='S')$prop["VALUE"] = $prop["VALUE"];
+        if($prop["PROPERTY_TYPE"]=='L')$prop["VALUE"] = $prop["VALUE_ENUM"];
+        $props[] = array(
+            "NAME" => $prop["NAME"],
+            "CODE" => $prop["CODE"],
+            "VALUE" => $prop["VALUE"]
+        );
+    }
+    
+    $arFields = array(
+        "PRODUCT_ID"=>  $product["ID"],
+        "PRICE"     =>  $price["PRICE"],
+        "CURRENCY"  =>  "BAL",
+        "QUANTITY"  =>  intval($_GET["quantity"]),
+        "LID" => LANG,
+        "DELAY" => "N",
+        "CAN_BUY" => "Y",
+        "NAME"    =>    $product["ELEMENT_NAME"],
+        "MODULE" => "catalog",
+        "PROPS" =>  $props
+    );
+    
+    $resBasket = new CSaleBasket;
+    if(!$resBasket->Add($arFields)){
+        echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Товар не добавлен:".print_r($resBasket)));
+        die;    
+    }
+    $answer = array("STATUS"=>"OK","MESSAGE"=>"Товар добавлен");
+}
 elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
     
@@ -211,6 +269,7 @@ else{
         // Получаем информацию по товарному предложению
         $res = CCatalogProduct::GetList(array(),array("ID"=>$offer_id),false,array("nTopCount"=>1));
         $product = $res->GetNext();
+        
         $answer["product"] = $product;
         $answer["price"] = CCatalogProduct::GetOptimalPrice($offer_id);
         $answer["account"] = CSaleUserAccount::GetByUserID(CUser::GetID(),"RUB");
