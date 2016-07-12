@@ -10,6 +10,7 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
+
 $this->setFrameMode(true);
 $templateLibrary = array('popup');
 $currencyList = '';
@@ -201,6 +202,18 @@ if ($arResult['SHOW_SLIDER'])
 ?>
 	</ul>
 	</div>
+ 
+ 
+    <div class="ag-product-rating">
+            <div class="ag-product-wish <?= $arResult["MY_WISH"]?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arResult['ID']?>" onclick="return mywish(this)"><?= $arResult['WISHES'];?></div>
+        
+    <? if($arResult["ORDER"]['STATUS_ID']!='F' || $arResult["MY_MARK"]):?>
+        <div class="ag-product-mark" style="top: 0px; right: <?= round(74+24*(1-$arResult["RATING"]))?>px;background-position: <?= round(24*(1-$arResult["RATING"]))?>px 0%;" title="Средняя оценка <?= round(5*$arResult["RATING"],1)?>" productid="<?= $arResult['ID']?>"></div>
+    <? else:?>
+        <div class="ag-product-mark-post" product="<?= $arResult["ID"]?>"><div class="yellow"></div></div>
+    <? endif?>
+    </div>
+    
 	<div class="bx_slide_left" id="<? echo $arItemIDs['SLIDER_LEFT_OF_ID'].$arOneOffer['ID'] ?>" style="<? echo $strSlideStyle; ?>" data-value="<? echo $arOneOffer['ID']; ?>"></div>
 	<div class="bx_slide_right" id="<? echo $arItemIDs['SLIDER_RIGHT_OF_ID'].$arOneOffer['ID'] ?>" style="<? echo $strSlideStyle; ?>" data-value="<? echo $arOneOffer['ID']; ?>"></div>
 	</div>

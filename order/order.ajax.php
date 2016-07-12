@@ -11,6 +11,65 @@ global $USER;
 if(!$USER->IsAuthorized()){
     $answer["error"] = "Not Authorized";
 }
+elseif(isset($_GET["mark"]) && isset($_GET["product"])){
+    $mark = intval($_GET["mark"]);
+    $product=intval($_GET["product"]);
+    CModule::IncludeModule('iblock');
+
+    // Смотрим, не было ли уже оценки у этого пользователя
+    $res = CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_CODE"=>"marks","PROPERTY_MARK_PRODUCT"=>$product,"PROPERTY_MARK_USER"=>CUser::GetID()),
+        false,
+        array("nTopCount"=>1),
+        array("PROPERTY_MARK")
+    );
+    if($res->GetNext()){
+        echo json_encode(array("error"=>"Вы уже голосовали за этот товар"));
+        die;
+    }
+    
+    // Получаем все оценки для товара
+    $res = CIBlockElement::GetList(
+        array(),
+        $arrr = array("IBLOCK_CODE"=>"marks","PROPERTY_MARK_PRODUCT"=>$product),
+        false,
+        array(),
+        array("PROPERTY_MARK")
+    );
+    $count = 0;
+    $sum = 0;
+    while($row = $res->GetNext()){
+        $count++;
+        $sum+=$row["PROPERTY_MARK_VALUE"];
+    }
+    // Вычисляем новое среднее
+    $answer["percent"] = ($sum+$mark)/($count+1)/5;
+    
+    // Обновляем рейтинг товара
+    CIBlockElement::SetPropertyValueCode($product,"RATING",$answer["percent"]);
+    
+    
+    
+    // Записываем оценку
+    $res = CIBlock::GetList(array(),array("CODE"=>"marks"));
+    $iblock = $res->GetNext();
+    $iblockId = $iblock["ID"];
+    $objIBlockElement = new CIBlockElement;
+    if(!$elementId = $objIBlockElement->Add(array(
+        "NAME"=>$product."_".CUser::GetID(),
+        "IBLOCK_ID"=>$iblockId
+    ))){
+        echo json_encode(array("error"=>"Ошибка добавления".print_r($objIBlockElement,1)));
+        die;
+    }
+    CIBlockElement::SetPropertyValues($elementId,$iblockId,array(
+        "MARK_PRODUCT"=>array("VALUE"=>$product),
+        "MARK"=>array("VALUE"=>$mark),
+        "MARK_USER"=>array("VALUE"=>CUser::GetID()),
+    ));
+
+}
 elseif(isset($_GET["add_to_basket"])){
     CModule::IncludeModule('sale');
     CModule::IncludeModule('catalog');

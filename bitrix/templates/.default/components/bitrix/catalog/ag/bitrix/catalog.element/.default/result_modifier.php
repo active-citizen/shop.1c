@@ -611,3 +611,67 @@ if ($arResult['MODULES']['currency'])
 		unset($currencyFormat, $currency, $currencyIterator);
 	}
 }
+
+// Определяем заказывали ли мы такой товар
+$ids = array();
+// Составляем список торговых предложений этого товара
+foreach($arResult["OFFERS"] as $offer)$ids[] = $offer["ID"];
+
+// Ищем эти торговые предложения среди корзин
+$res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"),array("USER_ID"=>CUser::GetID(),"PRODUCT_ID"=>$ids),false,array("nTopCount"=>1));
+$orderId = 0;
+if($arrBasket = $res->GetNext())$orderId = $arrBasket["ORDER_ID"];
+
+
+// Смотрим статус заказа этой корзины
+$arResult["ORDER"] = array("STATUS"=>"");
+if($orderId)$arResult["ORDER"] = CSaleOrder::GetByID($orderId);
+
+// Ищем голос за этот продукт у этого пользователя
+$arResult["MY_MARK"] = 0;
+if($arResult["ID"]){
+    $res = CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_CODE"=>"marks","PROPERTY_MARK_PRODUCT"=>$arResult["ID"],"PROPERTY_MARK_USER"=>CUser::GetID()),
+        false,
+        array("nTopCount"=>1),
+        array("PROPERTY_MARK")
+    );
+    $row = $res->GetNext();
+    if(isset($row["PROPERTY_MARK_VALUE"]))$arResult["MY_MARK"] = $row["PROPERTY_MARK_VALUE"];
+}
+
+// Определяем среднюю оценку товара
+$arResult["RATING"] = 0;
+$res = CIBlockElement::GetList(array(),array(
+    "IBLOCK_ID"=>$arResult["IBLOCK_ID"],"ID"=>$arResult["ID"]
+),false,array("nTopCount"=>1),array("PROPERTY_RATING"));
+if($rating = $res->GetNext())$arResult["RATING"] = $rating["PROPERTY_RATING_VALUE"];
+
+// Определяем есть ли товар в моих желаниях и общее число желающих
+$arResult["MY_WISH"] = 0;
+$arResult["WISHES"] = 0;
+if($arResult["ID"]){
+    $res = CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_CODE"=>"whishes","PROPERTY_WISH_PRODUCT"=>$arResult["ID"],"PROPERTY_WISH_USER"=>CUser::GetID()),
+        false,
+        array("nTopCount"=>1),
+        array("ID")
+    );
+    $row = $res->GetNext();
+    $arResult["MY_WISH"] = isset($row["ID"]);
+
+    $res = CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_CODE"=>"whishes","PROPERTY_WISH_PRODUCT"=>$arResult["ID"]),
+        false,
+        array(),
+        array("ID")
+    );
+    $arResult["WISHES"] = $res->SelectedRowsCount();
+
+}
+
+
+

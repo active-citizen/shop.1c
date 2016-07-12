@@ -313,6 +313,43 @@ div.ag-product-wish{
     background-image: url(/bitrix/templates/agnew/i/common/ajax-loader.gif); 
 }
 
+
+div.ag-product-rating{
+    height: 50px;
+    width: 60%;
+    margin: 0px auto;
+    position: relative;
+}
+
+    div.ag-product-rating div.ag-product-mark-post{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 120px;
+        height: 23px;
+        background-image: url(/bitrix/templates/agnew/i/common/greystar.png); 
+        text-align: center;
+    }
+
+    div.ag-product-rating div.ag-product-mark-post .yellow{
+        position: relative;
+        height: 23px;
+        width: 0%;
+        background-image: url(/bitrix/templates/agnew/i/common/yellowstar.png); 
+    }
+    
+    div.ag-product-rating div.ag-product-mark{
+        top: 0px !important;
+    }
+    
+    div.ag-product-rating div.ag-product-wish{
+        right: 80% !important;
+        top: 5px;
+    }
+    
+
+
+
 div.ag-product-mark{
     position: absolute;
     top: 50px;

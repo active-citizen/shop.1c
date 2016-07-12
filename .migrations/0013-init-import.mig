@@ -13,7 +13,7 @@
             
             CModule::IncludeModule("iblock");
             // Узнаём ID инфоблока товарных предложений
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offАers"));
             $iblock = $res->GetNext();
             $OfferIblockId = $iblock["ID"];
             // Узнаём ID инфоблока каталога
@@ -825,7 +825,7 @@
                 }
 
                 if(!isset($product["PROPERTIES"]["MORE_PHOTO"]))$product["PROPERTIES"]["MORE_PHOTO"] = $picturePath;
-                
+                $product["PROPERTIES"]["RATING"] = rand();
                 foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
                     if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                         $arrFile = array();

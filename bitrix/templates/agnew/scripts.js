@@ -2,6 +2,45 @@ var scrollProcess = 0;
 
 $(document).ready(function(){
     
+    
+    $(".ag-product-mark-post").mousemove(function(){
+        var ofset = $(this).offset();
+        var percent = parseInt(100*(event.clientX - ofset.left)/$(this).width());
+        var mark = parseInt(5*(event.clientX - ofset.left)/$(this).width()+1);
+        $(this).find('.yellow').css("width",20*parseInt(5*(percent/100)+1)+'%');
+        $(this).attr("mark",mark)
+    });
+    $(".ag-product-mark-post").mouseout(function(){
+        $(this).find('.yellow').css("width",'0%');
+    });
+    $(".ag-product-mark-post").click(function(){
+        var mark = $(this).attr("mark");
+        var product = $(this).attr("product");
+        var markObj = $(this);
+        
+        markObj.text('Загрузка...');
+        $.get(
+            "/order/order.ajax.php?mark="+mark+"&product="+product,
+            function(data){
+                var answer = JSON.parse(data);
+                if(answer.percent){
+                    markObj.find('yellow').remove();
+                    markObj.removeClass("ag-product-mark-post");
+                    markObj.addClass("ag-product-mark");
+                    markObj.css("right",parseInt(4+24*(1-answer.percent))+'px');
+                    markObj.css("background-position",parseInt(24*(1-answer.percent))+'px');
+                    markObj.css("right",'70px');
+                    markObj.text('');
+                }
+                else{
+                    alert(answer.error);
+                }
+            }
+        );
+    });
+    
+    
+    
     $("#back-top").hide();
     $(window).scroll(function () {
         if ($(this).scrollTop() > 630) {
