@@ -255,7 +255,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 			0 => "",
 			1 => "",
 		),
-		"SHOW_EMPTY_STORE" => "Y",
+		"SHOW_EMPTY_STORE" => "N",
 		"SHOW_GENERAL_STORE_INFORMATION" => "N",
 		"USE_BIG_DATA" => "N",
 		"BIG_DATA_RCM_TYPE" => "bestsell",

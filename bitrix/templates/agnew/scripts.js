@@ -56,7 +56,7 @@ $(document).ready(function(){
             $('#ag-sorting').val('price-asc');
         }
         
-        var types = $('#ag-types').val().split(',');
+        var types = $('#ag-types').length>0?$('#ag-types').val().split(','):Array();
         for(i in types)
             $('.ag-filter-params label[rel="'+types[i]+'"]').addClass('radio-active');
         
@@ -206,6 +206,34 @@ $(document).ready(function(){
                     "ORDER_PROP_3":     $('.catalog_item_confirm_message .ag-window #ag-phone').html(),
                     "ORDER_PROP_7":     $('.catalog_item_confirm_message .ag-window #ag-address').html(),
                 }
+
+
+                $.get(
+                    "/order/order.ajax.php?add_order=Y",
+                    function(data){
+                        var answer = JSON.parse(data);
+                        if(answer.redirect_url){
+                            document.location.href=answer.redirect_url;
+                        }
+                        else{
+                            // Чистим корзину, если заказ неудачен
+                            $.get(
+                                "/order/order.ajax.php?clear_basket",
+                                function(){
+                                    $('#order-process-done').css('display','none');
+                                    $('.ok-button').css('display','block');
+                                    var error_text = '';
+                                    for(i in answer.order.ERROR){
+                                        error_text += i+": "+answer.order.ERROR[i];
+                                    }
+                                    $('.catalog_item_confirm_message').fadeOut('fast');
+                                    ag_ci_rise_error(error_text);
+                                }
+                            );
+                        }
+                    }
+                );
+                /*
                 $.post(
                     "/order/make/",
                     postdata,
@@ -232,6 +260,8 @@ $(document).ready(function(){
                         }
                     }
                 );
+                */
+                
             }
         );
         return false;
@@ -369,4 +399,3 @@ function ag_filter(){
 
     });
 }
-

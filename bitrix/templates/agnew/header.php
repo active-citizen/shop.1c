@@ -12,9 +12,10 @@
     $APPLICATION->SetAdditionalCSS("/bitrix/css/main/bootstrap.css");                                                                                                                       
     $APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
     ?>
-    <link rel="stylesheet" href="/bitrix/templates/agnew/css/jquery-ui.css">
-    <link rel="stylesheet" href="/bitrix/templates/agnew/css/fotorama.css" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="/bitrix/templates/agnew/ag-styles.css" />
+    <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/jquery-ui.css">
+    <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/fotorama.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="<?= SITE_TEMPLATE_PATH?>/ag-styles.css" />
+    <link rel="icon" type="image/ico" href="<?= SITE_TEMPLATE_PATH?>/i/favicon.ico">
     <title><?$APPLICATION->ShowTitle()?></title>
 
 </head>
@@ -65,5 +66,3 @@
                     </div>
                 </div>
             </div>
-            
-    

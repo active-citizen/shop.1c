@@ -11,6 +11,71 @@ global $USER;
 if(!$USER->IsAuthorized()){
     $answer["error"] = "Not Authorized";
 }
+elseif(isset($_GET["add_order"])){
+    CModule::IncludeModule('sale');
+    
+    $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"), array(
+        "FUSER_ID" => CSaleBasket::GetBasketUserID(),
+        "LID" => SITE_ID,
+        "ORDER_ID" => "NULL"
+    ),false,false,array("ID"));
+    
+    if(!$basket = $res->GetNext()){
+        $answer = array("error"=>"Корзина пуста");
+        echo json_encode($answer);
+        die;
+    }
+    $basketId = $basket["ID"];
+    
+    $arrBasket = CSaleBasket::GetByID($basketId);
+    
+    $res = CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
+    if(!$paySystem = $res->GetNext()){
+        $answer = array("error"=>"Нет активных платёжных систем");
+        echo json_encode($answer);
+        die;
+    }
+    
+    $res = CSaleDelivery::GetList(array(),array("ACTIVE"=>"Y"));
+    if(!$delivery = $res->GetNext()){
+        $answer = array("error"=>"Нет активных служб доставки");
+        echo json_encode($answer);
+        die;
+    }
+    
+    $arFields = array();
+    $arFields["LID"] = SITE_ID;
+    $arFields["PERSON_TYPE_ID"] = 1;
+    $arFields["PAYED"] = 'Y';
+    $arFields["CANCELED"] = "N";
+    $arFields["STATUS_ID"] = "N";
+    $arFields["PRICE"] = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
+    $arFields["CURRENCY"] = "BAL";
+    $arFields["USER_ID"] = IntVal($USER->GetID());
+    $arFields["PAY_SYSTEM_ID"] = $paySystem["ID"];
+    $arFields["PRICE_DELIVERY"] = 0;
+    $arFields["DELIVERY_ID"] = $delivery["ID"];
+    $arFields["DISCOUNT_VALUE"] = 0;
+    $arFields["TAX_VALUE"] = 0;
+    $arFields["USER_DESCRIPTION"] = "";
+
+/*
+    echo "<pre>";
+    print_r($arFields);
+    print_r($arrBasket);
+    die;
+*/
+
+    $resCSaleOrder = new CSaleOrder;
+    if($orderId = $resCSaleOrder->Add($arFields)){
+        CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
+        $answer["redirect_url"] = "/order/detail/$orderId/";
+    }
+    else{
+        $answer["error"] = "Не могу создать заказ: ".print_r($resCSaleOrder,1);
+    }
+    
+}
 elseif(isset($_GET["clear_basket"])){
     CModule::IncludeModule('sale');
     CSaleBasket::DeleteAll(CUser::GetID());    
