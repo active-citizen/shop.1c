@@ -195,25 +195,32 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
     //////////////////// Конец: Кастомизация вывода товаров в разделе
     
 	?><div class="<? echo ($arItem['SECOND_PICT'] ? 'bx_catalog_item double' : 'bx_catalog_item'); ?>"><div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
+
+    <? $top = 20;?>
+    <? if($arItem["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
+    <div class="ag-newproduct" title="Новинка" style="top: <?= $top ?>px">Новинка</div>
+    <? $top += 60;?>
+    <? endif?>
+
+    <? if($arItem["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
+    <div class="ag-saleleader" title="Лидер продаж" style="top: <?= $top ?>px">Лидер продаж</div>
+    <? $top += 60;?>
+    <? endif?>
+
+    <? if($arItem["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
+    <div class="ag-specialoffer" title="Спецпредложение" style="top: <?= $top ?>px">Спец- предло- жение</div>
+    <? $top += 60;?>
+    <? endif?>
+    
+    
         <div class="bx_catalog_item_title"><a href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" title="<? echo $productTitle; ?>"><? echo $productTitle; ?></a></div>
         <div class="ag-product-wish <?= $arItem['mywish']?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arItem['ID']?>" onclick="return mywish(this)"><?= $arItem['wishes'];?></div>
         <? if($arItem["mark"]):?>
         <div class="ag-product-mark" style="right: <?= round(4+24*(1-$arItem["mark"]))?>px;background-position: <?= round(24*(1-$arItem["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$arItem["mark"],1)?>" productid="<?= $arItem['ID']?>"></div>
         <? endif ?>
 		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><?
-	if ('Y' == $arParams['SHOW_DISCOUNT_PERCENT'])
-	{
 	?>
-			<div id="<? echo $arItemIDs['DSC_PERC']; ?>" class="bx_stick_disc right bottom" style="display:<? echo (0 < $minPrice['DISCOUNT_DIFF_PERCENT'] ? '' : 'none'); ?>;">-<? echo $minPrice['DISCOUNT_DIFF_PERCENT']; ?>%</div>
-	<?
-	}
-	if ($arItem['LABEL'])
-	{
-	?>
-			<div id="<? echo $arItemIDs['STICKER_ID']; ?>" class="bx_stick average left top" title="<? echo $arItem['LABEL_VALUE']; ?>"><? echo $arItem['LABEL_VALUE']; ?></div>
-	<?
-	}
-	?>
+
 		</a><?
 	if ($arItem['SECOND_PICT'])
 	{
@@ -226,12 +233,6 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 		{
 		?>
 			<div id="<? echo $arItemIDs['SECOND_DSC_PERC']; ?>" class="bx_stick_disc right bottom" style="display:<? echo (0 < $minPrice['DISCOUNT_DIFF_PERCENT'] ? '' : 'none'); ?>;">-<? echo $minPrice['DISCOUNT_DIFF_PERCENT']; ?>%</div>
-		<?
-		}
-		if ($arItem['LABEL'])
-		{
-		?>
-			<div id="<? echo $arItemIDs['SECOND_STICKER_ID']; ?>" class="bx_stick average left top" title="<? echo $arItem['LABEL_VALUE']; ?>"><? echo $arItem['LABEL_VALUE']; ?></div>
 		<?
 		}
 		?>

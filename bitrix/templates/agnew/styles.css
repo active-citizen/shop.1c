@@ -635,3 +635,45 @@ div.ag-amount{
 div.ag-amount span.real{
     display: none;
 }
+
+div.ag-newproduct{
+    position: absolute;
+    font-size: 10px;
+    width: 60px;
+    background-color: red;
+    height: 50px;
+    padding: 5px;
+    left: 5px;
+    border-radius: 30px;
+    color: white;
+    z-index: 999;
+    text-align: center;
+}
+
+div.ag-saleleader{
+    position: absolute;
+    font-size: 10px;
+    width: 60px;
+    background-color: blue;
+    height: 50px;
+    padding: 5px;
+    left: 5px;
+    border-radius: 30px;
+    color: white;
+    z-index: 999;
+    text-align: center;
+}
+
+div.ag-specialoffer{
+    position: absolute;
+    font-size: 10px;
+    width: 60px;
+    background-color: green;
+    height: 50px;
+    padding: 5px;
+    left: 5px;
+    border-radius: 30px;
+    color: white;
+    z-index: 999;
+    text-align: center;
+}

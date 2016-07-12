@@ -450,6 +450,11 @@ if (!empty($arResult['ITEMS']))
 		}
 		$arItem['LAST_ELEMENT'] = 'N';
 		$arNewItemsList[$key] = $arItem;
+        
+        // Получение всех свойств товара
+        $ress = CIBlockElement::GetProperty($arItem["IBLOCK_ID"],$arItem["ID"]);
+        $arItem["ALL_PROPERTIES"] = array();
+        while($row = $ress->GetNext())$arItem["ALL_PROPERTIES"][$row["CODE"]] = $row;
 	}
 	$arNewItemsList[$key]['LAST_ELEMENT'] = 'Y';
 	$arResult['ITEMS'] = $arNewItemsList;
@@ -523,6 +528,12 @@ foreach($arResult["ITEMS"] as $item_id=>$item){
     $row = $res->GetNext();
 
     $arResult["ITEMS"][$item_id]["mark"] = $row["PROPERTY_RATING_VALUE"];
+
+    // Получение всех свойств товара
+    $ress = CIBlockElement::GetProperty($arItem["IBLOCK_ID"],$arItem["ID"]);
+    $arResult["ITEMS"][$item_id]["ALL_PROPERTIES"] = array();
+    while($row = $ress->GetNext())$arResult["ITEMS"][$item_id]["ALL_PROPERTIES"][$row["CODE"]] = $row;
+
 }
 
 

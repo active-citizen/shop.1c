@@ -91,7 +91,12 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     );
     
     while($product = $res->GetNext()){
-       
+
+        // Получение всех свойств товара
+        $res2 = CIBlockElement::GetProperty($arrFilter["IBLOCK_ID"],$product["ID"]);
+        $product["ALL_PROPERTIES"] = array();
+        while($row = $res2->GetNext())$product["ALL_PROPERTIES"][$row["CODE"]] = $row;
+        
         $image_url = '';
         if($file_id = intval($product["DETAIL_PICTURE"]))$image_url = CFile::GetPath($file_id);
 
@@ -121,6 +126,22 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             <div class="ag-product-mark" style="right: <?= round(4+24*(1-$product["mark"]))?>px;background-position: <?= round(24*(1-$product["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$product["mark"],1)?>" productid="<?= $product['ID']?>"></div>
             <? endif ?>
             <div class="ag-main-price"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?> б.</div>
+            
+            <? $top = 10;?>
+            <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
+            <div class="ag-newproduct" title="Новинка" style="top: <?= $top ?>px">Новинка</div>
+            <? $top += 60;?>
+            <? endif?>
+        
+            <? if($product["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
+            <div class="ag-saleleader" title="Лидер продаж" style="top: <?= $top ?>px">Лидер продаж</div>
+            <? $top += 60;?>
+            <? endif?>
+        
+            <? if($product["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
+            <div class="ag-specialoffer" title="Спецпредложение" style="top: <?= $top ?>px">Спец- предло- жение</div>
+            <? endif?>
+            
         </div>
         <?
     }

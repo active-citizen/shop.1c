@@ -101,27 +101,24 @@ $arFirstPhoto = current($arResult['MORE_PHOTO']);
 	<div class="bx_bigimages" id="<? echo $arItemIDs['BIG_IMG_CONT_ID']; ?>">
 	<div class="bx_bigimages_imgcontainer">
 	<span class="bx_bigimages_aligner"><img id="<? echo $arItemIDs['PICT']; ?>" src="<? echo $arFirstPhoto['SRC']; ?>" alt="<? echo $strAlt; ?>" title="<? echo $strTitle; ?>"></span>
-<?
-if ('Y' == $arParams['SHOW_DISCOUNT_PERCENT'])
-{
-	if (!isset($arResult['OFFERS']) || empty($arResult['OFFERS']))
-	{
-		if (0 < $arResult['MIN_PRICE']['DISCOUNT_DIFF'])
-		{
-?>
-	<div class="bx_stick_disc right bottom" id="<? echo $arItemIDs['DISCOUNT_PICT_ID'] ?>"><? echo -$arResult['MIN_PRICE']['DISCOUNT_DIFF_PERCENT']; ?>%</div>
-<?
-		}
-	}
-	else
-	{
-?>
-	<div class="bx_stick_disc right bottom" id="<? echo $arItemIDs['DISCOUNT_PICT_ID'] ?>" style="display: none;"></div>
-<?
-	}
-}
-?>
-	<div class="bx_stick average left top" <?= (empty($arResult['LABEL'])? 'style="display:none;"' : '' ) ?> id="<? echo $arItemIDs['STICKER_ID'] ?>" title="<? echo $arResult['LABEL_VALUE']; ?>"><? echo $arResult['LABEL_VALUE']; ?></div>
+    
+    
+    <? $top = 10;?>
+    <? if($arResult["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
+    <div class="ag-newproduct" title="Новинка" style="top: <?= $top ?>px">Новинка</div>
+    <? $top += 60;?>
+    <? endif?>
+
+    <? if($arResult["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
+    <div class="ag-saleleader" title="Лидер продаж" style="top: <?= $top ?>px">Лидер продаж</div>
+    <? $top += 60;?>
+    <? endif?>
+
+    <? if($arResult["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
+    <div class="ag-specialoffer" title="Спецпредложение" style="top: <?= $top ?>px">Спец- предло- жение</div>
+    <? $top += 60;?>
+    <? endif?>
+
 	</div>
 	</div>
 <?
@@ -453,6 +450,7 @@ if (isset($arResult['OFFERS']) && !empty($arResult['OFFERS']) && !empty($arResul
 	unset($arProp);
 ?>
 </div>
+
 <?
 }
 ?>

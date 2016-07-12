@@ -670,8 +670,9 @@ if($arResult["ID"]){
         array("ID")
     );
     $arResult["WISHES"] = $res->SelectedRowsCount();
-
 }
 
-
-
+// Получение всех свойств товара
+$res = CIBlockElement::GetProperty($arResult["IBLOCK_ID"],$arResult["ID"]);
+$arResult["ALL_PROPERTIES"] = array();
+while($row = $res->GetNext())$arResult["ALL_PROPERTIES"][$row["CODE"]] = $row;
