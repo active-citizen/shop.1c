@@ -42,37 +42,43 @@ elseif(isset($_GET["add_order"])){
         echo json_encode($answer);
         die;
     }
+
+
+    
+    // Проверяем сумму на счёте
+    $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
+    $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
+    if($account["CURRENT_BUDGET"]<$totalSum){
+        $answer = array("error"=>"Недостаточно баллов на счёте");
+        echo json_encode($answer);
+        die;
+    }
     
     $arFields = array();
     $arFields["LID"] = SITE_ID;
     $arFields["PERSON_TYPE_ID"] = 1;
-    $arFields["PAYED"] = 'Y';
+    $arFields["PAYED"] = 'N';
     $arFields["CANCELED"] = "N";
     $arFields["STATUS_ID"] = "N";
-    $arFields["PRICE"] = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
+    $arFields["PRICE"] = $totalSum;
     $arFields["CURRENCY"] = "BAL";
-    $arFields["USER_ID"] = IntVal($USER->GetID());
-    $arFields["PAY_SYSTEM_ID"] = $paySystem["ID"];
+    $arFields["USER_ID"] = CUSer::GetID();
+    //$arFields["PAY_SYSTEM_ID"] = $paySystem["ID"];
     $arFields["PRICE_DELIVERY"] = 0;
     $arFields["DELIVERY_ID"] = $delivery["ID"];
     $arFields["DISCOUNT_VALUE"] = 0;
     $arFields["TAX_VALUE"] = 0;
     $arFields["USER_DESCRIPTION"] = "";
 
-/*
-    echo "<pre>";
-    print_r($arFields);
-    print_r($arrBasket);
-    die;
-*/
-
     $resCSaleOrder = new CSaleOrder;
     if($orderId = $resCSaleOrder->Add($arFields)){
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
+//        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
+        CSaleOrder::PayOrder($orderId,"Y",true,false);
         $answer["redirect_url"] = "/order/detail/$orderId/";
     }
     else{
-        $answer["error"] = "Не могу создать заказ: ".print_r($resCSaleOrder,1);
+        $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);
     }
     
 }
