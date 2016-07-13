@@ -200,7 +200,6 @@ if ($arResult['SHOW_SLIDER'])
 	</ul>
 	</div>
  
- 
     <div class="ag-product-rating">
             <div class="ag-product-wish <?= $arResult["MY_WISH"]?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arResult['ID']?>" onclick="return mywish(this)"><?= $arResult['WISHES'];?></div>
         

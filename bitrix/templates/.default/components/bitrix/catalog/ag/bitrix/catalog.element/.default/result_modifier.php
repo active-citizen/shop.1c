@@ -618,14 +618,15 @@ $ids = array();
 foreach($arResult["OFFERS"] as $offer)$ids[] = $offer["ID"];
 
 // Ищем эти торговые предложения среди корзин
+
 $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"),array("USER_ID"=>CUser::GetID(),"PRODUCT_ID"=>$ids),false,array("nTopCount"=>1));
 $orderId = 0;
 if($arrBasket = $res->GetNext())$orderId = $arrBasket["ORDER_ID"];
 
-
 // Смотрим статус заказа этой корзины
 $arResult["ORDER"] = array("STATUS"=>"");
 if($orderId)$arResult["ORDER"] = CSaleOrder::GetByID($orderId);
+
 
 // Ищем голос за этот продукт у этого пользователя
 $arResult["MY_MARK"] = 0;
@@ -640,6 +641,7 @@ if($arResult["ID"]){
     $row = $res->GetNext();
     if(isset($row["PROPERTY_MARK_VALUE"]))$arResult["MY_MARK"] = $row["PROPERTY_MARK_VALUE"];
 }
+
 
 // Определяем среднюю оценку товара
 $arResult["RATING"] = 0;
@@ -676,3 +678,4 @@ if($arResult["ID"]){
 $res = CIBlockElement::GetProperty($arResult["IBLOCK_ID"],$arResult["ID"]);
 $arResult["ALL_PROPERTIES"] = array();
 while($row = $res->GetNext())$arResult["ALL_PROPERTIES"][$row["CODE"]] = $row;
+

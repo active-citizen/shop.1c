@@ -640,40 +640,40 @@ div.ag-newproduct{
     position: absolute;
     font-size: 10px;
     width: 60px;
-    background-color: red;
-    height: 50px;
+    height: 60px;
     padding: 5px;
     left: 5px;
-    border-radius: 30px;
     color: white;
     z-index: 999;
     text-align: center;
+    background-image: url(/bitrix/templates/agnew/i/common/newproduct.png);
+    color: transparent;
 }
 
 div.ag-saleleader{
     position: absolute;
     font-size: 10px;
     width: 60px;
-    background-color: blue;
-    height: 50px;
+    height: 60px;
     padding: 5px;
     left: 5px;
-    border-radius: 30px;
     color: white;
     z-index: 999;
     text-align: center;
+    background-image: url(/bitrix/templates/agnew/i/common/saleleader.png);
+    color: transparent;
 }
 
 div.ag-specialoffer{
     position: absolute;
     font-size: 10px;
     width: 60px;
-    background-color: green;
-    height: 50px;
+    height: 60px;
     padding: 5px;
     left: 5px;
-    border-radius: 30px;
     color: white;
     z-index: 999;
     text-align: center;
+    background-image: url(/bitrix/templates/agnew/i/common/saleoffer.png);
+    color: transparent;
 }
