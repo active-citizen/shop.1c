@@ -13,9 +13,10 @@
             
             CModule::IncludeModule("iblock");
             // Узнаём ID инфоблока товарных предложений
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offАers"));
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
             $iblock = $res->GetNext();
             $OfferIblockId = $iblock["ID"];
+            
             // Узнаём ID инфоблока каталога
             $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
             $iblock = $res->GetNext();
@@ -701,8 +702,8 @@
             while($doc=$res->GetNext()){
                 CCatalogDocs::Update($doc["ID"],array("STATUS"=>"N"));
                 if(!CCatalogDocs::delete($doc["ID"])){
-                    print_r($doc);
-                    echo "Error!!!";
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
             
@@ -719,8 +720,8 @@
             // Сносим элементы каталога
             while($element = $res->GetNext()){
                 if(!$resIB->Delete($element["ID"])){
-                    print_r($resIB);
-                    echo "Error!!!";
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
 
@@ -730,8 +731,8 @@
             $resIB = new CIBlockSection;
             while($section = $res->GetNext()){
                 if(!$resIB->Delete($section["ID"])){
-                    print_r($resIB);
-                    echo "Error!!!";
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
             
@@ -742,7 +743,8 @@
             $resIB = new CIBlockElement;
             while($element = $res->GetNext()){
                 if(!$resIB->Delete($element["ID"])){
-                    print_r($resIB);
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
             
@@ -753,8 +755,8 @@
             $resIB = new CIBlockElement;
             while($element = $res->GetNext()){
                 if(!$resIB->Delete($element["ID"])){
-                    echo "Error!!!";
-                    print_r($resIB);
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
             
@@ -764,8 +766,8 @@
                 if(!CCatalogStore::Delete(
                     $store["ID"]
                 )){
-                    echo "Error!!!";
-                    print_r($res);
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
             
@@ -788,8 +790,8 @@
                     "MODULE_ID" => "catalog"
                 );
                 if(!$resSection->Add($section)){
-                    echo "Error!!!";
-                    print_r($resSection);
+                    echo "Error!!!: ".__LINE__;
+                    die;
                 }
             }
             
@@ -857,13 +859,19 @@
                         "PREVIEW_PICTURE"   =>  (isset($offer["PREVIEW_PICTURE"]) && $offer["PREVIEW_PICTURE"]? CFile::MakeFileArray($offer["PREVIEW_PICTURE"]):$product["PREVIEW_PICTURE"]),
                         "DETAIL_PICTURE"    =>  (isset($offer["DETAIL_PICTURE"]) && $offer["DETAIL_PICTURE"]? CFile::MakeFileArray($offer["DETAIL_PICTURE"]):$product["DETAIL_PICTURE"]),
                     );
-
+                    
+                    
                     if(!isset($offer["PROPERTIES"]) || !is_array($offer["PROPERTIES"]))$offer["PROPERTIES"] = array();
-                    $offerId = $resElement->Add($offerFields);
+                    if(!$offerId = $resElement->Add($offerFields)){
+                        print_r($offerFields);
+                        echo "Error!!! ".__LINE__." ".print_r($resElement);
+                        die;
+                    }
                     
                     
                     $offer["PROPERTIES"]["CML2_LINK"] = $id;
                     $offer["PROPERTIES"]["PRICE"] = $offerFields["PRICE"];
+                    $offer["PROPERTIES"]["MORE_PHOTO"] = (isset($offer["PROPERTIES"]["MORE_PHOTO"]) && $offer["PROPERTIES"]["MORE_PHOTO"]?$offer["PROPERTIES"]["MORE_PHOTO"]:$product["PROPERTIES"]["MORE_PHOTO"]);
                     foreach($offer["PROPERTIES"] as $prop_code=>$prop_value){
                         if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                             $arrFile = array();
@@ -873,13 +881,17 @@
                             CIBlockElement::SetPropertyValuesEx($offerId, $OfferIblockId, array('MORE_PHOTO' => $arrFile));
                         }
                         elseif($prop_code=='PRICE' && !is_array($prop_value)){
-                            if(!$priceId = CPrice::Add(array(
+                            $arFields = array(
                                 "PRODUCT_ID"=>$offerId,
                                 "CATALOG_GROUP_ID"=>1,
                                 "PRICE"=>$prop_value,
                                 "CURRENCY"=>"BAL",
-                            ),true)){
-                                echo "error!";
+                            );
+                            print_r($arFields);
+                            $objPrice = new CPrice;
+                            if(!$priceId = $objPrice->Add($arFields,true)){
+                                echo "Error!!!: ".__LINE__." ".print_r($objPrice,1);;
+                                die;
                             }
                         }
                         elseif($prop_code=='MORE_PHOTO' && !is_array($prop_value)){
@@ -908,7 +920,7 @@
                             "AMOUNT"=>$storeAmount
                         );
                         if(!$resCatalogStoreProduct->Add($arFields)){
-                            echo "Error!: ".print_r($resCatalogStoreProduct,1);
+                            echo "Error!!!: ".__LINE__;
                             die;
                         }
                         $totalAmount+=$storeAmount;
@@ -925,8 +937,6 @@
             }
             
             
-            
-            die;
             
             return true;
 

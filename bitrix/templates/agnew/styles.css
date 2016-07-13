@@ -323,7 +323,7 @@ div.ag-product-rating{
 
     div.ag-product-rating div.ag-product-mark-post{
         position: absolute;
-        top: 10px;
+        top: -70px;
         right: 10px;
         width: 120px;
         height: 23px;
@@ -339,12 +339,12 @@ div.ag-product-rating{
     }
     
     div.ag-product-rating div.ag-product-mark{
-        top: 0px !important;
+        top: -70px !important;
     }
     
     div.ag-product-rating div.ag-product-wish{
         right: 80% !important;
-        top: 5px;
+        top: -70px;
     }
     
 
@@ -676,4 +676,26 @@ div.ag-specialoffer{
     text-align: center;
     background-image: url(/bitrix/templates/agnew/i/common/saleoffer.png);
     color: transparent;
+}
+
+.bx_item_detail .bx_item_slider .bx_slide{
+    overflow: inherit;
+}
+
+.bx_item_detail .bx_item_slider .bx_slide ul{
+    width: 100%;
+    margin-left: 66px;
+}
+
+.bx_item_detail .bx_item_slider .bx_slide ul li{
+    width: 111px;
+    height: 111px
+}
+
+.bx_slide_right{
+    display: none;
+}
+
+.bx_slide_left{
+    display: none;
 }

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/fotorama.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="<?= SITE_TEMPLATE_PATH?>/ag-styles.css" />
     <link rel="icon" type="image/ico" href="<?= SITE_TEMPLATE_PATH?>/i/favicon.ico">
+    <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/jquery.fancybox.css">
     <title><?$APPLICATION->ShowTitle()?></title>
 
 </head>

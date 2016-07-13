@@ -187,18 +187,19 @@ if ($arResult['SHOW_SLIDER'])
 	<div class="<? echo $strClass; ?>" id="<? echo $arItemIDs['SLIDER_CONT_OF_ID'].$arOneOffer['ID']; ?>" style="display: <? echo $strVisible; ?>;">
 	<div class="bx_slider_scroller_container">
 	<div class="bx_slide">
-	<ul style="width: <? echo $strWidth; ?>;" id="<? echo $arItemIDs['SLIDER_LIST_OF_ID'].$arOneOffer['ID']; ?>">
+	<ul id="<? echo $arItemIDs['SLIDER_LIST_OF_ID'].$arOneOffer['ID']; ?>">
 <?
 			foreach ($arOneOffer['MORE_PHOTO'] as &$arOnePhoto)
 			{
 ?>
-	<li data-value="<? echo $arOneOffer['ID'].'_'.$arOnePhoto['ID']; ?>" style="width: <? echo $strOneWidth; ?>; padding-top: <? echo $strOneWidth; ?>"><span class="cnt"><span class="cnt_item" style="background-image:url('<? echo $arOnePhoto['SRC']; ?>');"></span></span></li>
+	<li data-value="<? echo $arOneOffer['ID'].'_'.$arOnePhoto['ID']; ?>" style="padding-top: <? echo $strOneWidth; ?>"><span class="cnt"><span class="cnt_item" style="background-image:url('<? echo $arOnePhoto['SRC']; ?>');"></span></span></li>
 <?
 			}
 			unset($arOnePhoto);
 ?>
 	</ul>
 	</div>
+ 
  
     <div class="ag-product-rating">
             <div class="ag-product-wish <?= $arResult["MY_WISH"]?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arResult['ID']?>" onclick="return mywish(this)"><?= $arResult['WISHES'];?></div>

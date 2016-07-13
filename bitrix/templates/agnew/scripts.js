@@ -156,6 +156,8 @@ $(document).ready(function(){
                 return false;
             }
         });
+        
+        
         if(!offer_id){ag_ci_rise_error("Неизвестный ID товарного каталога");return false;}
         
         // Определяем ID выбранного склада
