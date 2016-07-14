@@ -2,6 +2,14 @@ var scrollProcess = 0;
 
 $(document).ready(function(){
     
+    $('.ag-tab-title').click(function(){
+        $('.ag-tab-title').removeClass('active');
+        $(this).addClass('active');
+        $('.ag-tab-content').css('display','none');
+        $('div.ag-tab-content[rel="'+$(this).attr("rel")+'"]').css('display','block');
+        
+    });
+    
     
     $(".ag-product-mark-post").mousemove(function(){
         if($(this).hasClass('voted'))return false;

@@ -734,5 +734,73 @@ div.ag-specialoffer{
     width: 265px;
     height: 32px;
     background-repeat: no-repeat;
+    margin: 0px auto 40px auto;
+}
+
+.ag-tab-content{
+    width: 90% !important;
+    display: none;
+}
+
+.ag-product-tabs{
+    width: 80% !important;
+    margin: 20px auto 0px auto;
+    clear: both;
+    height: 32px;
+    border-bottom: 1px #AAA solid;
+}
+
+    .ag-product-tabs div{
+        float: left;
+        width: 150px;
+        height: 32px;
+        text-align: center;
+        padding-top: 5px;
+        cursor: pointer;
+    }
+    .ag-product-tabs div:hover{
+        text-decoration: underline;
+    }
+
+    .ag-product-tabs div.active{
+        font-weight: bold;
+        border-top: 1px #AAA solid;
+    }
+
+.tab-section-container{
+    width: 75%;
     margin: 0px auto;
 }
+
+a.fimage{
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+}
+
+.fimage img{
+    display: none;
+}
+
+.ag-troika-form{
+    margin: 10px 10px 10px 10px;
+    width: 300px;
+    height: 200px;
+    border: 1px #AAA solid;
+    text-align: center;
+    border-radius: 20px;
+    background-color: #8AD;
+}
+
+    .ag-troika-form input{
+        width: 250px;
+    }
+
+
+    div.ag-troika-form  div.title{
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 50px;
+    }
+    

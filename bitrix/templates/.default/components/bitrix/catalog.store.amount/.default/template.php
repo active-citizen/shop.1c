@@ -80,6 +80,12 @@ if(!empty($arResult["STORES"]) && $arParams["MAIN_TITLE"] != ''):?>
         <div class="ag-store-detail" <?if($arProperty["REAL_AMOUNT"]>0 && !$first):$first=1;?>style="display: block;"<?endif?> id="agst-<?= $arProperty['ID'];?>">
             <h4><a target="_blank" href="<?= $arProperty["URL"]?>"><?= $arProperty["TITLE"]?></a></h4>
             <?if($arProperty["SCHEDULE"]):?>График работы: <?= $arProperty["SCHEDULE"]?><br/><?endif?>
+            <? if($arProperty["ID"]==6):?>
+            <div class="ag-troika-form">
+                <div class="title">Введите номер карты Тройка</div>
+                <input type="text" placeholder="Пример: 1234 456 789 (10 цифр)"> 
+            </div>
+            <? endif ?>
         </div>
 		<?endforeach;?>
         

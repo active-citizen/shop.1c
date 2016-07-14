@@ -680,4 +680,3 @@ $arResult["ALL_PROPERTIES"] = array();
 while($row = $res->GetNext())$arResult["ALL_PROPERTIES"][$row["CODE"]] = $row;
 
 if($arResult["RATING"]>1)$arResult["RATING"] = 0;
-

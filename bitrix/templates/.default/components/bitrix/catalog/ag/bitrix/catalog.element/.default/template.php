@@ -193,7 +193,7 @@ if ($arResult['SHOW_SLIDER'])
 			{
 ?>
 	<li data-value="<? echo $arOneOffer['ID'].'_'.$arOnePhoto['ID']; ?>">
-            <a class="fimage" href="<? echo $arOnePhoto['SRC']; ?>">
+            <a class="fimage" href="<? echo $arOnePhoto['SRC']; ?>" style="background-image: url(<? echo $arOnePhoto['SRC']; ?>);">
                 <img src="<? echo $arOnePhoto['SRC']; ?>">
             </a>
     </li>
@@ -466,6 +466,9 @@ if (isset($arResult['OFFERS']) && !empty($arResult['OFFERS']) && !empty($arResul
 }
 ?>
 <div class="item_info_section">
+    
+<? if(CUser::IsAuthorized()):?><!-- Authorezed -->
+
 <?
 if (isset($arResult['OFFERS']) && !empty($arResult['OFFERS']))
 {
@@ -691,6 +694,7 @@ else
 }
 unset($showAddBtn, $showBuyBtn);
 ?>
+<!-- Authorezed --><? endif?>        
 </div>
 			<div class="clb"></div>
 		</div>
@@ -885,14 +889,18 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 ?>
 </div>
 		</div>
-		<div class="bx_rb">
+        
+        <div class="ag-product-tabs">
+            <div class="ag-tab-title active" rel="detail">Полное описание</div>
+            <div class="ag-tab-title" rel="comments">Комментарии</div>
+        </div>
+		<div class="bx_rb  ag-tab-content" style="display: block;" rel="detail">
 <div class="item_info_section">
 <?
 if ('' != $arResult['DETAIL_TEXT'])
 {
 ?>
 	<div class="bx_item_description">
-		<div class="bx_item_section_name_gray" style="border-bottom: 1px solid #f2f2f2;"><? echo GetMessage('FULL_DESCRIPTION'); ?></div>
 <?
 	if ('html' == $arResult['DETAIL_TEXT_TYPE'])
 	{
@@ -909,7 +917,7 @@ if ('' != $arResult['DETAIL_TEXT'])
 ?>
 </div>
 		</div>
-		<div class="bx_lb">
+		<div class="bx_lb ag-tab-content" rel="comments">
 <div class="tac ovh">
 </div>
 <div class="tab-section-container">
