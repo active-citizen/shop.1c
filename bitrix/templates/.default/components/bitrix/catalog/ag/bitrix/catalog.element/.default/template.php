@@ -192,7 +192,11 @@ if ($arResult['SHOW_SLIDER'])
 			foreach ($arOneOffer['MORE_PHOTO'] as &$arOnePhoto)
 			{
 ?>
-	<li data-value="<? echo $arOneOffer['ID'].'_'.$arOnePhoto['ID']; ?>" style="padding-top: <? echo $strOneWidth; ?>"><span class="cnt"><span class="cnt_item" style="background-image:url('<? echo $arOnePhoto['SRC']; ?>');"></span></span></li>
+	<li data-value="<? echo $arOneOffer['ID'].'_'.$arOnePhoto['ID']; ?>">
+            <a class="fimage" href="<? echo $arOnePhoto['SRC']; ?>">
+                <img src="<? echo $arOnePhoto['SRC']; ?>">
+            </a>
+    </li>
 <?
 			}
 			unset($arOnePhoto);

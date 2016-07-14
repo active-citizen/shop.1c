@@ -348,6 +348,8 @@ $(document).ready(function(){
         return false;
     });
 
+
+    $('.fimage').fancybox();
     
 });
 
