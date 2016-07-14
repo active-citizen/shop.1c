@@ -206,10 +206,15 @@ if ($arResult['SHOW_SLIDER'])
  
  
     <div class="ag-product-rating">
-            <div class="ag-product-wish <?= $arResult["MY_WISH"]?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arResult['ID']?>" onclick="return mywish(this)"><?= $arResult['WISHES'];?></div>
-        
+            <div class="ag-product-wish <?= $arResult["MY_WISH"]?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arResult['ID']?>" onclick="return mywish(this)">
+                <?= $arResult['WISHES'];?>
+            </div>
     <? if($arResult["ORDER"]['STATUS_ID']!='F' || $arResult["MY_MARK"]):?>
-        <div class="ag-product-mark" style="top: 0px; right: <?= round(74+24*(1-$arResult["RATING"]))?>px;background-position: <?= round(24*(1-$arResult["RATING"]))?>px 0%;" title="Средняя оценка <?= round(5*$arResult["RATING"],1)?>" productid="<?= $arResult['ID']?>"></div>
+        <div class="ag-product-mark-post voted" product="<?= $arResult["ID"]?>">
+            <div class="yellow" style="width: <?= round($arResult["RATING"]*100) ?>%">
+            </div>
+            <?= number_format($arResult["RATING"]*5,1,',',' ') ?>
+        </div>
     <? else:?>
         <div class="ag-product-mark-post" product="<?= $arResult["ID"]?>"><div class="yellow"></div></div>
     <? endif?>
@@ -225,6 +230,8 @@ if ($arResult['SHOW_SLIDER'])
 }
 ?>
 </div>
+    
+    <div class="ag-socials" style="background-image: url(<?= SITE_TEMPLATE_PATH?>/i/common/socials.png);"></div>
 		</div>
 		<div class="bx_rt">
 <?

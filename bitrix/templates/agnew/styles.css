@@ -326,9 +326,10 @@ div.ag-product-rating{
         top: -70px;
         right: 10px;
         width: 120px;
-        height: 23px;
+        height: 64px;
         background-image: url(/bitrix/templates/agnew/i/common/greystar.png); 
         text-align: center;
+        background-repeat: repeat-x;
     }
 
     div.ag-product-rating div.ag-product-mark-post .yellow{
@@ -336,6 +337,7 @@ div.ag-product-rating{
         height: 23px;
         width: 0%;
         background-image: url(/bitrix/templates/agnew/i/common/yellowstar.png); 
+        top: 0px;
     }
     
     div.ag-product-rating div.ag-product-mark{
@@ -725,4 +727,12 @@ div.ag-specialoffer{
 
 .bx_item_detail .bx_item_slider .bx_bigimages .bx_bigimages_imgcontainer img{
     margin-top: 20px;
+}
+
+.ag-socials{
+    clear: both;
+    width: 265px;
+    height: 32px;
+    background-repeat: no-repeat;
+    margin: 0px auto;
 }

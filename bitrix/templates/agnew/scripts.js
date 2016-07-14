@@ -4,6 +4,7 @@ $(document).ready(function(){
     
     
     $(".ag-product-mark-post").mousemove(function(){
+        if($(this).hasClass('voted'))return false;
         var ofset = $(this).offset();
         var percent = parseInt(100*(event.clientX - ofset.left)/$(this).width());
         var mark = parseInt(5*(event.clientX - ofset.left)/$(this).width()+1);
@@ -11,9 +12,11 @@ $(document).ready(function(){
         $(this).attr("mark",mark)
     });
     $(".ag-product-mark-post").mouseout(function(){
+        if($(this).hasClass('voted'))return false;
         $(this).find('.yellow').css("width",'0%');
     });
     $(".ag-product-mark-post").click(function(){
+        if($(this).hasClass('voted'))return false;
         var mark = $(this).attr("mark");
         var product = $(this).attr("product");
         var markObj = $(this);
