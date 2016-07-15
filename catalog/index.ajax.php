@@ -1,6 +1,7 @@
 <?
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
 
     $ON_PAGE = 10;
     $PAGE = isset($_REQUEST["PAGE"])?intval($_REQUEST["PAGE"]):1;
@@ -125,7 +126,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             <? if($product["mark"]):?>
             <div class="ag-product-mark" style="right: <?= round(4+24*(1-$product["mark"]))?>px;background-position: <?= round(24*(1-$product["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$product["mark"],1)?>" productid="<?= $product['ID']?>"></div>
             <? endif ?>
-            <div class="ag-main-price"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?> б.</div>
+            <div class="ag-main-price"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?> <?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
             
             <? $top = 10;?>
             <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
