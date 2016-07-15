@@ -1,4 +1,5 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+require_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
 
 $cp = $this->__component;
 if (is_object($cp))
@@ -90,5 +91,27 @@ if (is_object($cp))
             if(!$prop["VALUE_ENUM"])break;
         }
 	}
+    
+    if(preg_match("#(\d+)#",$arResult["PRICE_FORMATED"],$m)){
+        $arResult["PRICE_FORMATED"] = $m[1]." ".get_points($m[1]);
+    }
+    if(preg_match("#(\d+)#",$arResult["PRODUCT_SUM_FORMATTED"],$m)){
+        $arResult["PRODUCT_SUM_FORMATTED"] = $m[1]." ".get_points($m[1]);
+    }
+    if(preg_match("#(\d+)#",$arResult["PRICE_DELIVERY_FORMATED"],$m)){
+        $arResult["PRICE_DELIVERY_FORMATED"] = $m[1]." ".get_points($m[1]);
+    }
+    
+    foreach($arResult["BASKET"] as $key=>$prod){
+        if(preg_match("#(\d+)#",$prod["PRICE_FORMATED"],$m)){
+            $arResult["BASKET"][$key]["PRICE_FORMATED"] = $m[1]." ".get_points($m[1]);
+        }
+        if(preg_match("#(\d+)#",$prod["DISCOUNT_PRICE_PERCENT_FORMATED"],$m)){
+            $arResult["BASKET"][$key]["DISCOUNT_PRICE_PERCENT_FORMATED"] = $m[1]." ".get_points($m[1]);
+        }
+        
+        
+        
+    }
 }
 ?>
