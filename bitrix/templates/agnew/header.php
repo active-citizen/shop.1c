@@ -44,12 +44,23 @@
                     <a href="/points/" class="ag2-menu-item" >Мои баллы</a>
                     <a href="/wishes/" class="ag2-menu-item" >Мои желания</a>
                     <a href="/rules/" class="ag2-menu-item" >Мои правила</a>
-                    <a href="" class="ag2-menu-item profile" >Иван Иванович Иванов(<? 
-                   CModule::IncludeModule("sale");
-                   $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
-                   $account = $res->GetNext();
-                   if($account["CURRENT_BUDGET"])echo round($account["CURRENT_BUDGET"]);
-                   ?>)</a>
+                    <? if(CUser::IsAuthorized()):?>
+                        <? 
+                            CModule::IncludeModule("sale");
+                            $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
+                            $account = $res->GetNext();
+                            $userInfo = CUser::GetByID(CUser::GetID());
+                            $userInfo = $userInfo->GetNext();
+                        ?>
+                        <a href="http://ag.mos.ru/profile/" class="ag2-menu-item profile" >
+                            <? 
+                                echo $userInfo["LAST_NAME"];
+                                echo $userInfo["NAME"];
+                                if(!trim($userInfo["LAST_NAME"]) && !trim($userInfo["LAST_NAME"]))echo $userInfo["LOGIN"];
+                            ?>
+                            (<?= number_format($account["CURRENT_BUDGET"],0 ,',',' ')?>)
+                        </a>
+                    <? endif?>
                 </div>
                 
                 <div class="ag2-bottom-part">
