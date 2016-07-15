@@ -2,6 +2,7 @@ var scrollProcess = 0;
 
 $(document).ready(function(){
     
+    
     $('.ag-tab-title').click(function(){
         $('.ag-tab-title').removeClass('active');
         $(this).addClass('active');
@@ -241,7 +242,7 @@ $(document).ready(function(){
             return false;
         }
         
-        var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity=1";
+        var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value");
 
         // добавляем в корзину
         $('#order-process-done').css('display','block');
@@ -361,6 +362,11 @@ $(document).ready(function(){
 
 
     $('.fimage').fancybox();
+    
+    $('#ag-basket-amount').spinner({culture: "ru",min: "1",step: "1"});
+
+    $('#ag-basket-amount').spinner("enable");
+    $('#ag-basket-amount').spinner("value",1);
     
 });
 

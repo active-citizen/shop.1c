@@ -290,6 +290,7 @@ if ($useBrands || $useVoteRating)
 unset($useVoteRating, $useBrands);
 ?>
 <div class="item_price">
+
 <?
 $minPrice = (isset($arResult['RATIO_PRICE']) ? $arResult['RATIO_PRICE'] : $arResult['MIN_PRICE']);
 $boolDiscountShow = (0 < $minPrice['DISCOUNT_DIFF']);
@@ -310,6 +311,11 @@ if ($arParams['SHOW_OLD_PRICE'] == 'Y')
 }
 ?>
 </div>
+
+    <b>Количество:</b>
+    <?=$arResult['PROPERTIES']['QUANT']['VALUE']?>
+
+
 <?
 unset($minPrice);
 if (!empty($arResult['DISPLAY_PROPERTIES']) || $arResult['SHOW_OFFERS_PROPS'])
@@ -649,10 +655,11 @@ else
             <!-- END: окно заказа -->
             
             <hr/>
-            <div class="ag-amount-button">-</div>
-            <div class="ag-amount"><span class="real">1</span><span class="visible">200</span></div>
-            <div class="ag-amount-button">+</div>
-            Парковочных баллов
+            <b><?=$arResult['PROPERTIES']['QUANT']['VALUE']?></b>
+            &#160;&#160;&#160;
+            X
+            &#160;&#160;&#160;
+            <input id="ag-basket-amount" name="value">
             <hr/>
             <div id="order-process" style="display: none;">Загрузка...</div>
             <a href="" class="bx_big bx_bt_button bx_cart_ag"><span></span><? echo $buyBtnMessage; ?> </a>
