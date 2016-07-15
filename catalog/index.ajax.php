@@ -76,6 +76,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
         );
         */
     }
+    elseif(!isset($_REQUEST['filter_balls'])){
+        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1500;
+    }
     $arrFilter["ACTIVE"] = 'Y';
     
     // Узнаём ID инфоблока
