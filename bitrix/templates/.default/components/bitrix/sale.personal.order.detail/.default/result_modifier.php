@@ -92,21 +92,21 @@ if (is_object($cp))
         }
 	}
     
-    if(preg_match("#(\d+)#",$arResult["PRICE_FORMATED"],$m)){
+    if(preg_match("#^(\d+).+$#",$arResult["PRICE_FORMATED"],$m)){
         $arResult["PRICE_FORMATED"] = $m[1]." ".get_points($m[1]);
     }
-    if(preg_match("#(\d+)#",$arResult["PRODUCT_SUM_FORMATTED"],$m)){
+    if(preg_match("#^(\d+).+$#",$arResult["PRODUCT_SUM_FORMATTED"],$m)){
         $arResult["PRODUCT_SUM_FORMATTED"] = $m[1]." ".get_points($m[1]);
     }
-    if(preg_match("#(\d+)#",$arResult["PRICE_DELIVERY_FORMATED"],$m)){
+    if(preg_match("#^(\d+).+$#",$arResult["PRICE_DELIVERY_FORMATED"],$m)){
         $arResult["PRICE_DELIVERY_FORMATED"] = $m[1]." ".get_points($m[1]);
     }
     
     foreach($arResult["BASKET"] as $key=>$prod){
-        if(preg_match("#(\d+)#",$prod["PRICE_FORMATED"],$m)){
+        if(preg_match("#^(\d+).+$#",$prod["PRICE_FORMATED"],$m)){
             $arResult["BASKET"][$key]["PRICE_FORMATED"] = $m[1]." ".get_points($m[1]);
         }
-        if(preg_match("#(\d+)#",$prod["DISCOUNT_PRICE_PERCENT_FORMATED"],$m)){
+        if(preg_match("#^(\d+).+$#",$prod["DISCOUNT_PRICE_PERCENT_FORMATED"],$m)){
             $arResult["BASKET"][$key]["DISCOUNT_PRICE_PERCENT_FORMATED"] = $m[1]." ".get_points($m[1]);
         }
         
