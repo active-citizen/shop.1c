@@ -17,7 +17,9 @@ $APPLICATION->SetTitle("Мои желания");
     $res = CIBlockElement::GetList(array(),$arFields,false);
     
     $elements = array();
+    $arrFilter[0][] = array("ID"=>"nowishes");
     while($element = $res->GetNext())$arrFilter[0][] = array("ID"=>preg_replace("#^(\d+)\_\d+$#","$1",$element["NAME"]));
+    
     
     $APPLICATION->IncludeComponent(
     "bitrix:catalog.section",

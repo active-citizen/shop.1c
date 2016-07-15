@@ -10,7 +10,6 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
-
 $this->setFrameMode(true);
 ?>
 <?
@@ -260,7 +259,8 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 		}
 		else
 		{
-			echo $minPrice['PRINT_DISCOUNT_VALUE'];
+			//echo $minPrice['PRINT_DISCOUNT_VALUE'];
+            echo $minPrice['VALUE']." ".get_points($minPrice['VALUE']);
 		}
 		if ('Y' == $arParams['SHOW_OLD_PRICE'] && $minPrice['DISCOUNT_VALUE'] < $minPrice['VALUE'])
 		{
