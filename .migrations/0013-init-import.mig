@@ -31,6 +31,7 @@
                 $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
             }
             
+            
             $data = array(
                 "stores"=>array(
                     array(
@@ -120,6 +121,7 @@
                             "WANTS"     =>  $ENUM["WANTS"]["Развлечься"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Гастрономией"],
                             "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
                         ),
@@ -145,6 +147,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
                             "WANTS"     =>  $ENUM["WANTS"]["На мероприятие"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Спортом"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
@@ -167,6 +170,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
@@ -195,6 +199,7 @@
                             "TYPES"     =>  0,
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
@@ -221,6 +226,7 @@
                             "TYPES"     =>  0,
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -246,6 +252,7 @@
                             "MINIMUM_PRICE" =>  300,
                             "TYPES"     =>  0,
                             "WANTS"     =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "INTERESTS" =>  0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
@@ -274,6 +281,7 @@
                             "TYPES"     =>  0,
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -301,6 +309,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Модой"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
@@ -423,6 +432,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
@@ -464,6 +474,7 @@
                             "TYPES"     =>  0,
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
@@ -491,6 +502,7 @@
                             "TYPES"     =>  0,
                             "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> 0
@@ -518,6 +530,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
                             "WANTS"     =>  $ENUM["WANTS"]["Кататься"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
@@ -543,6 +556,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
                             "WANTS"     =>  $ENUM["WANTS"]["Кататься"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
@@ -568,6 +582,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -595,6 +610,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -610,6 +626,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Историей"],
+                            "CANCEL_ABILITY"=>0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -625,6 +642,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Историей"],
+                            "CANCEL_ABILITY"=>0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -640,6 +658,7 @@
                             "MORE_PHOTO"    =>  array("prod19_01.jpg","prod19_02.jpg"),
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "CANCEL_ABILITY"=>0,
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Технологиями"],
                             "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  0,
@@ -656,6 +675,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "CANCEL_ABILITY"=>0,
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  0,
                             "SPECIALOFFER"=> 0
@@ -671,6 +691,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Отдохни"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  0,
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
@@ -687,6 +708,7 @@
                             "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
                             "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
                             "INTERESTS" =>  $ENUM["INTERESTS"]["Физиологией"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
                             "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
                             "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
                             "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
