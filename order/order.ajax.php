@@ -294,7 +294,41 @@ elseif(isset($_GET["wish"])){
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     // Проверить принадлежит ли заказ пользователю
     CModule::IncludeModule('sale');
+    CModule::IncludeModule('iblock');
     $order = CSaleOrder::GetByID($order_id);
+    
+    // Определяем для каждого заказа возможность его отменить
+    $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes_offers"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+    $res = $res->GetNext();
+    $IBlockId = $res["IBLOCK_ID"];
+    
+    $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+    $res = $res->GetNext();
+    $IBlockId2 = $res["IBLOCK_ID"];
+
+    // Вычисляем может ли быьт заказ отменён
+    $res = CSaleBasket::GetList(array(),array("ORDER_ID"=>$order_id),false);
+    $canCancel = true;
+    while($product = $res->GetNext()){
+
+        $res = CIBlockElement::GetProperty($IBlockId,$product["PRODUCT_ID"],array(), array("CODE"=>"CML2_LINK"));
+        $res = $res->GetNExt();
+        
+        $res = CIBlockElement::GetProperty($IBlockId2,$res["VALUE"],array(), array("CODE"=>"CANCEL_ABILITY"));
+        $prop = $res->GetNext();
+        
+        if(!$prop["VALUE_ENUM"]){
+            $canCancel = false;
+            break;
+        }
+
+    }
+    if(!$canCancel){
+        $answer = array("error"=>"Заказ ID=$order_id не может быть отменн");
+        die;
+    }
+
+    
     if(!isset($order["USER_ID"])){
         $answer = array("error"=>"Нет заказа с ID=$order_id");
     }

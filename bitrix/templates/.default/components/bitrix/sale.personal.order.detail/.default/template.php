@@ -31,7 +31,7 @@
 			<thead>
 				<tr>
 					<td colspan="2">
-                        <?if($arResult["STATUS_ID"]=='N' && $arResult["CANCELED"]!='Y'):?>
+                        <?if($arResult["STATUS_ID"]=='N' && $arResult["CANCEL_ABILITY"] && $arResult["CANCELED"]!='Y'):?>
                                 <a href="#" onclick="return order_cancel(<?=$arResult["ID"]?>,this);" style="min-width:140px" 
                                 id="ag-order-<?=$arResult["ID"]?>" class="bx_big bx_bt_button_type_2 bx_cart bx_order_action ag-cancel-button">
                                     <?=GetMessage("SPOD_ORDER_CANCEL")?>

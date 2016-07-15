@@ -105,8 +105,9 @@
 								<td>
 									<?=$order["ORDER"]["DATE_STATUS_FORMATED"];?>
 									<div class="bx_my_order_status <?=$arResult["INFO"]["STATUS"][$key]['COLOR']?><?/*yellow*/ /*red*/ /*green*/ /*gray*/?>"><?=$arResult["INFO"]["STATUS"][$key]["NAME"]?></div>
+                                        
 
-									<?if($order["ORDER"]["CANCELED"] != "Y"):?>
+									<?if($order["CANCEL_ABILITY"] && $order["ORDER"]["CANCELED"] != "Y"):?>
 									<!-- 
 										<a href="<?=$order["ORDER"]["URL_TO_CANCEL"]?>" style="min-width:140px" 
                                         class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_CANCEL_ORDER')?></a>

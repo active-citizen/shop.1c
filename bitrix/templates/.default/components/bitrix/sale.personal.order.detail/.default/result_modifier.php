@@ -81,7 +81,14 @@ if (is_object($cp))
 
 			$arResult["DELIVERY"]["STORE_LIST"][$arResult['STORE_ID']]['IMAGE'] = $pict;
 		}
-
+        
+        // Определяем для заказа возможность его отменить
+        foreach($arResult["BASKET"] as $basketItem=>$product){
+            $res = CIBlockElement::GetProperty($product["PARENT"]["IBLOCK_ID"],$product["PARENT"]["ID"],array(), array("CODE"=>"CANCEL_ABILITY"));
+            $prop = $res->GetNext();
+            $arResult["CANCEL_ABILITY"] = $prop["VALUE_ENUM"];
+            if(!$prop["VALUE_ENUM"])break;
+        }
 	}
 }
 ?>

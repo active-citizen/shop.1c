@@ -52,4 +52,34 @@
 			$arResult["ORDER_BY_STATUS"][$stat][] = $order;
 		}
 	}
+    
+    // Определяем для каждого заказа возможность его отменить
+    $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes_offers"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+    $res = $res->GetNext();
+    $IBlockId = $res["IBLOCK_ID"];
+    
+    $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+    $res = $res->GetNext();
+    $IBlockId2 = $res["IBLOCK_ID"];
+
+
+    foreach($arResult["ORDER_BY_STATUS"]["N"] as $orderKey => $order){
+        $canCancel = true;
+        foreach($order["BASKET_ITEMS"] as $basketItem=>$product){
+            $res = CIBlockElement::GetProperty($IBlockId,$product["PRODUCT_ID"],array(), array("CODE"=>"CML2_LINK"));
+            
+            while($row = $res->GetNext()){
+                if(!$row["VALUE"])continue;
+                $res2 = CIBlockElement::GetProperty($IBlockId2,$row["VALUE"],array(), array("CODE"=>"CANCEL_ABILITY"));
+                $prop = $res2->GetNext();
+                $arResult["ORDER_BY_STATUS"]["N"][$orderKey]["CANCEL_ABILITY"] = $prop["VALUE_ENUM"];
+                if(!$prop["VALUE_ENUM"])$canCancel = false;
+            }
+            
+            if(!$canCancel)break;
+        }
+    }
+    
+    
+    
 ?>
