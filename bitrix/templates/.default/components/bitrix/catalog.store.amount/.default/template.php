@@ -79,7 +79,38 @@ if(!empty($arResult["STORES"]) && $arParams["MAIN_TITLE"] != ''):?>
 		<?foreach($arResult["STORES"] as $pid => $arProperty):?>
         <div class="ag-store-detail" <?if($arProperty["REAL_AMOUNT"]>0 && !$first):$first=1;?>style="display: block;"<?endif?> id="agst-<?= $arProperty['ID'];?>">
             <h4><a target="_blank" href="<?= $arProperty["URL"]?>"><?= $arProperty["TITLE"]?></a></h4>
-            <?if($arProperty["SCHEDULE"]):?>График работы: <?= $arProperty["SCHEDULE"]?><br/><?endif?>
+            <table class="ag-store-detail-table">
+                
+                <?if($arProperty["DETAIL"]['ADDRESS']):?>
+                <tr>
+                    <th>Адрес:</th>
+                    <td><?= $arProperty["DETAIL"]['ADDRESS']?></td>
+                </tr>
+                <?endif?>
+                
+                <?if($arProperty["DETAIL"]['PHONE']):?>
+                <tr>
+                    <th>Телефон:</th>
+                    <td><?= $arProperty["DETAIL"]['PHONE']?></td>
+                </tr>
+                <?endif?>
+                
+                <?if($arProperty["DETAIL"]['SCHEDULE']):?>
+                <tr>
+                    <th>Режим работы:</th>
+                    <td><?= $arProperty["DETAIL"]['SCHEDULE']?></td>
+                </tr>
+                <?endif?>
+
+                <?if($arProperty["DETAIL"]['DESCRIPTION']):?>
+                <tr>
+                    <th>URL:</th>
+                    <td><a href="<?= $arProperty["DETAIL"]['DESCRIPTION']?>" target="blank"><?= $arProperty["DETAIL"]['DESCRIPTION']?></a></td>
+                </tr>
+                <?endif?>
+
+                
+            </table>
             <? if($arProperty["ID"]==6):?>
             <div class="ag-troika-form">
                 <div class="title">Введите номер карты Тройка</div>
