@@ -1,6 +1,6 @@
 <?php
 
-    require("request.class.php");
+    require_once("request.class.php");
 
     class auth extends request{
         private $sessionId = '';
@@ -23,7 +23,6 @@
         }
 
         function setPassword($password){
-            echo "111";
             $this->password = $password;
         }
 
@@ -37,13 +36,11 @@
         
         function sendRequest(){
             
-            
             $data["auth"] = array();
             if($this->login)$data["auth"]["login"] = $this->login;
             if($this->password)$data["auth"]["password"] = $this->password;
             if($this->sessionId)$data["auth"]["session_id"] = $this->sessionId;
             $this->setData($data);
-            print_r($this);
             return $this->exec();
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-    require("auth.class.php");
+    require_once("auth.class.php");
 
     class profile extends auth{
         
