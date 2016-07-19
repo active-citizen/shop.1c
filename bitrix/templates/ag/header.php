@@ -36,10 +36,12 @@
     
     <link rel="apple-touch-icon" href="http://ag.mos.ru/images/apple-touch-icon.png">
     <script type="text/javascript" src="http://ag.mos.ru/assets/script-0-m_MdmsNGFKrhf9d74r4gFA.js"></script>
+    <script type="text/javascript" src="/bitrix/templates/ag/scripts.js"></script>
 
 </head>
 
     <body>
+        <?$APPLICATION->ShowPanel()?>
         <div class="wrapper">
             <header class="header">
                 <div class="headerControll">
@@ -62,7 +64,12 @@
                                     </li>
                                     <li class=""><a href="/catalog"
                                            class="link active">Магазин поощрений</a>
-                                        <span id="current_points">32</span>
+                                        <span id="current_points"><? 
+                   CModule::IncludeModule("sale");
+                   $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
+                   $account = $res->GetNext();
+                   if($account["CURRENT_BUDGET"])echo round($account["CURRENT_BUDGET"]);
+                   ?></span>
                                     </li>
                                     <li><a href="http://ag.mos.ru/site/news"
                                            class="link ">Новости</a>
@@ -93,16 +100,33 @@
     <div class="contentShopMain">
         <div class="userMenuShop">
         <ul>
-            <li><a class="link_2 active_2"
-                   href="/catalog">Поощрения</a></li>
-                        <li><a class="link_2 "
-                   href="/orders">История заказов</a></li>
-            <li><a class="link_2 "
-                   href="/points">Мои баллы</a></li>
-                        <li><a class="link_2 "
-                   href="/rules">Правила</a></li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/catalog/">Поощрения</a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/order/$#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/order/">История заказов</a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/points/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/points/">Мои баллы
+                   </a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/rules/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/rules/">Правила
+                </a>
+            </li>
+            <li>
+                <a class="link_2 <? if(preg_match("#^/news/.*#",$_SERVER["REQUEST_URI"])){?>active_2<? }?>"
+                   href="/news/">Новости
+                </a>
+            </li>
         </ul>
     </div>
+
+
 
     
     

@@ -1,0 +1,992 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление шаблона к основному сайту
+     */
+    class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+ 
+            
+            CModule::IncludeModule("iblock");
+            // Узнаём ID инфоблока товарных предложений
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $iblock = $res->GetNext();
+            $OfferIblockId = $iblock["ID"];
+            
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+            $iblock = $res->GetNext();
+            $CatalogIblockId = $iblock["ID"];
+
+            // Составляем справочник флагов
+            $ENUM = array();
+            $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>$CatalogIblockId));
+            while($data = $res->getNext()){
+                $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
+                if(!isset($ENUM[$data["PROPERTY_CODE"]]))$ENUM[$data["PROPERTY_CODE"]] = array();
+                $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
+            }
+            
+            
+            $data = array(
+                "stores"=>array(
+                    array(
+                        "ID"            =>  1,
+                        "TITLE"         =>  'Jeffrey\'s Coffee',
+                        "ADDRESS"       =>  '1) ул. Маросейка 15; 2) Староконюшенный пер. 45,; 3)пер. Старокирочный 16/2<br/>',
+                        "DESCRIPRION"   =>  '',
+                        "SCHEDULE"      =>  'В будни с 9.00 до 19.00, выходные с 10.00 до 20.00',
+                        "PHONE"         =>  '8(495)623-8777'
+                    ),
+                    array(
+                        "ID"            =>  2,
+                        "TITLE"         =>  'АНО «Народная команда – ХК «Спартак»',
+                        "ADDRESS"       =>  'ЛД Сокольники, Москва, Сокольнический Вал, дом 1 б.',
+                        "DESCRIPRION"   =>  'www.spartak.ru',
+                        "SCHEDULE"      =>  'В кассах с 4 августа 2016г. до 20 августа 2016г., пн-вс С 12:00 до 18:00',
+                        "PHONE"         =>  '8(495)623-8777'
+                    ),
+                    array(
+                        "ID"            =>  3,
+                        "TITLE"         =>  'МФЦ района Тимирязевский',
+                        "ADDRESS"       =>  'ул. Тимирязевская, д. 8, корп. 1',
+                        "DESCRIPRION"   =>  'http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/',
+                        "SCHEDULE"      =>  'ПН–ВС с 08:00 до 20:00',
+                        "PHONE"         =>  '+7 (495) 777-77-77'
+                    ),
+                    array(
+                        "ID"            =>  4,
+                        "TITLE"         =>  'МФЦ района Лианозово',
+                        "ADDRESS"       =>  'ул. Абрамцевская, д.3',
+                        "DESCRIPRION"   =>  'http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/',
+                        "SCHEDULE"      =>  'ПН–ВС с 08:00 до 20:00',
+                        "PHONE"         =>  '+7 (495) 777-77-77'
+                    ),
+                    array(
+                        "ID"            =>  5,
+                        "TITLE"         =>  'МФЦ районов Северное Тушино и Южное Тушино',
+                        "ADDRESS"       =>  'ул. Василия Петушкова д.13, корп.1',
+                        "DESCRIPRION"   =>  'http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/',
+                        "SCHEDULE"      =>  'ПН–ВС с 08:00 до 20:00',
+                        "PHONE"         =>  '+7 (495) 777-77-77'
+                    ),
+                    array(
+                        "ID"            =>  6,
+                        "TITLE"         =>  'ГУП Московский Метрополитен',
+                        "ADDRESS"       =>  'ул. Василия Петушкова д.13, корп.1',
+                        "DESCRIPRION"   =>  'http://troika.mos.ru',
+                        "SCHEDULE"      =>  '',
+                        "PHONE"         =>  '8 (495) 688-02-61, 3210 (для звонков с мобильного)'
+                    ),
+                    array(
+                        "ID"            =>  7,
+                        "TITLE"         =>  'Приложение "Парковки"',
+                        "ADDRESS"       =>  '',
+                        "DESCRIPRION"   =>  'http://parking.mos.ru/',
+                        "SCHEDULE"      =>  '',
+                        "PHONE"         =>  '8 (495) 539-22-99'
+                    ),
+                    array(
+                        "ID"            =>  8,
+                        "TITLE"         =>  'Музейно-выставочное объединение «Манеж»',
+                        "ADDRESS"       =>  'Технический центр "Алмаз", Новогиреевская ул., 37a, Москва',
+                        "DESCRIPRION"   =>  'http://www.moscowmanege.ru/',
+                        "SCHEDULE"      =>  '',
+                        "PHONE"         =>  ''
+                    ),
+                ),
+                "sections"=>array(
+                    array("NAME"  =>  "Развлечения","CODE"  =>  "razvlecheniya","PICTURE"=>"all_raznoe.jpg"),
+                    array("NAME"  =>  "Дети","CODE"  =>  "deti","PICTURE"=>"Detyam_ag.png"),
+                    array("NAME"  =>  "Спорт","CODE"  =>  "sport","PICTURE"=>"sport.jpg"),
+                    array("NAME"  =>  "Музеи","CODE"  =>  "muzei","PICTURE"=>"all_museum.jpg"),
+                    array("NAME"  =>  "Транспорт","CODE"  =>  "transport","PICTURE"=>"trans_msk.png"),
+                    array("NAME"  =>  "Сувениры","CODE"  =>  "suveniri","PICTURE"=>"all_souvenir.jpg"),
+                ),
+                "index"=>array(
+                ),
+                "products"=>array(
+                    array(
+                        "NAME"  =>  "Бесплатный час в тайм-кофейне Jeffrey's Coffee",
+                        "CODE"  =>  "prod01",
+                        "IBLOCK_SECTION_ID"    => "razvlecheniya",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=996",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  750,
+                            "TYPES"     =>  $ENUM["TYPES"]["Отдохни"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развлечься"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Гастрономией"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 час',
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
+                        ),
+                        "OFFERS" => array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "SIZES_CLOTHES"=>"XL"
+                                ),
+                                "STORES"=>array(
+                                    "1"=>50
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Абонемент ХК \"Спартак\" сезон 2016/2017",
+                        "CODE"  =>  "prod02",
+                        "IBLOCK_SECTION_ID"    => "sport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1398",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  5000,
+                            "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
+                            "WANTS"     =>  $ENUM["WANTS"]["На мероприятие"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Спортом"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 абонемент',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "STORES"=>array(
+                                    "2"=>200
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Зонт белый",
+                        "CODE"  =>  "prod03",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=956",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1730,
+                            "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 шт.',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white"
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "4"=>35,
+                                    "5"=>105,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Обложка для студенческого билета",
+                        "CODE"  =>  "prod04",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=939",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1030,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 шт.',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "5"=>105,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Чехол для Samsung Galaxy S3",
+                        "CODE"  =>  "prod05",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=988",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 шт.',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "4"=>50,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Салфетка для телефона",
+                        "CODE"  =>  "prod06",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=938",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  300,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "INTERESTS" =>  0,
+                            "QUANT"=>'1 шт.',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>3,
+                                    "4"=>50,
+                                    "5"=>30,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Чехол для HTC One M7",
+                        "CODE"  =>  "prod07",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=991",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "QUANT"=>'1 шт.',
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "4"=>50,
+                                    "5"=>130,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Свитшот",
+                        "CODE"  =>  "prod08",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=959 http://ag.mos.ru/catalog/item?item_id=958 http://ag.mos.ru/catalog/item?item_id=964 http://ag.mos.ru/catalog/item?item_id=960 http://ag.mos.ru/catalog/item?item_id=961 http://ag.mos.ru/catalog/item?item_id=963 ",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  2250,
+                            "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg"),
+                            "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Модой"],
+                            "QUANT"=>'1 шт.',
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>11,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>120,
+                                    "4"=>0,
+                                    "5"=>30,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>12,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>30,
+                                    "4"=>105,
+                                    "5"=>0,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>13,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>15,
+                                    "4"=>40,
+                                    "5"=>50,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"white",
+                                    "SIZES_CLOTHES"=>14,
+                                    "MORE_PHOTO"    =>  array("prod08_02.jpg","prod08_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>110,
+                                    "4"=>150,
+                                    "5"=>0,
+                                )
+                            ),
+                            
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>11,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>120,
+                                    "4"=>0,
+                                    "5"=>30,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>12,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>30,
+                                    "4"=>105,
+                                    "5"=>0,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>13,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>15,
+                                    "4"=>40,
+                                    "5"=>50,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "SIZES_CLOTHES"=>14,
+                                    "MORE_PHOTO"    =>  array("prod08_03.jpg","prod08_04.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>110,
+                                    "4"=>150,
+                                    "5"=>0,
+                                )
+                            ),
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Набор для записей с символикой проекта",
+                        "CODE"  =>  "prod09",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=899 http://ag.mos.ru/catalog/item?item_id=900 http://ag.mos.ru/catalog/item?item_id=885 http://ag.mos.ru/catalog/item?item_id=894",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  864,
+                            "TYPES"     =>  $ENUM["TYPES"]["Попробуй"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 шт.',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"green",
+                                    "MORE_PHOTO"    =>  array("prod09.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>120,
+                                    "4"=>50,
+                                    "5"=>10,
+                                )
+                            ),
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                    "COLOR_REF"=>"pink",
+                                    "MORE_PHOTO"    =>  array("prod09_01.jpg")
+                                ),
+                                "STORES"=>array(
+                                    "3"=>5,
+                                    "4"=>5,
+                                    "5"=>30,
+                                )
+                            ),
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Обложка для паспорта с символикой проекта",
+                        "CODE"  =>  "prod10",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=128",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  333,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 шт.',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>1,
+                                    "4"=>50,
+                                    "5"=>130,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Значок",
+                        "CODE"  =>  "prod11",
+                        "IBLOCK_SECTION_ID"    => "suveniri",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=936",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  580,
+                            "TYPES"     =>  0,
+                            "WANTS"     =>  $ENUM["WANTS"]["Что-то на память"],
+                            "INTERESTS" =>  0,
+                            "QUANT"=>'1 шт.',
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "3"=>50,
+                                    "4"=>5,
+                                    "5"=>130,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Пополнение карты «Тройка»",
+                        "CODE"  =>  "prod13",
+                        "IBLOCK_SECTION_ID"    => "transport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1104",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1708,
+                            "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Кататься"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>0,
+                            "QUANT"=>'Пополнение карты на 256р',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "6"=>50,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Парковочное пространство",
+                        "CODE"  =>  "prod14",
+                        "IBLOCK_SECTION_ID"    => "transport",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=132",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  667,
+                            "TYPES"     =>  $ENUM["TYPES"]["Зарядись"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Кататься"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>0,
+                            "QUANT"=>'100 парковочных баллов',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"][""]
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "7"=>130,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение музея Вадима Сидура",
+                        "CODE"  =>  "prod15",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1397",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  350,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 билет',
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        ),
+                        "OFFERS"    =>  array(
+                            array(
+                                "PROPERTIES"=>array(
+                                    "ARTNUMBER"=>md5(rand()),
+                                ),
+                                "STORES"=>array(
+                                    "8"=>130,
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение Центра Современного Искусства М`АРС",
+                        "CODE"  =>  "prod16",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=992",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1200,
+                            "MORE_PHOTO"    =>  array("prod16_01.jpg","prod16_02.jpg","prod16_03.jpg","prod16_04.jpg","prod16_05.jpg","prod16_06.jpg","prod16_07.jpg","prod16_08.jpg",),
+                            "TYPES"     =>  $ENUM["TYPES"][""],
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "QUANT"=>'1 билет',
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Музей археологии Москвы",
+                        "CODE"  =>  "prod17",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=330",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  667,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Историей"],
+                            "QUANT"=>'1 билет',
+                            "CANCEL_ABILITY"=>0,
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Музей Английское подворье",
+                        "CODE"  =>  "prod18",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=331",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  667,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Историей"],
+                            "CANCEL_ABILITY"=>0,
+                            "QUANT"=>'1 билет',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение музея техники Apple",
+                        "CODE"  =>  "prod19",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=684",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  700,
+                            "MORE_PHOTO"    =>  array("prod19_01.jpg","prod19_02.jpg"),
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "CANCEL_ABILITY"=>0,
+                            "QUANT"=>'1 билет',
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Технологиями"],
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Посещение музея М.А. Булгакова",
+                        "CODE"  =>  "prod20",
+                        "IBLOCK_SECTION_ID"    => "muzei",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=241",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  7467,
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Искусством"],
+                            "CANCEL_ABILITY"=>0,
+                            "QUANT"=>'1 билет',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  0,
+                            "SPECIALOFFER"=> 0
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "«Классный журнал» электронная подписка на детский журнал",
+                        "CODE"  =>  "prod21",
+                        "IBLOCK_SECTION_ID"    => "deti",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=13791",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  500,
+                            "TYPES"     =>  $ENUM["TYPES"]["Отдохни"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  0,
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 абонемент',
+                            "NEWPRODUCT"=>  0,
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
+                        )
+                    ),
+                    array(
+                        "NAME"  =>  "Кидзания, дети 7-14 лет, вт-пт 10-20ч",
+                        "CODE"  =>  "prod22",
+                        "IBLOCK_SECTION_ID"    => "deti",
+                        "PREVIEW_TEXT"          => "http://ag.mos.ru/catalog/item?item_id=1370",
+                        "PROPERTIES" =>array(
+                            "MINIMUM_PRICE" =>  1500,
+                            "MORE_PHOTO"    =>  array("prod22_01.jpg","prod22_02.jpg","prod22_03.jpg",),
+                            "TYPES"     =>  $ENUM["TYPES"]["Узнай"],
+                            "WANTS"     =>  $ENUM["WANTS"]["Развиваться"],
+                            "INTERESTS" =>  $ENUM["INTERESTS"]["Физиологией"],
+                            "CANCEL_ABILITY"=>$ENUM["CANCEL_ABILITY"]["Да"],
+                            "QUANT"=>'1 билет',
+                            "NEWPRODUCT"=>  $ENUM["NEWPRODUCT"]["да"],
+                            "SALELEADER"=>  $ENUM["SALELEADER"]["да"],
+                            "SPECIALOFFER"=> $ENUM["SPECIALOFFER"]["да"]
+                        )
+                    ),
+                )
+            );
+
+            CModule::IncludeModule("catalog");
+            
+            // Очищаем документы-проводки
+            $res = CCatalogDocs::getList(array(),array(),false,false,array());
+            while($doc=$res->GetNext()){
+                CCatalogDocs::Update($doc["ID"],array("STATUS"=>"N"));
+                if(!CCatalogDocs::delete($doc["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
+            $resIB = new CIBlockElement;
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    print_r($resIB);
+                }
+            }
+            
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array());
+            $resIB = new CIBlockElement;
+            // Сносим элементы каталога
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+
+                
+            // Сносим разделы каталога
+            $res = CIBlockSection::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,array("ID"));
+            $resIB = new CIBlockSection;
+            while($section = $res->GetNext()){
+                if(!$resIB->Delete($section["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            // Сносим желания
+            $res = CIBlock::GetList(array(),array("CODE"=>"whishes"));
+            $iblock = $res->GetNext();
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
+            $resIB = new CIBlockElement;
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            // Сносим оценки
+            $res = CIBlock::GetList(array(),array("CODE"=>"marks"));
+            $iblock = $res->GetNext();
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array("ID"));
+            $resIB = new CIBlockElement;
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            // Удаляем склады
+            $res = CCatalogStore::GetList();
+            while($store = $res->GetNext()){
+                if(!CCatalogStore::Delete(
+                    $store["ID"]
+                )){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            
+            ////////////////////////////////////////////////////////////////////////////////
+            
+            // Добавляем разделы каталога
+            $resSection = new CIBlockSection;
+            foreach($data["sections"] as $section){
+                $section["IBLOCK_ID"] = $CatalogIblockId;
+                $section["IBLOCK_SECTION_ID"] = 0;
+                $section["SORT"] = 500;
+                
+                $section["PICTURE"] = array(
+                    "name" => $section["PICTURE"],
+                    "size" => "размер",
+                    "tmp_name" => realpath(dirname(__FILE__))."/files/sections/".$section["PICTURE"],
+                    "type" => "image/jpeg",
+                    "del" => "Y",
+                    "MODULE_ID" => "catalog"
+                );
+                if(!$resSection->Add($section)){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            // Добавляем склады
+            foreach($data["stores"] as $store){
+                $store["ACTIVE"]= 'Y';
+                $store["ISSUING_CENTER"]= 'Y';
+                $store["SHIPPING_CENTER"]= 'Y';
+                CCatalogStore::Add($store);
+            }
+            
+            // Добавляем товары
+            $resElement = new CIBlockElement;
+            foreach($data["products"] as $product){
+                $product["SITE_ID"] = 's1';
+                $product["IBLOCK_ID"] = $CatalogIblockId;
+                $product["DETAIL_TEXT"] = file_get_contents(realpath(dirname(__FILE__))."/files/products/".$product["CODE"].".html");
+                $product["PREVIEW_TEXT"] = file_get_contents(realpath(dirname(__FILE__))."/files/products/".$product["CODE"].".html");
+                $res = CIBlockSection::GetList(array(),array("IBLOCK_ID"=>$CatalogIblockId,"CODE"=>$product["IBLOCK_SECTION_ID"]),false,array("nTopCount"=>1),array("ID"));
+                $arrSection = $res->GetNext();
+                $product["IBLOCK_SECTION_ID"] = $arrSection["ID"];
+                $product["SECTION_ID"] = $arrSection["ID"];
+                $product["PREVIEW_TEXT_TYPE"] = 'html';
+                $product["DETAIL_TEXT_TYPE"] = 'html';
+                
+                $picturePath = realpath(dirname(__FILE__))."/files/products/".$product["CODE"].".jpg";
+                $product["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
+                $product["DETAIL_PICTURE"] = CFile::MakeFileArray($picturePath);
+                
+                if(!$id = $resElement->Add($product)){
+                    print_r($resSection);
+                    continue;
+                }
+
+                if(!isset($product["PROPERTIES"]["MORE_PHOTO"]))$product["PROPERTIES"]["MORE_PHOTO"] = $picturePath;
+                $product["PROPERTIES"]["RATING"] = rand();
+                foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
+                    if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
+                        $arrFile = array();
+                        foreach($prop_value as $img)
+                            $arrFile[] = array("VALUE"=>CFile::MakeFileArray(realpath(dirname(__FILE__))."/files/products/".$img),"DESCRIPTION"=>"");
+                        
+                        CIBlockElement::SetPropertyValuesEx($id, $CatalogIblockId, array('MORE_PHOTO' => $arrFile));
+                    }
+                    elseif($prop_code=='MORE_PHOTO' && !is_array($prop_value)){
+                        $product["PROPERTIES"]["MORE_PHOTO"] = CFile::MakeFileArray($prop_value);
+                        CIBlockElement::SetPropertyValueCode($id,$prop_code,$prop_value);
+                    }
+                    else{
+                        CIBlockElement::SetPropertyValueCode($id,$prop_code,$prop_value);
+                    }
+                }
+                
+                
+                if(!isset($product["OFFERS"]) || !is_array($product["OFFERS"]))$product["OFFERS"] = array(array());
+                
+                foreach($product["OFFERS"] as $offer){
+                    $offerFields = array(
+                        "IBLOCK_ID"         =>  $OfferIblockId,
+                        "NAME"              =>  (isset($offer["NAME"]) && $offer["NAME"]?$offer["NAME"]:$product["NAME"]),
+                        "PRICE"             =>  (isset($offer["PRICE"]) && $offer["PRICE"]?$offer["PRICE"]:$product["PROPERTIES"]["MINIMUM_PRICE"]),
+                        "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
+                        "PREVIEW_TEXT"      =>  $product["PREVIEW_TEXT"],
+                        "PREVIEW_TEXT_TYPE" =>  $product["PREVIEW_TEXT_TYPE"],
+                        "PREVIEW_PICTURE"   =>  (isset($offer["PREVIEW_PICTURE"]) && $offer["PREVIEW_PICTURE"]? CFile::MakeFileArray($offer["PREVIEW_PICTURE"]):$product["PREVIEW_PICTURE"]),
+                        "DETAIL_PICTURE"    =>  (isset($offer["DETAIL_PICTURE"]) && $offer["DETAIL_PICTURE"]? CFile::MakeFileArray($offer["DETAIL_PICTURE"]):$product["DETAIL_PICTURE"]),
+                    );
+                    
+                    
+                    if(!isset($offer["PROPERTIES"]) || !is_array($offer["PROPERTIES"]))$offer["PROPERTIES"] = array();
+                    if(!$offerId = $resElement->Add($offerFields)){
+                        print_r($offerFields);
+                        echo "Error!!! ".__LINE__." ".print_r($resElement);
+                        die;
+                    }
+                    
+                    
+                    $offer["PROPERTIES"]["CML2_LINK"] = $id;
+                    $offer["PROPERTIES"]["PRICE"] = $offerFields["PRICE"];
+                    $offer["PROPERTIES"]["MORE_PHOTO"] = (isset($offer["PROPERTIES"]["MORE_PHOTO"]) && $offer["PROPERTIES"]["MORE_PHOTO"]?$offer["PROPERTIES"]["MORE_PHOTO"]:$product["PROPERTIES"]["MORE_PHOTO"]);
+                    foreach($offer["PROPERTIES"] as $prop_code=>$prop_value){
+                        if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
+                            $arrFile = array();
+                            foreach($prop_value as $img)
+                                $arrFile[] = array("VALUE"=>CFile::MakeFileArray(realpath(dirname(__FILE__))."/files/products/".$img),"DESCRIPTION"=>"");
+                            
+                            CIBlockElement::SetPropertyValuesEx($offerId, $OfferIblockId, array('MORE_PHOTO' => $arrFile));
+                        }
+                        elseif($prop_code=='PRICE' && !is_array($prop_value)){
+                            $arFields = array(
+                                "PRODUCT_ID"=>$offerId,
+                                "CATALOG_GROUP_ID"=>1,
+                                "PRICE"=>$prop_value,
+                                "CURRENCY"=>"BAL",
+                            );
+                            print_r($arFields);
+                            $objPrice = new CPrice;
+                            if(!$priceId = $objPrice->Add($arFields,true)){
+                                echo "Error!!!: ".__LINE__." ".print_r($objPrice,1);;
+                                die;
+                            }
+                        }
+                        elseif($prop_code=='MORE_PHOTO' && !is_array($prop_value)){
+                            $prop_value = CFile::MakeFileArray($prop_value);
+                            CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value);
+                        }
+                        elseif($prop_code=='CML2_LINK' && is_array($prop_value)){
+                            if(!CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value)){
+                                echo "Failed";
+                            }
+                            else{
+                                echo "Success";
+                            }
+                        }
+                        else{
+                            CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value);
+                        }
+                    }
+
+                    $resCatalogStoreProduct = new CCatalogStoreProduct;
+                    $totalAmount = 0;
+                    foreach($offer["STORES"] as $storeId=>$storeAmount){
+                        $arFields = array(
+                            "PRODUCT_ID"=>$offerId,
+                            "STORE_ID"=>$storeId,
+                            "AMOUNT"=>$storeAmount
+                        );
+                        if(!$resCatalogStoreProduct->Add($arFields)){
+                            echo "Error!!!: ".__LINE__;
+                            die;
+                        }
+                        $totalAmount+=$storeAmount;
+                    }
+
+                    CCatalogProduct::Add(array(
+                        "ID"=>$offerId,
+                        "QUANTITY"=>$totalAmount,
+                        "QUANTITY_TRACE"=>"Y",
+                        "CAN_BUY_ZERO"=>"N",
+                    ));
+
+                }
+            }
+            
+            
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$migration = new add_ag_template();
+// Откатываем, если неудачно
+if(!$migration->Run())$migration->RollBack();

@@ -1,0 +1,30 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Установка платёжных систем. Активной остаётся только "внутренний счёт"
+     */
+    class init_payment_systems extends Migration{
+        function Run(){
+            // Подключаем модуль торговли
+            CModule::IncludeModule("sale");
+            
+            // Получаем список платёжных систем
+            $dbResult = CSalePaySystem::GetList();
+            // Делаем неактивными все платёжные системы кроме "внутренний счёт"
+            while($arResult = $dbResult->getNext()){
+                CSalePaySystem::Update($arResult["ID"], array(
+                        // Внутренний счёт - ID=9
+                        "ACTIVE"=>$arResult["ID"]==9?"Y":"N"
+                    )
+                );
+            }
+            return true;
+        }
+        
+    }
+    
+// Запускаем миграцию    
+$payment_systems = new init_payment_systems();
+// Откатываем, если неудачно
+if(!$payment_systems->Run())$payment_systems->RollBack();

@@ -1,0 +1,47 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление доаолнительного свойства инфоблоку товаров - квант поощрения, например "{quant} парковочных баллов" или "Пополнение карты на {quant} рублец"
+     */
+    class cancel_property extends Migration{
+        function Run(){
+            
+            
+            // Получаем полный список валют
+            CModule::IncludeModule("iblock");
+
+            // Проверяем наличие свойства
+            $res = CIBlockProperty::GetByID("QUANT",false,"clothes");
+            if($res->GetNext())return true;
+            
+            // Определяем для каждого заказа возможность его отменить
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+            $res = $res->GetNext();
+            $IBlockId = $res["IBLOCK_ID"];
+            
+            $arFields = Array(
+                "NAME" => "Квант поощрения",
+                "ACTIVE" => "Y",
+                "SORT" => "1500",
+                "CODE" => "QUANT",
+                "PROPERTY_TYPE" => "S",
+                "IBLOCK_ID" => $IBlockId
+            );
+            
+            $ibp = new CIBlockProperty;
+            if(!$PropID = $ibp->Add($arFields)){
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$cancel_property = new cancel_property();
+// Откатываем, если неудачно
+if(!$cancel_property->Run())$cancel_property->RollBack();

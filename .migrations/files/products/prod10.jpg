@@ -1,0 +1,680 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="language" content="ru"/>
+    <meta name="description" content="Ты решаешь! Электронные референдумы правительства Москвы."/>
+    <meta name="keywords" content="активный, гражданин, аг, ag"/>
+    <meta name="keyphrases" content="активный гражданин, аг, электронные референдумы, ты решаешь, мос ру, mos ru"/>
+
+        <meta property="og:title" content="Обложка для паспорта с символикой проекта" />
+        <meta property="og:description" content="Система электронных голосований Правительства Москвы."/>
+    <meta property="og:url" content="http://ag.mos.ru/"/>
+    <meta property="og:image" content="http://ag.mos.ru/images/ag_logo.png"/>
+
+    <meta name="twitter:card" content="summary"/> <!-- Тип окна -->
+    <meta name="twitter:site" content="Активный Гражданин"/>
+    <meta name="twitter:title" content="Активный Гражданин - проект для тех, кому важно, что происходит в Москве">
+    <meta name="twitter:description" content="Система электронных голосований Правительства Москвы."/>
+    <meta name="twitter:image:src" content="http://ag.mos.ru/images/ag_logo.png"/>
+    <meta name="twitter:domain" content="ag.mos.ru"/>
+
+    <meta name="author" content="Электронная Москва"/>
+    <meta name="apple-itunes-app" content="app-id=873648765"/>
+    <meta name="google-play-app" content="app-id=ru.mos.polls"/>
+
+    <link rel="icon" type="image/ico" href="/images/favicon.ico">
+                                        <link rel="stylesheet" type="text/css" href="/assets/style-90GOlRydkuu8zjBBtNfzCw.css" />
+<script type="text/javascript" src="/assets/script-0-ZbTEIyqMNqCTjeYCdNEhgw.js"></script>
+<title>Обложка для паспорта с символикой проекта</title>
+                            
+    <!-- icon for smart banner -->
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <script type="text/javascript">
+        Yii = new Object();
+        Yii.baseUrl = "http://ag.mos.ru";
+    </script>
+    <!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function () {
+            try {
+                w.yaCounter24583919 = new Ya.Metrika({id: 24583919,
+                    webvisor: true,
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true});
+            } catch (e) {
+            }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () {
+                n.parentNode.insertBefore(s, n);
+            };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else {
+            f();
+        }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript>
+    <div><img src="//mc.yandex.ru/watch/24583919" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Google Analytics -->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-52662983-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!-- /Google Analytics -->
+
+    <!-- AGMOS Header -->
+    <script type="text/javascript" charset="utf-8">
+        (function (d, w, c) {
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () {
+                    n.parentNode.insertBefore(s, n);
+                },
+                protocol = "https:";
+            current_domain = window.location.hostname;
+            s.type = "text/javascript";
+            s.charset = "utf-8";
+            s.async = true;
+            s.src = protocol + "//pevp.mos.ru/frame/v2/all.php?cur_domain=" + current_domain + "&async=1&set_lang=ru&langs=ru&site_id=2366";
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            }
+            else {
+                f();
+            }
+        })(document, window, "evp_header_callbacks");
+    </script>
+    <!-- /AGMOS Header -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript"> (function (d, w, c) {
+        (w[c] = w[c] || []).push(function () {
+            try {
+                w.yaCounter24742073 = new Ya.Metrika({id: 24742073, webvisor: true, clickmap: true, trackLinks: true, accurateTrackBounce: true});
+                w.yaCounter14112952 = new Ya.Metrika({id: 14112952, webvisor: true, clickmap: true, trackLinks: true, accurateTrackBounce: true});
+            } catch (e) {
+            }
+        });
+        var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () {
+            n.parentNode.insertBefore(s, n);
+        };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else {
+            f();
+        }
+    })(document, window, "yandex_metrika_callbacks"); </script>
+<noscript>
+    <div><img src="//mc.yandex.ru/watch/24742073" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<noscript>
+    <div><img src="//mc.yandex.ru/watch/14112952" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript> <!-- /Yandex.Metrika counter -->
+
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PQZ9ZB"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PQZ9ZB');</script>
+<!-- End Google Tag Manager -->
+
+</head>
+
+    <body>
+        <div class="wrapper">
+            <header class="header">
+                <div class="headerControll">
+                    <div class="logo">
+                        <a href="/site/index">
+                            <img class="logoImg" src="/images/logo_AG_1-new.png">
+                        </a>
+                    </div>
+                    
+                        <div class="menuTop">
+                            <nav>
+                                <ul>
+                                    <li><a href="/poll/index"
+                                           class="link ">Голосования</a>
+                                    </li>
+                                    <li>
+                                        <a href="/experiments" class="link ">
+                                            Городские новинки
+                                        </a>
+                                    </li>
+                                    <li><a href="/site/news"
+                                           class="link ">Новости</a>
+                                    </li>
+                                    <li><a href="#" class="link js-show-register">Регистрация</a>
+                                    </li>
+                                    <li><a href="/results"
+                                           class="link ">Результаты работы</a>
+                                    </li>
+                                    <li><a href="/photos"
+                                           class="link ">Проект в лицах</a>
+                                    </li>
+                                    <li style="display: none;"><a href="/site/news"
+                                           class="link ">Новости</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="userTop uTop-no_auth">
+                            <a href="#" class="js-show-login">
+                                <span class="userIcoTop"></span>
+                            </a>
+                            <a href="#" class="ui-link js-show-login">Войти</a>
+                        </div>
+
+
+
+                                        <div class="reset"></div>
+                </div>
+            </header>
+            <main class="content">
+                <div class="twoBlockBox">
+    
+
+<div class="menuCategoryBox">
+    <div class="shopCart-window">
+        <button class="addTocart_btn addTocart_noActive gotoLogin_btn">Войдите, чтобы получить поощрение</button>
+    </div>
+</div>
+    <div class="contentQuestionBox">
+            <div class="userMenuShop">
+        <ul>
+            <li><a class="link_2 "
+                   href="/catalog/index">Поощрения</a></li>
+                        <li><a class="link_2 "
+                   href="/catalog/rules">Правила</a></li>
+        </ul>
+    </div>
+
+<!-- rm_49611
+<div class="o-time_work_mfc">
+    Внимание: 12 июня 2016 г. выдача сувенирной продукции в центрах государственных услуг не производится.
+</div>
+-->
+<div class="ItemGoodsBox">
+    <h1 id="product_name">Обложка для паспорта с символикой проекта</h1>
+    <div class="ItemGoodsBox-big">
+        <img src="http://arm.ag.mos.ru/image/data/photo/square/oblojka.jpg">
+        <div class="pointsBalls_Shop">
+            333 балла        </div>
+    </div>
+
+    <div class="ItemgoodsBox-description">
+        <h4>Количество</h4>
+        1 шт.
+        <h4>
+            Производитель        </h4>
+        Активный Гражданин                                    <p>г. Москва</p>
+                                    <div id="addresses">
+                <h4 class="address_head" style="display: none;">Адрес для получения</h4>
+                                                                                    <div class="storageAddress" data-storage="67">
+                            МФЦ Арбат                                                                                                                    <p><p>
+	пер. Сивцев Вражек, д. 20</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_arbat/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="66">
+                            МФЦ Красносельский                                                                                                                    <p><p>
+	ул. Верхняя Красносельская, д.3, стр.2</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_krasnoselskiy/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="64">
+                            МФЦ Москворечье-Сабурово                                                                                                                    <p><p>
+	Пролетарский просп., 18</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_moskvoreche_saburovo/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="65">
+                            МФЦ Марьино                                                                                                                    <p><p>
+	ул. Совхозная, 41</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_marino/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="58">
+                            МФЦ Тимирязевский                                                                                                                    <p><p>
+	ул. Тимирязевская, д. 8, корп. 1</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_timiryazevskiy/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="63">
+                            МФЦ Академический                                                                                                                    <p><p>
+	ул. Новочерёмушкинская, д. 23, корп. 5</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_akademicheskiy/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="62">
+                            МФЦ Богородское и Метрогородок                                                                                                                    <p><p>
+	ш. Открытое, 8</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayonov_bogorodskoe_i_metrogorodok/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="61">
+                            МФЦ Тропарево-Никулино                                                                                                                    <p><p>
+	Москва, Вернадского просп., 97, корп.3</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_troparevo_nikulino/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="59">
+                            МФЦ Лианозово                                                                                                                    <p><p>
+	ул. Абрамцевская, д.3</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayona_lianozovo/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><p>
+	Ежедневно Пн-Вс 8:00-20:00</p>
+</p>
+                                                                                </div>
+                                                                                                        <div class="storageAddress" data-storage="60">
+                            МФЦ Северное Тушино и Южное Тушино                                                                                                                    <p><p>
+	ул. Василия Петушкова, 13, корп.1</p>
+</p>
+                                                                                                                    <p><p>
+	<a href="http://md.mos.ru/find-your-dcp/structure/mfts_rayonov_severnoe_i_yuzhnoe_tushino/">Подробная информация о МФЦ</a></p>
+</p>
+                                                                                        <p><div>
+	Ежедневно Пн-Вс 8:00-20:00</div>
+</p>
+                                                                                </div>
+                                                </div>
+            </div>
+    <div class="reset"></div>
+
+    <!-- thumbs -->
+            <div class="ItemGoodsBox-thumbs">
+            <script type="text/javascript">
+                $(".fancybox_item").fancybox({nextEffect : 'fade', prevEffect : 'none'});
+            </script>
+                            <a class="fancybox_item" rel="group" href="http://arm.ag.mos.ru/image/data/photo/square/oblojka.jpg">
+                    <img src="http://arm.ag.mos.ru/image/data/photo/square/oblojka.jpg">
+                </a>
+                    </div>
+        <!-- end thumbs -->
+
+    <div class="b-itemDescription">
+        <h4>Описание</h4>
+        <p>
+	<span style="font-size:16px;"><span style="font-family:arial,helvetica,sans-serif;">Обложка на паспорт с символикой проекта "Активный Гражданин".</span></span>
+
+	&nbsp;
+
+	<span style="font-size:16px;"><span style="font-family:arial,helvetica,sans-serif;">Материал – ПВХ.</span></span>
+
+	&nbsp;
+
+	<strong><span style="font-size:16px;"><span style="font-family:arial,helvetica,sans-serif;">Внимание: срок действия вашего заказа 14 дней с момента оформления.</span></span></strong>
+
+	&nbsp;
+</p>
+    </div>
+</div>
+    </div>
+    <div class="reset"></div>
+</div>
+            </main>
+        </div>
+
+        <div class="wrapWindow" id="questionWindow">
+            <div class="ourWindowQuestions">
+                <form id="question-form" action="/site/question" method="post">
+<div style="display:none"><input type="hidden" value="9b727a7dd6fddaedaa91248814d3b55d2e33b56e" name="YII_CSRF_TOKEN" /></div>                    <div class="ppQuestionBox">
+
+                    </div>
+                </form>            </div>
+        </div>
+
+        <div class="pre_footer">
+            <div class="pre_footer_content">
+                <p>Узнай результаты <br>и подпишись на новости</p>
+
+                <div class="socialBlock">
+                    <a target="_blank" href="http://vk.com/citizenmoscow" class="ui-link"><img
+                            src="/images/site8_vk.png"></a>
+                    <a target="_blank" href="http://www.odnoklassniki.ru/citizenmoscow" class="ui-link"><img
+                            src="/images/site8_odn.png"></a>
+                    <a target="_blank" href="https://www.facebook.com/citizenmoscow" class="ui-link"><img
+                            src="/images/site8_fb.png"></a>
+                    <a target="_blank" href="https://twitter.com/citizenmoscow" class="ui-link"><img
+                            src="/images/site8_tw.png"></a>
+                    <a target="_blank" href="https://instagram.com/citizenmoscow/" class="ui-link"><img
+                            src="/images/instagram_icon.png"></a>
+                    <a target="_blank" href="https://www.youtube.com/channel/UC1snUVTmzK72iKWphN8B9yQ" class="ui-link"><img
+                            src="/images/site9_youtube.png"></a>
+                </div>
+                <div class="reset"></div>
+            </div>
+        </div>
+
+        <footer class="footerNoActive">
+            <div class="footerMenuNoActive">
+                <nav>
+                    <ul>
+                        <li><a class="js-show-about" href="#">О проекте</a></li>
+                        <li><a class="js-show-feedback" href="#">Обратная связь</a></li>
+                		<li><a href="/faq">Часто задаваемые вопросы</a></li>
+                        <li><a href="/otchet2016">Годовой отчет</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="copyrightsNoActive">
+        © 2016, Активный Гражданин. Все права защищены. <a href="/site/offer#content">Публичная оферта</a>            </div>
+        </footer>
+
+        <div class="wrapWindow" id="pguZeroPoints" style="">
+            <div class="ourWindow">
+                <span class="closeWindow"></span>
+                <p>Если в интерфейсе ПГУ отображается неверное количество баллов участника проекта “Активный гражданин”, обратитесь в <a class="js-show-feedback" href="#">службу технической поддержки</a></p>
+            </div>
+        </div>
+
+		<div class="wrapWindow js-auth__modal__window-login js-auth__modal__window">
+    <div class="ourWindow">
+        <span class="closeWindow"></span>
+
+		<form class="js-auth__modal__form-login" id="login_form" action="/user/login" method="post">
+<div style="display:none"><input type="hidden" value="9b727a7dd6fddaedaa91248814d3b55d2e33b56e" name="YII_CSRF_TOKEN" /></div>		<p id='passwordResetText' style='display: none;'>
+			Пароль успешно восстановлен
+		</p>
+		<p id="login_text">
+			Введите номер Вашего мобильного телефона, зарегистрированный в Единой Мобильной Платформе г. Москвы
+		</p>
+
+		<p><input class="pp-input js-auth__input-phone" type="text" name="LoginForm[username]"  placeholder="Телефон"></p>
+
+		<p><input class="pp-input" type="password" name="LoginForm[password]" placeholder="Пароль"></p>
+
+		<p class="login_captcha js-auth__modal__captcha" >
+			<img id="yw0" src="/user/captcha?v=577fb05db4b37" alt="" />			<input class="pp-input" type="text" name="LoginForm[verifyCode]" placeholder="Код" />
+		</p>
+
+		<p style="text-align: left; margin-left: 100px;">
+
+			<input type="checkbox" id="c14" name="LoginForm[offer]" value="true"  />
+			<label for="c14">
+				<span></span>
+			</label>
+
+			<span>
+				Я согласен с условиями <a href="/site/offer#content">оферты</a>
+			</span>
+
+			<br />
+
+			<input type="checkbox" id="c15" name="LoginForm[remember_me]" value="true" checked="checked" />
+			<label for="c15">
+				<span></span>
+			</label>
+
+			<span>
+				Запомнить меня на этом устройстве
+			</span>
+
+		</p>
+
+		<p><input class="btn_enter_reg" type="submit" value="Войти" /></p>
+		</form>
+        <ul class="registration">
+            <li><a class="js-show-register">Зарегистрироваться</a></li>
+            <li><a class="js-show-recovery">Восстановить пароль</a></li>
+        </ul>
+    </div>
+</div><div class="wrapWindow js-auth__modal__window-recovery js-auth__modal__window">
+    <div class="ourWindow">
+        <span class="closeWindow" id="closeRecovery"></span>
+		<div class="js-auth__modal__phone-block">
+			<form class="js-auth__modal__form-recovery" id="recovery-form" action="/site/recovery" method="post">
+<div style="display:none"><input type="hidden" value="9b727a7dd6fddaedaa91248814d3b55d2e33b56e" name="YII_CSRF_TOKEN" /></div>			<p id="rec_text">
+			Введите номер Вашего мобильного телефона, зарегистрированный в Единой Мобильной Платформе г. Москвы
+			</p>
+			<p><input class="pp-input js-auth__input-phone" type="text" name="PhoneForm[phone]" placeholder="Телефон"></p>
+			<p>
+				<input class="btn_enter_reg" type="submit" value="Сохранить">
+			</p>
+			</form>		</div>
+		<div class="js-auth__modal__recovery-block" style='display:none'>
+			<form class="js-auth__modal__form-change-password" id="recovery-form" action="/site/recovery" method="post">
+<div style="display:none"><input type="hidden" value="9b727a7dd6fddaedaa91248814d3b55d2e33b56e" name="YII_CSRF_TOKEN" /></div>			<p>
+				На Ваш телефон выслан код подтверждения, с помощью которого можно изменить пароль
+			</p>
+			<p><input class="pp-input js-auth__modal__form-change-password__code" type="text" name="PhoneForm[code]" placeholder="Код подтверждения"></p>
+			<p><input class="pp-input js-auth__modal__form-change-password__password" type="password" name="PhoneForm[password]" placeholder="Новый пароль"></p>
+			<p><input class="pp-input js-auth__modal__form-change-password__password-again" type="password" name="PhoneForm[password_again]" placeholder="Повтор пароля"></p><p class="js-auth__modal__message"></p>    
+			<p style="display: none;"><input type="password" name="fake_password" id="fake_password" placeholder="Фейковое поле ввода пароля чтобы обмануть хромовский запомненый пароль"></p>
+			<p>
+				<input class="btn_enter_reg js-auth__modal__form-change-password__submit" disabled="disabled" type="submit" value="Сохранить">
+			</p>
+			</form>		</div>
+		
+		<ul class="registration">
+			<li><a class="js-show-login">Вход в систему</a></li>
+			<li><a class="js-show-register">Зарегистрироваться</a></li>
+			<li><a class="js-show-password-change">Уже есть код</a></li>
+		</ul>
+    </div>
+</div>
+<div class="wrapWindow js-auth__modal__window-register js-auth__modal__window">
+    <div class="ourWindow">
+        <span class="closeWindow" id="closeRegister"></span>
+
+        <form class="js-auth__modal__form-register" id="register-form" action="/site/registration" method="post">
+<div style="display:none"><input type="hidden" value="9b727a7dd6fddaedaa91248814d3b55d2e33b56e" name="YII_CSRF_TOKEN" /></div>            <p style="display:none;" id="reg_text"></p>
+
+            <p class="b-pl-rt-form">
+                Для регистрации* в системе «Активный гражданин» введите номер Вашего мобильного телефона в формате +7 (ХХХ) ХХХ-ХХ-ХХ
+            </p>
+
+            <p><input class="pp-input js-auth__input-phone" type="text" name="PhoneForm[phone]" placeholder="Телефон">
+            </p>
+
+            <p><input class="btn_enter_reg" type="submit" value="Зарегистрироваться"></p>
+        </form>        <ul class="registration">
+            <li><a class="js-show-login">Вход в систему</a></li>
+            <li><a class="js-show-recovery">Восстановить пароль</a></li>
+        </ul>
+        <p class="b-pl-rg-form">
+            *Используются сервисы Единой Мобильной Платформы г.Москвы (ЕМП)
+        </p>
+    </div>
+</div>
+<!--перенести в layout-->
+<div class="modal-layout js-alert">
+	<div class="modal-layout__inner">
+		<div class="modal js-ui-draggable">
+			<button type="button" class="modal__close-button js-modal-close"></button>
+			<div class="modal__inner">
+				<div class="modal__header">
+					<div class="modal__container js-alert-title">Заголовок</div>
+				</div>
+				<div class="modal__content">
+					<div class="modal__container">
+						<div class="modal__row js-alert-message">Сообщение</div>
+						<div class="modal__row">
+							<!-- Кнопки стандартного окна -->
+							<div class="layout layout--inline js-alert-buttons__default">
+								<div class="layout__unit">
+									<button type="button" class="modal__button js-modal-close">Закрыть</button>
+								</div>
+							</div>
+							<!-- Кнопки окна подтверждения действия -->
+							<div class="layout layout--inline js-alert-buttons__confirm" style="display: none;">
+								<div class="layout__unit">
+									<button type="button" class="modal__button js-alert-confirm__ok">Подтвердить</button>
+									<button type="button" class="modal__button js-alert-confirm__cancel">Отмена</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="b-new-farm__pp wrapWindow js-modal__feedback__window-main modal-layout">
+    <div class="ourWindow">
+        <span class="closeWindow js-modal-close"></span>
+        <h3 class="b-new-farm__title">Обратная связь</h3>
+		<form class="b-new-farm__form js-modal__feedback-form" action="/site/support" method="post">
+<div style="display:none"><input type="hidden" value="9b727a7dd6fddaedaa91248814d3b55d2e33b56e" name="YII_CSRF_TOKEN" /></div>		<p>
+			При обращении в службу поддержки по техническим вопросам, пожалуйста, указывайте в тексте обращения:<br/>
+			- номер телефона, который вы используете в качестве логина;<br/>
+			- текст ошибки;<br/>
+			- последовательность действий, которая приводит к возникновению ошибки.
+		</p>
+		<p>
+			Если проблема касается некорректного отображения начисленных баллов участника проекта, укажите, где именно вы видите некорректную информацию: на сайте ag.mos.ru, в мобильном приложении «Активный гражданин», на сайте pgu.mos.ru.
+		</p>
+		<p>&nbsp;</p>
+		<p>E-mail для ответа</p>
+		<p><input class="pp-input" name="email" placeholder="E-mail"></p>
+		<p>Тема</p>
+		<p>
+			<select class="pp-input js-modal__feedback-subjects" name="subject">
+				<option value="0">Выберите тему</option>
+			</select>
+		</p>
+		<div class="js-modal__feedback-order-number">
+			<p>Номер заказа (если есть)</p>
+			<p><input class="pp-input" name="order" placeholder="Номер заказа"></p>
+		</div>
+		<p>Сообщение</p>
+		<p><textarea class="pp-input" rows="5" name="message"></textarea></p>
+		<p><input class="btn_enter_reg" type="submit" value="Отправить">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="closeWindowLink js-modal-close">Отмена</a></p>
+		<p class="js-modal__feedback-message"></p>
+		</form>    </div>
+</div>
+
+<div class="b-new-farm__pp wrapWindow js-modal__feedback__window-send modal-layout">
+    <div class="ourWindow">
+        <span class="closeWindow js-modal-close"></span>
+        <p class="wrapWindowTitle">
+            Сообщение отправлено
+        </p>
+		<p>
+			Ваше обращение отправлено, ответ придёт на указанную вами почту.
+		</p>
+		<div>
+			<button class="btn_enter_reg js-modal-close" style='margin-top: 0px; margin-bottom: 10px'>Закрыть</button>
+		</div>
+    </div>
+</div>
+<div class="loader js-loader" style="display: none;">
+	<img class="loader__image" src="/images/blocks/loader/loader_image.gif" />
+	<div class="loader__text">Обработка данных</div>
+</div>
+
+        <div class="logOut_popup wrapWindow">
+            <div class="ourWindow">
+                <span class="closeWindow"></span>
+                <p>
+                    Вы действительно хотите выйти?
+                </p>
+                <a href="#" class="logout_yes">Да</a>
+                <a class="logout_no">Нет</a>
+            </div>
+        </div>
+
+    <script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+	
+	    $('button.gotoLogin_btn').click(function(e) {
+	        console.log('he-he');
+	        e.preventDefault();
+	        window.location = '/site/index?showlogin=true'
+	    });
+	
+	jQuery('#yw0').after("<a id=\"yw0_button\" href=\"\/user\/captcha?refresh=1\">\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043d\u043e\u0432\u044b\u0439 \u043a\u043e\u0434<\/a>");
+	jQuery(document).on('click', '#yw0_button', function(){
+		jQuery.ajax({
+			url: "\/user\/captcha?refresh=1",
+			dataType: 'json',
+			cache: false,
+			success: function(data) {
+				jQuery('#yw0').attr('src', data['url']);
+				jQuery('body').data('/user/captcha.hash', [data['hash1'], data['hash2']]);
+			}
+		});
+		return false;
+	});
+	
+});
+/*]]>*/
+</script>
+</body>
+</html>

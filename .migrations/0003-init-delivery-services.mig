@@ -1,0 +1,34 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Установка служб доставки. Активной остаётся только "самовывоз"
+     */
+    class init_delivery_services extends Migration{
+        
+        /*
+        * Запускаем миграцию
+        */
+        function Run(){
+
+            // Подключаем торговый модуль
+            CModule::IncludeModule("sale");
+            
+            // Получаем список служб доставки и запоминаем какой из них "Самовывоз"
+            // Остальные делаем неактивными
+            $dbResult = CSaleDelivery::GetList();
+            while($arResult = $dbResult->getNext()){
+                CSaleDelivery::Update($arResult["ID"], array("ACTIVE"=>$arResult["ID"]==3?"Y":"N"));
+            }
+            // А самовывоз делаем активным
+            CSaleDelivery::Update($need_id, array("ACTIVE"=>"Y"));
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$delivery = new init_delivery_services();
+// Откатываем, если неудачно
+if(!$delivery->Run())$delivery->RollBack();
