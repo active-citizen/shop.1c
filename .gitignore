@@ -21,4 +21,4 @@ bitrix/templates/*
 !.install/screens/README.md
 include/*
 !include/check_store.php
-libs/apibridge/passwd.php
+.indegration/passwd.php
