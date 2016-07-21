@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/fotorama.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="<?= SITE_TEMPLATE_PATH?>/ag-styles.css" />
     <link rel="icon" type="image/ico" href="<?= SITE_TEMPLATE_PATH?>/i/favicon.ico">
-    <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/jquery.fancybox.css">v
+    <link rel="stylesheet" href="<?= SITE_TEMPLATE_PATH?>/css/jquery.fancybox.css">
     <title><?$APPLICATION->ShowTitle()?></title>
 
 </head>
@@ -60,6 +60,14 @@
                             ?>
                             (<?= number_format($account["CURRENT_BUDGET"],0 ,',',' ')?>)
                         </a>
+                    <? else:?>
+                        <div class="smooth"></div>
+                        <div class="ag-login-form">
+                            <input type="text" id="ag-login" placeholder="Телефон в формате 79130123610">
+                            <input type="password" id="ag-password" placeholder="Пароль">
+                            <div id="ag-login-error">sdfsdfsdf</div>
+                            <div id="go-login">Войти</div>
+                        </div>
                     <? endif?>
                 </div>
                 

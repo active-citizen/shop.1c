@@ -135,7 +135,8 @@ use base Common;
         Dialog::FatalError($DBI::errstr) unless $stha->execute;
 
         my $sql = '';
-        while(my $table=$stha->fetchrow_array){
+        CAB:while(my $table=$stha->fetchrow_array){
+	    next CAB unless $table=~m/^b_/i;
             $sql = "DROP TABLE `$table`;";
             print $sql."\n" if $self->{verbose};
             Dialog::FatalError($DBI::errstr) unless $dbh->do($sql);

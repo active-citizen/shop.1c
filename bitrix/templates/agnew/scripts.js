@@ -3,6 +3,40 @@ var scrollProcess = 0;
 $(document).ready(function(){
     
     
+    $('#go-login').click(function(){
+        
+        var myObj = $(this);
+        
+        myObj.addClass('catalog-ajax-block-loader');
+        
+        
+        var postData = {};
+        postData["login"] = $('#ag-login').val();
+        postData["password"] = $('#ag-password').val();
+        
+        $.post(
+            "/.integration/auth.ajax.php",
+            postData,
+            function(data){
+                var answer = JSON.parse(data);
+                if(answer.errors.length){
+                    $('#ag-login-error').html('');
+                    $('#ag-login-error').append('<ol>');
+                    for(i in answer.errors){
+                        $('#ag-login-error').append('<li>'+answer.errors[i]+'</li>');
+                    }
+                    $('#ag-login-error').append('</ol>');
+                    $('#ag-login-error').fadeIn();
+                }
+                else{
+                    document.location.href="/";
+                }
+                myObj.removeClass('catalog-ajax-block-loader');
+            }
+        );
+        return false;
+    });
+    
     $('.ag-tab-title').click(function(){
         $('.ag-tab-title').removeClass('active');
         $(this).addClass('active');

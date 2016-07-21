@@ -1,0 +1,46 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление таблицы с логом профилирования
+     */
+    class profile_import_db extends Migration{
+        function Run(){
+            global $DB;
+            
+            
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_profile_import`;
+            "
+            );
+            
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_profile_import` (
+                  `login` char(16) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Логин пользователя',
+                  `email` char(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email пользователя',
+                  `last_update` BIGINT NOT NULL,
+                  `session_id` CHAR(128)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+            ");
+
+            
+            
+            $DB->Query("
+                ALTER TABLE `int_profile_import`
+                  ADD PRIMARY KEY (`login`),
+                  ADD UNIQUE KEY `login` (`login`,`email`),
+                  ADD KEY `email` (`email`),
+                  ADD KEY `last_update` (`last_update`),
+                  ADD KEY `session_id` (`session_id`);
+            ");
+
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$profile_import_db = new profile_import_db();
+// Откатываем, если неудачно
+if(!$profile_import_db->Run())$profile_import_db->RollBack();

@@ -18,7 +18,9 @@
  */
 
 
+    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
     require_once("classes/active-citizen-bridge.class.php");
+    require_once("classes/user.class.php");
     
     $agBrige = new ActiveCitizenBridge;
     
@@ -37,17 +39,25 @@
     $agBrige->setMode('emp');
     $agBrige->setArguments($args);
     $answer["errors"] = $agBrige->getErrors();
+    $profile = array();
     if(!$answer["errors"])
         $profile = $agBrige->exec();
         
     if(isset($profile["errorMessage"]) && $profile["errorMessage"])
         $answer["errors"][] = $profile["errorMessage"];
+        
+    if(isset($profile["result"]))$answer["profile"] = $profile["result"];
     
+    if(isset($profile["result"]) && $profile["result"] && isset($profile["session_id"]) && isset($profile["session_id"])){
+        $bxUser = new bxUser;
+        if(!$bxUser->login($args["login"],$profile["session_id"], $profile["result"]))
+            $answer["errors"][] = $bxUser->error;
+    }
     
+    echo json_encode($answer);
+    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
     
-    //echo json_encode($answer);
-    
-    echo "<pre>";
-    print_r($profile);
+    //echo "<pre>";
+    //print_r($profile);
     
     

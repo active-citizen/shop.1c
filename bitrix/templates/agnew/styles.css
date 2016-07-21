@@ -280,7 +280,7 @@ div.ag-product-wish{
     top: 10px;
     right: -10px;
     width: 50px;
-    z-index: 9999;
+    z-index: 9997;
     height: 40px;
     padding-top: 20px;
     text-align: center;
@@ -453,6 +453,7 @@ div.catalog-ajax-block{
     background-repeat: no-repeat;
     background-position: 50% 0%;
     background-image: url(/bitrix/templates/agnew/i/common/ajax-loader.gif); 
+    color: transparent;
 }
 
 #back-top {
@@ -808,3 +809,82 @@ a.fimage{
     width: 30px;
     height: 24px;
 }
+
+div.smooth{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 9998;
+    right: 0px;
+    bottom: 0px;
+    background-color: black;
+    opacity: 0.4;
+}
+
+div.ag-login-form{
+    position: fixed;
+    width: 400px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -150px;
+    z-index: 9999;
+    background-color: white;
+    border: 1px #DDD solid;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+    div.ag-login-form #ag-login{
+        width: 300px;
+        margin: 50px auto 20px auto;
+        display: block;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+
+    div.ag-login-form #ag-password{
+        width: 300px;
+        margin: 20px auto 20px auto;
+        display: block;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    div#go-login{
+        width: 100px;
+        margin: 20px auto 20px auto;
+        display: block;
+        -webkit-border-radius: 8px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px #AAA solid;
+        cursor: pointer;
+        background-color: #0eb0a0;  
+    }
+
+    div#go-login:hover{
+        background-color: #3eE0D0;  
+    }
+    
+    div#ag-login-error{
+        width: 380px;
+        margin: 20px auto 20px auto;
+        display: block;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        text-align: left;
+        background-color: #FCC;  
+        border: 1px #DAA solid;
+        color: red;
+        display: none;
+        font-size: 12px;
+        padding: 10px;
+    }
+
+
