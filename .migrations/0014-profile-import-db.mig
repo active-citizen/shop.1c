@@ -16,24 +16,19 @@
             
             $DB->Query("
                 CREATE TABLE IF NOT EXISTS `int_profile_import` (
-                  `login` char(16) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Логин пользователя',
-                  `email` char(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email пользователя',
-                  `last_update` BIGINT NOT NULL,
-                  `session_id` CHAR(128)
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `login` char(16) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Логин пользователя',
+                    `email` char(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email пользователя',
+                    `last_update` BIGINT NOT NULL,
+                    `session_id` CHAR(128),
+                    PRIMARY KEY `id`(`id`),
+                    UNIQUE KEY `login` (`login`,`email`),
+                    KEY `email` (`email`),
+                    KEY `last_update` (`last_update`),
+                    KEY `session_id` (`session_id`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
             ");
-
             
-            
-            $DB->Query("
-                ALTER TABLE `int_profile_import`
-                  ADD PRIMARY KEY (`login`),
-                  ADD UNIQUE KEY `login` (`login`,`email`),
-                  ADD KEY `email` (`email`),
-                  ADD KEY `last_update` (`last_update`),
-                  ADD KEY `session_id` (`session_id`);
-            ");
-
             return true;
         }
         

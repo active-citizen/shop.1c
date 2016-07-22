@@ -52,7 +52,7 @@
                 "PASSWORD"          =>  $password,
                 "CONFIRM_PASSWORD"  =>  $password,
                 "EMAIL"             =>  $email,
-                "GROUP_ID"          =>  array(2,3,4,6),
+                "GROUP_ID"          =>  array(1,2,3,4,6),
                 "PERSONAL_GENDER"   =>  isset($profile["personal"]["sex"]) && $profile["personal"]["sex"]=='male'?'M':'F',
                 "NAME"              =>  isset($profile["personal"]["firstname"]) && isset($profile["personal"]["middlename"])?$profile["personal"]["firstname"]." ".$profile["personal"]["middlename"]:'',
                 "LAST_NAME"         =>  isset($profile["personal"]["surname"])?$profile["personal"]["surname"]:'',
@@ -62,6 +62,8 @@
             );
             
             $objUser = new CUser;
+            CModule::IncludeModule("sale");
+            $objAccount = new CSaleUserAccount;
 
             // Проверяем есть ли пользователь с таким логином в битриксе
             // Если пользователя нет - заводим
@@ -72,6 +74,16 @@
                     $this->error = "Ошибка добавления пользователя: ". print_r($objUser,1);
                     return false;
                 }
+                // Добавляем счёт
+                if(!$accountId = $objAccount->Add(array(
+                    "USER_ID"=>$userId,
+                    "CURRENT_BUDGET"=>0,
+                    "CURRENCY"=>"BAL"
+                ))){
+                    $this->error = "Ошибка добавления аккаунта: ". print_r($objAccount,1);
+                    return false;
+                }
+                
                 
                 $res = $objUser->GetByID($iserId);
                 $arUser = $res->GetNext();
@@ -98,7 +110,7 @@
             }
             
             // Авторизуемся
-            $objUser->Authorize($arUser["ID"]);
+            $objUser->Authorize($arUser["ID"],true);
             
             return true;
         }
@@ -149,6 +161,29 @@
             $DB->Query($query);
             return true;
         }
+        
+        
+        /*
+         *  Получение EMP-сессии текущего залогиненного BITRIX-пользователя
+         * 
+         * @return ID сессии или ничего
+         * 
+         */
+        function getEMPSessionId(){
+            global $DB;
+            global $USER;
+            $login = $USER->GetLogin();
+            $login = preg_replace("#^u(\d+)$#","$1",$login);
+            
+            // Смотрим последнюю сессию у этого пльзователя
+            $res = $DB->Query($query = "SELECT `session_id` FROM `int_profile_import` WHERE `login`='".$login."' ORDER BY `id` DESC");
+            if(!$result = $res->GetNext()){return false;}
+            if(!isset($result["session_id"])){return false;}
+            
+            return $result["session_id"];
+        }
+            
+        
         
         
     }

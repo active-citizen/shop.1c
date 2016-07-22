@@ -49,7 +49,23 @@
                     ),
                 ),
                 "mode"=>"emp"
-            )
+            ),
+            "pointsHistory"=> array(
+                "name"      =>  "Получение истории начисления баллов",
+                "inputs"    =>  array(
+                    "session_id" =>  array(
+                        "name"      =>  "ID сессии ЕМП-пользователя",
+                        "require"   =>  true,
+                        "regexp"    =>  "#^.{1,64}$#"
+                    ),
+                    "token" =>  array(
+                        "name"      =>  "Токен",
+                        "require"   =>  true,
+                        "regexp"    =>  "#^.{1,32}$#"
+                    ),
+                ),
+                "mode"=>"emp"
+            ),
         );
         
         private $method = 'auth'; //!< Метод 
@@ -188,7 +204,7 @@
             if(is_object($object))$object = get_object_vars($object);
             if(!is_array($object))return false;
             foreach($object as $key=>$value){
-                if(is_object($value))$object[$key] = $this->objectToArray($value);
+                if(is_object($value) || is_array($value))$object[$key] = $this->objectToArray($value);
             }
             return $object;
         }
