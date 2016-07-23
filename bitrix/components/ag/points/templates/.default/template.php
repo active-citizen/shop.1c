@@ -12,7 +12,6 @@
     </a>
 </div>
 
-
 <?if ($arParams["SHOW_TOP_PAGINATION"] && count($arResult["PAGES"])>1):?>
     <div class="points_pagination">
         Страницы: 
@@ -48,7 +47,7 @@
             <th>Баллы</th>
         </tr>
         <?foreach($arResult["RECORDS"] as $record):?><tr>
-            <td class="date"><? echo $record["TIMESTAMP_X"];?></td>
+            <td class="date"><? echo $record["TRANSACT_DATE"];?></td>
             <td>
                 <h3><? echo $record["DEBIT"]=="Y"?"Начисление":"Списание"?></h3>
                 <? 
@@ -61,6 +60,9 @@
                         break;
                         case 'ORDER_UNPAY':
                             echo 'Отмена заказа №<a href="/order/detail/'.$record["ORDER_ID"].'/">'.$record["ORDER_ID"]."</a>";
+                        break;
+                        default:
+                            echo $record["DESCRIPTION"];
                         break;
                     }
                 
@@ -100,4 +102,3 @@
         <?endforeach;?>
     </div>
 <?endif;?>
-

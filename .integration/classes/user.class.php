@@ -37,14 +37,16 @@
         */
         function login($login, $sessionId, $profile = array()){
             
+            // Устанавливаем целевой логив битриксе
             $bitrixLogin = "u$login";
 
-
+            // Проверяем корректност email
             if(!isset($profile["personal"]["email"]) || !preg_match("#^[\d\w\-\.\_]+@[\d\w\-\.\_]+$#",$profile["personal"]["email"])){
                 $this->error = 'Профиль пользователя не содержит корректный email';
                 return false;
             }
             
+            // ДЕлаем для битрикса случайный пароль
             $password = substr(md5(time()),0,16);
             $email = $profile["personal"]["email"];
             $userData = array(
@@ -52,7 +54,7 @@
                 "PASSWORD"          =>  $password,
                 "CONFIRM_PASSWORD"  =>  $password,
                 "EMAIL"             =>  $email,
-                "GROUP_ID"          =>  array(1,2,3,4,6),
+                "GROUP_ID"          =>  array(2,3,4,6),
                 "PERSONAL_GENDER"   =>  isset($profile["personal"]["sex"]) && $profile["personal"]["sex"]=='male'?'M':'F',
                 "NAME"              =>  isset($profile["personal"]["firstname"]) && isset($profile["personal"]["middlename"])?$profile["personal"]["firstname"]." ".$profile["personal"]["middlename"]:'',
                 "LAST_NAME"         =>  isset($profile["personal"]["surname"])?$profile["personal"]["surname"]:'',
@@ -68,6 +70,8 @@
             // Проверяем есть ли пользователь с таким логином в битриксе
             // Если пользователя нет - заводим
             $res = CUser::GetByLogin($bitrixLogin);
+            
+            // Если пользователя с таким логином нет - создаём
             if(!$arUser = $res->GetNext()){
 
                 if(!$userId = $objUser->Add($userData)){
@@ -84,15 +88,27 @@
                     return false;
                 }
                 
-                
                 $res = $objUser->GetByID($iserId);
                 $arUser = $res->GetNext();
-                print_r($arUser);
             }
+            // Если пользователь есть - обновляем информацию о нём
             else{
                 if(!$objUser->Update($arUser["ID"], $userData)){
-                    $this->error = "Ошибка обновления пользователя: ". print_r($objUser,1);
+                    $this->error = "Ошибка обновления счёта: ". print_r($objUser,1);
                     return false;
+                }
+                
+                // Если у пользователя нет счёта = создаём
+                if(!CSaleUserAccount::GetByUserID($arUser["ID"], "BAL")){
+                    // Добавляем счёт
+                    if(!$accountId = $objAccount->Add(array(
+                        "USER_ID"=>$arUser["ID"],
+                        "CURRENT_BUDGET"=>0,
+                        "CURRENCY"=>"BAL"
+                    ))){
+                        $this->error = "Ошибка добавления счёта: ". print_r($objAccount,1);
+                        return false;
+                    }
                 }
                 
             }

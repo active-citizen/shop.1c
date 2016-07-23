@@ -16,7 +16,7 @@ if(!isset($arParams["CREDIT_FOLDER"]))$arParams["CREDIT_FOLDER"] = "credit";
 
 if(!isset($arParams["SELF_FOLDER"]))$arParams["CREDIT_FOLDER"] = "/points/";
 if(!isset($arParams["USER_ID"]))$arParams["USER_ID"] = CUser::GetID();
-if(!isset($arParams["SORT"]))$arParams["SORT"] = array("TIMESTAMP_X"=>"DESC");
+if(!isset($arParams["SORT"]))$arParams["SORT"] = array("TRANSACT_DATE"=>"DESC");
 if(!isset($arParams["RECORDS_ON_PAGE"]))$arParams["RECORDS_ON_PAGE"] = 10;
 if(!isset($arParams["PAGE"]))$arParams["PAGE"] = 1;
 if(!isset($arParams["PAGE_BLOCK_SIZE"]))$arParams["PAGE_BLOCK_SIZE"] = 10;

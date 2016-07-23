@@ -24,25 +24,56 @@
 
 
     class bxPoint{
+
+        var $error = '';
         
         /**
          * Обновление в битриксе транзакций личного счёта из занных EМП
          */
         function updatePoints($history, $userId){
-            $history = array_reverse($history);
             
             CModule::IncludeModule("sale");
             
+            // Получаем номер счёта данного пользователя
+            $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
+            $accountId = 0;
+            $accountAmount = 0;
+            if($arrAccount = $res->getNext()){
+                $accountId = $arrAccount["ID"];
+            }
             
+            
+            // Создаём индекс транзакций счёта, чтобы определять
+            // есть ли уже начисление/списание из $history в транзакциях или нет
+            // Ключ индекса - DEBIT+TRANSACT_DATE+AMOUNT
+            
+            $transactionIndex = array();
+            $res = CSaleUserTransact::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
+            
+            while($arTransaction = $res->GetNext())
+                $transactionsIndex[
+                    $arTransaction["DEBIT"]." ".
+                    preg_replace("#^(.*)\s+.*$#","$1",$arTransaction["TRANSACT_DATE"])." ".
+                    $arTransaction["DESCRIPTION"]
+                ] = $arTransaction["AMOUNT"];
+                
+
+            $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
             $objTransact = new CSaleUserTransact;
 
-            $res = $objTransact->GetList();
-//            echo "<pre>";
-//            print_r($res->GetNext());
-//            die;
 
-            for($i=0;$i<10;$i++){
-                $empTransact = $history[0];
+
+
+            foreach($history as $empTransact){
+                // Формируем ключ для поиска по индексу транзакций
+                $transactionKey = 
+                    ($empTransact["action"]=='debit'?"Y":"N")." ".
+                    date("d.m.Y",$empTransact["date"])." ".
+                    $empTransact["title"];
+                
+                // Если это начисление/списание уже есть в индексе транзакций - пропускаем её
+                if(isset($transactionsIndex[$transactionKey]))continue;
+                
                 $arFields = array(
                     "USER_ID"       =>  $userId,
                     "AMOUNT"        =>  $empTransact['points'],
@@ -53,19 +84,33 @@
                     "EMPLOYEE_ID"   =>  1,
                     "TRANSACT_DATE" =>  date("d.m.Y H:i:s", $empTransact["date"])
                 );                
+
                 
+                // Получаем сумму на счёте
+                $arrAccount = CSaleUserAccount::GetByID($accountId);
+                $accountAmount = $arrAccount["CURRENT_BUDGET"];
+                
+                // ДОбавляем транзакцию
                 if(!$transactId = $objTransact->Add($arFields)){
-                    echo "<pre>";
-                    print_r($objTransact);
-                    die;
+                    $error = $this->error = "Ошибка добавления транзакции: ". print_r($objTransact, 1);
+                    return false;
                 }
-                echo "<pre>";
-                print_r($arFields);
-                die;
-                
+                else{
+                    // Изменяем размер счёта
+                    CSaleUserAccount::Update(
+                        $accountId,
+                        array(
+                            "USER_ID"       =>  $arFields["USER_ID"],
+                            "CURRENT_BUDGET"=>  $accountAmount+($arFields["DEBIT"]=='Y'?'+1':'-1')*$arFields["AMOUNT"],
+                            "CURRENCY"      =>  "BAL",
+                            "NOTES"         =>  $empTransact["title"]
+                        )
+                    );
+                }
                 
             }
-            
+
+
             
         }
     }

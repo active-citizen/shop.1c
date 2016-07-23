@@ -2,7 +2,7 @@
     require 'common.php';
     
     /**
-     * Добавление таблицы с логом профилирования
+     * Добавление таблицы с логом профилия
      */
     class profile_import_db extends Migration{
         function Run(){
@@ -28,6 +28,21 @@
                     KEY `session_id` (`session_id`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
             ");
+            
+            
+            CModule::IncludeModule("sale");
+            
+            // Удаляем все транзакции
+            $objTransaction = new CSaleUserTransact;
+            $res = CSaleUserTransact::GetList();
+            while($transact = $res->GetNext())
+                $objTransaction->Delete($transact["ID"]);
+            
+            // Удаляем все счета
+            $objAccount = new CSaleUserAccount;
+            $res = CSaleUserAccount::GetList();
+            while($account = $res->GetNext())
+                $objAccount->Delete($account["ID"]);
             
             return true;
         }
