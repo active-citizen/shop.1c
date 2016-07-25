@@ -60,6 +60,7 @@
                             ?>
                             (<?= number_format($account["CURRENT_BUDGET"],0 ,',',' ')?>)
                         </a>
+                        <a href="?logout=yes" class="ag2-menu-item profile" >Выход</a>
                     <? else:?>
                         <div class="smooth"></div>
                         <div class="ag-login-form">
