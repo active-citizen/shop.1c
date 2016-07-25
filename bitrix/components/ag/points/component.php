@@ -53,7 +53,7 @@ $arResult["PAGES"] = get_pages_list(
 
 
 $arResult["RECORDS"] = array();
-while($arResult["RECORDS"][] = $res->GetNext());
+while($data = $res->GetNext())$arResult["RECORDS"][] = $data;
     
 $this->IncludeComponentTemplate();
 

@@ -49,7 +49,7 @@
         <?foreach($arResult["RECORDS"] as $record):?><tr>
             <td class="date"><? echo $record["TRANSACT_DATE"];?></td>
             <td>
-                <h3><? echo $record["DEBIT"]=="Y"?"Начисление":"Списание"?></h3>
+                <h3><? /* echo $record["DEBIT"]=="Y"?"Начисление":"Списание" */?></h3>
                 <? 
                     switch($record["DESCRIPTION"]){
                         case 'MANUAL':
