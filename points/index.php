@@ -3,6 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Мои баллы");
 
 
+if($_SERVER["REQUEST_URI"]=='/points/'){
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
@@ -34,7 +35,9 @@ $APPLICATION->SetTitle("Мои баллы");
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
     }   
-
+    LocalRedirect("/points/all/");
+    die;
+}
 
 ?>
 
