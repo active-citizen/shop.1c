@@ -50,8 +50,9 @@
     
     if(isset($profile["result"]) && $profile["result"] && isset($profile["session_id"]) && isset($profile["session_id"])){
         $bxUser = new bxUser;
-        if(!$bxUser->login($args["login"],$profile["session_id"], $profile["result"]))
+        if(!$bxUser->login($args["login"],$profile["session_id"], $profile["result"])){
             $answer["errors"][] = $bxUser->error;
+        }
     }
     
     echo json_encode($answer);
