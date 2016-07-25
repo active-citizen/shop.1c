@@ -45,6 +45,7 @@ use base Common;
         $self->unpack();
         $self->checkDist();
         $self->clearDatabase();
+        `chmod -R 777 /home/r-asian/local/www/shop.ag.mos.ru.local/`;
         $self->installFromBrowser();
     }
     
@@ -135,8 +136,7 @@ use base Common;
         Dialog::FatalError($DBI::errstr) unless $stha->execute;
 
         my $sql = '';
-        CAB:while(my $table=$stha->fetchrow_array){
-	    next CAB unless $table=~m/^b_/i;
+        while(my $table=$stha->fetchrow_array){
             $sql = "DROP TABLE `$table`;";
             print $sql."\n" if $self->{verbose};
             Dialog::FatalError($DBI::errstr) unless $dbh->do($sql);

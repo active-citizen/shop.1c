@@ -49,12 +49,12 @@ use strict;
         foreach my $section($default_conf->Sections){
             foreach my $parameter($default_conf->Parameters($section)){
                 
-                $self->{data}->{$section."::".$parameter} =  
+                $self->{data}->{"$section::$parameter"} =  
                     $current_conf->val($section,$parameter,$default_conf->val($section,$parameter));
                     
                 # Прекращаем работу, если какой-то из параметров не указан ни в конфиге по умолчанию
                 # ни в пользовательском конфиге
-                unless($self->{data}->{$section."::".$parameter}){
+                unless($self->{data}->{"$section::$parameter"}){
                     $self->{error}="Parameter $section::$parameter must be defined";
                     return $self;
                 }
