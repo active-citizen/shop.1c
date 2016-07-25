@@ -54,7 +54,7 @@
                         ?>
                         <a href="http://ag.mos.ru/profile/" class="ag2-menu-item profile" >
                             <? 
-                                echo $userInfo["LAST_NAME"];
+                                echo $userInfo["LAST_NAME"]." ";
                                 echo $userInfo["NAME"];
                                 if(!trim($userInfo["LAST_NAME"]) && !trim($userInfo["LAST_NAME"]))echo $userInfo["LOGIN"];
                             ?>
