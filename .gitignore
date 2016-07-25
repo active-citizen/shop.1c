@@ -14,11 +14,7 @@ bitrix/templates/*
 !bitrix/templates/.default
 !bitrix/components/ag
 !bitrix/.settings.php
-.install/config.ini
-.install/tmp/*
-!.install/tmp/README.txt
-.install/screens/*
-!.install/screens/README.md
+.install/*
 include/*
 !include/check_store.php
 .indegration/passwd.php
