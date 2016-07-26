@@ -66,6 +66,18 @@
                 ),
                 "mode"=>"emp"
             ),
+            "getProducts"=> array(
+                "name"      =>  "Получение товаров",
+                "inputs"    =>  array(
+                ),
+                "mode"=>"arm"
+            ),
+            "getCategories"=> array(
+                "name"      =>  "Получение категорий",
+                "inputs"    =>  array(
+                ),
+                "mode"=>"arm"
+            ),
         );
         
         private $method = 'auth'; //!< Метод 

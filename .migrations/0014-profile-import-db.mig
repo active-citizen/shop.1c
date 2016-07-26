@@ -28,7 +28,34 @@
                     KEY `session_id` (`session_id`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
             ");
+
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_categories_import`;
+            "
+            );
             
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_categories_import` (
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `external_id` INT(11) UNSIGNED NOT NULL,
+                    `bitrix_id` INT(11) UNSIGNED NOT NULL,
+                    `name` char(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email пользователя',
+                    `sort_order` INT(11),
+                    `image` char(255),
+                    `external_parent_id` INT(11) UNSIGNED,
+                    `bitrix_parent_id` INT(11) UNSIGNED,
+                    `description` CHAR(255),
+                    `last_update` BIGINT NOT NULL COMMENT 'Дата последней синхронизации с Битрикс',
+                    PRIMARY KEY `id`(`id`),
+                    KEY `external_id` (`external_id`),
+                    KEY `bitrix_id` (`bitrix_id`),
+                    KEY `external_parent_id` (`external_parent_id`),
+                    KEY `bitrix_parent_id` (`bitrix_parent_id`),
+                    KEY `sort_order` (`sort_order`),
+                    KEY `last_update` (`last_update`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+            ");
+
             
             CModule::IncludeModule("sale");
             
