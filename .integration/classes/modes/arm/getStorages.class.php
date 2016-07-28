@@ -1,6 +1,6 @@
-<?php
+<?
 /*
- * categories.ajax.php
+ * getStorages.class.php
  * 
  * Copyright 2016 Андрей Инюцин <inutcin@yandex.ru>
  * 
@@ -21,17 +21,16 @@
  * 
  * 
  */
+ 
+    require_once(realpath(dirname(__FILE__)."/../../curl.class.php"));
+    
+    class getStoragesBridgeMethod{
+        function exec($args){
+            
+            $curl = new curlTool;
+            $data = $curl->get("http://arm.ag.mos.ru/rest/getStorages", $data);
+            return $data;
+        }
+    }
 
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require_once("classes/categories.class.php");
-    
-    $bxCategories = new bxCategories;
-    // Обновляем список категорий
-    $bxCategories->updateImportTable(
-        0   //Период обновления, 0 - обновляем независимо от времени последнего обновления
-    );
-    
-    
-    echo json_encode($answer);
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
-    
+

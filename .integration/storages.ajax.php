@@ -1,6 +1,6 @@
 <?php
 /*
- * categories.ajax.php
+ * storages.ajax.php
  * 
  * Copyright 2016 Андрей Инюцин <inutcin@yandex.ru>
  * 
@@ -23,15 +23,23 @@
  */
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require_once("classes/categories.class.php");
+    require_once("classes/storages.class.php");
     
-    $bxCategories = new bxCategories;
-    // Обновляем список категорий
-    $bxCategories->updateImportTable(
+    $bxStorages = new bxStorages;
+    // Обновляем список складов
+    $bxStorages->updateImportTable(
         0   //Период обновления, 0 - обновляем независимо от времени последнего обновления
     );
+    
+    echo "<pre>";
+    print_r($bxStorages);
+    echo "</pre>";
     
     
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
+    
+    //echo "<pre>";
+    //print_r($profile);
+    
     

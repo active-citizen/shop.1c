@@ -23,39 +23,16 @@
  */
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require_once("classes/active-citizen-bridge.class.php");
+    require_once("classes/products.class.php");
     
-    $agBrige = new ActiveCitizenBridge;
+    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+    require_once("classes/categories.class.php");
     
-    $answer = array(
-        "errors"=>""
+    $bxProducts = new bxProducts;
+    // Обновляем список продуктов
+    $bxProducts->updateImportTable(
+        0   //Период обновления, 0 - обновляем независимо от времени последнего обновления
     );
-    
-    
-    
-    $args = array(
-    );
-    
-    
-    $agBrige->setMethod('getProducts');
-    $agBrige->setMode('arm');
-    $agBrige->setArguments($args);
-    $answer["errors"] = $agBrige->getErrors();
-    
-    if(!$answer["errors"] && !$products = $agBrige->exec()){
-        $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
-    }
-    echo "<pre>";
-    print_r($products);
-    die;
-        
-        
-        
     
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
-    
-    //echo "<pre>";
-    //print_r($profile);
-    
-    

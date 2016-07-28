@@ -1,0 +1,81 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление таблицы с логом обновления продуктов
+     */
+    class categories_import_db extends Migration{
+        function Run(){
+            global $DB;
+            
+
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_manufacturers_import`;
+            "
+            );
+
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_manufacturers_import` (
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `external_id` INT(11) UNSIGNED NOT NULL,
+                    `name` char(64) NOT NULL 
+                        COMMENT 'Email пользователя',
+                    `image` CHAR(255)
+                        COMMENT 'Изображение',
+                    `description` CHAR(255)
+                        COMMENT 'Описание',
+                    `schedule` CHAR(255)
+                        COMMENT 'Расписание работы',
+                    `path` CHAR(255)
+                        COMMENT 'Как проехать',
+                    `address` CHAR(128)
+                        COMMENT 'Адрес',
+                    `url` CHAR(64)
+                        COMMENT 'Сайт',
+                    `phone` CHAR(64)
+                        COMMENT 'Телефон',
+                    `email` CHAR(64)
+                        COMMENT 'Email',
+                    `shortname` CHAR(64)
+                        COMMENT 'Краткое наименование',
+                    `last_update` BIGINT NOT NULL 
+                        COMMENT 'Дата последней синхронизации',
+                    PRIMARY KEY `id`(`id`),
+                    KEY `external_id` (`external_id`),
+                    KEY `last_update` (`last_update`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+            ");
+
+            
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_products_import`;
+            "
+            );
+            
+            
+            CModule::IncludeModule("iblock");
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+            $iblock = $res->GetNext();
+            
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array());
+            $resIB = new CIBlockElement;
+            // Сносим элементы каталога
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$categories_import_db = new categories_import_db();
+// Откатываем, если неудачно
+if(!$categories_import_db->Run())$categories_import_db->RollBack();

@@ -1,6 +1,6 @@
 <?
 /*
- * categories.class.php
+ * storages.class.php
  * 
  * Copyright 2016 Андрей Инюцин <inutcin@yandex.ru>
  * 
@@ -21,10 +21,9 @@
  * 
  * 
  */
-
     require_once("classes/active-citizen-bridge.class.php");
 
-    class bxCategories{
+    class bxStorages{
         
         var $errors = array();
         var $logs = array();
@@ -38,13 +37,6 @@
         function updateImportTable($updatePeriod = 3600){
             
             global $DB;
-            
-            // Получаем ID IBlock-а под кодом 
-            CModule::IncludeModule("iblock");
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
-            $row = $res->GetNext();
-            $iblockId = $row["ID"];
-            $objIblockSection = new CIblockSection;
         
             // Проверяем, надо ли что-нибудь обновлять
             $needUpdate = 0;
@@ -56,7 +48,7 @@
                     SELECT 
                         count(*) as `count` 
                     FROM 
-                        `int_categories_import` 
+                        `int_storages_import` 
                     WHERE 
                         UNIX_TIMESTAMP(NOW())-`last_update`>$updatePeriod
                     LIMIT
@@ -75,7 +67,7 @@
             // Список аргументов
             $args = array();
             // Метод моста
-            $agBrige->setMethod('getCategories');
+            $agBrige->setMethod('getStorages');
             // Режим моста
             $agBrige->setMode('arm');
             // Аргументы
@@ -84,46 +76,46 @@
             $this->errors = $agBrige->getErrors();
             
             // Если ошибок нет - выполняем установленным метод моста
-            if(!$this->errors && !$categories = $agBrige->exec()){
+            if(!$this->errors && !$storages = $agBrige->exec()){
                 $this->errors = array_merge(
                     $this->errors, $agBrige->getErrors()
                 );
             }
-
+            
             // Составляем индекс текущего содержимого промежуточной таблицы
             // Ключ - ID внешнего источника данных
-            $indexCategories = array();
-            $query = "SELECT * FROM `int_categories_import`";
+            $indexStorages = array();
+            $query = "SELECT * FROM `int_storages_import`";
             $res = $DB->Query($query);
             while($row = $res->GetNext())
-                $indexCategories[$row["external_id"]] = $row;
+                $indexStorages[$row["external_id"]] = $row;
+              
             
-            // Перебираем полученные от моста категории
-            foreach($categories as $category){
-                // Подготавливаем все параметры категории для работы с SQL
-                foreach($category as $k=>$v)$category[$k] = $DB->ForSql($v);
-                // Если текущей категории от моста нет в индексе - добавляем в 
+            
+            // Перебираем полученные от моста склады
+            foreach($storages as $storage){
+                // Подготавливаем все параметры склада для работы с SQL
+                foreach($storage as $k=>$v)$storage[$k] = $DB->ForSql($v);
+                // Если текущего склада от моста нет в индексе - добавляем в 
                 // промежуточную таблицу
                 //============================================================
                 //      Заполнение промежуточной таблицы новыми данными
                 //============================================================
-                if(!isset($indexCategories[$category["category_id"]])){
+                if(!isset($indexStorages[$storage["option_id"]])){
                     $query = "
-                        INSERT `int_categories_import`(
+                        INSERT `int_storages_import`(
                             `external_id`,
                             `name`,
-                            `sort_order`,
-                            `image`,
-                            `external_parent_id`,
-                            `description`
+                            `schedule`,
+                            `description`,
+                            `address`
                         )
                         VALUES(
-                            '".$category["category_id"]."',
-                            '".$category["name"]."',
-                            '".$category["sort_order"]."',
-                            '".$category["image"]."',
-                            '".$category["parent_id"]."',
-                            '".$category["description"]."'
+                            '".$storage["option_id"]."',
+                            '".$storage["name"]."',
+                            '".$storage["schedule"]."',
+                            '".$storage["description"]." ".$storage["path"]."',
+                            '".$storage["address"]."'
                         )
                     ";
                     $DB->Query($query);
@@ -133,93 +125,70 @@
                 else{
                     $query = "
                         UPDATE 
-                            `int_categories_import`
+                            `int_storages_import`
                         SET
-                            `name`='".$category["name"]."',
-                            `sort_order`='".$category["sort_order"]."',
-                            `image`='".$category["image"]."',
-                            `external_parent_id`='".$category["parent_id"]."',
-                            `description`='".$category["description"]."'
+                            `name`='".$storage["name"]."',
+                            `schedule`='".$storage["schedule"]."',
+                            `description`='".$storage["description"]." "
+                                .$storage["path"]."',
+                            `address`='".$storage["address"]."'
                         WHERE
-                            `external_id`='".$category["category_id"]."'
+                            `external_id`='".$storage["option_id"]."'
                     ";
                     $DB->Query($query);
                 }
-                
                 
                 //============================================================
                 //      Заполнение битрикса данными
                 //============================================================
                 // Ищем в каталоге битрикса имя разжела с таким же именем
-                $res = CIBlockSection::GetList(
-                    array(), array("NAME"=>$category["name"])
+                CModule::IncludeModule("catalog");
+                $res = CCatalogStore::GetList(
+                    array(), array("TITLE"=>$storage["name"])
                 );
-                $row = $res->GetNext();
                 // Формируем поля раздела
                 $arFields = array(
-                    "IBLOCK_ID"         =>  $iblockId,
-                    "NAME"              =>  $category["name"],
-                    "CODE"              =>  CUtil::translit(
-                        $category["name"], 'ru',
-                        array("replace_space"=>"-","replace_other"=>"-")
-                    ),
-                    "SORT"              =>  $category["sort_order"],
-                    "DESCRIPTION"       =>  $category["description"],
-                    "DESCRIPTION_TYPE"  =>  'html'
+                    "TITLE"         =>  $storage["name"],
+                    "DESCRIPTION"   =>  $storage["description"]." "
+                        .$storage["path"],
+                    "ADDRESS"       =>  $storage["address"],
+                    "SCHEDULE"      =>  $storage["schedule"],
                 );
-                // Если раздел уже есть в битриксе - обновляем
+                $row = $res->GetNext();
+                // Если склад уже есть в битриксе - обновляем
                 if($row){
-                    // Получаем ID ижображения для каталога
-                    $pictureId = $row["PICTURE"];
-                    // Загружаем изображение, указанное в атрибутах раздела,
-                    // полученных из API (это url на внешний ресурс),
-                    // И получаем массив его атрибутов (из него нам нужен размер)
-                    $newFileArray = CFile::MakeFileArray($category["image"]);
-                    // Получаем информацию о файле картинки каталога по его ID
-                    // Нам нужен оттуда размер
-                    $res = CFile::GetByID($pictureId);
-                    $oldFileArray = $res->GetNext();
-                    // Добавляем к полям раздела новую картинку, если размер
-                    // загруженного извне изображения не совпадает с тем, что
-                    // в битриксе
-                    if($oldFileArray["FILE_SIZE"]!=$newFileArray['size']){
-                        CFile::Delete($pictureId);
-                        $arFields["PICTURE"] = $newFileArray;
-                    }
                     
                     // Обновляем ращдел каталога
-                    $objIblockSection->Update($row["ID"], $arFields);
+                    CCatalogStore::Update($row["ID"], $arFields);
                     
-                    // Привязываем к объекту промежуточной таблицы ID раздела в
+                    // Привязываем к объекту промежуточной таблицы ID склада в
                     // Битриксе
                     $query = "
                         UPDATE 
-                            `int_categories_import` 
+                            `int_storages_import` 
                         SET 
                             `bitrix_id`=".$row["ID"]." 
                         WHERE 
-                            `external_id`=".$category["category_id"];
+                            `external_id`=".$storage["option_id"];
                     $DB->Query($query);
                     
                 }
                 // Если раздела ещё нет в битриксе - добавляем
                 else{
-                    // Формируем массив добавляемого файла из ссылки на картинку
-                    $arFields["PICTURE"] = CFile::MakeFileArray($category["image"]);
                     // Пытвемся добавить раздел в битрикс, при неудаче фиксируем 
                     // ошибку
-                    if(!$categoryId = $objIblockSection->Add($arFields))
-                        $this->error = $objIblockSection->LAST_ERROR;
+                    if(!$storageId = CCatalogStore::Add($arFields))
+                        $this->error = "Ошибка добавления склада";
                     
                     // Привязываем к объекту промежуточной таблицы ID раздела в
                     // Битриксе
                     $query = "
                         UPDATE 
-                            `int_categories_import` 
+                            `int_storages_import` 
                         SET 
-                            `bitrix_id`=".$categoryId." 
+                            `bitrix_id`=".$storageId." 
                         WHERE 
-                            `external_id`=".$category["category_id"];
+                            `external_id`=".$storage["option_id"];
                     $DB->Query($query);
                 }
                 

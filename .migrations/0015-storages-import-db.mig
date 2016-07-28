@@ -1,0 +1,59 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление структур импорта складов
+     */
+    class storages_import_db extends Migration{
+        function Run(){
+            global $DB;
+            
+            
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_storages_import`;
+            "
+            );
+            
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_storages_import` (
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `external_id` INT(11) UNSIGNED NOT NULL,
+                    `bitrix_id` INT(11) UNSIGNED NOT NULL,
+                    `name` char(64) NOT NULL COMMENT 'Название склада',
+                    `schedule` char(255) NOT NULL COMMENT 'Режим работы',
+                    `description` CHAR(255) NOT NULL COMMENT 'Описание',
+                    `address` CHAR(255) NOT NULL COMMENT 'Адрес',
+                    `last_update` BIGINT NOT NULL 
+                        COMMENT 'Дата последней синхронизации с Битрикс',
+                        
+                    PRIMARY KEY `id`(`id`),
+                    KEY `external_id` (`external_id`),
+                    KEY `bitrix_id` (`bitrix_id`),
+                    KEY `last_update` (`last_update`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+            ");
+            
+            // Очищаем список складов
+            // Удаляем склады
+            CModule::IncludeModule("catalog");
+            $res = CCatalogStore::GetList();
+            while($store = $res->GetNext()){
+                if(!CCatalogStore::Delete(
+                    $store["ID"]
+                )){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$storages_import_db = new storages_import_db();
+// Откатываем, если неудачно
+if(!$storages_import_db->Run())$storages_import_db->RollBack();

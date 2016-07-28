@@ -78,6 +78,18 @@
                 ),
                 "mode"=>"arm"
             ),
+            "getStorages"=> array(
+                "name"      =>  "Получение складов",
+                "inputs"    =>  array(
+                ),
+                "mode"=>"arm"
+            ),
+            "getManufacturers"=>array(
+                "name"      =>  "Получение производителей",
+                "inputs"    =>  array(
+                ),
+                "mode"=>"arm"
+            )
         );
         
         private $method = 'auth'; //!< Метод 

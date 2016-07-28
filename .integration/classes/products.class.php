@@ -1,6 +1,6 @@
 <?
 /*
- * categories.class.php
+ * products.class.php
  * 
  * Copyright 2016 Андрей Инюцин <inutcin@yandex.ru>
  * 
@@ -24,27 +24,33 @@
 
     require_once("classes/active-citizen-bridge.class.php");
 
-    class bxCategories{
+    class bxProducts{
         
         var $errors = array();
         var $logs = array();
         
         /*
-         * Заполнение промежуточной таблицы данными категорий из внешнего 
+         * Заполнение промежуточной таблицы данными товаров из внешнего 
          * источника
-         * @param - $updatePeriod - период обновления категорий 
+         * @param - $updatePeriod - период обновления товаров
          *      (0 - принудительное обновление)
          */
         function updateImportTable($updatePeriod = 3600){
             
             global $DB;
-            
-            // Получаем ID IBlock-а под кодом 
+
             CModule::IncludeModule("iblock");
+            // Узнаём ID инфоблока товарных предложений
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $iblock = $res->GetNext();
+            $OfferIblockId = $iblock["ID"];
+            
+            // Узнаём ID инфоблока каталога
             $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
-            $row = $res->GetNext();
-            $iblockId = $row["ID"];
-            $objIblockSection = new CIblockSection;
+            $iblock = $res->GetNext();
+            $CatalogIblockId = $iblock["ID"];
+
+        
         
             // Проверяем, надо ли что-нибудь обновлять
             $needUpdate = 0;
@@ -56,7 +62,7 @@
                     SELECT 
                         count(*) as `count` 
                     FROM 
-                        `int_categories_import` 
+                        `int_products_import` 
                     WHERE 
                         UNIX_TIMESTAMP(NOW())-`last_update`>$updatePeriod
                     LIMIT
@@ -75,7 +81,7 @@
             // Список аргументов
             $args = array();
             // Метод моста
-            $agBrige->setMethod('getCategories');
+            $agBrige->setMethod('getProducts');
             // Режим моста
             $agBrige->setMode('arm');
             // Аргументы
@@ -84,91 +90,78 @@
             $this->errors = $agBrige->getErrors();
             
             // Если ошибок нет - выполняем установленным метод моста
-            if(!$this->errors && !$categories = $agBrige->exec()){
+            if(!$this->errors && !$products = $agBrige->exec()){
                 $this->errors = array_merge(
                     $this->errors, $agBrige->getErrors()
                 );
             }
-
-            // Составляем индекс текущего содержимого промежуточной таблицы
-            // Ключ - ID внешнего источника данных
-            $indexCategories = array();
-            $query = "SELECT * FROM `int_categories_import`";
-            $res = $DB->Query($query);
-            while($row = $res->GetNext())
-                $indexCategories[$row["external_id"]] = $row;
             
             // Перебираем полученные от моста категории
-            foreach($categories as $category){
-                // Подготавливаем все параметры категории для работы с SQL
-                foreach($category as $k=>$v)$category[$k] = $DB->ForSql($v);
-                // Если текущей категории от моста нет в индексе - добавляем в 
-                // промежуточную таблицу
-                //============================================================
-                //      Заполнение промежуточной таблицы новыми данными
-                //============================================================
-                if(!isset($indexCategories[$category["category_id"]])){
-                    $query = "
-                        INSERT `int_categories_import`(
-                            `external_id`,
-                            `name`,
-                            `sort_order`,
-                            `image`,
-                            `external_parent_id`,
-                            `description`
-                        )
-                        VALUES(
-                            '".$category["category_id"]."',
-                            '".$category["name"]."',
-                            '".$category["sort_order"]."',
-                            '".$category["image"]."',
-                            '".$category["parent_id"]."',
-                            '".$category["description"]."'
-                        )
-                    ";
-                    $DB->Query($query);
-                }
-                // Если текущая категория от моста есть в индексе - обновляем в 
-                // промежуточной таблице
-                else{
-                    $query = "
-                        UPDATE 
-                            `int_categories_import`
-                        SET
-                            `name`='".$category["name"]."',
-                            `sort_order`='".$category["sort_order"]."',
-                            `image`='".$category["image"]."',
-                            `external_parent_id`='".$category["parent_id"]."',
-                            `description`='".$category["description"]."'
-                        WHERE
-                            `external_id`='".$category["category_id"]."'
-                    ";
-                    $DB->Query($query);
-                }
-                
-                
+            $resElement = new CIBlockElement;
+            echo "<pre>";
+            print_r($products);
+            die;
+            foreach($products as $productItem){
                 //============================================================
                 //      Заполнение битрикса данными
                 //============================================================
-                // Ищем в каталоге битрикса имя разжела с таким же именем
+                // Ищем в каталоге битрикса имя продукта с таким же именем
                 $res = CIBlockSection::GetList(
-                    array(), array("NAME"=>$category["name"])
+                    array(), array("NAME"=>$productItem["name"])
                 );
                 $row = $res->GetNext();
-                // Формируем поля раздела
-                $arFields = array(
-                    "IBLOCK_ID"         =>  $iblockId,
-                    "NAME"              =>  $category["name"],
-                    "CODE"              =>  CUtil::translit(
-                        $category["name"], 'ru',
-                        array("replace_space"=>"-","replace_other"=>"-")
-                    ),
-                    "SORT"              =>  $category["sort_order"],
-                    "DESCRIPTION"       =>  $category["description"],
-                    "DESCRIPTION_TYPE"  =>  'html'
-                );
+                
+                // Формируем поля продукта
+                $product = array();
+                $product["SITE_ID"] = 's1';
+                $product["IBLOCK_ID"] = $CatalogIblockId;
+                $product["DETAIL_TEXT"] = html_entity_decode($productItem["description"]);
+                $product["PREVIEW_TEXT"] = html_entity_decode($productItem["description"]);
+                
+                
+                // Определяем Bitrix-ID категории
+                $res = $DB->Query("
+                    SELECT 
+                        `bitrix_id` 
+                    FROM
+                        `int_categories_import` 
+                    WHERE 
+                        `external_id`=".
+                            (
+                                isset($productItem["categories"][0])
+                                ?
+                                $productItem["categories"][0]
+                                :
+                                0
+                            )
+                            ."
+                    LIMIT 1
+                ");
+                $arrSection = $res->GetNext();
+                $sectionId = isset($arrSection["bitrix_id"])
+                    ?
+                    $arrSection["bitrix_id"]
+                    :
+                    0;
+                $product["IBLOCK_SECTION_ID"] = $sectionId;
+                $product["SECTION_ID"] = $sectionId;
+                $product["PREVIEW_TEXT_TYPE"] = 'html';
+                $product["DETAIL_TEXT_TYPE"] = 'html';
+                $picturePath = isset($productItem["images"][0])
+                    ?
+                    $productItem["images"][0]
+                    :
+                    '';
+                $product["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
+                $product["DETAIL_PICTURE"] = CFile::MakeFileArray($picturePath);
+
+                echo "<pre>222";
+                print_r($product);
+                die;
+                
                 // Если раздел уже есть в битриксе - обновляем
                 if($row){
+                    continue;
                     // Получаем ID ижображения для каталога
                     $pictureId = $row["PICTURE"];
                     // Загружаем изображение, указанное в атрибутах раздела,
@@ -204,6 +197,13 @@
                 }
                 // Если раздела ещё нет в битриксе - добавляем
                 else{
+                    if(!$id = $resElement->Add($product)){
+                        print_r($resSection);
+                        continue;
+                    }
+                echo "<pre>111";
+                print_r($product);
+                die;
                     // Формируем массив добавляемого файла из ссылки на картинку
                     $arFields["PICTURE"] = CFile::MakeFileArray($category["image"]);
                     // Пытвемся добавить раздел в битрикс, при неудаче фиксируем 
