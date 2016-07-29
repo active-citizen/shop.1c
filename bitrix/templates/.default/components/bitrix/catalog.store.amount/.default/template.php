@@ -78,31 +78,38 @@ if(!empty($arResult["STORES"]) && $arParams["MAIN_TITLE"] != ''):?>
         <? $first = 0; ?>
 		<?foreach($arResult["STORES"] as $pid => $arProperty):?>
         <div class="ag-store-detail" <?if($arProperty["REAL_AMOUNT"]>0 && !$first):$first=1;?>style="display: block;"<?endif?> id="agst-<?= $arProperty['ID'];?>">
+            <? if(
+                trim($arProperty["DETAIL"]['ADDRESS'])
+                || trim($arProperty["DETAIL"]['PHONE'])
+                || trim($arProperty["DETAIL"]['SCHEDULE'])
+                || trim($arProperty["DETAIL"]['DESCRIPTION'])
+            ):?>
             <h4><a target="_blank" href="<?= $arProperty["URL"]?>"><?= $arProperty["TITLE"]?></a></h4>
+            <? endif?>
             <table class="ag-store-detail-table">
                 
-                <?if($arProperty["DETAIL"]['ADDRESS']):?>
+                <?if(trim($arProperty["DETAIL"]['ADDRESS'])):?>
                 <tr>
                     <th>Адрес:</th>
                     <td><?= $arProperty["DETAIL"]['ADDRESS']?></td>
                 </tr>
                 <?endif?>
                 
-                <?if($arProperty["DETAIL"]['PHONE']):?>
+                <?if(trim($arProperty["DETAIL"]['PHONE'])):?>
                 <tr>
                     <th>Телефон:</th>
                     <td><?= $arProperty["DETAIL"]['PHONE']?></td>
                 </tr>
                 <?endif?>
                 
-                <?if($arProperty["DETAIL"]['SCHEDULE']):?>
+                <?if(trim($arProperty["DETAIL"]['SCHEDULE'])):?>
                 <tr>
                     <th>Режим работы:</th>
                     <td><?= $arProperty["DETAIL"]['SCHEDULE']?></td>
                 </tr>
                 <?endif?>
 
-                <?if($arProperty["DETAIL"]['DESCRIPTION']):?>
+                <?if(trim($arProperty["DETAIL"]['DESCRIPTION'])):?>
                 <tr>
                     <th>URL:</th>
                     <td><a href="<?= $arProperty["DETAIL"]['DESCRIPTION']?>" target="blank"><?= $arProperty["DETAIL"]['DESCRIPTION']?></a></td>

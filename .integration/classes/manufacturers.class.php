@@ -107,8 +107,8 @@
                     $query = "
                         INSERT `int_manufacturers_import`(
                             `external_id`,
-                            `image`,
                             `name`,
+                            `image`,
                             `description`,
                             `schedule`,
                             `path`,

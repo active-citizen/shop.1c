@@ -1,0 +1,19 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление таблицы с логом профилия
+     */
+    class categories_import_db extends Migration{
+        function Run(){
+            global $DB;
+            return $DB->RunSqlBatch("sql/optimize_patch.sql");
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$categories_import_db = new categories_import_db();
+// Откатываем, если неудачно
+if(!$categories_import_db->Run())$categories_import_db->RollBack();

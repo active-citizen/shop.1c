@@ -331,11 +331,11 @@ if (!empty($arResult['DISPLAY_PROPERTIES']) || $arResult['SHOW_OFFERS_PROPS'])
 		foreach ($arResult['DISPLAY_PROPERTIES'] as &$arOneProp)
 		{
 ?>
-		<dt><? echo $arOneProp['NAME']; ?></dt><dd><?
+		<dt><? /*echo $arOneProp['NAME'];*/ ?></dt><dd><?
 			echo (
 				is_array($arOneProp['DISPLAY_VALUE'])
 				? implode(' / ', $arOneProp['DISPLAY_VALUE'])
-				: $arOneProp['DISPLAY_VALUE']
+				: html_entity_decode($arOneProp['DISPLAY_VALUE'])
 			); ?></dd><?
 		}
 		unset($arOneProp);
@@ -351,6 +351,7 @@ if (!empty($arResult['DISPLAY_PROPERTIES']) || $arResult['SHOW_OFFERS_PROPS'])
 	}
 ?>
 </div>
+
 <?
 }
 if ('' != $arResult['PREVIEW_TEXT'])

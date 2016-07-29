@@ -81,6 +81,14 @@
                     $this->errors, $agBrige->getErrors()
                 );
             }
+            // На электронную почту
+            $storages[] = array(
+                "option_id"=>69,
+                "name"=>"На электронную почту",
+                "schedule"=>"",
+                "description"=>"",
+                "address"=>""
+            );
             
             // Составляем индекс текущего содержимого промежуточной таблицы
             // Ключ - ID внешнего источника данных
@@ -90,6 +98,7 @@
             while($row = $res->GetNext())
                 $indexStorages[$row["external_id"]] = $row;
               
+            
             
             
             // Перебираем полученные от моста склады

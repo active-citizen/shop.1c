@@ -1,3 +1,0 @@
-<?php
-
-echo "First migration\n";
