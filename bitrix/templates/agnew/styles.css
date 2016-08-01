@@ -888,3 +888,20 @@ div.ag-login-form{
     }
 
 
+table.manufacturer{
+    margin-top:20px;
+}
+
+    table.manufacturer th{
+        padding: 0px 15px;
+        vertical-align: middle;
+    }
+
+table.ag-store-detail-table{
+    margin-top: 20px;
+}
+    
+    table.ag-store-detail-table  th{
+        padding: 0px 15px;
+        vertical-align: middle;
+    }

@@ -301,7 +301,9 @@ if ($arParams['SHOW_OLD_PRICE'] == 'Y')
 <?
 }
 ?>
-	<div class="item_current_price" id="<? echo $arItemIDs['PRICE']; ?>"><? echo $minPrice['PRINT_DISCOUNT_VALUE']; ?></div>
+	<div class="item_current_price" id="<? echo $arItemIDs['PRICE']; ?>">
+        <? echo $minPrice['PRINT_DISCOUNT_VALUE']; ?>
+    </div>
 <?
 if ($arParams['SHOW_OLD_PRICE'] == 'Y')
 {

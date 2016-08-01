@@ -126,7 +126,7 @@
 									<?endif?>
 
 
-									<a href="<?=$order["ORDER"]["URL_TO_COPY"]?>" style="min-width:140px" class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_REPEAT_ORDER')?></a>
+									<!-- <a href="<?=$order["ORDER"]["URL_TO_COPY"]?>" style="min-width:140px" class="bx_big bx_bt_button_type_2 bx_cart bx_order_action"><?=GetMessage('SPOL_REPEAT_ORDER')?></a> -->
 								</td>
 							</tr>
 						</tbody>

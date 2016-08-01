@@ -91,28 +91,28 @@ if(!empty($arResult["STORES"]) && $arParams["MAIN_TITLE"] != ''):?>
                 <?if(trim($arProperty["DETAIL"]['ADDRESS'])):?>
                 <tr>
                     <th>Адрес:</th>
-                    <td><?= $arProperty["DETAIL"]['ADDRESS']?></td>
+                    <td><?= html_entity_decode($arProperty["DETAIL"]['ADDRESS'])?></td>
                 </tr>
                 <?endif?>
                 
                 <?if(trim($arProperty["DETAIL"]['PHONE'])):?>
                 <tr>
                     <th>Телефон:</th>
-                    <td><?= $arProperty["DETAIL"]['PHONE']?></td>
+                    <td><?= html_entity_decode($arProperty["DETAIL"]['PHONE'])?></td>
                 </tr>
                 <?endif?>
                 
                 <?if(trim($arProperty["DETAIL"]['SCHEDULE'])):?>
                 <tr>
                     <th>Режим работы:</th>
-                    <td><?= $arProperty["DETAIL"]['SCHEDULE']?></td>
+                    <td><?= html_entity_decode($arProperty["DETAIL"]['SCHEDULE'])?></td>
                 </tr>
                 <?endif?>
 
                 <?if(trim($arProperty["DETAIL"]['DESCRIPTION'])):?>
                 <tr>
                     <th>URL:</th>
-                    <td><a href="<?= $arProperty["DETAIL"]['DESCRIPTION']?>" target="blank"><?= $arProperty["DETAIL"]['DESCRIPTION']?></a></td>
+                    <td><?= html_entity_decode($arProperty["DETAIL"]['DESCRIPTION'])?></td>
                 </tr>
                 <?endif?>
 

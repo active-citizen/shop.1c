@@ -393,7 +393,7 @@
                 $manufacturer = $MANUFACTURERS[$productItem["manufacturer_id"]];
                 $manufacturerCode = '<table class="manufacturer">';
                 if($manufacturer["name"])
-                    $manufacturerCode .='<tr class="name"><th>Наименование</th>'
+                    $manufacturerCode .='<tr class="name"><th>Поставщик</th>'
                     .'<td>'.$manufacturer["name"].'</td></tr>';
                 if($manufacturer["address"])
                     $manufacturerCode .='<tr class="address"><th>Адрес</th>'

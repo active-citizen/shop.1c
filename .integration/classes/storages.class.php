@@ -104,7 +104,8 @@
             // Перебираем полученные от моста склады
             foreach($storages as $storage){
                 // Подготавливаем все параметры склада для работы с SQL
-                foreach($storage as $k=>$v)$storage[$k] = $DB->ForSql($v);
+                //foreach($storage as $k=>$v)$storage[$k] = $DB->ForSql($v);
+                foreach($storage as $k=>$v)$storage[$k] = html_entity_decode($v);
                 // Если текущего склада от моста нет в индексе - добавляем в 
                 // промежуточную таблицу
                 //============================================================
