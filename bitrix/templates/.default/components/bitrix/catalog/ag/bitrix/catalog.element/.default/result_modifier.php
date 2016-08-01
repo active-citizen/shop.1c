@@ -682,7 +682,10 @@ while($row = $res->GetNext())$arResult["ALL_PROPERTIES"][$row["CODE"]] = $row;
 
 if($arResult["RATING"]>1)$arResult["RATING"] = 0;
 
-
+/*
+ * Разное
+*/
+ 
 /*
 $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"] = preg_replace(
     "#^(\d+).*$#","$1", $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"]

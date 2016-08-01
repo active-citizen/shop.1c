@@ -267,7 +267,7 @@
                 }
                 
                 $counter++;
-                if($counter>3)break;
+                if($counter>10)break;
                 
             }// END: Перебираем полученные от моста категории
 
