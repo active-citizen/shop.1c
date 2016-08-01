@@ -681,6 +681,9 @@ $arResult["ALL_PROPERTIES"] = array();
 while($row = $res->GetNext())$arResult["ALL_PROPERTIES"][$row["CODE"]] = $row;
 
 if($arResult["RATING"]>1)$arResult["RATING"] = 0;
+
+
+/*
 $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"] = preg_replace(
     "#^(\d+).*$#","$1", $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"]
 );
@@ -690,3 +693,4 @@ $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"] =
     $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"].
     " ".
     get_points($arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"]);
+*/
