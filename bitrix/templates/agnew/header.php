@@ -24,11 +24,20 @@
 <?
     // Получаем корневых разделов
     CModule::IncludeModule("iblock");
-    $res = CIBlockSection::GetList(array(),array("ACTIVE"=>"Y","IBLOCK_CODE"=>"clothes","SECTION_ID"=>0),false,false);
+    $res = CIBlockSection::GetList(
+        array(),
+        array("ACTIVE"=>"Y","IBLOCK_CODE"=>"clothes","SECTION_ID"=>0),
+        false,
+        false
+    );
 
     $SECTIONS = array();
     while($section = $res->getNext()){
         $SECTIONS[$section["ID"]] = $section;
+        $res1 = CIBlockElement::GetList(
+            array(),array("SECTION_ID"=>$section["ID"]),false
+        );
+        $SECTIONS[$section["ID"]]["products"]=$res1->SelectedRowsCount();
     }
 ?>
 
@@ -80,6 +89,7 @@
                     </div>
                     <div class="ag-catalog-menu">
                         <?php foreach($SECTIONS as $section):?>
+                        <? if(!$section["products"])continue;?>
                         <a href="<?= $section["SECTION_PAGE_URL"];?>" 
                         <? if(preg_match("#^".$section["SECTION_PAGE_URL"]."#",$_SERVER["REQUEST_URI"])):?>class="active"<? endif?>
                         ><?= $section["NAME"];?></a>
