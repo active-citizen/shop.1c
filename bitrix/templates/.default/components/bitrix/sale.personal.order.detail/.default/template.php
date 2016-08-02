@@ -26,7 +26,6 @@
 	</div>
 
 	<div class="bx_order_list">
-
 		<table class="bx_order_list_table">
 			<thead>
 				<tr>

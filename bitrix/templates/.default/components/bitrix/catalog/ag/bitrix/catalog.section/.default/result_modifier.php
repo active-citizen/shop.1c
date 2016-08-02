@@ -510,6 +510,8 @@ if (!empty($arResult['ITEMS']))
 }
 
 
+include_once($_SERVER["DOCUMENT_RROT"]."/libs/rus.lib.php");
+
 // Добавление желаний и оценок
 foreach($arResult["ITEMS"] as $item_id=>$item){
     // Входит ли товар с писок моих желаний

@@ -27,8 +27,6 @@ $templateData = array(
 );
 unset($currencyList, $templateLibrary);
 
-
-
 $strMainID = $this->GetEditAreaId($arResult['ID']);
 $arItemIDs = array(
 	'ID' => $strMainID,

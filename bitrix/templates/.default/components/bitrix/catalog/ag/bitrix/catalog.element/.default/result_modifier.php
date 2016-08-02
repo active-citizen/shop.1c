@@ -686,9 +686,8 @@ if($arResult["RATING"]>1)$arResult["RATING"] = 0;
  * Разное
 */
  
-/*
 $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"] = preg_replace(
-    "#^(\d+).*$#","$1", $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"]
+    "#^([\d\s+]+).*$#","$1", $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"]
 );
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
@@ -696,4 +695,3 @@ $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"] =
     $arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"].
     " ".
     get_points($arResult['MIN_PRICE']["PRINT_DISCOUNT_VALUE"]);
-*/

@@ -1,6 +1,9 @@
 <?php
     
     function get_points($points){
+        
+        $points = preg_replace("#\s#","",$points);
+        
         if($points%10==2 && $points!=12){
             return 'балла';
         }

@@ -169,7 +169,6 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 		$minPrice = (isset($arItem['RATIO_PRICE']) ? $arItem['RATIO_PRICE'] : $arItem['MIN_PRICE']);
 
     //////////////////// Кастомизация вывода товаров в разделе
-    /*
     // Получаем полное название единицы измерения
     $arItem["MEASURE"] = '';
     if(isset($arItem["OFFERS"][0]["CATALOG_MEASURE"]) && $messureId = intval($arItem["OFFERS"][0]["CATALOG_MEASURE"])){
@@ -178,23 +177,55 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
         $arItem["MEASURE"] = $measure["MEASURE_TITLE"];
     }
     ?>
-        <a href="<? echo $arItem['DETAIL_PAGE_URL']; ?>"
-        class="ag-goods-tizer"
-        title="<? echo $arItem['NAME']; ?>"
-        > 
-            <div class="ag-goods-picture" <? if($arItem['PREVIEW_PICTURE']['SRC']){?>style="background-image:url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>');"<? }?>>
-                <? if($minPrice["VALUE"]){?><div class="ag-good-price"><? echo round($minPrice["VALUE"])?> баллов</div><? }?>
-            </div>
-            <? echo $arItem['NAME']; ?>
-            <? if($arItem["MEASURE"]){?><div class="ad-goods-measure">1 <? echo mb_strtolower($arItem["MEASURE"])?></div><? }?>
-        </a>                    
+        <div class="ag-product">
+
+                <? $top = 60;?>
+                <? if($arItem["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
+                <div class="ag-newproduct" title="Новинка" style="top: <?= $top ?>px">Новинка</div>
+                <? $top += 60;?>
+                <? endif?>
+            
+                <? if($arItem["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
+                <div class="ag-saleleader" title="Лидер продаж" style="top: <?= $top ?>px">Лидер продаж</div>
+                <? $top += 60;?>
+                <? endif?>
+            
+                <? if($arItem["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
+                <div class="ag-specialoffer" title="Спецпредложение" style="top: <?= $top ?>px">Спец- предло- жение</div>
+                <? $top += 60;?>
+                <? endif?>
+
+                <div class="ag-product-wish <?= $arItem['mywish']?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $arItem['ID']?>" onclick="return mywish(this)">
+                    <?= $arItem['wishes'];?>
+                </div>
+                <? if($arItem["mark"]):?>
+                <div class="ag-product-mark" style="right: <?= round(4+24*(1-$arItem["mark"]))?>px;background-position: <?= round(24*(1-$arItem["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$arItem["mark"],1)?>" productid="<?= $arItem['ID']?>"></div>
+                <? endif ?>
+
+
+                <a href="<? echo $arItem['DETAIL_PAGE_URL']; ?>"
+                class="ag-goods-tizer"
+                title="<? echo $arItem['NAME']; ?>"
+                > 
+                    <div class="ag-goods-title"><? echo $arItem['NAME']; ?></div>
+                    <div class="ag-goods-picture" <? if($arItem['PREVIEW_PICTURE']['SRC']){?>style="background-image:url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>');"<? }?>>
+                        <? if($minPrice["VALUE"]){?>
+                            <div class="ag-good-price">
+                                <? echo round($minPrice["VALUE"])?>  <?= get_points(round($minPrice["VALUE"]));?>
+                            </div><? }?>
+                    </div>
+        
+                    <? if($arItem["MEASURE"]){?><div class="ad-goods-measure">1 <? echo mb_strtolower($arItem["MEASURE"])?></div><? }?>
+                </a>  
+        </div>                  
     <?
     continue;
-    */
     //////////////////// Конец: Кастомизация вывода товаров в разделе
     
-	?><div class="<? echo ($arItem['SECOND_PICT'] ? 'bx_catalog_item double' : 'bx_catalog_item'); ?>"><div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
-
+	?><div class="<? 
+        echo ($arItem['SECOND_PICT'] ? 'bx_catalog_item double' : 'bx_catalog_item'); 
+    ?>">
+    <div class="bx_catalog_item_container" id="<? echo $strMainID; ?>">
     <? $top = 20;?>
     <? if($arItem["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
     <div class="ag-newproduct" title="Новинка" style="top: <?= $top ?>px">Новинка</div>
@@ -217,10 +248,8 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
         <? if($arItem["mark"]):?>
         <div class="ag-product-mark" style="right: <?= round(4+24*(1-$arItem["mark"]))?>px;background-position: <?= round(24*(1-$arItem["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$arItem["mark"],1)?>" productid="<?= $arItem['ID']?>"></div>
         <? endif ?>
-		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><?
-	?>
-
-		</a><?
+		<a id="<? echo $arItemIDs['PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images" style="background-image: url('<? echo $arItem['PREVIEW_PICTURE']['SRC']; ?>')" title="<? echo $imgTitle; ?>"><? ?></a>
+    <?
 	if ($arItem['SECOND_PICT'])
 	{
 		?><a id="<? echo $arItemIDs['SECOND_PICT']; ?>" href="<? echo $arItem['DETAIL_PAGE_URL']; ?>" class="bx_catalog_item_images_double" style="background-image: url('<? echo (

@@ -27,47 +27,77 @@ div.ag-section-top a.bx_catalog_tile_img{
     float: left;
 }
 
-a.ag-goods-tizer{
-    width: 221px;
-    height: 300px;
-    line-height: 1.2;
-    font-size: 20px;
-    color: #0EB0A0;
+div.ag-product{
+    width: 250px;
     float: left;
-    margin: 20px 50px 100px 0px;
-    text-align: left;
+    height: 300px;
+    margin: 0px 20px;
+    position:relative;
 }
-    a.ag-goods-tizer div.ad-goods-measure{
-        color: #444;
+
+    a.ag-goods-tizer{
+        width: 221px;
+        height: 300px;
+        line-height: 1.2;
+        color: #0EB0A0;
+        float: left;
+        margin: 20px 50px 100px 0px;
         text-align: left;
-        font-size: 14px;
-        margin: 10px 0px 0px 0px;
     }
+        a.ag-goods-tizer div.ad-goods-measure{
+            color: #444;
+            text-align: left;
+            font-size: 14px;
+            margin: 10px 0px 0px 0px;
+        }
+    
+        a.ag-goods-tizer div.ag-goods-title{
+            color: black;
+            text-align: center;
+            font-size: 14px;
+            margin: 0px 100px 0px 0px;
+            height: 16px;
+            overflow: hidden;
+            position: absolute;
+            z-index: 99;
+            background-color: white;
+            width: 221px;
+            opacity: 0.75;
+            vertical-align: middle;
+            display: table-cell;
+        }
+        
+        div.ag-product:hover a.ag-goods-tizer div.ag-goods-title{
+            height: 48px;
+            overflow: hidden;
+        }
 
-div.ag-goods-picture{
-    width: 221px;
-    height: 221px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: 50% 50%;
-    position: relative;
-    margin: 0px 0px 20px 0px;
-}
 
-    div.ag-goods-picture div.ag-good-price{
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-        height: 46px;
-        background-color: #000;
-        opacity: 0.6;
-        text-align: center;
-        color: #FFF;
-        padding-top: 10px;
-        font-size: 26px;
-    }
-
+        div.ag-goods-picture{
+            width: 221px;
+            height: 221px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 50% 50%;
+            position: relative;
+            margin: 0px 0px 20px 0px;
+        }
+    
+        div.ag-goods-picture div.ag-good-price{
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            height: 28px;
+            background-color: #000;
+            opacity: 0.6;
+            text-align: center;
+            color: #FFF;
+            padding-top: 5px;
+            font-size: 18px;
+        }
+        
+        
 div.ag-section-top a.bx_catalog_tile_img div{
     position: absolute;
     bottom: -18px;
