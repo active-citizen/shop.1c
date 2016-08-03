@@ -28,7 +28,8 @@
         
         var $errors = array();
         var $logs = array();
-        
+        var $update_period = 2*60*60;   // Период обновления товара (секунд)
+        var $processed_items = 3;       // Число обрабатываемых за раз элементов
         /*
          * Заполнение промежуточной таблицы данными товаров из внешнего 
          * источника
@@ -83,61 +84,226 @@
                 $res = CIBlockElement::GetList(
                     array(), 
                     $arFields = array(
-                        "IBLOCK_ID"=>$CatalogIblockId,"CODE"=>$product["CODE"]
+                        "IBLOCK_ID"         =>  $CatalogIblockId,
+                        "CODE"              =>  $product["CODE"],
                     )
                 );
                 $row = $res->GetNext();
+                echo $row["CODE"]." ";
+                echo $row["TIMESTAMP_X"]."<br>";
+                // Не обрабатываем элементы, которые есть в битриксе и 
+                // обновлялись недавно
+                if(
+                    isset($row["TIMESTAMP_X_UNIX"]) 
+                    && $row["TIMESTAMP_X_UNIX"]>(time()-$this->update_period)
+                )continue;
+                
+                // Приращиваем число обработанных эдлементов
+                $counter++;
+                // Если число обработанных элементов больше положенного - выходим
+                if($counter>$this->processed_items)break;
+                    
+                $picturePath = isset($product["IMAGES"][0])?
+                    $product["IMAGES"][0]:'';
 
+                $product["PROPERTIES"]["MORE_PHOTO"] = array();
+                // Убираем дубли изображений
+                $images = array();
+                foreach($product["IMAGES"] as $image)$images[$image] = 1;
+                $product['images'] = array();
+                foreach($images as $image=>$v)
+                    $product["PROPERTIES"]["MORE_PHOTO"][] = $image;
+
+                
                 // Если раздел уже есть в битриксе - обновляем
                 if($row){
-                    continue;
-                    // Получаем ID ижображения для каталога
-                    $pictureId = $row["PICTURE"];
-                    // Загружаем изображение, указанное в атрибутах раздела,
-                    // полученных из API (это url на внешний ресурс),
-                    // И получаем массив его атрибутов (из него нам нужен размер)
-                    $newFileArray = CFile::MakeFileArray($category["image"]);
-                    // Получаем информацию о файле картинки каталога по его ID
-                    // Нам нужен оттуда размер
-                    $res = CFile::GetByID($pictureId);
-                    $oldFileArray = $res->GetNext();
-                    // Добавляем к полям раздела новую картинку, если размер
-                    // загруженного извне изображения не совпадает с тем, что
-                    // в битриксе
-                    if($oldFileArray["FILE_SIZE"]!=$newFileArray['size']){
-                        CFile::Delete($pictureId);
-                        $arFields["PICTURE"] = $newFileArray;
-                    }
                     
+                    // Загружаем картинку с удалённого сервера
+                    $removeFileInfo = CFile::MakeFileArray($picturePath);
+
+                    // Получаем информацию о уже загруженной картинке
+                    $res = CFile::GetByID($row["PREVIEW_PICTURE"]);
+                    $localFileInfo = $res->GetNext(); 
+
+                    if($localFileInfo["FILE_SIZE"]!=$removeFileInfo["size"]){
+                        $product["PREVIEW_PICTURE"] = $removeFileInfo; 
+                        $product["DETAIL_PICTURE"] = $removeFileInfo;
+                    }
+
+
                     // Обновляем ращдел каталога
-                    $objIblockSection->Update($row["ID"], $arFields);
+                    $resElement->Update($row["ID"], $arFields);
                     
                     // Привязываем к объекту промежуточной таблицы ID раздела в
                     // Битриксе
-                    $query = "
-                        UPDATE 
-                            `int_categories_import` 
-                        SET 
-                            `bitrix_id`=".$row["ID"]." 
-                        WHERE 
-                            `external_id`=".$category["category_id"];
-                    $DB->Query($query);
-                    
+                    echo "<pre>";
+                    print_r($product);
+                    die;
+!!!!!!!!!!!!!!!!!!!
+                    foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
+                        if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
+                            $arrFile = array();
+                            foreach($prop_value as $img)
+                                $arrFile[] = array(
+                                    "VALUE"=>CFile::MakeFileArray($img),
+                                    "DESCRIPTION"=>""
+                                );
+                            
+                            CIBlockElement::SetPropertyValuesEx(
+                                $id, $CatalogIblockId, 
+                                array('MORE_PHOTO' => $arrFile)
+                            );
+                        }
+                        else{
+                            CIBlockElement::SetPropertyValueCode(
+                                $id,$prop_code,$prop_value
+                            );
+                        }
+                    }
+
+
+                    foreach($product["OFFERS"] as $offer){
+                        $offerFields = array(
+                            "IBLOCK_ID"         =>  $OfferIblockId,
+                            "NAME"              =>  (
+                                isset($offer["NAME"]) && $offer["NAME"]
+                                ?
+                                $offer["NAME"]
+                                :
+                                $product["NAME"]
+                            ),
+                            "PRICE"             =>  (
+                                isset($offer["PRICE"]) && $offer["PRICE"]
+                                ?
+                                $offer["PRICE"]
+                                :
+                                $product["PROPERTIES"]["MINIMUM_PRICE"]
+                            ),
+                            "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
+                            "PREVIEW_TEXT"      =>  $product["PREVIEW_TEXT"],
+                            "PREVIEW_TEXT_TYPE" =>  $product["PREVIEW_TEXT_TYPE"],
+                            "PREVIEW_PICTURE"   =>  (
+                                isset($offer["PREVIEW_PICTURE"]) 
+                                    && $offer["PREVIEW_PICTURE"]
+                                ? 
+                                CFile::MakeFileArray($offer["PREVIEW_PICTURE"])
+                                :
+                                $product["PREVIEW_PICTURE"]
+                            ),
+                            "DETAIL_PICTURE"    =>  (
+                                isset($offer["DETAIL_PICTURE"]) 
+                                    && $offer["DETAIL_PICTURE"]
+                                ? 
+                                CFile::MakeFileArray($offer["DETAIL_PICTURE"])
+                                :
+                                $product["DETAIL_PICTURE"]
+                            ),
+                        );
+                        
+                        
+                        if(
+                            !isset($offer["PROPERTIES"]) 
+                            || !is_array($offer["PROPERTIES"])
+                        )$offer["PROPERTIES"] = array();
+
+                        if(!$offerId = $resElement->Add($offerFields)){
+                            echo "Error!!! ".__LINE__." ".print_r($resElement);
+                            die;
+                        }
+                        
+                        $offer["PROPERTIES"]["CML2_LINK"] = $id;
+                        $offer["PROPERTIES"]["PRICE"] = $offerFields["PRICE"];
+                        $offer["PROPERTIES"]["MORE_PHOTO"] = $product["PROPERTIES"]
+                            ["MORE_PHOTO"];
+                        foreach($offer["PROPERTIES"] as $prop_code=>$prop_value){
+                            if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
+                                $arrFile = array();
+                                foreach($prop_value as $img)
+                                    $arrFile[] = array(
+                                        "VALUE"=>CFile::MakeFileArray($img),
+                                        "DESCRIPTION"=>""
+                                    );
+                                
+                                CIBlockElement::SetPropertyValuesEx(
+                                    $offerId, 
+                                    $OfferIblockId, 
+                                    array('MORE_PHOTO' => $arrFile)
+                                );
+                            }
+                            elseif($prop_code=='PRICE' && !is_array($prop_value)){
+                                $arFields = array(
+                                    "PRODUCT_ID"=>$offerId,
+                                    "CATALOG_GROUP_ID"=>1,
+                                    "PRICE"=>$prop_value,
+                                    "CURRENCY"=>"BAL",
+                                );
+                                $objPrice = new CPrice;
+                                if(!$priceId = $objPrice->Add($arFields,true)){
+                                    echo "Error!!!: ".__LINE__." ".
+                                        print_r($objPrice,1);;
+                                    die;
+                                }
+                            }
+                            elseif(
+                                $prop_code=='MORE_PHOTO' 
+                                && !is_array($prop_value)){
+                                $prop_value = CFile::MakeFileArray($prop_value);
+                                CIBlockElement::SetPropertyValueCode(
+                                    $offerId,
+                                    $prop_code,
+                                    $prop_value
+                                );
+                            }
+                            elseif($prop_code=='CML2_LINK' && is_array($prop_value)){
+                                if(!CIBlockElement::SetPropertyValueCode(
+                                    $offerId,
+                                    $prop_code,
+                                    $prop_value)
+                                ){
+                                    echo "Failed";
+                                }
+                                else{
+                                    echo "Success";
+                                }
+                            }
+                            else{
+                                CIBlockElement::SetPropertyValueCode(
+                                    $offerId,
+                                    $prop_code,
+                                    $prop_value
+                                );
+                            }
+                        }
+
+                        $resCatalogStoreProduct = new CCatalogStoreProduct;
+                        $totalAmount = 0;
+                        foreach($offer["STORES"] as $storeId=>$storeAmount){
+                            $arFields = array(
+                                "PRODUCT_ID"=>$offerId,
+                                "STORE_ID"=>$storeId,
+                                "AMOUNT"=>$storeAmount
+                            );
+                            if(!$resCatalogStoreProduct->Add($arFields)){
+                                echo "Error!!!: ".__LINE__;
+                                print_r($resCatalogStoreProduct);
+                                die;
+                            }
+                            $totalAmount+=$storeAmount;
+                        }
+    
+                        CCatalogProduct::Add(array(
+                            "ID"=>$offerId,
+                            "QUANTITY"=>$totalAmount,
+                            "QUANTITY_TRACE"=>"Y",
+                            "CAN_BUY_ZERO"=>"N",
+                        ));
+
+                    }
                 }
                 // Если раздела ещё нет в битриксе - добавляем
                 else{
                     
-                    $picturePath = isset($product["IMAGES"][0])?
-                        $product["IMAGES"][0]:'';
-    
-                    $product["PROPERTIES"]["MORE_PHOTO"] = array();
-                    // Убираем дубли изображений
-                    $images = array();
-                    foreach($product["IMAGES"] as $image)$images[$image] = 1;
-                    $product['images'] = array();
-                    foreach($images as $image=>$v)
-                        $product["PROPERTIES"]["MORE_PHOTO"][] = $image;
-    
+
                     $product["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
                     $product["DETAIL_PICTURE"] = CFile::MakeFileArray($picturePath);
                     unset($product["IMAGES"]);
@@ -175,26 +341,56 @@
                     foreach($product["OFFERS"] as $offer){
                         $offerFields = array(
                             "IBLOCK_ID"         =>  $OfferIblockId,
-                            "NAME"              =>  (isset($offer["NAME"]) && $offer["NAME"]?$offer["NAME"]:$product["NAME"]),
-                            "PRICE"             =>  (isset($offer["PRICE"]) && $offer["PRICE"]?$offer["PRICE"]:$product["PROPERTIES"]["MINIMUM_PRICE"]),
+                            "NAME"              =>  (
+                                isset($offer["NAME"]) && $offer["NAME"]
+                                ?
+                                $offer["NAME"]
+                                :
+                                $product["NAME"]
+                            ),
+                            "PRICE"             =>  (
+                                isset($offer["PRICE"]) && $offer["PRICE"]
+                                ?
+                                $offer["PRICE"]
+                                :
+                                $product["PROPERTIES"]["MINIMUM_PRICE"]
+                            ),
                             "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
                             "PREVIEW_TEXT"      =>  $product["PREVIEW_TEXT"],
                             "PREVIEW_TEXT_TYPE" =>  $product["PREVIEW_TEXT_TYPE"],
-                            "PREVIEW_PICTURE"   =>  (isset($offer["PREVIEW_PICTURE"]) && $offer["PREVIEW_PICTURE"]? CFile::MakeFileArray($offer["PREVIEW_PICTURE"]):$product["PREVIEW_PICTURE"]),
-                            "DETAIL_PICTURE"    =>  (isset($offer["DETAIL_PICTURE"]) && $offer["DETAIL_PICTURE"]? CFile::MakeFileArray($offer["DETAIL_PICTURE"]):$product["DETAIL_PICTURE"]),
+                            "PREVIEW_PICTURE"   =>  (
+                                isset($offer["PREVIEW_PICTURE"]) 
+                                    && $offer["PREVIEW_PICTURE"]
+                                ? 
+                                CFile::MakeFileArray($offer["PREVIEW_PICTURE"])
+                                :
+                                $product["PREVIEW_PICTURE"]
+                            ),
+                            "DETAIL_PICTURE"    =>  (
+                                isset($offer["DETAIL_PICTURE"]) 
+                                    && $offer["DETAIL_PICTURE"]
+                                ? 
+                                CFile::MakeFileArray($offer["DETAIL_PICTURE"])
+                                :
+                                $product["DETAIL_PICTURE"]
+                            ),
                         );
                         
                         
-                        if(!isset($offer["PROPERTIES"]) || !is_array($offer["PROPERTIES"]))$offer["PROPERTIES"] = array();
+                        if(
+                            !isset($offer["PROPERTIES"]) 
+                            || !is_array($offer["PROPERTIES"])
+                        )$offer["PROPERTIES"] = array();
+
                         if(!$offerId = $resElement->Add($offerFields)){
                             echo "Error!!! ".__LINE__." ".print_r($resElement);
                             die;
                         }
                         
-                        
                         $offer["PROPERTIES"]["CML2_LINK"] = $id;
                         $offer["PROPERTIES"]["PRICE"] = $offerFields["PRICE"];
-                        $offer["PROPERTIES"]["MORE_PHOTO"] = $product["PROPERTIES"]["MORE_PHOTO"];
+                        $offer["PROPERTIES"]["MORE_PHOTO"] = $product["PROPERTIES"]
+                            ["MORE_PHOTO"];
                         foreach($offer["PROPERTIES"] as $prop_code=>$prop_value){
                             if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                                 $arrFile = array();
@@ -219,16 +415,27 @@
                                 );
                                 $objPrice = new CPrice;
                                 if(!$priceId = $objPrice->Add($arFields,true)){
-                                    echo "Error!!!: ".__LINE__." ".print_r($objPrice,1);;
+                                    echo "Error!!!: ".__LINE__." ".
+                                        print_r($objPrice,1);;
                                     die;
                                 }
                             }
-                            elseif($prop_code=='MORE_PHOTO' && !is_array($prop_value)){
+                            elseif(
+                                $prop_code=='MORE_PHOTO' 
+                                && !is_array($prop_value)){
                                 $prop_value = CFile::MakeFileArray($prop_value);
-                                CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value);
+                                CIBlockElement::SetPropertyValueCode(
+                                    $offerId,
+                                    $prop_code,
+                                    $prop_value
+                                );
                             }
                             elseif($prop_code=='CML2_LINK' && is_array($prop_value)){
-                                if(!CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value)){
+                                if(!CIBlockElement::SetPropertyValueCode(
+                                    $offerId,
+                                    $prop_code,
+                                    $prop_value)
+                                ){
                                     echo "Failed";
                                 }
                                 else{
@@ -236,7 +443,11 @@
                                 }
                             }
                             else{
-                                CIBlockElement::SetPropertyValueCode($offerId,$prop_code,$prop_value);
+                                CIBlockElement::SetPropertyValueCode(
+                                    $offerId,
+                                    $prop_code,
+                                    $prop_value
+                                );
                             }
                         }
 
@@ -265,10 +476,6 @@
 
                     }
                 }
-                
-                $counter++;
-                if($counter>10)break;
-                
             }// END: Перебираем полученные от моста категории
 
             
@@ -288,10 +495,14 @@
         
             // Составляем справочник флагов
             $ENUM = array();
-            $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>$CatalogIblockId));
+            $res = CIBlockPropertyEnum::GetList(
+                array(),
+                array("IBLOCK_ID"=>$CatalogIblockId)
+            );
             while($data = $res->getNext()){
                 $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
-                if(!isset($ENUM[$data["PROPERTY_CODE"]]))$ENUM[$data["PROPERTY_CODE"]] = array();
+                if(!isset($ENUM[$data["PROPERTY_CODE"]]))
+                    $ENUM[$data["PROPERTY_CODE"]] = array();
                 $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
             }
             
@@ -341,11 +552,7 @@
             $result = array();
 
             foreach($products as $productItem){
-                //============================================================
-                //      Заполнение битрикса данными
-                //============================================================
-                
-                //----------------- Формируем поля продукта --------------------
+                //----------------- Формируем поля продукта ------------------
                 $product = array();
                 $product["SITE_ID"] = 's1';
                 $product["NAME"] = html_entity_decode($productItem["name"]);
@@ -367,7 +574,9 @@
                 $product["PROPERTIES"]["MINIMUM_PRICE"] = $productItem["price"];
                 $product["PROPERTIES"]["QUANT"] = $productItem["unit"];
                 $product["PROPERTIES"]["SALELEADER"] = $productItem["sale"];
-                $product["PROPERTIES"]["RATING"] = round($productItem["rank"]/100,3);
+                $product["PROPERTIES"]["RATING"] = round(
+                    $productItem["rank"]/100,3
+                );
                 
                 // ............Заданные случайно
                 
@@ -399,10 +608,12 @@
                     $manufacturerCode .='<tr class="address"><th>Адрес</th>'
                     .'<td>'.$manufacturer["address"].'</td></tr>';
                 if($manufacturer["path"])
-                    $manufacturerCode .='<tr class="path"><th>Как проехать</th>'
+                    $manufacturerCode .=
+                    '<tr class="path"><th>Как проехать</th>'
                     .'<td>'.$manufacturer["path"].'</td></tr>';
                 if($manufacturer["schedule"])
-                    $manufacturerCode .='<tr class="schedule"><th>График работы</th>'
+                    $manufacturerCode .=
+                    '<tr class="schedule"><th>График работы</th>'
                     .'<td>'.$manufacturer["schedule"].'</td></tr>';
                 if($manufacturer["phone"])
                     $manufacturerCode .='<tr class="phone"><th>Телефон</th>'
@@ -415,14 +626,19 @@
                     .'<td><a target="_blank" href="'.$manufacturer["url"].'">'.
                     $manufacturer["url"].'</a></td></tr>';
                 if($manufacturer["description"])
-                    $manufacturerCode .='<tr class="description"><th>Описание</th>'
+                    $manufacturerCode .=
+                    '<tr class="description"><th>Описание</th>'
                     .'<td>'.$manufacturer["description"].'</td></tr>';
                 $manufacturerCode .= '</table>';
                 $product["PROPERTIES"]["MANUFACTURER"] = $manufacturerCode;
                 // .......END: Определяем параметры производителя.........
                 
-                $sectionId = isset($CATS[$productItem["categories"][0]]["bitrix_id"])
-                    ?$CATS[$productItem["categories"][0]]["bitrix_id"]:0;
+                $sectionId = 
+                    isset($CATS[$productItem["categories"][0]]["bitrix_id"])
+                    ?
+                    $CATS[$productItem["categories"][0]]["bitrix_id"]
+                    :
+                    0;
                     
                 $product["IBLOCK_SECTION_ID"] = $sectionId;
                 $product["SECTION_ID"] = $sectionId;
@@ -441,13 +657,14 @@
                 );
                 
                 foreach($productItem["options"] as $option)
-                    $product["OFFERS"][0]["STORES"][$STORAGES[$option["id"]]["bitrix_id"]] = 
-                        $option["quantity"];
+                    $product["OFFERS"][0]["STORES"]
+                        [$STORAGES[$option["id"]]["bitrix_id"]] = 
+                            $option["quantity"];
                 
                 //...........END:Предложения.................
                 
-                //-------------- END: Формируем поля продукта ------------------
-                $result[] = $product;
+                //-------------- END: Формируем поля продукта -------------
+                $result[$product["CODE"]] = $product;
             }
 
             return $result;
