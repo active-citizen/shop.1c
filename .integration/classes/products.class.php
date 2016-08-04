@@ -136,11 +136,29 @@
                     
                     // Привязываем к объекту промежуточной таблицы ID раздела в
                     // Битриксе
+                    $row["PROPERTIES"] = array();
+                    $res = CIBlockElement::GetProperty($CatalogIblockId,$row["ID"]);
+                    while($prop = $res->GetNext()){
+                        if($prop["MULTIPLE"]=='Y'){
+                            if(!isset($row["PROPERTIES"][$prop["CODE"]]))$row["PROPERTIES"][$prop["CODE"]] = array();
+                            $row["PROPERTIES"][$prop["CODE"]][] = $prop; 
+                        }
+                        else{
+                            $row["PROPERTIES"][$prop["CODE"]] = $prop;
+                        }
+                    }
+                    foreach($row["PROPERTIES"] as $prop_code=>$prop_value)
+                        if(isset($prop_value[0]) && count($prop_value)==1)
+                            $row["PROPERTIES"][$prop_code] = $prop_value[0];
+                   
+                    
                     echo "<pre>";
+                    print_r($row["PROPERTIES"]);
                     print_r($product);
-                    die;
-!!!!!!!!!!!!!!!!!!!
+                    continue;
+
                     foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
+                        die;
                         if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                             $arrFile = array();
                             foreach($prop_value as $img)
