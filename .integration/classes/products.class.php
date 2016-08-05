@@ -140,39 +140,42 @@
                     $res = CIBlockElement::GetProperty($CatalogIblockId,$row["ID"]);
                     while($prop = $res->GetNext()){
                         if($prop["MULTIPLE"]=='Y'){
-                            if(!isset($row["PROPERTIES"][$prop["CODE"]]))$row["PROPERTIES"][$prop["CODE"]] = array();
+                            if(!isset($row["PROPERTIES"][$prop["CODE"]]))
+                                $row["PROPERTIES"][$prop["CODE"]] = array();
                             $row["PROPERTIES"][$prop["CODE"]][] = $prop; 
                         }
                         else{
                             $row["PROPERTIES"][$prop["CODE"]] = $prop;
                         }
                     }
+                    /*
                     foreach($row["PROPERTIES"] as $prop_code=>$prop_value)
                         if(isset($prop_value[0]) && count($prop_value)==1)
                             $row["PROPERTIES"][$prop_code] = $prop_value[0];
-                   
+                    */
                     
-                    echo "<pre>";
-                    print_r($row["PROPERTIES"]);
-                    print_r($product);
-                    continue;
-
                     foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
-                        die;
                         if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                             $arrFile = array();
-                            foreach($prop_value as $img)
+
+                            echo "<pre>";
+                            print_r($prop_value);
+                            print_r($row["PROPERTIES"][$prop_code]);
+                            die;
+
+                            for($i=0,$c=count($prop_value);$i<$c;$i++){
                                 $arrFile[] = array(
                                     "VALUE"=>CFile::MakeFileArray($img),
                                     "DESCRIPTION"=>""
                                 );
-                            
+                            }
                             CIBlockElement::SetPropertyValuesEx(
                                 $id, $CatalogIblockId, 
                                 array('MORE_PHOTO' => $arrFile)
                             );
                         }
                         else{
+                            continue;
                             CIBlockElement::SetPropertyValueCode(
                                 $id,$prop_code,$prop_value
                             );
@@ -221,7 +224,8 @@
                         
                         if(
                             !isset($offer["PROPERTIES"]) 
-                            || !is_array($offer["PROPERTIES"])
+                            || 
+                            !is_array($offer["PROPERTIES"])
                         )$offer["PROPERTIES"] = array();
 
                         if(!$offerId = $resElement->Add($offerFields)){
