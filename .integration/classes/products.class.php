@@ -22,24 +22,29 @@
  * 
  */
 
-    require_once("classes/active-citizen-bridge.class.php");
+    require_once("active-citizen-bridge.class.php");
+    require_once("curl.class.php");
 
     class bxProducts{
         
         var $errors = array();
         var $logs = array();
-        var $update_period = 2*60*60;   // Период обновления товара (секунд)
-        var $processed_items = 3;       // Число обрабатываемых за раз элементов
+        var $update_period = 1*60*60;   // Период обновления товара (секунд)
+        var $processed_items = 5;       // Число обрабатываемых за раз элементов
+        var $timeout = 10;
         /*
          * Заполнение промежуточной таблицы данными товаров из внешнего 
          * источника
          * @param - $updatePeriod - период обновления товаров
          *      (0 - принудительное обновление)
          */
-        function updateImportTable($updatePeriod = 3600){
+        function updateImportTable($updatePeriod = 0){
             
             global $DB;
 
+            if(intval($updatePeriod))$this->update_period = $updatePeriod;
+
+            $json_result = array();
             CModule::IncludeModule("iblock");
             // Узнаём ID инфоблока товарных предложений
             $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
@@ -51,29 +56,6 @@
             $iblock = $res->GetNext();
             $CatalogIblockId = $iblock["ID"];
 
-            // Проверяем, надо ли что-нибудь обновлять
-            $needUpdate = 0;
-            if($updatePeriod==0){
-                $needUpdate = 1;
-            }
-            else{
-                $query = "
-                    SELECT 
-                        count(*) as `count` 
-                    FROM 
-                        `int_products_import` 
-                    WHERE 
-                        UNIX_TIMESTAMP(NOW())-`last_update`>$updatePeriod
-                    LIMIT
-                        1";
-                $res = $DB->query($query);
-                $row = $res->GetNext();
-                if(isset($row['count']) && $row['count']>0)$needUpdate = 1;
-            }
-            
-            // Обновлять ничего не надо - выходим
-            if(!$needUpdate)return false;
-            
             $products = $this->getProducts();
             
             // Перебираем полученные от моста категории
@@ -89,14 +71,21 @@
                     )
                 );
                 $row = $res->GetNext();
-                echo $row["CODE"]." ";
-                echo $row["TIMESTAMP_X"]."<br>";
                 // Не обрабатываем элементы, которые есть в битриксе и 
                 // обновлялись недавно
                 if(
                     isset($row["TIMESTAMP_X_UNIX"]) 
                     && $row["TIMESTAMP_X_UNIX"]>(time()-$this->update_period)
-                )continue;
+                ){
+                    $json_result[] = array(
+                        "CODE"=>$row["CODE"],
+                        "NAME"=>$row["NAME"],
+                        "LAST_MODIFIED_TIMESTAMP"=>$row["TIMESTAMP_X_UNIX"],
+                        "LAST_MODIFIED"=>$row["TIMESTAMP_X"],
+                        "STATUS"=>"NOT UPDATED"
+                    );
+                    continue;
+                }
                 
                 // Приращиваем число обработанных эдлементов
                 $counter++;
@@ -117,22 +106,30 @@
                 
                 // Если раздел уже есть в битриксе - обновляем
                 if($row){
-                    
-                    // Загружаем картинку с удалённого сервера
-                    $removeFileInfo = CFile::MakeFileArray($picturePath);
+                   
+                    $curl = new curlTool;
+                    $curl->timeout = $this->timeout;
+                    $headers = $curl->head($picturePath);
 
                     // Получаем информацию о уже загруженной картинке
                     $res = CFile::GetByID($row["PREVIEW_PICTURE"]);
                     $localFileInfo = $res->GetNext(); 
-
-                    if($localFileInfo["FILE_SIZE"]!=$removeFileInfo["size"]){
+                   
+                    // Если на удалённом сервере картинка по размеру не совпадает
+                    if(
+                        intval($headers["content-length"])
+                        &&
+                        $localFileInfo["FILE_SIZE"]!=$headers["content-length"]
+                    ){
+                        // Загружаем картинку с удалённого сервера
+                        $removeFileInfo = CFile::MakeFileArray($picturePath);
                         $product["PREVIEW_PICTURE"] = $removeFileInfo; 
                         $product["DETAIL_PICTURE"] = $removeFileInfo;
                     }
 
-
                     // Обновляем ращдел каталога
-                    $resElement->Update($row["ID"], $arFields);
+                    $id = $row["ID"];
+                    $resElement->Update($id, $arFields);
                     
                     // Привязываем к объекту промежуточной таблицы ID раздела в
                     // Битриксе
@@ -148,21 +145,40 @@
                             $row["PROPERTIES"][$prop["CODE"]] = $prop;
                         }
                     }
-                    /*
-                    foreach($row["PROPERTIES"] as $prop_code=>$prop_value)
-                        if(isset($prop_value[0]) && count($prop_value)==1)
-                            $row["PROPERTIES"][$prop_code] = $prop_value[0];
-                    */
                     
                     foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
                         if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                             $arrFile = array();
+                            
+                            // Составляем индекс размеров файлов
+                            $check_prop_value = array();
+                            foreach($prop_value as $value){
+                                $headers = $curl->head($value);
+                                $check_prop_value[$headers["content-length"]] = 
+                                    $value; 
+                            }
 
-                            echo "<pre>";
-                            print_r($prop_value);
-                            print_r($row["PROPERTIES"][$prop_code]);
-                            die;
+                            // Получаем размеры фотографий свойства MORE_PHOTO
+                            // 
+                            $res = CIBlockElement::GetProperty(
+                                $CatalogIblockId, 
+                                $id,
+                                array(),
+                                array("CODE"=>"MORE_PHOTO")
+                            );
+                            while($photoItem = $res->GetNext()){
+                                $res1 = CFile::GetByID($photoItem["VALUE"]);
+                                $localFileInfo = $res1->GetNext(); 
+                                if(isset(
+                                    $check_prop_value[$localFileInfo["FILE_SIZE"]]
+                                ))unset(
+                                    $check_prop_value[$localFileInfo["FILE_SIZE"]]
+                                );
 
+                            }
+                            // Если хоть одн изображение не совпадает по размерам
+                            // меняем весь список изображений
+                            if(count($check_prop_value))
                             for($i=0,$c=count($prop_value);$i<$c;$i++){
                                 $arrFile[] = array(
                                     "VALUE"=>CFile::MakeFileArray($img),
@@ -182,7 +198,7 @@
                         }
                     }
 
-
+                    // Меняем свойства предложений
                     foreach($product["OFFERS"] as $offer){
                         $offerFields = array(
                             "IBLOCK_ID"         =>  $OfferIblockId,
@@ -227,9 +243,18 @@
                             || 
                             !is_array($offer["PROPERTIES"])
                         )$offer["PROPERTIES"] = array();
+                        
+                        // Получаем ID предложения
+                        $res = CIBlockElement::GetList(array(), array(
+                            "IBLOCK_ID" =>  $OfferIblockId,
+                            "NAME"      =>  $offerFields["NAME"]
+                        ),false,array("nTopCount"=>1));
+                        $offerArr = $res->GetNext();
+                        $offerId = $offerArr["ID"]; 
+                        
 
-                        if(!$offerId = $resElement->Add($offerFields)){
-                            echo "Error!!! ".__LINE__." ".print_r($resElement);
+                        if(!$resElement->Update($offerId, $offerFields)){
+                            echo "ERROR:".$resElement->LAST_ERROR." LINE:".__LINE__;
                             die;
                         }
                         
@@ -237,9 +262,40 @@
                         $offer["PROPERTIES"]["PRICE"] = $offerFields["PRICE"];
                         $offer["PROPERTIES"]["MORE_PHOTO"] = $product["PROPERTIES"]
                             ["MORE_PHOTO"];
+
                         foreach($offer["PROPERTIES"] as $prop_code=>$prop_value){
                             if($prop_code=='MORE_PHOTO' && is_array($prop_value)){
                                 $arrFile = array();
+
+                                // Составляем индекс размеров файлов
+                                $check_prop_value = array();
+                                foreach($prop_value as $value){
+                                    $headers = $curl->head($value);
+                                    $check_prop_value[$headers["content-length"]] = 
+                                        $value; 
+                                 }
+
+                                // Получаем размеры фотографий свойства MORE_PHOTO
+                                $res = CIBlockElement::GetProperty(
+                                    $OfferIblockId, 
+                                    $offerId,
+                                    array(),
+                                    array("CODE"=>"MORE_PHOTO")
+                                );
+                                while($photoItem = $res->GetNext()){
+                                    $res1 = CFile::GetByID($photoItem["VALUE"]);
+                                    $localFileInfo = $res1->GetNext(); 
+                                    if(isset(
+                                      $check_prop_value[$localFileInfo["FILE_SIZE"]]
+                                    ))unset(
+                                      $check_prop_value[$localFileInfo["FILE_SIZE"]]
+                                    );
+
+                                }
+                                
+                                // Если хоть одн изображение не совпадает по размерам
+                                // меняем весь список изображений
+                                if(count($check_prop_value))
                                 foreach($prop_value as $img)
                                     $arrFile[] = array(
                                         "VALUE"=>CFile::MakeFileArray($img),
@@ -266,16 +322,6 @@
                                     die;
                                 }
                             }
-                            elseif(
-                                $prop_code=='MORE_PHOTO' 
-                                && !is_array($prop_value)){
-                                $prop_value = CFile::MakeFileArray($prop_value);
-                                CIBlockElement::SetPropertyValueCode(
-                                    $offerId,
-                                    $prop_code,
-                                    $prop_value
-                                );
-                            }
                             elseif($prop_code=='CML2_LINK' && is_array($prop_value)){
                                 if(!CIBlockElement::SetPropertyValueCode(
                                     $offerId,
@@ -298,14 +344,17 @@
                         }
 
                         $resCatalogStoreProduct = new CCatalogStoreProduct;
+
+
                         $totalAmount = 0;
                         foreach($offer["STORES"] as $storeId=>$storeAmount){
                             $arFields = array(
-                                "PRODUCT_ID"=>$offerId,
                                 "STORE_ID"=>$storeId,
                                 "AMOUNT"=>$storeAmount
                             );
-                            if(!$resCatalogStoreProduct->Add($arFields)){
+                            if(!$resCatalogStoreProduct->Update(
+                                offerId, $arFields
+                            )){
                                 echo "Error!!!: ".__LINE__;
                                 print_r($resCatalogStoreProduct);
                                 die;
@@ -313,15 +362,21 @@
                             $totalAmount+=$storeAmount;
                         }
     
-                        CCatalogProduct::Add(array(
-                            "ID"=>$offerId,
+                        CCatalogProduct::Update($offerId, array(
                             "QUANTITY"=>$totalAmount,
                             "QUANTITY_TRACE"=>"Y",
                             "CAN_BUY_ZERO"=>"N",
                         ));
 
                     }
-                }
+                    $json_result[] = array(
+                        "CODE"=>$row["CODE"],
+                        "NAME"=>$row["NAME"],
+                        "LAST_MODIFIED_TIMESTAMP"=>$row["TIMESTAMP_X_UNIX"],
+                        "LAST_MODIFIED"=>$row["TIMESTAMP_X"],
+                        "STATUS"=>"UPDATED"
+                    );
+                 }
                 // Если раздела ещё нет в битриксе - добавляем
                 else{
                     
@@ -332,10 +387,12 @@
 
                     if(!$id = $resElement->Add($product)){
                         $this->error = $resElement->LAST_ERROR;
-                        echo "<pre>";
-                        print_r($resElement);
-                        print_r($product);
-                        die;
+                        $json_result[] = array(
+                            "CODE"=>$product["CODE"],
+                            "NAME"=>$product["NAME"],
+                            "STATUS"=>"NOT CREATED",
+                            "REASON"=>$resElement->LAST_ERROR
+                        );
                     }
 
                     foreach($product["PROPERTIES"] as $prop_code=>$prop_value){
@@ -497,10 +554,15 @@
                         ));
 
                     }
+                    $json_result[] = array(
+                        "CODE"=>$product["CODE"],
+                        "NAME"=>$product["NAME"],
+                        "STATUS"=>"CREATED",
+                    );
                 }
             }// END: Перебираем полученные от моста категории
 
-            
+            return $json_result;
         }
         
         

@@ -22,17 +22,25 @@
  * 
  */
 
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"].
+        "/bitrix/modules/main/include/prolog_before.php"
+    );
     require_once("classes/products.class.php");
     
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"].
+        "/bitrix/modules/main/include/prolog_before.php"
+    );
     require_once("classes/categories.class.php");
     
     $bxProducts = new bxProducts;
     // Обновляем список продуктов
-    $bxProducts->updateImportTable(
-        0   //Период обновления, 0 - обновляем независимо от времени последнего обновления
-    );
+    $answer = array();
+    $answer["result"] = $bxProducts->updateImportTable();
     
     echo json_encode($answer);
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"].
+        "/bitrix/modules/main/include/epilog_after.php"
+    );
