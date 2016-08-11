@@ -2,11 +2,102 @@
     require 'common.php';
     
     /**
-     * Добавление таблицы с логом профилия
+     * Оптимизация БД битрикса
      */
     class categories_import_db extends Migration{
+        
+        var $suffixes = array(
+            "BY"=>0,"SORT"=>0,"ID"=>0,"FIRST"=>0,"LAST"=>0,"X"=>0,"TYPE"=>0,
+            "STATUS"=>0,"HASH"=>0,"TO"=>0,"FROM"=>0,"USED"=>0,"TILL"=>0
+        );
+        
+        var $nonIndexedTypes = array(
+            "TEXT"=>0, "TINYTEXT"=>0, "MEDIUMTEXT"=>0, "LONGTEXT"=>0, "BLOB"=>0
+        );
+        
+        var $indexedNames = array("CODE"=>0);
+        
         function Run(){
             global $DB;
+            $resTables = $DB->Query("SHOW TABLES;");
+            while($tableName=$resTables->GetNext()){
+                foreach($tableName as $tableName)break;
+                echo "\n========== $tableName ===========\n";
+                $resDescribe = $DB->Query("DESCRIBE $tableName;");
+                while($arrDescribe = $resDescribe->GetNext()){
+                    $queryIndex = "";
+                    $isKey = $arrDescribe["Key"]?true:false;
+                    $type = '';
+                    $size = 0;
+                    $name = $arrDescribe["Field"];
+                    $suffix = '';
+                    $suffix = preg_replace("#^.*_(\w+)$#","$1",$arrDescribe["Field"]);
+                    
+                    if(preg_match("#^(\w+)\((\d+)\)$#",$arrDescribe["Type"],$m)){
+                        $type = strtoupper($m[1]);
+                        $size = strtoupper($m[2]);
+                    }
+                    if(preg_match("#^(\w+)\((\d+)\)\s+.*$#",$arrDescribe["Type"],$m)){
+                        $type = strtoupper($m[1]);
+                        $size = strtoupper($m[2]);
+                    }
+                    elseif(preg_match("#^(\w+)$#",$arrDescribe["Type"],$m)){
+                        $type = strtoupper($m[1]);
+                    }
+                    elseif(preg_match("#^(\w+)\s+.*?$#",$arrDescribe["Type"],$m)){
+                        $type = strtoupper($m[1]);
+                    }
+
+                    // Если нужен индекс - делаем его
+                    if(
+                        !$isKey
+                        &&
+                        (
+                            isset($indexedNames[$name])
+                            ||
+                            isset($this->suffixes[$suffix])
+                            ||
+                            ($type=='CHAR' && $size<32)
+                            ||
+                            ($type=='VARCHAR' && $size<32)
+                            ||
+                            ($type=='DATETIME')
+                        )
+                        &&
+                        !isset($this->nonIndexedTypes[$type])
+                    ){
+                        $DB->Query(
+                            $query = 
+                            "ALTER TABLE `$tableName` ADD KEY `$name`(`$name`)"
+                        );
+                        echo "SQL: $query\n";
+                    }
+                    
+                    // Если поле varchar - переводим в char
+                    if($type=='VARCHAR' && $size<=255){
+                        $DB->Query(
+                            $query = "ALTER TABLE `$tableName` CHANGE COLUMN `$name` `$name` CHAR($size)"
+                        );
+                        echo "SQL: $query\n";
+                    }
+                    
+                }
+                $resTableStatus = $DB->Query("SHOW TABLE STATUS LIKE 'b_abtest'");
+                $tableStatus = $resTableStatus->GetNext();
+                if($tableStatus["Engine"]=='InnoDB'){
+                    $DB->Query(
+                        $query = "ALTER TABLE `$tableName` ENGINE=MyISAM"
+                    );
+                    echo "SQL: $query\n";
+                }
+                $DB->Query(
+                    $query = "OPTIMIZE TABLE `$tableName`"
+                );
+                echo "SQL: $query\n";
+            }
+            
+            die;
+            
             return $DB->RunSqlBatch("sql/optimize_patch.sql");
         }
         

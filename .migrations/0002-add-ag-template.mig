@@ -41,10 +41,10 @@
             );
             $obSite = new CSite();
             // Обновляем список шаблонов для сайта
-            if($obSite->Update($this->data["site"]["ID"], array(
+            $obSite->Update($this->data["site"]["ID"], array(
                 'ACTIVE' => "Y",
                 'TEMPLATE'=>$this->data["templates"]
-            )))return false;;                
+            ));                
             
             return true;
 

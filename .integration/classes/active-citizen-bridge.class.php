@@ -66,6 +66,17 @@
                 ),
                 "mode"=>"emp"
             ),
+            "getOrders"=> array(
+                "name"      =>  "Авторизация и получение сессии",
+                "inputs"    =>  array(
+                    "phone" =>  array(
+                        "name"      =>  "Логин(номер телефона)",
+                        "require"   =>  true,
+                        "regexp"    =>  "#^\d+$#"
+                    ),
+                ),
+                "mode"=>"arm"
+            ),
             "getProducts"=> array(
                 "name"      =>  "Получение товаров",
                 "inputs"    =>  array(
@@ -224,7 +235,7 @@
          * @return vfccbd
          * 
          */
-        private function objectToArray($object){
+        function objectToArray($object){
             if(is_object($object))$object = get_object_vars($object);
             if(!is_array($object))return false;
             foreach($object as $key=>$value){

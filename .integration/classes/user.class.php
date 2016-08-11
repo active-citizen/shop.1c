@@ -198,6 +198,19 @@
             
             return $result["session_id"];
         }
+        
+        /**
+         * Получение пользователя по его логину(номеру телефона)
+        */
+        function getUserInfo(){
+            global $DB;
+            $sessionId = $this->getEMPSessionId();
+            $res = $DB->Query($query = 
+                "SELECT * FROM `int_profile_import` 
+                WHERE `session_id`='".$sessionId."' LIMIT 1");
+            
+            return $res->GetNext();
+        }
             
         
         

@@ -139,7 +139,6 @@
                                             ),
                                             "baners"
                                         );
-                                        echo "\n|$prop_value|\n";
                                     }
                                 }
                                     
