@@ -93,7 +93,7 @@
                 //============================================================
                 // Если текущей категории от моста нет в таблице - добавляем в 
                 // промежуточную таблицу
-                $res = $DB->Query("
+                $query = "
                     SELECT 
                         * 
                     FROM 
@@ -102,7 +102,9 @@
                         `external_id`=".$manufacturer["manufacturer_id"]."
                     LIMIT
                         1
-                ");
+                ";
+
+                $res = $DB->Query($query);
                 if(!$row=$res->GetNext()){
                     $query = "
                         INSERT `int_manufacturers_import`(

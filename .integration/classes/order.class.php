@@ -46,6 +46,12 @@
             $iblock = $res->GetNext();
             $OfferIblockId = $iblock["ID"];
 
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+            $iblock = $res->GetNext();
+            $CatalogIblockId = $iblock["ID"];
+
+
             // Определяем ID платёжной системы
             $res= CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
             $paySystem = $res->GetNext();
@@ -58,9 +64,13 @@
             $deliverySystemId = 3;
             if(isset($deliverySystem["ID"]))
                 $deliverySystemId = $deliverySystem["ID"];
-            
             // Перебираем все заказы, пришедшие извне
             foreach($orders as $order){
+                echo "<pre>";
+                !!! Тут надо добавить товар, если его ещё нет
+                print_r($order["products"][0]);
+                die;
+                
                 // Формируем массив лдя вствавки
                 $person_type_id = 1;
                 $payed = "N";
@@ -94,18 +104,21 @@
                 );      
                 
 
+                $objOrder = new CSaleOrder;
                 // Если заказ уже добавлен - обновляем его статус
-                if($this->getOrderById($order["order_id"])){
+                if($orderInfo = $this->getOrderById($order["order_id"])){
+                    $objOrder->Update(
+                        $orderInfo["bitrix_id"],
+                        $arFields
+                    );
                     continue;
                 }
 
                 $this->addOrder($order["order_id"],$order);
 
                 // Добавляем заказ
-                $objOrder = new CSaleOrder;
                 if(!$bxOrderId = $objOrder->Add($arFields)){
-                    print_r($objOrder);
-                    $error = $objOrder->LAST_ERROR;
+                    $this->error = $objOrder->LAST_ERROR;
                     return false;
                 }
                 
@@ -124,8 +137,8 @@
                 
                 foreach($order["products"] as $product){
                     $arFields = array(
-                        "NAME"      =>  $product["name"],
-                        "IBLOCK_ID" =>  $OfferIblockId
+                        "PROPERTY_EXTERNAL_ID"  =>  $product["product_id"],
+                        "IBLOCK_ID"             =>  $CatalogIblockId
                     );
                     $res =  CIBlockElement::GetList(
                         array(),
@@ -133,17 +146,14 @@
                         false,
                         array("nTopCount"=>1)
                     ); 
-                    $arOffer = $res->GetNext();
+                    $arCatalog = $res->GetNext();
                     echo "<pre>";
-                    print_r($arOffer);
+                    print_r($arCatalog);
                     echo "</pre>";
                 }
                 
                 
                 
-                echo "<pre>";
-                print_r($order["products"][0]);
-                die;
             }
             
             die;

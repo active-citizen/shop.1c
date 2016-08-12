@@ -66,8 +66,9 @@
                 $res = CIBlockElement::GetList(
                     array(), 
                     $arFields = array(
-                        "IBLOCK_ID"         =>  $CatalogIblockId,
-                        "CODE"              =>  $product["CODE"],
+                        "IBLOCK_ID"  =>  $CatalogIblockId,
+                        "PROPERTY_EXTERNAL_ID" =>  
+                            $product["PROPERTIES"]["EXTERNAL_ID"],
                     )
                 );
                 $row = $res->GetNext();
@@ -651,6 +652,7 @@
                     $productItem["description"]
                 );
                 $product["PROPERTIES"] = array();
+                $product["PROPERTIES"]["EXTERNAL_ID"] = $productItem["product_id"];
                 $product["PROPERTIES"]["CANCEL_ABILITY"] = 
                     $productItem["allow_return"]?
                     $ENUM["CANCEL_ABILITY"]["Да"]:
@@ -750,7 +752,7 @@
                 //-------------- END: Формируем поля продукта -------------
                 $result[$product["CODE"]] = $product;
             }
-
+            
             return $result;
         }
         

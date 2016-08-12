@@ -10,12 +10,12 @@
             
 
             $DB->Query("
-                DROP TABLE IF EXISTS `int_orders_import`;
+                DROP TABLE IF EXISTS `int_manufacturers_import`;
             "
             );
 
             $DB->Query("
-                CREATE TABLE IF NOT EXISTS `int_orders_import` (
+                CREATE TABLE IF NOT EXISTS `int_manufacturers_import` (
                     `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `external_id` INT(11) UNSIGNED NOT NULL,
                     `name` char(64) NOT NULL 
@@ -46,13 +46,6 @@
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
             ");
 
-            
-            $DB->Query("
-                DROP TABLE IF EXISTS `int_products_import`;
-            "
-            );
-            
-            
             CModule::IncludeModule("iblock");
             // Узнаём ID инфоблока каталога
             $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
@@ -67,6 +60,26 @@
                     die;
                 }
             }
+
+            // Проверяем наличие свойства
+            $res = CIBlockProperty::GetByID("EXTERNAL_ID",false,"clothes");
+            if($res->GetNext())return true;
+            
+            
+            $arFields = Array(
+                "NAME" => "ID товара во внешнем источнике",
+                "ACTIVE" => "Y",
+                "SORT" => "1500",
+                "CODE" => "EXTERNAL_ID",
+                "PROPERTY_TYPE" => "N",
+                "IBLOCK_ID" => 2
+            );
+            
+            $ibp = new CIBlockProperty;
+            if(!$PropID = $ibp->Add($arFields)){
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
             
             
             return true;
@@ -79,3 +92,4 @@
 $categories_import_db = new categories_import_db();
 // Откатываем, если неудачно
 if(!$categories_import_db->Run())$categories_import_db->RollBack();
+
