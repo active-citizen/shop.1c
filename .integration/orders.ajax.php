@@ -31,8 +31,9 @@
     require_once("classes/user.class.php");
     require_once("classes/order.class.php");
     
-    $agBrige = new ActiveCitizenBridge;
-    $bxUser =  new bxUser;
+    $agBrige = new ActiveCitizenBridge();
+    $bxUser =  new bxUser();
+    $bxOrder = new bxOrder();
     
     $answer = array(
         "errors"=>""
@@ -56,15 +57,12 @@
     //file_put_contents("orders.txt",json_encode($orders["orders"]));
 
     $orders = $agBrige->objectToArray(json_decode(file_get_contents("orders.txt")));
-    echo "<pre>";
-    print_r($orders);
-    die;
-    
+
     if(isset($orders["errorMessage"]) && $orders["errorMessage"])
         $answer["errors"][] = $history["errorMessage"];
 
     $bxOrder = new bxOrder;
-    $bxOrder->updateOrders($orders["orders"], CUser::GetID());
+    $bxOrder->updateOrders($orders, CUser::GetID());
     
     
     

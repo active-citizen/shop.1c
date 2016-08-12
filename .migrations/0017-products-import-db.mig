@@ -10,12 +10,12 @@
             
 
             $DB->Query("
-                DROP TABLE IF EXISTS `int_manufacturers_import`;
+                DROP TABLE IF EXISTS `int_orders_import`;
             "
             );
 
             $DB->Query("
-                CREATE TABLE IF NOT EXISTS `int_manufacturers_import` (
+                CREATE TABLE IF NOT EXISTS `int_orders_import` (
                     `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `external_id` INT(11) UNSIGNED NOT NULL,
                     `name` char(64) NOT NULL 

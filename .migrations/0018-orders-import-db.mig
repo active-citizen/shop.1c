@@ -1,0 +1,38 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление таблицы с логом обновления продуктов
+     */
+    class orders_import_db extends Migration{
+        function Run(){
+            global $DB;
+            
+
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_orders_import`;
+            "
+            );
+
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_orders_import` (
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `external_id` INT(11) UNSIGNED NOT NULL,
+                    `bitrix_id` INT(11) UNSIGNED NOT NULL,
+                    `data` longtext NOT NULL COMMENT 'json полученного заказа',
+                    KEY `id`(`id`),
+                    UNIQUE KEY `external_id` (`external_id`),
+                    KEY `bitrix_id` (`bitrix_id`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+            ");
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$orders_import_db = new orders_import_db();
+// Откатываем, если неудачно
+if(!$orders_import_db->Run())$orders_import_db->RollBack();

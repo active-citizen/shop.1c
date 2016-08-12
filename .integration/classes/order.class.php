@@ -22,6 +22,7 @@
  * 
  */
 
+    require_once("active-citizen-bridge.class.php");
 
     class bxOrder{
 
@@ -31,38 +32,118 @@
          * Обновление в битриксе транзакций личного счёта из занных EМП
          */
         function updateOrders($orders, $userId){
-            
             global $USER;
+            global $DB;
+            $objBridge = new ActiveCitizenBridge();
+            // Получаем список статусов
+            $statusesList = $this->getStatuses();
             
+            CModule::IncludeModule("sale");
+            CModule::IncludeModule("catalog");
+            CModule::IncludeModule("iblock");
+            // Узнаём ID инфоблока товарных предложений
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $iblock = $res->GetNext();
+            $OfferIblockId = $iblock["ID"];
+
+            // Определяем ID платёжной системы
+            $res= CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
+            $paySystem = $res->GetNext();
+            $paySystemId = 9;
+            if(isset($paySystem["ID"]))$paySystemId = $paySystem["ID"];
+            
+            // Определяем ID системы доставки
+            $res = CSaleDelivery::GetList(array(),array("ACTIVE"=>"Y"));
+            $deliverySystem = $res->GetNext();
+            $deliverySystemId = 3;
+            if(isset($deliverySystem["ID"]))
+                $deliverySystemId = $deliverySystem["ID"];
+            
+            // Перебираем все заказы, пришедшие извне
             foreach($orders as $order){
-                
-                // Если заказ уже добавлен - пропускаем
-                if($this->getOrderById($order["order_id"]))continue;
-                
+                // Формируем массив лдя вствавки
                 $person_type_id = 1;
-                $payed = "Y";
+                $payed = "N";
+                $canceled = "N";
                 
-                
+                $bxStatus = $statusesList[$order["order_status_id"]]['bitrix_id'];
+                if($order["order_status_id"]==7)$canceled = "Y";
                 $arFields = array(
-                   "LID" => "ru",
-                   "PERSON_TYPE_ID" => 1,
-                   "PAYED" => $payed,
-                   "CANCELED" => "N",
-                   "STATUS_ID" => "N",
-                   "PRICE" => 279.32,
-                   "CURRENCY" => "USD",
-                   "USER_ID" => intval($USER->GetID()),
-                   "PAY_SYSTEM_ID" => 3,
-                   "PRICE_DELIVERY" => 11.37,
-                   "DELIVERY_ID" => 2,
-                   "DISCOUNT_VALUE" => 1.5,
-                   "TAX_VALUE" => 0.0,
-                   "USER_DESCRIPTION" => ""
-                );                
-                            
+                   "LID"                =>  "s1",
+                   "PERSON_TYPE_ID"     =>  $person_type_id,
+                   "PAYED"              =>  $payed,
+                   "CANCELED"           =>  $canceled,
+                   "STATUS_ID"          =>  $bxStatus,
+                   "PRICE"              =>  $order['total'],
+                   "CURRENCY"           =>  "BAL",
+                   "USER_ID"            =>  intval($USER->GetID()),
+                   "PAY_SYSTEM_ID"      =>  $paySystemId,
+                   "PRICE_DELIVERY"     =>  0,
+                   "DELIVERY_ID"        =>  $deliverySystemId,
+                   "DISCOUNT_VALUE"     =>  0,
+                   "TAX_VALUE"          =>  0,
+                   "USER_DESCRIPTION"   =>  $order["comment"],
+                   "DATE_INSERT"        =>  $DB->FormatDate(
+                                                $order["date_added"],
+                                                "Y-m-d H:i:s"
+                                            ),
+                   "DATE_UPDATE"        =>  $DB->FormatDate(
+                                                $order["date_modified"],
+                                                "Y-m-d H:i:s"
+                                            )
+                );      
+                
+
+                // Если заказ уже добавлен - обновляем его статус
+                if($this->getOrderById($order["order_id"])){
+                    continue;
+                }
+
+                $this->addOrder($order["order_id"],$order);
+
+                // Добавляем заказ
+                $objOrder = new CSaleOrder;
+                if(!$bxOrderId = $objOrder->Add($arFields)){
+                    print_r($objOrder);
+                    $error = $objOrder->LAST_ERROR;
+                    return false;
+                }
+                
+                $query = "
+                    UPDATE 
+                        `int_orders_import`
+                    SET 
+                        `bitrix_id`=$bxOrderId
+                    WHERE
+                        `external_id`=".$order["order_id"]."
+                    LIMIT
+                        1
+                ";
+                
+                $DB->Query($query);
+                
+                foreach($order["products"] as $product){
+                    $arFields = array(
+                        "NAME"      =>  $product["name"],
+                        "IBLOCK_ID" =>  $OfferIblockId
+                    );
+                    $res =  CIBlockElement::GetList(
+                        array(),
+                        $arFields,
+                        false,
+                        array("nTopCount"=>1)
+                    ); 
+                    $arOffer = $res->GetNext();
+                    echo "<pre>";
+                    print_r($arOffer);
+                    echo "</pre>";
+                }
+                
+                
+                
                 echo "<pre>";
-                print_r($order);
-                echo "</pre>";
+                print_r($order["products"][0]);
+                die;
             }
             
             die;
@@ -77,7 +158,7 @@
         function getOrderById($order_id){
             global $DB;
 
-            $res = $DB->Query("
+            $res = $DB->Query($query = "
                 SELECT 
                     * 
                 FROM 
@@ -88,7 +169,56 @@
                     1
             ");
             
-            return $res->GetNext();
+            $result = $res->GetNext();
+            $objBridge = new ActiveCitizenBridge();
+            if(isset($result["data"]))
+                $result["data"] = $objBridge->objectToArray(json_decode(
+                    $result["data"]
+                ));
+            unset($objBridge);
+
+            return $result;
         }
+        
+        /**
+         * Добавление в промежуточную таблицу информации о заказе
+         * 
+         * @return ID добавленной записи
+        */
+        function  addOrder(
+            $external_id,   //!< ID заказа в arm или где ещё
+            $data           //!< Массив заказа
+        ){
+            global $DB; 
+            
+            $data = json_encode($data);
+            $query = "
+                INSERT INTO `int_orders_import`(
+                    `external_id`,
+                    `data`
+                )
+                VALUES(
+                    '".intval($external_id)."',
+                    '".json_encode($data)."'
+                )
+            ";
+            
+            if($res = $DB->Query($query))return $DB->LastID();
+            return false;
+        }
+        
+        /*
+         * Получение списка статусов
+        */
+        function getStatuses(){
+            global $DB; 
+            $res = $DB->Query("
+                SELECT * FROM `int_status_import` ORDER BY external_id ASC
+            ");
+            $result = array();
+            while($row = $res->GetNext())$result[$row["external_id"]] = $row;
+            return $result;
+        }
+        
         
     }
