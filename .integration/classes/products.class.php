@@ -377,11 +377,9 @@
                         "LAST_MODIFIED"=>$row["TIMESTAMP_X"],
                         "STATUS"=>"UPDATED"
                     );
-                 }
+                }
                 // Если раздела ещё нет в битриксе - добавляем
                 else{
-                    
-
                     $product["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
                     $product["DETAIL_PICTURE"] = CFile::MakeFileArray($picturePath);
                     unset($product["IMAGES"]);

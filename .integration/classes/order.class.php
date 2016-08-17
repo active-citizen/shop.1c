@@ -41,6 +41,7 @@
             CModule::IncludeModule("sale");
             CModule::IncludeModule("catalog");
             CModule::IncludeModule("iblock");
+            CModule::IncludeModule("price");
             // Узнаём ID инфоблока товарных предложений
             $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
             $iblock = $res->GetNext();
@@ -51,6 +52,8 @@
             $iblock = $res->GetNext();
             $CatalogIblockId = $iblock["ID"];
 
+            $objOrder = new CSaleOrder;
+            $objBasket = new CSaleBasket;
 
             // Определяем ID платёжной системы
             $res= CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
@@ -66,10 +69,21 @@
                 $deliverySystemId = $deliverySystem["ID"];
             // Перебираем все заказы, пришедшие извне
             foreach($orders as $order){
-                echo "<pre>";
-                !!! Тут надо добавить товар, если его ещё нет
-                print_r($order["products"][0]);
-                die;
+
+                $arrProducts = array();
+                // Собираем массив товаров заказа
+                foreach($order["products"] as $product){
+                    if(!$bxProduct = $this->getBxProductByExternalId(
+                        $product["product_id"], $CatalogIblockId, $OfferIblockId
+                    )){
+                        $bxProduct = $this->addBxProduct(
+                            $product,
+                            $CatalogIblockId,
+                            $OfferIblockId
+                        );
+                    }
+                    $arrProducts[$bxProduct["ID"]] = 1;
+                }
                 
                 // Формируем массив лдя вствавки
                 $person_type_id = 1;
@@ -78,6 +92,8 @@
                 
                 $bxStatus = $statusesList[$order["order_status_id"]]['bitrix_id'];
                 if($order["order_status_id"]==7)$canceled = "Y";
+                
+                // Формируем поля заказа
                 $arFields = array(
                    "LID"                =>  "s1",
                    "PERSON_TYPE_ID"     =>  $person_type_id,
@@ -102,14 +118,47 @@
                                                 "Y-m-d H:i:s"
                                             )
                 );      
-                
 
-                $objOrder = new CSaleOrder;
                 // Если заказ уже добавлен - обновляем его статус
                 if($orderInfo = $this->getOrderById($order["order_id"])){
                     $objOrder->Update(
                         $orderInfo["bitrix_id"],
                         $arFields
+                    );
+                    
+                    $resBasket =  $objBasket->GetList(
+                        array(),array("ORDER_ID"=>$orderInfo["bitrix_id"])
+                    );
+                    
+                    $indexBasket = array();
+                    while($itemBasket = $resBasket->GetNext())
+                        $indexBasket[$itemBasket["PRODUCT_ID"]] = $itemBasket;
+                    
+                    $userBasketId = $objBasket->GetBasketUserID();
+                    
+                    foreach($arrProducts as $productId=>$item){
+                        if(!$indexBasket[$productId])
+                            if(!$basketItemId = $objBasket->Add($addArrBasket = 
+                                array(
+                                    "PRODUCT_ID"        =>  $productId,
+                                    "PRICE"             =>  $product["price"],
+                                    "CURRENCY"          =>  "BAL",
+                                    "QUANTITY"          =>  1,
+                                    "LID"               =>  LANG,
+                                    "DELAY"             =>  "N",
+                                    "CAN_BUY" => "Y",
+                                    "MODULE"            => "catalog",
+                                    "NAME"              =>  $product["name"],
+                                )
+                            )){
+                                echo $objBasket->LAST_ERROR;
+                                echo "<pre>";
+                                print_r($addArrBasket);
+                                die;
+                            }
+                    }
+                    CSaleBasket::OrderBasket(
+                        $orderInfo["bitrix_id"], $userBasketId
                     );
                     continue;
                 }
@@ -135,28 +184,37 @@
                 
                 $DB->Query($query);
                 
-                foreach($order["products"] as $product){
-                    $arFields = array(
-                        "PROPERTY_EXTERNAL_ID"  =>  $product["product_id"],
-                        "IBLOCK_ID"             =>  $CatalogIblockId
-                    );
-                    $res =  CIBlockElement::GetList(
-                        array(),
-                        $arFields,
-                        false,
-                        array("nTopCount"=>1)
-                    ); 
-                    $arCatalog = $res->GetNext();
-                    echo "<pre>";
-                    print_r($arCatalog);
-                    echo "</pre>";
+                $userBasketId = $objBasket->GetBasketUserID();
+                
+                
+                foreach($arrProducts as $productId=>$item){
+                    if(!$basketItemId = $objBasket->Add($addArrBasket = 
+                        array(
+                            "PRODUCT_ID"        =>  $productId,
+                            "PRICE"             =>  $product["price"],
+                            "CURRENCY"          =>  "BAL",
+                            "QUANTITY"          =>  1,
+                            "LID"               =>  LANG,
+                            "DELAY"             =>  "N",
+                            "CAN_BUY" => "Y",
+                            "MODULE"            => "catalog",
+                            "NAME"              =>  $product["name"],
+                        )
+                    )){
+                        echo $objBasket->LAST_ERROR;
+                        echo "<pre>";
+                        print_r($addArrBasket);
+                        die;
+                    }
                 }
-                
-                
-                
+                CSaleBasket::OrderBasket($bxOrderId, $userBasketId);
+                echo "<pre>";
+                print_r($order);
+                print_r($arrProducts);
+                die;
             }
             
-            die;
+            return true;
             
         }
         
@@ -230,5 +288,106 @@
             return $result;
         }
         
+        
+        /**
+         * Получение продукта в битрикс по ID внешнего источника
+         * @param $externalId - внешний ID
+         * @param $CatalogIblockId - ID иефоблока с товарами
+        */
+        function getBxProductByExternalId(
+            $externalId, $CatalogIblockId, $OfferIblockId
+        ){
+            
+            $res = CIBlockElement::GetList(
+                array(),
+                array(
+                    "IBLOCK_ID"             =>  $CatalogIblockId,
+                    "PROPERTY_EXTERNAL_ID"  =>  $externalId
+                ),
+                false,
+                array("nTopCount"=>1)
+            );
+            
+            $product = $res->GetNext();
+            if(!$product)return false;
+            
+            $res = CIBlockElement::GetList(
+                array(),
+                array(
+                    "IBLOCK_ID"             =>  $OfferIblockId,
+                    "PROPERTY_CML2_LINK"    =>  $product["ID"]
+                ),
+                false,
+                array("nTopCount"=>1)
+            );
+            $offer = $res->GetNext();
+            
+            return $offer;
+        }
+        
+        /**
+         * Добавление
+        */
+        function addBxProduct(
+            $product, $CatalogIblockId, 
+            $OfferIblockId, $categoryId = 0
+        ){
+            $resElement = new CIBlockElement;
+            $arrFields = array(
+                "SITE_ID"       =>  "s1",
+                "NAME"          =>  $product["name"],
+                "CODE"          =>  Cutil::translit($product["name"],"ru",
+                    array("replace_space"=>"-","replace_other"=>"-")
+                ),
+                "IBLOCK_ID"     =>  $CatalogIblockId,
+                "DETAIL_TEXT"   =>  $product["model"],
+                "PREVIEW_TEXT"  =>  $product["model"],
+                "IBLOCK_SECTION_ID" =>  1,//$categoryId,
+                "SECTION_ID"    =>  1,//$categoryId,
+                "PREVIEW_TEXT_TYPE" =>  'html',
+                "DETAIL_TEXT_TYPE"  =>  'html',
+            );
+            
+
+            if(!$id = $resElement->Add($arrFields)){
+                $this->error = $resElement->LAST_ERROR;
+                echo $this->error;
+                die;
+                return false;
+            }
+            
+            CIBlockElement::SetPropertyValueCode(
+                $id,"EXTERNAL_ID",$product["product_id"]
+            );
+            
+            $arrFields["IBLOCK_ID"] = $OfferIblockId;
+            $arrFields["PRICE"] = $product["price"];
+            if(!$offerId = $resElement->Add($arrFields)){
+                $this->error = $resElement->LAST_ERROR;
+                echo $this->error;
+                die;
+                return false;
+            }
+            
+            $objPrice = new CPrice;
+            $objPrice->Add(array(
+                "PRODUCT_ID"=>$offerId,
+                "CATALOG_GROUP_ID"=>1,
+                "PRICE"=>$product["price"],
+                "CURRENCY"=>"BAL",
+            ),true);
+
+            
+            CIBlockElement::SetPropertyValueCode($offerId,"CML2_LINK",$id);
+
+            CCatalogProduct::Add(array(
+                "ID"=>$offerId,
+                "QUANTITY"=>0,
+                "QUANTITY_TRACE"=>"Y",
+                "CAN_BUY_ZERO"=>"N",
+            ));
+            
+            return array("ID"=>$offerId);
+        }
         
     }
