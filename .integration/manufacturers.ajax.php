@@ -26,7 +26,7 @@
     require_once("classes/manufacturers.class.php");
     
     $bxManufacturers = new bxManufacturers;
-    // Обновляем список продуктов
+    // Обновляем список производителей
     $bxManufacturers->updateImportTable(
         0   //Период обновления, 0 - обновляем независимо от времени последнего обновления
     );

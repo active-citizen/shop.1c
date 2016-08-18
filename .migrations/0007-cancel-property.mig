@@ -10,30 +10,39 @@
             //Код валюты балл
             $currency_code = "BAL";
             
-            
+            // Подключаем модуль инфоблоков
             CModule::IncludeModule("iblock");
 
-            // Проверяем наличие свойства
+            // Проверяем наличие свойства у инфоблока clothes
             $res = CIBlockProperty::GetByID("CANCEL_ABILITY",false,"clothes");
+            // Выходим, если свойство есть
             if($res->GetNext())return true;
             
-            
+            // Собираем массив для добавления свойства
             $arFields = Array(
+                // Название свойства
                 "NAME" => "Возможность отмены",
+                // Активность
                 "ACTIVE" => "Y",
+                // Порядок сортировки
                 "SORT" => "1500",
+                // Кодовое обозначение
                 "CODE" => "CANCEL_ABILITY",
+                // Тип свойства (L-список)
                 "PROPERTY_TYPE" => "L",
+                // ID инфоблока для которого свойство
                 "IBLOCK_ID" => 2
             );
+            // Список значений свойства
             $arFields["VALUES"][] = array(
-                "VALUE" => "да",
-                "DEF" => "Y",
-                "SORT" => "100"
+                "VALUE" => "да","DEF" => "Y","SORT" => "100"
             );
             
+            // Создаём объект инфоблока
             $ibp = new CIBlockProperty;
+            // Добавляем свойство к инфоблоку
             if(!$PropID = $ibp->Add($arFields)){
+                // Выводим текст ошибки, если добавление не удалось
                 $this->FatalError($ibp->LAST_ERROR);
                 return false;
             }            
