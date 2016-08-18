@@ -62,10 +62,9 @@
             }
 
             // Проверяем наличие свойства
+            //------------------------------------
             $res = CIBlockProperty::GetByID("EXTERNAL_ID",false,"clothes");
             if($res->GetNext())return true;
-            
-            
             $arFields = Array(
                 "NAME" => "ID товара во внешнем источнике",
                 "ACTIVE" => "Y",
@@ -74,7 +73,22 @@
                 "PROPERTY_TYPE" => "N",
                 "IBLOCK_ID" => 2
             );
-            
+            $ibp = new CIBlockProperty;
+            if(!$PropID = $ibp->Add($arFields)){
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+            //------------------------------------
+            $res = CIBlockProperty::GetByID("DAYS_TO_EXPIRE",false,"clothes");
+            if($res->GetNext())return true;
+            $arFields = Array(
+                "NAME" => "Время, которое доступен выданный купон",
+                "ACTIVE" => "Y",
+                "SORT" => "1501",
+                "CODE" => "DAYS_TO_EXPIRE",
+                "PROPERTY_TYPE" => "N",
+                "IBLOCK_ID" => 2
+            );
             $ibp = new CIBlockProperty;
             if(!$PropID = $ibp->Add($arFields)){
                 $this->FatalError($ibp->LAST_ERROR);

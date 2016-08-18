@@ -20,9 +20,12 @@
                     `external_id` INT(11) UNSIGNED NOT NULL,
                     `bitrix_id` INT(11) UNSIGNED NOT NULL,
                     `data` longtext NOT NULL COMMENT 'json полученного заказа',
+                    `last_update` BIGINT NOT NULL 
+                        COMMENT 'Дата последней синхронизации',
                     KEY `id`(`id`),
                     UNIQUE KEY `external_id` (`external_id`),
-                    KEY `bitrix_id` (`bitrix_id`)
+                    KEY `bitrix_id` (`bitrix_id`),
+                    KEY `last_update` (`last_update`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
             ");
             

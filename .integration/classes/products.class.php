@@ -29,7 +29,7 @@
         
         var $errors = array();
         var $logs = array();
-        var $update_period = 1*60*60;   // Период обновления товара (секунд)
+        var $update_period = 2*60*60;   // Период обновления товара (секунд)
         var $processed_items = 5;       // Число обрабатываемых за раз элементов
         var $timeout = 10;
         /*
@@ -126,11 +126,12 @@
                         $removeFileInfo = CFile::MakeFileArray($picturePath);
                         $product["PREVIEW_PICTURE"] = $removeFileInfo; 
                         $product["DETAIL_PICTURE"] = $removeFileInfo;
+                        
                     }
 
                     // Обновляем ращдел каталога
                     $id = $row["ID"];
-                    $resElement->Update($id, $arFields);
+                    $resElement->Update($id, $product);
                     
                     // Привязываем к объекту промежуточной таблицы ID раздела в
                     // Битриксе
@@ -199,6 +200,9 @@
                         }
                     }
 
+                echo "<pre>";
+                print_r($product["OFFERS"]);
+                die;
                     // Меняем свойства предложений
                     foreach($product["OFFERS"] as $offer){
                         $offerFields = array(
@@ -575,7 +579,6 @@
             $iblock = $res->GetNext();
             $CatalogIblockId = $iblock["ID"];
 
-        
             // Составляем справочник флагов
             $ENUM = array();
             $res = CIBlockPropertyEnum::GetList(
@@ -633,7 +636,6 @@
             }
             
             $result = array();
-
             foreach($products as $productItem){
                 //----------------- Формируем поля продукта ------------------
                 $product = array();
@@ -650,6 +652,7 @@
                     $productItem["description"]
                 );
                 $product["PROPERTIES"] = array();
+                $product["PROPERTIES"]["DAYS_TO_EXPIRE"] = isset($productItem["days_to_expire"])?$productItem["days_to_expire"]:0;
                 $product["PROPERTIES"]["EXTERNAL_ID"] = $productItem["product_id"];
                 $product["PROPERTIES"]["CANCEL_ABILITY"] = 
                     $productItem["allow_return"]?

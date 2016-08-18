@@ -27,7 +27,8 @@
     class bxOrder{
 
         var $error = '';
-        var $max_creater_orders =3; 
+        var $max_creater_orders =25; 
+        var $order_update_period = 3*60*60;
         
         /**
          * Обновление в битриксе транзакций личного счёта из занных EМП
@@ -73,11 +74,16 @@
             $count = 0;
             foreach($orders as $order){
 
-                die;
-
+                if($this->notAddUpdate($order["order_id"])){
+                    $result[] = array(
+                        "order_id"  =>  $order["order_id"],
+                        "status"    =>  "not updated"    
+                    );
+                    continue;
+                }
+                
                 $count++;
                 if($count>$this->max_creater_orders)break;
-
 
                 $arrProducts = array();
                 // Собираем массив товаров заказа
@@ -135,17 +141,21 @@
                         $arFields
                     );
                     
-                    $resBasket =  $objBasket->GetList(
-                        array(),array("ORDER_ID"=>$orderInfo["bitrix_id"])
+                    // Составляем индекс уже добавленных в заказ товаров
+                    $resBasket =  $objBasket->GetList(array(),
+                        array("ORDER_ID"=>$orderInfo["bitrix_id"])
                     );
-                    
                     $indexBasket = array();
                     while($itemBasket = $resBasket->GetNext())
                         $indexBasket[$itemBasket["PRODUCT_ID"]] = $itemBasket;
                     
+                    // Прицепляем корзину к пользователю
                     $userBasketId = $objBasket->GetBasketUserID();
                     
+                    // Каждый из продуктов заказа
                     foreach($arrProducts as $productId=>$item){
+                        // Добавляем товар к заказу, если этого товара в заказе 
+                        // ещё нет
                         if(!$indexBasket[$productId])
                             if(!$basketItemId = $objBasket->Add($addArrBasket = 
                                 array(
@@ -155,22 +165,31 @@
                                     "QUANTITY"          =>  1,
                                     "LID"               =>  LANG,
                                     "DELAY"             =>  "N",
-                                    "CAN_BUY" => "Y",
+                                    "CAN_BUY"           => "Y",
                                     "MODULE"            => "catalog",
                                     "NAME"              =>  $product["name"],
                                 )
                             )){
-                                echo $objBasket->LAST_ERROR;
-                                echo "<pre>";
-                                print_r($addArrBasket);
-                                die;
+                                $this->errror = $objBasket->LAST_ERROR;
+                                return false;
                             }
                     }
+                    // Привязать картину к заказу и отцепить от сессии
                     CSaleBasket::OrderBasket(
                         $orderInfo["bitrix_id"], $userBasketId
                     );
+                    // Фиксируем метку времени
+                    $query = "
+                        UPDATE `int_orders_import`
+                        SET `last_update`=UNIX_TIMESTAMP()
+                        WHERE `external_id`=".$order["order_id"]."
+                        LIMIT 1
+                    ";
+                    $DB->Query($query);
+                    
                     $result[] = array(
-                        "order_id"=>
+                        "order_id"  =>  $order["order_id"],
+                        "status"    =>  "updated"    
                     );
                     continue;
                 }
@@ -183,11 +202,14 @@
                     return false;
                 }
                 
+                // Связываем в таблице связки ID заказа по внешнем источнике и 
+                // в BITRIX
                 $query = "
                     UPDATE 
                         `int_orders_import`
                     SET 
-                        `bitrix_id`=$bxOrderId
+                        `bitrix_id`=$bxOrderId,
+                        `last_update`=UNIX_TIMESTAMP()
                     WHERE
                         `external_id`=".$order["order_id"]."
                     LIMIT
@@ -196,9 +218,10 @@
                 
                 $DB->Query($query);
                 
+                // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
                 
-                
+                // Добавляем в корзину продукты
                 foreach($arrProducts as $productId=>$item){
                     if(!$basketItemId = $objBasket->Add($addArrBasket = 
                         array(
@@ -213,16 +236,19 @@
                             "NAME"              =>  $product["name"],
                         )
                     )){
-                        echo $objBasket->LAST_ERROR;
-                        echo "<pre>";
-                        print_r($addArrBasket);
-                        die;
+                        $this->error = $objBasket->LAST_ERROR;
+                        return false;
                     }
                 }
+                // Привязать картину к заказу и отцепить от сессии
                 CSaleBasket::OrderBasket($bxOrderId, $userBasketId);
+                $result[] = array(
+                    "order_id"  =>  $order["order_id"],
+                    "status"    =>  "created"    
+                );
             }
             
-            return true;
+            return $result;
             
         }
         
@@ -271,11 +297,13 @@
             $query = "
                 INSERT INTO `int_orders_import`(
                     `external_id`,
-                    `data`
+                    `data`,
+                    `last_update`
                 )
                 VALUES(
                     '".intval($external_id)."',
-                    '".json_encode($data)."'
+                    '".json_encode($data)."',
+                    UNIX_TIMESTAMP(NOW())
                 )
             ";
             
@@ -334,7 +362,7 @@
         }
         
         /**
-         * Добавление
+         * Добавление товара в битрикс
         */
         function addBxProduct(
             $product, $CatalogIblockId, 
@@ -397,5 +425,29 @@
             
             return array("ID"=>$offerId);
         }
+        
+        /**
+         * Заказ уже есть и его не надо обновлять
+        */
+        function notAddUpdate(
+            $orderId //!< ID заказа из внешнего источника
+        ){
+            global $DB;
+            $query = "
+                SELECT 
+                    * 
+                FROM 
+                    `int_orders_import` 
+                WHERE 
+                    `external_id`=".intval($orderId)."
+                    AND
+                    `last_update`+".$this->order_update_period.">UNIX_TIMESTAMP(NOW())
+                LIMIT
+                    1
+            ";
+            $res = $DB->Query($query);
+            return $res->GetNext();
+        }
+        
         
     }
