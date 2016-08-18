@@ -27,6 +27,7 @@
     class bxOrder{
 
         var $error = '';
+        var $max_creater_orders =3; 
         
         /**
          * Обновление в битриксе транзакций личного счёта из занных EМП
@@ -37,6 +38,7 @@
             $objBridge = new ActiveCitizenBridge();
             // Получаем список статусов
             $statusesList = $this->getStatuses();
+            $result = array();
             
             CModule::IncludeModule("sale");
             CModule::IncludeModule("catalog");
@@ -68,7 +70,14 @@
             if(isset($deliverySystem["ID"]))
                 $deliverySystemId = $deliverySystem["ID"];
             // Перебираем все заказы, пришедшие извне
+            $count = 0;
             foreach($orders as $order){
+
+                die;
+
+                $count++;
+                if($count>$this->max_creater_orders)break;
+
 
                 $arrProducts = array();
                 // Собираем массив товаров заказа
@@ -160,6 +169,9 @@
                     CSaleBasket::OrderBasket(
                         $orderInfo["bitrix_id"], $userBasketId
                     );
+                    $result[] = array(
+                        "order_id"=>
+                    );
                     continue;
                 }
 
@@ -208,10 +220,6 @@
                     }
                 }
                 CSaleBasket::OrderBasket($bxOrderId, $userBasketId);
-                echo "<pre>";
-                print_r($order);
-                print_r($arrProducts);
-                die;
             }
             
             return true;

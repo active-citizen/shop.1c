@@ -62,7 +62,7 @@
         $answer["errors"][] = $history["errorMessage"];
 
     $bxOrder = new bxOrder;
-    $bxOrder->updateOrders($orders, CUser::GetID());
+    $answer["result"] = $bxOrder->updateOrders($orders, CUser::GetID());
     
     
     
