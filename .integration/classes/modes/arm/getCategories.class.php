@@ -26,10 +26,12 @@
     require_once(realpath(dirname(__FILE__)."/../../curl.class.php"));
     
     class getCategoriesBridgeMethod{
-        function exec($args){
+        function exec($args,$contour='uat'){
+            $domain = "arm.ag.mos.ru";
+            if($contour=='uat')$domain = "opencart.resolutionpoint.ru";
             
             $curl = new curlTool;
-            $data = $curl->get("http://arm.ag.mos.ru/rest/getCategories", $data);
+            $data = $curl->get("http://$domain/rest/getCategories", $data);
             return $data;
         }
     }

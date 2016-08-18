@@ -26,8 +26,11 @@
     
     class getOrdersBridgeMethod{
         function exec($args){
+            $domain = "arm.ag.mos.ru";
+            if($contour=='uat')$domain = "opencart.resolutionpoint.ru";
+            
             $curl = new curlTool;
-            $data = $curl->post("http://arm.ag.mos.ru/rest/getOrders", $args,
+            $data = $curl->post("http://$domain/rest/getOrders", $args,
             array("Content-type: multipart/form-data"));
             return $data;
         }

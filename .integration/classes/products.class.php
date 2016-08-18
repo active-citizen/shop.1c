@@ -29,7 +29,7 @@
         
         var $errors = array();
         var $logs = array();
-        var $update_period = 2*60*60;   // Период обновления товара (секунд)
+        var $update_period = 3*60*60;   // Период обновления товара (секунд)
         var $processed_items = 5;       // Число обрабатываемых за раз элементов
         var $timeout = 10;
         /*
@@ -200,9 +200,6 @@
                         }
                     }
 
-                echo "<pre>";
-                print_r($product["OFFERS"]);
-                die;
                     // Меняем свойства предложений
                     foreach($product["OFFERS"] as $offer){
                         $offerFields = array(
@@ -321,10 +318,19 @@
                                     "CURRENCY"=>"BAL",
                                 );
                                 $objPrice = new CPrice;
-                                if(!$priceId = $objPrice->Add($arFields,true)){
-                                    echo "Error!!!: ".__LINE__." ".
-                                        print_r($objPrice,1);;
-                                    die;
+                                
+                                $res = $objPrice->GetList(
+                                    array(),array("PRODUCT_ID"=>$offerId),
+                                    false,array("nTopCount"=>1)
+                                );
+                                $arrPrice = $res->GetNext();
+                                
+                                
+                                if(!isset($arrPrice["ID"])){
+                                    $objPrice->Add($arFields,true);
+                                }
+                                else{
+                                    $objPrice->Update($arrPrice["ID"], $arFields);
                                 }
                             }
                             elseif($prop_code=='CML2_LINK' && is_array($prop_value)){
@@ -542,6 +548,7 @@
                                 "AMOUNT"=>$storeAmount
                             );
                             if(!$resCatalogStoreProduct->Add($arFields)){
+                                print_r($arFields);
                                 echo "Error!!!: ".__LINE__;
                                 print_r($resCatalogStoreProduct);
                                 die;

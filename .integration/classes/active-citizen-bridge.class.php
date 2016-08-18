@@ -107,9 +107,12 @@
         private $mode = 'dummy';
         private $arguments = array();
         private $errors = array();
+        private $contour = 'uat';
         
         
         function __construct(){
+            if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
+                $this->contour = 'prod';
         }
         
         /**
@@ -214,7 +217,7 @@
                 $this->addError("Метод \"exec\" в классе \"$methodClass\" не найден");
                 return false;
             }
-            $data = $methodObject->exec($this->arguments);
+            $data = $methodObject->exec($this->arguments,$this->contour);
             if(!$data = json_decode($data)){
                 $this->addError("Ошибка преобразования json к объекту");
                 return false;

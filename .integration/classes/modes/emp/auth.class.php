@@ -25,7 +25,13 @@
     require_once(realpath(dirname(__FILE__)."/../../curl.class.php"));
     
     class authBridgeMethod{
-        function exec($args){
+        function exec($args,$contour='uat'){
+            if($contour=='uat')
+                $args["token"] = "ag_uat_token";
+            else
+                $args["token"] = "ag_token";
+                
+            
             $data = array(
                 "token"=>$args["token"],
                 "auth"=>array(

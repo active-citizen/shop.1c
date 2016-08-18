@@ -49,12 +49,12 @@
     $agBrige->setArguments($args);
     
     
-    
     if(1 && !$answer["errors"] && !$orders = $agBrige->exec()){
         $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
         echo json_encode($answer);
         die;
     }
+
     file_put_contents("orders.txt",json_encode($orders["orders"]));
 
     $orders = $agBrige->objectToArray(json_decode(file_get_contents("orders.txt")));
