@@ -548,10 +548,11 @@
                                 "AMOUNT"=>$storeAmount
                             );
                             if(!$resCatalogStoreProduct->Add($arFields)){
+                                echo "<pre>";
                                 print_r($arFields);
                                 echo "Error!!!: ".__LINE__;
                                 print_r($resCatalogStoreProduct);
-                                die;
+                                echo "<pre>";
                             }
                             $totalAmount+=$storeAmount;
                         }
