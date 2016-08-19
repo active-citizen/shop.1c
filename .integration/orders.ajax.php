@@ -55,6 +55,10 @@
         die;
     }
 
+    echo "<pre>";
+    print_r($orders);
+    die;
+
     file_put_contents("orders.txt",json_encode($orders["orders"]));
 
     $orders = $agBrige->objectToArray(json_decode(file_get_contents("orders.txt")));

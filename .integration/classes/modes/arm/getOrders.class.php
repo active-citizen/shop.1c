@@ -25,7 +25,7 @@
     require_once(realpath(dirname(__FILE__)."/../../curl.class.php"));
     
     class getOrdersBridgeMethod{
-        function exec($args){
+        function exec($args,$contour='uat'){
             $domain = "arm.ag.mos.ru";
             if($contour=='uat')$domain = "opencart.resolutionpoint.ru";
             
