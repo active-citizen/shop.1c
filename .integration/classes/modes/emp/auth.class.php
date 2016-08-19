@@ -27,11 +27,10 @@
     class authBridgeMethod{
         function exec($args,$contour='uat'){
             if($contour=='uat')
-                $args["token"] = "ag_uat_token";
+                $args["token"] = "ag_uat_token3";
             else
                 $args["token"] = "ag_token";
                 
-            
             $data = array(
                 "token"=>$args["token"],
                 "auth"=>array(

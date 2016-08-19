@@ -651,7 +651,7 @@
                 $product["NAME"] = html_entity_decode($productItem["name"]);
                 $product["CODE"] = Cutil::translit($productItem["name"],"ru",
                     array("replace_space"=>"-","replace_other"=>"-")
-                );
+                )."-".$productItem["id"];
                 $product["IBLOCK_ID"] = $CatalogIblockId;
                 $product["DETAIL_TEXT"] = html_entity_decode(
                     $productItem["description"]
@@ -681,6 +681,7 @@
                     $ENUM["WANTS"][array_rand($ENUM["WANTS"])];
                 $product["PROPERTIES"]["INTERESTS"] = 
                     $ENUM["INTERESTS"][array_rand($ENUM["INTERESTS"])];
+                /*
                 $product["PROPERTIES"]["NEWPRODUCT"] = 
                     rand()>0.5?
                     $ENUM["NEWPRODUCT"]["да"]:
@@ -689,6 +690,7 @@
                     rand()>0.5?
                     $ENUM["SPECIALOFFER"]["да"]:
                     0;
+                */
                 // ............END: Заданные случайно
                 
                 

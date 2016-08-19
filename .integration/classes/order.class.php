@@ -71,7 +71,6 @@
             if(isset($deliverySystem["ID"]))
                 $deliverySystemId = $deliverySystem["ID"];
             // Перебираем все заказы, пришедшие извне
-            $count = 0;
             foreach($orders as $order){
 
                 if($this->notAddUpdate($order["order_id"])){
@@ -368,13 +367,14 @@
             $product, $CatalogIblockId, 
             $OfferIblockId, $categoryId = 0
         ){
+            $count = 0;
             $resElement = new CIBlockElement;
             $arrFields = array(
                 "SITE_ID"       =>  "s1",
                 "NAME"          =>  $product["name"],
                 "CODE"          =>  Cutil::translit($product["name"],"ru",
                     array("replace_space"=>"-","replace_other"=>"-")
-                ),
+                )."-".$product["product_id"],
                 "IBLOCK_ID"     =>  $CatalogIblockId,
                 "DETAIL_TEXT"   =>  $product["model"],
                 "PREVIEW_TEXT"  =>  $product["model"],
