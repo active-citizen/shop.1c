@@ -27,8 +27,8 @@
     class bxOrder{
 
         var $error = '';
-        var $max_creater_orders =25; 
-        var $order_update_period = 3*60*60;
+        var $max_creater_orders =3; 
+        var $order_update_period = 6*60*60;
         
         /**
          * Обновление в битриксе транзакций личного счёта из занных EМП
@@ -286,7 +286,7 @@
          * 
          * @return ID добавленной записи
         */
-        function  addOrder(
+        function addOrder(
             $external_id,   //!< ID заказа в arm или где ещё
             $data           //!< Массив заказа
         ){
@@ -449,5 +449,25 @@
             return $res->GetNext();
         }
         
+        /**
+         *  Создание заказа во внешнем источнике данных
+        */
+        function createOrder(
+            $addParams = array()
+        ){
+            global $DB;
+            // Получаем из торгового предложения ID из каталога
+            
+            CModule::IncludeModule('iblock');
+            $res = CIBlockE;ement::GetList(
+                array(),
+                array("ID"=>$addParams["offr_id"]),
+                false
+            );
+            
+            echo "<pre>";
+            print_r($addParams);
+            die;
+        }
         
     }

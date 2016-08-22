@@ -100,6 +100,78 @@
                 "inputs"    =>  array(
                 ),
                 "mode"=>"arm"
+            ),
+            "addOrder"=>array(
+                "name"      =>  "Оформление заказа",
+                "inputs"    =>  array(
+                    "hash"=>array(
+                        "name"      =>  "Ключ соединения, обязательный параметр",
+                        "require"   =>  true,
+                        "regexp"    =>  "#[\d\w]+#"
+                    ),
+                    "email"=>array(
+                        "name"      =>  "E-mail, обязательный параметр",
+                        "require"   =>  true,
+                        "regexp"    =>  "#[\d\w\.\-\_]+\@[\d\w\.\-\_]+#"
+                    ),
+                    "firstname"=>array(
+                        "name"      =>  "Имя, обязательный параметр",
+                        "require"   =>  true,
+                        "regexp"    =>  "#.+#"
+                    ),
+                    "lastname"=>array(
+                        "name"      =>  "Фамилия, обязательный параметр",
+                        "require"   =>  true,
+                        "regexp"    =>  "#.+#"
+                    ),
+                    "telephone"=>array(
+                        "name"      =>  "Телефон, обязательный параметр",
+                        "require"   =>  true,
+                        "regexp"    =>  "#\d{11}#"
+                    ),
+                    "secondname"=>array(
+                        "name"      =>  "Отчество",
+                        "require"   =>  false,
+                        "regexp"    =>  "#.+#"
+                    ),
+                    "address"=>array(
+                        "name"      =>  "Адрес",
+                        "require"   =>  false,
+                        "regexp"    =>  "#.+#"
+                    ),
+                    "postcode"=>array(
+                        "name"      =>  "Почтовый индекс",
+                        "require"   =>  false,
+                        "regexp"    =>  "#\d{6}#"
+                    ),
+                    "shipping"=>array(
+                        "name"      =>  "Тип доставки (web – по интернету, pickup - самовывоз) При отсутствии параметра выставляется по логике заданной [типом](types)",
+                        "require"   =>  true,
+                        "regexp"    =>  "#[\w\d]+#"
+                    ),
+                    "product_id"=>array(
+                        "name"      =>  "ID товара",
+                        "require"   =>  true,
+                        "regexp"    =>  "#\d+#"
+                    ),
+                    "troyka_serial"=>array(
+                        "name"      =>  "Номер карты Тройка (обязательный для заказа пополнения карты)",
+                        "require"   =>  true,
+                        "regexp"    =>  "#[\w\d]+#"
+                    ),
+                    "options"=>array(
+                        "name"      =>  "Опции продукта(массив)",
+                        "require"   =>  false,
+                        "regexp"    =>  "#.*#"
+                    ),
+                    "lottery"=>array(
+                        "name"      =>  "Заказ является выигрышем в лотерею(необязательный параметр)",
+                        "require"   =>  false,
+                        "regexp"    =>  "#.*#"
+                    ),
+                    
+                ),
+                "mode"=>"arm"
             )
         );
         

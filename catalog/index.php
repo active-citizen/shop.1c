@@ -314,6 +314,4 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 <div class="catalog-ajax-block catalog-ajax-block-loader"></div>
 <p id="back-top"><a href="#top"><span></span>&#9650; Вверх &#9650;</a></p>
 
-
-
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

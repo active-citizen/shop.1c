@@ -234,7 +234,6 @@ $(document).ready(function(){
         $('.bx_cart_ag').css('display','none');
         $.get(get_profile_url,function(data){
             var answer = JSON.parse(data);
-            console.log(answer);
             if(!answer.profile){
                 ag_ci_rise_error('Ошибка запроса профиля, склада, товара:'+answer.error);
                 $('#bx_cart_ag').css('display','block');
@@ -275,6 +274,40 @@ $(document).ready(function(){
             ag_ci_rise_error('Не определён ID торгового предложения');
             return false;
         }
+
+        // создаём заказ
+        $('#order-process-done').css('display','block');
+        $('.ok-button').css('display','none');
+        $.post(
+            "/order/order.ajax.php",
+            {
+                "quantity":$('#ag-basket-amount').spinner("value"),
+                "create_order":$('.catalog_item_confirm_message .ag-window #offer_id').html(),
+                "store_id":$('.catalog_item_confirm_message .ag-window #store_id').html(),
+                "name":$('.catalog_item_confirm_message .ag-window #ag-name').html(),
+                "email":$('.catalog_item_confirm_message .ag-window #ag-email').html(),
+                "address":$('.catalog_item_confirm_message .ag-window #ag-address').html()
+            },
+            function(data){
+                var answer = JSON.parse(data);
+                if(answer.redirect_url){
+                    document.location.href=answer.redirect_url;
+                }
+                else{
+                    $('#order-process-done').css('display','none');
+                    $('.ok-button').css('display','block');
+                    var error_text = '';
+                    for(i in answer.order.ERROR){
+                        error_text += i+": "+answer.order.ERROR[i];
+                    }
+                    $('.catalog_item_confirm_message').fadeOut('fast');
+                    ag_ci_rise_error(error_text);            }
+                }
+        )
+        
+
+        return false;
+        ///////////////////////////////////////////////////////////////
         
         var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value");
 
@@ -316,51 +349,6 @@ $(document).ready(function(){
                         }
                     }
                 );
-                /*
-
-                var postdata = {
-                    "sessid":           $('.catalog_item_confirm_message .ag-window #sess_id').html(),
-                    "action":           "saveOrderAjax",
-                    "location_type":    "code",
-                    "BUYER_STORE":      $('.catalog_item_confirm_message .ag-window #store_id').html(),
-                    "DELIVERY_ID":      3,
-                    "save":             "Y",
-                    "ORDER_PROP_1":     $('.catalog_item_confirm_message .ag-window #ag-name').html(),
-                    "ORDER_PROP_2":     $('.catalog_item_confirm_message .ag-window #ag-email').html(),
-                    "ORDER_PROP_3":     $('.catalog_item_confirm_message .ag-window #ag-phone').html(),
-                    "ORDER_PROP_7":     $('.catalog_item_confirm_message .ag-window #ag-address').html(),
-                }
-
-
-
-                $.post(
-                    "/order/make/",
-                    postdata,
-                    function(data){
-                        var answer = JSON.parse(data);
-                        if(answer.order.REDIRECT_URL){
-                            document.location.href=answer.order.REDIRECT_URL;
-                        }
-                        else{
-                            // Чистим корзину, если заказ неудачен
-                            $.get(
-                                "/order/order.ajax.php?clear_basket",
-                                function(){
-                                    $('#order-process-done').css('display','none');
-                                    $('.ok-button').css('display','block');
-                                    var error_text = '';
-                                    for(i in answer.order.ERROR){
-                                        error_text += i+": "+answer.order.ERROR[i];
-                                    }
-                                    $('.catalog_item_confirm_message').fadeOut('fast');
-                                    ag_ci_rise_error(error_text);
-                                }
-                            );
-                        }
-                    }
-                );
-                */
-                
             }
         );
         return false;
@@ -401,6 +389,12 @@ $(document).ready(function(){
 
     $('#ag-basket-amount').spinner("enable");
     $('#ag-basket-amount').spinner("value",1);
+
+    if(document.location.pathname=='/catalog/'){
+        $.get(
+            "/.integration/orders.ajax.php"
+        );
+    }
     
 });
 

@@ -55,10 +55,12 @@
         die;
     }
 
+    //file_put_contents("orders.txt",json_encode($orders["orders"]));
 
-    file_put_contents("orders.txt",json_encode($orders["orders"]));
-
-    $orders = $agBrige->objectToArray(json_decode(file_get_contents("orders.txt")));
+    $orders = $agBrige->objectToArray(
+        //json_decode(file_get_contents("orders.txt"))
+        $orders["orders"]
+    );
 
     if(isset($orders["errorMessage"]) && $orders["errorMessage"])
         $answer["errors"][] = $history["errorMessage"];
@@ -76,5 +78,3 @@
     
     //echo "<pre>";
     //print_r($profile);
-    
-    

@@ -70,6 +70,21 @@ elseif(isset($_GET["mark"]) && isset($_GET["product"])){
     ));
 
 }
+elseif(isset($_POST["create_order"]) && $offer_id=intval($_POST["create_order"])){
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+    $BxOrder = new bxOrder();
+    $BxOrder->createOrder(array(
+        "quantity"  => $_POST["quantity"],
+        "offer_id"  => $_POST["create_order"],
+        "store_id"  => $_POST["store_id"],
+        "name"      => $_POST["name"],
+        "email"     => $_POST["email"],
+        "address"   => $_POST["address"]
+    ));
+    print_r($_POST);
+    die;
+    echo json_encode(array("redirect_url"=>"/order/"));
+}
 elseif(isset($_GET["add_to_basket"])){
     CModule::IncludeModule('sale');
     CModule::IncludeModule('catalog');
