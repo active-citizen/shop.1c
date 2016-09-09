@@ -1,5 +1,7 @@
 bitrix/*
 upload/*
+!upload/1c_catalog
+!upload/1c_exchange
 desktop_app/*
 eshop_app/*
 auth/*
