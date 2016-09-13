@@ -46,75 +46,6 @@
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
 
-    ///////////////////////////////////////////////////////////////////////////
-    ///                     Импортируем склады
-    ///////////////////////////////////////////////////////////////////////////
-    if($offersFilename){
-        $xmlOffers = file_get_contents($uploadDir.$offersFilename);
-        $obOffers = simplexml_load_string(
-            $xmlOffers, "SimpleXMLElement" 
-        );
-        
-        $arOffers = json_decode(json_encode((array)$obOffers), TRUE);        
-        
-        $arStorages = $arOffers["ПакетПредложений"]["Склады"]["Склад"];
-        $arOffers = $arOffers["ПакетПредложений"]["Предложения"]["Предложение"];
-        
-        $arStoragesIndex = array();
-        foreach($arStorages as $arStorage){
-
-            $arStoragesIndex[$arStorage["Ид"]] = 0;
-
-            $arFields = array();
-            $arFields["TITLE"] = $arStorage["НаименованиеПолное"];
-            $arFields["ACTIVE"] = 'Y';
-            $arFields["ADDRESS"] = '';
-            $arFields["DESCRIPTION"] = '';
-            $arFields["GPS_N"] = '';
-            $arFields["GPS_S"] = '';
-            $arFields["IMAGE_ID"] = '';
-            $arFields["PHONE"] = '';
-            $arFields["SCHEDULE"] = '';
-            $arFields["XML_ID"] = $arStorage["Ид"];
-            $arFields["USER_ID"] = '';
-            $arFields["EMAIL"] = '';
-            $arFields["ISSUING_CENTER"] = '';
-            $arFields["SHIPPING_CENTER"] = '';
-            $arFields["SITE_ID"] = 's1';
-            
-
-            if(
-                isset($arStorage["КакПроехать"]) 
-                && $arStorage["КакПроехать"]
-                && !is_array($arStorage["КакПроехать"])
-            )$arFields["ADDRESS"] .= $arStorage["КакПроехать"];
-                
-            if(
-                isset($arStorage["ДополнительнаяИнформация"]) 
-                && $arStorage["ДополнительнаяИнформация"]
-                && !is_array($arStorage["ДополнительнаяИнформация"])
-            )$arFields["DESCRIPTION"] .= $arStorage["ДополнительнаяИнформация"];
-
-            if(
-                isset($arStorage["ГрафикРаботы"]) 
-                && $arStorage["ГрафикРаботы"]
-                && !is_array($arStorage["ГрафикРаботы"])
-            )$arFields["SCHEDULE"] .= $arStorage["ГрафикРаботы"];
-
-            $res = CCatalogStore::GetList(array(),array(
-                "XML_ID"=>$arStorage["Ид"]
-            ),false,array("nTopCount"=>1));
-
-            if(!$existsStorage = $res->GetNext()){
-                $arStoragesIndex[$arStorage["Ид"]] = CCatalogStore::Add($arFields);
-            }
-            else{
-                $arStoragesIndex[$arStorage["Ид"]] = $existsStorage["ID"];
-                CCatalogStore::Update($existsStorage["ID"], $arFields);
-            }
-        }
-    }
-
     if($importFilename){
         
         $xmlImport = file_get_contents($uploadDir.$importFilename);
@@ -167,12 +98,12 @@
                 $objIBlockSection->Update($existsSection["ID"], $arFields);
             }
         }
-        
 
         ///////////////////////////////////////////////////////////////////////
         ///                     Импортируем товары
         ///////////////////////////////////////////////////////////////////////
         $productsIndex = array();
+        $productsIndexDetail = array();
         /*
         echo "<pre>";
         print_r($arProducts);
@@ -195,9 +126,14 @@
             $arFields["SORT"]           = $arProduct["Сортировка"];
             $arFields["IBLOCK_ID"]      = 2;
             $arFields["XML_ID"]         = $arProduct["Ид"];
-            $arFields["IBLOCK_SECTION_ID"] = true;
-            if(isset($sectionsIndex[$arProduct["Группы"]["Ид"]]))
+            if(isset($sectionsIndex[$arProduct["Группы"]["Ид"]])){
                 $arFields["IBLOCK_SECTION_ID"] = $sectionsIndex[$arProduct["Группы"]["Ид"]];
+                $arFields["SECTION_ID"] = $arFields["IBLOCK_SECTION_ID"];
+            }
+            else{
+                $arFields["IBLOCK_SECTION_ID"] = true;
+                $arFields["SECTION_ID"] = true;
+            }
 
             $code = explode("-",$arProduct["Ид"]);
             $code = $code[0];
@@ -207,17 +143,18 @@
                 array("replace_space"=>"-", "replace_other"=>"-")
             )."-".$code;
 
-            $res = CIBlockElement::GetList(array(),array("XML_ID"=>$arProduct["Ид"]));
+            $res = CIBlockElement::GetList(array(),array(
+                "IBLOCK_ID"=>2,
+                "XML_ID"=>$arProduct["Ид"]
+            ));
 
             $objIBlockElement = new CIBlockElement;
             if(!$existsElement = $res->GetNext()){
                 if(!$elementId = $objIBlockElement->Add($arFields)){
                     echo "<pre>";
-                    print_r($arFields);
                     print_r($objIBlockElement);
                     die;
                 }
-                
                 $productsIndex[$arProduct["Ид"]] = $elementId;
             }
             else{
@@ -225,7 +162,9 @@
                 $elementId = $existsElement["ID"];
                 $objIBlockElement->Update($existsElement["ID"], $arFields);
             }
+            $productsIndexDetail[$arProduct["Ид"]] = $arProduct;
 
+            ////////// Устанавливаем свойства товара
             $arProperties["MANUFACTURER"]   = $manufacturersIndex[$arProduct["Производитель"]["Ид"]]["ПолноеНаименование"];
             $arProperties["QUANT"]          = $arProduct["БазоваяЕдиница"]["@attributes"]["НаименованиеПолное"];
             
@@ -239,11 +178,219 @@
 
         }
         
-        echo "<pre>";
-        print_r($productsIndex);
-        die;
-
     }
+
+    if($offersFilename){
+        $xmlOffers = file_get_contents($uploadDir.$offersFilename);
+        $obOffers = simplexml_load_string(
+            $xmlOffers, "SimpleXMLElement" 
+        );
+        
+        $arOffers = json_decode(json_encode((array)$obOffers), TRUE);        
+        
+        $arStorages = $arOffers["ПакетПредложений"]["Склады"]["Склад"];
+        $arOffers = $arOffers["ПакетПредложений"]["Предложения"]["Предложение"];
+        
+        ///////////////////////////////////////////////////////////////////////
+        ///                     Импортируем склады
+        ///////////////////////////////////////////////////////////////////////
+        $arStoragesIndex = array();
+        foreach($arStorages as $arStorage){
+
+            $arStoragesIndex[$arStorage["Ид"]] = 0;
+
+            $arFields = array();
+            $arFields["TITLE"] = $arStorage["Наименование"];
+            $arFields["ACTIVE"] = 'Y';
+            $arFields["ADDRESS"] = '';
+            $arFields["DESCRIPTION"] = '';
+            $arFields["GPS_N"] = '';
+            $arFields["GPS_S"] = '';
+            $arFields["IMAGE_ID"] = '';
+            $arFields["PHONE"] = '';
+            $arFields["SCHEDULE"] = '';
+            $arFields["XML_ID"] = $arStorage["Ид"];
+            $arFields["USER_ID"] = '';
+            $arFields["EMAIL"] = '';
+            $arFields["ISSUING_CENTER"] = '';
+            $arFields["SHIPPING_CENTER"] = '';
+            $arFields["SITE_ID"] = 's1';
+            
+
+            if(
+                isset($arStorage["КакПроехать"]) 
+                && $arStorage["КакПроехать"]
+                && !is_array($arStorage["КакПроехать"])
+            )$arFields["ADDRESS"] .= $arStorage["КакПроехать"];
+                
+            if(
+                isset($arStorage["ДополнительнаяИнформация"]) 
+                && $arStorage["ДополнительнаяИнформация"]
+                && !is_array($arStorage["ДополнительнаяИнформация"])
+            )$arFields["DESCRIPTION"] .= $arStorage["ДополнительнаяИнформация"];
+
+            if(
+                isset($arStorage["ГрафикРаботы"]) 
+                && $arStorage["ГрафикРаботы"]
+                && !is_array($arStorage["ГрафикРаботы"])
+            )$arFields["SCHEDULE"] .= $arStorage["ГрафикРаботы"];
+
+            $res = CCatalogStore::GetList(array(),array(
+                "XML_ID"=>$arStorage["Ид"]
+            ),false,array("nTopCount"=>1));
+
+            if(!$existsStorage = $res->GetNext()){
+                $arStoragesIndex[$arStorage["Ид"]] = CCatalogStore::Add($arFields);
+            }
+            else{
+                $arStoragesIndex[$arStorage["Ид"]] = $existsStorage["ID"];
+                CCatalogStore::Update($existsStorage["ID"], $arFields);
+            }
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+        ///                  Импортируем торговые предложения
+        ///////////////////////////////////////////////////////////////////////
+        $objPrice = new CPrice;
+        $objPrice = new CPrice;
+        $objOffer = new CIBlockElement;
+        $resCatalogStoreProduct = new CCatalogStoreProduct;
+        foreach($arOffers as $arOffer){
+            if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))
+                $arOffer["Склад"] = array($arOffer["Склад"]);
+                
+/*            echo "<pre>";
+            print_r($arOffer);
+            echo "</pre>";
+            continue;
+*/
+            $offerFields = array(
+                "IBLOCK_ID"         =>  3,
+                "NAME"              =>  $arOffer["Наименование"],
+                "PRICE"             =>  $productsIndexDetail[$arOffer["Ид"]]["Баллы"],
+                "XML_ID"            =>  $arOffer["Ид"]
+//                "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
+//                "PREVIEW_TEXT"      =>  $product["PREVIEW_TEXT"],
+//                "PREVIEW_TEXT_TYPE" =>  $product["PREVIEW_TEXT_TYPE"],
+//                "PREVIEW_PICTURE"   =>  (
+//                "DETAIL_PICTURE"    =>  (
+            );
+            
+            $res = CIBlockElement::GetList(array(),array(
+                "IBLOCK_ID"=>3,"XML_ID"=>$arOffer["Ид"]
+            ));
+            if(!$existsOffer = $res->GetNext()){
+                $offerId = $objOffer->Add($offerFields);
+                CCatalogProduct::Add(array(
+                    "ID"=>$offerId,
+                    "QUANTITY"=>$arOffer["Количество"],
+                    "QUANTITY_TRACE"=>"Y",
+                    "CAN_BUY_ZERO"=>"N",
+                ));
+                $priceId = $objPrice->Add(
+                    array(
+                        "PRODUCT_ID"=>$offerId,
+                        "CATALOG_GROUP_ID"=>1,
+                        "PRICE"=>$productsIndexDetail[$arOffer["Ид"]]["Баллы"],
+                        "CURRENCY"=>"BAL",
+                    ),
+                    true
+                );
+                if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))
+                    foreach($arOffer["Склад"] as $storage){
+                        if(!$resCatalogStoreProduct->Add($arFields = array(
+                            "PRODUCT_ID"=>  $offerId,
+                            "STORE_ID"=>    $arStoragesIndex[$storage["@attributes"]["ИдСклада"]],
+                            "AMOUNT"=>      $storage["@attributes"]["КоличествоНаСкладе"]
+                        ))){
+                            echo "<pre>";
+                            print_r($resCatalogStoreProduct);
+                            die;
+                        }
+                    }
+            }
+            else{
+                $offerId = $existsOffer["ID"];
+                $objOffer->Update($existsOffer["ID"], $offerFields);
+                CCatalogProduct::Update($offerId, array(
+                    "QUANTITY"=>$arOffer["Количество"],
+                    "QUANTITY_TRACE"=>"Y",
+                    "CAN_BUY_ZERO"=>"N",
+                ));
+                
+                $res = CPrice::GetList(array(),array("PRODUCT_ID"=>$offerId));
+                if(!$existsPrice = $res->GetNext()){
+                    $priceId = $objPrice->Add(
+                        array(
+                            "PRODUCT_ID"=>$offerId,
+                            "CATALOG_GROUP_ID"=>1,
+                            "PRICE"=>$productsIndexDetail[$arOffer["Ид"]]["Баллы"],
+                            "CURRENCY"=>"BAL",
+                        ),
+                        true
+                    );
+                }
+                else{
+                    $priceId = $existsPrice["ID"];
+                    $objPrice->Update(
+                        $priceId,
+                        array(
+                            "PRODUCT_ID"=>$offerId,
+                            "CATALOG_GROUP_ID"=>1,
+                            "PRICE"=>$productsIndexDetail[$arOffer["Ид"]]["Баллы"],
+                            "CURRENCY"=>"BAL",
+                        ),
+                        true
+                    );
+                }
+                
+                // Обнуляем остатки на складах
+                $res = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$offerId));
+                while($store = $res->GetNext())
+                    $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
+                    
+                // Прописываем новые остатки
+                if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))
+                    foreach($arOffer["Склад"] as $storage){
+                        $res = CCatalogStoreProduct::GetList(array(),array(
+                            "PRODUCT_ID"=>$offerId,
+                            "STORE_ID"  =>$arStoragesIndex[$storage["@attributes"]["ИдСклада"]]
+                        ));
+                        // Если запись для товара на складе есть - обновляем
+                        // Иначе добавляем
+                        if(!$existsRest = $res->GetNext()){
+                            $resCatalogStoreProduct->Add(array(
+                                "PRODUCT_ID"=>$offerId,
+                                "STORE_ID"  =>$arStoragesIndex[$storage["@attributes"]["ИдСклада"]],
+                                "AMOUNT"=>$storage["@attributes"]["КоличествоНаСкладе"]
+                            ));
+                        }
+                        else{
+                            $resCatalogStoreProduct->Update($existsRest,
+                                array("AMOUNT"=>$storage["@attributes"]["КоличествоНаСкладе"])
+                            );
+                        }
+                    }
+                
+                
+            }
+            
+            
+            $arOffer["Ид"] = explode("#",$arOffer["Ид"]);
+            $arOffer["Ид"] = $arOffer["Ид"][0];
+            CIBlockElement::SetPropertyValueCode(
+                $offerId, "CML2_LINK", $productsIndex[$arOffer["Ид"]]
+            );
+            
+            echo "<pre>";
+            print_r($offerFields);
+            echo "</pre>";
+        }
+die;        
+        
+    }
+
+
     
     echo json_encode($answer);
     require(
