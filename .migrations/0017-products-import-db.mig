@@ -61,6 +61,22 @@
                 }
             }
 
+            CModule::IncludeModule("iblock");
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
+            $iblock = $res->GetNext();
+            
+            $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$iblock["ID"]),false,false,array());
+            $resIB = new CIBlockElement;
+            // Сносим элементы каталога
+            while($element = $res->GetNext()){
+                if(!$resIB->Delete($element["ID"])){
+                    echo "Error!!!: ".__LINE__;
+                    die;
+                }
+            }
+
+
             // Проверяем наличие свойства
             //------------------------------------
             $res = CIBlockProperty::GetByID("EXTERNAL_ID",false,"clothes");

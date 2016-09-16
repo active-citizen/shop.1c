@@ -118,7 +118,7 @@
         ////////// Устанавливаем свойства товара
         $arProperties["MANUFACTURER"]   = $manufacturersIndex[$arProduct["Производитель"]["Ид"]]["ПолноеНаименование"];
         $arProperties["QUANT"]          = $arProduct["БазоваяЕдиница"]["@attributes"]["НаименованиеПолное"];
-        
+
         foreach($arProperties as $propertyCode=>$propertyValue){
             CIBlockElement::SetPropertyValueCode(
                 $elementId,

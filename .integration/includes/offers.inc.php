@@ -6,15 +6,12 @@
     $objPrice = new CPrice;
     $objOffer = new CIBlockElement;
     $resCatalogStoreProduct = new CCatalogStoreProduct;
+    // Перебираем товарные предложения
     foreach($arOffers as $arOffer){
+        // Если склад еданственный
         if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))
             $arOffer["Склад"] = array($arOffer["Склад"]);
             
-/*            echo "<pre>";
-        print_r($arOffer);
-        echo "</pre>";
-        continue;
-*/
         $offerFields = array(
             "IBLOCK_ID"         =>  3,
             "NAME"              =>  $arOffer["Наименование"],
@@ -27,26 +24,20 @@
 //                "DETAIL_PICTURE"    =>  (
         );
         
-        $res = CIBlockElement::GetList(array(),array(
-            "IBLOCK_ID"=>3,"XML_ID"=>$arOffer["Ид"]
-        ));
+        // Ищем в товарных предложениях с указанным XML_ID
+        $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>3,"XML_ID"=>$arOffer["Ид"]));
+        // Если предложения нет - добавляем
         if(!$existsOffer = $res->GetNext()){
+            // Добавляем предложение
             $offerId = $objOffer->Add($offerFields);
-            CCatalogProduct::Add(array(
-                "ID"=>$offerId,
-                "QUANTITY"=>$arOffer["Количество"],
-                "QUANTITY_TRACE"=>"Y",
-                "CAN_BUY_ZERO"=>"N",
-            ));
+            // Добавляем продукт
+            CCatalogProduct::Add(array("ID"=>$offerId,"QUANTITY"=>$arOffer["Количество"],"QUANTITY_TRACE"=>"Y","CAN_BUY_ZERO"=>"N"));
+            // Добавляем цену
             $priceId = $objPrice->Add(
-                array(
-                    "PRODUCT_ID"=>$offerId,
-                    "CATALOG_GROUP_ID"=>1,
-                    "PRICE"=>$productsIndexDetail[$arOffer["Ид"]]["Баллы"],
-                    "CURRENCY"=>"BAL",
-                ),
+                array("PRODUCT_ID"=>$offerId,"CATALOG_GROUP_ID"=>1,"PRICE"=>$productsIndexDetail[$arOffer["Ид"]]["Баллы"],"CURRENCY"=>"BAL"),
                 true
             );
+            // Добавляем наличие на складах
             if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))
                 foreach($arOffer["Склад"] as $storage){
                     if(!$resCatalogStoreProduct->Add($arFields = array(
@@ -60,14 +51,11 @@
                     }
                 }
         }
+        // Если предложения есть - обновляем
         else{
             $offerId = $existsOffer["ID"];
             $objOffer->Update($existsOffer["ID"], $offerFields);
-            CCatalogProduct::Update($offerId, array(
-                "QUANTITY"=>$arOffer["Количество"],
-                "QUANTITY_TRACE"=>"Y",
-                "CAN_BUY_ZERO"=>"N",
-            ));
+            CCatalogProduct::Update($offerId, array("QUANTITY"=>$arOffer["Количество"],"QUANTITY_TRACE"=>"Y","CAN_BUY_ZERO"=>"N",));
             
             $res = CPrice::GetList(array(),array("PRODUCT_ID"=>$offerId));
             if(!$existsPrice = $res->GetNext()){
