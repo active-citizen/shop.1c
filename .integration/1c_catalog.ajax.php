@@ -26,6 +26,10 @@
         "/bitrix/modules/main/include/prolog_before.php"
     );
     
+    
+    require("logger.inc.php");
+    die;
+    
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/";
     // Получаем имя файла каталога
     $dd = opendir($uploadDir);
