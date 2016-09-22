@@ -19,4 +19,4 @@ bitrix/templates/*
 .install/*
 include/*
 !include/check_store.php
-.indegration/passwd.php
+.integration/secret.inc.php
