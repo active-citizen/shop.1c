@@ -50,6 +50,22 @@
                 ),
                 "mode"=>"emp"
             ),
+            "enc_auth"=> array(
+                "name"      =>  "Авторизация по кодированной сессии",
+                "inputs"    =>  array(
+                    "session_id" =>  array(
+                        "name"      =>  "ID сессии",
+                        "require"   =>  true,
+                        "regexp"    =>  "#^.{1,40}$#"
+                    ),
+                    "token" =>  array(
+                        "name"      =>  "Токен",
+                        "require"   =>  true,
+                        "regexp"    =>  "#^.{1,32}$#"
+                    ),
+                ),
+                "mode"=>"emp"
+            ),
             "pointsHistory"=> array(
                 "name"      =>  "Получение истории начисления баллов",
                 "inputs"    =>  array(

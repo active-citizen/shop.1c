@@ -19,4 +19,3 @@ bitrix/templates/*
 .install/*
 include/*
 !include/check_store.php
-.integration/secret.inc.php

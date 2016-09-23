@@ -24,25 +24,31 @@
     
     $agBrige = new ActiveCitizenBridge;
     
-    $answer = array(
-        "errors"=>""
-    );
+    $answer = array("errors"=>"");
     
     
     $args = array(
         "login"     =>  isset($_REQUEST["login"])?$_REQUEST["login"]:'',
         "password"  =>  isset($_REQUEST["password"])?$_REQUEST["password"]:'',
-        "token"     =>  "ag_uat_token3"
+        "token"     =>  "ag_uat_token3",
+        "session_id"=>  isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:'',
     );
     
-    $agBrige->setMethod('auth');
+    if($args["session_id"])
+        $agBrige->setMethod('enc_auth');
+    else
+        $agBrige->setMethod('auth');
+    
     $agBrige->setMode('emp');
     $agBrige->setArguments($args);
     $answer["errors"] = $agBrige->getErrors();
     $profile = array();
     if(!$answer["errors"])
         $profile = $agBrige->exec();
-        
+
+    if(isset($profile['result']['personal']['phone']))
+        $args["login"] = $profile['result']['personal']['phone'];
+
     if(isset($profile["errorMessage"]) && $profile["errorMessage"])
         $answer["errors"][] = $profile["errorMessage"];
         
