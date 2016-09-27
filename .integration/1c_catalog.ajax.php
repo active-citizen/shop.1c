@@ -27,10 +27,11 @@
     );
     
     
-    require("logger.inc.php");
-    die;
-    
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/";
+    $LOCK_FILENAME = $uploadDir."lock";
+    
+    //if(file_exists($LOCK_FILENAME)){echo "Locked!!!";die;}
+    
     // Получаем имя файла каталога
     $dd = opendir($uploadDir);
     $importFilename = '';
@@ -47,12 +48,33 @@
             {$offersFilename = $filename;break;}
     closedir($dd);
 
+    // Проверяем давно ли была последняя загрузка файлов, если менее минуты назад - не парсим
+    if(!$fd = fopen($LOCK_FILENAME, "w")){
+        echo "Cant create lock file $lock_filename";
+        die;
+    }
+    fwrite($fd,"1");
+    fclose($fd);
+    $lockstat = stat($LOCK_FILENAME);
+    $importstat = stat($uploadDir.$importFilename);
+    
+    $timesheet = 
+        (isset($lockstat["mtime"]) && isset($importstat["mtime"]))
+        ?
+        ($lockstat["mtime"] - $importstat["mtime"])
+        :
+        0;
+       
+    if($timesheet<60){echo "Wait!!!";die;}
+    
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
 
     if($importFilename){
         include("includes/import.inc.php");
     }
+    unlink($LOCK_FILENAME);
+    die;
 
     if($offersFilename){
         $xmlOffers = file_get_contents($uploadDir.$offersFilename);
@@ -72,7 +94,12 @@
 
     
     echo json_encode($answer);
+
+    unlink($LOCK_FILENAME);
+
     require(
         $_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/epilog_after.php"
     );
+
+

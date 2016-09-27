@@ -5,7 +5,7 @@
     );
     
     $arImport = json_decode(json_encode((array)$obImport), TRUE);        
-
+    
     $arGroups = $arImport["Классификатор"]["Группы"]["Группа"];
     $arManufacturers = 
         $arImport["Классификатор"]["Производители"]["Производитель"];
@@ -19,6 +19,8 @@
         $manufacturersIndex[$arManufacturer["Ид"]] = $arManufacturer;
     }
     
+    $CATALOG_IBLOCK_ID = 2;
+    
     ///////////////////////////////////////////////////////////////////////
     ///                     Импортируем разделы
     ///////////////////////////////////////////////////////////////////////
@@ -28,7 +30,7 @@
         $arFields["NAME"]       = $arGroup["Наименование"];
         $arFields["ACTIVE"]     = "Y";
         $arFields["SORT"]       = $arGroup["Сортировка"];
-        $arFields["IBLOCK_ID"]  = 2;
+        $arFields["IBLOCK_ID"]  = $CATALOG_IBLOCK_ID;
         $arFields["XML_ID"]     = $arGroup["Ид"];
         
         $arFields["CODE"]       = CUtil::translit(
@@ -37,7 +39,7 @@
             array("replace_space"=>"-", "replace_other"=>"-")
         );
 
-        $res = CIBlockSection::GetList(array(),array("XML_ID"=>$arGroup["Ид"]));
+        $res = CIBlockSection::GetList(array(),array("XML_ID"=>$arGroup["Ид"],"IBLOCK_ID"=>$CATALOG_IBLOCK_ID));
 
         $objIBlockSection = new CIBlockSection;
         if(!$existsSection = $res->GetNext()){
@@ -55,11 +57,6 @@
     ///////////////////////////////////////////////////////////////////////
     $productsIndex = array();
     $productsIndexDetail = array();
-    /*
-    echo "<pre>";
-    print_r($arProducts);
-    die;
-    */
 
     // Составляем справочник флагов
     $ENUM = array();
@@ -71,15 +68,17 @@
     }
 
     foreach($arProducts as $arProduct){
+        
         $arFields = array();
         $arFields["NAME"]           = $arProduct["Наименование"];
-        $arFields["ACTIVE"]         = $arProduct["Включен"]=='Да'?"Y":"";
+        $arFields["ACTIVE"]         = $arProduct["Включен"]=='Да'?"Y":"N";
         $arFields["SORT"]           = $arProduct["Сортировка"];
-        $arFields["IBLOCK_ID"]      = 2;
+        $arFields["IBLOCK_ID"]      = $CATALOG_IBLOCK_ID;
         $arFields["XML_ID"]         = $arProduct["Ид"];
+        
         if(isset($sectionsIndex[$arProduct["Группы"]["Ид"]])){
-            $arFields["IBLOCK_SECTION_ID"] = $sectionsIndex[$arProduct["Группы"]["Ид"]];
-            $arFields["SECTION_ID"] = $arFields["IBLOCK_SECTION_ID"];
+            $arFields["IBLOCK_SECTION_ID"]  = $sectionsIndex[$arProduct["Группы"]["Ид"]];
+            $arFields["SECTION_ID"]         = $arFields["IBLOCK_SECTION_ID"];
         }
         else{
             $arFields["IBLOCK_SECTION_ID"] = true;
@@ -95,7 +94,7 @@
         )."-".$code;
 
         $res = CIBlockElement::GetList(array(),array(
-            "IBLOCK_ID"=>2,
+            "IBLOCK_ID"=>$CATALOG_IBLOCK_ID,
             "XML_ID"=>$arProduct["Ид"]
         ));
 
@@ -113,6 +112,21 @@
             $elementId = $existsElement["ID"];
             $objIBlockElement->Update($existsElement["ID"], $arFields);
         }
+        if($arProduct["Картинка"]){
+            $res = CIBlockElement::GetProperty(
+                $CATALOG_IBLOCK_ID,
+                $elementId,
+                array(),
+                array("CODE"=>"MORE_PHOTO")
+            );
+            // Получаем размер 
+            echo $arProduct["Картинка"];
+            echo "<pre>";
+            print_r($res->GetNext());
+            print_r($existsElement);
+            die;
+        }
+
         $productsIndexDetail[$arProduct["Ид"]] = $arProduct;
 
         ////////// Устанавливаем свойства товара
