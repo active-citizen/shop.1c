@@ -120,11 +120,9 @@
                 array("CODE"=>"MORE_PHOTO")
             );
             // Получаем размер 
-            echo $arProduct["Картинка"];
             echo "<pre>";
-            print_r($res->GetNext());
-            print_r($existsElement);
-            die;
+            print_r($arProduct["Картинка"]);
+            echo "</pre>";
         }
 
         $productsIndexDetail[$arProduct["Ид"]] = $arProduct;
