@@ -499,3 +499,39 @@ function ag_filter(){
 
     });
 }
+
+
+function agauth(encsession){
+    
+    if(!encsession)return false;
+
+    // Отсылаем шифрованный ID сессии ajax-скрипту для расшифровки и авторизации
+    $.post(
+	'/.integration/auth.ajax.php',
+	{"enc_session_id":encsession},
+	function(data){
+	    var answer = {};
+	    try{
+		answer = JSON.parse(data);
+	    }
+	    catch(e){
+		answer.errors = new Array(e.message);
+	    }
+	    
+	    // Ошибок нет - возвращаемся на страницу откуда авторизовались
+	    if(!answer.errors.length){
+		document.location.href = '/';
+		return true;
+	    }
+
+	    // Формируем блок ошибок
+	    for(i in answer.errors){
+            alert(answer.errors[i]);
+	    }
+	}
+    );
+    
+    
+}
+
+

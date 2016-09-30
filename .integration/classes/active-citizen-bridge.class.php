@@ -56,7 +56,7 @@
                     "session_id" =>  array(
                         "name"      =>  "ID сессии",
                         "require"   =>  true,
-                        "regexp"    =>  "#^.{1,40}$#"
+                        "regexp"    =>  "#^.{1,128}$#"
                     ),
                     "token" =>  array(
                         "name"      =>  "Токен",

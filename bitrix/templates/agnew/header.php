@@ -53,7 +53,7 @@
                     <a href="/points/" class="ag2-menu-item" >Мои баллы</a>
                     <a href="/wishes/" class="ag2-menu-item" >Мои желания</a>
                     <a href="/rules/" class="ag2-menu-item" >Мои правила</a>
-                    <? if(CUser::IsAuthorized()):?>
+                    <? /*if(CUser::IsAuthorized()):?>
                         <? 
                             CModule::IncludeModule("sale");
                             $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
@@ -78,7 +78,7 @@
                             <div id="ag-login-error">sdfsdfsdf</div>
                             <div id="go-login">Войти</div>
                         </div>
-                    <? endif?>
+                    <? endif*/?>
                 </div>
                 
                 <div class="ag2-bottom-part">

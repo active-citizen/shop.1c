@@ -29,18 +29,33 @@
             
             require_once(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
             
+            // Алгоритм шифрования
+            $method = "rijndael-128";
+            // Метод
+            $mode = 'cbc';
+            // Ключ шифрования
+            $key = $AG_KEYS[$contour]["key"];
+            // Зашифрованная сессия из скрипта
+            $encData = $args["session_id"];
+        
+            $module = mcrypt_module_open($method,'',$mode,'');
+        
+            $key = substr(md5($key),0,mcrypt_get_key_size($module));
+            $encData = base64_decode($encData);
+        
+            $ivSize = mcrypt_enc_get_iv_size($module);
+            // Выделяем IV из зашифрованной строки
+            //$iv=hex2bin(substr(bin2hex($encData),0,2*$ivSize));
+            $iv=mb_substr($encData,0,$ivSize,'8bit');
             
-            $session_id = unpack("H*",mcrypt_decrypt(
-                    MCRYPT_3DES, 
-                    pack("H*", $AG_KEYS[$contour]["key"]), 
-                    base64_decode($args["session_id"]),
-                    MCRYPT_MODE_ECB
-                ));
-
-            $session_id = 
-                is_array($session_id) && isset($session_id[1])
-                ?$session_id[1]
-                :'';
+            mcrypt_generic_init($module, $key, $iv);
+            
+            // Расшифровываем строку без IV
+            $decrypted=mdecrypt_generic($module,mb_substr($encData,$ivSize,mb_strlen($encData,'8bit'),'8bit'));
+            
+            mcrypt_generic_deinit($module);
+            mcrypt_module_close($module);
+            $session_id = rtrim($decrypted,"\0");
 
             
             if($contour=='uat')

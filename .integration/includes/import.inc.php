@@ -11,6 +11,13 @@
         $arImport["Классификатор"]["Производители"]["Производитель"];
     $arProducts = $arImport["Каталог"]["Товары"]["Товар"];
     
+    // Приводим картинки к массивному виду
+    foreach($arProducts as $k=>$arProduct)
+        if(
+            isset($arProducts[$k]["Картинка"]) 
+            && !is_array($arProducts[$k]["Картинка"])
+        )$arProducts[$k]["Картинка"] = array($arProducts[$k]["Картинка"]);
+    
     ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем производителей
     ///////////////////////////////////////////////////////////////////////
@@ -39,7 +46,10 @@
             array("replace_space"=>"-", "replace_other"=>"-")
         );
 
-        $res = CIBlockSection::GetList(array(),array("XML_ID"=>$arGroup["Ид"],"IBLOCK_ID"=>$CATALOG_IBLOCK_ID));
+        $res = CIBlockSection::GetList(
+            array(),
+            array("XML_ID"=>$arGroup["Ид"],"IBLOCK_ID"=>$CATALOG_IBLOCK_ID)
+        );
 
         $objIBlockSection = new CIBlockSection;
         if(!$existsSection = $res->GetNext()){
@@ -122,7 +132,8 @@
             // Получаем размер 
             echo "<pre>";
             print_r($arProduct["Картинка"]);
-            echo "</pre>";
+            print_r($res->GetNext());
+            echo "</pre><hr/>";
         }
 
         $productsIndexDetail[$arProduct["Ид"]] = $arProduct;

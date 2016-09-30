@@ -31,6 +31,8 @@
             
             if($contour=='uat')
                 $args["token"] = $EMP_TOKENS["uat"];
+            if($contour=='test')
+                $args["token"] = $EMP_TOKENS["test"];
             else
                 $args["token"] = $EMP_TOKENS["prod"];
                 
