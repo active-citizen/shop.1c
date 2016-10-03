@@ -116,23 +116,74 @@
                 die;
             }
             $productsIndex[$arProduct["Ид"]] = $elementId;
+            
         }
         else{
             $productsIndex[$arProduct["Ид"]] = $existsElement["ID"];
             $elementId = $existsElement["ID"];
             $objIBlockElement->Update($existsElement["ID"], $arFields);
         }
+        
+        
         if($arProduct["Картинка"]){
+            
+            $res = $objIBlockElement->GetList(
+                array(),
+                array("ID"=>$elementId,"IBLOCK_ID"=>$CATALOG_IBLOCK_ID),
+                false, array("nTopCount"=>1)
+            );
+            
+            $currentElement = $res->GetNext();
+            $arFields = array();
+            $picturePath = isset($arProduct["Картинка"][0])?$arProduct["Картинка"][0]:'';
+
+            if(
+                $currentElement["DETAIL_PICTURE"]
+                && $picturePath
+            ){
+            }
+            elseif(
+                !$currentElement["DETAIL_PICTURE"]
+                && $picturePath
+            ){
+                $picturePath = mb_convert_encoding($picturePath, "utf-8", "cp866");
+                $picturePath = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$picturePath;
+                $arFields["DETAIL_PICTURE"] = CFile::MakeFileArray($picturePath);
+                $arFields["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
+                $objIBlockElement->Update($elementId, $arFields);
+                echo "<pre>$picturePath<br/>";
+                print_r($arFields);
+                print_r($currentElement);
+                die;
+            }
+            else{
+            }
+            
+            
+            /*
             $res = CIBlockElement::GetProperty(
                 $CATALOG_IBLOCK_ID,
                 $elementId,
                 array(),
-                array("CODE"=>"MORE_PHOTO")
+                array("CODE"=>"PREVIEW_PICTURE")
             );
+            
+            // Если картинка существует
+            if($pic = $res->GetNext()){
+                echo "<pre>";
+                print_r($pic);
+                echo "</pre>";
+                
+            }
+            else{
+                
+            }
+            * */
+            
+            
             // Получаем размер 
             echo "<pre>";
             print_r($arProduct["Картинка"]);
-            print_r($res->GetNext());
             echo "</pre><hr/>";
         }
 
