@@ -618,7 +618,7 @@ $ids = array();
 foreach($arResult["OFFERS"] as $offer)$ids[] = $offer["ID"];
 
 // Ищем эти торговые предложения среди корзин
-
+CModule::IncludeModule('sale');
 $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"),array("USER_ID"=>CUser::GetID(),"PRODUCT_ID"=>$ids),false,array("nTopCount"=>1));
 $orderId = 0;
 if($arrBasket = $res->GetNext())$orderId = $arrBasket["ORDER_ID"];

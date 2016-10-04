@@ -57,6 +57,9 @@
     $objOffer = new CIBlockElement;
     $resCatalogStoreProduct = new CCatalogStoreProduct;
     // Перебираем товарные предложения
+    echo "<pre>";
+    print_r($arOffers);
+    die;
     foreach($arOffers as $arOffer){
         // Если склад еданственный
         if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))

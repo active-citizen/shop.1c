@@ -1,6 +1,6 @@
 #!/usr/bin/perl 
 
-$PHPSESSID  = '93ffmost2tu3nbcn1ipdloubs5';
+$PHPSESSID  = 'qfbha8ljg7m17pfubfrmnuvmq0';
 $SESSION_ID = '36388acaf5084c28ce9a54858be49df0';
 $DOMAIN     = "shop.ag.mos.ru.local";
 

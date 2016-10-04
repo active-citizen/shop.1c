@@ -73,8 +73,6 @@
     if($importFilename){
         include("includes/import.inc.php");
     }
-    unlink($LOCK_FILENAME);
-    die;
 
     if($offersFilename){
         $xmlOffers = file_get_contents($uploadDir.$offersFilename);
@@ -88,8 +86,10 @@
         $arOffers = $arOffers["ПакетПредложений"]["Предложения"]["Предложение"];
         
         include("includes/storages.inc.php");
-        include("includes/offers.inc.php");
+        //include("includes/offers.inc.php");
     }
+    unlink($LOCK_FILENAME);
+    die;
 
 
     
