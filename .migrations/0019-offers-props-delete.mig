@@ -1,0 +1,26 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление таблицы с логом обновления продуктов
+     */
+    class offers_props_delete extends Migration{
+        function Run(){
+            CModule::IncludeModule("iblock");
+            $OFFER_IBLOCK_ID = 3;
+            
+            $DELETED_PROPS = array("COLOR_REF","SIZES_SHOES","SIZES_CLOTHES");
+            foreach($DELETED_PROPS as $PROP){
+                $res = CIBlockProperty::GetList(array(),array("IBLOCK_ID"=>$OFFER_IBLOCK_ID, "CODE"=>$PROP));
+                if($prop = $res->getNext())
+                    CIBlockProperty::Delete($prop["ID"]);
+            }
+            return true;
+        }
+        
+    }
+    
+// Запускаем миграцию    
+$offers_props_delete = new offers_props_delete();
+// Откатываем, если неудачно
+if(!$offers_props_delete->Run())$offers_props_delete->RollBack();

@@ -48,18 +48,7 @@ if(!empty($arResult["STORES"]) && $arParams["MAIN_TITLE"] != ''):?>
 				<?else:?>
 					<!-- <?=GetMessage('S_AMOUNT')?> -->
 				<?endif;?>
-                <?
-                    if($arProperty["AMOUNT"]<20){
-                        $arProperty["AMOUNT"] = 'Мало';
-                    }
-                    elseif($arProperty["AMOUNT"]<100){
-                        $arProperty["AMOUNT"] = 'Достаточно';
-                    }
-                    elseif($arProperty["AMOUNT"]>=100){
-                        $arProperty["AMOUNT"] = 'Много';
-                    }
-                ?>
-				<span class="balance" id="<?=$arResult['JS']['ID']?>_<?=$arProperty['ID']?>">(<i><?=$arProperty["AMOUNT"]?></i>)</span><br />
+				<span class="balance" id="<?=$arResult['JS']['ID']?>_<?=$arProperty['ID']?>"><i>(<?=$arProperty["AMOUNT"]?>)</i></span><br />
 				<?
 				if (!empty($arProperty['USER_FIELDS']) && is_array($arProperty['USER_FIELDS']))
 				{

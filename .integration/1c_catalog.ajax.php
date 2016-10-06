@@ -65,7 +65,7 @@
         :
         0;
        
-    if($timesheet<60){echo "Wait!!!";die;}
+    //if($timesheet<60){echo "Wait!!!";die;}
     
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
@@ -86,9 +86,10 @@
         $arOffers = $arOffers["ПакетПредложений"]["Предложения"]["Предложение"];
         
         include("includes/storages.inc.php");
-        //include("includes/offers.inc.php");
+        include("includes/offers.inc.php");
     }
     unlink($LOCK_FILENAME);
+    echo "success";
     die;
 
 

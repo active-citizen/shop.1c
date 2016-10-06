@@ -79,10 +79,10 @@
         if(!isset($ENUM[$data["PROPERTY_CODE"]]))$ENUM[$data["PROPERTY_CODE"]] = array();
         $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
     }
+    
 
     // Проходим по каждому товару в XML
     foreach($arProducts as $arProduct){
-        
         ////////////////////////////////////////////////////////////////////////
         // Основные поля инфоблока
         ////////////////////////////////////////////////////////////////////////
@@ -133,7 +133,6 @@
                 die;
             }
             $productsIndex[$arProduct["Ид"]] = $elementId;
-            
         }
         else{
             // Обновляем товар
@@ -173,26 +172,6 @@
             }
             else{
             }
-            
-            /*
-            $res = CIBlockElement::GetProperty(
-                $CATALOG_IBLOCK_ID,
-                $elementId,
-                array(),
-                array("CODE"=>"PREVIEW_PICTURE")
-            );
-            
-            // Если картинка существует
-            if($pic = $res->GetNext()){
-                echo "<pre>";
-                print_r($pic);
-                echo "</pre>";
-                
-            }
-            else{
-                
-            }
-            * */
         }
 
         $productsIndexDetail[$arProduct["Ид"]] = $arProduct;
@@ -238,6 +217,33 @@
         
         // Базовая единица
         $arProperties["QUANT"]          = $arProduct["БазоваяЕдиница"]["@attributes"]["НаименованиеПолное"];
+        // Минимальная цена
+        $arProperties["MINIMUM_PRICE"]      = $arProduct["Баллы"];
+        // Максимальная цена
+        $arProperties["MAXIMUM_PRICE"]      = $arProduct["Баллы"];
+        // Максимальная цена
+        $arProperties["MAXIMUM_PRICE"]      = $arProduct["Баллы"];
+        // Возможность отмены
+        $arProperties["CANCEL_ABILITY"]     = 
+            $arProduct["ВозможностьОтмены"]=='Да'?$ENUM["CANCEL_ABILITY"]["да"]:0;
+        // Новинка
+        $arProperties["NEWPRODUCT"] = 
+            $arProduct["Новинка"]=='Да'?$ENUM["NEWPRODUCT"]["да"]:0;
+        // Лидер продаж
+        $arProperties["SALELEADER"] = 
+            $arProduct["ЛидерПродаж"]=='Да'?$ENUM["SALELEADER"]["да"]:0;
+        // Лидер продаж
+        $arProperties["SPECIALOFFER"] = 
+            $arProduct["Спецпредложение"]=='Да'?$ENUM["SPECIALOFFER"]["да"]:0;
+        // Интересуюсь
+        $arProperties["INTERESTS"] = $ENUM["INTERESTS"][$arProduct["Интересуюсь"]];
+        // Хочу
+        $arProperties["WANTS"] = $ENUM["WANTS"][$arProduct["Хочу"]];
+        // Тип поощрений
+        $arProperties["TYPES"] = $ENUM["TYPES"][$arProduct["ТипПоощрения"]];
+            
+            
+            
 
         foreach($arProperties as $propertyCode=>$propertyValue)
             CIBlockElement::SetPropertyValueCode($elementId,$propertyCode,$propertyValue);

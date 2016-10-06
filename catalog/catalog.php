@@ -1,6 +1,15 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+
+// Определяемся с именами свойст для предложений 1С
+$res = CIBlockProperty::GetList(array(),array("IBLOCK_ID"=>3));
+
+$offerProps = array();
+while($arrProp = $res->GetNext())
+    if(preg_match("#^PROP1C_.*#i", $arrProp["CODE"]))$offerProps[] = $arrProp["CODE"];
+
 ?>
+
 
 
 
@@ -78,11 +87,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"USE_PRODUCT_QUANTITY" => "N",
 		"CONVERT_CURRENCY" => "Y",
 		"QUANTITY_FLOAT" => "N",
-		"OFFERS_CART_PROPERTIES" => array(
-			0 => "COLOR_REF",
-			1 => "SIZES_SHOES",
-			2 => "SIZES_CLOTHES",
-		),
+		"OFFERS_CART_PROPERTIES" => $offerProps,
 		"SHOW_TOP_ELEMENTS" => "N",
 		"SECTION_COUNT_ELEMENTS" => "N",
 		"SECTION_TOP_DEPTH" => "1",
@@ -110,14 +115,13 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 			2 => "DETAIL_PICTURE",
 			3 => "",
 		),
-		"LIST_OFFERS_PROPERTY_CODE" => array(
+		"LIST_OFFERS_PROPERTY_CODE" => array_merge(array(
 			0 => "ARTNUMBER",
-			1 => "COLOR_REF",
 			2 => "SIZES_SHOES",
 			3 => "SIZES_CLOTHES",
 			4 => "MORE_PHOTO",
 			5 => "",
-		),
+		),$offerProps),
 		"LIST_OFFERS_LIMIT" => "0",
 		"SECTION_BACKGROUND_IMAGE" => "UF_BACKGROUND_IMAGE",
 		"DETAIL_PROPERTY_CODE" => array(
@@ -133,14 +137,14 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 			0 => "NAME",
 			1 => "",
 		),
-		"DETAIL_OFFERS_PROPERTY_CODE" => array(
+		"DETAIL_OFFERS_PROPERTY_CODE" => array_merge(array(
 			0 => "ARTNUMBER",
-			1 => "COLOR_REF",
+			1 => "PROP1C_TSVET",
 			2 => "SIZES_SHOES",
 			3 => "SIZES_CLOTHES",
 			4 => "MORE_PHOTO",
 			5 => "",
-		),
+		),$offerProps),
 		"DETAIL_BACKGROUND_IMAGE" => "BACKGROUND_IMAGE",
 		"LINK_IBLOCK_TYPE" => "",
 		"LINK_IBLOCK_ID" => "",
@@ -165,11 +169,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"LABEL_PROP" => "NEWPRODUCT",
 		"PRODUCT_DISPLAY_MODE" => "Y",
 		"OFFER_ADD_PICT_PROP" => "MORE_PHOTO",
-		"OFFER_TREE_PROPS" => array(
-			0 => "COLOR_REF",
-			1 => "SIZES_SHOES",
-			2 => "SIZES_CLOTHES",
-		),
+		"OFFER_TREE_PROPS" => $offerProps,
 		"SHOW_DISCOUNT_PERCENT" => "Y",
 		"SHOW_OLD_PRICE" => "Y",
 		"MESS_BTN_BUY" => "Заказать",
@@ -190,7 +190,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 			1 => "STORE",
 			2 => "",
 		),
-		"USE_MIN_AMOUNT" => "N",
+		"USE_MIN_AMOUNT" => "Y",
 		"STORE_PATH" => "/rules/stores/#store_id#",
 		"MAIN_TITLE" => "Наличие на складах",
 		"MIN_AMOUNT" => "10",

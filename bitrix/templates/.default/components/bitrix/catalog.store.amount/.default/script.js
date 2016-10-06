@@ -35,7 +35,7 @@ window.JCCatalogStoreSKU.prototype.offerOnChange = function(id)
 		BX.adjust(this.obStores[k], {html: message});
 		if (!!curSku[k])
 		{
-			message = (!!this.config.useMinAmount) ? this.getStringCount(curSku[k]) : curSku[k];
+			message = '<i>('+((!!this.config.useMinAmount) ? this.getStringCount(curSku[k]) : curSku[k])+')</i>';
 			BX.adjust(this.obStores[k],  {html: message});
 		}
 		parent = BX.findParent(this.obStores[k], {tagName: 'li'});

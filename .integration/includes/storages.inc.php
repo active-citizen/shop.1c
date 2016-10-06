@@ -20,10 +20,10 @@
         $arFields["XML_ID"] = $arStorage["Ид"];
         $arFields["USER_ID"] = '';
         $arFields["EMAIL"] = '';
-        $arFields["ISSUING_CENTER"] = '';
-        $arFields["SHIPPING_CENTER"] = '';
+        $arFields["ISSUING_CENTER"] = 'Y';
+        $arFields["SHIPPING_CENTER"] = 'Y';
         $arFields["SITE_ID"] = 's1';
-        
+        // Мне кажется он не очень объективен для мужыка 30-35 лет и даёт какие то нереально завышенные результаты. 
 
         if(
             isset($arStorage["КакПроехать"]) 
