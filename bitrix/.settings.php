@@ -1,6 +1,6 @@
 <?php
 
-if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru'){
+if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru.local'){
     $DB_HOST = 'localhost';
     $DB_NAME = 'ag_mos_ru';
     $DB_USER = 'ag_mos_ru';
@@ -57,10 +57,10 @@ else{
       'default' => 
       array (
         'className' => '\\Bitrix\\Main\\DB\\MysqliConnection',
-        'host' => 'localhost',
-        'database' => 'ag_mos_ru',
-        'login' => 'ag_mos_ru',
-        'password' => 'ag_mos_ru',
+        'host' => $DB_HOST,
+        'database' => $DB_NAME,
+        'login' => $DB_NAME,
+        'password' => $DB_PASS,
         'options' => 2.0,
       ),
     ),
