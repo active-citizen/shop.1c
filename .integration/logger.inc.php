@@ -1,27 +1,18 @@
 <?php
 
     $REQUEST_FOLDER = "upload/1c_exchange/logger";
-    $FILES_FOLDER = "upload/1c_exchange/logger/files";
-    $REQUEST_KEY = date("Y-m-d-H-i-s").rand(0,10000);
-    
+    $REQUEST_KEY = date("Y-m-d-H-i-s-").microtime(true);
+
     mkdirs($REQUEST_FOLDER);
-    mkdirs($REQUEST_FOLDER."/files/".$REQUEST_KEY);
-    
-    $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".get";
-    @file_put_contents($filename, print_r($_GET,1));
-    $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".post";
-    @file_put_contents($filename, print_r($_POST,1));
-    $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".files";
-    @file_put_contents($filename, print_r($_FILES,1));
-    
-    foreach($_FILES as $file){
-        $tmp_name = str_replace("/","_",$file["tmp_name"]);
-        @copy($file["tmp_name"], $REQUEST_FOLDER."/files/".$REQUEST_KEY."/".$tmp_name);
-    }
-    
-    
-    
-    
+
+    $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".headers";
+
+    $fd = fopen($filename, "w");
+    $headers = apache_request_headers();
+    fwrite($fd, ($_POST?"POST ":"GET ")." ".$_SERVER["REQUEST_URI"]."\n");
+    foreach($headers as $hname=>$hvalue)fwrite($fd, trim($hname).":".trim($hvalue)."\n");
+    fclose($fd);
+
     function mkdirs($REQUEST_FOLDER){
         $folders = explode("/", $REQUEST_FOLDER);
         $path = "";

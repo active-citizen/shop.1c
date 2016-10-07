@@ -1,4 +1,5 @@
 <?
+include("../../.integration/logger.inc.php");
 if(
     isset($_GET["type"]) && isset($_GET["mode"]) && isset($_GET["filename"])
     && $_GET["type"]=='catalog' && $_GET["mode"]=="import"
