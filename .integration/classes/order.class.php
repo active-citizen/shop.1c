@@ -459,15 +459,12 @@
             // Получаем из торгового предложения ID из каталога
             
             CModule::IncludeModule('iblock');
-            $res = CIBlockE;ement::GetList(
+            $res = CIBlockElement::GetList(
                 array(),
-                array("ID"=>$addParams["offr_id"]),
+                array("ID"=>$addParams["offer_id"]),
                 false
             );
             
-            echo "<pre>";
-            print_r($addParams);
-            die;
         }
         
     }

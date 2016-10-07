@@ -81,8 +81,6 @@ elseif(isset($_POST["create_order"]) && $offer_id=intval($_POST["create_order"])
         "email"     => $_POST["email"],
         "address"   => $_POST["address"]
     ));
-    print_r($_POST);
-    die;
     echo json_encode(array("redirect_url"=>"/order/"));
 }
 elseif(isset($_GET["add_to_basket"])){

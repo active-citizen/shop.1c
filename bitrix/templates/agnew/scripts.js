@@ -275,7 +275,9 @@ $(document).ready(function(){
             return false;
         }
 
+
         // создаём заказ
+        /*
         $('#order-process-done').css('display','block');
         $('.ok-button').css('display','none');
         $.post(
@@ -304,10 +306,10 @@ $(document).ready(function(){
                     ag_ci_rise_error(error_text);            }
                 }
         )
-        
-
         return false;
         ///////////////////////////////////////////////////////////////
+        */
+        
         
         var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value");
 
