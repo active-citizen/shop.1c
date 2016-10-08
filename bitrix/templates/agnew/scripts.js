@@ -270,6 +270,7 @@ $(document).ready(function(){
     $('.catalog_item_confirm_message .ok-button').click(function(){
 
         var offer_id = $('.catalog_item_confirm_message .ag-window #offer_id').html();
+        var store_id = $('.catalog_item_confirm_message .ag-window #store_id').html();
         if(!offer_id){
             ag_ci_rise_error('Не определён ID торгового предложения');
             return false;
@@ -311,7 +312,7 @@ $(document).ready(function(){
         */
         
         
-        var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value");
+        var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value")+"&store_id="+store_id;
 
         // добавляем в корзину
         $('#order-process-done').css('display','block');
@@ -327,7 +328,7 @@ $(document).ready(function(){
                 }
                 
                 $.get(
-                    "/order/order.ajax.php?add_order=Y",
+                    "/order/order.ajax.php?add_order=Y&store_id="+answer.store_id,
                     function(data){
                         var answer = JSON.parse(data);
                         if(answer.redirect_url){

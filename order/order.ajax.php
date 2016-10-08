@@ -139,7 +139,7 @@ elseif(isset($_GET["add_to_basket"])){
         echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Товар не добавлен:".print_r($resBasket)));
         die;    
     }
-    $answer = array("STATUS"=>"OK","MESSAGE"=>"Товар добавлен");
+    $answer = array("STATUS"=>"OK","MESSAGE"=>"Товар добавлен","store_id"=>intval($_GET["store_id"]));
 }
 elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
@@ -172,8 +172,6 @@ elseif(isset($_GET["add_order"])){
         echo json_encode($answer);
         die;
     }
-
-
     
     // Проверяем сумму на счёте
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
@@ -187,6 +185,7 @@ elseif(isset($_GET["add_order"])){
     $arFields = array();
     $arFields["LID"] = SITE_ID;
     $arFields["PERSON_TYPE_ID"] = 1;
+    $arFields["STORE_ID"] = intval($_GET["store_id"]);
     $arFields["PAYED"] = 'N';
     $arFields["CANCELED"] = "N";
     $arFields["STATUS_ID"] = "N";

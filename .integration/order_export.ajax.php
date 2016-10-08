@@ -16,11 +16,32 @@
     while($arrOrder = $res->GetNext()){
         $order = array("Ид"=>$arrOrder["ID"]);
         $order["Номер"] = "БИТРИКС-".$arrOrder["ID"];
-        $order["Дата"] = date_parse($arrOrder["DATE_INSERT"]);//date("Y-m-d");
+        
+        $order["Дата"] = date_parse($arrOrder["DATE_INSERT"]);
         $order["Дата"] = date("Y-m-d",mktime(
             $order["Дата"]["hour"],$order["Дата"]["minute"],$order["Дата"]["second"],
             $order["Дата"]["month"],$order["Дата"]["day"],$order["Дата"]["year"]
         ));
+
+        $order["ДатаИстеченияБронирования"] = date_parse($arrOrder["DATE_INSERT"]);
+        $order["ДатаИстеченияБронирования"] = date("Y-m-d",24*60*60+mktime(
+            $order["ДатаИстеченияБронирования"]["hour"],$order["ДатаИстеченияБронирования"]["minute"],$order["ДатаИстеченияБронирования"]["second"],
+            $order["ДатаИстеченияБронирования"]["month"],$order["ДатаИстеченияБронирования"]["day"],$order["ДатаИстеченияБронирования"]["year"]
+        ));
+
+        
+        $order["ДатаИзменения"] = date_parse($arrOrder["DATE_UPDATE"]);
+        $order["ДатаИзменения"] = date("Y-m-d H:i:s",mktime(
+            $order["ДатаИзменения"]["hour"],$order["ДатаИзменения"]["minute"],$order["ДатаИзменения"]["second"],
+            $order["ДатаИзменения"]["month"],$order["ДатаИзменения"]["day"],$order["ДатаИзменения"]["year"]
+        ));
+        
+        $order["Время"] = date_parse($arrOrder["DATE_INSERT"]);
+        $order["Время"] = date("H:i:s",mktime(
+            $order["Время"]["hour"],$order["Время"]["minute"],$order["Время"]["second"],
+            $order["Время"]["month"],$order["Время"]["day"],$order["Время"]["year"]
+        ));
+        $order["Сумма"] = $arrOrder["SUM_PAID"];
         
         $resProducts = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arrOrder["ID"]));
         $products = array();
@@ -29,20 +50,31 @@
             $product["Количество"] = $arProduct["QUANTITY"];
             
             $resOffer = CIBlockElement::GetList(array(), 
-                array("IBLOCK_ID"=>3,"ID"=>$arProduct["PRODUCT_ID"]),false,array(),
+                array("IBLOCK_ID"=>3,"ID"=>$arProduct["PRODUCT_ID"]),false,array("nTopCount"=>1),
                 array("PROPERTY_CML2_LINK","XML_ID","NAME","ID")
             );
             $arOffer = $resOffer->GetNext();
             
+            $resProps = CIBlockElement::GetProperty(3, $arOffer["ID"]);
+            $product["ХарактеристикиТовара"] = array();
+            while($arrProp = $resProps->GetNext()){
+                if(!preg_match("#^PROP1C_.*#",$arrProp["CODE"]) || !$arrProp["VALUE"])continue;
+                $product["ХарактеристикиТовара"][] = array(
+                    "Наименование"  =>  $arrProp["NAME"],
+                    "Значение"      =>  $arrProp["VALUE_ENUM"]
+                );
+            }
+
+            
             
             $resPrice = CPrice::GetList(array(),
-                array("PRODUCT_ID"=>$arOffer["ID"]),false,array(),
+                array("PRODUCT_ID"=>$arOffer["ID"]),false,array("nTopCount"=>1),
                 array("PRICE")
             );
             $arPrice = $resPrice->GetNext();
             
             $resCatalog = CIBlockElement::GetList(array(), 
-                array("IBLOCK_ID"=>2,"ID"=>$arrOffer["PROPERTY_CML2_LINK_VALUE"]),false,array(),
+                array("IBLOCK_ID"=>2,"ID"=>$arrOffer["PROPERTY_CML2_LINK_VALUE"]),false,array("nTopCount"=>1),
                 array("PROPERTY_QUANT","PROPERTY_ARTNUMBER")
             );
             $arrCatalog = $resCatalog->GetNext();
@@ -60,21 +92,24 @@
         
         $resUser = CUser::GetByID($arrOrder["USER_ID"]);
         $arUser = $resUser->GetNext();
+        
+        $resStore = CCatalogStore::GetList(array(),array(),false,array("nTopCount"=>1));
+        $arStore = $resStore->GetNext();
+        
+        
         $order["Телефон"] = preg_replace("#^u(\d+)$#","$1",$arUser["LOGIN"]);
         $order["ЭлектроннаяПочта"] = $arUser["EMAIL"];
         $order["Клиент"] = $arUser["LAST_NAME"]." ".$arUser["NAME"];
+        $order["Имя"] = $arUser["NAME"];
+        $order["Фамилия"] = $arUser["LAST_NAME"];
+        $order["Город"] = $arUser["PERSONAL_CITY"];
+        $order["Склад"] = $arStore["XML_ID"];
         
         $arSatatus = CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
         $order["СостояниеЗаказа"] = $arSatatus["NAME"];
-        $order["ДатаИзменения"] = date_parse($arrOrder["DATE_STATUS"]);//date("Y-m-d");
-        $order["ДатаИзменения"] = date("c",mktime(
-            $order["ДатаИзменения"]["hour"],$order["ДатаИзменения"]["minute"],$order["ДатаИзменения"]["second"],
-            $order["ДатаИзменения"]["month"],$order["ДатаИзменения"]["day"],$order["ДатаИзменения"]["year"]
-        ));
         
         $arOrders[] = $order;
     }
-  
 ?>
 <КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_205" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ВерсияСхемы="2.05" ДатаФормирования="<? echo date("c");?>">
 <? foreach($arOrders as $arOrder):?>
@@ -82,34 +117,69 @@
     <Ид><? echo $arOrder["Ид"];?></Ид>
     <Номер><? echo $arOrder["Номер"];?></Номер>
     <Дата><? echo $arOrder["Дата"];?></Дата>
-    <Товары>
-        <? foreach($arOrder["Товары"] as $product):?>
-        <Товар>
-            <Ид><? echo $product["Ид"];?></Ид>
-            <Артикул><? echo $product["Артикул"];?></Артикул>
-            <Наименование><? echo $product["Наименование"];?></Наименование>
-            <БазоваяЕдиница Код="796" НаименованиеПолное="<? echo $product["Единица"];?>" МеждународноеСокращение="PCE"/>
-            <ЗначенияРеквизитов>
-            </ЗначенияРеквизитов>
-            <ЦенаЗаЕдиницу><? echo $product["ЦенаЗаЕдиницу"];?></ЦенаЗаЕдиницу>
-            <Количество><? echo $product["Количество"];?></Количество>
-            <Единица><? echo $product["Единица"];?></Единица>
-        </Товар>
-        <? endforeach?>
-    </Товары>
+    <Время><? echo $arOrder["Время"];?></Время>
+    <Валюта>руб.</Валюта>
+    <Курс>1</Курс>
+    <ХозОперация>Заказ товара</ХозОперация>
+    <Роль>Продавец</Роль>
+    <Сумма><? echo $arOrder["Сумма"];?></Сумма>
+    <Комментарий/>
+    <ДатаИстеченияБронирования><? echo $arOrder["ДатаИстеченияБронирования"];?></ДатаИстеченияБронирования>
+    <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
+    <СтатусЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СтатусЗаказа>
+    <ЗапросНаИзменение/>
+    <Контрагенты>
+        <Контрагент>
+            <Ид>0#<? echo $arOrder["ЭлектроннаяПочта"];?></Ид>
+            <Наименование><? echo $arOrder["Клиент"];?></Наименование>
+            <Роль>Покупатель</Роль>
+            <ПолноеНаименование><? echo $arOrder["Клиент"];?></ПолноеНаименование>
+            <Фамилия><? echo $arOrder["Фамилия"];?></Фамилия>
+            <Имя><? echo $arOrder["Имя"];?></Имя>
+            <Адрес>
+                <Представление><? echo $arOrder["Город"];?></Представление>
+            </Адрес>
+            <Контакты>
+                <Контакт>
+                    <Тип>ТелефонРабочий</Тип>
+                    <Значение><? echo $arOrder["Телефон"];?></Значение>
+                </Контакт>
+                <Контакт>
+                    <Тип>Почта</Тип>
+                    <Значение><? echo $arOrder["ЭлектроннаяПочта"];?></Значение>
+                </Контакт>
+            </Контакты>
+        </Контрагент>
+    </Контрагенты>
     <История>
         <Состояние>
             <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
             <СостояниеЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СостояниеЗаказа>
-            <Комментарий>Из <?
-                echo $_SERVER['HTTP_HOST']
-            ?></Комментарий>
+            <Комментарий/>
             <Уведомление>Нет</Уведомление>
         </Состояние>
     </История>
-    <Клиент><? echo $arOrder["Клиент"];?></Клиент>
-    <Телефон><? echo $arOrder["Телефон"];?></Телефон>
-    <ЭлектроннаяПочта><? echo $arOrder["ЭлектроннаяПочта"];?></ЭлектроннаяПочта>
+    <Товары>    
+        <? foreach($arOrder["Товары"] as $product):?>
+        <Товар>
+            <Ид><? echo $product["Ид"];?></Ид>
+            <Наименование><? echo $product["Наименование"];?></Наименование>
+            <ЦенаЗаЕдиницу><? echo $product["ЦенаЗаЕдиницу"];?></ЦенаЗаЕдиницу>
+            <ЦенаЗаЕдиницуРублей><? echo $product["ЦенаЗаЕдиницу"];?></ЦенаЗаЕдиницуРублей>
+            <Количество><? echo $product["Количество"];?></Количество>
+            <Сумма><? echo number_format($product["Количество"]*$product["ЦенаЗаЕдиницу"],2,'.',' ');?></Сумма>
+            <Склад><? echo $arOrder["Склад"];?></Склад>
+            <ХарактеристикиТовара>
+                <? foreach($product["ХарактеристикиТовара"] as $arProps):?>
+                <ХарактеристикаТовара>
+                    <Наименование><? echo $arProps["Наименование"]?></Наименование>
+                    <Значение><? echo $arProps["Значение"]?></Значение>
+                </ХарактеристикаТовара>
+                <? endforeach?>
+            </ХарактеристикиТовара>
+        </Товар>
+        <? endforeach?>
+    </Товары>
 </Документ>
 <? endforeach?>
 </КоммерческаяИнформация>

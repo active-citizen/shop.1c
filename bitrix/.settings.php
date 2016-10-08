@@ -1,17 +1,11 @@
 <?php
 
-if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru.local'){
-    $DB_HOST = 'localhost';
-    $DB_NAME = 'ag_mos_ru';
-    $DB_USER = 'ag_mos_ru';
-    $DB_PASS = 'ag_mos_ru';
-}
-else{
+
     $DB_HOST = 'localhost';
     $DB_NAME = 'shop_ag_mos_ru';
     $DB_USER = 'shop_ag_mos_ru';
     $DB_PASS = 's6ehd_Jhgak';
-}
+
 return array (
   'utf_mode' => 
   array (

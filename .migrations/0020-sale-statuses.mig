@@ -1,0 +1,205 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Редактирование названий статувос заказов
+     */
+    class sale_statuses extends Migration{
+        function Run(){
+            
+            global $DB;
+            
+            $statuses = array(
+                "N" => array(
+                    array(
+                        "ID"            =>  "N",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "В работе",
+                        "DESCRIPTION"   =>  "В работе",
+                        "STATUS_ID"     =>  11
+                    ),
+                    array(
+                        "ID"            =>  "N",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "В работе",
+                        "DESCRIPTION"   =>  "В работе",
+                        "STATUS_ID"     =>  11
+                    )
+                ),
+                "F" => array(
+                    array(
+                        "ID"            =>  "F",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "Выполнен",
+                        "DESCRIPTION"   =>  "Выполнен",
+                        "STATUS_ID"     =>  3
+                    ),
+                    array(
+                        "ID"            =>  "F",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "Выполнен",
+                        "DESCRIPTION"   =>  "Выполнен",
+                        "STATUS_ID"     =>  3
+                    )
+                ),
+                "AI" => array(
+                    array(
+                        "ID"            =>  "AI",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "Аннулирован",
+                        "DESCRIPTION"   =>  "Аннулирован",
+                        "STATUS_ID"     =>  9
+                    ),
+                    array(
+                        "ID"            =>  "AI",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "Аннулирован",
+                        "DESCRIPTION"   =>  "Аннулирован",
+                        "STATUS_ID"     =>  9
+                    )
+                ),
+                "AB" => array(
+                    array(
+                        "ID"            =>  "AB",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "В обработке",
+                        "DESCRIPTION"   =>  "В обработке",
+                        "STATUS_ID"     =>  2
+                    ),
+                    array(
+                        "ID"            =>  "AB",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "В обработке",
+                        "DESCRIPTION"   =>  "В обработке",
+                        "STATUS_ID"     =>  2
+                    )
+                ),
+                "AC" => array(
+                    array(
+                        "ID"            =>  "AC",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "Брак",
+                        "DESCRIPTION"   =>  "Брак",
+                        "STATUS_ID"     =>  12
+                    ),
+                    array(
+                        "ID"            =>  "AC",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "Брак",
+                        "DESCRIPTION"   =>  "Брак",
+                        "STATUS_ID"     =>  12
+                    )
+                ),
+                "AA" => array(
+                    array(
+                        "ID"            =>  "AA",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "Новый",
+                        "DESCRIPTION"   =>  "Новый",
+                        "STATUS_ID"     =>  1
+                    ),
+                    array(
+                        "ID"            =>  "AA",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "Новый",
+                        "DESCRIPTION"   =>  "Новый",
+                        "STATUS_ID"     =>  1
+                    )
+                ),
+                "AG" => array(
+                    array(
+                        "ID"            =>  "AG",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "Отменён",
+                        "DESCRIPTION"   =>  "Отменён",
+                        "STATUS_ID"     =>  7
+                    ),
+                    array(
+                        "ID"            =>  "AG",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "Отменён",
+                        "DESCRIPTION"   =>  "Отменён",
+                        "STATUS_ID"     =>  7
+                    )
+                )
+            );
+
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_status_import`;
+            "
+            );
+            
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_status_import` (
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `external_id` INT(11) UNSIGNED NOT NULL,
+                    `bitrix_id` CHAR(2) NOT NULL,
+                    PRIMARY KEY `id`(`id`),
+                    KEY `external_id` (`external_id`),
+                    KEY `bitrix_id` (`bitrix_id`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+            ");
+
+            
+            CModule::IncludeModule("sale");
+            foreach($statuses as $statusId=>$langs){
+                foreach($langs as $status){
+
+                    $resExternal = $DB->Query("SELECT * FROM int_status_import 
+                        WHERE external_id=".$status["STATUS_ID"]."");
+                    
+                    if($arrExtStatus = $resExternal->GetNext()){
+                       $DB->Query("
+                            UPDATE
+                                `int_status_import`
+                            SET
+                                `bitrix_id` = '".$status["ID"]."'
+                            WHERE
+                                `external_id`='".$status["STATUS_ID"]."'
+                       "); 
+                    }
+                    else{
+                       $DB->Query("
+                            INSERT INTO `int_status_import`(
+                                `external_id`,
+                                `bitrix_id`
+                            )
+                            VALUES(
+                                '".$status["STATUS_ID"]."',
+                                '".$status["ID"]."'
+                            )
+                       "); 
+                    }
+    
+                    
+                    $resBitrix = CSaleStatus::GetList(array(),array(
+                        "ID"=>$statusId,
+                        "LID"=>$status["LID"]
+                    ));
+                    
+                    $arrFields = array(
+                        "ID"=>$status["ID"],
+                        "SORT"=>500,
+                        "LANG"=>$langs
+                    );
+                    
+                    if($arrStatus = $resBitrix->GetNext()){
+                        CSaleStatus::Update($status["ID"], $arrFields);
+                    }
+                    else{
+                        CSaleStatus::Add($arrFields);
+                    }
+                
+                }
+            }
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$sale_statuses = new sale_statuses();
+// Откатываем, если неудачно
+if(!$sale_statuses->Run())$sale_statuses->RollBack();
