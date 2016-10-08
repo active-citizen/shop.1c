@@ -14,6 +14,11 @@
     
     $arOrders = array();
     while($arrOrder = $res->GetNext()){
+        
+        // Не выводим заказы импортированные из других систем
+        if(!$arrOrder["EMP_PAYED_ID"])continue;
+        
+        
         $order = array("Ид"=>$arrOrder["ID"]);
         $order["Номер"] = "БИТРИКС-".$arrOrder["ID"];
         
@@ -64,8 +69,6 @@
                     "Значение"      =>  $arrProp["VALUE_ENUM"]
                 );
             }
-
-            
             
             $resPrice = CPrice::GetList(array(),
                 array("PRODUCT_ID"=>$arOffer["ID"]),false,array("nTopCount"=>1),
@@ -93,7 +96,7 @@
         $resUser = CUser::GetByID($arrOrder["USER_ID"]);
         $arUser = $resUser->GetNext();
         
-        $resStore = CCatalogStore::GetList(array(),array(),false,array("nTopCount"=>1));
+        $resStore = CCatalogStore::GetList(array(),array("ID"=>$arrOrder["STORE_ID"]),false,array("nTopCount"=>1));
         $arStore = $resStore->GetNext();
         
         
