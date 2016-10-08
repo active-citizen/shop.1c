@@ -6,11 +6,17 @@
     mkdirs($REQUEST_FOLDER);
 
     $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".headers";
-
     $fd = fopen($filename, "w");
     $headers = apache_request_headers();
     fwrite($fd, ($_POST?"POST ":"GET ")." ".$_SERVER["REQUEST_URI"]."\n");
     foreach($headers as $hname=>$hvalue)fwrite($fd, trim($hname).":".trim($hvalue)."\n");
+    fclose($fd);
+    
+    $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".data";
+    $fd = fopen("php://input", "r");
+    $fd2= fopen($filename,"w");
+    while(!feof($fd))fwrite($fd2, fread($fd,1000));
+    fclose($fd2);
     fclose($fd);
 
     function mkdirs($REQUEST_FOLDER){
