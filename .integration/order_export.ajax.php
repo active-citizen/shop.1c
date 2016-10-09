@@ -65,8 +65,8 @@
             while($arrProp = $resProps->GetNext()){
                 if(!preg_match("#^PROP1C_.*#",$arrProp["CODE"]) || !$arrProp["VALUE"])continue;
                 $product["ХарактеристикиТовара"][] = array(
-                    "Наименование"  =>  $arrProp["NAME"],
-                    "Значение"      =>  $arrProp["VALUE_ENUM"]
+                    "Наименование"  =>  mb_convert_encoding($arrProp["NAME"],"cp1251","utf-8"),
+                    "Значение"      =>  mb_convert_encoding($arrProp["VALUE_ENUM"],"cp1251","utf-8")
                 );
             }
             
@@ -83,8 +83,8 @@
             $arrCatalog = $resCatalog->GetNext();
             
             $product["Ид"] = $arOffer["XML_ID"];
-            $product["Наименование"] = $arOffer["NAME"];
-            $product["Единица"] = $arrCatalog["PROPERTY_QUANT_VALUE"];
+            $product["Наименование"] = mb_convert_encoding($arOffer["NAME"],"cp1251","utf-8");
+            $product["Единица"] = mb_convert_encoding($arrCatalog["PROPERTY_QUANT_VALUE"],"cp1251","utf-8");
             $product["Артикул"] = $arrCatalog["PROPERTY_ARTNUMBER_VALUE"];
             $product["ЦенаЗаЕдиницу"] = $arPrice["PRICE"];
             $product["Продукт"] = $arOffer;
@@ -102,14 +102,14 @@
         
         $order["Телефон"] = preg_replace("#^u(\d+)$#","$1",$arUser["LOGIN"]);
         $order["ЭлектроннаяПочта"] = $arUser["EMAIL"];
-        $order["Клиент"] = $arUser["LAST_NAME"]." ".$arUser["NAME"];
-        $order["Имя"] = $arUser["NAME"];
-        $order["Фамилия"] = $arUser["LAST_NAME"];
-        $order["Город"] = $arUser["PERSONAL_CITY"];
+        $order["Клиент"] = mb_convert_encoding($arUser["LAST_NAME"]." ".$arUser["NAME"],"cp1251","utf-8");
+        $order["Имя"] = mb_convert_encoding($arUser["NAME"],"cp1251","utf-8");
+        $order["Фамилия"] = mb_convert_encoding($arUser["LAST_NAME"],"cp1251","utf-8");
+        $order["Город"] = mb_convert_encoding($arUser["PERSONAL_CITY"],"cp1251","utf-8");
         $order["Склад"] = $arStore["XML_ID"];
         
         $arSatatus = CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
-        $order["СостояниеЗаказа"] = $arSatatus["NAME"];
+        $order["СостояниеЗаказа"] = mb_convert_encoding($arSatatus["NAME"],"cp1251","utf-8");
         
         $arOrders[] = $order;
     }
