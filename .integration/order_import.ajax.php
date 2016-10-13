@@ -2,6 +2,8 @@
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
+    $CatalogIblockId = 2;
+    $OfferIblockId = 3;
     
     // Получаем имя файла каталога
     $dd = opendir($uploadDir);
@@ -26,6 +28,7 @@
     $objOrder   = new CSaleOrder;
     $objUser    = new CUser;
     $objBasket  = new CSaleBasket;
+    $objIBlockElement = new CIBlockElement;
     if(file_exists($uploadDir.$offersFilename)){
         $xmlOrders = file_get_contents($uploadDir.$offersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
@@ -55,24 +58,73 @@
                 $existsOffer = $resOffer->GetNext();
                 // Если продукта нет - создаём его прототип
                 if(!$existsOffer){
-                    // Создаём торговое предложение
-                    // Назначаем свойства торгового предложения
-                    
+                    $product["product_id"] = explode("-",$product["Ид"]);
+                    $product["product_id"] = $product["product_id"][0];
+                    $product["product_xml_id"] = explode("#",$product["Ид"]);
+                    $product["product_xml_id"] = $product["product_xml_id"][0];
                     // Создаём элемент каталога
-                    // Назначаем свойства элемента каталога
-                    
-                    // Создаём товар на складе
-                    
-                    // Создаём цену
-                }
-                else{
-                    $basketProducts[$existsOffer["ID"]] = array(
-                        "count" => $product["Количество"],
-                        "name"  => $product["Наименование"],
-                        "price" => $product["ЦенаЗаЕдиницу"]
+                    $arrFields = array(
+                        "SITE_ID"       =>  "s1",
+                        "XML_ID"        =>  $product["product_xml_id"],
+                        "NAME"          =>  $product["Наименование"],
+                        "CODE"          =>  Cutil::translit($product["Наименование"],"ru",
+                            array("replace_space"=>"-","replace_other"=>"-")
+                        )."-".$product["product_id"],
+                        "IBLOCK_ID"     =>  $CatalogIblockId,
+                        "DETAIL_TEXT"   =>  '',
+                        "PREVIEW_TEXT"  =>  '',
+                        "IBLOCK_SECTION_ID" =>  1,//$categoryId,
+                        "SECTION_ID"    =>  1,//$categoryId,
+                        "PREVIEW_TEXT_TYPE" =>  'html',
+                        "DETAIL_TEXT_TYPE"  =>  'html',
                     );
                     
+        
+                    if(!$id = $objIBlockElement->Add($arrFields)){
+                        $this->error = $resElement->LAST_ERROR;
+                        echo $this->error;
+                        die;
+                        return false;
+                    }
+                    
+                    // Создаём торговое предложение
+                    $arrFields["IBLOCK_ID"] = $OfferIblockId;
+                    $arrFields["PRICE"] = $product["ЦенаЗаЕдиницу"];
+                    if(!$offerId = $objIBlockElement->Add($arrFields)){
+                        $this->error = $resElement->LAST_ERROR;
+                        echo $this->error;
+                        die;
+                        return false;
+                    }
+                    
+                    // Назначаем свойства торгового предложения
+                    CIBlockElement::SetPropertyValueCode($offerId,"CML2_LINK",$id);
+                    
+                    // Создаём цену
+                    $objPrice = new CPrice;
+                    $objPrice->Add(array(
+                        "PRODUCT_ID"=>$offerId,
+                        "CATALOG_GROUP_ID"=>1,
+                        "PRICE"=>$product["ЦенаЗаЕдиницу"],
+                        "CURRENCY"=>"BAL",
+                    ),true);
+                    
+                    // Создаём товар на складе
+                    CCatalogProduct::Add(array(
+                        "ID"=>$offerId,
+                        "QUANTITY"=>0,
+                        "QUANTITY_TRACE"=>"Y",
+                        "CAN_BUY_ZERO"=>"N",
+                    ));
+                    
+                    $resOffer = CIBlockElement::GetList(array(),array("ID"=>$offerId));
+                    $existsOffer = $resOffer->GetNext(); 
                 }
+                $basketProducts[$existsOffer["ID"]] = array(
+                    "count" => $product["Количество"],
+                    "name"  => $product["Наименование"],
+                    "price" => $product["ЦенаЗаЕдиницу"]
+                );
             }
             // Считаем сумму заказа
             $sum = 0;
@@ -104,8 +156,8 @@
             // Если пользователя нет - создаём
             if(!$existsUser){
                 if(!$userId = $objUser->Add($userData)){
-                    echo "<pre>";
-                    print_r($objUser);
+                    echo "failed";
+                    echo "cant_create_user"
                     die;
                 }
             }
@@ -221,17 +273,10 @@
                         return false;
                     }
                 }
-                echo "<pre>";
-                print_r($addArrBasket);
-                echo "</pre>";
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
                 CSaleOrder::PayOrder($orderId,"Y",true,false);
             }
             else{
-                echo "Обновляем: ";
-                echo "<pre>";
-                print_r($existsOrder);
-                echo "</pre>";
                 $orderId = $existsOrder["ID"];
                 CSaleOrder::Update($orderId, $arOrder);
             }
