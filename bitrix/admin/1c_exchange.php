@@ -22,6 +22,15 @@ if(
     isset($_GET["type"]) && isset($_GET["mode"]) && isset($_GET["filename"])
     && $_GET["type"]=='sale' && $_GET["mode"]=="file" && $_GET["filename"]
 ){
+    if(!file_exists($filename = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/".$_GET["filename"])){
+        $fd = fopen("php://input", "r");
+        $fd2= fopen($filename,"w");
+        while(!feof($fd))fwrite($fd2, fread($fd,1000));
+        fclose($fd2);
+        fclose($fd);
+    }
+
+
     include("../../.integration/order_import.ajax.php");
     die;
 }

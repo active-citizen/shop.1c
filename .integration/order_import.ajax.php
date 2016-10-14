@@ -1,25 +1,22 @@
 <?php
+    if(!isset($_SERVER["DOCUMENT_ROOT"]) || !$_SERVER["DOCUMENT_ROOT"])
+        $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/..");
+    
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
     $CatalogIblockId = 2;
     $OfferIblockId = 3;
     
-    // Получаем имя файла каталога
-    $dd = opendir($uploadDir);
-    $importFilename = '';
-    while($filename = readdir($dd))
-        if(preg_match("#^import.*\.xml$#",$filename))
-            {$importFilename = $filename;break;}
-    closedir($dd);
-    
     // Получаем имя файла заказов
-    $dd = opendir($uploadDir);
-    $offersFilename = '';
-    while($filename = readdir($dd))
-        if(preg_match("#^orders.*\.xml$#",$filename))
-            {$offersFilename = $filename;break;}
-    closedir($dd);
+    $ordersFilename = $_GET["filename"];
+    if(!$ordersFilename){
+        $dd = opendir($uploadDir);
+        while($filename = readdir($dd))
+            if(preg_match("#^orders.*\.xml$#",$filename))
+                {$ordersFilename = $filename;break;}
+        closedir($dd);
+    }
 
     CModule::IncludeModule("sale");
     CModule::IncludeModule("catalog");
@@ -29,8 +26,9 @@
     $objUser    = new CUser;
     $objBasket  = new CSaleBasket;
     $objIBlockElement = new CIBlockElement;
+    $objPrice = new CPrice;
     if(file_exists($uploadDir.$offersFilename)){
-        $xmlOrders = file_get_contents($uploadDir.$offersFilename);
+        $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
         $arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
         
@@ -53,8 +51,10 @@
                 if(!isset($product["Ид"]))continue;
                 
                 $XML_ID = $product["Ид"];
-                $resOffer = CIblockElement::GetList(array(),array("IBLOCK_ID"=>3,"XML_ID"=>$XML_ID),false,
-                    array("nTopCount"=>1));
+                $resOffer = CIblockElement::GetList(
+                    array(),array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),false,
+                    array("nTopCount"=>1)
+                );
                 $existsOffer = $resOffer->GetNext();
                 // Если продукта нет - создаём его прототип
                 if(!$existsOffer){
@@ -79,29 +79,39 @@
                         "DETAIL_TEXT_TYPE"  =>  'html',
                     );
                     
-        
-                    if(!$id = $objIBlockElement->Add($arrFields)){
-                        $this->error = $resElement->LAST_ERROR;
-                        echo $this->error;
+                    $resCatalog = CIblockElement::GetList(array(),array(
+                        "CODE"=>$arrFields["CODE"]
+                    ),false,array("nTopCount"=>1));
+                    $arCatalog = $resCatalog->GetNext();
+                    
+                    if(!$arCatalog && !$id = $objIBlockElement->Add($arrFields)){
+                        echo "failed\n";
+                        echo "Cant create catalog item: ".__FILE__.":".__LINE__;
                         die;
-                        return false;
+                    }
+                    elseif (isset($arCatalog["ID"])) {
+                        $id = $arCatalog["ID"];
+                    }
+                    else{
+                        echo "failed\n";
+                        echo "Error: ".__FILE__.":".__LINE__;
+                        die;
                     }
                     
                     // Создаём торговое предложение
                     $arrFields["IBLOCK_ID"] = $OfferIblockId;
                     $arrFields["PRICE"] = $product["ЦенаЗаЕдиницу"];
+                    $arrFields["XML_ID"] = $product["Ид"];
                     if(!$offerId = $objIBlockElement->Add($arrFields)){
-                        $this->error = $resElement->LAST_ERROR;
-                        echo $this->error;
+                        echo "failed\n";
+                        echo "cant create offer: ".__FILE__.":".__LINE__;
                         die;
-                        return false;
                     }
                     
                     // Назначаем свойства торгового предложения
                     CIBlockElement::SetPropertyValueCode($offerId,"CML2_LINK",$id);
                     
                     // Создаём цену
-                    $objPrice = new CPrice;
                     $objPrice->Add(array(
                         "PRODUCT_ID"=>$offerId,
                         "CATALOG_GROUP_ID"=>1,
@@ -117,9 +127,14 @@
                         "CAN_BUY_ZERO"=>"N",
                     ));
                     
-                    $resOffer = CIBlockElement::GetList(array(),array("ID"=>$offerId));
+                    // Получаем инормацию о получившемся торговом предложении
+                    $resOffer = CIBlockElement::GetList(
+                        array(),array("IBLOCK_ID"=>$OfferIblockId,"ID"=>$offerId),
+                        false,array("nTopCount"=>1)
+                    );
                     $existsOffer = $resOffer->GetNext(); 
                 }
+                // Запоминаем товар для добавления в корзину
                 $basketProducts[$existsOffer["ID"]] = array(
                     "count" => $product["Количество"],
                     "name"  => $product["Наименование"],
@@ -131,13 +146,15 @@
             foreach($basketProducts as $product)$sum+=$product["count"]*$product["price"];
             // Бортуем заказы с нулевой суммой
             if(!$sum)continue;
-            
+
+            // Выделяем из ФИО фамилию и Имя-Отчество
             $tmpName = explode(" ", $arDocument["Клиент"]);
-            $userLastName = $tmpName[0];
-            $password = mb_substr(md5(rand()),0,10);
-            unset($tmpName[0]);
+            $userLastName = $tmpName[0];unset($tmpName[0]);
             $userName = implode(" ",$tmpName);
+            // Делаем пользователю случайный пароль
+            $password = mb_substr(md5(rand()),0,10);
             
+            // Данные для добавления пользователя
             $userData = array(
                 "LOGIN"             =>  "u".$arDocument["Телефон"],
                 "PASSWORD"          =>  $password,
@@ -155,9 +172,10 @@
             $existsUser = $resUser->GetNext();
             // Если пользователя нет - создаём
             if(!$existsUser){
+                // Если создание провалилось - сообщаем об ошибке
                 if(!$userId = $objUser->Add($userData)){
-                    echo "failed";
-                    echo "cant_create_user"
+                    echo "failed\n";
+                    echo "cant_create_user: ".__FILE__.":".__LINE__;
                     die;
                 }
             }
@@ -169,43 +187,44 @@
             // Вычисляем флаги статуса
             if(!isset($arDocument["История"]["Состояние"][0]))
                 $arDocument["История"]["Состояние"] = array($arDocument["История"]["Состояние"]);
+            // Состояние заказа по умолчанию
             if(!isset($arDocument["История"]["Состояние"][0]["СостояниеЗаказа"]))
                 $arDocument["История"]["Состояние"][0]["СостояниеЗаказа"] = 'В работе';
-                
-            $statusId = "N";
-            $canceled = "N";
+            
+            // Статус и опрлата по умолчанию    
+            $statusId = "N";$canceled = "N";
             switch($arDocument["История"]["Состояние"][0]["СостояниеЗаказа"]){
                 case 'В работе':
-                    $statusId = "N";
-                    $canceled = "N";
+                    $statusId = "N";$canceled = "N";
                 break;
                 case 'Аннулирован':
-                    $statusId = "AI";
-                    $canceled = "N";
+                    $statusId = "AI";$canceled = "N";
                 break;
                 case 'Брак':
-                    $statusId = "AC";
-                    $canceled = "N";
+                    $statusId = "AC";$canceled = "N";
                 break;
                 case 'Выполнен':
-                    $statusId = "F";
-                    $canceled = "N";
+                    $statusId = "F";$canceled = "N";
                 break;
                 case 'Отменён':
-                    $statusId = "AG";
-                    $canceled = "Y";
+                    $statusId = "AG";$canceled = "Y";
                 break;
             }
                 
             // Поиск заказа под XML-Ид
-            $res = CSaleOrder::GetList(array(),array("XML_ID"=>$arDocument["Ид"]));
+            $res = CSaleOrder::GetList(
+                array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1)
+            );
             $existsOrder = $res->GetNext();
             
             // Поиск заказа по номеру
             if(!$existsOrder){
                 $number = 0;
                 if(preg_match("#^.*\-(\d+)$#",$arDocument["Ид"], $m))$number = $m[1];
-                $res = CSaleOrder::GetList(array(),array("ID"=>$number));
+                $res = CSaleOrder::GetList(
+                    array(),array("ID"=>$number),false,
+                    array("nTopCount"=>1)
+                );
                 $existsOrder = $res->GetNext();
             }
 
@@ -247,7 +266,7 @@
             // Если заказа нет - создаём, есть - обновляем
             if(!$existsOrder){
                 if(!$orderId = $objOrder->Add($arOrder)){
-                    echo "failed ";
+                    echo "failed\n";
                     echo "Not created";
                     die;
                 }
@@ -262,15 +281,18 @@
                             "PRICE"             =>  $item["price"],
                             "CURRENCY"          =>  "BAL",
                             "QUANTITY"          =>  $item["count"],
-                            "LID"               =>  LANG,
+                            "LID"               =>  "s1",
                             "DELAY"             =>  "N",
                             "CAN_BUY"           => "Y",
                             "MODULE"            => "catalog",
                             "NAME"              =>  $item["name"],
                         )
                     )){
-                        $this->error = $objBasket->LAST_ERROR;
-                        return false;
+                	echo "$userBasketId";
+                	print_r($addArrBasket );
+                	print_r($basketProducts);
+                        print_r($objBasket);
+                        die;
                     }
                 }
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
@@ -286,17 +308,6 @@
     }
     
     echo "success";
-
-
-
-
-
-
-
-
-
-
-
 ?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");?>
