@@ -22,6 +22,7 @@
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
     CModule::IncludeModule("price");
+    global $DB;
     $objOrder   = new CSaleOrder;
     $objUser    = new CUser;
     $objBasket  = new CSaleBasket;
@@ -141,6 +142,8 @@
                     "price" => $product["ЦенаЗаЕдиницу"]
                 );
             }
+            
+            
             // Считаем сумму заказа
             $sum = 0;
             foreach($basketProducts as $product)$sum+=$product["count"]*$product["price"];
@@ -206,11 +209,11 @@
                 case 'Выполнен':
                     $statusId = "F";$canceled = "N";
                 break;
-                case 'Отменён':
+                case 'Отменен':
                     $statusId = "AG";$canceled = "Y";
                 break;
             }
-                
+            
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
                 array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1)
@@ -300,7 +303,40 @@
             }
             else{
                 $orderId = $existsOrder["ID"];
+                
                 CSaleOrder::Update($orderId, $arOrder);
+                // Меняем статус
+                CSaleOrder::StatusOrder($orderId, $statusId);
+                
+                
+                // Ищем корзину для этого заказа
+                $resBasket = CSaleBasket::GetList(array(),array("ORDER_ID"=>$orderId),false,array("nTopCount"=>1));
+                // Удаляем корзины заказа
+                while($arBasket = $resBasket->GetNext())CSaleBasket::Delete($arBasket["ID"]);
+                
+                foreach($basketProducts as $productId=>$item){
+            	    
+            	    $strSql = "INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
+            	    VALUES(
+        		'".$userId."', 
+                	'".$orderId."', 
+                        '".$productId."',
+                        '".$item["count"]."',
+                        '".$item["name"]."',
+                        '".$item["price"]."',
+                        '".$DB->GetNowFunction()."',
+                        'BAL',
+                        's1',
+                        'catalog',
+                        'Y',
+                        'N'
+                    )";
+            	    $DB->Query($strSql);
+                }
+                
+                
+		CSaleOrder::Update($orderId, $arOrder);
+                
             }
                 
         }
