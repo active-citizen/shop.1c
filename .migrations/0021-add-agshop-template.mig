@@ -1,0 +1,58 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление шаблона к основному сайту
+     */
+    class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+            // Имя шаблона для сайта 
+            $template_name = "agshop";
+            
+            // Получаем список сайтов
+            $rsSites = CSite::GetList($by="sort", $order="desc", Array());
+            // Берём первый
+            $this->data["site"] = $arSite = $rsSites->Fetch();
+            if(!$this->data["site"])return 0;
+            // Получаем его шаблоны
+            $rsTemplates = CSite::GetTemplateList($this->data["site"]["ID"]);
+
+            $this->data["templates"] = array();
+            $max_id = 0;
+            // Для каждого шаблона основного сайта
+            while($template = $rsTemplates->Fetch()){
+                $template["SORT"] = 500;
+                // Запоминаем параметры шаблона
+                $this->data["templates"][$template["TEMPLATE"]] = $template;
+                if($template["ID"]>$max_id)$max_id = $template["ID"];
+            }
+
+            // Добавляем к списку имеющихся шаблонов шаблон высокого приоритета без условий
+            $this->data["templates"]["agnew"] = array(
+                "ID"        =>  $max_id+1,
+                "SITE_ID"   =>  $this->data["site"]["ID"],
+                "CONDITION" =>  "",
+                // Сортировка - ставим первым
+                "SORT"      =>  0,
+                // Имя нового шаблона
+                "TEMPLATE"  =>$template_name
+            );
+            $obSite = new CSite();
+            // Обновляем список шаблонов для сайта
+            if(!$obSite->Update($this->data["site"]["ID"], array(
+                'ACTIVE' => "Y",
+                'TEMPLATE'=>$this->data["templates"]
+            )))return false;;                
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$migration = new add_ag_template();
+// Откатываем, если неудачно
+if(!$migration->Run())$migration->RollBack();
