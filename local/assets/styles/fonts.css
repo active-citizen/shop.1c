@@ -1,0 +1,103 @@
+@font-face {
+	font-family: 'PT Mono';
+	src: url('../fonts/PTMono/PTMono-Regular.woff') format('woff'),
+		url('../fonts/PTMono/PTMono-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-MediumItalic.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-MediumItalic.ttf') format('truetype');
+	font-weight: 500;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-RegularItalic.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-RegularItalic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-Medium.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-HeavyItalic.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-HeavyItalic.ttf') format('truetype');
+	font-weight: 900;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-Regular.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-Bold.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-SemiboldItalic.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-SemiboldItalic.ttf') format('truetype');
+	font-weight: 600;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-Heavy.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-Heavy.ttf') format('truetype');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-Semibold.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-Semibold.ttf') format('truetype');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-Light.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-Light.ttf') format('truetype');
+	font-weight: 200;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-LightItalic.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-LightItalic.ttf') format('truetype');
+	font-weight: 200;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'SF UI Text';
+	src: url('../fonts/SFUI/SFUIText-BoldItalic.woff') format('woff'),
+		url('../fonts/SFUI/SFUIText-BoldItalic.ttf') format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
