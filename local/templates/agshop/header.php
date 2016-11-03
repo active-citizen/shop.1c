@@ -1,4 +1,22 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+
+    // Получаем корневых разделов
+    CModule::IncludeModule("iblock");
+    $res = CIBlockSection::GetList(
+        array(),
+        array("ACTIVE"=>"Y","IBLOCK_CODE"=>"clothes","SECTION_ID"=>0),
+        false,
+        false
+    );
+
+    $SECTIONS = array();
+    while($section = $res->getNext()){
+        $SECTIONS[$section["ID"]] = $section;
+        $res1 = CIBlockElement::GetList(
+            array(),array("SECTION_ID"=>$section["ID"]),false
+        );
+        $SECTIONS[$section["ID"]]["products"]=$res1->SelectedRowsCount();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -13,20 +31,23 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <title>ag-shop__main</title>
-    <link rel="stylesheet" href="/local/assets/styles/fonts.css">
-    <link rel="stylesheet" href="/local/assets/styles/components.css">
-    <link rel="stylesheet" href="/local/assets/styles/catalog.css">
-    <script src="/local/assets/libs/jquery.min.js"></script>
-    <link rel="stylesheet" href="assets/libs/slick.css">
-    <script src="/local/assets/libs/slick.min.js"></script>
-    <script src="/local/assets/scripts/index.js"></script>
 
     <?$APPLICATION->ShowHead();?>                                                                                                                                                           
     <?                                                                                                                                                                                      
     $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/colors.css");                                                                                                                       
-    $APPLICATION->SetAdditionalCSS("/bitrix/css/main/bootstrap.css");                                                                                                                       
     $APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
     ?>
+
+    <link rel="stylesheet" href="/local/assets/styles/fonts.css">
+    <link rel="stylesheet" href="/local/assets/styles/components.css">
+    <link rel="stylesheet" href="/local/assets/styles/catalog.css">
+    <script src="/local/assets/libs/jquery.min.js"></script>
+    <script src="/local/assets/scripts/scripts.js"></script>
+    <link rel="stylesheet" href="/local/assets/libs/slick.css">
+    
+    <script src="/local/assets/libs/slick.min.js"></script>
+    <script src="/local/assets/scripts/index.js"></script>
+
     
     <title><?$APPLICATION->ShowTitle()?></title>
 
@@ -112,18 +133,21 @@
               </div>
             </div>
             <div class="ag-shop-menu__items js-menu__list">
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="#">Театры</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Спорт</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Детям</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Сувениры</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Парки</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Развлечения</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Музеи</a></div>
-              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Транспорт</a></div>
+                
+                <?php foreach($SECTIONS as $section):?>
+                <? if(!$section["products"])continue;?>
+                <div class="ag-shop-menu__item">
+                    <a class="ag-shop-menu__link<? if(preg_match("#^".$section["SECTION_PAGE_URL"]."#",$_SERVER["REQUEST_URI"])):?> ag-shop-menu__link--active<? endif?>" 
+                        href="<?= $section["SECTION_PAGE_URL"];?>">
+                        <?= $section["NAME"];?>
+                    </a>
+                </div>
+                <?endforeach?>
             </div>
           </div>
         </div>
         <!-- }}} Menu-->
+        <div class="ag-shop-content">
 
 
 

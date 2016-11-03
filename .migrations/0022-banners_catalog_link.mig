@@ -1,0 +1,56 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Добавление шаблона к основному сайту
+     */
+    class banners_catalog_links extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+            
+            CModule::IncludeModule("iblock");
+            
+            // Узнаём ID инфоблока банеров
+            $res = CIBlock::GetList(array(),array("CODE"=>"baners_on_main"));
+            $iblock = $res->GetNext();
+            $banersIblockId = $iblock["ID"];
+            
+            // Узнаём ID инфоблока каталога
+            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+            $iblock = $res->GetNext();
+            $catalogIblockId = $iblock["ID"];
+
+            // Если свойства нет - добавляем
+            $res = CIBlockProperty::GetList(array(),array(
+                "IBLOCK_ID" =>  $iblock["ID"],
+                "CODE"      =>  'CATALOT_ITEM_LINK'
+            ));
+            if(!$res->GetNext){
+                $arFields = array(
+                    "NAME"              =>  "Товар демонстрируемый в банере",
+                    "ACTIVE"            =>  "Y",
+                    "SORT"              =>  "500",
+                    "CODE"              =>  "BANER_CATALOG_LINK",
+                    "PROPERTY_TYPE"     =>  "E",
+                    "LIST_TYPE"         =>  "L",
+                    "IBLOCK_ID"         =>  $banersIblockId,
+                    "LINK_IBLOCK_ID"    =>  $catalogIblockId
+                );
+                $ibp = new CIBlockProperty;
+                if(!$PropID = $ibp->Add($arFields)){
+                    print_r($ibp);
+                    return false;
+                }            
+            }
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$banners_catalog_links = new banners_catalog_links();
+// Откатываем, если неудачно
+if(!$banners_catalog_links->Run())$banners_catalog_links->RollBack();

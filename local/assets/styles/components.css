@@ -1629,3 +1629,28 @@
     display: none;
   }
 }
+
+/**
+ * Модификация css
+ */
+.ag-shop-slider__item{
+    position: relative;
+}
+
+.ag-shop-slider-card__likes{
+    top:24px;
+    right: 24px;
+    z-index: 9999;
+}
+
+.wish-on{
+    background-position: 0 -432px;
+}
+.wish-off{
+    background-position: 0 -456px;
+}
+.ag-shop-slider-card-dark__info-layer{
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
