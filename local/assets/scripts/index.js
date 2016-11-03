@@ -39,5 +39,27 @@ $(document).ready(function() {
         }
     }]
   });
+  
+  /**
+   * Переключение вкладок
+   */
+  $('.ag-shop-filter__trigger').click(function(){
+    $('.ag-shop-filter__trigger').removeClass('ag-shop-filter__trigger--active');
+    $(this).addClass('ag-shop-filter__trigger--active');
+    $('.ag-shop-filter__variants').removeClass('filter-active');
+    $('#'+$(this).attr("rel")).addClass('filter-active');
+  });
+  
+  /**
+   * Выбор элементов фильтра
+   */
+  $('.ag-shop-filter__variants-item').click(function(){
+    if($(this).hasClass('ag-shop-filter__trigger--active')){
+      $(this).parent().find('input').
+    }
+    else{
+    }
+
+  });   
 
 });

@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     // Получаем список банеров
     CModule::IncludeModule("iblock");
-    $res = CIBlockElement::GetList(array(),array(
+    $res = CIBlockElement::GetList(array("SORT"=>"ASC"),array(
         "ACTIVE"        =>  "Y",
         "IBLOCK_CODE"   =>  "baners_on_main",
         array(
@@ -44,7 +44,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                         "PREVIEW_TEXT",
                         "PREVIEW_PICTURE",
                         "IBLOCK_SECTION_ID",
-                        "NAME"
+                        "NAME",
+                        "DETAIL_PAGE_URL"
                     )
                 );
                 $arCatalogLinkItem = $resCatalogLinkItem->GetNext();
@@ -55,6 +56,9 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                 // Вычисляем цену
                 $BANERS[$baner["ID"]]["CATALOG_LINK_DATA"]["PRICE"] = 
                     $arCatalogLinkItem["PROPERTY_MINIMUM_PRICE_VALUE"];
+                // Вычисляем ссылку
+                $BANERS[$baner["ID"]]["CATALOG_LINK_DATA"]["URL"] = 
+                    $arCatalogLinkItem["DETAIL_PAGE_URL"];
                 // Вычисляем рейтинг
                 $BANERS[$baner["ID"]]["CATALOG_LINK_DATA"]["RATING"] = 
                     round($arCatalogLinkItem["PROPERTY_RATING_VALUE"]*5,2);
@@ -150,7 +154,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                         $BANER["CATALOG_LINK_DATA"]["WISHES"]
                       ?></div>
                     </button>
-                  <a class="ag-shop-slider-card" href="/qweqwe">
+                  <a class="ag-shop-slider-card" href="<?= $BANER["CATALOG_LINK_DATA"]["URL"]?>">
                         <img class="ag-shop-slider-card__image" src="<?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>">
                   <div class="ag-shop-slider-card__badges">
                       <? if($BANER["CATALOG_LINK_DATA"]["NEWPRODUCT"]):?>
@@ -192,7 +196,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                   
                 <?if(!$BANER["CATALOG_LINK_DATA"]):?>
                 <div class="ag-shop-slider__item">
-                  <a class="ag-shop-slider-card-dark" href="#">
+                  <a class="ag-shop-slider-card-dark" href="<?= $BANER["PROPERTIES"]["BANER_URL"]["VALUE"]?>">
                     <img class="ag-shop-slider-card-dark__image" src="" style="display:none;">
                   <div class="ag-shop-slider-card-dark__info-layer" style="background-image: url('<?= $BANER["PROPERTIES"]["BANER_PICTURE"]["URL"] ?>');">
                     <div class="ag-shop-slider-card-dark__info">
@@ -201,8 +205,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                   </div></a></div>
                 <? endif ?>  
             <? endforeach?>
-                  
-                  
             </div>
             <div class="ag-shop-slider__buttons">
               <div class="ag-shop-slider__prev"></div>
@@ -214,31 +216,75 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
 
 
 
-
-            <div class="ag-baners">
-                <div class="fotorama" 
-                    data-loop="true" 
-                    data-autoplay="true" 
-                    data-fit="cover"
-                    data-width="100%"
-                    data-height="300px"
-                    data-nav="dots"
-                    data-navPosition="bottom"
-                    data-dotColor="red"
-                    data-transition="slide"
-                    data-transitionduration="500"
-                    data-arrows = "false"
-                >
-                <?foreach($BANERS as $baner):?>
-                    <div data-img="<?= $baner["PROPERTIES"]["BANER_PICTURE"]["URL"]?>">
-                        <div class="ag-baner-name"><?= $baner["NAME"]?></div>
-                        <div class="ag-baner-desc"><?= $baner["PROPERTIES"]["BANER_DESC"]["VALUE"]?></div>
-                        <a href="<?= $baner["PROPERTIES"]["BANER_URL"]["VALUE"]?>">
-                        </a>
-                    </div>
-                <?endforeach?>
-                </div>
+          <!-- Filter {{{-->
+          <form class="ag-shop-filter">
+            <div class="ag-shop-filter__filters">
+              <div class="ag-shop-filter__filters-item">
+                Я хочу 
+                <span class="ag-shop-filter__trigger ag-shop-filter__trigger--active" rel="wish-filter">
+                  всё
+                </span>
+              </div>
+              <div class="ag-shop-filter__filters-item">
+                интересуюсь 
+                <span class="ag-shop-filter__trigger" rel="interests-filter">
+                  всем
+                </span>
+              </div>
+              <div class="ag-shop-filter__filters-item">
+                типы 
+                <span class="ag-shop-filter__trigger" rel="types-filter">
+                  все
+                </span>
+              </div>
+              <div class="ag-shop-filter__filters-item">
+                у меня 
+                <span class="ag-shop-filter__trigger" rel="balls-filter">
+                  1654 балла
+                </span>
+              </div>
             </div>
+            
+            <div class="ag-shop-filter__variants filter-active" id="wish-filter">
+              <? foreach($IWANTS as $WANT_ID=>$WANT):?>
+              <label>
+                <input type="checkbox" class="iwant" value="<?= $WANT_ID ?>">
+                <div class="ag-shop-filter__variants-item"><?= $WANT["VALUE"]?></div>
+              </label>
+              <? endforeach ?>
+            </div>
+            
+            <div class="ag-shop-filter__variants" id="interests-filter">
+              <? foreach($INTERESTS as $INTEREST_ID=>$INTEREST):?>
+              <label>
+                <input type="checkbox" class="interests" value="<?= $INTEREST_ID ?>">
+                <div class="ag-shop-filter__variants-item"><?= $INTEREST["VALUE"]?></div>
+              </label>
+              <? endforeach ?>
+            </div>
+
+            <div class="ag-shop-filter__variants" id="types-filter">
+              <? foreach($TYPES as $TYPE_ID=>$TYPE):?>
+              <label>
+                <input type="checkbox" class="interests" value="<?= $TYPES_ID ?>">
+                <div class="ag-shop-filter__variants-item"><?= $TYPE["VALUE"]?></div>
+              </label>
+              <? endforeach ?>
+            </div>
+
+            <div class="ag-shop-filter__variants filter-passive" id="balls-filter">
+                Баллы
+            </div>
+
+            
+            <div class="ag-shop-filter__confirm filter-passive">
+              <button class="ag-shop-filter__confirm-button" type="submit">Подобрать</button>
+            </div>
+          </form>
+          <!-- }}} Filter-->
+
+
+
 
             <a name="products"><h1></h1></a>
             <div class="ad-main-filter">

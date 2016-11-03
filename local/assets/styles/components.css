@@ -807,6 +807,7 @@
 .ag-shop-slider {
   border-radius: 3px;
   overflow: hidden;
+  height:500px;
 }
 .ag-shop-slider__dots {
   margin: 12px 0 0;
@@ -1652,5 +1653,13 @@
 .ag-shop-slider-card-dark__info-layer{
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+div.filter-active{
+    display: block;
+}
+
+.ag-shop-filter__variants{
+    display:none;
 }
 
