@@ -41,9 +41,13 @@
     <link rel="stylesheet" href="/local/assets/styles/fonts.css">
     <link rel="stylesheet" href="/local/assets/styles/components.css">
     <link rel="stylesheet" href="/local/assets/styles/catalog.css">
+    
     <script src="/local/assets/libs/jquery.min.js"></script>
+    <script src="/local/assets/libs/jquery-ui.js"></script>
+    
     <script src="/local/assets/scripts/scripts.js"></script>
     <link rel="stylesheet" href="/local/assets/libs/slick.css">
+    <link rel="stylesheet" href="/local/assets/libs/jquery-ui.css">
     
     <script src="/local/assets/libs/slick.min.js"></script>
     <script src="/local/assets/scripts/index.js"></script>

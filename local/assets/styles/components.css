@@ -1631,9 +1631,9 @@
   }
 }
 
-/**
- * Модификация css
- */
+/** ========================================================================
+                               Модификация css
+ =========================================================================== */
 .ag-shop-slider__item{
     position: relative;
 }
@@ -1662,4 +1662,62 @@ div.filter-active{
 .ag-shop-filter__variants{
     display:none;
 }
+
+#interests-filter::before{
+    left: 35%;
+}
+
+#types-filter::before{
+    left: 60%;
+}
+
+#balls-filter::before{
+    left: 85%;
+}
+
+
+
+#slider {
+	width: 80%;
+    float: left;
+    margin-top: 16px;
+}
+
+#minPrice{
+    text-align: center;
+	width: 6%;
+    float: left;
+    border: 1px #888 solid;
+    margin-right: 1%;
+    margin-top: 5px;
+    border-radius: 16px;
+
+    font-family: 'SF UI Text', Arial, sans-serif;
+    font-weight: 200;
+    font-size: 14px;
+    font-size: 0.875rem;
+    color: #0e2f4b;
+    
+    padding: 7px 20px;
+}
+
+#maxPrice{
+    text-align: center;
+	width: 6%;
+    float: left;
+    border: 1px #888 solid;
+    margin-left: 1%;
+    margin-top: 5px;
+    border-radius: 16px;
+
+    font-family: 'SF UI Text', Arial, sans-serif;
+    font-weight: 200;
+    font-size: 14px;
+    font-size: 0.875rem;
+    color: #0e2f4b;
+    
+    padding: 7px 20px;
+}
+
+
 

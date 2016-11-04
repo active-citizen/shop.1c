@@ -44,22 +44,38 @@ $(document).ready(function() {
    * Переключение вкладок
    */
   $('.ag-shop-filter__trigger').click(function(){
+
+    $('.ag-shop-filter__variants').find(":before").css("left","200");
+
     $('.ag-shop-filter__trigger').removeClass('ag-shop-filter__trigger--active');
     $(this).addClass('ag-shop-filter__trigger--active');
     $('.ag-shop-filter__variants').removeClass('filter-active');
     $('#'+$(this).attr("rel")).addClass('filter-active');
   });
   
+  
   /**
    * Выбор элементов фильтра
    */
-  $('.ag-shop-filter__variants-item').click(function(){
-    if($(this).hasClass('ag-shop-filter__trigger--active')){
-      $(this).parent().find('input').
-    }
-    else{
-    }
+  $('.ag-shop-filter__variants input').change(function(){
+    var triggerTab = $('span[rel="'+$(this).parent().parent().attr("id")+'"]');
+    var fieldTab = $(this).parent().parent();
+    var arrOptions = Array();
+    
+    triggerTab.html('');
+    fieldTab.find('input').each(function(){
+        if($(this).is(':checked')){
+            arrOptions.push($(this).attr("title"));
+        }
+    });
+    triggerTab.html(arrOptions.join(", "));
+    if(!triggerTab.html())triggerTab.html(triggerTab.attr('alltitle'));
 
+    return true;
   });   
+
+
+    
+
 
 });

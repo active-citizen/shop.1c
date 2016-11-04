@@ -1332,7 +1332,7 @@ input:checked + .ag-shop-filter__variants-item {
   }
 
   .ag-shop-filter__variants::before {
-    left: 16%;
+    left: 15%;
     right: auto;
     margin: 0;
   }

@@ -135,6 +135,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     $TYPES = array();
     while($type = $res->getNext())$TYPES[$type["ID"]]=$type;
     
+    $MY_BALLS = 1641;
+    
 ?>
 
 
@@ -221,26 +223,26 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__filters">
               <div class="ag-shop-filter__filters-item">
                 Я хочу 
-                <span class="ag-shop-filter__trigger ag-shop-filter__trigger--active" rel="wish-filter">
+                <span class="ag-shop-filter__trigger ag-shop-filter__trigger--active" rel="wish-filter" alltitle="всё">
                   всё
                 </span>
               </div>
               <div class="ag-shop-filter__filters-item">
                 интересуюсь 
-                <span class="ag-shop-filter__trigger" rel="interests-filter">
+                <span class="ag-shop-filter__trigger" rel="interests-filter" alltitle="всем">
                   всем
                 </span>
               </div>
               <div class="ag-shop-filter__filters-item">
                 типы 
-                <span class="ag-shop-filter__trigger" rel="types-filter">
+                <span class="ag-shop-filter__trigger" rel="types-filter" alltitle="все">
                   все
                 </span>
               </div>
               <div class="ag-shop-filter__filters-item">
-                у меня 
+                у меня баллов 
                 <span class="ag-shop-filter__trigger" rel="balls-filter">
-                  1654 балла
+                  <?= $MY_BALLS ?> 
                 </span>
               </div>
             </div>
@@ -248,7 +250,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__variants filter-active" id="wish-filter">
               <? foreach($IWANTS as $WANT_ID=>$WANT):?>
               <label>
-                <input type="checkbox" class="iwant" value="<?= $WANT_ID ?>">
+                <input type="checkbox" class="iwant" value="<?= $WANT_ID ?>" title="<?= $WANT["VALUE"]?>">
                 <div class="ag-shop-filter__variants-item"><?= $WANT["VALUE"]?></div>
               </label>
               <? endforeach ?>
@@ -257,7 +259,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__variants" id="interests-filter">
               <? foreach($INTERESTS as $INTEREST_ID=>$INTEREST):?>
               <label>
-                <input type="checkbox" class="interests" value="<?= $INTEREST_ID ?>">
+                <input type="checkbox" class="interests" value="<?= $INTEREST_ID ?>" title="<?= $INTEREST["VALUE"]?>">
                 <div class="ag-shop-filter__variants-item"><?= $INTEREST["VALUE"]?></div>
               </label>
               <? endforeach ?>
@@ -266,14 +268,16 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__variants" id="types-filter">
               <? foreach($TYPES as $TYPE_ID=>$TYPE):?>
               <label>
-                <input type="checkbox" class="interests" value="<?= $TYPES_ID ?>">
+                <input type="checkbox" class="interests" value="<?= $TYPES_ID ?>" title="<?= $TYPE["VALUE"]?>">
                 <div class="ag-shop-filter__variants-item"><?= $TYPE["VALUE"]?></div>
               </label>
               <? endforeach ?>
             </div>
 
-            <div class="ag-shop-filter__variants filter-passive" id="balls-filter">
-                Баллы
+            <div class="ag-shop-filter__variants filter-passive" id="balls-filter" style="height: 42px;">
+                <div id="minPrice">0</div>
+                <div id="slider"></div>
+                <div id="maxPrice"><?= $MY_BALLS;?></div>
             </div>
 
             
@@ -282,8 +286,22 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             </div>
           </form>
           <!-- }}} Filter-->
-
-
+            <script>
+                $("#slider").slider({
+                    min: 0,
+                    max: 1000,
+                    values: [0,1000],
+                    range: true,
+                    
+                    stop: function(event, ui) {return true;},
+                    slide: function(event, ui){
+                        $('#minPrice').html(ui.values[0]);
+                        $('#maxPrice').html(ui.values[1]);
+                        return true;
+                    }
+                });
+            </script>
+        
 
 
             <a name="products"><h1></h1></a>
