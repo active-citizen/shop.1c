@@ -1,6 +1,5 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     // Получаем список банеров
     CModule::IncludeModule("iblock");
     $res = CIBlockElement::GetList(array("SORT"=>"ASC"),array(
@@ -135,7 +134,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     $TYPES = array();
     while($type = $res->getNext())$TYPES[$type["ID"]]=$type;
     
-    $MY_BALLS = 1641;
     
 ?>
 
@@ -182,10 +180,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                       <p class="ag-shop-slider-card__category"><?= $BANER["CATALOG_LINK_DATA"]["SECTION_NAME"]?></p>
                       <p class="ag-shop-slider-card__description"><?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"]?></p>
                       <div class="ag-shop-slider-card__rating" title="Средняя оценка  <?= $BANER["CATALOG_LINK_DATA"]["RATING"]?>">
-                        <? for($i=0;$i<$BANER["CATALOG_LINK_DATA"]["RATING"];$i++):?>
+                        <? for($i=0;$i<round($BANER["CATALOG_LINK_DATA"]["RATING"]);$i++):?>
                         <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
                         <? endfor ?>
-                        <? for($j=0;$j<5-$BANER["CATALOG_LINK_DATA"]["RATING"]-1;$j++):?>
+                        <? for($j=0;$j<5-round($BANER["CATALOG_LINK_DATA"]["RATING"]);$j++):?>
                         <div class="ag-shop-slider-card__rating-item"></div>
                         <? endfor ?>
                       </div>
@@ -202,7 +200,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                     <img class="ag-shop-slider-card-dark__image" src="" style="display:none;">
                   <div class="ag-shop-slider-card-dark__info-layer" style="background-image: url('<?= $BANER["PROPERTIES"]["BANER_PICTURE"]["URL"] ?>');">
                     <div class="ag-shop-slider-card-dark__info">
-                      <h3 class="ag-shop-slider-card-dark__name">Посещение Центра Современного Искусства МАРС</h3>
+                      <h3 class="ag-shop-slider-card-dark__name"><?= $BANER["NAME"]?></h3>
                     </div>
                   </div></a></div>
                 <? endif ?>  
@@ -240,9 +238,9 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                 </span>
               </div>
               <div class="ag-shop-filter__filters-item">
-                у меня баллов 
+                у меня 
                 <span class="ag-shop-filter__trigger" rel="balls-filter">
-                  <?= $MY_BALLS ?> 
+                  <?= $myBalls ?> 
                 </span>
               </div>
             </div>
@@ -250,7 +248,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__variants filter-active" id="wish-filter">
               <? foreach($IWANTS as $WANT_ID=>$WANT):?>
               <label>
-                <input type="checkbox" class="iwant" value="<?= $WANT_ID ?>" title="<?= $WANT["VALUE"]?>">
+                <input type="checkbox" class="ag-iwant" value="<?= $WANT_ID ?>" title="<?= $WANT["VALUE"]?>">
                 <div class="ag-shop-filter__variants-item"><?= $WANT["VALUE"]?></div>
               </label>
               <? endforeach ?>
@@ -259,7 +257,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__variants" id="interests-filter">
               <? foreach($INTERESTS as $INTEREST_ID=>$INTEREST):?>
               <label>
-                <input type="checkbox" class="interests" value="<?= $INTEREST_ID ?>" title="<?= $INTEREST["VALUE"]?>">
+                <input type="checkbox" class="ag-interest" value="<?= $INTEREST_ID ?>" title="<?= $INTEREST["VALUE"]?>">
                 <div class="ag-shop-filter__variants-item"><?= $INTEREST["VALUE"]?></div>
               </label>
               <? endforeach ?>
@@ -268,97 +266,44 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <div class="ag-shop-filter__variants" id="types-filter">
               <? foreach($TYPES as $TYPE_ID=>$TYPE):?>
               <label>
-                <input type="checkbox" class="interests" value="<?= $TYPES_ID ?>" title="<?= $TYPE["VALUE"]?>">
+                <input type="checkbox" class="ag-types" value="<?= $TYPE_ID ?>" title="<?= $TYPE["VALUE"]?>">
                 <div class="ag-shop-filter__variants-item"><?= $TYPE["VALUE"]?></div>
               </label>
               <? endforeach ?>
             </div>
 
             <div class="ag-shop-filter__variants filter-passive" id="balls-filter" style="height: 42px;">
-                <div id="minPrice">0</div>
+                <div id="ag-minPrice">0</div>
                 <div id="slider"></div>
-                <div id="maxPrice"><?= $MY_BALLS;?></div>
+                <div id="ag-maxPrice"><?= str_replace(" ","",$MY_BALLS);?></div>
             </div>
 
             
             <div class="ag-shop-filter__confirm filter-passive">
-              <button class="ag-shop-filter__confirm-button" type="submit">Подобрать</button>
+              <button class="ag-shop-filter__confirm-button" type="submit" onclick="return ag_filter();">Подобрать</button>
             </div>
           </form>
           <!-- }}} Filter-->
             <script>
+                asdasdasdasdasd
+                var vals = new Array();
                 $("#slider").slider({
                     min: 0,
-                    max: 1000,
-                    values: [0,1000],
+                    max: <?= str_replace(" ","",$MY_BALLS);?>,
+                    values: [0,<?= str_replace(" ","",$MY_BALLS);?>],
                     range: true,
                     
                     stop: function(event, ui) {return true;},
                     slide: function(event, ui){
-                        $('#minPrice').html(ui.values[0]);
-                        $('#maxPrice').html(ui.values[1]);
+                        $('#ag-minPrice').html(ui.values[0]);
+                        $('#ag-maxPrice').html(ui.values[1]);
                         return true;
                     }
                 });
             </script>
-        
-
 
             <a name="products"><h1></h1></a>
-            <div class="ad-main-filter">
-                <div class="title">Что выбрать?</div>
-                <div class="slogan">Подбери поощрение своей мечты, попробуй новый сервис &laquo;Что выбрать?&raquo;</div>
-                <div class="ag-filter-params">
-                    <!-- 
-                    <select name="type" id="ag-type" class="ag-filter-param">
-                        <option value="0">--Тип--</option>
-                        <?foreach($TYPES as $type):?>
-                        <option value="<?= $type["ID"]?>"<?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> selected<?endif?>><?= $type["VALUE"]?></option>    
-                        <?endforeach?>
-                    </select>
-                    -->
-                    <div class="ag-filter-param">
-                        <select name="iwant" id="ag-iwant">
-                            <option value="0">-Хочу-</option>
-                            <?foreach($IWANTS as $iwant):?>
-                            <option value="<?= $iwant["ID"]?>"<?if(isset($_REQUEST["filter_iwant"]) && $_REQUEST["filter_iwant"]==$iwant["ID"]):?> selected<?endif?>><?= $iwant["VALUE"]?></option>    
-                            <?endforeach?>
-                        </select>
-                    </div>
-                    <div class="ag-filter-param"></div>
-                    <div class="ag-filter-param">
-                        <select name="interest" id="ag-interest">
-                            <option value="0">-Интересуюсь-</option>
-                            <?foreach($INTERESTS as $interest):?>
-                            <option value="<?= $interest["ID"]?>"<?if(isset($_REQUEST["filter_interest"]) && $_REQUEST["filter_interest"]==$interest["ID"]):?> selected<?endif?>><?= $interest["VALUE"]?></option>    
-                            <?endforeach?>
-                        </select>
-                    </div>
-                    <div class="ag-filter-param"></div>
-                    <!-- <div class="ag-filter-param"><div class="ag-label">В пределах</div></div> -->
-                    <div class="ag-filter-param"></div>
-                    <div class="ag-filter-param" id="ag-balls-cont">
-                        <input type="text" name="balls" id="ag-balls" value="<?= (intval($_REQUEST["filter_balls"])?$_REQUEST["filter_balls"]:1500) ?>">
-                        баллов
-                    </div>
-                    <div class="ag-filter-param"></div>
-                    <!-- <div id="ag-show" class="ag-filter-param">Попробовать</div> -->
-                </div>
-                <div class="ag-filter-params">
-                    <input type="hidden" id="ag-types" name="ag-types" value="">
-                    <?foreach($TYPES as $type):?>
-                    <label 
-                        style="background-image:url(/bitrix/templates/agnew/i/activities/<?= md5($type["VALUE"])?>.png);"
-                        <?if(isset($_REQUEST["filter_type"]) && $_REQUEST["filter_type"]==$type["ID"]):?> class="radio-active"<?endif?>
-                        rel="<?= $type["ID"]?>"
-                    >
-                        <?= $type["VALUE"];?>
-                    </label>
-                    <?endforeach?>
-                </div>
-                <input type="hidden" id="ag-flag" name="ag-flag" value="<?= !isset($_REQUEST["flag"])?"all":htmlspecialchars(($_REQUEST["flag"]))?>">
-                <input type="hidden" id="ag-sorting" name="ag-sorting" value="<?= !isset($_REQUEST["sorting"])?"price-asc":htmlspecialchars(($_REQUEST["sorting"]))?>">
-            </div>
+
     
             <?
                 $GETARRAY = $_REQUEST;

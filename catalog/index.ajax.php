@@ -42,24 +42,36 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='populars'){
         $arrFilter["PROPERTY_SALELEADER"] = $ENUMS['SALELEADER']["да"];
     }
-    if(isset($_REQUEST['filter_iwant']) && $iwant = intval($_REQUEST['filter_iwant'])){
-        $arrFilter["PROPERTY_WANTS"] = $iwant;
+    
+    
+    if(isset($_REQUEST['filter_iwant']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_iwant'])){
+        $iwant = explode(",",$_REQUEST['filter_iwant']);
+        if(!count($iwant)){
+        }else{
+            $arrFilter["PROPERTY_WANTS"] = $iwant;
+        }
     }
 
     if(isset($_REQUEST['filter_type']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_type'])){
         $type = explode(",",$_REQUEST['filter_type']);
-        if(count($type)==1 &&  $type[0]==0){
+        if(!count($type)){
         }else{
             $arrFilter["PROPERTY_TYPES"] = $type;
         }
     }
     
-    if(isset($_REQUEST['filter_interest']) && $interest = intval($_REQUEST['filter_interest'])){
-        $arrFilter["PROPERTY_INTERESTS"] = $interest;
+    if(isset($_REQUEST['filter_interest']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_interest'])){
+        $interest = explode(",",$_REQUEST['filter_interest']);
+        if(!count($interest)){
+        }else{
+            $arrFilter["PROPERTY_INTERESTS"] = $interest;
+        }
     }
 
-    if(isset($_REQUEST['filter_balls']) && $balls = intval($_REQUEST['filter_balls'])){
-        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = $balls;
+    if(isset($_REQUEST['filter_balls']) && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])){
+        $balls = explode(",",$_REQUEST['filter_balls']);
+        $arrFilter[">=PROPERTY_MINIMUM_PRICE"] = $balls[0];
+        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = $balls[1];
         /*
         // Узнаём ID инфоблока
         $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));

@@ -58,8 +58,16 @@ $(document).ready(function() {
    * Выбор элементов фильтра
    */
   $('.ag-shop-filter__variants input').change(function(){
-    var triggerTab = $('span[rel="'+$(this).parent().parent().attr("id")+'"]');
-    var fieldTab = $(this).parent().parent();
+    input_variant_click($(this));
+    return false;
+  });   
+
+});
+
+
+function input_variant_click(obj){
+    var triggerTab = $('span[rel="'+obj.parent().parent().attr("id")+'"]');
+    var fieldTab = obj.parent().parent();
     var arrOptions = Array();
     
     triggerTab.html('');
@@ -72,10 +80,5 @@ $(document).ready(function() {
     if(!triggerTab.html())triggerTab.html(triggerTab.attr('alltitle'));
 
     return true;
-  });   
+}
 
-
-    
-
-
-});

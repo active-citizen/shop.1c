@@ -1683,7 +1683,7 @@ div.filter-active{
     margin-top: 16px;
 }
 
-#minPrice{
+#ag-minPrice{
     text-align: center;
 	width: 6%;
     float: left;
@@ -1701,7 +1701,7 @@ div.filter-active{
     padding: 7px 20px;
 }
 
-#maxPrice{
+#ag-maxPrice{
     text-align: center;
 	width: 6%;
     float: left;
@@ -1719,5 +1719,7 @@ div.filter-active{
     padding: 7px 20px;
 }
 
-
+.tablebodytext{
+    display: none;
+}
 

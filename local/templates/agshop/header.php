@@ -1,5 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+    include_once($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
+    
     // Получаем корневых разделов
     CModule::IncludeModule("iblock");
     $res = CIBlockSection::GetList(
@@ -17,6 +19,16 @@
         );
         $SECTIONS[$section["ID"]]["products"]=$res1->SelectedRowsCount();
     }
+    
+    CModule::IncludeModule("sale");
+    $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
+    $account = $res->GetNext();
+    
+    $MY_BALLS = number_format($account["CURRENT_BUDGET"],0 ,',',' ');
+    $myBalls = $MY_BALLS." ".get_points($account["CURRENT_BUDGET"]);
+
+    $arUserInfo = $USER->GetById($USER->GetId())->GetNext();
+    $FIO = $arUserInfo["NAME"]."<br/>".$arUserInfo["LAST_NAME"];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -102,10 +114,9 @@
                   <div class="ag-shop-nav__profile-container"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
                     <div class="ag-shop-nav__link-caption">
                       <span class="hide-on-desktop">Профиль</span>
-                      <span class="show-on-desktop">Константин&nbsp;Констанинович<br>Иванов</span>
+                      <span class="show-on-desktop"><?= $FIO;?></span>
                     </div>
-                    <div class="ag-shop-nav__profile-points">
-                       1654&nbsp;балла</div>
+                    <div class="ag-shop-nav__profile-points"><?= $myBalls;?></div>
                   </div></a></div>
               <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
                   <div class="ag-shop-nav__link-caption">
