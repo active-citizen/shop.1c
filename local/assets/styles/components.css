@@ -1678,12 +1678,12 @@ div.filter-active{
 
 
 #slider {
-	width: 80%;
+	width: 85%;
     float: left;
     margin-top: 16px;
 }
 
-#ag-minPrice{
+input#ag-minPrice{
     text-align: center;
 	width: 6%;
     float: left;
@@ -1701,7 +1701,7 @@ div.filter-active{
     padding: 7px 20px;
 }
 
-#ag-maxPrice{
+input#ag-maxPrice{
     text-align: center;
 	width: 6%;
     float: left;

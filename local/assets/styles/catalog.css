@@ -962,7 +962,7 @@ body {
 .ag-shop-filter__variants label {
   display: inline-block;
 }
-.ag-shop-filter__variants input {
+.ag-shop-filter__variants input[type="checkbox"] {
   display: none;
 }
 .ag-shop-filter__variants-item {

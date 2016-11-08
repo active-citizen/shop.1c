@@ -273,9 +273,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
             </div>
 
             <div class="ag-shop-filter__variants filter-passive" id="balls-filter" style="height: 42px;">
-                <div id="ag-minPrice">0</div>
+                <input type="text" id="ag-minPrice" value="0"/>
                 <div id="slider"></div>
-                <div id="ag-maxPrice"><?= str_replace(" ","",$MY_BALLS);?></div>
+                <input type="text" id="ag-maxPrice" value="<?= str_replace(" ","",$MY_BALLS);?>"/>
             </div>
 
             
@@ -285,7 +285,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
           </form>
           <!-- }}} Filter-->
             <script>
-                asdasdasdasdasd
                 var vals = new Array();
                 $("#slider").slider({
                     min: 0,
@@ -295,8 +294,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                     
                     stop: function(event, ui) {return true;},
                     slide: function(event, ui){
-                        $('#ag-minPrice').html(ui.values[0]);
-                        $('#ag-maxPrice').html(ui.values[1]);
+                        $('#ag-minPrice').val(ui.values[0]);
+                        $('#ag-maxPrice').val(ui.values[1]);
                         return true;
                     }
                 });
