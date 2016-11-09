@@ -282,6 +282,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
             <div class="ag-shop-filter__confirm filter-passive">
               <button class="ag-shop-filter__confirm-button" type="submit" onclick="return ag_filter();">Подобрать</button>
             </div>
+            <input type="hidden" id="ag-flag" value="all"/>
+            <input type="hidden" id="ag-sorting" value="price-asc"/>
           </form>
           <!-- }}} Filter-->
             <script>
@@ -300,212 +302,27 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                     }
                 });
             </script>
-
+          <!-- Catalog {{{-->
+          <div class="ag-shop-catalog">
             <a name="products"><h1></h1></a>
-
-    
-            <?
-                $GETARRAY = $_REQUEST;
-                if(isset($GETARRAY["flag"]))unset($GETARRAY["flag"]);
-                if(isset($GETARRAY["PAGEN_1"]))unset($GETARRAY["PAGEN_1"]);
-                $BASEURL = array();
-                foreach($GETARRAY as $key=>$value)$BASEURL[] = "$key=$value";
-                $BASEURL="?".implode("&",$BASEURL);
-                if(!isset($_REQUEST["flag"]) || !trim($_REQUEST["flag"]))$_REQUEST["flag"] = 'all';
-            ?>
-            <div class="ag-section-title">
-                <a href="#" rel="all" class="filter-flag">Все товары</a>
-                |
-                <a href="#" rel="actions" class="filter-flag">Акции</a>
-                |
-                <a href="#" rel="news" class="filter-flag">Новые поступления</a>
-                |
-                <a href="#" rel="populars" class="filter-flag">Популярные</a>
-                <div style="float: right;">
-                    Сначала:&nbsp;&nbsp;&nbsp;
-                    <a href="#" rel="price-asc" class="sorting-flag">Дешевые</a>
-                    |
-                    <a href="#" rel="price-desc" class="sorting-flag">Дорогие</a>
-                    |
-                    <a href="#" rel="rating-desc" class="sorting-flag">Популярные</a>
-                </div>
+            <!-- Для сортировки/фильтра-->
+            <div class="ag-shop-catalog__filter">
+              <div class="ag-shop-catalog__filter-instance">
+                <div class="ag-shop-catalog__filter-item"><a rel="all" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Все товары</a></div>
+                <div class="ag-shop-catalog__filter-item"><a rel="actions" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Акции</a></div>
+                <div class="ag-shop-catalog__filter-item"><a rel="news" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Новые поступления</a></div>
+                <div class="ag-shop-catalog__filter-item"><a rel="populars" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Популярные</a></div>
+              </div>
+              <div class="ag-shop-catalog__filter-instance">Сначала:
+                <div class="ag-shop-catalog__filter-item"><a rel="price-asc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дешевые</a></div>
+                <div class="ag-shop-catalog__filter-item"><a rel="price-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дорогие</a></div>
+                <div class="ag-shop-catalog__filter-item"><a rel="rating-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Популярные</a></div>
+              </div>
             </div>
-
-<?
-    global $arrFilter;
-    $arrFilter = array();
+            <div class="ag-shop-catalog__items-container">
+              <div class="grid grid--bleed grid--justify-center catalog-ajax-block">
+              </div>
+            </div>
     
-    // Составляем справочник флагов
-    $ENUMS = array();
-    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>2));
-    while($data = $res->getNext()){
-        $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
-        if(!isset($ENUMS[$data["PROPERTY_CODE"]]))$ENUMS[$data["PROPERTY_CODE"]] = array();
-        $ENUMS[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
-    }
-    
-    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='news'){
-        $arrFilter["PROPERTY_NEWPRODUCT"] = $ENUMS['NEWPRODUCT']["да"];
-    }
-    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='actions'){
-        $arrFilter["PROPERTY_SPECIALOFFER"] = $ENUMS['SPECIALOFFER']["да"];
-    }
-    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='populars'){
-        $arrFilter["PROPERTY_SALELEADER"] = $ENUMS['SALELEADER']["да"];
-    }
-
-    if(isset($_REQUEST['filter_iwant']) && $iwant = intval($_REQUEST['filter_iwant'])){
-        $arrFilter["PROPERTY_WANTS"] = $iwant;
-    }
-
-    if(isset($_REQUEST['filter_type']) && $type = intval($_REQUEST['filter_type'])){
-        $arrFilter["PROPERTY_TYPES"] = $type;
-    }
-    
-    if(isset($_REQUEST['filter_interest']) && $interest = intval($_REQUEST['filter_interest'])){
-        $arrFilter["PROPERTY_INTERESTS"] = $interest;
-    }
-
-    if(isset($_REQUEST['filter_balls']) && $balls = intval($_REQUEST['filter_balls'])){
-        $arrFilter["<=CATALOG_PRICE_1"] = $balls;
-    }
-    
-    
-//    echo "<pre>";
-//    print_r($ENUMS);
-//    echo "</pre>";
-    
-    /*
-    $APPLICATION->IncludeComponent(
-    "bitrix:catalog.section",
-    ".default",
-    array(
-        "USE_FILTER"=>"Y",
-        "IBLOCK_TYPE_ID" => "catalog",
-        "IBLOCK_ID" => "2",
-        "BASKET_URL" => "/personal/cart/",
-        "COMPONENT_TEMPLATE" => "",
-        "IBLOCK_TYPE" => "catalog",
-        "SECTION_ID" => 0,
-        "SECTION_CODE" => "",
-        "SECTION_USER_FIELDS" => array(
-            0 => "",
-            1 => "",
-        ),
-        "ELEMENT_SORT_FIELD" => "sort",
-        "ELEMENT_SORT_ORDER" => "desc",
-        "ELEMENT_SORT_FIELD2" => "id",
-        "ELEMENT_SORT_ORDER2" => "desc",
-        "FILTER_NAME" => "arrFilter",
-        "INCLUDE_SUBSECTIONS" => "Y",
-        "SHOW_ALL_WO_SECTION" => "Y",
-        "HIDE_NOT_AVAILABLE" => "N",
-        "PAGE_ELEMENT_COUNT" => "12",
-        "LINE_ELEMENT_COUNT" => "3",
-        "PROPERTY_CODE" => array(
-            0 => "",
-            1 => "",
-        ),
-        "OFFERS_FIELD_CODE" => array(
-            0 => "",
-            1 => "",
-        ),
-        "OFFERS_PROPERTY_CODE" => array(
-            0 => "COLOR_REF",
-            1 => "SIZES_SHOES",
-            2 => "SIZES_CLOTHES",
-            3 => "",
-        ),
-        "OFFERS_SORT_FIELD" => "sort",
-        "OFFERS_SORT_ORDER" => "desc",
-        "OFFERS_SORT_FIELD2" => "id",
-        "OFFERS_SORT_ORDER2" => "desc",
-        "OFFERS_LIMIT" => "5",
-        "TEMPLATE_THEME" => "site",
-        "PRODUCT_DISPLAY_MODE" => "Y",
-        "ADD_PICT_PROP" => "MORE_PHOTO",
-        "LABEL_PROP" => "-",
-        "OFFER_ADD_PICT_PROP" => "-",
-        "OFFER_TREE_PROPS" => array(
-            0 => "COLOR_REF",
-            1 => "SIZES_SHOES",
-            2 => "SIZES_CLOTHES",
-        ),
-        "PRODUCT_SUBSCRIPTION" => "N",
-        "SHOW_DISCOUNT_PERCENT" => "N",
-        "SHOW_OLD_PRICE" => "Y",
-        "SHOW_CLOSE_POPUP" => "N",
-        "MESS_BTN_BUY" => "Купить",
-        "MESS_BTN_ADD_TO_BASKET" => "В корзину",
-        "MESS_BTN_SUBSCRIBE" => "Подписаться",
-        "MESS_BTN_DETAIL" => "Подробнее",
-        "MESS_NOT_AVAILABLE" => "Нет в наличии",
-        "SECTION_URL" => "",
-        "DETAIL_URL" => "",
-        "SECTION_ID_VARIABLE" => "SECTION_ID",
-        "SEF_MODE" => "N",
-        "AJAX_MODE" => "Y",
-        "AJAX_OPTION_JUMP" => "N",
-        "AJAX_OPTION_STYLE" => "Y",
-        "AJAX_OPTION_HISTORY" => "Y",
-        "AJAX_OPTION_ADDITIONAL" => "",
-        "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "36000000",
-        "CACHE_GROUPS" => "Y",
-        "SET_TITLE" => "Y",
-        "SET_BROWSER_TITLE" => "Y",
-        "BROWSER_TITLE" => "-",
-        "SET_META_KEYWORDS" => "Y",
-        "META_KEYWORDS" => "-",
-        "SET_META_DESCRIPTION" => "Y",
-        "META_DESCRIPTION" => "-",
-        "SET_LAST_MODIFIED" => "N",
-        "USE_MAIN_ELEMENT_SECTION" => "N",
-        "ADD_SECTIONS_CHAIN" => "N",
-        "CACHE_FILTER" => "N",
-        "ACTION_VARIABLE" => "action",
-        "PRODUCT_ID_VARIABLE" => "id",
-        "PRICE_CODE" => array(
-            0 => "BASE",
-        ),
-        "USE_PRICE_COUNT" => "N",
-        "SHOW_PRICE_COUNT" => "1",
-        "PRICE_VAT_INCLUDE" => "Y",
-        "CONVERT_CURRENCY" => "N",
-        "USE_PRODUCT_QUANTITY" => "N",
-        "PRODUCT_QUANTITY_VARIABLE" => "",
-        "ADD_PROPERTIES_TO_BASKET" => "Y",
-        "PRODUCT_PROPS_VARIABLE" => "prop",
-        "PARTIAL_PRODUCT_PROPERTIES" => "N",
-        "PRODUCT_PROPERTIES" => array(
-        ),
-        "OFFERS_CART_PROPERTIES" => array(
-            0 => "COLOR_REF",
-            1 => "SIZES_SHOES",
-            2 => "SIZES_CLOTHES",
-        ),
-        "ADD_TO_BASKET_ACTION" => "ADD",
-        "PAGER_TEMPLATE" => "round",
-        "DISPLAY_TOP_PAGER" => "Y",
-        "DISPLAY_BOTTOM_PAGER" => "Y",
-        "PAGER_TITLE" => "Товары",
-        "PAGER_SHOW_ALWAYS" => "N",
-        "PAGER_DESC_NUMBERING" => "N",
-        "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-        "PAGER_SHOW_ALL" => "N",
-        "PAGER_BASE_LINK_ENABLE" => "N",
-        "SET_STATUS_404" => "N",
-        "SHOW_404" => "N",
-        "MESSAGE_404" => "",
-        "USE_SALE_BESTSELLERS"=>"Y"
-    ),
-    false
-);
-*/
-
-?>
-
-<div class="catalog-ajax-block catalog-ajax-block-loader"></div>
-<p id="back-top"><a href="#top"><span></span>&#9650; Вверх &#9650;</a></p>
-
+          </div>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -172,17 +172,27 @@ $(document).ready(function(){
         if(parameters.filter_type)$('#ag-types').val(parameters.filter_type);
         */
         
-        $('.filter-flag').each(function(){if($(this).attr("rel")==parameters.flag)$(this).addClass('radio-active')});
-        $('.sorting-flag').each(function(){if($(this).attr("rel")==parameters.sorting)$(this).addClass('radio-active')});
+        $('.ag-shop-menu__link_flag').each(function(){
+            if($(this).attr("rel")==parameters.flag){
+                $(this).addClass('ag-shop-menu__link--active');
+                $('#ag-flag').val($(this).attr("rel"));
+            }
+        });
+        $('.ag-shop-menu__link_sorting').each(function(){
+            if($(this).attr("rel")==parameters.sorting){
+                $(this).addClass('ag-shop-menu__link--active');
+                $('#ag-sorting').val($(this).attr("rel"));
+            }
+        });
         
         if(!parameters.flag){
-            $('.filter-flag[rel="all"]').addClass('radio-active');
+            $('.filter-flag[rel="all"]').addClass('ag-shop-menu__link--active');
             $('#ag-flag').val('all');
         }
         
         
         if(!parameters.sorting){
-            $('.sorting-flag[rel="price-asc"]').addClass('radio-active');
+            $('.sorting-flag[rel="price-asc"]').addClass('ag-shop-menu__link--active');
             $('#ag-sorting').val('price-asc');
         }
         
@@ -523,7 +533,7 @@ function ag_filter(){
         
     var url = "/catalog/index.ajax.php?"+uri;
     document.location.hash = uri;
-    $('.catalog-ajax-block').load(url,function(){
+    $('.ag-shop-catalog__items-container > div').load(url,function(){
         $('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');
         $('body,html').animate({
             scrollTop: 630

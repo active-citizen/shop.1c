@@ -134,6 +134,55 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
 //        echo "</pre>";
 //        die;
         ?>
+        
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item">
+                    <!-- Обычная карточка товара-->
+                      <a class="ag-shop-item-card" href="#">
+                      <img class="ag-shop-item-card__image" src="/local/assets/images/item__image.png">
+                      <div class="ag-shop-item-card__badges">
+                        <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png">
+                        <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png">
+                        <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png">
+                      </div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">
+                            Размеры:
+                            <span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span>
+                          </div>
+                          <p class="ag-shop-item-card__description">
+                              Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку
+                          </p>
+                        </div>
+                      </div>
+                      </a>
+                  </div>
+                </div>
+        
+        <!-- 
         <div class="ag-main-product" title="<?= $product["PROPERTY_CML2_LINK.NAME"];?>" style="background-image: url(<?= $image_url?>);">
             <a href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>">
             </a>
@@ -159,6 +208,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
             <? endif?>
             
         </div>
+        -->
         <?
     }
     
@@ -167,7 +217,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     
     ?>
     
-    <?if($res->SelectedRowsCount()>$PAGE*$ON_PAGE):?><a class="next-page" href="#" onclick="return next_page('<?= $request."PAGE=".($PAGE+1);?>');">&#9660; Загрузить ещё &#9660;</a><?endif?>
+    <?if($res->SelectedRowsCount()>$PAGE*$ON_PAGE):?>
+        </div><a class="next-page ag-shop-catalog__more-button" href="#" onclick="return next_page('<?= $request."PAGE=".($PAGE+1);?>');">Ещё</a>
+        <a class="next-page" href="#" onclick="return next_page('<?= $request."PAGE=".($PAGE+1);?>');">&#9660; Загрузить ещё &#9660;</a>
+    <?endif?>
     
     <?
 

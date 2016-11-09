@@ -903,7 +903,7 @@ body {
 }
 .ag-shop-filter {
   display: block;
-  margin: 0 0 20px;
+  margin: 0 0 0px;
   border-radius: 3px;
   overflow: hidden;
 }

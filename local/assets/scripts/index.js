@@ -62,6 +62,23 @@ $(document).ready(function() {
     return false;
   });   
 
+    // Клик на фильтрацию и сортировку
+    $('.ag-shop-menu__link_flag').click(function(){
+        $('.ag-shop-menu__link_flag').removeClass('ag-shop-menu__link--active');
+        $(this).addClass('ag-shop-menu__link--active');
+        $('#ag-flag').val($(this).attr('rel'));
+        ag_filter();
+        return false;
+    });
+    
+    $('.ag-shop-menu__link_sorting').click(function(){
+        $('.ag-shop-menu__link_sorting').removeClass('ag-shop-menu__link--active');
+        $(this).addClass('ag-shop-menu__link--active');
+        $('#ag-sorting').val($(this).attr('rel'));
+        ag_filter();
+        return false;
+    });
+
 });
 
 
