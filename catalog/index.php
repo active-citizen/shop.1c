@@ -232,20 +232,28 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
                 </span>
               </div>
               <div class="ag-shop-filter__filters-item">
-                типы 
-                <span class="ag-shop-filter__trigger" rel="types-filter" alltitle="все">
-                  все
-                </span>
-              </div>
-              <div class="ag-shop-filter__filters-item">
+                <? if($USER->IsAuthorized()):?>
                 у меня 
                 <span class="ag-shop-filter__trigger" rel="balls-filter">
                   <?= $myBalls ?> 
                 </span>
+                <?else:?>
+                <span class="ag-shop-filter__login ag-shop-filter__trigger--active" 
+                    onclick="document.location.href='<? 
+                    if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
+                        echo "http://ag.mos.ru/site/";
+                    elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
+                        echo "http://testing.ag.mos.ru/site/";
+                    else
+                        echo "http://testing.ag.mos.ru/site/";
+                  ?>'">
+                  Войти
+                </span>
+                <?endif?>
               </div>
             </div>
             
-            <div class="ag-shop-filter__variants filter-active" id="wish-filter">
+            <div class="ag-shop-filter__variants" id="wish-filter">
               <? foreach($IWANTS as $WANT_ID=>$WANT):?>
               <label>
                 <input type="checkbox" class="ag-iwant" value="<?= $WANT_ID ?>" title="<?= $WANT["VALUE"]?>">
@@ -263,19 +271,40 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
               <? endforeach ?>
             </div>
 
-            <div class="ag-shop-filter__variants" id="types-filter">
-              <? foreach($TYPES as $TYPE_ID=>$TYPE):?>
-              <label>
-                <input type="checkbox" class="ag-types" value="<?= $TYPE_ID ?>" title="<?= $TYPE["VALUE"]?>">
-                <div class="ag-shop-filter__variants-item"><?= $TYPE["VALUE"]?></div>
-              </label>
-              <? endforeach ?>
-            </div>
-
             <div class="ag-shop-filter__variants filter-passive" id="balls-filter" style="height: 42px;">
-                <input type="text" id="ag-minPrice" value="0"/>
-                <div id="slider"></div>
-                <input type="text" id="ag-maxPrice" value="<?= str_replace(" ","",$MY_BALLS);?>"/>
+                <? $pureBalls = str_replace(" ","",$MY_BALLS);?>
+                <? for($i=0;pow(10,$i)<$pureBalls;$i++):?>
+                  <?
+                    $startBalls = pow(10,$i)+1; 
+                    if($startBalls==2)$startBalls=0;
+                    $endBalls = pow(10,$i+1); 
+                    if($endBalls>$pureBalls) $endBalls=$pureBalls;
+                  ?>
+                  <label>
+                    <input type="radio" name="ag-balls" class="ag-balls" value="<?= $startBalls ?>,<?= $endBalls ?>" title="от <?= $startBalls ?> до <?= $endBalls ?> баллов">
+                    <div class="ag-shop-filter__variants-item">от <?= $startBalls ?> до <?= $endBalls ?> баллов</div>
+                  </label>
+                
+                <? endfor?>
+                  <label>
+                    <input 
+                        <? if($USER->IsAuthorized()):?>checked<? endif ?>
+                        type="radio" 
+                        name="ag-balls" class="ag-balls" 
+                        value="0,<?= $pureBalls?>" 
+                        title="от 0 до <?= $pureBalls?> <?= get_points($pureBalls)?>"
+                    >
+                    <div class="ag-shop-filter__variants-item">от 0 до <?= $endBalls ?> <?= get_points($pureBalls)?></div>
+                  </label>
+                  <label>
+                    <input 
+                        <? if(!$USER->IsAuthorized()):?>checked<? endif ?>
+                        type="radio" 
+                        name="ag-balls" 
+                        class="ag-balls" 
+                        value="0,1000000000" title="все баллы">
+                    <div class="ag-shop-filter__variants-item">все баллы</div>
+                  </label>
             </div>
 
             
@@ -308,20 +337,38 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
             <!-- Для сортировки/фильтра-->
             <div class="ag-shop-catalog__filter">
               <div class="ag-shop-catalog__filter-instance">
-                <div class="ag-shop-catalog__filter-item"><a rel="all" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Все товары</a></div>
-                <div class="ag-shop-catalog__filter-item"><a rel="actions" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Акции</a></div>
-                <div class="ag-shop-catalog__filter-item"><a rel="news" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Новые поступления</a></div>
-                <div class="ag-shop-catalog__filter-item"><a rel="populars" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Популярные</a></div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="all" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">
+                        Все товары
+                    </a>
+                </div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="actions" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Акция</a>
+                </div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="news" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Новое</a>
+                </div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="populars" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Хит</a>
+                </div>
               </div>
               <div class="ag-shop-catalog__filter-instance">Сначала:
-                <div class="ag-shop-catalog__filter-item"><a rel="price-asc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дешевые</a></div>
-                <div class="ag-shop-catalog__filter-item"><a rel="price-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дорогие</a></div>
-                <div class="ag-shop-catalog__filter-item"><a rel="rating-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Популярные</a></div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="price-asc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дешевые</a>
+                </div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="price-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дорогие</a>
+                </div>
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="rating-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Популярные</a>
+                </div>
               </div>
             </div>
             <div class="ag-shop-catalog__items-container">
               <div class="grid grid--bleed grid--justify-center catalog-ajax-block">
               </div>
+              <a class="next-page ag-shop-catalog__more-button" href="#" onclick="return next_page();">Ещё</a>
+
             </div>
     
           </div>

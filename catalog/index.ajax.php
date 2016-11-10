@@ -23,6 +23,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     }
 
     
+    if(!isset($_REQUEST['sorting']) || !$_REQUEST['sorting'])$_REQUEST['sorting']='rating-desc';
     if(isset($_REQUEST['sorting']) && $_REQUEST['sorting']=='rating-desc'){
         $arrSorting["PROPERTY_RATING"]="DESC";
     }
@@ -103,7 +104,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
         $arrFilter,
         false,
         array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
-        array("PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE","DETAIL_PAGE_URL")
+        array(
+            "PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE",
+            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME"
+            )
     );
     
     while($product = $res->GetNext()){
@@ -126,6 +130,26 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
         $res1 = CIBlockElement::GetList(array(),$arFilter,false, array());
         $product["wishes"] = $res1->SelectedRowsCount();
 
+        // Вычисляем раздел
+        $resCatalogSection = CIBlockSection::GetList(
+            array(),
+            array(
+                "IBLOCK_CODE"   =>  "clothes",
+                "ID"=>$product["IBLOCK_SECTION_ID"]
+            ),
+            false,
+            array("nTopCount"=>1),
+            array("NAME")
+        );
+        $arCatalogSection = $resCatalogSection->GetNext();
+        $product["SECTION_NAME"] = $arCatalogSection["NAME"];
+
+        // Вычисляем рейтинг
+        $product["RATING"] = round($product["PROPERTY_RATING_VALUE"]*5,2);
+        // Обеззараживаем текст описания
+        $product["PREVIEW_TEXT"] = strip_tags($product["PREVIEW_TEXT"]);
+
+
         $product["mark"] = $product["PROPERTY_RATING_VALUE"];
 
 //        echo "<pre>";
@@ -138,43 +162,59 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                 <div class="grid__col-shrink">
                   <div class="ag-shop-catalog__item">
                     <!-- Обычная карточка товара-->
-                      <a class="ag-shop-item-card" href="#">
-                      <img class="ag-shop-item-card__image" src="/local/assets/images/item__image.png">
+                    <button class="ag-shop-slider-card__likes" type="button">
+                      <div class="ag-shop-slider-card__likes-icon<? if($product["mywish"]){?> wish-on<? }else{?> wish-off<? }?>"
+                        productid="<?= $product["ID"]?>" 
+                        onclick="return mywish(this);"></div>
+                      <div class="ag-shop-slider-card__likes-count"
+                      id="wishid<?= $product["ID"]?>"><?= 
+                        $product["wishes"]
+                      ?></div>
+                    </button>
+                      <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>">
+                      <img class="ag-shop-item-card__image" src="<?= $image_url?>">
                       <div class="ag-shop-item-card__badges">
+                      <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png">
+                      <? endif?>
+                      <? if($product["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png">
+                      <? endif?>
+                      <? if($product["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png">
+                      <? endif?>
                       </div>
                       <div class="ag-shop-item-card__info-layer">
                         <div class="ag-shop-item-card__points">
-                          <div class="ag-shop-item-card__points-count">1170</div>
-                          <div class="ag-shop-item-card__points-text">баллов</div>
+                          <div class="ag-shop-item-card__points-count"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?></div>
+                          <div class="ag-shop-item-card__points-text"><?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
                         </div>
-                        <button class="ag-shop-item-card__likes" type="button">
-                          <div class="ag-shop-item-card__likes-icon"></div>
-                          <div class="ag-shop-item-card__likes-count">893</div>
-                        </button>
                         <div class="ag-shop-item-card__colors">
+                          <!--
                           <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
                           <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
                           <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                          -->
                         </div>
                         <div class="ag-shop-item-card__info">
-                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
-                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
+                          <p class="ag-shop-item-card__category"><?= $product["SECTION_NAME"];?></p>
                           <div class="ag-shop-item-card__rating">
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item"></div>
+                            <? for($i=0;$i<round($product["RATING"]);$i++):?>
+                            <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
+                            <? endfor ?>
+                            <? for($j=0;$j<5-round($product["RATING"]);$j++):?>
+                            <div class="ag-shop-slider-card__rating-item"></div>
+                            <? endfor ?>
                           </div>
                           <div class="ag-shop-item-card__sizes">
+                            <!--
                             Размеры:
                             <span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span>
+                            -->
                           </div>
                           <p class="ag-shop-item-card__description">
-                              Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку
+                              <?= mb_strlen($product["PREVIEW_TEXT"])<196?$product["PREVIEW_TEXT"]:mb_substr($product["PREVIEW_TEXT"],0,196)."..."?>
                           </p>
                         </div>
                       </div>
@@ -182,33 +222,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                   </div>
                 </div>
         
-        <!-- 
-        <div class="ag-main-product" title="<?= $product["PROPERTY_CML2_LINK.NAME"];?>" style="background-image: url(<?= $image_url?>);">
-            <a href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>">
-            </a>
-            <div class="ag-product-wish <?= $product['mywish']?"wish-on":"wish-off"?>" title="Добавить в мои желания" productid="<?= $product['ID']?>" onclick="return mywish(this)"><?= $product['wishes'];?></div>
-            <? if($product["mark"]):?>
-            <div class="ag-product-mark" style="right: <?= round(4+24*(1-$product["mark"]))?>px;background-position: <?= round(24*(1-$product["mark"]))?>px 0%;" title="Средняя оценка <?= round(5*$product["mark"],1)?>" productid="<?= $product['ID']?>"></div>
-            <? endif ?>
-            <div class="ag-main-price"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?> <?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
-            
-            <? $top = 10;?>
-            <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
-            <div class="ag-newproduct" title="Новинка" style="top: <?= $top ?>px">Новинка</div>
-            <? $top += 60;?>
-            <? endif?>
-        
-            <? if($product["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
-            <div class="ag-saleleader" title="Лидер продаж" style="top: <?= $top ?>px">Лидер продаж</div>
-            <? $top += 60;?>
-            <? endif?>
-        
-            <? if($product["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
-            <div class="ag-specialoffer" title="Спецпредложение" style="top: <?= $top ?>px">Спец- предло- жение</div>
-            <? endif?>
-            
-        </div>
-        -->
         <?
     }
     
@@ -217,9 +230,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     
     ?>
     
-    <?if($res->SelectedRowsCount()>$PAGE*$ON_PAGE):?>
-        </div><a class="next-page ag-shop-catalog__more-button" href="#" onclick="return next_page('<?= $request."PAGE=".($PAGE+1);?>');">Ещё</a>
-        <a class="next-page" href="#" onclick="return next_page('<?= $request."PAGE=".($PAGE+1);?>');">&#9660; Загрузить ещё &#9660;</a>
+    <?if($res->SelectedRowsCount()>($PAGE*$ON_PAGE)):?>
+        <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
+    <?else:?>
     <?endif?>
     
     <?

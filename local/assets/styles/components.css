@@ -1639,10 +1639,11 @@
 }
 
 .ag-shop-slider-card__likes{
-    top:24px;
-    right: 24px;
+    top: 45px;
+    right: 36px;
     z-index: 9999;
 }
+
 
 .wish-on{
     background-position: 0 -432px;
@@ -1664,11 +1665,7 @@ div.filter-active{
 }
 
 #interests-filter::before{
-    left: 35%;
-}
-
-#types-filter::before{
-    left: 60%;
+    left: 50%;
 }
 
 #balls-filter::before{
@@ -1720,6 +1717,10 @@ input#ag-maxPrice{
 }
 
 .tablebodytext{
+    display: none;
+}
+
+input.ag-balls[type="radio"]{
     display: none;
 }
 

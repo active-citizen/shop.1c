@@ -42,12 +42,13 @@
     <meta name="msapplication-tap-highlight" content="no"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>ag-shop__main</title>
 
-    <?$APPLICATION->ShowHead();?>                                                                                                                                                           
-    <?                                                                                                                                                                                      
-    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/colors.css");                                                                                                                       
-    $APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
+    <?
+        //$APPLICATION->ShowHead();
+    ?>                                                                                                                                                           
+    <?  
+    //$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/colors.css");                                                                                                                       
+    //$APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
     ?>
 
     <link rel="stylesheet" href="/local/assets/styles/fonts.css">

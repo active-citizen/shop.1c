@@ -45,20 +45,64 @@ $(document).ready(function() {
    */
   $('.ag-shop-filter__trigger').click(function(){
 
+    if(
+        $(this).hasClass('ag-shop-filter__trigger--active')
+        && $('#'+$(this).attr("rel")).hasClass('filter-active')
+    ){
+        $('#'+$(this).attr("rel")).removeClass('filter-active')
+    }else if(
+        $(this).hasClass('ag-shop-filter__trigger--active')
+        && !$('#'+$(this).attr("rel")).hasClass('filter-active')
+    ){
+        $('.ag-shop-filter__variants').removeClass('filter-active');
+        $('#'+$(this).attr("rel")).addClass('filter-active');
+    }
+    else if(
+        !$(this).hasClass('ag-shop-filter__trigger--active')
+        && $('#'+$(this).attr("rel")).hasClass('filter-active')
+    ){
+    }
+    else if(
+        !$(this).hasClass('ag-shop-filter__trigger--active')
+        && !$('#'+$(this).attr("rel")).hasClass('filter-active')
+    ){
+        $('.ag-shop-filter__variants').removeClass('filter-active');
+        $('#'+$(this).attr("rel")).addClass('filter-active');
+    }
+
+
     $('.ag-shop-filter__variants').find(":before").css("left","200");
 
     $('.ag-shop-filter__trigger').removeClass('ag-shop-filter__trigger--active');
+    
     $(this).addClass('ag-shop-filter__trigger--active');
-    $('.ag-shop-filter__variants').removeClass('filter-active');
-    $('#'+$(this).attr("rel")).addClass('filter-active');
+    
+    
   });
   
   
   /**
    * Выбор элементов фильтра
    */
+  $('.ag-shop-filter__variants input').click(function(){
+    if($(this).parent().parent().find('input:checked').length>3){
+       $(this).removeAttr('checked');
+        alert('Нельзя выбирать более 3 элементов');
+        return false;
+    }
+    return true;
+  });
+
+
   $('.ag-shop-filter__variants input').change(function(){
+    if($(this).parent().parent().find('input:checked').length>3){
+        $(this).removeAttr('checked');
+        alert('Нельзя выбирать более 3 элементов');
+        return false;
+    }
     input_variant_click($(this));
+    
+    ag_filter();
     return false;
   });   
 

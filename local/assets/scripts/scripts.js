@@ -94,7 +94,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#back-top a').click(function () {
+    $('.ag-shop-sidebar__up').click(function () {
         $('body,html').animate({
             scrollTop: 630
         }, 800);
@@ -114,7 +114,17 @@ $(document).ready(function(){
     if($('.catalog-ajax-block')){
         var hash = document.location.hash;
         hash = hash.replace(/#/,"");
-        $('.catalog-ajax-block').load("/catalog/index.ajax.php?"+hash,function(){$('.catalog-ajax-block').removeClass('catalog-ajax-block-loader');});
+        $('.catalog-ajax-block').load("/catalog/index.ajax.php?"+hash,function(){
+            $('.catalog-ajax-block').removeClass('catalog-ajax-block-loader');
+            // Показывать или прятать кнопку "исчо"
+            if($('.catalog-page-input').last().val()){
+                $('.ag-shop-catalog__more-button').fadeIn();
+            }
+            else{
+                console.log($('.catalog-page-input').last());
+                $('.ag-shop-catalog__more-button').fadeOut();
+            }
+        });
     }
     
     if($('.ag-shop-filter')){
@@ -142,36 +152,16 @@ $(document).ready(function(){
                 input_variant_click($('input.ag-interest[value="'+tmp[i]+'"]'));
             }
         }
-        if(parameters.filter_type){
-            tmp = parameters.filter_type.split(",");
-            for(i in tmp){
-                $('input.ag-types[value="'+tmp[i]+'"]').click();
-                input_variant_click($('input.ag-types[value="'+tmp[i]+'"]'));
-            }
-        }
+
         if(parameters.filter_balls){
-            tmp = parameters.filter_balls.split(",");
-            balls_from  = tmp[0];
-            balls_to    = tmp[1];
-            if(balls_from)
-                $('#ag-minPrice').val(balls_from);
-            
-            if(balls_to)
-                $('#ag-maxPrice').val(balls_to);
-                
-            $("#slider").slider({values:[balls_from,balls_to]});
+            $('input[name="ag-balls"]').each(function(){
+                if($(this).val()==parameters.filter_balls){
+                    $('input.ag-balls[value="'+$(this).val()+'"]').attr('checked',true);
+                    input_variant_click($('input.ag-balls[value="'+$(this).val()+'"]'));
+                }
+            });
         }
 
-
-        /*
-        if(parameters.filter_iwant)$('#ag-iwant').val(parameters.filter_iwant);
-        if(parameters.filter_interest)$('#ag-interest').val(parameters.filter_interest);
-        if(parameters.filter_balls)$('#ag-balls').val(parameters.filter_balls);
-        if(parameters.flag)$('#ag-flag').val(parameters.flag);
-        if(parameters.sorting)$('#ag-sorting').val(parameters.sorting);
-        if(parameters.filter_type)$('#ag-types').val(parameters.filter_type);
-        */
-        
         $('.ag-shop-menu__link_flag').each(function(){
             if($(this).attr("rel")==parameters.flag){
                 $(this).addClass('ag-shop-menu__link--active');
@@ -186,19 +176,14 @@ $(document).ready(function(){
         });
         
         if(!parameters.flag){
-            $('.filter-flag[rel="all"]').addClass('ag-shop-menu__link--active');
+            $('a[rel="all"]').addClass('ag-shop-menu__link--active');
             $('#ag-flag').val('all');
         }
         
-        
         if(!parameters.sorting){
-            $('.sorting-flag[rel="price-asc"]').addClass('ag-shop-menu__link--active');
+            $('a[rel="rating-desc"]').addClass('ag-shop-menu__link--active');
             $('#ag-sorting').val('price-asc');
         }
-        
-        var types = $('#ag-types').length>0?$('#ag-types').val().split(','):Array();
-        for(i in types)
-            $('.ag-filter-params label[rel="'+types[i]+'"]').addClass('radio-active');
         
     }
     
@@ -420,20 +405,23 @@ $(document).ready(function(){
     
 });
 
-function next_page(query_string){
-    $('.catalog-ajax-block .next-page').last().html('');
-    $('.catalog-ajax-block .next-page').last().addClass('catalog-ajax-block-loader');
+function next_page(){
+    // Берём информацию о следующей странице для подгрузки из input
+    query_string = $('.catalog-page-input').last().val();
+    // Удаляем input, хранящий информацию о следующей странице для подгрузки
+    $('.catalog-page-input').remove();
     // Конец промотки
     if(!query_string)return false;
     $.get(
         "/catalog/index.ajax.php?"+query_string,
         function(data){
-            $('.catalog-ajax-block .next-page').remove();
             $('.catalog-ajax-block').append(data);
             scrollProcess = 0;
             $('body,html').animate({
                 scrollTop: $('body').height()
             }, 1600);
+            //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
+            if(!$('.catalog-page-input').last().val())$('.next-page').remove();
         }
     );
     return false;
@@ -503,10 +491,6 @@ function mywish(object){
 
 function ag_filter(){
     $('.catalog-ajax-block').last().addClass('catalog-ajax-block-loader');
-    var types = Array();
-    $('.ag-types').each(function(){if($(this).is(":checked"))types.push($(this).val())});
-    types = types.join(',');
-    
     
     var iwant =  Array();
     $('.ag-iwant').each(function(){if($(this).is(":checked"))iwant.push($(this).val())});
@@ -517,15 +501,14 @@ function ag_filter(){
     $('.ag-interest').each(function(){if($(this).is(":checked"))interest.push($(this).val())});
     interest = interest.join(',');
     
-    var balls = $('#ag-minPrice').val()+','+$('#ag-maxPrice').val();
+    var balls = $('input[name="ag-balls"]:checked').val();
     var flag = $('#ag-flag').val()?$('#ag-flag').val():'all';
-    var sorting = $('#ag-sorting').val()?$('#ag-sorting').val():'all';
+    var sorting = $('#ag-sorting').val()?$('#ag-sorting').val():'rating-desc';
     
     
 
     var uri = 
-        "filter_type="+types+
-        "&filter_iwant="+iwant+
+        "filter_iwant="+iwant+
         "&filter_interest="+interest+
         "&filter_balls="+balls+
         '&flag='+flag+
@@ -535,10 +518,21 @@ function ag_filter(){
     document.location.hash = uri;
     $('.ag-shop-catalog__items-container > div').load(url,function(){
         $('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');
-        $('body,html').animate({
-            scrollTop: 630
-        }, 800);
 
+        $('body,html').animate(
+            {
+                scrollTop: 630
+            }, 
+            800
+        );
+        
+        if($('.catalog-page-input').last().val()){
+            $('.ag-shop-catalog__more-button').fadeIn();
+        }
+        else{
+            $('.ag-shop-catalog__more-button').fadeOut();
+        }
+        
     });
     return false;
 }
