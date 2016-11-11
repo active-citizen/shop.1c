@@ -1,8 +1,15 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+if($_SERVER["REQUEST_URI"]=='/rules/'){
+    LocalRedirect('/rules/faq/');
+    die;
+}
 $APPLICATION->SetTitle("Правила");
 include("menu.php")
 ?>
+
+
+        <div class="ag-shop-content">
 
         <div class="chopItemsGroups mb80">
             <div class="rule_description">
@@ -61,6 +68,7 @@ include("menu.php")
 
 
 
+        </div>
 
 
 

@@ -2,6 +2,8 @@
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы");
+
+include("../menu.php");
 ?><?$APPLICATION->IncludeComponent("ag:sale.personal.order", "", array(
     "SEF_MODE" => "Y",
     "SEF_FOLDER" => "/order/",

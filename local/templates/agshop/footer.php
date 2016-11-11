@@ -1,6 +1,5 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
-        </div>
         <!-- Footer {{{-->
         <footer class="ag-shop-footer">
           <div class="ag-shop-footer__links"><a class="ag-shop-footer__link" href="#">О проекте</a><a class="ag-shop-footer__link" href="#">Часто задаваемые вопросы</a><a class="ag-shop-footer__link" href="#">Обратная связь</a></div>

@@ -35,11 +35,13 @@ if($_SERVER["REQUEST_URI"]=='/points/'){
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
     }   
-    LocalRedirect("/points/all/");
-    die;
+
 }
+    include("../menu.php");
 
 ?>
+        <div class="ag-shop-content">
+          <div class="ag-shop-content__limited-container">
 
 <?$APPLICATION->IncludeComponent(
     "ag:points", 
@@ -53,5 +55,8 @@ if($_SERVER["REQUEST_URI"]=='/points/'){
         "RECORDS_ON_PAGE"   =>  30
     )
 );?>
+
+          </div>
+        </div>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

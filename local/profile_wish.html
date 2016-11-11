@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="address=no"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>ag-shop__profile-wishes</title>
+    <link rel="stylesheet" href="assets/styles/fonts.css">
+    <link rel="stylesheet" href="assets/styles/components.css">
+    <link rel="stylesheet" href="assets/styles/catalog.css">
+    <script src="assets/libs/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/libs/slick.css">
+    <script src="assets/libs/slick.min.js"></script>
+    <script src="assets/scripts/index.js"></script>
+  </head>
+  <body>
+    <div class="ag-shop">
+      <div class="ag-shop__sidebar">
+        <!-- Sidebar {{{-->
+        <div class="ag-shop-sidebar">
+          <div class="ag-shop-sidebar__logo-container"><a class="ag-shop-sidebar__logo" href="#"></a></div>
+          <div class="ag-shop-sidebar__social-container">
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--vk" href="#"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--fb" href="#"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--tw" href="#"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--inst" href="#"></a></div>
+          </div>
+          <button class="ag-shop-sidebar__up" type="button"></button>
+        </div>
+        <!-- }}} Sidebar-->
+      </div>
+      <div class="ag-shop__main">
+        <!-- Top Nav {{{-->
+        <nav class="ag-shop-nav">
+          <div class="ag-shop-nav__container">
+            <div class="grid grid--bleed">
+              <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--basket"></i>
+                  <div class="ag-shop-nav__link-caption">Магазин<span class="show-on-desktop">&nbsp;поощрений</span></div></a></div>
+              <div class="grid__col-auto grid__col-md-shrink">
+                <div class="ag-shop-nav__link ag-shop-nav__link--active">
+                  <div class="ag-shop-nav__profile-container"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
+                    <div class="ag-shop-nav__link-caption">
+                      <span class="hide-on-desktop">Профиль</span>
+                      <span class="show-on-desktop">Константин&nbsp;Констанинович<br>Иванов</span>
+                    </div>
+                    <div class="ag-shop-nav__profile-points">
+                       1654&nbsp;балла</div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
+                  <div class="ag-shop-nav__link-caption">
+                     Правила</div></a></div>
+              <!-- Можно выпилить целиком, если не нужно-->
+              <div class="grid__col-auto grid__col-md-shrink ag-shop-nav__last-item">
+                <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
+                  <div class="ag-shop-nav__link"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--search"></i>
+                    <div class="ag-shop-nav__link-caption">
+                       Поиск</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <!-- }}} Top Nav-->
+        <!-- Menu {{{-->
+        <div class="ag-shop-menu">
+          <div class="ag-shop-menu__container">
+            <div class="ag-shop-menu__header">
+              <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
+                <div class="grid__col grid__col-shrink">
+                  <h2 class="ag-shop-menu__current">Мои желания</h2>
+                </div>
+                <div class="grid__col grid__col-shrink">
+                  <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" type="button"><span></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="ag-shop-menu__items js-menu__list">
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Мои заказы</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Мои баллы</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="#">Мои желания</a></div>
+            </div>
+          </div>
+        </div>
+        <!-- }}} Menu-->
+        <div class="ag-shop-content">
+          <!-- Catalog {{{-->
+          <div class="ag-shop-catalog">
+            <div class="ag-shop-catalog__items-container">
+              <div class="grid grid--bleed grid--justify-center">
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item">
+                    <!-- Обычная карточка товара--><a class="ag-shop-item-card" href="#"><img class="ag-shop-item-card__image" src="/assets/images/item__image.png">
+                      <div class="ag-shop-item-card__badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__hit.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__sale.png"></div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes ag-shop-item-card__likes--active" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">Размеры:<span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span></div>
+                          <p class="ag-shop-item-card__description">Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку</p>
+                        </div>
+                      </div></a>
+                  </div>
+                </div>
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item">
+                    <!-- Карточка с тёмным фоном, картинка должна занимать всю площадь--><a class="ag-shop-item-card ag-shop-item-card--dark" href="#"><img class="ag-shop-item-card__image" src="assets/images/item__dark-image.jpg">
+                      <div class="ag-shop-item-card__badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__hit.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__sale.png"></div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes ag-shop-item-card__likes--active" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">Размеры:<span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span></div>
+                          <p class="ag-shop-item-card__description">Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку</p>
+                        </div>
+                      </div></a>
+                  </div>
+                </div>
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item">
+                    <!-- карточка с баннером (нет в наличии и прочее)--><a class="ag-shop-item-card ag-shop-item-card--not-available" href="#"><img class="ag-shop-item-card__image" src="assets/images/categories/ic_children.png">
+                      <div class="ag-shop-item-card__badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__hit.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__sale.png"></div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes ag-shop-item-card__likes--active" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">Размеры:<span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span></div>
+                          <p class="ag-shop-item-card__description">Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку</p>
+                        </div>
+                      </div>
+                      <div class="ag-shop-item-card__banner">
+                        <div class="ag-shop-item-card__banner-text">Нет в наличии</div>
+                      </div></a>
+                  </div>
+                </div>
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item"><a class="ag-shop-item-card" href="#"><img class="ag-shop-item-card__image" src="assets/images/categories/ic_entertainment.png">
+                      <div class="ag-shop-item-card__badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__hit.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__sale.png"></div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes ag-shop-item-card__likes--active" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">Размеры:<span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span></div>
+                          <p class="ag-shop-item-card__description">Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку</p>
+                        </div>
+                      </div></a></div>
+                </div>
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item"><a class="ag-shop-item-card" href="#"><img class="ag-shop-item-card__image" src="assets/images/categories/ic_museum.png">
+                      <div class="ag-shop-item-card__badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__hit.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__sale.png"></div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes ag-shop-item-card__likes--active" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">Размеры:<span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span></div>
+                          <p class="ag-shop-item-card__description">Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку</p>
+                        </div>
+                      </div></a></div>
+                </div>
+                <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item"><a class="ag-shop-item-card" href="#"><img class="ag-shop-item-card__image" src="assets/images/categories/ic_park.png">
+                      <div class="ag-shop-item-card__badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__hit.png"><img class="ag-shop-item-card__badge" src="assets/images/badge__sale.png"></div>
+                      <div class="ag-shop-item-card__info-layer">
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count">1170</div>
+                          <div class="ag-shop-item-card__points-text">баллов</div>
+                        </div>
+                        <button class="ag-shop-item-card__likes ag-shop-item-card__likes--active" type="button">
+                          <div class="ag-shop-item-card__likes-icon"></div>
+                          <div class="ag-shop-item-card__likes-count">893</div>
+                        </button>
+                        <div class="ag-shop-item-card__colors">
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
+                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
+                        </div>
+                        <div class="ag-shop-item-card__info">
+                          <h3 class="ag-shop-item-card__name">Сумка городская Сумка городская</h3>
+                          <p class="ag-shop-item-card__category">Сувениры</p>
+                          <div class="ag-shop-item-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                          <div class="ag-shop-item-card__sizes">Размеры:<span class="ag-shop-item-card__sizes-content">M &nbsp;|&nbsp; L &nbsp;|&nbsp; XL</span></div>
+                          <p class="ag-shop-item-card__description">Суперсумки городские.<br>Зелёные и белые <br>в полоску и крапинку</p>
+                        </div>
+                      </div></a></div>
+                </div>
+              </div><a class="ag-shop-catalog__more-button" href="#">Ещё</a>
+            </div>
+          </div>
+          <!-- }}} Catalog-->
+        </div>
+        <!-- Footer {{{-->
+        <footer class="ag-shop-footer">
+          <div class="ag-shop-footer__links"><a class="ag-shop-footer__link" href="#">О проекте</a><a class="ag-shop-footer__link" href="#">Часто задаваемые вопросы</a><a class="ag-shop-footer__link" href="#">Обратная связь</a></div>
+          <div class="ag-shop-footer__copy"><small class="ag-shop-footer__copy-text">&copy; 2016, Активный Гражданин. <br class="hide-on-desktop">Все права защищены. <a href="#">Публичная оферта</a></small></div>
+        </footer>
+        <!-- }}} Footer-->
+      </div>
+    </div>
+  </body>
+</html>

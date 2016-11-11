@@ -1724,3 +1724,18 @@ input.ag-balls[type="radio"]{
     display: none;
 }
 
+.searchform input[type="text"]{
+    background-image: url(../images/icon__search.svg);
+    background-repeat: no-repeat;
+    background-position: 10px 5px;
+    padding-left: 48px;
+    height: 40px;
+    font-size: 0.8125rem;
+    border: 1px #888 solid;
+    border-radius: 20px;
+}
+
+.searchform input:focus{
+     outline: none;
+}
+

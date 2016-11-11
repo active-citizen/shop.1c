@@ -54,6 +54,8 @@
     <link rel="stylesheet" href="/local/assets/styles/fonts.css">
     <link rel="stylesheet" href="/local/assets/styles/components.css">
     <link rel="stylesheet" href="/local/assets/styles/catalog.css">
+    <link rel="stylesheet" href="/local/assets/styles/profile.css">
+    <link rel="stylesheet" href="/local/assets/styles/rules.css">
     
     <script src="/local/assets/libs/jquery.min.js"></script>
     <script src="/local/assets/libs/jquery-ui.js"></script>
@@ -74,7 +76,7 @@
       <div class="ag-shop__sidebar">
         <!-- Sidebar {{{-->
         <div class="ag-shop-sidebar">
-          <div class="ag-shop-sidebar__logo-container"><a class="ag-shop-sidebar__logo" href="#"></a></div>
+          <div class="ag-shop-sidebar__logo-container"><a class="ag-shop-sidebar__logo" href="/catalog/"></a></div>
           <div class="ag-shop-sidebar__social-container">
             <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--vk" href="#"></a></div>
             <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--fb" href="#"></a></div>
@@ -107,27 +109,37 @@
           <div class="ag-shop-nav__container">
             <div class="grid grid--bleed">
               <div class="grid__col-auto grid__col-md-shrink">
-                <div class="ag-shop-nav__link ag-shop-nav__link--active"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--basket"></i>
+                <a class="ag-shop-nav__link" href="/catalog/" style="padding-left: 0px;">
+                <div class="ag-shop-nav__link <? if(preg_match("#^/catalog/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--basket"></i>
                   <div class="ag-shop-nav__link-caption">Магазин<span class="show-on-desktop">&nbsp;поощрений</span></div>
                 </div>
+                </a>
               </div>
-              <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#">
-                  <div class="ag-shop-nav__profile-container"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
+              <div class="grid__col-auto grid__col-md-shrink">
+                  <a class="ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
+                  <div class="ag-shop-nav__profile-container">
+                      <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
                     <div class="ag-shop-nav__link-caption">
                       <span class="hide-on-desktop">Профиль</span>
                       <span class="show-on-desktop"><?= $FIO;?></span>
                     </div>
                     <div class="ag-shop-nav__profile-points"><?= $myBalls;?></div>
                   </div></a></div>
-              <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
+              <div class="grid__col-auto grid__col-md-shrink">
+                  <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/">
+                  <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
                   <div class="ag-shop-nav__link-caption">
-                     Правила</div></a></div>
+                     Правила
+                  </div>
+                  </a>
+                </div>
               <!-- Можно выпилить целиком, если не нужно-->
               <div class="grid__col-auto grid__col-md-shrink ag-shop-nav__last-item">
                 <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
-                  <div class="ag-shop-nav__link"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--search"></i>
-                    <div class="ag-shop-nav__link-caption">
-                       Поиск</div>
+                  <div class="ag-shop-nav__link">
+                    <form action="/search/" class="searchform">
+                      <input name="q" type="text" placeholder="Поиск" value="<?= htmlspecialchars(isset($_GET["q"])?$_GET["q"]:"") ?>">
+                    </form>
                   </div>
                 </button>
               </div>
@@ -135,35 +147,6 @@
           </div>
         </nav>
         <!-- }}} Top Nav-->
-        <!-- Menu {{{-->
-        <div class="ag-shop-menu">
-          <div class="ag-shop-menu__container">
-            <div class="ag-shop-menu__header">
-              <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
-                <div class="grid__col grid__col-shrink">
-                  <h2 class="ag-shop-menu__current">Все&nbsp;категории</h2>
-                </div>
-                <div class="grid__col grid__col-shrink">
-                  <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" type="button"><span></span></button>
-                </div>
-              </div>
-            </div>
-            <div class="ag-shop-menu__items js-menu__list">
-                
-                <?php foreach($SECTIONS as $section):?>
-                <? if(!$section["products"])continue;?>
-                <div class="ag-shop-menu__item">
-                    <a class="ag-shop-menu__link<? if(preg_match("#^".$section["SECTION_PAGE_URL"]."#",$_SERVER["REQUEST_URI"])):?> ag-shop-menu__link--active<? endif?>" 
-                        href="<?= $section["SECTION_PAGE_URL"];?>">
-                        <?= $section["NAME"];?>
-                    </a>
-                </div>
-                <?endforeach?>
-            </div>
-          </div>
-        </div>
-        <!-- }}} Menu-->
-        <div class="ag-shop-content">
 
 
 
