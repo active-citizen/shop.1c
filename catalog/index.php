@@ -167,7 +167,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
         <div class="ag-shop-content">
           <!-- Slider {{{-->
-          <div class="ag-shop-slider">
+          <div class="ag-shop-slider" style="height:500px;">
             <div class="js-content-slider">
                 
             <?foreach($BANERS as $BANER):?>
