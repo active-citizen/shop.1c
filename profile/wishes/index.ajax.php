@@ -5,6 +5,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
 
     $ON_PAGE = 10;
     $PAGE = isset($_REQUEST["PAGE"])?intval($_REQUEST["PAGE"]):1;
+    if(!$PAGE)$PAGE = 1;
 
 
     CModule::IncludeModule("iblock");
@@ -23,107 +24,50 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     }
 
     
-    if(!isset($_REQUEST['sorting']) || !$_REQUEST['sorting'])$_REQUEST['sorting']='rating-desc';
-    if(isset($_REQUEST['sorting']) && $_REQUEST['sorting']=='rating-desc'){
-        $arrSorting["PROPERTY_RATING"]="DESC";
-    }
-    elseif(isset($_REQUEST['sorting']) && $_REQUEST['sorting']=='price-desc'){
-        $arrSorting["PROPERTY_MINIMUM_PRICE"]="DESC";
-    }
-    else{
-        $arrSorting["PROPERTY_MINIMUM_PRICE"]="ASC";
-    }
-    
-    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='news'){
-        $arrFilter["PROPERTY_NEWPRODUCT"] = $ENUMS['NEWPRODUCT']["да"];
-    }
-    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='actions'){
-        $arrFilter["PROPERTY_SPECIALOFFER"] = $ENUMS['SPECIALOFFER']["да"];
-    }
-    if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='populars'){
-        $arrFilter["PROPERTY_SALELEADER"] = $ENUMS['SALELEADER']["да"];
-    }
-    
-    
-    if(isset($_REQUEST['filter_iwant']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_iwant'])){
-        $iwant = explode(",",$_REQUEST['filter_iwant']);
-        if(!count($iwant)){
-        }else{
-            $arrFilter["PROPERTY_WANTS"] = $iwant;
-        }
-    }
-
-    if(isset($_REQUEST['filter_type']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_type'])){
-        $type = explode(",",$_REQUEST['filter_type']);
-        if(!count($type)){
-        }else{
-            $arrFilter["PROPERTY_TYPES"] = $type;
-        }
-    }
-    
-    if(isset($_REQUEST['filter_interest']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_interest'])){
-        $interest = explode(",",$_REQUEST['filter_interest']);
-        if(!count($interest)){
-        }else{
-            $arrFilter["PROPERTY_INTERESTS"] = $interest;
-        }
-    }
-
-    if(isset($_REQUEST['filter_balls']) && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])){
-        $balls = explode(",",$_REQUEST['filter_balls']);
-        $arrFilter[">=PROPERTY_MINIMUM_PRICE"] = $balls[0];
-        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = $balls[1];
-        /*
-        // Узнаём ID инфоблока
-        $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
-        $iblock = $res->GetNext();
-        //$arrFilter["<=CATALOG_PRICE_1"] = $balls;
-        $arrFilter[] = array(
-            "LOGIC"=>"OR",
-            array(
-                "<=CATALOG_PRICE_1"=>$balls
-            ),
-            array(
-                "=ID"=>CIBlockElement::SubQuery("PROPERTY_CML2_LINK",array("IBLOCK_ID"=>$iblock["ID"],"<=CATALOG_PRICE_1"=>$balls))
-            )
-        );
-        */
-    }
-    elseif(!isset($_REQUEST['filter_balls'])){
-        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1500;
-    }
-    $arrFilter["ACTIVE"] = 'Y';
-    
-    // Узнаём ID инфоблока
-    $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+    // Узнаём ID инфоблока пожеланий
+    $res = CIBlock::GetList(array(),array("CODE"=>"whishes"));
     $iblock = $res->GetNext();
     $arrFilter["IBLOCK_ID"] = $iblock["ID"];
+    $arrFilter["PROPERTY_WISH_USER"] = $USER->GetId();
+    
+    // Узнаём ID инфоблока товаров
+    $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
+    $iblock = $res->GetNext();
+    $catalogIbId = $iblock["ID"];
     
     $res = CIBlockElement::GetList(
-        $arrSorting,
+        array("TIMESTAMP_X"=>"DESC"),
         $arrFilter,
         false,
         array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
-        array(
-            "PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE",
-            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME"
-            )
+        array("PROPERTY_WISH_PRODUCT")
     );
     
-    while($product = $res->GetNext()){
-
+    while($wishProduct = $res->GetNext()){
+        
+        // Получаем продукт, который привязан
+        $resWishCatalog = CIBlockElement::GetList(
+            array(),
+            array("IBLOCK_ID"=>$catalogIbId,"ID"=>$wishProduct["PROPERTY_WISH_PRODUCT_VALUE"]),
+            false,
+            array("nPageSize"=>1),
+            array(
+                "PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE",
+                "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME"
+                )
+        );
+        $product = $resWishCatalog->GetNext();
+        if(!$product)continue;
+        
         // Получение всех свойств товара
-        $res2 = CIBlockElement::GetProperty($arrFilter["IBLOCK_ID"],$product["ID"]);
+        $res2 = CIBlockElement::GetProperty($catalogIbId,$product["ID"]);
         $product["ALL_PROPERTIES"] = array();
         while($row = $res2->GetNext())$product["ALL_PROPERTIES"][$row["CODE"]] = $row;
         
         $image_url = '';
         if($file_id = intval($product["DETAIL_PICTURE"]))$image_url = CFile::GetPath($file_id);
 
-        // Входит ли товар с писок моих желаний
-        $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_USER"=>CUser::GetID(),"PROPERTY_WISH_PRODUCT"=>$product["ID"]);
-        $res1 = CIBlockElement::GetList(array(),$arFilter,false, array("nTopCount"=>1));
-        $product["mywish"] = $res1->SelectedRowsCount();
+        $product["mywish"] = 1;
         
         // Сколько у товара всего желающих
         $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_PRODUCT"=>$product["ID"]);
@@ -152,11 +96,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
 
         $product["mark"] = $product["PROPERTY_RATING_VALUE"];
 
-//        echo "<pre>";
-//        print_r($image_url);
-//        print_r($product);
-//        echo "</pre>";
-//        die;
+        
         ?>
         
                 <div class="grid__col-shrink">
@@ -231,7 +171,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
     ?>
     
     <?if($res->SelectedRowsCount()>($PAGE*$ON_PAGE)):?>
-        <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
+        <input type="hidden" class="catalog-page-input" value="<?= ($PAGE+1);?>"/>
     <?else:?>
     <?endif?>
     

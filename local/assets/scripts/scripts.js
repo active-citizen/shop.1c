@@ -66,7 +66,7 @@ $(document).ready(function(){
         
         markObj.text('Загрузка...');
         $.get(
-            "/order/order.ajax.php?mark="+mark+"&product="+product,
+            "/profile/order/order.ajax.php?mark="+mark+"&product="+product,
             function(data){
                 var answer = JSON.parse(data);
                 if(answer.percent){
@@ -226,7 +226,7 @@ $(document).ready(function(){
         if(stores_count==1 && default_store_id)store_id = default_store_id;
         if(!store_id){ag_ci_rise_error("Центр выдачи не выбран, либо товара нет в наличии");return false;}
 
-        var get_profile_url = "/order/order.ajax.php?offer_id="+offer_id+'&store_id='+store_id;
+        var get_profile_url = "/profile/profile/order/order.ajax.php?offer_id="+offer_id+'&store_id='+store_id;
 
 
         // Получаем информацию по профилю пользователя
@@ -287,7 +287,7 @@ $(document).ready(function(){
         $('#order-process-done').css('display','block');
         $('.ok-button').css('display','none');
         $.post(
-            "/order/order.ajax.php",
+            "/profile/order/order.ajax.php",
             {
                 "quantity":$('#ag-basket-amount').spinner("value"),
                 "create_order":$('.catalog_item_confirm_message .ag-window #offer_id').html(),
@@ -317,7 +317,7 @@ $(document).ready(function(){
         */
         
         
-        var add_basket_url = "/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value")+"&store_id="+store_id;
+        var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value")+"&store_id="+store_id;
 
         // добавляем в корзину
         $('#order-process-done').css('display','block');
@@ -333,7 +333,7 @@ $(document).ready(function(){
                 }
                 
                 $.get(
-                    "/order/order.ajax.php?add_order=Y&store_id="+answer.store_id,
+                    "/profile/order/order.ajax.php?add_order=Y&store_id="+answer.store_id,
                     function(data){
                         var answer = JSON.parse(data);
                         if(answer.redirect_url){
@@ -342,7 +342,7 @@ $(document).ready(function(){
                         else{
                             // Чистим корзину, если заказ неудачен
                             $.get(
-                                "/order/order.ajax.php?clear_basket",
+                                "/profile/order/order.ajax.php?clear_basket",
                                 function(){
                                     $('#order-process-done').css('display','none');
                                     $('.ok-button').css('display','block');
@@ -427,6 +427,27 @@ function next_page(){
     return false;
 }
 
+function wishes_load(){
+    
+    $.get(
+        "/profile/wishes/index.ajax.php?PAGE="+$('.catalog-page-input').val(),
+        function(data){
+            $('.catalog-page-input').remove();
+            $('.my-wishes-ajax').append(data);
+            //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
+            if(!$('.catalog-page-input').last().val())$('.ag-shop-catalog__more-button').remove();
+            /*
+                $('body,html').animate({
+                    scrollTop: $('body').height()
+                }, 1600);
+            */
+        }
+    );
+    
+    return false;
+}
+
+
 function ag_ci_rise_error(text){
     $('.catalog_item_error_message .ag-window .message').html(text);
     $('.catalog_item_error_message').fadeIn('fast');
@@ -450,7 +471,7 @@ function ag_ci_rise_confirm(profile,store,product){
 function order_cancel(order_id,obj){
     $(obj).css('display','none');
     $('#ag-cancel-loader-'+order_id).css('display','inline-block');
-    $.get("/order/order.ajax.php?cancel="+order_id,function(){
+    $.get("/profile/order/order.ajax.php?cancel="+order_id,function(){
         document.location.href='/order/';
 //        $(obj).css('display','inline-block');
 //        $('#ag-cancel-loader-'+order_id).css('display','none');
@@ -461,7 +482,7 @@ function order_cancel(order_id,obj){
 function mywish(object){
     var obj = $(object);
     var product_id = obj.attr("productid");
-    var url = "/order/order.ajax.php?wish=";
+    var url = "/profile/order/order.ajax.php?wish=";
     if(obj.hasClass('wish-on')){
         obj.removeClass('wish-on')
         obj.addClass('wish-off')

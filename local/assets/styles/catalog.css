@@ -903,7 +903,7 @@ body {
 }
 .ag-shop-filter {
   display: block;
-  margin: 0 0 0px;
+  margin: 0 0 20px;
   border-radius: 3px;
   overflow: hidden;
 }
@@ -962,7 +962,7 @@ body {
 .ag-shop-filter__variants label {
   display: inline-block;
 }
-.ag-shop-filter__variants input[type="checkbox"] {
+.ag-shop-filter__variants input {
   display: none;
 }
 .ag-shop-filter__variants-item {
@@ -1332,7 +1332,7 @@ input:checked + .ag-shop-filter__variants-item {
   }
 
   .ag-shop-filter__variants::before {
-    left: 15%;
+    left: 16%;
     right: auto;
     margin: 0;
   }

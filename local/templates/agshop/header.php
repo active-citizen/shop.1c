@@ -53,20 +53,18 @@
 
     <link rel="stylesheet" href="/local/assets/styles/fonts.css">
     <link rel="stylesheet" href="/local/assets/styles/components.css">
-    <link rel="stylesheet" href="/local/assets/styles/catalog.css">
     <link rel="stylesheet" href="/local/assets/styles/profile.css">
+    <link rel="stylesheet" href="/local/assets/styles/catalog.css">
     <link rel="stylesheet" href="/local/assets/styles/rules.css">
+    <link rel="stylesheet" href="/local/assets/libs/jquery-ui.css">
+    <link rel="stylesheet" href="/local/assets/libs/slick.css">
+    <link rel="stylesheet" href="/local/assets/styles/mod.css">
     
     <script src="/local/assets/libs/jquery.min.js"></script>
     <script src="/local/assets/libs/jquery-ui.js"></script>
-    
-    <script src="/local/assets/scripts/scripts.js"></script>
-    <link rel="stylesheet" href="/local/assets/libs/slick.css">
-    <link rel="stylesheet" href="/local/assets/libs/jquery-ui.css">
-    
     <script src="/local/assets/libs/slick.min.js"></script>
     <script src="/local/assets/scripts/index.js"></script>
-
+    <script src="/local/assets/scripts/scripts.js"></script>
     
     <title><?$APPLICATION->ShowTitle()?></title>
 
@@ -89,20 +87,6 @@
       </div>
 
 
-      <div class="ag-shop__sidebar">
-        <!-- Sidebar {{{-->
-        <div class="ag-shop-sidebar">
-          <div class="ag-shop-sidebar__logo-container"><a class="ag-shop-sidebar__logo" href="#"></a></div>
-          <div class="ag-shop-sidebar__social-container">
-            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--vk" href="#"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--fb" href="#"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--tw" href="#"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--inst" href="#"></a></div>
-          </div>
-          <button class="ag-shop-sidebar__up" type="button"></button>
-        </div>
-        <!-- }}} Sidebar-->
-      </div>
       <div class="ag-shop__main">
         <!-- Top Nav {{{-->
         <nav class="ag-shop-nav">

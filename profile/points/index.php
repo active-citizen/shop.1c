@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Мои баллы");
 
 
-if($_SERVER["REQUEST_URI"]=='/points/'){
+if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
@@ -37,18 +37,20 @@ if($_SERVER["REQUEST_URI"]=='/points/'){
     }   
 
 }
-    include("../menu.php");
+    include(dirname(__FILE__)."/../menu.php");
 
 ?>
         <div class="ag-shop-content">
           <div class="ag-shop-content__limited-container">
+            <!-- Profile {{{-->
+
 
 <?$APPLICATION->IncludeComponent(
     "ag:points", 
     "",
     array(
         "ALL_TITLE"         =>  "Все начисления и списания",
-        "SELF_FOLDER"       =>  "/points/",
+        "SELF_FOLDER"       =>  "/profile/points/",
         "ALL_FOLDER"        =>  "all",
         "DEBIT_FOLDER"      =>  "debit",
         "CREDIT_FOLDER"     =>  "credit",
@@ -56,6 +58,7 @@ if($_SERVER["REQUEST_URI"]=='/points/'){
     )
 );?>
 
+            <!-- }}} Profile-->
           </div>
         </div>
 

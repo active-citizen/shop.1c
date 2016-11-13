@@ -200,6 +200,7 @@
 }
 .ag-shop-menu__link:active,
 .ag-shop-menu__link--active {
+  display: none;
   cursor: default;
   color: #0eb0a0;
 }
@@ -520,6 +521,11 @@
   box-sizing: border-box;
   padding: 20px 0 40px 0;
 }
+.ag-shop-content__limited-container {
+  box-sizing: border-box;
+  max-width: 980px;
+  margin: 0 auto;
+}
 .ag-shop-item-card {
   box-sizing: border-box;
   display: block;
@@ -807,7 +813,6 @@
 .ag-shop-slider {
   border-radius: 3px;
   overflow: hidden;
-  height:500px;
 }
 .ag-shop-slider__dots {
   margin: 12px 0 0;
@@ -1459,6 +1464,10 @@
   .ag-shop-menu__item {
     padding: 0 30px;
   }
+  .ag-shop-menu__link:active,
+  .ag-shop-menu__link--active {
+    display: inline-block;
+  }
   .ag-shop {
     padding-left: 60px;
   }
@@ -1630,112 +1639,3 @@
     display: none;
   }
 }
-
-/** ========================================================================
-                               Модификация css
- =========================================================================== */
-.ag-shop-slider__item{
-    position: relative;
-}
-
-.ag-shop-slider-card__likes{
-    top: 45px;
-    right: 36px;
-    z-index: 9999;
-}
-
-
-.wish-on{
-    background-position: 0 -432px;
-}
-.wish-off{
-    background-position: 0 -456px;
-}
-.ag-shop-slider-card-dark__info-layer{
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-div.filter-active{
-    display: block;
-}
-
-.ag-shop-filter__variants{
-    display:none;
-}
-
-#interests-filter::before{
-    left: 50%;
-}
-
-#balls-filter::before{
-    left: 85%;
-}
-
-
-
-#slider {
-	width: 85%;
-    float: left;
-    margin-top: 16px;
-}
-
-input#ag-minPrice{
-    text-align: center;
-	width: 6%;
-    float: left;
-    border: 1px #888 solid;
-    margin-right: 1%;
-    margin-top: 5px;
-    border-radius: 16px;
-
-    font-family: 'SF UI Text', Arial, sans-serif;
-    font-weight: 200;
-    font-size: 14px;
-    font-size: 0.875rem;
-    color: #0e2f4b;
-    
-    padding: 7px 20px;
-}
-
-input#ag-maxPrice{
-    text-align: center;
-	width: 6%;
-    float: left;
-    border: 1px #888 solid;
-    margin-left: 1%;
-    margin-top: 5px;
-    border-radius: 16px;
-
-    font-family: 'SF UI Text', Arial, sans-serif;
-    font-weight: 200;
-    font-size: 14px;
-    font-size: 0.875rem;
-    color: #0e2f4b;
-    
-    padding: 7px 20px;
-}
-
-.tablebodytext{
-    display: none;
-}
-
-input.ag-balls[type="radio"]{
-    display: none;
-}
-
-.searchform input[type="text"]{
-    background-image: url(../images/icon__search.svg);
-    background-repeat: no-repeat;
-    background-position: 10px 5px;
-    padding-left: 48px;
-    height: 40px;
-    font-size: 0.8125rem;
-    border: 1px #888 solid;
-    border-radius: 20px;
-}
-
-.searchform input:focus{
-     outline: none;
-}
-

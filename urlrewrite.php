@@ -19,16 +19,16 @@ $arUrlRewrite = array(
 		"PATH" => "/catalog/catalog.php",
 	),
 	array(
-		"CONDITION" => "#^/order/#",
+		"CONDITION" => "#^//profileorder/#",
 		"RULE" => "",
 		"ID" => "bitrix:sale.personal.order",
-		"PATH" => "/order/index.php",
+		"PATH" => "/profile/order/index.php",
 	),
     array(
-        "CONDITION" => "#^/order/#",
+        "CONDITION" => "#^/profile/order/#",
         "RULE" => "",
         "ID" => "bitrix:sale.personal.order",
-        "PATH" => "/order/index.php",
+        "PATH" => "/profile/order/index.php",
     ),
 	array(
 		"CONDITION" => "#^/rules/stores/#",
@@ -43,10 +43,10 @@ $arUrlRewrite = array(
 		"PATH" => "/news/index.php",
 	),
     array(
-        "CONDITION" => "#^/points/#",
+        "CONDITION" => "#^/profile/points/#",
         "RULE" => "",
         "ID" => "ag:points",
-        "PATH" => "/points/index.php",
+        "PATH" => "/profile/points/index.php",
     ),
 );
 

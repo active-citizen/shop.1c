@@ -53,7 +53,11 @@ $arResult["PAGES"] = get_pages_list(
 
 
 $arResult["RECORDS"] = array();
-while($data = $res->GetNext())$arResult["RECORDS"][] = $data;
+while($data = $res->GetNext()){
+    $arResult["RECORDS"][] = $data;
+}
+ 
+$arResult["ACCOUNT_INFO"] = CSaleUserAccount::GetByUserID($USER->GetId(),"BAL");
     
 $this->IncludeComponentTemplate();
 
