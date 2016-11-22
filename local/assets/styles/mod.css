@@ -107,3 +107,7 @@ input.ag-balls[type="radio"]{
      outline: none;
 }
 
+.points_pagination .ag-shop-profile-tabs__link{
+    margin-left: 10px;
+}
+

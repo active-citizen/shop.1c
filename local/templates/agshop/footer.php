@@ -8,5 +8,16 @@
         <!-- }}} Footer-->
       </div>
     </div>
+
+        <? if(!CUser::IsAuthorized()):?>
+        <? 
+            require_once(realpath(dirname(__FILE__)."/../../..")."/.integration/secret.inc.php");
+            $url = $AG_KEYS["uat"]["url"];
+            if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')$url = $AG_KEYS["prod"]["url"];
+        ?>
+        <script src="<?php echo $url; ?>"></script>
+        <? endif?>
+
+
   </body>
 </html>

@@ -16,28 +16,34 @@
             </div>
                 
 <?if ($arParams["SHOW_TOP_PAGINATION"] && count($arResult["PAGES"])>1):?>
-    <div class="points_pagination">
+  <div class="ag-shop-profile-tabs points_pagination">
+    <div class="ag-shop-profile-tabs__link  ag-shop-profile-tabs__link--active">
         Страницы: 
-        <?foreach($arResult["PAGES"] as $offset=>$pagenum):?>
-            <? if($arParams["PAGE"]!=$pagenum){?>
-                <a href="<?= $arParams["SELF_FOLDER"]?><?
-                    switch($arResult["DEBIT"]){
-                        case "Y":
-                            echo $arParams["DEBIT_FOLDER"];
-                        break;
-                        case "N":
-                            echo $arParams["CREDIT_FOLDER"];
-                        break;
-                        default:
-                            echo "all";
-                        break;
-                    }    
-                ?>/<?= ($offset/$arParams["RECORDS_ON_PAGE"]+1)?>/"><?= $pagenum?></a>
-            <? }else{?>
-                <a class="active"><?= $pagenum;?></a>
-            <? }?>
-        <?endforeach;?>
     </div>
+    <?foreach($arResult["PAGES"] as $offset=>$pagenum):?>
+        <? if($arParams["PAGE"]!=$pagenum){?>
+            <div class="ag-shop-profile-tabs__link">
+            <a href="<?= $arParams["SELF_FOLDER"]?><?
+                switch($arResult["DEBIT"]){
+                    case "Y":
+                        echo $arParams["DEBIT_FOLDER"];
+                    break;
+                    case "N":
+                        echo $arParams["CREDIT_FOLDER"];
+                    break;
+                    default:
+                        echo "all";
+                    break;
+                }    
+            ?>/<?= ($offset/$arParams["RECORDS_ON_PAGE"]+1)?>/"><?= $pagenum?></a>
+            </div>
+        <? }else{?>
+            <div class="ag-shop-profile-tabs__link  ag-shop-profile-tabs__link--active">
+                <a class="active"><?= $pagenum;?></a>
+            </div>
+        <? }?>
+    <?endforeach;?>
+  </div>
 <?endif;?>
 
             <div class="ag-shop-profile-points">
@@ -47,7 +53,6 @@
                     <td>Дата</td>
                     <td>Операция</td>
                     <td>Баллы</td>
-                    <td><?= number_format($arResult["ACCOUNT_INFO"]["CURRENT_BUDGET"],0,","," ")?></td>
                   </tr>
                 </table>
               </div>
@@ -94,11 +99,6 @@
                         <? echo ($record["DEBIT"]=="Y"?"":"-").number_format($record["AMOUNT"],0,","," ");?>
                       </div>
                     </td>
-                    <td data-label="Всего">
-                      <div class="ag-shop-profile-points__data"><?
-                        echo "нет";
-                      ?></div>
-                    </td>
                   </tr>
                 <?endforeach?>
 
@@ -108,27 +108,34 @@
 
 
             </div>
-<?if ($arParams["SHOW_BOTTOM_PAGINATION"] && count($arResult["PAGES"])>1):?>
-    <div class="points_pagination">
+<?if ($arParams["SHOW_TOP_PAGINATION"] && count($arResult["PAGES"])>1):?>
+  <div class="ag-shop-profile-tabs points_pagination">
+    <div class="ag-shop-profile-tabs__link  ag-shop-profile-tabs__link--active">
         Страницы: 
-        <?foreach($arResult["PAGES"] as $offset=>$pagenum):?>
-            <? if($arParams["PAGE"]!=$pagenum){?>
-                <a href="<?= $arParams["SELF_FOLDER"]?><?
-                    switch($arResult["DEBIT"]){
-                        case "Y":
-                            echo $arParams["DEBIT_FOLDER"];
-                        break;
-                        case "N":
-                            echo $arParams["CREDIT_FOLDER"];
-                        break;
-                        default:
-                            echo "all";
-                        break;
-                    }    
-                ?>/<?= ($offset/$arParams["RECORDS_ON_PAGE"]+1)?>/"><?= $pagenum?></a>
-            <? }else{?>
-                <a class="active"><?= $pagenum;?></a>
-            <? }?>
-        <?endforeach;?>
     </div>
+    <?foreach($arResult["PAGES"] as $offset=>$pagenum):?>
+        <? if($arParams["PAGE"]!=$pagenum){?>
+            <div class="ag-shop-profile-tabs__link">
+            <a href="<?= $arParams["SELF_FOLDER"]?><?
+                switch($arResult["DEBIT"]){
+                    case "Y":
+                        echo $arParams["DEBIT_FOLDER"];
+                    break;
+                    case "N":
+                        echo $arParams["CREDIT_FOLDER"];
+                    break;
+                    default:
+                        echo "all";
+                    break;
+                }    
+            ?>/<?= ($offset/$arParams["RECORDS_ON_PAGE"]+1)?>/"><?= $pagenum?></a>
+            </div>
+        <? }else{?>
+            <div class="ag-shop-profile-tabs__link  ag-shop-profile-tabs__link--active">
+                <a class="active"><?= $pagenum;?></a>
+            </div>
+        <? }?>
+    <?endforeach;?>
+  </div>
 <?endif;?>
+

@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
         "ALL_FOLDER"        =>  "all",
         "DEBIT_FOLDER"      =>  "debit",
         "CREDIT_FOLDER"     =>  "credit",
-        "RECORDS_ON_PAGE"   =>  30
+        "RECORDS_ON_PAGE"   =>  10
     )
 );?>
 
