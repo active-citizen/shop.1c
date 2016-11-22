@@ -79,15 +79,18 @@
                       <div class="ag-shop-profile-order__desktop-controls"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a><a class="ag-shop-profile-order__control" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a></div>
                     </div>
                   </div>
+                  <? foreach($arOrder["PRODUCTS"] as $arProduct):?>
                   <div class="ag-shop-profile-order__content">
                     <div class="ag-shop-profile-order__image-container"><img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"></div>
-                    <div class="ag-shop-profile-order__points">3510 баллов</div>
+                    <div class="ag-shop-profile-order__points"><?= number_format($arProduct["PRICE"]*$arProduct["QUANTITY"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"]*$arProduct["QUANTITY"])) ?></div>
                     <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                       <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name">Посещение Центра Современного Искусства МАРС Посещение Центра Современного Искусства МАРС</div>
+                        <div class="ag-shop-profile-order__name"><?= $arProduct["NAME"]?></div>
                       </div>
                       <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__review"><a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a></div>
+                        <div class="ag-shop-profile-order__review">
+                          <a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
+                        </div>
                       </div>
                     </div>
                     <div class="grid grid--bleed grid--justify-space-between grid--align-end">
@@ -95,10 +98,11 @@
                         <div class="ag-shop-profile-order__place"><span>Забирать здесь:</span><br class="hide-on-desktop"><a href="#">МФЦ Академический (Москва, Нижний сусальный переулок, 5с5)</a></a></div>
                       </div>
                       <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__count"><span>количество пар: 2, 1170 баллов</span></div>
+                        <div class="ag-shop-profile-order__count"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
                       </div>
                     </div>
                   </div>
+                  <? endforeach ?>
                 </div>
                 <div class="ag-shop-profile-order__mobile-controls">
                   <div class="grid grid--bleed grid--justify-space-around grid--align-center">
@@ -108,11 +112,11 @@
                     <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i><span>Отменить заказ</span></a></div>
                   </div>
                 </div>
-                <pre>
                 <?
-                print_r($arOrder);
+                //echo "<pre>";
+                //print_r($arOrder);
+                //echo "</pre>";
                 ?>
-                </pre>
               </div>
               <? endforeach ?>
               
@@ -147,8 +151,6 @@
     <?endforeach;?>
   </div>
 <?endif;?>
-              
-              
               <hr/>
               <div class="ag-shop-profile-order ag-shop-profile-order--active">
                 <div class="ag-shop-profile-order__container">

@@ -10,7 +10,7 @@ include("../menu.php");
 <?$APPLICATION->IncludeComponent("ag:orders", "", array(
     "SEF_MODE"  => "Y",
     "USER_ID"   =>  $USER->GetId(),
-    "RECORDS_ON_PAGE"   => 2,
+    "RECORDS_ON_PAGE"   => 10,
     "SEF_FOLDER" => "/profile/order/",
     "ORDERS_PER_PAGE" => "10",
     "PATH_TO_PAYMENT" => "/profile/order/payment/",

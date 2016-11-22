@@ -35,6 +35,7 @@ else
 
 
 CModule::IncludeModule("sale");
+CModule::IncludeModule("price");
 $arResult = array("ORDERS"=>array(),"STATUSES"=>array(),"PAGES"=>array());
 
 
@@ -47,7 +48,19 @@ while($arStatus = $resStatuses->GetNext())
 $arOrder = array();
 $arFilter = array();
 $arFilter["USER_ID"] = $arParams["USER_ID"];
-$arFilter["STATUS_ID"] = array('N','F');
+
+switch($arParams["TAB"]){
+    case 'all':
+        //$arFilter["STATUS_ID"] = array();
+    break;
+    case 'use':
+        $arFilter["STATUS_ID"] = array('N','AA','AB');
+    break;
+    case 'unuse':
+        $arFilter["STATUS_ID"] = array('F','AI','AG','AC');
+    break;
+}
+
 $arNavStartParams = array(
     "iNumPage"  =>  $arParams["PAGE"],
     "nPageSize" =>  $arParams["RECORDS_ON_PAGE"]
@@ -66,6 +79,15 @@ while($arOrder = $resOrders->GetNext()){
         $order["DATE_SHORT"]["year"]
     );
     $order["DATE_SHORT"] = date("d.m.y",$order["DATE_SHORT"]);
+    
+    $order["PRODUCTS"] = array();
+    $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
+    while($arProduct = $resProduct->GetNext()){
+        $order["PRODUCTS"][] = $arProduct;
+        
+    }
+    
+    
     
     $arResult["ORDERS"][] = $order;
 }
