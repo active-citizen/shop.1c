@@ -9,11 +9,17 @@ while($arrProp = $res->GetNext())
     if(preg_match("#^PROP1C_.*#i", $arrProp["CODE"]))$offerProps[] = $arrProp["CODE"];
 
 ?>
+        <div class="ag-shop-content">
 
+            <? include("filter.inc.php")?>
+            <? include("sorting.inc.php")?>
+            
+            <div class="ag-shop-catalog">
+            <? include("container.inc.php")?>
+            </div>
+        <div>
 
-
-
-<? $APPLICATION->IncludeComponent(
+<? /*$APPLICATION->IncludeComponent(
 	"bitrix:catalog", 
 	"ag", 
 	array(
@@ -273,7 +279,7 @@ while($arrProp = $res->GetNext())
 		)
 	),
 	false
-);?>
+);*/?>
 
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

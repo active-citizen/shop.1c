@@ -114,14 +114,16 @@ $(document).ready(function(){
     if($('.catalog-ajax-block')){
         var hash = document.location.hash;
         hash = hash.replace(/#/,"");
-        $('.catalog-ajax-block').load("/catalog/index.ajax.php?"+hash,function(){
+        var path = document.location.pathname.split('/');
+        var catalog_param = '';
+        if(path[1]=='catalog' && path[2].match(/^[\w\d\-]+$/i))catalog_param = path[2];
+        $('.catalog-ajax-block').load("/catalog/index.ajax.php?"+hash+'&catalog_name='+catalog_param,function(){
             $('.catalog-ajax-block').removeClass('catalog-ajax-block-loader');
             // Показывать или прятать кнопку "исчо"
             if($('.catalog-page-input').last().val()){
                 $('.ag-shop-catalog__more-button').fadeIn();
             }
             else{
-                console.log($('.catalog-page-input').last());
                 $('.ag-shop-catalog__more-button').fadeOut();
             }
         });
@@ -526,6 +528,9 @@ function ag_filter(){
     var flag = $('#ag-flag').val()?$('#ag-flag').val():'all';
     var sorting = $('#ag-sorting').val()?$('#ag-sorting').val():'rating-desc';
     
+    var path = document.location.pathname.split('/');
+    var catalog_param = '';
+    if(path[1]=='catalog' && path[2].match(/^[\w\d\-]+$/i))catalog_param = path[2];
     
 
     var uri = 
@@ -533,7 +538,9 @@ function ag_filter(){
         "&filter_interest="+interest+
         "&filter_balls="+balls+
         '&flag='+flag+
-        '&sorting='+sorting;
+        '&sorting='+sorting+
+        '&catalog_name='+catalog_param
+        ;
         
     var url = "/catalog/index.ajax.php?"+uri;
     document.location.hash = uri;

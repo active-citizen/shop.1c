@@ -69,6 +69,19 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
         }
     }
 
+    if(isset($_REQUEST['catalog_name']) && preg_match("#^[\d\w\-]+$#i",$_REQUEST['catalog_name'])){
+
+        $resCatalogSection = CIBlockSection::GetList(array(),array("CODE"=>$_REQUEST['catalog_name']),false,array("nTopCount"=>1),array("ID"));
+        $arCatalogSection = $resCatalogSection->GetNext();
+        
+        if(!isset($arCatalogSection["ID"])){
+        }else{
+            $arrFilter["IBLOCK_SECTION_ID"] = $arCatalogSection["ID"];
+            $arrFilter["SECTION_ID"] = $arCatalogSection["ID"];
+        }
+    }
+
+
     if(isset($_REQUEST['filter_balls']) && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])){
         $balls = explode(",",$_REQUEST['filter_balls']);
         $arrFilter[">=PROPERTY_MINIMUM_PRICE"] = $balls[0];
@@ -90,7 +103,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
         */
     }
     elseif(!isset($_REQUEST['filter_balls'])){
-        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1500;
+        $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1000000000;
     }
     $arrFilter["ACTIVE"] = 'Y';
     
