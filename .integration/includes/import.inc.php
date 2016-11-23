@@ -215,6 +215,8 @@
         }
         $arProperties["MANUFACTURER"]   .= '</table>';
         
+        // Срок исполнения
+        $arProperties["DAYS_TO_EXPIRE"] = isset($arProduct["СрокИсполнения"])?intval($arProduct["СрокИсполнения"]):0;
         // Базовая единица
         $arProperties["QUANT"]          = $arProduct["БазоваяЕдиница"]["@attributes"]["НаименованиеПолное"];
         // Минимальная цена

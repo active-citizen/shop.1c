@@ -70,7 +70,7 @@
                       <div class="ag-shop-profile-order__info">
                         <div class="ag-shop-profile-order__status"><?=
                         $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
-                        ?>(12 дней)</div>
+                        ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= $arOrder["IN_WORK"] ?> <?= get_days($arOrder["IN_WORK"])?>)<? endif ?></div>
                         <div class="ag-shop-profile-order__number">Заказ №<?= $arOrder["ID"]?></div>
                         <div class="ag-shop-profile-order__date">от <?= $arOrder["DATE_SHORT"]?></div>
                       </div>
@@ -89,7 +89,7 @@
                       </div>
                       <div class="grid__col-shrink">
                         <div class="ag-shop-profile-order__review">
-                          <a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
+                          <!-- <a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a> -->
                         </div>
                       </div>
                     </div>

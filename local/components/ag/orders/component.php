@@ -45,7 +45,7 @@ while($arStatus = $resStatuses->GetNext())
     $arResult["STATUSES"][$arStatus["ID"]] = $arStatus;
 
 
-$arOrder = array();
+$arOrder = array("DATE_INSERT"=>"DESC");
 $arFilter = array();
 $arFilter["USER_ID"] = $arParams["USER_ID"];
 
@@ -83,9 +83,23 @@ while($arOrder = $resOrders->GetNext()){
     $order["PRODUCTS"] = array();
     $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
     while($arProduct = $resProduct->GetNext()){
-        $order["PRODUCTS"][] = $arProduct;
         
+        $arOffer = CIblockElement::GetList(array(),array(
+            "IBLOCK_ID"=>$arParams["OFFER_IBLOCK_ID"],"ID"=>$arProduct["PRODUCT_ID"]
+        ),false,array("nTopCount"=>1),array("PROPERTY_CML2_LINK"))->GetNext();
+
+        $arCatalog = CIblockElement::GetList(array(),array(
+            "IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
+        ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE"))->GetNext();
+        
+        $order["PRODUCTS"][] = $arProduct;
     }
+    $order["EXPIRES"] = $arCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"];
+    $tmp = date_parse($arOrder["DATE_INSERT"]);
+    $order["IN_WORK"] = 1+
+    floor((
+        time()-mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"])
+    )/(24*60*60));
     
     
     
