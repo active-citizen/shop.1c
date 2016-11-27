@@ -76,28 +76,43 @@ $resOffers = CIBlockElement::GetList(
     false
 );
 $arResult["OFFERS"] = array();
+$arResult["OFFERS_JSON"] = array();
+$arResult["PROP1C"] = array();
 while($arOffer = $resOffers->GetNext()){
+    $arOfferJson= array("PICS"=>array(),"1C_PROPS"=>array());
     $arOffer["PROPERTIES"] = array();
     $resProps = CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arOffer["ID"]);
     while($arProp = $resProps->GetNext()){
         if(!isset($arOffer["PROPERTIES"][$arProp["CODE"]]))
             $arOffer["PROPERTIES"][$arProp["CODE"]] = array();
-        if($arProp["PROPERTY_TYPE"]=='F')
+        if($arProp["PROPERTY_TYPE"]=='F'){
             $arProp["FILE_PATH"] = CFile::GetPath($arProp["VALUE"]);
-        if($arProp["PROPERTY_TYPE"]=='F' && !$arProp["FILE_PATH"])continue;
+        }
+        if($arProp["PROPERTY_TYPE"]=='F' && !$arProp["FILE_PATH"])
+            continue;
+        elseif($arProp["PROPERTY_TYPE"]=='F' && $arProp["FILE_PATH"] && $arProp["CODE"]=='MORE_PHOTO')
+            $arOfferJson["PICS"][] = $arProp["FILE_PATH"];
+        
+        if(preg_match("#PROP1C_(.*?)#",$arProp["CODE"])){
+            $arOfferJson["1C_PROPS"][$arProp["CODE"]] = array("ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"]);
+            if(!isset($arResult["PROP1C"][$arProp["CODE"]]))$arResult["PROP1C"][$arProp["CODE"]] = array("NAME"=>$arProp["NAME"],"VALUES"=>array());
+            $arResult["PROP1C"][$arProp["CODE"]]["VALUES"][$arProp["VALUE"]] = $arProp["VALUE_ENUM"];
+        }
+        
         $arOffer["PROPERTIES"][$arProp["CODE"]][] = $arProp;
     }
     
     
     $arOffer["RRICE_INFO"] = CPrice::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]))->GetNext();
+    $arOfferJson["PRICE"] = $arOffer["RRICE_INFO"]["PRICE"];
+    $arOfferJson["NAME"] = $arOffer["NAME"];
     
     $arResult["OFFERS"][] = $arOffer;
-    
+    $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
 };
 echo "<!-- ";
 print_r($arResult["CATALOG_ITEM"]);
 print_r($arResult["OFFERS"][0]);
 echo " -->";
-
 
 $this->IncludeComponentTemplate();

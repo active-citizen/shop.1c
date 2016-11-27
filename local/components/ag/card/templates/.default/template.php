@@ -1,7 +1,10 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
-
         <? if(isset($arResult["OFFERS"][0])):?>
+            <script>
+                var arOffers=<?=json_encode($arResult["OFFERS_JSON"])?>;
+            </script>
+        
             <div class="ag-shop-card">
             <? if($arResult["ACCOUNT"]["CURRENT_BUDGET"] < $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]): ?>
               <div class="ag-shop-card__container">
@@ -66,6 +69,7 @@
                         </div>
                         <div class="grid__col-12 grid__col-md-shrink">
                           <div class="ag-shop-card__actions">
+                            <!--
                             <div class="ag-shop-card__action"><a class="js-share-trigger" href="#"><i class="ag-shop-card__icon ag-shop-card__icon--write"></i><span>поделиться</span></a></div>
                             <div class="ag-shop-card__share">
                               <div class="ag-shop-card__share-container js-share-popup">
@@ -83,7 +87,8 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="ag-shop-card__action"><a href="#"><i class="ag-shop-card__icon ag-shop-card__icon--write"></i><span>оставить отзыв</span></a></div>
+                            -->
+                            <!-- <div class="ag-shop-card__action"><a href="#"><i class="ag-shop-card__icon ag-shop-card__icon--write"></i><span>оставить отзыв</span></a></div> -->
                           </div>
                         </div>
                       </div>
@@ -139,50 +144,27 @@
                           </div>
                         </div>
                       </div>
+                      <? foreach($arResult["PROP1C"] as $code1c=>$props): ?>
                       <div class="ag-shop-card__field">
-                        <div class="ag-shop-card__fieldname">Цвет:</div>
-                        <div class="ag-shop-card__colors">
-                          <label>
-                            <input type="radio" name="color" checked>
-                            <div class="ag-shop-card__colors-item" style="background-color:#ffffff"></div>
-                          </label>
-                          <label>
-                            <input type="radio" name="color">
-                            <div class="ag-shop-card__colors-item" style="background-color:#80807E"></div>
-                          </label>
-                          <label>
-                            <input type="radio" name="color">
-                            <div class="ag-shop-card__colors-item" style="background-color:#0F0F0F"></div>
-                          </label>
-                        </div>
-                      </div>
-                      <div class="ag-shop-card__field">
-                        <div class="ag-shop-card__fieldname">Размер:</div>
+                        <div class="ag-shop-card__fieldname"><?= $props["NAME"]?>:</div>
                         <div class="ag-shop-card__sizes">
+                          <? foreach($props["VALUES"] as $id=>$value):?>
                           <label>
-                            <input type="radio" name="size" checked>
-                            <div class="ag-shop-card__sizes-item">S</div>
+                            <input type="radio" name="<?= $code1c?>" checked value="<?= $id?>">
+                            <div class="ag-shop-card__sizes-item"><?= $value?></div>
                           </label>
-                          <label>
-                            <input type="radio" name="size">
-                            <div class="ag-shop-card__sizes-item">M</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="size">
-                            <div class="ag-shop-card__sizes-item">L</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="size">
-                            <div class="ag-shop-card__sizes-item">XL</div>
-                          </label>
+                          <? endforeach ?>
                         </div>
                       </div>
+                      <? endforeach ?>
                       <div class="ag-shop-card__field ag-shop-card__field--error">
                         <div class="ag-shop-card__fieldname">Где получить?</div>
+                        <!-- 
                         <div class="ag-shop-card__places-tabs">
                           <div class="ag-shop-card__places-tabs-item ag-shop-card__places-tabs-item--active">списком</div>
                           <div class="ag-shop-card__places-tabs-item">на карте</div>
                         </div>
+                        -->
                         <div class="ag-shop-card__places">
                           <label>
                             <input type="radio" name="place">
@@ -264,6 +246,7 @@
                 <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
                 <? endif ?>
                 <button class="ag-shop-card__submit-button" type="button">Заказать за <strong>1170</strong> баллов</button>
+                <!-- 
                 <div class="ag-shop-card__additional-info">
                   <div class="ag-shop-card__tabs">
                     <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link" href="#">Полное описание</a></div>
@@ -328,6 +311,7 @@
                     </div>
                   </div>
                 </div>
+                -->
               </div>
             </div>
         <? endif ?>
