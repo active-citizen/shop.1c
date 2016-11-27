@@ -56,6 +56,7 @@
     <link rel="stylesheet" href="/local/assets/styles/profile.css">
     <link rel="stylesheet" href="/local/assets/styles/catalog.css">
     <link rel="stylesheet" href="/local/assets/styles/rules.css">
+    <link rel="stylesheet" href="/local/assets/styles/card.css">
     <link rel="stylesheet" href="/local/assets/libs/jquery-ui.css">
     <link rel="stylesheet" href="/local/assets/libs/slick.css">
     <link rel="stylesheet" href="/local/assets/styles/mod.css">
