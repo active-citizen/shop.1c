@@ -111,3 +111,14 @@ input.ag-balls[type="radio"]{
     margin-left: 10px;
 }
 
+.ag-shop-card__image-container{
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.ag-shop-card__preview{
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}

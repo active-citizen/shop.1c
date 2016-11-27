@@ -1,51 +1,67 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 
+        <? if(isset($arResult["OFFERS"][0])):?>
             <div class="ag-shop-card">
+            <? if($arResult["ACCOUNT"]["CURRENT_BUDGET"] < $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]): ?>
               <div class="ag-shop-card__container">
-                <div class="ag-shop-card__requirements">Для заказа данного поощрения необходимо набрать 1000 баллов.</div>
+                <div class="ag-shop-card__requirements">Для заказа данного поощрения необходимо набрать <?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?> <?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?>.</div>
               </div>
+            <? endif ?>
               <div class="grid grid--bleed">
                 <div class="grid__col-12 grid__col-md-shrink">
                   <div class="ag-shop-card__left-column">
                     <div class="ag-shop-card__image-block">
                       <div class="ag-shop-card__image-wrap">
                         <!-- для темного фона добавить: ag-shop-item-card--dark-->
-                        <div class="ag-shop-card__image-container">
-                          <div class="ag-shop-card__map" style="display:none"></div><img class="ag-shop-card__image" src="http://placehold.it/420x420">
+                        <div class="ag-shop-card__image-container" style="background-image: url(<?= 
+                            $arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"][0]["FILE_PATH"]
+                          ?>)">
+                          <div class="ag-shop-card__map" style="display:none"></div>
+                          <div class="ag-shop-card__image"></div>
                           <div class="ag-shop-card__image-info">
                             <div class="ag-shop-card__image-points">
-                              <div class="ag-shop-item-card__points-count">1170</div>
-                              <div class="ag-shop-item-card__points-text">баллов</div>
+                              <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></div>
+                              <div class="ag-shop-item-card__points-text"><?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?></div>
                             </div>
                             <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
                           </div>
                           <button class="ag-shop-item-card__likes" type="button">
-                            <div class="ag-shop-item-card__likes-icon"></div>
-                            <div class="ag-shop-item-card__likes-count">893</div>
+                            <div class="ag-shop-item-card__likes-icon<?if($arResult["MYWISH"]):?> wish-on<? endif ?>"
+                            productId="<?= $arResult["CATALOG_ITEM"]["ID"]?>"
+                            onclick="return mywish(this)"
+                            ></div>
+                            <div class="ag-shop-item-card__likes-count" id="wishid<?= $arResult["CATALOG_ITEM"]["ID"]?>"><?= $arResult["WISHES"];?></div>
                           </button>
                         </div>
                         <div class="ag-shop-card__previews-container">
-                          <div class="ag-shop-card__preview ag-shop-card__preview--active"><img src="http://placehold.it/60x60"></div>
-                          <div class="ag-shop-card__preview"><img src="http://placehold.it/60x60"></div>
-                          <div class="ag-shop-card__preview"><img src="http://placehold.it/60x60"></div>
-                          <div class="ag-shop-card__preview"><img src="http://placehold.it/60x60"></div>
+                        <? foreach($arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto):?>
+                          <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?= 
+                          $morePhoto["FILE_PATH"]
+                          ?>);" rel="<?= $morePhoto["FILE_PATH"];?>"></div>
+                        <? endforeach ?>
                         </div>
                       </div>
                     </div>
                     <div class="ag-shop-card__container">
                       <div class="ag-shop-card__header ag-shop-card__header--mobile">
-                        <h2 class="ag-shop-card__header-title">Сумка городская Сумка городская</h2>
-                        <div class="ag-shop-card__header-code">Артикул: <strong>AGF16-01</strong></div>
+                        <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
+                        <? if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
+                        <div class="ag-shop-card__header-code">Артикул: <strong><?= 
+                            $arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
+                        ?></strong></div>
+                        <? endif ?>
                       </div>
                       <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                         <div class="grid__col-12 grid__col-md-shrink">
                           <div class="ag-shop-card__rating">
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
-                            <div class="ag-shop-item-card__rating-item"></div>
+                            <? for($i=0;$i<round($product["RATING"]);$i++):?>
+                            <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
+                            <? endfor ?>
+                            <? for($j=0;$j<5-round($product["RATING"]);$j++):?>
+                            <div class="ag-shop-slider-card__rating-item"></div>
+                            <? endfor ?>
+                              
                           </div>
                         </div>
                         <div class="grid__col-12 grid__col-md-shrink">
@@ -78,8 +94,12 @@
                   <div class="ag-shop-card__right-column">
                     <div class="ag-shop-card__container">
                       <div class="ag-shop-card__header">
-                        <h2 class="ag-shop-card__header-title">Сумка городская Сумка городская</h2>
-                        <div class="ag-shop-card__header-code">Артикул: <strong>AGF16-01</strong></div>
+                        <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
+                        <? if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
+                        <div class="ag-shop-card__header-code">Артикул: <strong><?= 
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
+                        ?></strong></div>
+                        <? endif ?>
                       </div>
                       <div class="ag-shop-card__field">
                         <div class="ag-shop-card__fieldname">Введите номер карты Тройка:</div>
@@ -93,6 +113,14 @@
                         </div>
                       </div>
                       <div class="grid grid--bleed">
+
+                        <div class="grid__col-shrink">
+                          <div class="ag-shop-card__field ag-shop-card__field--align-right">
+                            <div class="ag-shop-card__fieldname">Единица:</div>
+                            <div class="ag-shop-card__total-points"><?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["QUANT"][0]["VALUE"] ?></div>
+                          </div>
+                        </div>
+                          
                         <div class="grid__col-auto">
                           <div class="ag-shop-card__field">
                             <div class="ag-shop-card__fieldname">Количество:</div>
@@ -100,14 +128,14 @@
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--sub" type="button"></button>
                               <div class="ag-shop-card__count-number">1</div>
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--add" type="button"></button>
-                              <div class="ag-shop-card__count-text">штук</div>
                             </div>
                           </div>
                         </div>
+                        
                         <div class="grid__col-shrink">
                           <div class="ag-shop-card__field ag-shop-card__field--align-right">
                             <div class="ag-shop-card__fieldname">Итого:</div>
-                            <div class="ag-shop-card__total-points">1170</div>
+                            <div class="ag-shop-card__total-points"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></div>
                           </div>
                         </div>
                       </div>
@@ -228,9 +256,13 @@
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__field ag-shop-card__field--no-gaps">
                   <div class="ag-shop-card__fieldname">Описание:</div>
-                  <p class="ag-shop-card__description">Сумка тканевая с символикой проекта "Активный Гражданин".   Материал – холщевка. Размер 36 х 36 см. Ручки 2,5  х 60 см. Нанесение рисунка - шелкография</p>
+                  <p class="ag-shop-card__description"><?= 
+                    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+                  ?></p>
                 </div>
-                <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа 14 дней с момента оформления</span></div>
+                <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]):?>
+                <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
+                <? endif ?>
                 <button class="ag-shop-card__submit-button" type="button">Заказать за <strong>1170</strong> баллов</button>
                 <div class="ag-shop-card__additional-info">
                   <div class="ag-shop-card__tabs">
@@ -298,3 +330,4 @@
                 </div>
               </div>
             </div>
+        <? endif ?>
