@@ -3,6 +3,7 @@
         <? if(isset($arResult["OFFERS"][0])):?>
             <script>
                 var arOffers=<?=json_encode($arResult["OFFERS_JSON"])?>;
+                var arStorages = <?= json_encode($arResult["STORAGES"])?>
             </script>
         
             <div class="ag-shop-card">
@@ -166,69 +167,56 @@
                         </div>
                         -->
                         <div class="ag-shop-card__places">
+                          <? foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount):?>
                           <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Алтуфьевское</div>
+                            <input type="radio" name="place" value="<?= $id ?>">
+                            <div class="ag-shop-card__places-item"><?= $arResult["STORAGES"][$id]["TITLE"] ?></div>
                           </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Митино</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Люблино</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. ВДНХ</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Ботанический сад</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Алексеевкая</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Саларьево</div>
-                          </label>
-                          <label>
-                            <input type="radio" name="place">
-                            <div class="ag-shop-card__places-item">м. Проспект мира</div>
-                          </label>
+                          <? endforeach ?>
                         </div>
                         <div class="ag-shop-card__selected-place">
                           <div class="ag-shop-card__selected-place-header">
                             <div class="grid grid--bleed grid--justify-space-between">
                               <div class="grid__col-shrink">
-                                <div class="ag-shop-card__selected-place-station"><i class="ag-shop-icon ag-shop-icon--metro"></i><span>м. Люблино</span></div>
+                                <div class="ag-shop-card__selected-place-station"><i class="ag-shop-icon ag-shop-icon--metro"></i><span><?= $arResult["STORAGES"][$id]["TITLE"] ?></span></div>
                               </div>
                               <div class="grid__col-shrink">
-                                <div class="ag-shop-card__remaining-count"><span class="ag-shop-card__remaining-count-title">осталось:</span><span class="ag-shop-card__remaining-count-text">много</span></div>
+                                <div class="ag-shop-card__remaining-count"><span class="ag-shop-card__remaining-count-title">осталось:</span>
+                                  <? foreach(array(
+                                    array(0,0,"отсутствует"),
+                                    array(1,10,"мало"),
+                                    array(11,100,"достаточно"),
+                                    array(100,1000000000,"много")
+                                  ) as $arAmmount):?>
+                                    <span class="ag-shop-card__remaining-count-text" 
+                                    fromAmmount="<?= $arAmmount[0]?>"
+                                    toAmmount="<?= $arAmmount[1]?>"
+                                    style="display: <? if($ammount>=$arAmmount[0] && $ammount<=$arAmmount[1]):?>inline-block;<? else:?>none;<? endif ?>"
+                                    ><?= $arAmmount[2]?></span>
+                                  <? endforeach ?>
+                                </div>
                               </div>
                             </div>
                           </div>
                           <table class="ag-shop-card__selected-place-table">
                             <tr>
                               <td>Адрес:</td>
-                              <td>Москва, Нижний сусальный переулок, 5с5</td>
+                              <td><?= $arResult["STORAGES"][$id]["ADDRESS"] ?></td>
                             </tr>
                             <tr>
                               <td>Телефон:</td>
-                              <td>+7 985 999 00 87</td>
+                              <td><?= $arResult["STORAGES"][$id]["PHONE"] ?></td>
                             </tr>
                             <tr>
                               <td>Режим:</td>
-                              <td>9-18  пн-вс с перерывом на обед</td>
+                              <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
                             </tr>
                             <tr>
                               <td>Сайт:</td>
-                              <td><a href="#">www.site.ru</a></td>
+                              <td><a href="<?= $arResult["STORAGES"][$id]["EMAIL"] ?>"><?= $arResult["STORAGES"][$id]["EMAIL"] ?></a></td>
                             </tr>
                           </table>
-                          <p class="ag-shop-card__selected-place-description">Станция метро Люблино (Люблинской линии), первый вагон из центра, выход на улицу направо. Здание МФЦ района Марьино находится прямо около метро с правой стороны по отношению к дороге.</p>
+                          <p class="ag-shop-card__selected-place-description"><?= $arResult["STORAGES"][$id]["DESCRIPTION"] ?></p>
                         </div>
                       </div>
                     </div>

@@ -78,8 +78,11 @@ $resOffers = CIBlockElement::GetList(
 $arResult["OFFERS"] = array();
 $arResult["OFFERS_JSON"] = array();
 $arResult["PROP1C"] = array();
+$arResult["STORAGES"] = array();
 while($arOffer = $resOffers->GetNext()){
-    $arOfferJson= array("PICS"=>array(),"1C_PROPS"=>array());
+    $arOfferJson= array("PICS"=>array(),"1C_PROPS"=>array(),"STORAGES"=>array());
+    
+    // Свойства предложения
     $arOffer["PROPERTIES"] = array();
     $resProps = CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arOffer["ID"]);
     while($arProp = $resProps->GetNext()){
@@ -101,6 +104,21 @@ while($arOffer = $resOffers->GetNext()){
         
         $arOffer["PROPERTIES"][$arProp["CODE"]][] = $arProp;
     }
+    // Склады предложения
+    $arOffer["STORAGES"] = array();
+    $resStorage = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]));
+    while($arStorage = $resStorage->GetNext()){
+        if(!$arStorage["AMOUNT"])continue;
+        $arOffer["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"];
+        $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"];
+        
+        // Пополняем справочник складов
+        if(!isset($arResult["STORAGES"][$arStorage["STORE_ID"]])){
+            $arResult["STORAGES"][$arStorage["STORE_ID"]] = 
+                CCatalogStore::GetList(array(),array("ID"=>$arStorage["STORE_ID"]))->GetNext();
+        }
+        
+    }
     
     
     $arOffer["RRICE_INFO"] = CPrice::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]))->GetNext();
@@ -111,8 +129,8 @@ while($arOffer = $resOffers->GetNext()){
     $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
 };
 echo "<!-- ";
-print_r($arResult["CATALOG_ITEM"]);
 print_r($arResult["OFFERS"][0]);
+print_r($arResult["STORAGES"]);
 echo " -->";
 
 $this->IncludeComponentTemplate();
