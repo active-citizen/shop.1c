@@ -66,6 +66,7 @@
     <script src="/local/assets/libs/slick.min.js"></script>
     <script src="/local/assets/scripts/index.js"></script>
     <script src="/local/assets/scripts/scripts.js"></script>
+    <script src="/local/assets/scripts/common.js"></script>
     
     <title><?$APPLICATION->ShowTitle()?></title>
 

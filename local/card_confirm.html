@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="address=no"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>ag-shop__card-confirm</title>
+    <link rel="stylesheet" href="assets/styles/fonts.css">
+    <link rel="stylesheet" href="assets/styles/components.css">
+    <link rel="stylesheet" href="assets/styles/card.css">
+    <script src="assets/libs/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/libs/slick.css">
+    <script src="assets/libs/slick.min.js"></script>
+    <script src="assets/scripts/index.js"></script>
+  </head>
+  <body>
+    <div class="ag-shop">
+      <div class="ag-shop__sidebar">
+        <!-- Sidebar {{{-->
+        <div class="ag-shop-sidebar">
+          <div class="ag-shop-sidebar__logo-container"><a class="ag-shop-sidebar__logo" href="#"></a></div>
+          <div class="ag-shop-sidebar__social-container">
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--vk" href="#"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--fb" href="#"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--tw" href="#"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a class="ag-shop-social-link ag-shop-social-link--inst" href="#"></a></div>
+          </div>
+          <button class="ag-shop-sidebar__up" type="button"></button>
+        </div>
+        <!-- }}} Sidebar-->
+      </div>
+      <div class="ag-shop__main">
+        <!-- Top Nav {{{-->
+        <nav class="ag-shop-nav">
+          <div class="ag-shop-nav__container">
+            <div class="grid grid--bleed">
+              <div class="grid__col-auto grid__col-md-shrink">
+                <div class="ag-shop-nav__link ag-shop-nav__link--active"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--basket"></i>
+                  <div class="ag-shop-nav__link-caption">Магазин<span class="show-on-desktop">&nbsp;поощрений</span></div>
+                </div>
+              </div>
+              <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#">
+                  <div class="ag-shop-nav__profile-container"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
+                    <div class="ag-shop-nav__link-caption">
+                      <span class="hide-on-desktop">Профиль</span>
+                      <span class="show-on-desktop">Константин&nbsp;Констанинович<br>Иванов</span>
+                    </div>
+                    <div class="ag-shop-nav__profile-points">
+                       1654&nbsp;балла</div>
+                  </div></a></div>
+              <div class="grid__col-auto grid__col-md-shrink"><a class="ag-shop-nav__link" href="#"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
+                  <div class="ag-shop-nav__link-caption">
+                     Правила</div></a></div>
+              <!-- Можно выпилить целиком, если не нужно-->
+              <div class="grid__col-auto grid__col-md-shrink ag-shop-nav__last-item">
+                <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
+                  <div class="ag-shop-nav__link"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--search"></i>
+                    <div class="ag-shop-nav__link-caption">
+                       Поиск</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <!-- }}} Top Nav-->
+        <!-- Menu {{{-->
+        <div class="ag-shop-menu">
+          <div class="ag-shop-menu__container">
+            <div class="ag-shop-menu__header">
+              <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
+                <div class="grid__col grid__col-shrink">
+                  <h2 class="ag-shop-menu__current">Все&nbsp;категории</h2>
+                </div>
+                <div class="grid__col grid__col-shrink">
+                  <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" type="button"><span></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="ag-shop-menu__items js-menu__list">
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="#">Театры</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Спорт</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Детям</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Сувениры</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Парки</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Развлечения</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Музеи</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="#">Транспорт</a></div>
+            </div>
+          </div>
+        </div>
+        <!-- }}} Menu-->
+        <div class="ag-shop-content">
+          <div class="ag-shop-content__limited-container">
+            <div class="ag-shop-card">
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">Для заказа данного поощрения необходимо набрать 1000 баллов.</div>
+              </div>
+              <div class="grid grid--bleed">
+                <div class="grid__col-12 grid__col-md-shrink">
+                  <div class="ag-shop-card__left-column">
+                    <div class="ag-shop-card__image-block">
+                      <div class="ag-shop-card__image-wrap">
+                        <!-- для темного фона добавить: ag-shop-item-card--dark-->
+                        <div class="ag-shop-card__image-container">
+                          <div class="ag-shop-card__map" style="display:none"></div><img class="ag-shop-card__image" src="http://placehold.it/420x420">
+                          <div class="ag-shop-card__image-info">
+                            <div class="ag-shop-card__image-points">
+                              <div class="ag-shop-item-card__points-count">1170</div>
+                              <div class="ag-shop-item-card__points-text">баллов</div>
+                            </div>
+                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="assets/images/badge__new.png"></div>
+                          </div>
+                          <button class="ag-shop-item-card__likes" type="button">
+                            <div class="ag-shop-item-card__likes-icon"></div>
+                            <div class="ag-shop-item-card__likes-count">893</div>
+                          </button>
+                        </div>
+                        <div class="ag-shop-card__previews-container">
+                          <div class="ag-shop-card__preview ag-shop-card__preview--active"><img src="http://placehold.it/60x60"></div>
+                          <div class="ag-shop-card__preview"><img src="http://placehold.it/60x60"></div>
+                          <div class="ag-shop-card__preview"><img src="http://placehold.it/60x60"></div>
+                          <div class="ag-shop-card__preview"><img src="http://placehold.it/60x60"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ag-shop-card__container">
+                      <div class="ag-shop-card__header ag-shop-card__header--mobile">
+                        <h2 class="ag-shop-card__header-title">Сумка городская Сумка городская</h2>
+                        <div class="ag-shop-card__header-code">Артикул: <strong>AGF16-01</strong></div>
+                      </div>
+                      <div class="grid grid--bleed grid--justify-space-between grid--align-center">
+                        <div class="grid__col-12 grid__col-md-shrink">
+                          <div class="ag-shop-card__rating">
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                            <div class="ag-shop-item-card__rating-item"></div>
+                          </div>
+                        </div>
+                        <div class="grid__col-12 grid__col-md-shrink">
+                          <div class="ag-shop-card__actions">
+                            <div class="ag-shop-card__action"><a class="js-share-trigger" href="#"><i class="ag-shop-card__icon ag-shop-card__icon--write"></i><span>поделиться</span></a></div>
+                            <div class="ag-shop-card__share">
+                              <div class="ag-shop-card__share-container js-share-popup">
+                                <div class="ag-shop-card__share-item"><a class="ag-shop-social-link ag-shop-social-link--vk" href="#"></a></div>
+                                <div class="ag-shop-card__share-item"><a class="ag-shop-social-link ag-shop-social-link--ok" href="#"></a></div>
+                                <div class="ag-shop-card__share-item"><a class="ag-shop-social-link ag-shop-social-link--fb" href="#"></a></div>
+                                <div class="ag-shop-card__share-item"><a class="ag-shop-social-link ag-shop-social-link--tw" href="#"></a></div>
+                                <div class="ag-shop-card__share-item"><a class="ag-shop-social-link ag-shop-social-link--inst" href="#"></a></div>
+                                <div class="ag-shop-card__share-item"><a class="ag-shop-social-link ag-shop-social-link--yt" href="#"></a></div>
+                                <div class="ag-shop-card__share-item">
+                                  <form class="ag-shop-card__share-input-container">
+                                    <input class="ag-shop-card__share-input" type="text" placeholder="Отправить на почту">
+                                    <button class="ag-shop-card__share-submit" type="button">Отправить</button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="ag-shop-card__action"><a href="#"><i class="ag-shop-card__icon ag-shop-card__icon--write"></i><span>оставить отзыв</span></a></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid__col-12 grid__col-md-auto">
+                  <div class="ag-shop-card__right-column">
+                    <div class="ag-shop-card__container">
+                      <div class="ag-shop-card__header">
+                        <h2 class="ag-shop-card__header-title">Сумка городская Сумка городская</h2>
+                        <div class="ag-shop-card__header-code">Артикул: <strong>AGF16-01</strong></div>
+                      </div>
+                      <div class="ag-shop-card__field">
+                        <div class="ag-shop-card__fieldname">Введите номер карты Тройка:</div>
+                        <div class="ag-shop-card__card-number">
+                          <input class="ag-shop-card__card-number-input" type="tel" placeholder="0000 000 000">
+                          <div class="ag-shop-card__card-number-tooltip">
+                            <div class="ag-shop-card__card-number-tooltip-content"><img src="http://placehold.it/124x94">
+                              <p>Пример: <br>0004 456 789 (10цифр)</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid grid--bleed">
+                        <div class="grid__col-auto">
+                          <div class="ag-shop-card__field">
+                            <div class="ag-shop-card__fieldname">Количество:</div>
+                            <div class="ag-shop-card__count">
+                              <button class="ag-shop-card__count-button ag-shop-card__count-button--sub" type="button"></button>
+                              <div class="ag-shop-card__count-number">1</div>
+                              <button class="ag-shop-card__count-button ag-shop-card__count-button--add" type="button"></button>
+                              <div class="ag-shop-card__count-text">штук</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="grid__col-shrink">
+                          <div class="ag-shop-card__field ag-shop-card__field--align-right">
+                            <div class="ag-shop-card__fieldname">Итого:</div>
+                            <div class="ag-shop-card__total-points">1170</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ag-shop-card__field">
+                        <div class="ag-shop-card__fieldname">Цвет:</div>
+                        <div class="ag-shop-card__colors">
+                          <label>
+                            <input type="radio" name="color" checked>
+                            <div class="ag-shop-card__colors-item" style="background-color:#ffffff"></div>
+                          </label>
+                          <label>
+                            <input type="radio" name="color">
+                            <div class="ag-shop-card__colors-item" style="background-color:#80807E"></div>
+                          </label>
+                          <label>
+                            <input type="radio" name="color">
+                            <div class="ag-shop-card__colors-item" style="background-color:#0F0F0F"></div>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="ag-shop-card__field">
+                        <div class="ag-shop-card__fieldname">Размер:</div>
+                        <div class="ag-shop-card__sizes">
+                          <label>
+                            <input type="radio" name="size" checked>
+                            <div class="ag-shop-card__sizes-item">S</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="size">
+                            <div class="ag-shop-card__sizes-item">M</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="size">
+                            <div class="ag-shop-card__sizes-item">L</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="size">
+                            <div class="ag-shop-card__sizes-item">XL</div>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="ag-shop-card__field ag-shop-card__field--error">
+                        <div class="ag-shop-card__fieldname">Где получить?</div>
+                        <div class="ag-shop-card__places-tabs">
+                          <div class="ag-shop-card__places-tabs-item ag-shop-card__places-tabs-item--active">списком</div>
+                          <div class="ag-shop-card__places-tabs-item">на карте</div>
+                        </div>
+                        <div class="ag-shop-card__places">
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Алтуфьевское</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Митино</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Люблино</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. ВДНХ</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Ботанический сад</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Алексеевкая</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Саларьево</div>
+                          </label>
+                          <label>
+                            <input type="radio" name="place">
+                            <div class="ag-shop-card__places-item">м. Проспект мира</div>
+                          </label>
+                        </div>
+                        <div class="ag-shop-card__selected-place">
+                          <div class="ag-shop-card__selected-place-header">
+                            <div class="grid grid--bleed grid--justify-space-between">
+                              <div class="grid__col-shrink">
+                                <div class="ag-shop-card__selected-place-station"><i class="ag-shop-icon ag-shop-icon--metro"></i><span>м. Люблино</span></div>
+                              </div>
+                              <div class="grid__col-shrink">
+                                <div class="ag-shop-card__remaining-count"><span class="ag-shop-card__remaining-count-title">осталось:</span><span class="ag-shop-card__remaining-count-text">много</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <table class="ag-shop-card__selected-place-table">
+                            <tr>
+                              <td>Адрес:</td>
+                              <td>Москва, Нижний сусальный переулок, 5с5</td>
+                            </tr>
+                            <tr>
+                              <td>Телефон:</td>
+                              <td>+7 985 999 00 87</td>
+                            </tr>
+                            <tr>
+                              <td>Режим:</td>
+                              <td>9-18  пн-вс с перерывом на обед</td>
+                            </tr>
+                            <tr>
+                              <td>Сайт:</td>
+                              <td><a href="#">www.site.ru</a></td>
+                            </tr>
+                          </table>
+                          <p class="ag-shop-card__selected-place-description">Станция метро Люблино (Люблинской линии), первый вагон из центра, выход на улицу направо. Здание МФЦ района Марьино находится прямо около метро с правой стороны по отношению к дороге.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__field ag-shop-card__field--no-gaps">
+                  <div class="ag-shop-card__fieldname">Описание:</div>
+                  <p class="ag-shop-card__description">Сумка тканевая с символикой проекта "Активный Гражданин".   Материал – холщевка. Размер 36 х 36 см. Ручки 2,5  х 60 см. Нанесение рисунка - шелкография</p>
+                </div>
+                <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа 14 дней с момента оформления</span></div>
+                <button class="ag-shop-card__submit-button" type="button">Заказать за <strong>1170</strong> баллов</button>
+                <div class="ag-shop-card__additional-info">
+                  <div class="ag-shop-card__tabs">
+                    <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link" href="#">Полное описание</a></div>
+                    <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link" href="#">Правило отмены</a></div>
+                    <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link" href="#">Как получить</a></div>
+                    <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="#">Отзывы (23)</a></div>
+                  </div>
+                  <div class="ag-shop-card__tabs-content">
+                    <form class="ag-shop-card__review-form">
+                      <div class="grid grid--bleed">
+                        <div class="grid__col-12 grid__col-md-shrink">
+                          <label class="ag-shop-card__review-form-container"><span class="ag-shop-card__review-form-label">Ваш отзыв:</span>
+                            <textarea class="ag-shop-card__review-form-input" placeholder="Текст отзыва"></textarea>
+                          </label>
+                        </div>
+                        <div class="grid__col-12 grid__col-md-shrink">
+                          <div class="ag-shop-card__review-form-container"><span class="ag-shop-card__review-form-label">Ваша оценка:</span>
+                            <div class="ag-shop-card__rating ag-shop-card__rating--interactive">
+                              <div class="ag-shop-item-card__rating-item"></div>
+                              <div class="ag-shop-item-card__rating-item"></div>
+                              <div class="ag-shop-item-card__rating-item"></div>
+                              <div class="ag-shop-item-card__rating-item"></div>
+                              <div class="ag-shop-item-card__rating-item"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="grid__col-12">
+                          <div class="ag-shop-card__review-form-container">
+                            <div class="ag-shop-card__review-form-buttons">
+                              <button class="ag-shop-card__review-form-button" type="button">Оставить отзыв</button>
+                              <button class="ag-shop-card__review-form-button ag-shop-card__review-form-button--cancel" type="button">Отмена</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="ag-shop-card__reviews">
+                      <div class="ag-shop-card__reviews-item">
+                        <div class="ag-shop-card__reviews-item-name">Константин Владиморович Велихов</div>
+                        <div class="ag-shop-card__rating">
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item"></div>
+                        </div>
+                        <p class="ag-shop-card__addititonal-info-text">Он очень крут-сборка,начинка,батарея. Очень много крутых фишек,как уменьшение звука когда берешь в руки ,ответ на звонок при подносе к уху, пульт управления итд .</p>
+                        <div class="ag-shop-card__reviews-item-date">07.10.16</div>
+                      </div>
+                      <div class="ag-shop-card__reviews-item">
+                        <div class="ag-shop-card__reviews-item-name">Анжела Денисовна Свиридова</div>
+                        <div class="ag-shop-card__rating">
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item ag-shop-item-card__rating-item--active"></div>
+                          <div class="ag-shop-item-card__rating-item"></div>
+                          <div class="ag-shop-item-card__rating-item"></div>
+                        </div>
+                        <p class="ag-shop-card__addititonal-info-text">бщее впечатление только положительное. Заряд держит хорошо, шустрый, экран классный, на вид аппарат очень стильный. В руке удобный, не греется (прошлый аппарат М8s грел как утюг). Камеру особо не тестировал, но фронталка неплохая.</p>
+                        <div class="ag-shop-card__reviews-item-date">07.10.16</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Footer {{{-->
+        <footer class="ag-shop-footer">
+          <div class="ag-shop-footer__links"><a class="ag-shop-footer__link" href="#">О проекте</a><a class="ag-shop-footer__link" href="#">Часто задаваемые вопросы</a><a class="ag-shop-footer__link" href="#">Обратная связь</a></div>
+          <div class="ag-shop-footer__copy"><small class="ag-shop-footer__copy-text">&copy; 2016, Активный Гражданин. <br class="hide-on-desktop">Все права защищены. <a href="#">Публичная оферта</a></small></div>
+        </footer>
+        <!-- }}} Footer-->
+      </div>
+    </div>
+    <div class="ag-shop-modal-wrap" style="display:block">
+      <div class="ag-shop-modal">
+        <div class="ag-shop-modal__container">
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Подтверждение заказа</div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Заказ:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked">Сумка городская</div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Стоимость:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked">415 баллов</div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__alert"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>При нажатии кнопки «Оформить заказ» баллы, потраченные на данное поощрение, не возвращаются.</span></div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__buttons-wrap">
+              <button class="ag-shop-modal__button" type="button">Оформить заказ</button>
+              <button class="ag-shop-modal__button ag-shop-modal__button--cancel" type="button">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

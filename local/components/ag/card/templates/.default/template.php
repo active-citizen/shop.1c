@@ -2,8 +2,16 @@
 
         <? if(isset($arResult["OFFERS"][0])):?>
             <script>
+                var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
+                var accountSum=<?= round($arResult["ACCOUNT"]["CURRENT_BUDGET"])?>;
+                var offerCounts = <? 
+                    foreach($arResult["OFFERS"][0]["STORAGES"] as $storageId=>$storageCount){
+                        $arResult["OFFERS"][0]["STORAGES"];break;
+                    }
+                    echo $storageCount;
+                ?>;
                 var arOffers=<?=json_encode($arResult["OFFERS_JSON"])?>;
-                var arStorages = <?= json_encode($arResult["STORAGES"])?>
+                var arStorages = <?= json_encode($arResult["STORAGES"])?>;
             </script>
         
             <div class="ag-shop-card">
@@ -141,7 +149,7 @@
                         <div class="grid__col-shrink">
                           <div class="ag-shop-card__field ag-shop-card__field--align-right">
                             <div class="ag-shop-card__fieldname">Итого:</div>
-                            <div class="ag-shop-card__total-points"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></div>
+                            <div id="ag-shop-card__total-points" class="ag-shop-card__total-points"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></div>
                           </div>
                         </div>
                       </div>
@@ -151,7 +159,9 @@
                         <div class="ag-shop-card__sizes">
                           <? foreach($props["VALUES"] as $id=>$value):?>
                           <label>
-                            <input type="radio" name="<?= $code1c?>" checked value="<?= $id?>">
+                            <input type="radio" name="<?= $code1c?>" <?
+                            if($id==$arResult["OFFERS"][0]["PROPERTIES"][$code1c][0]["VALUE"])echo "checked";
+                            ?> value="<?= $id?>">
                             <div class="ag-shop-card__sizes-item"><?= $value?></div>
                           </label>
                           <? endforeach ?>
@@ -167,9 +177,9 @@
                         </div>
                         -->
                         <div class="ag-shop-card__places">
-                          <? foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount):?>
+                          <? $count=0;foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount): $count++;?>
                           <label>
-                            <input type="radio" name="place" value="<?= $id ?>">
+                            <input type="radio" name="place" value="<?= $id ?>" <? if($count==1){?>checked<? }?>>
                             <div class="ag-shop-card__places-item"><?= $arResult["STORAGES"][$id]["TITLE"] ?></div>
                           </label>
                           <? endforeach ?>
@@ -199,24 +209,34 @@
                             </div>
                           </div>
                           <table class="ag-shop-card__selected-place-table">
+                            <? if(trim($arResult["STORAGES"][$id]["ADDRESS"])):?>
                             <tr>
                               <td>Адрес:</td>
                               <td><?= $arResult["STORAGES"][$id]["ADDRESS"] ?></td>
                             </tr>
+                            <? endif ?>
+                            <? if(trim($arResult["STORAGES"][$id]["PHONE"])):?>
                             <tr>
                               <td>Телефон:</td>
                               <td><?= $arResult["STORAGES"][$id]["PHONE"] ?></td>
                             </tr>
+                            <? endif ?>
+                            <? if(trim($arResult["STORAGES"][$id]["SCHEDULE"])):?>
                             <tr>
                               <td>Режим:</td>
                               <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
                             </tr>
+                            <? endif ?>
+                            <? if(trim($arResult["STORAGES"][$id]["EMAIL"])):?>
                             <tr>
                               <td>Сайт:</td>
                               <td><a href="<?= $arResult["STORAGES"][$id]["EMAIL"] ?>"><?= $arResult["STORAGES"][$id]["EMAIL"] ?></a></td>
                             </tr>
+                            <? endif ?>
                           </table>
+                          <? if(trim($arResult["STORAGES"][$id]["DESCRIPTION"])):?>
                           <p class="ag-shop-card__selected-place-description"><?= $arResult["STORAGES"][$id]["DESCRIPTION"] ?></p>
+                          <? endif ?>
                         </div>
                       </div>
                     </div>
@@ -233,7 +253,7 @@
                 <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]):?>
                 <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
                 <? endif ?>
-                <button class="ag-shop-card__submit-button" type="button">Заказать за <strong>1170</strong> баллов</button>
+                <button class="ag-shop-card__submit-button" type="button">Заказать за <strong><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></strong> <?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?></button>
                 <!-- 
                 <div class="ag-shop-card__additional-info">
                   <div class="ag-shop-card__tabs">

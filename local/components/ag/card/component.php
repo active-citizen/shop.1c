@@ -98,8 +98,11 @@ while($arOffer = $resOffers->GetNext()){
         
         if(preg_match("#PROP1C_(.*?)#",$arProp["CODE"])){
             $arOfferJson["1C_PROPS"][$arProp["CODE"]] = array("ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"]);
-            if(!isset($arResult["PROP1C"][$arProp["CODE"]]))$arResult["PROP1C"][$arProp["CODE"]] = array("NAME"=>$arProp["NAME"],"VALUES"=>array());
-            $arResult["PROP1C"][$arProp["CODE"]]["VALUES"][$arProp["VALUE"]] = $arProp["VALUE_ENUM"];
+            if(!isset($arResult["PROP1C"][$arProp["CODE"]]))
+                $arResult["PROP1C"][$arProp["CODE"]] = array("NAME"=>$arProp["NAME"],"VALUES"=>array());
+            if($arProp["VALUE"])
+                $arResult["PROP1C"][$arProp["CODE"]]["VALUES"][$arProp["VALUE"]] = $arProp["VALUE_ENUM"];
+            
         }
         
         $arOffer["PROPERTIES"][$arProp["CODE"]][] = $arProp;
@@ -117,6 +120,7 @@ while($arOffer = $resOffers->GetNext()){
             $arResult["STORAGES"][$arStorage["STORE_ID"]] = 
                 CCatalogStore::GetList(array(),array("ID"=>$arStorage["STORE_ID"]))->GetNext();
         }
+        foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)$arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
         
     }
     
@@ -129,8 +133,8 @@ while($arOffer = $resOffers->GetNext()){
     $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
 };
 echo "<!-- ";
-print_r($arResult["OFFERS"][0]);
-print_r($arResult["STORAGES"]);
+print_r($arResult["OFFERS"]);
+//print_r($arResult["PROP1C"]);
 echo " -->";
 
 $this->IncludeComponentTemplate();
