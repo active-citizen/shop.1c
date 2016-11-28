@@ -2,21 +2,6 @@
 
 $RU = $_SERVER["REQUEST_URI"];
 // Значения по умолчанию
-
-/*
-if(!isset($arParams["ALL_TITLE"]))$arParams["ALL_TITLE"] = "Все начисления и списания";
-if(!isset($arParams["DEBIT_TITLE"]))$arParams["DEBIT_TITLE"] = "Все начисления";
-if(!isset($arParams["CREDIT_TITLE"]))$arParams["CREDIT_TITLE"] = "Все списания";
-
-
-if(!isset($arParams["ALL_FOLDER"]))$arParams["ALL_FOLDER"] = "all";
-if(!isset($arParams["DEBIT_FOLDER"]))$arParams["DEBIT_FOLDER"] = "debit";
-if(!isset($arParams["CREDIT_FOLDER"]))$arParams["CREDIT_FOLDER"] = "credit";
-
-if(!isset($arParams["SELF_FOLDER"]))$arParams["CREDIT_FOLDER"] = "/points/";
-if(!isset($arParams["USER_ID"]))$arParams["USER_ID"] = CUser::GetID();
-if(!isset($arParams["SORT"]))$arParams["SORT"] = array("TRANSACT_DATE"=>"DESC");
-*/
 if(!isset($arParams["PRODUCT_CODE"]))$arParams["PRODUCT_CODE"] = '';
 if(!isset($arParams["CATALOG_IBLOCK_ID"]))$arParams["CATALOG_IBLOCK_ID"] = 2;
 if(!isset($arParams["OFFER_IBLOCK_ID"]))$arParams["OFFER_IBLOCK_ID"] = 3;
@@ -24,6 +9,7 @@ if(!isset($arParams["USER_ID"]))$arParams["USER_ID"] = $USER->GetId();
 
 //Определяем сумму на счету пользователя
 CModule::IncludeModule("sale");
+CModule::IncludeModule("forum");
 $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>$arParams["USER_ID"]));
 $arResult["ACCOUNT"] = $res->GetNext();
 
@@ -39,6 +25,17 @@ $resCatalog = CIBlockElement::GetList(
     array("nTopCount"=>1)
 );
 $arResult["CATALOG_ITEM"] = $resCatalog->GetNext();
+
+
+// Информацация о разделе
+$arResult["CATALOG_ITEM"]["SECTION_INFO"] = CIBlockSection::GetList(
+    array(),array(
+        "IBLOCK_ID" =>  $arParams["CATALOG_IBLOCK_ID"],
+        "ID"      =>    $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
+    ),
+    false,
+    array("nTopCount"=>1)
+)->GetNext();
 
 // Сколько у товара всего желающих
 $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_PRODUCT"=>$arResult["CATALOG_ITEM"]["ID"]);
@@ -111,6 +108,7 @@ while($arOffer = $resOffers->GetNext()){
     $arOffer["STORAGES"] = array();
     $resStorage = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]));
     while($arStorage = $resStorage->GetNext()){
+        
         if(!$arStorage["AMOUNT"])continue;
         $arOffer["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"];
         $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"];
@@ -126,14 +124,35 @@ while($arOffer = $resOffers->GetNext()){
     
     
     $arOffer["RRICE_INFO"] = CPrice::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]))->GetNext();
-    $arOfferJson["PRICE"] = $arOffer["RRICE_INFO"]["PRICE"];
+    $arOfferJson["PRICE"] = str_replace(",","",$arOffer["RRICE_INFO"]["PRICE"]);
     $arOfferJson["NAME"] = $arOffer["NAME"];
     
     $arResult["OFFERS"][] = $arOffer;
     $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
 };
+
+$arIBlock = CIBlock::GetList(array(),array("CODE"=>"marks"))->GetNext();
+$iblockId = $arIBlock["ID"];
+// Определяем ставил ли пользователь оценку этому товару
+$arResult["MARK"] = CIBlockElement::GetList(
+    array(), 
+    $arField = array(
+        "IBLOCK_ID"=>$iblockId,
+        "PROPERTY_MARK_USER"=>$USER->GetId(),
+        "PROPERTY_MARK_PRODUCT"=>$arResult["CATALOG_ITEM"]["ID"]
+    ),
+    false,
+    array(),
+    array("PROPERTY_MARK")
+)->GetNext();
+
+// Считаем количество отзывов
+$resComments = CForumMessage::GetList(array("POST_DATE"=>"DESC"),array("TOPIC_ID"=>$arResult["CATALOG_ITEM"]["PROPERTIES"]["FORUM_TOPIC_ID"][0]["VALUE"]));
+$arResult["MESSAGES"] = $resComments->SelectedRowsCount();
+
+
 echo "<!-- ";
-print_r($arResult["OFFERS"]);
+print_r($arResult["OFFERS_JSON"]);
 //print_r($arResult["PROP1C"]);
 echo " -->";
 

@@ -954,6 +954,7 @@ body {
   line-height: 24px;
   transition: 0.2s ease-out;
 }
+.ag-shop-rules__spoiler-link--active,
 .ag-shop-rules__spoiler-link:hover {
   color: #2473e8;
 }

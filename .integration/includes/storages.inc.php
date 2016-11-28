@@ -10,20 +10,19 @@
         $arFields = array();
         $arFields["TITLE"] = $arStorage["Наименование"];
         $arFields["ACTIVE"] = 'Y';
-        $arFields["ADDRESS"] = '';
+        $arFields["ADDRESS"] = $arStorage["АдресФактический"];
         $arFields["DESCRIPTION"] = '';
         $arFields["GPS_N"] = '';
         $arFields["GPS_S"] = '';
         $arFields["IMAGE_ID"] = '';
-        $arFields["PHONE"] = '';
-        $arFields["SCHEDULE"] = '';
+        $arFields["PHONE"] = $arStorage["Телефон"];
+        $arFields["SCHEDULE"] = $arStorage["ГрафикРаботы"];
         $arFields["XML_ID"] = $arStorage["Ид"];
         $arFields["USER_ID"] = '';
-        $arFields["EMAIL"] = '';
+        $arFields["EMAIL"] = $arStorage["ОфициальныйСайт"];
         $arFields["ISSUING_CENTER"] = 'Y';
         $arFields["SHIPPING_CENTER"] = 'Y';
         $arFields["SITE_ID"] = 's1';
-        // Мне кажется он не очень объективен для мужыка 30-35 лет и даёт какие то нереально завышенные результаты. 
 
         if(
             isset($arStorage["КакПроехать"]) 

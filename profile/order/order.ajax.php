@@ -81,7 +81,7 @@ elseif(isset($_POST["create_order"]) && $offer_id=intval($_POST["create_order"])
         "email"     => $_POST["email"],
         "address"   => $_POST["address"]
     ));
-    echo json_encode(array("redirect_url"=>"/order/"));
+    echo json_encode(array("redirect_url"=>"/profile/order/"));
 }
 elseif(isset($_GET["add_to_basket"])){
     CModule::IncludeModule('sale');
@@ -204,7 +204,7 @@ elseif(isset($_GET["add_order"])){
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
         CSaleOrder::PayOrder($orderId,"Y",true,false);
-        $answer["redirect_url"] = "/order/detail/$orderId/";
+        $answer["redirect_url"] = "/profile/order/detail/$orderId/";
     }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);

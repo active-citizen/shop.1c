@@ -998,6 +998,9 @@ input:checked + .ag-shop-filter__variants-item {
   border-radius: 0;
   text-decoration: none;
   color: inherit;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   cursor: pointer;
   display: block;
   margin: 0 auto;
