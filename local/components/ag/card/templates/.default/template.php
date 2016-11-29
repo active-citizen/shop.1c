@@ -326,7 +326,7 @@
                 </div>
               </div>
             </div>
-    <div class="ag-shop-modal-wrap" style="display:none">
+    <div class="ag-shop-modal-wrap" style="display:none" id="card-order-confirm">
       <div class="ag-shop-modal">
         <div class="ag-shop-modal__container">
           <div class="ag-shop-modal__row">
@@ -362,7 +362,7 @@
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__buttons-wrap">
-              <button class="ag-shop-modal__button" type="button" onclick="return productConfirmNext();">Оформить заказ</button>
+              <button class="ag-shop-modal__button" id="card-order-confirm-button" type="button" onclick="return productConfirmNext();">Оформить заказ</button>
               <button class="ag-shop-modal__button ag-shop-modal__button--cancel" type="button" onclick="$('.ag-shop-modal-wrap').fadeOut();">Отмена</button>
             </div>
           </div>

@@ -40,5 +40,4 @@ include("../menu.php");
           </div>
         </div>
 
-
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

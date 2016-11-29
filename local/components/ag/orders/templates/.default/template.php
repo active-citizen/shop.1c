@@ -48,12 +48,6 @@
 
             <div class="ag-shop-profile__orders">
               <? foreach($arResult["ORDERS"] as $arOrder):?>
-                <pre>
-                <?
-                    //print_r($arOrder);
-                    //die;
-                ?>
-                </pre>
               <div class="ag-shop-profile-order ag-shop-profile-order--<?
               switch($arOrder["STATUS_ID"]){
                 case 'N':
@@ -83,7 +77,7 @@
                     </div>
                     <div class="grid__col-shrink">
                       <div class="ag-shop-profile-order__desktop-controls">
-                          <a class="ag-shop-profile-order__control" href="#">
+                          <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
                           <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ №<?= $arOrder["ID"]?>');">
@@ -95,12 +89,11 @@
                   <? foreach($arOrder["PRODUCTS"] as $arProduct):?>
                   <div class="ag-shop-profile-order__content">
                     <div class="ag-shop-profile-order__image-container" style="background-image: url('<?= $arProduct["PIC_PATH"];?>')">
-                        <!-- <img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"> -->
                     </div>
                     <div class="ag-shop-profile-order__points"><?= number_format($arProduct["PRICE"]*$arProduct["QUANTITY"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"]*$arProduct["QUANTITY"])) ?></div>
                     <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                       <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name"><?= $arProduct["NAME"]?></div>
+                        <div class="ag-shop-profile-order__name"><?= html_entity_decode($arProduct["NAME"])?></div>
                       </div>
                       <div class="grid__col-shrink">
                         <div class="ag-shop-profile-order__review">
@@ -127,13 +120,9 @@
                     <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i><span>Отменить заказ</span></a></div>
                   </div>
                 </div>
-                <?
-                //echo "<pre>";
-                //print_r($arOrder);
-                //echo "</pre>";
-                ?>
               </div>
               <? endforeach ?>
+            </div>
               
               
 <?if ($arParams["SHOW_TOP_PAGINATION"] && count($arResult["PAGES"])>1):?>
@@ -184,12 +173,15 @@
           <div class="ag-shop-modal__row">
             <label>
               <div class="ag-shop-modal__label">Номер заказа:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-ordernum"></div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-ordernum">
+            </div>
             </label>
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">От:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-fio">Константин Констанинович Иванов </div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-fio">
+                Константин Констанинович Иванов 
+            </div>
           </div>
           <div class="ag-shop-modal__row">
             <label>

@@ -188,7 +188,8 @@
             "СхемаПроезда"              =>"Схема проезда::text",
             "ДополнительнаяИнформация"  =>"Дополнительная информаци::text"
         );
-        $arProperties["MANUFACTURER"]   = '<table class="ag_manufacturer">';
+        $arProperties["MANUFACTURER"]   = base64_encode(serialize($manufacturersIndex[$arProduct["Производитель"]["Ид"]]));
+        /*
         foreach($arManufactersTags as $tagName=>$fieldName){
             // Пропускае пустые
             if(!trim($manufacturersIndex[$arProduct["Производитель"]["Ид"]][$tagName]))continue;
@@ -214,6 +215,7 @@
             
         }
         $arProperties["MANUFACTURER"]   .= '</table>';
+        */
         
         // Срок исполнения
         $arProperties["DAYS_TO_EXPIRE"] = isset($arProduct["СрокИсполнения"])?intval($arProduct["СрокИсполнения"]):0;

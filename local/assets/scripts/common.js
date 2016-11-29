@@ -306,7 +306,7 @@ function loadComments(){
 }
 
 function productConfirm(){
-    $('.ag-shop-modal-wrap').fadeIn();
+    $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
     $('#confirm-unit').html($('.ag-shop-card__total-points').html());
@@ -323,7 +323,7 @@ function productConfirmNext(){
     +"&store_id="+$('#confirm-store-id').html();
     
     // добавляем в корзину
-    $('.ag-shop-modal__button').html('Обработка заказа...')
+    $('#card-order-confirm-button').html('Обработка заказа...')
     $.get(
         add_basket_url,
         function(data){
@@ -409,6 +409,11 @@ function sendOrdersFeedbackForm(){
         });
     },2000);
     
+    return false;
+}
+
+function printOrder(orderId){
+    $('body').append('<iframe style="display:none;" src="/profile/order/print.ajax.php?id='+orderId+'"></iframe>');
     return false;
 }
 
