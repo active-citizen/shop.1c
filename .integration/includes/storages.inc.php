@@ -8,7 +8,7 @@
         $arStoragesIndex[$arStorage["Ид"]] = 0;
 
         $arFields = array();
-        $arFields["TITLE"] = $arStorage["Наименование"];
+        $arFields["TITLE"] = $arStorage["НаименованиеПолное"];
         $arFields["ACTIVE"] = 'Y';
         $arFields["ADDRESS"] = $arStorage["АдресФактический"];
         $arFields["DESCRIPTION"] = '';

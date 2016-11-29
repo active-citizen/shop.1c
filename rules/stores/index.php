@@ -5,29 +5,18 @@ $APPLICATION->SetTitle("Центры выдачи");
 include("../menu.php")
 
 ?>
-<h1>Где получить</h1>
-<?$APPLICATION->IncludeComponent(
-	"bitrix:catalog.store",
-	"",
-	Array(
-		"SEF_MODE" => "Y",
-		"PHONE" => "N",
-		"SCHEDULE" => "N",
-		"SET_TITLE" => "Y",
-		"TITLE" => "Список центров выдачи с подробной информацией",
-		"MAP_TYPE" => "0",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "3600",
-		"CACHE_NOTES" => "",
-		"SEF_FOLDER" => "/rules/stores/",
-		"SEF_URL_TEMPLATES" => Array(
-			"liststores" => "index.php",
-			"element" => "#store_id#"
-		),
-		"VARIABLE_ALIASES" => Array(
-			"liststores" => Array(),
-			"element" => Array(),
-		)
-	),
-false
-);?> <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+        <div class="ag-shop-content">
+          <div class="ag-shop-rules">
+            <div class="ag-shop-rules__content">
+              <div class="ag-shop-content__limited-container">
+                <mark><strong>Список центров госуслуг, в которых вы можете получить поощрение:</strong></mark>
+              </div>
+            </div>
+
+                <?$APPLICATION->IncludeComponent("ag:stores","",Array(),false);?> 
+
+          </div>
+        </div>
+
+
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
