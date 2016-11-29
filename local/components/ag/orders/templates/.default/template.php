@@ -48,6 +48,12 @@
 
             <div class="ag-shop-profile__orders">
               <? foreach($arResult["ORDERS"] as $arOrder):?>
+                <pre>
+                <?
+                    //print_r($arOrder);
+                    //die;
+                ?>
+                </pre>
               <div class="ag-shop-profile-order ag-shop-profile-order--<?
               switch($arOrder["STATUS_ID"]){
                 case 'N':
@@ -76,12 +82,21 @@
                       </div>
                     </div>
                     <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__desktop-controls"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a><a class="ag-shop-profile-order__control" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a></div>
+                      <div class="ag-shop-profile-order__desktop-controls">
+                          <a class="ag-shop-profile-order__control" href="#">
+                              <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
+                          </a>
+                          <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ №<?= $arOrder["ID"]?>');">
+                              <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a><a class="ag-shop-profile-order__control" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
+                          </a>
+                      </div>
                     </div>
                   </div>
                   <? foreach($arOrder["PRODUCTS"] as $arProduct):?>
                   <div class="ag-shop-profile-order__content">
-                    <div class="ag-shop-profile-order__image-container"><img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"></div>
+                    <div class="ag-shop-profile-order__image-container" style="background-image: url('<?= $arProduct["PIC_PATH"];?>')">
+                        <!-- <img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"> -->
+                    </div>
                     <div class="ag-shop-profile-order__points"><?= number_format($arProduct["PRICE"]*$arProduct["QUANTITY"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"]*$arProduct["QUANTITY"])) ?></div>
                     <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                       <div class="grid__col-auto">
@@ -89,7 +104,7 @@
                       </div>
                       <div class="grid__col-shrink">
                         <div class="ag-shop-profile-order__review">
-                          <!-- <a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a> -->
+                          <a href="<?= $arProduct["CATALOG_URL"]?>#review"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
                         </div>
                       </div>
                     </div>
@@ -151,183 +166,47 @@
     <?endforeach;?>
   </div>
 <?endif;?>
-              <hr/>
-              <div class="ag-shop-profile-order ag-shop-profile-order--active">
-                <div class="ag-shop-profile-order__container">
-                  <div class="grid grid--bleed grid--justify-space-between">
-                    <div class="grid__col-auto">
-                      <div class="ag-shop-profile-order__info">
-                        <div class="ag-shop-profile-order__status">Активный (12 дней)</div>
-                        <div class="ag-shop-profile-order__number">Заказ №1112</div>
-                        <div class="ag-shop-profile-order__date">от 23.11.16</div>
-                      </div>
-                    </div>
-                    <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__desktop-controls"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
-                        <div class="ag-shop-profile-order__control"><span>Невозвратный билет</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ag-shop-profile-order__content">
-                    <div class="ag-shop-profile-order__image-container"><img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"></div>
-                    <div class="ag-shop-profile-order__points">3510 баллов</div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-center">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name">Посещение Центра Современного Искусства МАРС Посещение Центра Современного Искусства МАРС</div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__review"><a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a></div>
-                      </div>
-                    </div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-end">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__place"><span>Забирать здесь:</span><br class="hide-on-desktop"><a href="#">МФЦ Академический (Москва, Нижний сусальный переулок, 5с5)</a></a></div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__count"><span>количество пар: 2, 1170 баллов</span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="ag-shop-profile-order__mobile-controls">
-                  <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
-                    <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__control"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i><span>Невозвратный билет</span></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="ag-shop-profile-order ag-shop-profile-order--canceled">
-                <div class="ag-shop-profile-order__container">
-                  <div class="grid grid--bleed grid--justify-space-between">
-                    <div class="grid__col-auto">
-                      <div class="ag-shop-profile-order__info">
-                        <div class="ag-shop-profile-order__status">Отменён</div>
-                        <div class="ag-shop-profile-order__number">Заказ №1112</div>
-                        <div class="ag-shop-profile-order__date">от 23.11.16</div>
-                      </div>
-                    </div>
-                    <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__desktop-controls"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    </div>
-                  </div>
-                  <div class="ag-shop-profile-order__content">
-                    <div class="ag-shop-profile-order__image-container"><img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"></div>
-                    <div class="ag-shop-profile-order__points">3510 баллов</div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-center">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name">Посещение Центра Современного Искусства МАРС Посещение Центра Современного Искусства МАРС</div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__review"><a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a></div>
-                      </div>
-                    </div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-end">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__place"><span>Забирать здесь:</span><br class="hide-on-desktop"><a href="#">МФЦ Академический (Москва, Нижний сусальный переулок, 5с5)</a></a></div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__count"><span>количество пар: 2, 1170 баллов</span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="ag-shop-profile-order__mobile-controls">
-                  <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
-                  </div>
-                </div>
-              </div>
-              <div class="ag-shop-profile-order ag-shop-profile-order--annuled">
-                <div class="ag-shop-profile-order__container">
-                  <div class="grid grid--bleed grid--justify-space-between">
-                    <div class="grid__col-auto">
-                      <div class="ag-shop-profile-order__info">
-                        <div class="ag-shop-profile-order__status">Аннулирован (истек срок)</div>
-                        <div class="ag-shop-profile-order__number">Заказ №1112</div>
-                        <div class="ag-shop-profile-order__date">от 23.11.16</div>
-                      </div>
-                    </div>
-                    <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__desktop-controls"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    </div>
-                  </div>
-                  <div class="ag-shop-profile-order__content">
-                    <div class="ag-shop-profile-order__image-container"><img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"></div>
-                    <div class="ag-shop-profile-order__points">3510 баллов</div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-center">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name">Посещение Центра Современного Искусства МАРС Посещение Центра Современного Искусства МАРС</div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__review"><a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a></div>
-                      </div>
-                    </div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-end">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__place"><span>Забирать здесь:</span><br class="hide-on-desktop"><a href="#">МФЦ Академический (Москва, Нижний сусальный переулок, 5с5)</a></a></div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__count"><span>количество пар: 2, 1170 баллов</span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="ag-shop-profile-order__mobile-controls">
-                  <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
-                  </div>
-                </div>
-              </div>
-              <div class="ag-shop-profile-order ag-shop-profile-order--done">
-                <div class="ag-shop-profile-order__container">
-                  <div class="grid grid--bleed grid--justify-space-between">
-                    <div class="grid__col-auto">
-                      <div class="ag-shop-profile-order__info">
-                        <div class="ag-shop-profile-order__status">Выполнен</div>
-                        <div class="ag-shop-profile-order__number">Заказ №1112</div>
-                        <div class="ag-shop-profile-order__date">от 23.11.16</div>
-                      </div>
-                    </div>
-                    <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__desktop-controls"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    </div>
-                  </div>
-                  <div class="ag-shop-profile-order__content">
-                    <div class="ag-shop-profile-order__image-container"><img class="ag-shop-profile-order__image" src="http://placehold.it/60x60"></div>
-                    <div class="ag-shop-profile-order__points">3510 баллов</div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-center">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name">Посещение Центра Современного Искусства МАРС Посещение Центра Современного Искусства МАРС</div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__review"><a href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a></div>
-                      </div>
-                    </div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-end">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__place"><span>Забирать здесь:</span><br class="hide-on-desktop"><a href="#">МФЦ Академический (Москва, Нижний сусальный переулок, 5с5)</a></a></div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__count"><span>количество пар: 2, 1170 баллов</span></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="ag-shop-profile-order__mobile-controls">
-                  <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
-                  </div>
-                </div>
-              </div>
+
+
+    <div class="ag-shop-modal-wrap" id="orders-feedback-form" style="display:none">
+      <div class="ag-shop-modal">
+        <div class="ag-shop-modal__container">
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__select-wrap">
+              <select class="ag-shop-modal__select" id="order-feedback-form-type">
+                <option disabled selected>Тип обращения</option>
+                <option>Тип 1</option>
+                <option>Тип 2</option>
+                <option>Тип 3</option>
+              </select>
             </div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <label>
+              <div class="ag-shop-modal__label">Номер заказа:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-ordernum"></div>
+            </label>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">От:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-fio">Константин Констанинович Иванов </div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <label>
+              <div class="ag-shop-modal__label">Сообщение:</div>
+              <textarea class="ag-shop-modal__textinput" placeholder="Что вас волнует?"  id="order-feedback-form-text"></textarea>
+            </label>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__buttons-wrap">
+              <button class="ag-shop-modal__button" type="button" onclick="return sendOrdersFeedbackForm();">Отправить</button>
+              <button class="ag-shop-modal__button ag-shop-modal__button--cancel" type="button" onclick="return hideOrdersFeedbackForm();">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
             <!-- }}} Profile-->

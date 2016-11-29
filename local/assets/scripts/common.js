@@ -362,6 +362,7 @@ function productConfirmNext(){
     );
 }
 
+
 function showCommonFeedbackForm(){
     $('#common-feedback-form').fadeIn();
     return false;
@@ -385,4 +386,31 @@ function sendCommonFeedbackForm(){
     
     return false;
 }
+
+function showOrdersFeedbackForm(orderNum){
+    $('#order-feedback-form-ordernum').html(orderNum);
+    $('#orders-feedback-form').fadeIn();
+    return false;
+}
+
+function hideOrdersFeedbackForm(){
+    $('#orders-feedback-form').fadeOut();
+    return false;
+}
+
+function sendOrdersFeedbackForm(){
+    $('#orders-feedback-form .ag-shop-modal__container div').hide();
+    $('#orders-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправлено</div>');
+    setTimeout(function(){
+        
+        $('#orders-feedback-form').fadeOut(function(){
+            $('#orders-feedback-form .ag-shop-modal__container div').show();
+            $('#orders-feedback-form .ag-shop-modal__container .form-success').remove();        
+        });
+    },2000);
+    
+    return false;
+}
+
+
 

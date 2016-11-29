@@ -22,6 +22,10 @@ if(!isset($arParams["SHOW_TOP_PAGINATION"]))$arParams["SHOW_TOP_PAGINATION"] = 1
 if(!isset($arParams["SHOW_BOTTOM_PAGINATION"]))$arParams["SHOW_BOTTOM_PAGINATION"] = 1;
 if(!isset($arParams["PAGE_BLOCK_SIZE"]))$arParams["PAGE_BLOCK_SIZE"] = 10;
 
+if(!isset($arParams["CATALOG_IBLOCK_ID"]))$arParams["CATALOG_IBLOCK_ID"] = 2;
+if(!isset($arParams["OFFER_IBLOCK_ID"]))$arParams["OFFER_IBLOCK_ID"] = 3;
+
+
 if(!isset($arParams["PAGE"]) && !isset($_GET["page"]))
     $arParams["PAGE"] = 1;
 else
@@ -91,6 +95,18 @@ while($arOrder = $resOrders->GetNext()){
         $arCatalog = CIblockElement::GetList(array(),array(
             "IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
         ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE"))->GetNext();
+        
+        // Картинка продукта
+        $arProp = CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNExt();
+        $catalogElementId = $arProp["VALUE"];
+        
+        $arCatalogItem = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$catalogElementId))->GetNext();
+        
+        $arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"MORE_PHOTO"))->GetNExt();
+        $arProduct["PIC_PATH"] = CFile::GetPath($arProp["VALUE"]);
+        $arProduct["CATALOG_URL"] = $arCatalogItem["DETAIL_PAGE_URL"];
+        
+        // Ссылка на продукт
         
         $order["PRODUCTS"][] = $arProduct;
     }

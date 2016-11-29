@@ -132,3 +132,7 @@ input.ag-balls[type="radio"]{
     color: #0eb0a0;
     text-align: center;
 }
+
+.ag-shop-profile-order__image-container{
+    background-size: cover;
+}
