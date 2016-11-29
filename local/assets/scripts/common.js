@@ -362,3 +362,27 @@ function productConfirmNext(){
     );
 }
 
+function showCommonFeedbackForm(){
+    $('#common-feedback-form').fadeIn();
+    return false;
+}
+
+function hideCommonFeedbackForm(){
+    $('#common-feedback-form').fadeOut();
+    return false;
+}
+
+function sendCommonFeedbackForm(){
+    $('#common-feedback-form .ag-shop-modal__container div').hide();
+    $('#common-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправлено</div>');
+    setTimeout(function(){
+        
+        $('#common-feedback-form').fadeOut(function(){
+            $('#common-feedback-form .ag-shop-modal__container div').show();
+            $('#common-feedback-form .ag-shop-modal__container .form-success').remove();        
+        });
+    },2000);
+    
+    return false;
+}
+
