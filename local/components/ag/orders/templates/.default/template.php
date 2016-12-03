@@ -103,7 +103,22 @@
                     </div>
                     <div class="grid grid--bleed grid--justify-space-between grid--align-end">
                       <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__place"><span>Забирать здесь:</span><br class="hide-on-desktop"><a href="#">МФЦ Академический (Москва, Нижний сусальный переулок, 5с5)</a></a></div>
+                        <div class="ag-shop-profile-order__place">
+                            <? if(trim($arOrder["STORE_INFO"]["TITLE"])){?>
+                                <span>Забирать здесь:</span>
+                                <br class="hide-on-desktop">
+                                <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
+                                    <a href="/rules/stores/#<?= $arOrder["STORE_INFO"]["ID"] ?>">
+                                        <?= $arOrder["STORE_INFO"]["TITLE"]?>
+                                        <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
+                                        (<?= $arOrder["STORE_INFO"]["ADDRESS"]?>)
+                                        <? }?>
+                                    </a>
+                                <? }else{ ?>
+                                    <?= $arOrder["STORE_INFO"]["TITLE"]?>
+                                <? } ?>
+                            <? } ?>
+                        </div>
                       </div>
                       <div class="grid__col-shrink">
                         <div class="ag-shop-profile-order__count"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
@@ -179,9 +194,10 @@
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">От:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-fio">
-                Константин Констанинович Иванов 
-            </div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-fio"><?
+                $arUser = CUser::GetById(CUSER::GEtID())->GetNext();
+                echo ($arUser["NAME"] || $arUser["LAST_NAME"]?$arUser["NAME"]." ".$arUser["LAST_NAME"]:$arUser["LOGIN"]);
+            ?></div>
           </div>
           <div class="ag-shop-modal__row">
             <label>

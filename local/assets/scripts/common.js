@@ -374,15 +374,37 @@ function hideCommonFeedbackForm(){
 }
 
 function sendCommonFeedbackForm(){
+
+    var post = {};
+    post["type"] = $('#feedback_type').val();
+    post["name"] = $('#feedback_name').html();
+    post["text"] = $('#feedback_text').val();
+
+    if(!post["text"]){
+        alert('Введите сообщение');
+        return false;
+    }
+    if(!post["type"]){
+        alert('Выберите тип обращения');
+        return false;
+    }
+    
     $('#common-feedback-form .ag-shop-modal__container div').hide();
-    $('#common-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправлено</div>');
-    setTimeout(function(){
-        
-        $('#common-feedback-form').fadeOut(function(){
-            $('#common-feedback-form .ag-shop-modal__container div').show();
-            $('#common-feedback-form .ag-shop-modal__container .form-success').remove();        
-        });
-    },2000);
+    $('#common-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправляется</div>');
+
+    $.post(
+        "/profile/common_feedback.ajax.php",
+        post,
+        function(data){
+            setTimeout(function(){
+                $('#common-feedback-form').fadeOut(function(){
+                    $('#common-feedback-form .ag-shop-modal__container div').show();
+                    $('#common-feedback-form .ag-shop-modal__container .form-success').remove();        
+                });
+            },2000);
+        }
+    );
+
     
     return false;
 }
@@ -399,15 +421,39 @@ function hideOrdersFeedbackForm(){
 }
 
 function sendOrdersFeedbackForm(){
+
+    var post = {};
+    post["order"] = $('#order-feedback-form-ordernum').html();
+    post["type"] = $('#order-feedback-form-type').val();
+    post["name"] = $('#order-feedback-form-fio').html();
+    post["text"] = $('#order-feedback-form-text').val();
+    if(!post["text"]){
+        alert('Введите сообщение');
+        return false;
+    }
+    if(!post["type"]){
+        alert('Выберите тип обращения');
+        return false;
+    }
+
+
     $('#orders-feedback-form .ag-shop-modal__container div').hide();
-    $('#orders-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправлено</div>');
-    setTimeout(function(){
-        
-        $('#orders-feedback-form').fadeOut(function(){
-            $('#orders-feedback-form .ag-shop-modal__container div').show();
-            $('#orders-feedback-form .ag-shop-modal__container .form-success').remove();        
-        });
-    },2000);
+    $('#orders-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправляется</div>');
+    
+    $.post(
+        "/profile/order_feedback.ajax.php",
+        post,
+        function(data){
+            setTimeout(function(){
+                $('#orders-feedback-form').fadeOut(function(){
+                    $('#orders-feedback-form .ag-shop-modal__container div').show();
+                    $('#orders-feedback-form .ag-shop-modal__container .form-success').remove();        
+                });
+            },2000);
+        }
+    );
+    
+    
     
     return false;
 }

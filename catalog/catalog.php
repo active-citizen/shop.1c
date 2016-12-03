@@ -23,6 +23,28 @@ $catalogIblockId = $arIBlock["ID"];
 $arIBlockOffer = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"))->GetNext();
 $offerIblockId = $arIBlockOffer["ID"];
 
+// 404-я ошибка
+if(
+    !CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$product_code),
+        false,
+        array(),
+        array("ID")
+    )->GetNext()
+    ||
+    !CIBlockSection::GetList(
+        array(),
+        array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code),
+        false,
+        array(),
+        array("ID")
+    )->GetNext()
+){
+    include($_SERVER["DOCUMENT_ROOT"]."/404.php");
+    die;
+}
+
 ?>
     <? if(!$product_code && $catalog_code){?>
         <div class="ag-shop-content">

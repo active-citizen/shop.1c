@@ -16,7 +16,7 @@
         <div class="ag-shop-modal__container">
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__select-wrap">
-              <select class="ag-shop-modal__select">
+              <select class="ag-shop-modal__select" id="feedback_type">
                 <option disabled selected>Тип обращения</option>
                 <option>Тип 1</option>
                 <option>Тип 2</option>
@@ -26,12 +26,16 @@
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">От:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked">Константин Констанинович Иванов </div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="feedback_name"><?
+                $arUser = CUser::GetById(CUSER::GEtID())->GetNext();
+                echo ($arUser["NAME"] || $arUser["LAST_NAME"]?$arUser["NAME"]." ".$arUser["LAST_NAME"]:$arUser["LOGIN"]);
+            ?></div>
+            
           </div>
           <div class="ag-shop-modal__row">
             <label>
               <div class="ag-shop-modal__label">Сообщение:</div>
-              <textarea class="ag-shop-modal__textinput" placeholder="Что вас волнует?"></textarea>
+              <textarea class="ag-shop-modal__textinput" placeholder="Что вас волнует?" id="feedback_text"></textarea>
             </label>
           </div>
           <div class="ag-shop-modal__row">

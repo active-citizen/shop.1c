@@ -73,6 +73,16 @@ $arNavStartParams = array(
 $resOrders = CSaleOrder::GetList($arOrder, $arFilter, false, $arNavStartParams);
 
 while($arOrder = $resOrders->GetNext()){
+    
+    // Склад
+    $arOrder["STORE_INFO"] = CCatalogStore::GetList(
+        array(),
+        array("ID"=>$arOrder["STORE_ID"]),
+        false,
+        array("nTopCount"=>1),
+        array()
+    )->GetNext();
+    
     $order = array();
     $order = $arOrder;
     $order["DATE_SHORT"] = date_parse($arOrder["DATE_INSERT"]);
