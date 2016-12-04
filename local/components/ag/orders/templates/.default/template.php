@@ -80,9 +80,13 @@
                           <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
-                          <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ №<?= $arOrder["ID"]?>');">
-                              <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a><a class="ag-shop-profile-order__control" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
-                          </a>
+                          <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ №<?= $arOrder["ID"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
+                          <? if($arOrder["STATUS_ID"]=='N' && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]):?>
+                          <a class="ag-shop-profile-order__control" onclick="return orderCancel(<?= $arOrder["ID"]?>,this);" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a>
+                          <? elseif($arOrder["STATUS_ID"]=='AG'): ?>
+                          <? else:?>
+                          <div class="ag-shop-profile-order__control"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i><span>Отмена невозможна</span></div>
+                          <? endif ?>
                       </div>
                     </div>
                   </div>

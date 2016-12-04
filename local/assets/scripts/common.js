@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+    if(document.location.hash){
+        var id = document.location.hash.split("#")[1];
+        if(id)$('#store-click-'+id).trigger('click');
+        if(id)$('#faq-click-'+id).trigger('click');
+    }
+
+    $('.hash-navigation').click(function(){
+        document.location.hash = $(this).attr("href").split("#")[1];
+    });
+
   /**
    * Переключение вкладок
    */
@@ -436,7 +446,6 @@ function sendOrdersFeedbackForm(){
         return false;
     }
 
-
     $('#orders-feedback-form .ag-shop-modal__container div').hide();
     $('#orders-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправляется</div>');
     
@@ -452,14 +461,29 @@ function sendOrdersFeedbackForm(){
             },2000);
         }
     );
-    
-    
-    
     return false;
 }
 
 function printOrder(orderId){
     $('body').append('<iframe style="display:none;" src="/profile/order/print.ajax.php?id='+orderId+'"></iframe>');
+    return false;
+}
+
+function orderCancel(orderId, obj){
+    $(obj).unbind("click");
+    $(obj).attr("onclick","return false;");
+    $(obj).html('Производится отмена...');
+    $.get(
+        "/profile/order/order.ajax.php?cancel="+orderId,
+        function(data){
+            var answer = JSON.parse(data);
+            if(answer.error){
+                alert(answer.error);
+                return false;
+            }
+            document.location.href='/profile/order/?tab=use';
+        }
+    );
     return false;
 }
 

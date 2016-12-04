@@ -591,7 +591,7 @@ function agauth(encsession){
 
 	    // Формируем блок ошибок
 	    for(i in answer.errors){
-            alert(answer.errors[i]);
+            //alert(answer.errors[i]);
 	    }
 	}
     );

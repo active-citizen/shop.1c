@@ -100,10 +100,4 @@ $(document).ready(function() {
     }
   })();
 
-    if(document.location.hash){
-        var id = document.location.hash.split("#")[1];
-        if(id)$('#store-click-'+id).trigger('click')
-    }
-
-
 });

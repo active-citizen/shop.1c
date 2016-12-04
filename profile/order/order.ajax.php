@@ -348,9 +348,12 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
         $answer = array("error"=>"Это заказ другого пользователя");
     }
     elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID()){
-        CSaleOrder::PayOrder($order_id,"N",true);
+        CSaleOrder::PayOrder($order_id,"N",true,false);
         if(!CSaleOrder::CancelOrder($order_id,"Y","Передумал")){
             $answer["error"] .= "Заказ не был отменён.";
+        }
+        else{
+            CSaleOrder::StatusOrder($order_id,"AG");
         }
     }
 }

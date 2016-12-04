@@ -116,7 +116,9 @@ while($arOrder = $resOrders->GetNext()){
         $arProduct["PIC_PATH"] = CFile::GetPath($arProp["VALUE"]);
         $arProduct["CATALOG_URL"] = $arCatalogItem["DETAIL_PAGE_URL"];
         
-        // Ссылка на продукт
+        // Возможность отмены
+        $arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"CANCEL_ABILITY"))->GetNExt();
+        $arProduct["CANCEL_ABILITY"] = $arProp["VALUE_ENUM"];
         
         $order["PRODUCTS"][] = $arProduct;
     }

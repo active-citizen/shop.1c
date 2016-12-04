@@ -6,10 +6,12 @@
             <div class="ag-shop-rules__container">
                 
             <? foreach($arResult["stores"] as $arStore):?>
-            <a name="<?= $arStore["ID"];?>"></a>
               <div class="ag-shop-content__limited-container js-spoiler__link" id="store-click-<?= $arStore["ID"];?>">
-                <a class="ag-shop-rules__spoiler-link" href="#">
-                    - <?= $arStore["TITLE"]?>, 
+                <a 
+                    class="ag-shop-rules__spoiler-link hash-navigation" 
+                    href="#<?= $arStore["ID"];?>"
+                    name="<?= $arStore["ID"];?>"
+                >- <?= $arStore["TITLE"]?>, 
                     <?= $arStore["ADDRESS"]?> 
                     карта
                 </a>

@@ -178,7 +178,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/libs/rus.lib.php");
                     <button class="ag-shop-slider-card__likes" type="button">
                       <div class="ag-shop-slider-card__likes-icon<? if($product["mywish"]){?> wish-on<? }else{?> wish-off<? }?>"
                         productid="<?= $product["ID"]?>" 
-                        onclick="return mywish(this);"></div>
+                        <? if($USER->IsAuthorized() && !$arResult["MARK"]):?>
+                        onclick="return mywish(this);"
+                        <? endif ?>
+                      ></div>
                       <div class="ag-shop-slider-card__likes-count"
                       id="wishid<?= $product["ID"]?>"><?= 
                         $product["wishes"]

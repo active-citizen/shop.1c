@@ -56,7 +56,9 @@
                           <button class="ag-shop-item-card__likes" type="button">
                             <div class="ag-shop-item-card__likes-icon<?if($arResult["MYWISH"]):?> wish-on<? endif ?>"
                             productId="<?= $arResult["CATALOG_ITEM"]["ID"]?>"
+                            <? if($USER->IsAuthorized() && !$arResult["MARK"]):?>
                             onclick="return mywish(this)"
+                            <? endif ?>
                             ></div>
                             <div class="ag-shop-item-card__likes-count" id="wishid<?= $arResult["CATALOG_ITEM"]["ID"]?>"><?= $arResult["WISHES"];?></div>
                           </button>

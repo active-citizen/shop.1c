@@ -1,0 +1,155 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Инфоблок миграций
+     */
+    class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+            // Имя шаблона для сайта 
+            $ibData = array(
+                array(
+                    "ID"        =>  "content",
+                    "SECTIONS"  =>  "N",
+                    "LANG"      =>  array(
+                        "ru"        =>  array(
+                            "NAME"          =>  "Контент",
+                            "SECTION_NAME"  =>  "Контент",
+                            "ELEMENT_NAME"  =>  "Контент"
+                        ),
+                        "en"        =>  array(
+                            "NAME"          =>  "Content",
+                            "SECTION_NAME"  =>  "Content",
+                            "ELEMENT_NAME"  =>  "Content"
+                        ),
+                    ),
+                    "IBLOCKS"=>array(
+                        array(
+                            "NAME"=>"Статьи",
+                            "SITE_ID"=>"s1",
+                            "CODE"=>"content_articles",
+                            "GROUP_ID"=>array("1"=>"X","2"=>"X"),
+                            "PROPERTIES"=>array(
+                            ),
+                            "ITEMS"=>array(
+                                array(
+                                    "NAME"=>"О проекте",
+                                    "DETAIL_TEXT_TYPE"=>"html",
+                                    "DETAIL_TEXT"=>'
+<p><strong>Для заказа товаров в Магазине поощрений проекта необходимо обладать статусом «Активный гражданин». Чтобы получить статус, вам необходимо набрать 1000 баллов. Как только вы наберете первые 1000 баллов, статус будет присвоен вам автоматически, и вы получите доступ к покупкам в Магазине.</strong></p>
+<p>После заказа поощрения в Магазине на указанный в вашем профиле адрес электронной почты придет письмо с подтверждением заказа. Обращаем ваше внимание, что после оформления заказа, произвести его отмену невозможно, за исключением заказов на сувенирную продукцию. После получения подтверждения вы можете получить поощрение следующим образом:</p>
+<p>Если это сувенирная продукция - необходимо выбрать и приехать в один из пунктов выдачи, расположенных в 10 центрах государственных услуг г. Москвы «Мои документы». Список центров госуслуг вы найдете в конце данного раздела.</p>
+<p>При получении поощрения в пункте выдачи необходимо подписать акт, в котором вы подтверждаете, что претензий по составу, размеру, количеству и качеству товара не имеете, и осведомлены о том, что товар обмену и возврату не подлежит.</p>
+<p>Если это билет на предоставление услуги - на электронную почту, указанную в вашем профиле, будет направлено письмо с сертификатом, который необходимо распечатать, во избежание возникновения конфликтных ситуаций.</p>
+<p>По истечении срока действия ваш заказ будет аннулирован, а баллы безвозвратно списаны со счета. Возврат баллов после окончания срока действия невозможен.</p>
+<p>Обращаем ваше внимание, что все поощрения <strong>БЕСПЛАТНЫ</strong>, никто и нигде не может попросить вас оплатить (полностью или частично) любые виды поощрений. В случае нарушения этого правила, а также в случае возникновения любых других вопросов относительно Магазина поощрений, просьба обращаться в техническую поддержку проекта по адресу <a href="mailto:support@ag.mos.ru">support@ag.mos.ru</a>.</p>
+<p>Информация об исключениях или дополнительных условиях всегда указана в описании поощрений. Будьте внимательны!</p>
+<mark>Выдача поощрений в центрах госуслуг осуществляется ежедневно, <strong>с 8.00 до 20.00</strong></mark>
+                                    ',
+                                    "PROPERTIES"=>array()
+                                ),
+                            )
+                        )
+                    )
+                )
+            );
+            
+            CModule::IncludeModule("iblock");
+            $ibTypeObj = new CIBlockType;
+            $ibObj = new CIBlock;
+            $ibPropObj = new CIBlockProperty;
+            $ibElemObj = new CIBlockElement;
+            foreach($ibData as $ibType){
+                $data = $ibType;
+                unset($data["IBLOCKS"]);
+                $res = CIBlockType::GetList(array(),array("ID"=>$ibType["ID"]));
+                if(!$ibTypeElem = $res->getNext())
+                    $ibTypeObj->Add($data);
+                else
+                    $ibTypeObj->Update($ibTypeElem["ID"],$data);
+                
+                foreach($ibType["IBLOCKS"] as $ib){
+                    $data = $ib;
+                    unset($data["PROPERTIES"]);
+                    unset($data["ITEMS"]);
+                    $data["IBLOCK_TYPE_ID"] = $ibType["ID"];
+                    $res = CIBlock::GetList(array(),array("CODE"=>$ib["CODE"]));
+                    if(!$ibElem = $res->getNext())
+                        $ibObj->Add($data);
+                    else
+                        $ibObj->Update($ibElem["ID"],$data);
+                    $res = CIBlock::GetList(array(),array("CODE"=>$ib["CODE"]));
+                    $ibElem = $res->getNext();
+                    
+                    foreach($ib["PROPERTIES"] as $CODE => $ibProp){
+                        $ibProp["IBLOCK_ID"] = $ibElem["ID"];
+                        $ibProp["CODE"]=$CODE;
+                        $res = CIBlockProperty::GetList(array(),array("CODE"=>$ibProp["CODE"]));
+                        if(!$ibPropElem = $res->getNext()){
+                            $ibPropObj->Add($ibProp);
+                        }
+                        else{
+                            $ibPropObj->Update($ibPropElem["ID"],$ibProp);
+                        }
+                    }
+                    
+                    foreach($ib["ITEMS"] as $item){
+                        $item["IBLOCK_ID"] = $ibElem["ID"];
+                        if(!trim($item["CODE"]))
+                            $item["CODE"] = CUtil::translit($item["NAME"],"ru",array(
+                                "replace_space"         =>  "_",
+                                "replace_other"         =>  "_",
+                                "delete_repeat_replace" =>  true,
+                                "safe_chars"            =>  ""
+                            ));
+                        $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$item["IBLOCK_ID"],"NAME"=>$item["NAME"]));
+                        
+                        if(!$ibElemElem = $res->getNext()){
+                            $ID = $ibElemObj->Add($item);
+                            foreach($item["PROPERTIES"] as $prop_code=>$prop_value){
+                                if(isset($ib["PROPERTIES"][$prop_code]["PROPERTY_TYPE"]) && $ib["PROPERTIES"][$prop_code]["PROPERTY_TYPE"]=='F'){
+                                    if(file_exists($prop_value)){
+                                        $stat = stat($prop_value);
+                                        $prop_value = CFile::SaveFile(
+                                            array(
+                                                "name" => md5($prop_value).".jpg",
+                                                "size" => $stat['size'],
+                                                "tmp_name" => $prop_value,
+                                                "type" => "image/jpg",
+                                                "old_file" => 0,
+                                                "del" => "N",
+                                                "MODULE_ID" => "iblock",
+                                                "description" => "описание файла"
+                                            ),
+                                            "baners"
+                                        );
+                                        echo "\n|$prop_value|\n";
+                                    }
+                                }
+                                    
+                                CIBlockElement::SetPropertyValues($ID,$item["IBLOCK_ID"],$prop_value,$prop_code);
+                            }
+                        }
+                        else{
+                            
+                            $ibElemObj->Update($ibElemElem["ID"],$item);
+                            foreach($item["PROPERTIES"] as $prop_code=>$prop_value)
+                                CIBlockElement::SetPropertyValues($ibElemElem["ID"],$item["IBLOCK_ID"],$prop_value,$prop_code);
+                        }
+                    }
+                    
+                }
+            }
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$migration = new add_ag_template();
+// Откатываем, если неудачно
+if(!$migration->Run())$migration->RollBack();
