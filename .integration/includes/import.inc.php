@@ -238,7 +238,7 @@
             $arProduct["ЛидерПродаж"]=='Да'?$ENUM["SALELEADER"]["да"]:0;
         // Лидер продаж
         $arProperties["SPECIALOFFER"] = 
-            $arProduct["Спецпредложение"]=='Да'?$ENUM["SPECIALOFFER"]["да"]:0;
+            $arProduct["ДоступенПоАкции"]=='Да'?$ENUM["SPECIALOFFER"]["да"]:0;
         // Интересуюсь
         $arProperties["INTERESTS"] = $ENUM["INTERESTS"][$arProduct["Интересуюсь"]];
         // Хочу
