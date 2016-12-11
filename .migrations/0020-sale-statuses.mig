@@ -58,22 +58,6 @@
                         "STATUS_ID"     =>  9
                     )
                 ),
-                "AB" => array(
-                    array(
-                        "ID"            =>  "AB",
-                        "LID"           =>  "ru",
-                        "NAME"          =>  "В обработке",
-                        "DESCRIPTION"   =>  "В обработке",
-                        "STATUS_ID"     =>  2
-                    ),
-                    array(
-                        "ID"            =>  "AB",
-                        "LID"           =>  "en",
-                        "NAME"          =>  "В обработке",
-                        "DESCRIPTION"   =>  "В обработке",
-                        "STATUS_ID"     =>  2
-                    )
-                ),
                 "AC" => array(
                     array(
                         "ID"            =>  "AC",
@@ -88,22 +72,6 @@
                         "NAME"          =>  "Брак",
                         "DESCRIPTION"   =>  "Брак",
                         "STATUS_ID"     =>  12
-                    )
-                ),
-                "AA" => array(
-                    array(
-                        "ID"            =>  "AA",
-                        "LID"           =>  "ru",
-                        "NAME"          =>  "Новый",
-                        "DESCRIPTION"   =>  "Новый",
-                        "STATUS_ID"     =>  1
-                    ),
-                    array(
-                        "ID"            =>  "AA",
-                        "LID"           =>  "en",
-                        "NAME"          =>  "Новый",
-                        "DESCRIPTION"   =>  "Новый",
-                        "STATUS_ID"     =>  1
                     )
                 ),
                 "AG" => array(
