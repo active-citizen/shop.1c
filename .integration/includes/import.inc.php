@@ -288,6 +288,11 @@
         $arProperties["WANTS"] = $ENUM["WANTS"][$arProduct["Хочу"]];
         // Тип поощрений
         $arProperties["TYPES"] = $ENUM["TYPES"][$arProduct["ТипПоощрения"]];
+        // Правила получения
+        $arProperties["RECEIVE_RULES"] = $arProduct["ПравилаПолученияЗаказа"];
+        // Правила отмены
+        $arProperties["CANCEL_RULES"] = $arProduct["ПравилаОтменыЗаказа"];
+
             
             
             
