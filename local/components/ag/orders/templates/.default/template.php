@@ -59,6 +59,10 @@
                 case 'AG':
                     echo "canceled";
                 break;
+                // Брак стилистически аналогичен отмене
+                case 'AC':
+                    echo "canceled";
+                break;
                 case 'AI':
                     echo "annuled";
                 break;
