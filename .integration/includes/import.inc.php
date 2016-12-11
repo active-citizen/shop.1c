@@ -13,7 +13,8 @@
     $arManufacturers = $arImport["Классификатор"]["Производители"]["Производитель"];
     // Получаем из XML массив товаров
     $arProducts = $arImport["Каталог"]["Товары"]["Товар"];
-    
+
+
     // Приводим картинки к массивному виду
     foreach($arProducts as $k=>$arProduct)
         if(isset($arProducts[$k]["Картинка"]) && !is_array($arProducts[$k]["Картинка"]))
@@ -23,9 +24,47 @@
     ///                  Импортируем производителей
     ///////////////////////////////////////////////////////////////////////
     $manufacturersIndex = array();
-    foreach($arManufacturers as $arManufacturer)
+    $arManufacturerIblock = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
+    $objManufacturer = new CIBlockElement;
+    foreach($arManufacturers as $arManufacturer){
         $manufacturersIndex[$arManufacturer["Ид"]] = $arManufacturer;
-    
+        $arManufacturerMain = array(
+            "NAME"=>$arManufacturer["ПолноеНаименование"],
+            "IBLOCK_ID"=>$arManufacturerIblock["ID"],
+            "CODE"=>CUtil::translit($arManufacturer["ПолноеНаименование"],'ru',array()),
+            "SORT"=>$arManufacturer["Сортировка"],
+            "XML_ID"=>$arManufacturer["Ид"],
+        );
+        $arManufacturerProps = array(
+            "SHORT_NAME"=>"КраткоеНаименование",
+            "FULL_NAME"=>"ПолноеНаименование",
+            "HOW_FIND"=>"КакПроехать",
+            "COORDS"=>"КоординатыНаКарте",
+            "DETAIL"=>"ДополнительнаяИнформация",
+            "SCHEDULE"=>"ГрафикРаботы",
+            "WEBSITE"=>"ОфициальныйСайт",
+            "PHONE"=>"Телефон",
+        );
+        // Ищем производителя с таким ID
+        if(!$arIblockManufacturer = CIBlockElement::GetList(
+            array(),
+            array("IBLOCK_CODE"=>"manuacturers","XML_ID"=>$arManufacturer["Ид"]),
+            false,
+            array("nTopCount"=>1)
+        )->getNext())
+        // Если производителя нет - добавляем
+        {
+            $id = $objManufacturer->Add($arManufacturerMain);
+        }
+        else{
+            $id = $arIblockManufacturer["ID"];
+            $objManufacturer->Update($id, $arManufacturerMain);
+        }
+        $manufacturersIndex[$arManufacturer["Ид"]]["IBLOCK_ID"] = $arManufacturerIblock["ID"];
+        $manufacturersIndex[$arManufacturer["Ид"]]["ID"] = $id;
+        foreach($arManufacturerProps as $propertyCode=>$propertyValue)
+            CIBlockElement::SetPropertyValueCode($id,$propertyCode,$arManufacturer[$propertyValue]);        
+    }
     
     $CATALOG_IBLOCK_ID = 2;
     
@@ -189,6 +228,9 @@
             "ДополнительнаяИнформация"  =>"Дополнительная информаци::text"
         );
         $arProperties["MANUFACTURER"]   = base64_encode(serialize($manufacturersIndex[$arProduct["Производитель"]["Ид"]]));
+        // Привязка к инфоблоку
+        $arProperties["MANUFACTURER_LINK"] = $manufacturersIndex[$arProduct["Производитель"]["Ид"]]["ID"];
+
         /*
         foreach($arManufactersTags as $tagName=>$fieldName){
             // Пропускае пустые
