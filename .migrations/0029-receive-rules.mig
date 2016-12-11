@@ -43,6 +43,13 @@
                                     "PROPERTY_TYPE"=>"S",
                                     "USER_TYPE"=>"HTML"
                                 ),
+                                "SEND_CERT" =>array(
+                                    "NAME"=>"ОтправлятьСертификат",
+                                    "PROPERTY_TYPE"=>"L",
+                                    "VALUES"=>array(
+                                        array("VALUE" => "да","DEF" => "Y","SORT" => "100")
+                                    )
+                                ),
                             ),
                             "ITEMS"=>array(
                             )

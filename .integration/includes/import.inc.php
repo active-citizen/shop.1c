@@ -294,6 +294,10 @@
         $arProperties["CANCEL_RULES"] = $arProduct["ПравилаОтменыЗаказа"];
         // Артикул
         $arProperties["ARTNUMBER"] = $arProduct["Артикул"];
+        // Отправлять сертификат
+        $arProperties["SEND_CERT"]     = 
+            $arProduct["ОтправлятьСертификат"]=='Да'?$ENUM["SEND_CERT"]["да"]:0;
+
 
             
             
