@@ -44,6 +44,7 @@
             "SCHEDULE"=>"ГрафикРаботы",
             "WEBSITE"=>"ОфициальныйСайт",
             "PHONE"=>"Телефон",
+            "SCHEME"=>"СхемаПроезда",
         );
         // Ищем производителя с таким ID
         if(!$arIblockManufacturer = CIBlockElement::GetList(

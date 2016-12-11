@@ -63,7 +63,7 @@
                                 ),
                                 "SCHEME" =>array(
                                     "NAME"=>"СхемаПроезда",
-                                    "PROPERTY_TYPE"=>"F",
+                                    "PROPERTY_TYPE"=>"S",
                                 ),
                                 "WEBSITE" =>array(
                                     "NAME"=>"ОфициальныйСайт",

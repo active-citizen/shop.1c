@@ -60,8 +60,20 @@ $data["FIO"] = (!$arUser['NAME'] && !$arUser["LAST_NAME"]?$arUser['LOGIN']:$arUs
 $data["NAME"] = $arCatalog["NAME"];
 $data["QUANTITY"] = ($arBasket["QUANTITY"]>1?$arBasket["QUANTITY"]." &times; ":"").$arCatalogProps["QUANT"][0]["VALUE"];
 $data["MANUFACTURER"] = unserialize(base64_decode($arCatalogProps["MANUFACTURER"][0]["VALUE"]));
-$data["HOW_SEARCH"] = $data["MANUFACTURER"]["КакПроехать"];
-$data["ADDRESS"] = 'Россия, Москва, Верхняя Красносельская улица 3 стр 2';
+
+if($arManufacturer = 
+    CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"manuacturers","ID"=>$arCatalogProps["MANUFACTURER_LINK"][0]["VALUE"]),false,
+    array("nTopCount"=>1),array("PROPERTY_HOW_FIND","PROPERTY_SCHEME","ID"))->GetNext()
+){
+    $data["ADDRESS"] = $arManufacturer["PROPERTY_HOW_FIND_VALUE"];
+    $data["HOW_SEARCH"] = $arManufacturer["PROPERTY_SCHEME_VALUE"];
+}
+else{
+    $data["ADDRESS"] = '';
+    $data["HOW_SEARCH"] = '';
+}
+
+//$data["HOW_SEARCH"] = $data["MANUFACTURER"]["КакПроехать"];
 $data["RULES"] = '          <p>Общественный городской прокат велосипедов ВелоБайк – сеть из 300 станций самообслуживания, установленных в Москве. На любой из них можно взять напрокат велосипед, совершить поездку и вернуть его на другую (или ту же) работающую станцию.</p>
           <p>
              Для получения данного поощрения Вам необходимо:<br><br>1. Приобрести его за баллы и получить на указанную в профиле электронную почту письмо с уникальным промокодом<br><br>2. Зарегистрироваться в системе Велобайк<br><br>3. Войти в личный профиль в системе ВелоБайк (с помощью мобильного приложения Android / iOS)<br><br>4. Активировать в системе Велобайк в разделе «Профиль» полученный на первом шаге промокод<br><br>5. Привязать банковскую карту (обязательно для пользования услугой)</p>
@@ -365,4 +377,6 @@ body {
     </div>
   </body>
 </html>
-<script>window.print();</script>
+<script>
+//window.print();
+</script>
