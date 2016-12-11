@@ -50,6 +50,10 @@
                                         array("VALUE" => "да","DEF" => "Y","SORT" => "100")
                                     )
                                 ),
+                                "MON_LIMIT" =>array(
+                                    "NAME"=>"МесячныйЛимит",
+                                    "PROPERTY_TYPE"=>"N"
+                                ),
                             ),
                             "ITEMS"=>array(
                             )

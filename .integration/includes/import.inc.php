@@ -297,6 +297,8 @@
         // Отправлять сертификат
         $arProperties["SEND_CERT"]     = 
             $arProduct["ОтправлятьСертификат"]=='Да'?$ENUM["SEND_CERT"]["да"]:0;
+        // Месячный лимит
+        $arProperties["MON_LIMIT"] = $arProduct["МесячныйЛимит"];
 
 
             
