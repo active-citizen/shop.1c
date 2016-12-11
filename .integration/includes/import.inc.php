@@ -292,6 +292,8 @@
         $arProperties["RECEIVE_RULES"] = $arProduct["ПравилаПолученияЗаказа"];
         // Правила отмены
         $arProperties["CANCEL_RULES"] = $arProduct["ПравилаОтменыЗаказа"];
+        // Артикул
+        $arProperties["ARTNUMBER"] = $arProduct["Артикул"];
 
             
             
