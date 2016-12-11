@@ -2,8 +2,11 @@ $(document).ready(function() {
 
     if(document.location.hash){
         var id = document.location.hash.split("#")[1];
-        if(id)$('#store-click-'+id).trigger('click');
-        if(id)$('#faq-click-'+id).trigger('click');
+        var re = /&/;
+        if(id && !re.test(id))
+            $('#store-click-'+id).trigger('click');
+        if(id && !re.test(id))
+            $('#faq-click-'+id).trigger('click');
     }
 
     $('.hash-navigation').click(function(){

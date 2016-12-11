@@ -186,7 +186,6 @@ $(document).ready(function(){
             $('a[rel="rating-desc"]').addClass('ag-shop-menu__link--active');
             $('#ag-sorting').val('price-asc');
         }
-        
     }
     
     
