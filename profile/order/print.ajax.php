@@ -88,17 +88,38 @@ $data["RULES"] = $arCatalogProps["RECEIVE_RULES"][0]["~VALUE"]["TEXT"];
 $data["MANUFACTURER"] = $data["MANUFACTURER"]["ПолноеНаименование"];
 
 $tmp = date_parse($arOrder["DATE_INSERT"]);
-
-$data["expire"] = date(
-    "d.m.Y",
-    mktime(
-	$tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]
-    )
-    +($arCatalogProps["DAYS_TO_EXPIRE"][0]["VALUE"])*24*60*60
-);
+$orderTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
 
 
-
+if($arCatalogProps["USE_BEFORE_DATE"][0]["VALUE"] && !$arCatalogProps["PERFOMANCE_DATE"][0]["VALUE"]){
+    $tmp = date_parse($arOrder["USE_BEFORE_DATE"]);
+    $useBeforeTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
+    $data["expire"] = date("d.m.Y",$useBeforeTimestamp);
+}
+elseif(!$arCatalogProps["USE_BEFORE_DATE"][0]["VALUE"] && $arCatalogProps["PERFOMANCE_DATE"][0]["VALUE"]){
+    $tmp = date_parse($arOrder["PERFOMANCE_DATE"]);
+    $perfomanseTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
+    $data["expire"] = date("d.m.Y",$perfomanseTimestamp);
+    
+}
+elseif($arCatalogProps["USE_BEFORE_DATE"][0]["VALUE"] && $arCatalogProps["PERFOMANCE_DATE"][0]["VALUE"]){
+    $tmp = date_parse($arOrder["PERFOMANCE_DATE"]);
+    $perfomanseTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
+    $tmp = date_parse($arOrder["USE_BEFORE_DATE"]);
+    $useBeforeTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
+    $data["expire"] = $perfomanseTimestamp<$useBeforeTimestamp?date("d.m.Y",$perfomanseTimestamp):date("d.m.Y",$useBeforeTimestamp);
+}
+elseif($arCatalogProps["DAYS_TO_EXPIRE"][0]["VALUE"]){
+    $tmp = date_parse($arOrder["DATE_INSERT"]);
+    $orderTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
+    $data["expire"] = date(
+	"d.m.Y",
+	$orderTimestamp+($arCatalogProps["DAYS_TO_EXPIRE"][0]["VALUE"])*24*60*60
+    );
+}
+else{
+    $data["expire"] = '';
+}
 
 
 ?>

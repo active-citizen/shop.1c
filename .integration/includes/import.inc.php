@@ -299,10 +299,27 @@
             $arProduct["ОтправлятьСертификат"]=='Да'?$ENUM["SEND_CERT"]["да"]:0;
         // Месячный лимит
         $arProperties["MON_LIMIT"] = $arProduct["МесячныйЛимит"];
+        
         // Дата мероприятия
-        $tmp = date_parse($arProduct["ДатаМероприятия"]);
-        $arProduct["ДатаМероприятия"] = date("d.m.Y",mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
-        $arProperties["PERFOMANCE_DATE"] = $arProduct["ДатаМероприятия"];
+        if(trim($arProduct["ДатаМероприятия"])){
+            $tmp = date_parse($arProduct["ДатаМероприятия"]);
+            $arProduct["ДатаМероприятия"] = date("d.m.Y",mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
+            $arProperties["PERFOMANCE_DATE"] = $arProduct["ДатаМероприятия"];
+        }
+        else{
+            $arProperties["PERFOMANCE_DATE"] = '';
+        }
+        
+        // Использовать по дату
+        if(trim($arProduct["ИспользоватьПоДату"])){
+            $tmp2 = date_parse($arProduct["ИспользоватьПоДату"]);
+            $arProduct["ИспользоватьПоДату"] = date("d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"]));
+            $arProperties["USE_BEFORE_DATE"] = $arProduct["ИспользоватьПоДату"];
+        }
+        else{
+            $arProperties["USE_BEFORE_DATE"] = '';
+        }
+        
 
 
             

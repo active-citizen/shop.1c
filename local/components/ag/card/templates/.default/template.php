@@ -145,6 +145,44 @@
                         ?></strong></div>
                         <? endif ?>
                         
+                        <? if(
+                            !$arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
+                            && 
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
+                        ):
+                        $date = date("d.m.Y",time()+$arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]*24*60*60)
+                        ?>
+                        <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
+                            $date
+                        ?></strong></div>
+                        <? endif ?>
+
+                        <? if(
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
+                            && 
+                            !$arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
+                        ):?>
+                        <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
+                        ?></strong></div>
+                        <? endif ?>
+
+                        <? if(
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
+                            && 
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
+                        ):
+                        $tmp = date_parse($arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]);
+                        $date1 = date("d.m.Y",$ts1 = mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
+                        $ts2 = time()+$arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]*24*60*60;
+                        $date2 = date("d.m.Y",$ts2)
+                        ?>
+                        <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
+                            $ts1<$ts2?$date1:$date2
+                        ?></strong></div>
+                        <? endif ?>
+
+
                         
                       </div>
                       <? if($arResult["CATALOG_ITEM"]["SECTION_INFO"]["CODE"]=='transport'):?>

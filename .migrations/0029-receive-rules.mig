@@ -59,6 +59,11 @@
                                     "PROPERTY_TYPE"=>"S",
                                     "USER_TYPE"=>"Date"
                                 ),
+                                "USE_BEFORE_DATE" =>array(
+                                    "NAME"=>"ИспользоватьПоДату",
+                                    "PROPERTY_TYPE"=>"S",
+                                    "USER_TYPE"=>"Date"
+                                ),
                             ),
                             "ITEMS"=>array(
                             )
