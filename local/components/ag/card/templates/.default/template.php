@@ -128,11 +128,24 @@
                     <div class="ag-shop-card__container">
                       <div class="ag-shop-card__header">
                         <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
+                        
                         <? if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
                         <div class="ag-shop-card__header-code">Артикул: <strong><?= 
                             $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                         ?></strong></div>
+                        <? elseif($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
+                        <div class="ag-shop-card__header-code">Артикул: <strong><?= 
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
+                        ?></strong></div>
                         <? endif ?>
+
+                        <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["PERFOMANCE_DATE"][0]["VALUE"]):?>
+                        <div class="ag-shop-card__header-code">Дата мероприятия: <strong><?= 
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["PERFOMANCE_DATE"][0]["VALUE"]
+                        ?></strong></div>
+                        <? endif ?>
+                        
+                        
                       </div>
                       <? if($arResult["CATALOG_ITEM"]["SECTION_INFO"]["CODE"]=='transport'):?>
                       <div class="ag-shop-card__field">

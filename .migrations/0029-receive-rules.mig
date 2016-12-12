@@ -54,6 +54,11 @@
                                     "NAME"=>"МесячныйЛимит",
                                     "PROPERTY_TYPE"=>"N"
                                 ),
+                                "PERFOMANCE_DATE" =>array(
+                                    "NAME"=>"ДатаМероприятия",
+                                    "PROPERTY_TYPE"=>"S",
+                                    "USER_TYPE"=>"Date"
+                                ),
                             ),
                             "ITEMS"=>array(
                             )
