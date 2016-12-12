@@ -64,7 +64,7 @@
         $manufacturersIndex[$arManufacturer["Ид"]]["IBLOCK_ID"] = $arManufacturerIblock["ID"];
         $manufacturersIndex[$arManufacturer["Ид"]]["ID"] = $id;
         foreach($arManufacturerProps as $propertyCode=>$propertyValue)
-            CIBlockElement::SetPropertyValueCode($id,$propertyCode,$arManufacturer[$propertyValue]);        
+                CIBlockElement::SetPropertyValueCode($id,$propertyCode,$arManufacturer[$propertyValue]);        
     }
     
     $CATALOG_IBLOCK_ID = 2;
@@ -299,6 +299,10 @@
             $arProduct["ОтправлятьСертификат"]=='Да'?$ENUM["SEND_CERT"]["да"]:0;
         // Месячный лимит
         $arProperties["MON_LIMIT"] = $arProduct["МесячныйЛимит"];
+        // Дата мероприятия
+        $tmp = date_parse($arProduct["ДатаМероприятия"]);
+        $arProduct["ДатаМероприятия"] = date("d.m.Y",mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
+        $arProperties["PERFOMANCE_DATE"] = $arProduct["ДатаМероприятия"];
 
 
             
