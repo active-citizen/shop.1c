@@ -201,6 +201,11 @@ elseif(isset($_GET["add_order"])){
 
     $resCSaleOrder = new CSaleOrder;
     if($orderId = $resCSaleOrder->Add($arFields)){
+        
+        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+        $obOrder = new bxOrder();
+        $resOrder = $obOrder->addEMPPoints(-$totalSum,"Заказ БТРКС-$orderId в магазине поощрений АГ");
+        
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
         CSaleOrder::PayOrder($orderId,"Y",true,false);
@@ -304,6 +309,8 @@ elseif(isset($_GET["wish"])){
     
 }
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
+    
+    
     // Проверить принадлежит ли заказ пользователю
     CModule::IncludeModule('sale');
     CModule::IncludeModule('iblock');
@@ -348,6 +355,11 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
         $answer = array("error"=>"Это заказ другого пользователя");
     }
     elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID()){
+
+        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+        $obOrder = new bxOrder();
+        $resOrder = $obOrder->addEMPPoints($order["SUM_PAID"],"Отмена заказа БТРКС-".$order["ID"]." в магазине поощрений АГ");
+
         CSaleOrder::PayOrder($order_id,"N",true,false);
         if(!CSaleOrder::CancelOrder($order_id,"Y","Передумал")){
             $answer["error"] .= "Заказ не был отменён.";

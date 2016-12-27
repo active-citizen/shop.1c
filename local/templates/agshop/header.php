@@ -101,6 +101,7 @@
                 </div>
                 </a>
               </div>
+              <? if($USER->isAuthorized()):?>
               <div class="grid__col-auto grid__col-md-shrink">
                   <a class="ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
                   <div class="ag-shop-nav__profile-container">
@@ -111,6 +112,7 @@
                     </div>
                     <div class="ag-shop-nav__profile-points"><?= $myBalls;?></div>
                   </div></a></div>
+              <? endif;?>
               <div class="grid__col-auto grid__col-md-shrink">
                   <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/">
                   <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>

@@ -61,10 +61,10 @@
             $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
             $objTransact = new CSaleUserTransact;
 
-
-
-
             foreach($history as $empTransact){
+                // Не загружаем транзакции за заказы
+                if(mb_strpos($empTransact["title"],"БТРКС-")!==false)continue;
+                
                 // Формируем ключ для поиска по индексу транзакций
                 $transactionKey = 
                     ($empTransact["action"]=='debit'?"Y":"N")." ".
@@ -76,7 +76,7 @@
                 
                 $arFields = array(
                     "USER_ID"       =>  $userId,
-                    "AMOUNT"        =>  $empTransact['points'],
+                    "AMOUNT"        =>  abs($empTransact['points']),
                     "CURRENCY"      =>  "BAL",
                     "DEBIT"         =>  ($empTransact['action']=='debit'?'Y':'N'),
                     "DESCRIPTION"   =>  $empTransact["title"],

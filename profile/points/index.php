@@ -8,7 +8,10 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
 
-
+/*
+        print_r($data);
+    die;
+*/
     $agBrige = new ActiveCitizenBridge;
     $bxUser = new bxUser;
 

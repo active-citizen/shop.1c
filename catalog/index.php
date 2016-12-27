@@ -1,9 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     CModule::IncludeModule("iblock");
-
-    
-    
 ?>
 
         <div class="ag-shop-content">

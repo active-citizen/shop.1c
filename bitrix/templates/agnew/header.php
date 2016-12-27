@@ -1,5 +1,4 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -44,7 +43,6 @@
     <body>
         <?$APPLICATION->ShowPanel()?>
         <div class="ag2-wrap">
-        
             <div class="ag2-header">
                 <div class="ag2-top-part">
                     <a class="ag2-logo" alt="Логотип" href="/"></a>
@@ -84,7 +82,7 @@
                 <div class="ag2-bottom-part">
                     <div class="ad-search-form">
                         <form action="/search/">
-                            <input type="text" name="q" placeholder="Поиск" value="<?= isset($_REQUEST["q"])?htmlspecialchars($_REQUEST["q"]):''?>">
+                            asdasdas<input type="text" name="q" placeholder="Поиск" value="<?= isset($_REQUEST["q"])?htmlspecialchars($_REQUEST["q"]):''?>">
                         </form>
                     </div>
                     <div class="ag-catalog-menu">

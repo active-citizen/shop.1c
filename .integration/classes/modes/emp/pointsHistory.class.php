@@ -28,7 +28,22 @@
     class pointsHistoryBridgeMethod{
         function exec($args,$contour='uat'){
             require_once(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
+            $url = $AG_KEYS[$contour]["bcc_url"];
+
+            $curl = new curlTool;
+            $data = "request=".urlencode('
+                {
+                    "method":"points",
+                    "args":{
+                    },
+                    "session_id":"'.$args["session_id"].'"
+                }
+            ');
+
+            $curl = new curlTool;
+            $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
             
+            /*
             if($contour=='uat')
                 $args["token"] = $EMP_TOKENS["uat"];
             if($contour=='test')
@@ -46,6 +61,11 @@
             $data = json_encode($data);
             $curl = new curlTool;
             $data = $curl->post("https://emp.mos.ru/v2.0.0/poll/getHistory", $data, array("Content-Type: application/json"));
+            echo "<pre>";
+            print_r(json_decode($data));
+            die;
+            */
+
             return $data;
         }
     }

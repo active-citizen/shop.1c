@@ -467,4 +467,38 @@
             
         }
         
+        function addEMPPoints($points,$comment){
+            require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curl.class.php");
+            require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
+            require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+            
+            if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
+                $contour = 'prod';
+            else
+                $contour = 'uat';
+            
+            $bxUser = new bxUser;
+            // Загружаем историю начисления баллов
+            $session_id = $bxUser->getEMPSessionId();
+            $curl = new curlTool;
+            $url = $AG_KEYS[$contour]["bcc_url"];
+            $data = "request=".urlencode('
+                {
+                    "method":"transaction",
+                    "args":{
+                        "appId":"1",
+                        "points":"'.abs($points).'",
+                        "debit": "'.($points<0?-1:1).'",
+                        "comment":"'.$comment.'"
+                    },
+                    "session_id":"'.$session_id.'"
+                }
+            ');
+            $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
+            $data = json_decode($data);
+            if(property_exists($data, "errorCode") && !$data->errorCode)return true;
+            return false;
+        }
+        
+        
     }
