@@ -30,3 +30,12 @@ favicon.ico
 sect_bottom.php
 sect_sidebar.php
 web.config
+*.swp
+*.toc
+*.htoc
+*.log
+*.aux
+*.haux
+*.out
+*.pdf
+docs/description/exports/*

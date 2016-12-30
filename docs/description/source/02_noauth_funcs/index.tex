@@ -1,0 +1,139 @@
+\chapter{Функционал неавторизованного пользователя}
+    \section{Общие элементы страниц}
+        \subsection{Фиксированная панель слева}
+            \label{baseitems_fixleft_panel}
+            \subsubsection{Логотип}
+                \begin{enumerate}
+                    \item Ссылка с логотипа на главную страницу
+                \end{enumerate}
+            \subsubsection{Кнопки соцсетей}
+                \begin{enumerate}
+                    \item Ссылка на группу вконтакте http://vk.com/citizenmoscow
+                    \item Ссылка на страницу в facebook https://www.facebook.com/citizenmoscow
+                    \item Ссылка на аккаунт в twitter https://twitter.com/citizenmoscow
+                    \item Ссылка на страницу в instagram https://instagram.com/citizenmoscow/
+                \end{enumerate}
+            \subsubsection{Кнопка <<вверх>>}
+                \begin{enumerate}
+                    \item На главной и в разделах каталога при нажатии перематывает страницы к фильтру. 
+                    \item На вторичных страницах перематывает страницу к началу(к главному меню)
+                \end{enumerate}
+        \subsection{Главное меню}
+            \label{baseitems_main_meu}
+            \subsubsection{Ссылка на каталог}
+                \begin{enumerate}
+                    \item Адрес ссылки /catalog/
+                    \item Ссылка активна на всех разделах каталога /catalog/*
+                \end{enumerate}
+            \subsubsection{Ссылка на правила.}
+                \begin{enumerate}
+                    \item Адрес ссылки /rules/
+                    \item С /faq/ идет редирект на /rules/faq/
+                    \item Ссылка активна на всех разделах каталога /rules/*
+                \end{enumerate}
+            
+            \subsubsection{Форма поиска}
+                \begin{enumerate}
+                    \item Placeholder <<поиск>>
+                    \item Отправка запроса на поиск по нажатию <<Enter>>
+                    \item Переход на страницу поиска (\ref{search_page}) при отправке формы
+                \end{enumerate}
+        \subsection{Важные ссылки}
+            \label{baseitems_important_links}
+            \subsubsection{О проекте}
+                \begin{enumerate}
+                    \item Ссылка указывает на страницу <<как это работает>> (\ref{sec:rules_hiw})
+                \end{enumerate}
+            \subsubsection{Часто задаваемые вопросы}
+                \begin{enumerate}
+                    \item Ссылка указывает на страницу <<faq>> (\ref{page_faq})
+                \end{enumerate}
+            \subsubsection{Обратная связь.}
+                \begin{enumerate}
+                    \item Ссылка вызывает модальное окно-форму обратной связи без перезагрузки страницы
+                    \item Форма обратной связи скрывается кликом на кнопку <<отмена>> или по нажатию <<Esc>>
+                    \item Форма имеет два поля для заполнения <<тип обращения>> и <<сообщение>>.
+                    \item Сообщение не отправляется, если не заполнено поле <<сообщение>>, выводится сообщение с просьбой заполнить это поле
+                    \item Сообщение не отправляется, если не выбрано значение в поле <<тип обращения>>, выводится сообщение с просьбой заполнить это поле
+                    \item Доступные типы обращений: <<другое>>.
+                    \item После успешной отправки выводится сообщение об успехе и модальное окно с формой закрывается
+                    \item После не успешной отправки выводится сообщение об ошибке и модальное окно с формой остается на месте
+                \end{enumerate}
+
+        \subsection{Копирайт}
+            \label{baseitems_footer_copiright}
+            \begin{enumerate}
+                \item Текст <<(C) 2016, Активный гражданин, Все права защищены. Публичная оферта>>
+                \item Ссылка с <<Публичная оферта>> на <<faq>> (\ref{page_faq})
+            \end{enumerate}
+        \subsection{Меню разделов магазина}
+            \begin{enumerate}
+                \item В меню разделов магазина входят только те разделы, которые имеют товары со свойством <<Включено>>(ACTIVE)
+                \item Каждый из пунктов имеет ссылку страницу раздела каталога (2.3) вида /catalog/<траслит имени раздела>/
+                \item Пункт меню активен при нахождении на соответствующей странице раздела каталога (\ref{page_catalog_section})
+            \end{enumerate}
+        \subsection{Фильтр по цене и интересам}
+            \label{baseitems_interest_filter}
+        \subsection{Ссылки фильтра по свойствам}
+            \label{baseitems_props_filter}
+        \subsection{Ссылки сортировки списка тизеров товаров}
+            \label{baseitems_goods_sort}
+        \subsection{Область вывода тизеров товаров}
+            \label{baseitems_goods_area}
+        \subsection{Кнопка подгрузки.}
+            \label{baseitems_goods_more}
+        \subsection{Тизер товара}
+
+
+
+
+    \section{Главная страница}
+
+        Содержит следующие элементы
+        \begin{enumerate}
+            \item Фиксированная панель слева (см. \ref{baseitems_fixleft_panel})
+            \item Главное меню (см. \ref{baseitems_main_meu})
+            \item Банер-слайдер (см. \ref{slider})
+            \item Фильтр по цене и интересам (см. \ref{baseitems_interest_filter})
+            \item Ссылки фильтра по свойствам (см. \ref{baseitems_props_filter})
+            \item Ссылки сортировки списка тизеров товаров (см. \ref{baseitems_goods_sort})
+            \item Область вывода тизеров товаров (см. \ref{baseitems_goods_area})
+            \item Кнопка подгрузки.  (см. \ref{baseitems_goods_more})
+            \item Важные ссылки (см. \ref{baseitems_important_links})
+            \item Копирайт (см. \ref{baseitems_footer_copiright})
+        \end{enumerate}
+    
+        \subsection{Банер-слайдер}
+            \label{slider}
+
+    \section{Страницы разделов каталога}
+        \label{page_catalog_section}
+
+
+    \section{Карточка товара}
+        \subsection{Активное фото}
+            \subsubsection{Иконка <<Новое>>}
+            \subsubsection{Иконка <<Хит>>}
+            \subsubsection{Иконка <<Акция>>}
+            \subsubsection{Цена в баллах}
+            \subsubsection{Число желающих.}
+
+        \subsection{Панель навигации по фотографиям товара}
+        \subsection{Средняя оценка товара}
+        \subsection{Сообщение <<необходимо набрать N баллов>>}
+        \subsection{Название товара}
+        \subsection{Артикул}
+        \subsection{Описание}
+        \subsection{Сообщение <<срок действия вашего заказа>>}
+        \subsection{Сообщение <<использовать до>>}
+        \subsection{Отзывы.}
+
+    \section{Правила}
+        \subsection{Как это работает}
+            \label{sec:rules_hiw}
+        \subsection{Адреса}
+        \subsection{FAQ}
+            \label{page_faq}
+
+    \section{Страница поиска}
+        \label{search_page}
