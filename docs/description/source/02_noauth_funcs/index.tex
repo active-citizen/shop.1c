@@ -1,7 +1,7 @@
 \chapter{Функционал неавторизованного пользователя}
     \section{Общие элементы страниц}
         \subsection{Фиксированная панель слева}
-            \label{baseitems_fixleft_panel}
+            \label{sec:baseitems_fixleft_panel}
             \subsubsection{Логотип}
                 \begin{enumerate}
                     \item Ссылка с логотипа на главную страницу
@@ -19,7 +19,7 @@
                     \item На вторичных страницах перематывает страницу к началу(к главному меню)
                 \end{enumerate}
         \subsection{Главное меню}
-            \label{baseitems_main_meu}
+            \label{sec:baseitems_main_meu}
             \subsubsection{Ссылка на каталог}
                 \begin{enumerate}
                     \item Адрес ссылки /catalog/
@@ -39,7 +39,7 @@
                     \item Переход на страницу поиска (\ref{search_page}) при отправке формы
                 \end{enumerate}
         \subsection{Важные ссылки}
-            \label{baseitems_important_links}
+            \label{sec:baseitems_important_links}
             \subsubsection{О проекте}
                 \begin{enumerate}
                     \item Ссылка указывает на страницу <<как это работает>> (\ref{sec:rules_hiw})
@@ -61,7 +61,7 @@
                 \end{enumerate}
 
         \subsection{Копирайт}
-            \label{baseitems_footer_copiright}
+            \label{sec:baseitems_footer_copiright}
             \begin{enumerate}
                 \item Текст <<(C) 2016, Активный гражданин, Все права защищены. Публичная оферта>>
                 \item Ссылка с <<Публичная оферта>> на <<faq>> (\ref{page_faq})
@@ -73,15 +73,15 @@
                 \item Пункт меню активен при нахождении на соответствующей странице раздела каталога (\ref{page_catalog_section})
             \end{enumerate}
         \subsection{Фильтр по цене и интересам}
-            \label{baseitems_interest_filter}
+            \label{sec:baseitems_interest_filter}
         \subsection{Ссылки фильтра по свойствам}
-            \label{baseitems_props_filter}
+            \label{sec:baseitems_props_filter}
         \subsection{Ссылки сортировки списка тизеров товаров}
-            \label{baseitems_goods_sort}
+            \label{sec:baseitems_goods_sort}
         \subsection{Область вывода тизеров товаров}
-            \label{baseitems_goods_area}
+            \label{sec:baseitems_goods_area}
         \subsection{Кнопка подгрузки.}
-            \label{baseitems_goods_more}
+            \label{sec:baseitems_goods_more}
         \subsection{Тизер товара}
 
 
@@ -89,28 +89,71 @@
 
     \section{Главная страница}
 
-        Содержит следующие элементы
         \begin{enumerate}
-            \item Фиксированная панель слева (см. \ref{baseitems_fixleft_panel})
-            \item Главное меню (см. \ref{baseitems_main_meu})
-            \item Банер-слайдер (см. \ref{slider})
-            \item Фильтр по цене и интересам (см. \ref{baseitems_interest_filter})
-            \item Ссылки фильтра по свойствам (см. \ref{baseitems_props_filter})
-            \item Ссылки сортировки списка тизеров товаров (см. \ref{baseitems_goods_sort})
-            \item Область вывода тизеров товаров (см. \ref{baseitems_goods_area})
-            \item Кнопка подгрузки.  (см. \ref{baseitems_goods_more})
-            \item Важные ссылки (см. \ref{baseitems_important_links})
-            \item Копирайт (см. \ref{baseitems_footer_copiright})
+            \item
+            Содержит следующие элементы
+            \begin{itemize}
+                \item Фиксированная панель слева (см. \ref{baseitems_fixleft_panel})
+                \item Главное меню (см. \ref{baseitems_main_meu})
+                \item Банер-слайдер (см. \ref{slider})
+                \item Фильтр по цене и интересам (см. \ref{baseitems_interest_filter})
+                \item Ссылки фильтра по свойствам (см. \ref{baseitems_props_filter})
+                \item Ссылки сортировки списка тизеров товаров (см. \ref{baseitems_goods_sort})
+                \item Область вывода тизеров товаров (см. \ref{baseitems_goods_area})
+                \item Кнопка подгрузки.  (см. \ref{baseitems_goods_more})
+                \item Важные ссылки (см. \ref{baseitems_important_links})
+                \item Копирайт (см. \ref{baseitems_footer_copiright})
+            \end{itemize}
         \end{enumerate}
     
         \subsection{Банер-слайдер}
-            \label{slider}
+            \label{sec:slider}
+            
+            \begin{enumerate}
+                \item В слайдере крутятся 2 вида слайдов: слайды-картинки и слайды-товары
+                \item Тип слайда задаётся в CMS
+            \end{enumerate}
+            
+            \subsubsection{Слайды-картинки}
+                \paragraph{Изображение}
+                    \begin{enumerate}
+                        \item Картинка для отображения загружается в CMS
+                        \item Картинка должна быть с соотношением сторон 87:50
+                        \item Если при ином соотношении сторон картинка выводится таким образом, чтобы полностью заполнять слайд
+                    \end{enumerate}
+                
+                \paragraph{Ссылка}
+
+                    \begin{enumerate}
+                        \item Ссылка может вести как на внутреннюю страницу магазина, так и на внешний ресурс
+                        \item Ссылка открывается в новом окне
+                    \end{enumerate}
+               
+            \subsubsection{Слайды-товары}
+                \paragraph{Изображение}
+                    \begin{enumerate}
+                        \item В качестве ссылки на изображение берётся ссылка на главное фото товара
+                    \end{enumerate}
+                \paragraph{Ссылка}
+                    \begin{enumerate}
+                        \item Ссылка ведёт на карточку товара (см. \ref{sec:goods_cart})
+                        \item Ссылка открывается в новом окне
+                    \end{enumerate}
+                \paragraph{Цена}
+                \paragraph{Хит}
+                \paragraph{Новое}
+                \paragraph{Акция}
+                \paragraph{Описание}
+                \paragraph{Раздел}
+                \paragraph{Ссылка с количеством желающих}
+            
 
     \section{Страницы разделов каталога}
-        \label{page_catalog_section}
+        \label{sec:page_catalog_section}
 
 
     \section{Карточка товара}
+        \label{sec:goods_cart}
         \subsection{Активное фото}
             \subsubsection{Иконка <<Новое>>}
             \subsubsection{Иконка <<Хит>>}
