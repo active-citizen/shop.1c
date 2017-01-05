@@ -15,6 +15,7 @@
 \usepackage[utf8]{inputenc}			% кодировка исходного текста
 \usepackage[english,russian]{babel}	% локализация и переносы
 
+\usepackage{gloss}
 
 %%% Дополнительная работа с математикой
 \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} % AMS
@@ -61,8 +62,8 @@
 %%% Страница
 \usepackage{extsizes} % Возможность сделать 14-й шрифт
 \usepackage{geometry} % Простой способ задавать поля
-	\geometry{top=15mm}
-	\geometry{bottom=10mm}
+	\geometry{top=20mm}
+	\geometry{bottom=15mm}
 	\geometry{left=20mm}
 	\geometry{right=15mm}
 
@@ -99,13 +100,15 @@
     urlcolor=cyan           % на URL
 }
 
-\renewcommand{\familydefault}{\sfdefault} % Начертание шрифта
+% \renewcommand{\familydefault}{\sfdefault} % Начертание шрифта
 
 \usepackage{multicol} % Несколько колонок
 
 \author{Музыка народная, стихи народные}
 \title{Магазин поощрений <<Активный гражданин>>. Описание функционала.}
 \date{\today}
+
+\makegloss
 
 \begin{document} % конец преамбулы, начало документа
 
@@ -120,7 +123,5 @@
 \include{./06_content_funcs/index}
 \include{./07_external_services/index}
 \include{./08_usecases/index}
-
-
 
 \end{document}
