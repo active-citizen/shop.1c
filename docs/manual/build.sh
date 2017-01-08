@@ -34,9 +34,9 @@ rm -f index.ps
 mv index.pdf ../../ag_shop_manual.pdf
 
 # Создаём HTML-версию
-hevea index.tex
-hevea index.tex
-mv index.html ../../ag_shop_manual.html
+#hevea index.tex
+#hevea index.tex
+#mv index.html ../../ag_shop_manual.html
 
 # Чистим за собой
 find .|grep '.aux$'|xargs rm -f
@@ -52,6 +52,6 @@ find .|grep '.ist$'|xargs rm -f
 find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
-xpdf ../ag_shop_manual.pfd
+okular ../../ag_shop_manual.pdf
 
 
