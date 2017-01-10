@@ -1,4 +1,5 @@
 \chapter{Функционал неавторизованного пользователя}
+\label{sec:nonauth_user}
     \section{Общие элементы страниц}
         \subsection{Фиксированная панель слева}
             См. рис. \ref{fig:common_items_1}
@@ -158,6 +159,7 @@
                     \item модой.
                 \end{enumerate}
             \subsubsection{Вкладка <<баллы>>}
+            \label{sec:noauth_filter_points}
                 Для неавторизованного пользователя заменяется на ссылку <<войти>>, ведущую к форме авторизации на
                 \gloss{AG}
                 
@@ -203,6 +205,7 @@
 
             \label{sec:baseitems_goods_more}
         \subsection{Тизер товара}
+            \label{sec:noauth_tizer}
             см. рис. \ref{fig:common_items_4}
 
             \subsubsection{Цена}
@@ -294,6 +297,7 @@
                     \end{enumerate}
                
             \subsubsection{Слайды-товары}
+            \label{sec:noauth_slide_goods}
                 \paragraph{Изображение}
                     \begin{enumerate}
                         \item В качестве ссылки на изображение берётся ссылка на главное фото товара
@@ -509,12 +513,75 @@
         \subsection{Как это работает}
             \label{sec:rules_hiw}
             
+            см рис. \ref{fig:page_hiw}
+            
+            \begin{enumerate}
+                \item Раздел находится по адресу /rules/hiw/.
+                \item Раздел описывает общие термины и правила заказа поощрений в магазине.
+                \item Раздел заполняется пользователями группы <<\gloss{content_editor}>> в \gloss{CMS}.
+            \end{enumerate}
+
+        \begin{figure}
+            \includegraphics[width=170mm]{02_noauth_funcs/figures/09.eps}
+            \caption{Правила. <<Как это работает>>}
+            \label{fig:page_hiw}
+        \end{figure} 
             
             
         \subsection{Адреса}
+            \label{sec:page_address}
+            
+            см рис. \ref{fig:page_address}
+            
+            \begin{enumerate}
+                \item Отображает список центров госуслуг, в которых можно получить поощрение.
+                \item Раздел находится по адресу /rules/stores/
+                \item Раздел формируется из информации об объектах типа \gloss{storage}, полученных из \gloss{UNF} в результате действия \gloss{import1c}.
+                \item Адрес конкретного центра услуг имеет вид /rules/stores/\#<ID центра>, например /rules/stores/\#24
+                \item Раздел имеет форму вертикального <<аккордиона>>. 
+                \item Каждый элемент аккордиона - ссылка. Текст ссылки - название центра и полный адрес.
+                \item При клике на любую ссылку аккордиона открывается блок с подробной информацией, включающей:
+                    \begin{itemize}
+                        \item Яндекс-карту с отметкой (карта и отметка формируются 
+                            из API яндекс-карт по полному адресу, передаваемому во время действия 
+                            \gloss{import1c}, поэтому важно контролировать полноту и корректность этого адреса);
+                        \item телефон;
+                        \item режим работы;
+                        \item адрес сайта;
+                    \end{itemize}
+            \end{enumerate}
+            
+        \begin{figure}
+            \includegraphics[width=170mm]{02_noauth_funcs/figures/10.eps}
+            \caption{Правила. <<Адреса>>}
+            \label{fig:page_address}
+        \end{figure} 
+            
         \subsection{FAQ}
             \label{sec:page_faq}
+            
+            см рис. \ref{fig:page_faq}
 
+            \begin{enumerate}
+                \item Отображает список ответов на часто задаваемые вопросы.
+                \item Раздел находится по адресу /rules/faq/
+                \item Раздел формируется из информации, вносимой пользователями группы \gloss{content_editor} в \gloss{CMS}.
+                \item Адрес конкретного ответа на вопрос имеет вид /rules/faq/\#<транслит вопроса>, например /rules/faq/\#kak\_stat\_uchastnikom\_proekta\_aktivnyy\_grazhdanin
+                \item Раздел имеет форму вертикального <<аккордиона>>. 
+                \item Каждый элемент аккордиона - ссылка. Текст ссылки - вопрос.
+                \item При клике на любую ссылку аккордиона открывается блок с ответом на вопрос
+            \end{enumerate}
+            
+
+        \begin{figure}
+            \includegraphics[width=170mm]{02_noauth_funcs/figures/11.eps}
+            \caption{Правила. <<FAQ>>}
+            \label{fig:page_faq}
+        \end{figure} 
+            
+            
     \section{Страница поиска}
         \label{search_page}
+        
+        FIXME
 

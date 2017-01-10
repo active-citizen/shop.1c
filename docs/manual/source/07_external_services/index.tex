@@ -1,2 +1,25 @@
 \chapter{Взаимодействие с внешними сервисами}
 
+    \section{Связь пользователя с контрагентом в \gloss{UNF}}
+        \begin{enumerate}
+            \item Связь объектом \gloss{BXUSER} с контрагентом в \gloss{UNF} устанавливается во время действия \gloss{exchange1c}.
+            \item Связь устанавливается на основе параметра <<телефон пользователя>>.
+        \end{enumerate}
+
+    \section{Связь \gloss{BXUSER} \gloss{AG}}
+        \begin{enumerate}
+            \item Связь устанавливается на основе параметра <<телефон пользователя>>.
+        \end{enumerate}
+
+    \section{Связь заказа в \gloss{shop} и \gloss{UNF}}
+        \begin{enumerate}
+            \item Связь устанавливается во время действия \gloss{exchange1c}.
+            \item Связь устанавливается на основе специального поля <<номер заказа>> в \gloss{UNF} и номера \gloss{BXORDER}.
+        \end{enumerate}
+    
+    \section{Связь объектов \gloss{AGTRANSACT} и \gloss{BXTRANSACT}}
+        \begin{enumerate}
+            \item Связь устанавливается во время действия получение истории баллов (см. \ref{sec:get_points_history}).
+            \item Связь устанавливается на основе комментария в объекте \gloss{AGTRANSACT} номера заказа в объекте \gloss{BXORDER}.
+        \end{enumerate}
+    
