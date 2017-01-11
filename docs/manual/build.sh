@@ -52,6 +52,6 @@ find .|grep '.ist$'|xargs rm -f
 find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
-xpdf ../../ag_shop_manual.pdf
+evince ../../ag_shop_manual.pdf
 
 

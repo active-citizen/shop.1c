@@ -325,7 +325,7 @@ function productConfirm(){
     $('#confirm-unit').html($('.ag-shop-card__total-points').html());
     $('#confirm-amount').html($('.ag-shop-card__count-number').html());
     $('#confirm-cost span').html($('#ag-shop-card__total-points').html());
-    $('#confirm-store').html($('.ag-shop-card__selected-place-station span').html());
+    $('#confirm-store').html($('.ag-shop-card__selected-place-station').html());
     $('#confirm-store-id').html(totalStoreId);
 }
 

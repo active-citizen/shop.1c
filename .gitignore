@@ -42,5 +42,5 @@ docs/*.haux
 docs/*.out
 docs/*.pdf
 docs/*.html
-
+*.backup
 
