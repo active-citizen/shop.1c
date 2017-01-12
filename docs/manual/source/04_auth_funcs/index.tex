@@ -1,19 +1,19 @@
 \chapter{Функционал пользователя группы <<авторизованный пользователь>>.}
 
-    См. \gloss{auth_user} в глоссарии.
+См. \gloss{auth_user} в глоссарии.
 
-    \section{Общие элементы страниц}
-        \subsection{Главное меню}
-            
-            См. рис. \ref{fig:auth_main_menu}
+\section{Общие элементы страниц}
+\subsection{Главное меню}
 
-            Все то же, что у неавторизованного пользователя (см.\ref{
-                ec:baseitems_main_meu}), плюс пункт <<профиль пользователя>> со
-                следующими элементами: 
-            \begin{enumerate}
-                \item ФИО пользователя.
-                \item Количество баллов.
-            \end{enumerate}
+См. рис. \ref{fig:auth_main_menu}
+
+Все то же, что у неавторизованного пользователя (см.\ref{
+ec:baseitems_main_meu}), плюс пункт <<профиль пользователя>> со
+следующими элементами: 
+\begin{enumerate}
+\item ФИО пользователя.
+\item Количество баллов.
+\end{enumerate}
 
 
         \begin{figure}
@@ -51,7 +51,7 @@
             \end{figure}
         
         \subsection{Тизер товара}
-
+            \label{sec:auth_tizer}
             См. рис. \ref{fig:auth_tizer}
         
             Единственное отличие от тизера товара для неавторизованного 
@@ -181,6 +181,7 @@
             добавить свой отзыв через форму.
 
             \subsubsection{Форма добавления отзыва}
+            \label{sec:auth_goods_cart_otz_form}
                 
                 \begin{enumerate}
                     \item Пользователь может добавить отзыв к товару только 
@@ -207,11 +208,13 @@
             \subsubsection{Статусы заказов}\label{sec:auth_order_statuses}
             
             \begin{itemize}
-                \item \textbf{В работе} - заказ сделан через сайт и ожидает выдачи
+                \item \textbf{В работе} - заказ сделан через сайт и ожидает 
+                выдачи
                 \item \textbf{Выполнен} - заказ выдан
                 \item \textbf{Брак} - возврат заказа по причине брака
                 \item \textbf{Отменен} - отмена заказа пользователем
-                \item \textbf{Аннулирован} - отмена заказа за истечением срока получения
+                \item \textbf{Аннулирован} - отмена заказа за истечением 
+                срока получения
                 (см. \ref{sec:goods_expires})
 
             \end{itemize}
@@ -230,6 +233,7 @@
             \end{figure}
 
             \subsubsection{Вкладка <<уже использовал>>}
+            \label{sec:auth_orders_already_use}
             См рис. \ref{fig:auth_orders_already_use}
 
             В ней отображены заказы, находящеся в статусахе
@@ -244,10 +248,12 @@
             \end{figure}
 
             \subsubsection{Вкладка <<все заказы>>}
-            См рис. \ref{fig:auth_orders_all_use}
+                \par{
+                См рис. \ref{fig:auth_orders_all_use}
 
-            В этой вкладке отображаются все заказы во всех статусах
-            (см. \ref{sec:auth_order_statuses})
+                В этой вкладке отображаются все заказы во всех статусах
+                (см. \ref{sec:auth_order_statuses})
+                }
             \begin{figure}
                 \center
                 \includegraphics[width=100mm]{04_auth_funcs/figures/10.eps}
@@ -256,9 +262,9 @@
             \end{figure}
 
             \subsubsection{Карточка заказа}
-
+                \par{
                 См. рис. \ref{fig:auth_order_cart}
-
+                }
                 \begin{figure}
                     \center
                     \includegraphics[width=170mm]{04_auth_funcs/figures/12.eps}
@@ -267,18 +273,28 @@
                 \end{figure}
 
                 \paragraph{Номер заказа}
+
+                    \par{
                     Сквозной номер заказа. Начинается с префикса <<БТРКС>>
+                    }
 
                 \paragraph{Дата заказа}
+                    \par{
                     Дата, когда на сайте \gloss{shop} был сделан заказ
-
+                    }
                 \paragraph{Статус заказа}
+
+                    \par{
                     Информация о текущем статусе и, для статуса <<в 
                     работе>>, о количестве дней, прошедших с момента заказа 
                     (см. \ref{sec:auth_order_statuses})
+                    }
 
                 \paragraph{Сертификат}
-                См. рис. \ref{fig:auth_order_cert}
+
+                    \par{
+                    См. рис. \ref{fig:auth_order_cert}
+                    }
 
                 \begin{enumerate}
                     \item Сертификат выдаётся на \gloss{nonmater_goods}.
@@ -307,7 +323,20 @@
                 \end{figure}
  
                 \paragraph{Связь с администрацией}
-                См. рис. \ref{fig:auth_order_feedback}
+
+                    \par{
+                    См. рис. \ref{fig:auth_order_feedback}
+
+                    Повторяет функционал \gloss{FBF} из \ref{sec:fbf}, за
+                    исключением нескольких деталей:
+                    }
+
+                \begin{itemize}
+                    \item в форму подставляется номер заказа, в котором была
+                    нажата иконка <<связь с администрацией>>;
+                    \item в форму подставляется Ф.И.О. пользователя, делающего
+                    обращение.
+                \end{itemize}
 
                 \begin{figure}
                     \center
@@ -316,26 +345,117 @@
                     \label{fig:auth_order_feedback}
                 \end{figure}
                 \paragraph{Отмена заказа}
+                
+                \begin{enumerate}
+                    \item Иконка отмены заказа доступна только для поощрений у
+                    которых предусмотрена отмена.
+                    \item Для поощрений у которых отмена не предусмотрена
+                    выводится соответствующая информационная иконка
+                    \item После нажатия на иконку <<отмена>> заказ помечается
+                    как <<в процессе отмены>> и ожидает отмены, которая
+                    происходит во время процесса \gloss{exchange1c}.
+                    \item После завершения отмены заказ получает статус
+                    <<отменён>> и перемещается во вкладку <<уже использовал>>
+                    (см. \ref{sec:auth_orders_already_use})
+                \end{enumerate}
+
+
                 \paragraph{Фото товара}
+
+                    \par{
+                    Уменьшенное (иконка)
+                    }
+
                 \paragraph{Стоимость заказа}
+
+                    \par{
+                    Общая стоимость заказа с учетом таких параметров как 
+                    цена и \gloss{quant}
+                    }
+
                 \paragraph{Название товара}
                 \paragraph{Склад}
+
+                    \begin{itemize}
+                        \item указывается адрес склада, который был выбран при
+                        заказе поощрения;
+                        \item ссылка с адрес склада ведёт на страницу 
+                        информации о складе (см. \label{sec:page_address}).
+                    \end{itemize}
+
                 \paragraph{Переход к форме отзыва}
+
+                    \par{
+                    Иконка, ссылка с которой ведёт на форму отзыва
+                    соответствующего товара 
+                    (см.\ref{sec:auth_goods_cart_otz_form})
+                    }
+
                 \paragraph{Количество заказанных единиц}
+
+                    \par{
+                    Количество заказанных единиц поощрения, каждая из которых
+                    аналогична понятию \gloss{quant}
+                    }
+
                 \paragraph{Цена товара}
-            
+
+                    \par{
+                    Цена за один \gloss{quant}
+                    }
+                    
         \subsection{Мои баллы}
 
             См. рис. \ref{fig:auth_my_points}
+
+            Список начислений и списаний баллов для данного пользователя. Каждый
+            элемент списка отражает объект \gloss{BXTRANSACT} (и соответствующий
+            ему \gloss{AGTRANSACT})
+
+            \begin{figure}
+                \center
+                \includegraphics[width=120mm]{04_auth_funcs/figures/14.eps}
+                \caption{Мои баллы.}
+                \label{fig:auth_my_points}
+            \end{figure}
         
             \subsubsection{Дата}
+                Дата проведения транзакции
             \subsubsection{Операция}
+                Комментарий к транзакции 
             \subsubsection{Баллы}
+                Начисленные или списанные балы
+
             \subsubsection{Пагинация}
+                Постраничная навигация
             
+            \subsubsection{Вкладка <<все баллы>>}
+                Показываются все транзакции
+
+            \subsubsection{Вкладка <<начисления>>}
+                Показываются только транзакции типа <<дебит>>
+
+            \subsubsection{Вкладка <<списания>>}
+                Показыватся только транзакции типа <<кредит>>
+
         \subsection{Мои желания}
             \label{sec:auth_my_wishes}
             См. рис. \ref{fig:auth_my_wishes}
+
+            В данный раздел помещаются тизеры товаров(см. 
+            \gloss{goods_tizer}), добавленных в мои
+            желаниях в тизерах (см. \ref{sec:auth_tizer}) разделов 
+            \ref{sec:baseitems_goods_area}, \ref{sec:page_catalog_section}
+
+            Для исключения из моих желаний необходимо кликнуть на сердечко в
+            верхнем правом углу тизера товара (см. \gloss{goods_tizer})
+        
+            \begin{figure}
+                \center
+                \includegraphics[width=120mm]{04_auth_funcs/figures/15.eps}
+                \caption{Мои желаание.}
+                \label{fig:auth_my_wishes}
+            \end{figure}
         
         
         

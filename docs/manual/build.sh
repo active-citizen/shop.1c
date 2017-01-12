@@ -53,5 +53,6 @@ find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
 evince ../../ag_shop_manual.pdf
+#xpdf ../../ag_shop_manual.pdf
 
 
