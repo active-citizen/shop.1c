@@ -4,8 +4,8 @@ bitrix/*
 
 
 upload/*
-!upload/1c_exchange/*
-!upload/1c_catalog/*
+!upload/1c_exchange*
+!upload/1c_catalog*
 
 
 desktop_app/*
