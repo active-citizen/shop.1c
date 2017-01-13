@@ -43,5 +43,10 @@ docs/*.haux
 docs/*.out
 docs/*.pdf
 docs/*.html
+docs/*.png
+docs/*.jpg
+docs/manual/source/02_noauth_funcs/figures/*.pdf
+docs/manual/source/04_auth_funcs/figures/*.pdf
 *.backup
+
 

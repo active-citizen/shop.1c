@@ -11,32 +11,15 @@
 ###############################################################
 
 cd source
-latex index.tex
-
-# Begin: Пляски из за того, что bibtex не работает с UTF-8
-cp index.bib index.bib.back
-iconv -f utf-8 -t cp1251 index.bib.back > index.bib
-
+pdflatex index.tex
 bibtex index.gls
-
-cp index.gls.bbl index.gls.bbl.back
-iconv -f cp1251 -t utf-8 index.gls.bbl.back > index.gls.bbl
-mv index.bib.back index.bib
-# End: Пляски из за того, что bibtex не работает с UTF-8
-
-latex index.tex
-latex index.tex
-
-# Проеобразуем DVI в PDF
-dvips index.dvi -o index.ps
-ps2pdf14 index.ps index.pdf
-rm -f index.ps
+pdflatex index.tex
+pdflatex index.tex
 mv index.pdf ../../ag_shop_manual.pdf
 
 # Создаём HTML-версию
-#hevea index.tex
-#hevea index.tex
-#mv index.html ../../ag_shop_manual.html
+cd ../..
+pdftohtml -s -noframes ag_shop_manual.pdf ag_shop_manual.html
 
 # Чистим за собой
 find .|grep '.aux$'|xargs rm -f
@@ -52,7 +35,7 @@ find .|grep '.ist$'|xargs rm -f
 find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
-evince ../../ag_shop_manual.pdf
+#evince ../../ag_shop_manual.pdf
 #xpdf ../../ag_shop_manual.pdf
 
 

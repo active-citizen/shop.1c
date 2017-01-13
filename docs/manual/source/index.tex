@@ -1,68 +1,68 @@
-% Р­С‚РѕС‚ С€Р°Р±Р»РѕРЅ РґРѕРєСѓРјРµРЅС‚Р° СЂР°Р·СЂР°Р±РѕС‚Р°РЅ РІ 2014 РіРѕРґСѓ
-% Р”Р°РЅРёР»РѕРј Р¤С‘РґРѕСЂРѕРІС‹С… (danil@fedorovykh.ru) 
-% РґР»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ РєСѓСЂСЃРµ 
-% <<Р”РѕРєСѓРјРµРЅС‚С‹ Рё РїСЂРµР·РµРЅС‚Р°С†РёРё РІ \LaTeX>>, Р·Р°РїРёСЃР°РЅРЅРѕРј РќРРЈ Р’РЁР­
-% РґР»СЏ Coursera.org: http://coursera.org/course/latex .
-% РСЃС…РѕРґРЅР°СЏ РІРµСЂСЃРёСЏ С€Р°Р±Р»РѕРЅР° --- 
+% Этот шаблон документа разработан в 2014 году
+% Данилом Фёдоровых (danil@fedorovykh.ru) 
+% для использования в курсе 
+% <<Документы и презентации в \LaTeX>>, записанном НИУ ВШЭ
+% для Coursera.org: http://coursera.org/course/latex .
+% Исходная версия шаблона --- 
 % https://www.writelatex.com/coursera/latex/3.2
 
 \documentclass[a4paper,12pt]{report}
 
-%%% Р Р°Р±РѕС‚Р° СЃ СЂСѓСЃСЃРєРёРј СЏР·С‹РєРѕРј
-\usepackage{cmap}					% РїРѕРёСЃРє РІ PDF
-\usepackage{mathtext} 				% СЂСѓСЃСЃРєРёРµ Р±СѓРєРІС‹ РІ С„РѕРјСѓР»Р°С…
-\usepackage[T2A]{fontenc}			% РєРѕРґРёСЂРѕРІРєР°
-\usepackage[utf8]{inputenc}			% РєРѕРґРёСЂРѕРІРєР° РёСЃС…РѕРґРЅРѕРіРѕ С‚РµРєСЃС‚Р°
-\usepackage[english,russian]{babel}	% Р»РѕРєР°Р»РёР·Р°С†РёСЏ Рё РїРµСЂРµРЅРѕСЃС‹
+%%% Работа с русским языком
+\usepackage{cmap}					% поиск в PDF
+\usepackage{mathtext} 				% русские буквы в фомулах
+\usepackage[T2A]{fontenc}			% кодировка
+\usepackage[cp1251]{inputenc}			% кодировка исходного текста
+\usepackage[english,russian]{babel}	% локализация и переносы
 
 \usepackage{gloss}
 
-%%% Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ СЂР°Р±РѕС‚Р° СЃ РјР°С‚РµРјР°С‚РёРєРѕР№
+%%% Дополнительная работа с математикой
 \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} % AMS
-\usepackage{icomma} % "РЈРјРЅР°СЏ" Р·Р°РїСЏС‚Р°СЏ: $0,2$ --- С‡РёСЃР»Рѕ, $0, 2$ --- РїРµСЂРµС‡РёСЃР»РµРЅРёРµ
+\usepackage{icomma} % "Умная" запятая: $0,2$ --- число, $0, 2$ --- перечисление
 
-%% РќРѕРјРµСЂР° С„РѕСЂРјСѓР»
-%\mathtoolsset{showonlyrefs=true} % РџРѕРєР°Р·С‹РІР°С‚СЊ РЅРѕРјРµСЂР° С‚РѕР»СЊРєРѕ Сѓ С‚РµС… С„РѕСЂРјСѓР», 
-% РЅР° РєРѕС‚РѕСЂС‹Рµ РµСЃС‚СЊ \eqref{} РІ С‚РµРєСЃС‚Рµ.
-%\usepackage{leqno} % РќРµРјСѓСЂРµР°С†РёСЏ С„РѕСЂРјСѓР» СЃР»РµРІР°
+%% Номера формул
+%\mathtoolsset{showonlyrefs=true} % Показывать номера только у тех формул, 
+% на которые есть \eqref{} в тексте.
+%\usepackage{leqno} % Немуреация формул слева
 
-%% РЎРІРѕРё РєРѕРјР°РЅРґС‹
+%% Свои команды
 \DeclareMathOperator{\sgn}{\mathop{sgn}}
 
-%% РџРµСЂРµРЅРѕСЃ Р·РЅР°РєРѕРІ РІ С„РѕСЂРјСѓР»Р°С… (РїРѕ Р›СЊРІРѕРІСЃРєРѕРјСѓ)
+%% Перенос знаков в формулах (по Львовскому)
 \newcommand*{\hm}[1]{#1\nobreak\discretionary{}
 {\hbox{$\mathsurround=0pt #1$}}{}}
 
-%%% Р Р°Р±РѕС‚Р° СЃ РєР°СЂС‚РёРЅРєР°РјРё
-\usepackage{graphicx}  % Р”Р»СЏ РІСЃС‚Р°РІРєРё СЂРёСЃСѓРЅРєРѕРІ
-\graphicspath{{images/}{images2/}}  % РїР°РїРєРё СЃ РєР°СЂС‚РёРЅРєР°РјРё
-\setlength\fboxsep{3pt} % РћС‚СЃС‚СѓРї СЂР°РјРєРё \fbox{} РѕС‚ СЂРёСЃСѓРЅРєР°
-\setlength\fboxrule{1pt} % РўРѕР»С‰РёРЅР° Р»РёРЅРёР№ СЂР°РјРєРё \fbox{}
-\usepackage{wrapfig} % РћР±С‚РµРєР°РЅРёРµ СЂРёСЃСѓРЅРєРѕРІ С‚РµРєСЃС‚РѕРј
+%%% Работа с картинками
+\usepackage{graphicx}  % Для вставки рисунков
+\graphicspath{{images/}{images2/}}  % папки с картинками
+\setlength\fboxsep{3pt} % Отступ рамки \fbox{} от рисунка
+\setlength\fboxrule{1pt} % Толщина линий рамки \fbox{}
+\usepackage{wrapfig} % Обтекание рисунков текстом
 
-%%% Р Р°Р±РѕС‚Р° СЃ С‚Р°Р±Р»РёС†Р°РјРё
-\usepackage{array,tabularx,tabulary,booktabs}%Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ СЂР°Р±РѕС‚Р° СЃ С‚Р°Р±Р»РёС†Р°РјРё
-\usepackage{longtable}  % Р”Р»РёРЅРЅС‹Рµ С‚Р°Р±Р»РёС†С‹
-\usepackage{multirow} % РЎР»РёСЏРЅРёРµ СЃС‚СЂРѕРє РІ С‚Р°Р±Р»РёС†Рµ
+%%% Работа с таблицами
+\usepackage{array,tabularx,tabulary,booktabs}%Дополнительная работа с таблицами
+\usepackage{longtable}  % Длинные таблицы
+\usepackage{multirow} % Слияние строк в таблице
 
-%%% РўРµРѕСЂРµРјС‹
-\theoremstyle{plain} % Р­С‚Рѕ СЃС‚РёР»СЊ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РµРіРѕ РјРѕР¶РЅРѕ РЅРµ РїРµСЂРµРѕРїСЂРµРґРµР»СЏС‚СЊ.
-\newtheorem{theorem}{РўРµРѕСЂРµРјР°}[section]
-\newtheorem{proposition}[theorem]{РЈС‚РІРµСЂР¶РґРµРЅРёРµ}
+%%% Теоремы
+\theoremstyle{plain} % Это стиль по умолчанию, его можно не переопределять.
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{proposition}[theorem]{Утверждение}
  
-\theoremstyle{definition} % "РћРїСЂРµРґРµР»РµРЅРёРµ"
-\newtheorem{corollary}{РЎР»РµРґСЃС‚РІРёРµ}[theorem]
-\newtheorem{problem}{Р—Р°РґР°С‡Р°}[section]
+\theoremstyle{definition} % "Определение"
+\newtheorem{corollary}{Следствие}[theorem]
+\newtheorem{problem}{Задача}[section]
  
-\theoremstyle{remark} % "РџСЂРёРјРµС‡Р°РЅРёРµ"
-\newtheorem*{nonum}{Р РµС€РµРЅРёРµ}
+\theoremstyle{remark} % "Примечание"
+\newtheorem*{nonum}{Решение}
 
-%%% РџСЂРѕРіСЂР°РјРјРёСЂРѕРІР°РЅРёРµ
-\usepackage{etoolbox} % Р»РѕРіРёС‡РµСЃРєРёРµ РѕРїРµСЂР°С‚РѕСЂС‹
+%%% Программирование
+\usepackage{etoolbox} % логические операторы
 
-%%% РЎС‚СЂР°РЅРёС†Р°
-\usepackage{extsizes} % Р’РѕР·РјРѕР¶РЅРѕСЃС‚СЊ СЃРґРµР»Р°С‚СЊ 14-Р№ С€СЂРёС„С‚
-\usepackage{geometry} % РџСЂРѕСЃС‚РѕР№ СЃРїРѕСЃРѕР± Р·Р°РґР°РІР°С‚СЊ РїРѕР»СЏ
+%%% Страница
+\usepackage{extsizes} % Возможность сделать 14-й шрифт
+\usepackage{geometry} % Простой способ задавать поля
 	\geometry{top=20mm}
 	\geometry{bottom=15mm}
 	\geometry{left=20mm}
@@ -75,43 +75,43 @@
 
  %
 
-\usepackage{setspace} % РРЅС‚РµСЂР»РёРЅСЊСЏР¶
-%\onehalfspacing % РРЅС‚РµСЂР»РёРЅСЊСЏР¶ 1.5
-%\doublespacing % РРЅС‚РµСЂР»РёРЅСЊСЏР¶ 2
-%\singlespacing % РРЅС‚РµСЂР»РёРЅСЊСЏР¶ 1
+\usepackage{setspace} % Интерлиньяж
+%\onehalfspacing % Интерлиньяж 1.5
+%\doublespacing % Интерлиньяж 2
+%\singlespacing % Интерлиньяж 1
 
-\usepackage{lastpage} % РЈР·РЅР°С‚СЊ, СЃРєРѕР»СЊРєРѕ РІСЃРµРіРѕ СЃС‚СЂР°РЅРёС† РІ РґРѕРєСѓРјРµРЅС‚Рµ.
+\usepackage{lastpage} % Узнать, сколько всего страниц в документе.
 
-\usepackage{soul} % РњРѕРґРёС„РёРєР°С‚РѕСЂС‹ РЅР°С‡РµСЂС‚Р°РЅРёСЏ
+\usepackage{soul} % Модификаторы начертания
 
 \usepackage{hyperref}
 \usepackage[usenames,dvipsnames,svgnames,table,rgb]{xcolor}
-\hypersetup{				% Р“РёРїРµСЂСЃСЃС‹Р»РєРё
-    unicode=true,           % СЂСѓСЃСЃРєРёРµ Р±СѓРєРІС‹ РІ СЂР°Р·РґРµР»Р° PDF
-    pdftitle={Р—Р°РіРѕР»РѕРІРѕРє},   % Р—Р°РіРѕР»РѕРІРѕРє
-    pdfauthor={РђРІС‚РѕСЂ},      % РђРІС‚РѕСЂ
-    pdfsubject={РўРµРјР°},      % РўРµРјР°
-    pdfcreator={РЎРѕР·РґР°С‚РµР»СЊ}, % РЎРѕР·РґР°С‚РµР»СЊ
-    pdfproducer={РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ}, % РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ
-    pdfkeywords={keyword1} {key2} {key3}, % РљР»СЋС‡РµРІС‹Рµ СЃР»РѕРІР°
-    colorlinks=true,       	% false: СЃСЃС‹Р»РєРё РІ СЂР°РјРєР°С…; true: С†РІРµС‚РЅС‹Рµ СЃСЃС‹Р»РєРё
-    linkcolor=red,          % РІРЅСѓС‚СЂРµРЅРЅРёРµ СЃСЃС‹Р»РєРё
-    citecolor=green,        % РЅР° Р±РёР±Р»РёРѕРіСЂР°С„РёСЋ
-    filecolor=magenta,      % РЅР° С„Р°Р№Р»С‹
-    urlcolor=cyan           % РЅР° URL
+\hypersetup{				% Гиперссылки
+    unicode=true,           % русские буквы в раздела PDF
+    pdftitle={Заголовок},   % Заголовок
+    pdfauthor={Автор},      % Автор
+    pdfsubject={Тема},      % Тема
+    pdfcreator={Создатель}, % Создатель
+    pdfproducer={Производитель}, % Производитель
+    pdfkeywords={keyword1} {key2} {key3}, % Ключевые слова
+    colorlinks=true,       	% false: ссылки в рамках; true: цветные ссылки
+    linkcolor=red,          % внутренние ссылки
+    citecolor=green,        % на библиографию
+    filecolor=magenta,      % на файлы
+    urlcolor=cyan           % на URL
 }
 
-% \renewcommand{\familydefault}{\sfdefault} % РќР°С‡РµСЂС‚Р°РЅРёРµ С€СЂРёС„С‚Р°
+% \renewcommand{\familydefault}{\sfdefault} % Начертание шрифта
 
-\usepackage{multicol} % РќРµСЃРєРѕР»СЊРєРѕ РєРѕР»РѕРЅРѕРє
+\usepackage{multicol} % Несколько колонок
 
-\author{РњСѓР·С‹РєР° РЅР°СЂРѕРґРЅР°СЏ, СЃС‚РёС…Рё РЅР°СЂРѕРґРЅС‹Рµ}
-\title{РњР°РіР°Р·РёРЅ РїРѕРѕС‰СЂРµРЅРёР№ <<РђРєС‚РёРІРЅС‹Р№ РіСЂР°Р¶РґР°РЅРёРЅ>>. РћРїРёСЃР°РЅРёРµ С„СѓРЅРєС†РёРѕРЅР°Р»Р°.}
+\author{Музыка народная, стихи народные}
+\title{Магазин поощрений <<Активный гражданин>>. Описание функционала.}
 \date{\today}
 
 \makegloss
 
-\begin{document} % РєРѕРЅРµС† РїСЂРµР°РјР±СѓР»С‹, РЅР°С‡Р°Р»Рѕ РґРѕРєСѓРјРµРЅС‚Р°
+\begin{document} % конец преамбулы, начало документа
 
 \maketitle
 \tableofcontents
