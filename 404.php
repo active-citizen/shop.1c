@@ -14,7 +14,7 @@ $APPLICATION->SetTitle("Страница не найдена");?>
             <h2>Страница не найдена</h2>
 
             <div class="bx-404-container">
-                <div class="bx-404-block"><img src="<?=SITE_DIR?>images/404.png" alt=""></div>
+                <div class="bx-404-block"><img src="/local/assets/images/404.png" alt=""></div>
                 <div class="bx-404-text-block">Неправильно набран адрес, <br>или такой страницы на сайте больше не существует.</div>
                 <div class="">Вернитесь на <a href="<?=SITE_DIR?>">главную</a> или воспользуйтесь картой сайта.</div>
             </div>

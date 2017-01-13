@@ -8,29 +8,8 @@ upload/*
 !upload/1c_catalog*
 
 
-desktop_app/*
-eshop_app/*
-auth/*
-login/*
-about/*
-images/*
-store/*
 .install/*
-include/*
-!include/check_store.php
-personal/*
-.access.php
-.bottom.menu.php
-.htaccess
 .integration/secret.inc.php
-.left.menu_ext.php
-.personal.menu.php
-.section.php
-.top.menu.php
-favicon.ico
-sect_bottom.php
-sect_sidebar.php
-web.config
 
 *.swp
 *.swo
