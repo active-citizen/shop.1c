@@ -74,7 +74,7 @@
                       <div class="ag-shop-profile-order__info">
                         <div class="ag-shop-profile-order__status"><?=
                         $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
-                        ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= $arOrder["IN_WORK"] ?> <?= get_days($arOrder["IN_WORK"])?>)<? endif ?></div>
+                        ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= ceil($arOrder["IN_WORK"]) ?> <?= get_days(ceil($arOrder["IN_WORK"]))?>)<? endif ?></div>
                         <div class="ag-shop-profile-order__number">Заказ БТРКС-<?= $arOrder["ID"]?></div>
                         <div class="ag-shop-profile-order__date">от <?= $arOrder["DATE_SHORT"]?></div>
                       </div>

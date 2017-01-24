@@ -104,7 +104,7 @@ while($arOrder = $resOrders->GetNext()){
 
         $arCatalog = CIblockElement::GetList(array(),array(
             "IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
-        ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE"))->GetNext();
+        ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE","PROPERTY_USE_BEFORE_DATE"))->GetNext();
         
         // Картинка продукта
         $arProp = CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNExt();
@@ -123,13 +123,30 @@ while($arOrder = $resOrders->GetNext()){
         $order["PRODUCTS"][] = $arProduct;
     }
     $order["EXPIRES"] = $arCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"];
-    $tmp = date_parse($arOrder["DATE_INSERT"]);
-    $order["IN_WORK"] = 1+
-    floor((
-        time()-mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"])
-    )/(24*60*60));
+    $order["USE_BEFORE"] = $arCatalog["PROPERTY_USE_BEFORE_DATE"];
     
+    $tmp_0  = date_parse($arOrder["DATE_INSERT"]);
+    $tmp_1  = date_parse($order["USE_BEFORE"]);
     
+    $order["EXPIRES_TS"] = 
+        mktime($tmp_0["hour"],$tmp_0["minute"],$tmp_0["second"],$tmp_0["month"],$tmp_0["day"],$tmp_0["year"])
+        +
+        $order["EXPIRES"]*24*60*60;
+    $order["USE_BEFORE_TS"] = mktime($tmp_1["hour"],$tmp_1["minute"],$tmp_1["second"],$tmp_1["month"],$tmp_1["day"],$tmp_1["year"]);
+
+    $order["IN_WORK"] = 0;
+    if($order["EXPIRES"] && $order["USE_BEFORE"] && $order["EXPIRES_TS"] < $order["USE_BEFORE_TS"]){
+        $order["IN_WORK"] = ($order["EXPIRES_TS"] - time())/(24*60*60);
+    }
+    elseif($order["EXPIRES"] && $order["USE_BEFORE"] && $order["EXPIRES_TS"] > $order["USE_BEFORE_TS"]){
+        $order["IN_WORK"] = ($order["USE_BEFORE_TS"] - time())/(24*60*60);
+    }
+    elseif($order["EXPIRES"] && !$order["USE_BEFORE"]){
+        $order["IN_WORK"] = ($order["EXPIRES_TS"] - time())/(24*60*60);
+    }
+    elseif(!$order["USE_BEFORE"] && $order["USE_BEFORE"]){
+        $order["IN_WORK"] = ($order["USE_BEFORE_TS"] - time())/(24*60*60);
+    }
     
     $arResult["ORDERS"][] = $order;
 }

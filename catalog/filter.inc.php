@@ -105,7 +105,6 @@
 
             
             <div class="ag-shop-filter__confirm filter-passive">
-              <button class="ag-shop-filter__confirm-button" type="submit" onclick="return ag_filter();">Подобрать</button>
             </div>
             <input type="hidden" id="ag-flag" value="all"/>
             <input type="hidden" id="ag-sorting" value="price-asc"/>

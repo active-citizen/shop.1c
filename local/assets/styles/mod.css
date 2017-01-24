@@ -9,7 +9,7 @@
 .ag-shop-slider-card__likes{
     top: 45px;
     right: 36px;
-    z-index: 9999;
+    z-index: 9998;
 }
 
 
@@ -142,4 +142,33 @@ input.ag-balls[type="radio"]{
 
 .ag-shop-catalog{
     padding-bottom: 10px;
+}
+
+#common-feedback-form{
+    z-index: 9999;
+}
+
+#input-ordernum{
+    width: 100%;
+    height: 31px;
+}
+
+.ag-shop-filter__confirm{
+    padding: 4px 0px;
+}
+
+.ag-shop-item-card{
+    padding: 0px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.ag-shop-slider-card__info{
+    width: 260px;
+    max-width: 50%;
+}
+
+.ag-shop-rules__spoiler-link span{
+    font-weight: normal;
 }

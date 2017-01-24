@@ -6,14 +6,6 @@ $answer = array("error"=>"");
 
 CModule::IncludeModule("form");
 
-// Узнаём ID нужной формы
-$arForm = CForm::GetList(
-    $by = "s_sort", 
-    $order = 'desc', 
-    array("SID" =>  "common_support_feedback")
-)->GetNext();
-
-
 $arForm = CForm::GetBySID("order_support_feedback")->GetNext();
 
 $arFieldIssueOrderNum = CFormField::GetBySID("ISSUE_ORDER_NUM")->GetNext();
@@ -30,7 +22,7 @@ $arAnswerIssueText = CFormAnswer::GetList($arFieldIssueText["ID"])->GetNext();
 
 
 $CFormResult = new CFormResult;
-if(!$CFormResult->Add($arForm["ID"],array(
+if(!$CFormResult->Add($arForm["ID"],$arFormData = array(
     "form_".$arAnswerIssueType["FIELD_TYPE"]."_".$arAnswerIssueType["ID"]      
         =>$DB->ForSql($_REQUEST['type']),
     "form_".$arAnswerIssueAuthor["FIELD_TYPE"]."_".$arAnswerIssueAuthor["ID"]      
@@ -40,7 +32,7 @@ if(!$CFormResult->Add($arForm["ID"],array(
     "form_".$arAnswerIssueOrderNum["FIELD_TYPE"]."_".$arAnswerIssueOrderNum["ID"]      
         =>$DB->ForSql($_REQUEST['order']),
 ))){
-    $answer['error'] = $CFormResult->LAST_ERROR;
+    $answer['error'] = print_r($arFormData, 1).print_r($arForm["ID"], 1);;
 }
 else{
 }

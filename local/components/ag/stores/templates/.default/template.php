@@ -11,9 +11,9 @@
                     class="ag-shop-rules__spoiler-link hash-navigation" 
                     href="#<?= $arStore["ID"];?>"
                     name="<?= $arStore["ID"];?>"
-                >- <?= $arStore["TITLE"]?>, 
+                >- <?= $arStore["TITLE"]?>, <span>
                     <?= $arStore["ADDRESS"]?> 
-                    карта
+                    </span>
                 </a>
               </div>
               <div class="ag-shop-rules__address js-spoiler__content">

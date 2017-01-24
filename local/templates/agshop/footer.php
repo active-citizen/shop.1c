@@ -25,6 +25,14 @@
             </div>
           </div>
           <div class="ag-shop-modal__row">
+            <label>
+              <div class="ag-shop-modal__label">Номер заказа:</div>
+              <input class="ag-shop-modal__textinput" type="text" id="input-ordernum" placeholder="Введите номер заказа" value="" onkeyup="$('#order-feedback-form-ordernum').html($(this).val());">
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="order-feedback-form-ordernum" style="display:none;">
+            </div>
+            </label>
+          </div>
+          <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">От:</div>
             <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="feedback_name"><?
                 $arUser = CUser::GetById(CUSER::GEtID())->GetNext();

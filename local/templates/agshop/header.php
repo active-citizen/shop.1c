@@ -125,7 +125,7 @@
                 <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
                   <div class="ag-shop-nav__link">
                     <form action="/search/" class="searchform">
-                      <input name="q" type="text" placeholder="Поиск" value="<?= htmlspecialchars(isset($_GET["q"])?$_GET["q"]:"") ?>">
+                      <input name="q" type="text" placeholder="Поиск" value="<?= htmlspecialchars(isset($_GET["q"])?$_GET["q"]:"") ?>" disabled>
                     </form>
                   </div>
                 </button>
@@ -149,6 +149,7 @@
                 </div>
               </div>
             </div>
+            <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):?>
             <div class="ag-shop-menu__items js-menu__list">
                 <?php foreach($SECTIONS as $section):?>
                 <? if(!$section["products"])continue;?>
@@ -160,6 +161,7 @@
                 </div>
                 <?endforeach?>
             </div>
+            <? endif?>
           </div>
         </div>
         <!-- }}} Menu-->

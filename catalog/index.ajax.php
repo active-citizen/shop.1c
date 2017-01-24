@@ -186,8 +186,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                         $product["wishes"]
                       ?></div>
                     </button>
-                      <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>">
-                      <img class="ag-shop-item-card__image" src="<?= $image_url?>">
+                      <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>"
+                      style="background-image: url(<?= $image_url?>);">
                       <div class="ag-shop-item-card__badges">
                       <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png">

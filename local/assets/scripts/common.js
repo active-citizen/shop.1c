@@ -389,6 +389,44 @@ function hideCommonFeedbackForm(){
 function sendCommonFeedbackForm(){
 
     var post = {};
+
+    post["type"] = $('#feedback_type').val();
+    post["name"] = $('#feedback_name').html();
+    post["text"] = $('#feedback_text').val();
+    post["order"] = $('#order-feedback-form-ordernum').html();
+    
+    if(!post["text"]){
+        alert('Введите сообщение');
+        return false;
+    }
+    if(!post["type"]){
+        alert('Выберите тип обращения');
+        return false;
+    }
+
+    $('#common-feedback-form .ag-shop-modal__container div').hide();
+    $('#common-feedback-form .ag-shop-modal__container').prepend('<div class="form-success">Сообщение отправляется</div>');
+    
+    $.post(
+        "/profile/order_feedback.ajax.php",
+        post,
+        function(data){
+            var answer = JSON.parse(data);
+            if(!answer.error)
+                setTimeout(function(){
+                    $('#common-feedback-form').fadeOut(function(){
+                        $('#common-feedback-form .ag-shop-modal__container div').show();
+                        $('#common-feedback-form .ag-shop-modal__container .form-success').remove();        
+                    });
+                },2000);
+            else
+                alert(answer.error);
+        }
+    );
+    return false;
+    
+    /*
+    var post = {};
     post["type"] = $('#feedback_type').val();
     post["name"] = $('#feedback_name').html();
     post["text"] = $('#feedback_text').val();
@@ -420,6 +458,7 @@ function sendCommonFeedbackForm(){
 
     
     return false;
+    */
 }
 
 function showOrdersFeedbackForm(orderNum){

@@ -161,7 +161,11 @@
                     </div>
                     <div class="ag-shop-slider-card__info">
                       <p class="ag-shop-slider-card__category"><?= $BANER["CATALOG_LINK_DATA"]["SECTION_NAME"]?></p>
-                      <p class="ag-shop-slider-card__description"><?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"]?></p>
+                      <p class="ag-shop-slider-card__description"><?= 
+                        mb_strlen($BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"])<64?
+                        strip_tags($BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"]):
+                        mb_substr(strip_tags($BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"]),0,64)."..."
+                      ?></p>
                       <div class="ag-shop-slider-card__rating" title="Средняя оценка  <?= $BANER["CATALOG_LINK_DATA"]["RATING"]?>">
                         <? for($i=0;$i<round($BANER["CATALOG_LINK_DATA"]["RATING"]);$i++):?>
                         <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
