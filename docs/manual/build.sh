@@ -18,8 +18,8 @@ pdflatex index.tex
 mv index.pdf ../../ag_shop_manual.pdf
 
 # Создаём HTML-версию
-cd ../..
-pdftohtml -s -noframes ag_shop_manual.pdf ag_shop_manual.html
+#cd ../..
+#pdftohtml -s -noframes ag_shop_manual.pdf ag_shop_manual.html
 
 # Чистим за собой
 find .|grep '.aux$'|xargs rm -f
@@ -35,7 +35,7 @@ find .|grep '.ist$'|xargs rm -f
 find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
-#evince ../../ag_shop_manual.pdf
+evince ../../ag_shop_manual.pdf
 #xpdf ../../ag_shop_manual.pdf
 
 
