@@ -21,7 +21,10 @@
             global $DB;
             $resTables = $DB->Query("SHOW TABLES;");
             while($tableName=$resTables->GetNext()){
+                
                 foreach($tableName as $tableName)break;
+                if(!preg_match("#^b_sale_order#",$tableName))
+                    continue;
                 echo "\n========== $tableName ===========\n";
                 $resDescribe = $DB->Query("DESCRIBE $tableName;");
                 while($arrDescribe = $resDescribe->GetNext()){

@@ -36,12 +36,35 @@
         // Нормализуем массив заказов
         if(!isset($arOrders["Документ"][0]))
             $arOrders["Документ"] = array($arOrders["Документ"]);
-        
-        
-        foreach($arOrders["Документ"] as $arDocument){
+
+        foreach($arOrders["Документ"] as $ccc=>$arDocument){
+            $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
+            if($ccc>2){break;}else{echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";}
+            $t0 = microtime(true);
+            // Поиск заказа под XML-Ид
+            $res = CSaleOrder::GetList(
+                array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1),
+                array("ID","PAYED")
+            );
+            $existsOrder = $res->GetNext();
+
+            // Поиск заказа по номеру
+            if(!$existsOrder){
+                $res = CSaleOrder::GetList(
+                    array(),array("ADDITIONAL_INFO"=>$arDocument["Номер"]),false,
+                    array("nTopCount"=>1),
+                    array("ID","PAYED")
+                );
+                $existsOrder = $res->GetNext();
+            }
+                        
             
             // Бортуем заказы с неверно указанным телефоном
-            if(!preg_match("#^\d{11}$#",$arDocument["Телефон"]))continue;
+            if(!preg_match("#^\d{7,11}$#",$arDocument["Телефон"])){
+                echo "Incorrect phone ".$arDocument["Телефон"]."<br/>";
+                $t1 = microtime(true);
+                continue;
+            }
 
             // Нормализация товаров
             if(!isset($arDocument["Товары"]["Товар"][0]))
@@ -49,12 +72,15 @@
             // пОЛУЧЕНИЕ МАССИВА ТОВАРОВ КОРЗИНЫ
             $basketProducts = array();
             foreach($arDocument["Товары"]["Товар"] as $product){
-                if(!isset($product["Ид"]))continue;
+                if(!isset($product["Ид"])){
+                    echo "Incorrect goods id= ".$product["Ид"]."<br/>";
+                    continue;
+                }
                 
                 $XML_ID = $product["Ид"];
                 $resOffer = CIblockElement::GetList(
                     array(),array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),false,
-                    array("nTopCount"=>1)
+                    array("nTopCount"=>1),array("ID")
                 );
                 $existsOffer = $resOffer->GetNext();
                 // Если продукта нет - создаём его прототип
@@ -85,18 +111,22 @@
                     ),false,array("nTopCount"=>1));
                     $arCatalog = $resCatalog->GetNext();
                     
-                    if(!$arCatalog && !$id = $objIBlockElement->Add($arrFields)){
-                        echo "failed\n";
-                        echo "Cant create catalog item: ".__FILE__.":".__LINE__;
-                        die;
-                    }
-                    elseif (isset($arCatalog["ID"])) {
+                    if (isset($arCatalog["ID"])) {
                         $id = $arCatalog["ID"];
                     }
-                    else{
+                    elseif(!$id = $objIBlockElement->Add($arrFields)){
                         echo "failed\n";
-                        echo "Error: ".__FILE__.":".__LINE__;
-                        die;
+                        echo "Cant create catalog item: ".__FILE__.":".__LINE__;
+                        $t1 = microtime(true);
+                        continue;
+                    }
+                    else{
+                        //print_r($arrFields);
+                        //print_r($objIBlockElement);
+                        //print_r($product);
+                        //echo "failed\n";
+                        //echo "Error: ".__FILE__.":".__LINE__;
+                        //continue;
                     }
                     
                     // Создаём торговое предложение
@@ -106,7 +136,8 @@
                     if(!$offerId = $objIBlockElement->Add($arrFields)){
                         echo "failed\n";
                         echo "cant create offer: ".__FILE__.":".__LINE__;
-                        die;
+                        $t1 = microtime(true);
+                        continue;
                     }
                     
                     // Назначаем свойства торгового предложения
@@ -148,7 +179,11 @@
             $sum = 0;
             foreach($basketProducts as $product)$sum+=$product["count"]*$product["price"];
             // Бортуем заказы с нулевой суммой
-            if(!$sum)continue;
+            if(!$sum){
+                echo "Empty order sum, OrderId =".$arDocument["Ид"];
+                $t1 = microtime(true);
+                continue;
+            }
 
             // Выделяем из ФИО фамилию и Имя-Отчество
             $tmpName = explode(" ", $arDocument["Клиент"]);
@@ -174,12 +209,15 @@
             $resUser = CUser::GetByLogin($userData["LOGIN"]);
             $existsUser = $resUser->GetNext();
             // Если пользователя нет - создаём
+            
+            
             if(!$existsUser){
                 // Если создание провалилось - сообщаем об ошибке
                 if(!$userId = $objUser->Add($userData)){
                     echo "failed\n";
                     echo "cant_create_user: ".__FILE__.":".__LINE__;
-                    die;
+                    $t1 = microtime(true);
+                    continue;
                 }
             }
             else{
@@ -214,44 +252,28 @@
                 break;
             }
             
-            // Поиск заказа под XML-Ид
-            $res = CSaleOrder::GetList(
-                array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1)
-            );
-            $existsOrder = $res->GetNext();
-            
-            // Поиск заказа по номеру
-            if(!$existsOrder){
-                $number = 0;
-                if(preg_match("#^.*\-(\d+)$#",$arDocument["Ид"], $m))$number = $m[1];
-                $res = CSaleOrder::GetList(
-                    array(),array("ID"=>$number),false,
-                    array("nTopCount"=>1)
-                );
-                $existsOrder = $res->GetNext();
-            }
-
             $arOrder = array(
-               "LID"                =>  "s1",
-               "XML_ID"             =>  $arDocument["Ид"],
-               "PERSON_TYPE_ID"     =>  1,
-               "PAYED"              =>  isset($existsOrder["PAYED"])?$existsOrder["PAYED"]:"N",
-               "CANCELED"           =>  $canceled,
-               "STATUS_ID"          =>  $statusId,
-               "PRICE"              =>  $sum,
-               "SUM_PAID"           =>  $sum,
-               "CURRENCY"           =>  "BAL",
-               "USER_ID"            =>  $userId,
-               "PAY_SYSTEM_ID"      =>  9,
-               "PRICE_DELIVERY"     =>  0,
-               "DELIVERY_ID"        =>  3,
-               "DISCOUNT_VALUE"     =>  0,
-               "TAX_VALUE"          =>  0,
-               "DATE_INSERT"        =>  $DB->FormatDate(
+                "ADDITIONAL_INFO"    =>  $arDocument["Номер"],
+                "LID"                =>  "s1",
+                "XML_ID"             =>  $arDocument["Ид"],
+                "PERSON_TYPE_ID"     =>  1,
+                "PAYED"              =>  isset($existsOrder["PAYED"])?$existsOrder["PAYED"]:"N",
+                "CANCELED"           =>  $canceled,
+                "STATUS_ID"          =>  $statusId,
+                "PRICE"              =>  $sum,
+                "SUM_PAID"           =>  $sum,
+                "CURRENCY"           =>  "BAL",
+                "USER_ID"            =>  $userId,
+                "PAY_SYSTEM_ID"      =>  9,
+                "PRICE_DELIVERY"     =>  0,
+                "DELIVERY_ID"        =>  3,
+                "DISCOUNT_VALUE"     =>  0,
+                "TAX_VALUE"          =>  0,
+                "DATE_INSERT"        =>  $DB->FormatDate(
                     $arDocument["Дата"]." ".$arDocument["Время"],
                     "Y-m-d H:i:s"
                 ),
-               "DATE_UPDATE"        =>  $DB->FormatDate(
+                "DATE_UPDATE"        =>  $DB->FormatDate(
                     $arDocument["Дата"]." ".$arDocument["Время"],
                     "Y-m-d H:i:s"
                 )
@@ -259,7 +281,7 @@
             
             // Определяем ID склада
             $resStorage = CCatalogStore::GetList(array(),array("XML_ID"=>$arDocument["Склад"]),
-                false,array("nTopCount"=>1));
+                false,array("nTopCount"=>1),array("ID"));
             $arStorage = $resStorage->GetNext();
             $storeId = 0;
             if(!isset($arStorage["ID"]))$storeId = $arStorage["ID"];
@@ -268,61 +290,27 @@
                 
             // Если заказа нет - создаём, есть - обновляем
             if(!$existsOrder){
+                
                 if(!$orderId = $objOrder->Add($arOrder)){
                     echo "failed\n";
                     echo "Not created";
-                    die;
+                    $t1 = microtime(true);
+                    continue;
                 }
+
+                echo "Add order_id=$orderId  ";
 
                 // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
                 // Добавляем в корзину продукты
                 foreach($basketProducts as $productId=>$item){
-                    if(!$basketItemId = $objBasket->Add($addArrBasket = 
-                        array(
-                            "PRODUCT_ID"        =>  $productId,
-                            "PRICE"             =>  $item["price"],
-                            "CURRENCY"          =>  "BAL",
-                            "QUANTITY"          =>  $item["count"],
-                            "LID"               =>  "s1",
-                            "DELAY"             =>  "N",
-                            "CAN_BUY"           => "Y",
-                            "MODULE"            => "catalog",
-                            "NAME"              =>  $item["name"],
-                        )
-                    )){
-                	echo "$userBasketId";
-                	print_r($addArrBasket );
-                	print_r($basketProducts);
-                        print_r($objBasket);
-                        die;
-                    }
-                }
-                CSaleBasket::OrderBasket($orderId, $userBasketId);
-                CSaleOrder::PayOrder($orderId,"Y",true,false);
-            }
-            else{
-                $orderId = $existsOrder["ID"];
-                
-                CSaleOrder::Update($orderId, $arOrder);
-                // Меняем статус
-                CSaleOrder::StatusOrder($orderId, $statusId);
-                
-                
-                // Ищем корзину для этого заказа
-                $resBasket = CSaleBasket::GetList(array(),array("ORDER_ID"=>$orderId),false,array("nTopCount"=>1));
-                // Удаляем корзины заказа
-                while($arBasket = $resBasket->GetNext())CSaleBasket::Delete($arBasket["ID"]);
-                
-                foreach($basketProducts as $productId=>$item){
-            	    
             	    $strSql = "INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
             	    VALUES(
-        		'".$userId."', 
+                    '".$userId."', 
                 	'".$orderId."', 
                         '".$productId."',
                         '".$item["count"]."',
-                        '".$item["name"]."',
+                        '".$DB->ForSql($item["name"])."',
                         '".$item["price"]."',
                         '".$DB->GetNowFunction()."',
                         'BAL',
@@ -333,12 +321,47 @@
                     )";
             	    $DB->Query($strSql);
                 }
-                
-                
-		CSaleOrder::Update($orderId, $arOrder);
-                
+                //CSaleBasket::OrderBasket($orderId, $userBasketId);
+                //CSaleOrder::PayOrder($orderId,"Y",true,false); //?????
             }
+            else{
+                $orderId = $existsOrder["ID"];
+                echo "Update order_id = $orderId ";
                 
+                CSaleOrder::Update($orderId, $arOrder);
+                if($arOrder["STATUS_ID"]!=$statusId){
+                    // Меняем статус
+                    CSaleOrder::StatusOrder($orderId, $statusId);
+                }
+                
+                // Ищем корзину для этого заказа
+                //// $resBasket = CSaleBasket::GetList(array(),array("ORDER_ID"=>$orderId),false,array("nTopCount"=>1));
+                // Удаляем корзины заказа
+                //// while($arBasket = $resBasket->GetNext())CSaleBasket::Delete($arBasket["ID"]);
+                
+                /*
+                foreach($basketProducts as $productId=>$item){
+            	    
+            	    $strSql = "INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
+            	    VALUES(
+        		'".$userId."', 
+                	'".$orderId."', 
+                        '".$productId."',
+                        '".$item["count"]."',
+                        '".$DB->ForSql($item["name"])."',
+                        '".$item["price"]."',
+                        '".$DB->GetNowFunction()."',
+                        'BAL',
+                        's1',
+                        'catalog',
+                        'Y',
+                        'N'
+                    )";
+            	    $DB->Query($strSql);
+                }
+                */
+            }
+            $t1 = microtime(true);
         }
         
     }

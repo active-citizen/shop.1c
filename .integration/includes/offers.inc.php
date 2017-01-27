@@ -26,6 +26,12 @@
         $ENUM_OFFERS[$propName]["ITEMS"][mb_strtolower($enum["VALUE"])] = $enum["ID"];
     }
 
+    // Обнуляем остатки на складах
+    $res = CCatalogStoreProduct::GetList(array(),array());
+    while($store = $res->GetNext()){
+        $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
+    }
+
     foreach($arOffers as $arOffer){
         
         $XML_ID = explode("#", $arOffer["Ид"]);
@@ -128,9 +134,9 @@
             }
             
             // Обнуляем остатки на складах
-            $res = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$offerId));
-            while($store = $res->GetNext())
-                $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
+            //$res = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$offerId));
+            //while($store = $res->GetNext())
+            //    $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
                 
             // Прописываем новые остатки
             if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))

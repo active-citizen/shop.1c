@@ -87,7 +87,6 @@
                     <div class="grid__col-shrink">
                       <div class="ag-shop-rules__address-container">
                         <div class="ag-shop-rules__address-description">
-                          <div class="ag-shop-rules__address-metro"><?= $arStore["TITLE"]?></div>
                           <div class="ag-shop-rules__address-text"><?= $arStore["DESCRIPTION"]?></div>
                         </div>
                       </div>
