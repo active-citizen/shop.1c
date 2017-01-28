@@ -7,6 +7,30 @@
     class mail_tmpl_disable extends Migration{
         function Run(){
             
+            // Ищем почтовые шаблоны и деактивируем
+            $objEvent = new CEventMessage;
+            $res = $objEvent->GetList($by="site_id", $order="desc",array(
+                /*
+                "EVENT_NAME"=>array(
+                    "SALE_NEW_ORDER",
+                    "SALE_ORDER_CANCEL",
+                    "SALE_ORDER_DELIVERY",
+                    "SALE_ORDER_PAID",
+                    "SALE_ORDER_REMIND_PAYMENT",
+                    "SALE_SUBSCRIBE_PRODUCT",
+                    "SALE_ORDER_TRACKING_NUMBER",
+                    "SALE_NEW_ORDER_RECURRING",
+                    "SALE_RECURRING_CANCEL",
+                    "SALE_STATUS_CHANGED_P",
+                    "SALE_STATUS_CHANGED_N",
+                    "SALE_STATUS_CHANGED_F"
+                )
+                */
+            ));
+            while($arTemplate = $res->GetNext())
+                $objEvent->Update($arTemplate["ID"], array("ACTIVE"=>"N"));
+                
+                
             return true;
         }
         

@@ -134,11 +134,16 @@ elseif(isset($_GET["add_to_basket"])){
         "PROPS" =>  $props
     );
     
+    
     $resBasket = new CSaleBasket;
+    // Чистим корзину()
+    $resBasket->DeleteAll(CSaleBasket::GetBasketUserID());
+    // Добавляем в корзину товар
     if(!$resBasket->Add($arFields)){
         echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Товар не добавлен:".print_r($resBasket)));
         die;    
     }
+
     $answer = array("STATUS"=>"OK","MESSAGE"=>"Товар добавлен","store_id"=>intval($_GET["store_id"]));
 }
 elseif(isset($_GET["add_order"])){
@@ -205,6 +210,7 @@ elseif(isset($_GET["add_order"])){
         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
         $obOrder = new bxOrder();
         $resOrder = $obOrder->addEMPPoints(-$totalSum,"Заказ БТРКС-$orderId в магазине поощрений АГ");
+        $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"БТРКС-$orderId"));
         
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
