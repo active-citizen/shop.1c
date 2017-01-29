@@ -25,6 +25,8 @@ $offerIblockId = $arIBlockOffer["ID"];
 
 // 404-я ошибка
 if(
+    0
+    &&
     !CIBlockElement::GetList(
         array(),
         array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$product_code),

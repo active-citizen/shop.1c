@@ -151,9 +151,4 @@ $resComments = CForumMessage::GetList(array("POST_DATE"=>"DESC"),array("TOPIC_ID
 $arResult["MESSAGES"] = $resComments->SelectedRowsCount();
 
 
-echo "<!-- ";
-print_r($arResult["OFFERS_JSON"]);
-//print_r($arResult["PROP1C"]);
-echo " -->";
-
 $this->IncludeComponentTemplate();

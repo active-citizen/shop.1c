@@ -39,7 +39,7 @@
 
         foreach($arOrders["Документ"] as $ccc=>$arDocument){
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if($ccc>3){break;}else{echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";}
+            if(0 && $ccc>55){break;}else{echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";}
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(

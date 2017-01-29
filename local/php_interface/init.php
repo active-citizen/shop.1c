@@ -7,21 +7,22 @@
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
 
-
-
-
     // Определяем ID инфоблока каталога
     $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
     define("CATALOG_IB_ID",$arr["ID"]);
     // Определяем ID инфоблока предложений
     $arr = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"))->GetNext();
     define("OFFER_IB_ID",$arr["ID"]);
+    // Определяем ID инфоблока производителей
+    $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
+    define("MANUFACTURER_IB_ID",$arr["ID"]);
     
     define("SHOP_EMAIL","shop@ag.mos.ru");
 
+    define("MAIL_TMPL_PATH",realpath(dirname(__FILE__)."/../mail_templates/"));
 
 
-    if(!preg_match("#^/admin#",$_SERVER["REQUEST_URI"])){
+    if(preg_match("#^/bitrix/admin#",$_SERVER["REQUEST_URI"])){
         define("ORDERS_EXCHANGE_ADMIN_MODE", true);
     }
     else{
@@ -29,7 +30,7 @@
     }
 
     // Если режим обмена заказами - глушим отправку письма при создании заказа
-    if(0 && ORDERS_EXCHANGE_ADMIN_MODE){
+    if(ORDERS_EXCHANGE_ADMIN_MODE){
         AddEventHandler("sale", "OnOrderNewSendEmail", "eventOrderNewSendEmail_dummy");
     }
     else{
@@ -57,6 +58,8 @@
     
     
     function eventOrderStatusSendEmail($orderId, &$eventName, &$arFields, $orderStatus){
+        
+        return true;
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderId);
         
@@ -91,24 +94,33 @@
 ."\r\n"
 ;
 
-        // Определяем какой из почтовых шаблонов отсылать
-        if($orderStatus=='AC'){     // Брак
-        }
-        elseif($orderStatus=='AG'){   // Отмена
-        }
-        elseif($orderStatus=='AI'){   // Аннулировать
-        }
-        elseif($orderStatus=='F'){    // Выполнен
-        }
-        elseif($orderStatus=='N'){    // В работе
-        }
+        /*
+        'AC'       // Брак
+        'AG'       // Отмена
+        'AI'       // Аннулировать
+        'F'        // Выполнен
+        'N'        // В работе
+        */
+        require(MAIL_TMPL_PATH."/_header.php");
+        if(
+            preg_match("#^\w+$#",$orderStatus)
+            &&
+            file_exists(MAIL_TMPL_PATH."/".$orderStatus."-".$orderInfo["TYPE"].".php")
+        )require(MAIL_TMPL_PATH."/".$orderStatus."-".$orderInfo["TYPE"].".php");
+        
+        require(MAIL_TMPL_PATH."/_footer.php");
+
+        $sMailText = $html;
+        
         custom_mail(
             $sTo, 
             $sSubject, 
             $sMailTextHeaders
-                .chunk_split(base64_encode($sMailText))
-            .$sMailAttachHeaders
-                .chunk_split(base64_encode($sMailAttach)), 
+                .$sMailText
+                //.chunk_split(base64_encode($sMailText))
+            //.$sMailAttachHeaders
+            //    .chunk_split(base64_encode($sMailAttach))
+            , 
             $sHeaders
         );
     }
@@ -120,6 +132,8 @@
     function eventOrderNewSendEmail_normal($orderID, &$eventName, &$arFields){
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderID);
+        
+        $orderInfo["ORDER"]["ADDITIONAL_INFO"] = "БТРКС-".$orderInfo["ORDER"]["ID"];
 
         $sMailText      =   '';
         $sMailAttach    =   '';
@@ -149,13 +163,18 @@
 
         $sMailTextHeaders = "--$boundary\r\n"
 ."Content-Type: text/html; UTF-8\r\n"
-."Content-Transfer-Encoding: base64\r\n"
+//."Content-Transfer-Encoding: base64\r\n"
 ."\r\n"
 ;
-        $orderInfo["SEND_CERT"] = 1;
+
+        require(MAIL_TMPL_PATH."/_header.php");
+        require(MAIL_TMPL_PATH."/N-".$orderInfo["TYPE"].".php");
+        require(MAIL_TMPL_PATH."/_footer.php");
+        
+        $sMailText = $html;
+
         if($orderInfo["SEND_CERT"]){
             require($_SERVER["DOCUMENT_ROOT"]."/profile/order/print.ajax.php");
-            
             $sMailAttach = $sHTML;
         }
         
@@ -163,7 +182,8 @@
             $sTo, 
             $sSubject, 
             $sMailTextHeaders
-                .chunk_split(base64_encode($sMailText))
+                //.chunk_split(base64_encode($sMailText))
+                .$sMailText
                 .(
                     $orderInfo["SEND_CERT"]
                     ?
@@ -197,6 +217,14 @@
             false,
             array("nTopCount"=>1)
         )->GetNext();
+        $arUser = CUser::GetByID($arOrder["USER_ID"])->GetNext();
+
+        // Переформатирование даты
+        $tmp = date_parse($arOrder["DATE_INSERT"]);
+        $arOrder["DATE_INSERT"] 
+            = sprintf("%02d",$tmp["day"])
+            .".".sprintf("%02d",$tmp["month"])
+            .".".$tmp["year"];
         
         $arBasket = CSaleBasket::GetList(
             array(),
@@ -216,17 +244,29 @@
                 "IBLOCK_ID" =>  OFFER_IB_ID
             ),
             false,
+            array("nTopCount"=>1),            
             array("PROPERTY_CML2_LINK")
         )->GetNext();
         
         $arCatalog = CIBlockElement::GetList(
             array(),
             array(
-                "ID"        =>  $arBasket["PROPERTY_CML2_LINK_VALUE"],
+                "ID"        =>  $arOffer["PROPERTY_CML2_LINK_VALUE"],
                 "IBLOCK_ID" =>  CATALOG_IB_ID
             ),
             false,
+            array("nTopCount"=>1),            
             array()
+        )->GetNext();
+        $arCatalogManufacturer = CIBlockElement::GetList(
+            array(),
+            array(
+                "ID"        =>  $arOffer["PROPERTY_CML2_LINK_VALUE"],
+                "IBLOCK_ID" =>  CATALOG_IB_ID
+            ),
+            false,
+            array("nTopCount"=>1),            
+            array("PROPERTY_MANUFACTURER_LINK")
         )->GetNext();
         
         $arProperties = array();
@@ -237,24 +277,64 @@
         $resStatus = CSaleStatus::GetList();
         while($ar = $resStatus->GetNext())$arStatuses[$ar["ID"]] = $ar;
         
+        $arManufacturer = CIBlockElement::GetList(
+            array(),
+            array(
+                "ID"        =>  $arCatalogManufacturer["PROPERTY_MANUFACTURER_LINK_VALUE"],
+                "IBLOCK_ID" =>  MANUFACTURER_IB_ID
+            ),
+            false,
+            array("nTopCount"=>1),            
+            array()
+        )->GetNext();
+        $arManufactProps = array();
+        $resManufactProps = CIBlockElement::GetProperty(MANUFACTURER_IB_ID, $arManufacturer["ID"]);
+        while($ar = $resManufactProps->GetNext())$arManufactProps[$ar["CODE"]] = $ar;
         
-        return array(
-            "ORDER"         =>  $arOrder,
-            "OFFER"         =>  $arOffer,
-            "CATALOG"       =>  $arCatalog,
-            "PROPERTIES"    =>  $arProperties,
-            "STATUSES"      =>  $arStatuses,
-            "SEND_CERT"     =>  (
+        $tmp = date_parse($arProperties["USE_BEFORE_DATE"]["VALUE"]);
+        $date1 = date("d.m.Y",$ts1 = mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
+        $ts2 = time()+$arProperties["DAYS_TO_EXPIRE"]["VALUE"]*24*60*60;
+        $date2 = date("d.m.Y",$ts2);
+        if(trim($arProperties["USE_BEFORE_DATE"]["VALUE"]) && $ts1<$ts2){
+            $arCatalog["EXPIRES"] = $date1;
+        }
+        elseif(trim($arProperties["USE_BEFORE_DATE"]["VALUE"]) && $ts1>=$ts2){
+            $arCatalog["EXPIRES"] = $date2;
+        }
+        else{
+            $arCatalog["EXPIRES"] = $date2;
+        }
+        
+        $send_cert = (
                 (
-                    isset($orderInfo["PROPERTIES"]["SEND_CERT"]["VALUE"])
+                    isset($arProperties["SEND_CERT"]["VALUE"])
                     &&
-                    $orderInfo["PROPERTIES"]["SEND_CERT"]["VALUE"]
+                    $arProperties["SEND_CERT"]["VALUE"]
                 )
                 ?
                 true
                 :
                 false
-            )
+            );
+        
+        $type = "m";
+        if($send_cert)$type = "v";
+        
+        return array(
+            "USER"          =>  $arUser,
+            "ORDER"         =>  $arOrder,
+            "BASKET"        =>  $arBasket,
+            "OFFER"         =>  $arOffer,
+            "CATALOG"       =>  $arCatalog,
+            "PROPERTIES"    =>  $arProperties,
+            "STATUSES"      =>  $arStatuses,
+            "MANUFACTURER"  =>  $arManufacturer,
+            "MANUFACT_PROPS"=>  $arManufactProps,
+            // M - материальное поощрение
+            // V - виртуальное поощрение
+            // R - поощрение-ресурс
+            "TYPE"          =>  $type,
+            "SEND_CERT"     =>  $send_cert
 
         );
     }
