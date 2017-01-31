@@ -62,13 +62,14 @@
                   <tr class="ag-shop-profile-points__row<? if($record["DEBIT"]=="Y"){?> ag-shop-profile-points__row--add<? }else{?> ag-shop-profile-points__row--sub<?}?>">
                     <td data-label="Дата">
                       <?
+                        
                         $tmp = date_parse($record["TRANSACT_DATE"]);
                         $timestamp = mktime(
                             $tmp["hour"],$tmp["minute"],$tmp["second"],
                             $tmp["month"],$tmp["day"],$tmp["year"]
                         );
-                        $date = date("d.m.Y");
-                        $time = date("H:i");
+                        $date = date("d.m.Y",$timestamp);
+                        $time = date("H:i",$timestamp);
                       ?>
                       <div class="ag-shop-profile-points__data"><?= $date;?>
                         <div class="ag-shop-profile-points__time"><?= $time;?></div>

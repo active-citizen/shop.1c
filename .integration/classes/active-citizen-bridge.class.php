@@ -201,6 +201,10 @@
         function __construct(){
             if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
                 $this->contour = 'prod';
+            if($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
+                $this->contour = 'uat';
+            if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru.local')
+                $this->contour = 'test';
         }
         
         /**

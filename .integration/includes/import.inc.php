@@ -9,11 +9,13 @@
     
     // Получаем из XML массив групп товаров
     $arGroups = $arImport["Классификатор"]["Группы"]["Группа"];
+    if(!isset($arGroups[0]))$arGroups = array($arGroups);
     // Получаем из XML массив производителей
     $arManufacturers = $arImport["Классификатор"]["Производители"]["Производитель"];
+    if(!isset($arManufacturers[0]))$arManufacturers = array($arManufacturers);
     // Получаем из XML массив товаров
     $arProducts = $arImport["Каталог"]["Товары"]["Товар"];
-
+    if(!isset($arProducts[0]))$arProducts = array($arProducts);
 
     // Приводим картинки к массивному виду
     foreach($arProducts as $k=>$arProduct)
@@ -24,13 +26,12 @@
     ///                  Импортируем производителей
     ///////////////////////////////////////////////////////////////////////
     $manufacturersIndex = array();
-    $arManufacturerIblock = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
     $objManufacturer = new CIBlockElement;
     foreach($arManufacturers as $arManufacturer){
         $manufacturersIndex[$arManufacturer["Ид"]] = $arManufacturer;
         $arManufacturerMain = array(
             "NAME"=>$arManufacturer["ПолноеНаименование"],
-            "IBLOCK_ID"=>$arManufacturerIblock["ID"],
+            "IBLOCK_ID"=>MANUFACTURER_IB_ID,
             "CODE"=>CUtil::translit($arManufacturer["ПолноеНаименование"],'ru',array()),
             "SORT"=>$arManufacturer["Сортировка"],
             "XML_ID"=>$arManufacturer["Ид"],
@@ -49,7 +50,7 @@
         // Ищем производителя с таким ID
         if(!$arIblockManufacturer = CIBlockElement::GetList(
             array(),
-            array("IBLOCK_CODE"=>"manuacturers","XML_ID"=>$arManufacturer["Ид"]),
+            array("IBLOCK_ID"=>MANUFACTURER_IB_ID,"XML_ID"=>$arManufacturer["Ид"]),
             false,
             array("nTopCount"=>1)
         )->getNext())
@@ -61,13 +62,13 @@
             $id = $arIblockManufacturer["ID"];
             $objManufacturer->Update($id, $arManufacturerMain);
         }
-        $manufacturersIndex[$arManufacturer["Ид"]]["IBLOCK_ID"] = $arManufacturerIblock["ID"];
+        $manufacturersIndex[$arManufacturer["Ид"]]["IBLOCK_ID"] = MANUFACTURER_IB_ID;
         $manufacturersIndex[$arManufacturer["Ид"]]["ID"] = $id;
         foreach($arManufacturerProps as $propertyCode=>$propertyValue)
                 CIBlockElement::SetPropertyValueCode($id,$propertyCode,$arManufacturer[$propertyValue]);        
     }
     
-    $CATALOG_IBLOCK_ID = 2;
+    $CATALOG_IBLOCK_ID = CATALOG_IB_ID;
     
     ///////////////////////////////////////////////////////////////////////
     ///                     Импортируем разделы

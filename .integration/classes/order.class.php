@@ -470,12 +470,15 @@
         function addEMPPoints($points,$comment){
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curl.class.php");
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
-            require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+            require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
             
             if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
                 $contour = 'prod';
-            else
+            elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
                 $contour = 'uat';
+            else
+                $contour = 'test';
+                
             
             $bxUser = new bxUser;
             // Загружаем историю начисления баллов

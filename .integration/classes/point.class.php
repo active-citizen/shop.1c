@@ -49,19 +49,19 @@
             
             $transactionIndex = array();
             $res = CSaleUserTransact::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
+            $objTransact = new CSaleUserTransact;
             
-            while($arTransaction = $res->GetNext())
+            while($arTransaction = $res->GetNext()){
                 $transactionsIndex[
                     $arTransaction["DEBIT"]." ".
                     preg_replace("#^(.*)\s+.*$#","$1",$arTransaction["TRANSACT_DATE"])." ".
                     $arTransaction["DESCRIPTION"]
-                ] = $arTransaction["AMOUNT"];
+                ] = $arTransaction["ID"];
+            }
                 
-
             $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
-            $objTransact = new CSaleUserTransact;
 
-            foreach($history as $empTransact){
+            foreach($history as $nT=>$empTransact){
                 // Не загружаем транзакции за заказы
                 if(mb_strpos($empTransact["title"],"БТРКС-")!==false)continue;
                 
@@ -70,10 +70,16 @@
                     ($empTransact["action"]=='debit'?"Y":"N")." ".
                     date("d.m.Y",$empTransact["date"])." ".
                     $empTransact["title"];
-                
+
                 // Если это начисление/списание уже есть в индексе транзакций - пропускаем её
-                if(isset($transactionsIndex[$transactionKey]))continue;
-                
+                if(isset($transactionsIndex[$transactionKey])){
+                    $objTransact->Update(
+                        $transactionsIndex[$transactionKey], 
+                        array("TRANSACT_DATE"=>date("d.m.Y", $empTransact["date"]))
+                    );
+                    continue;
+                }
+
                 $arFields = array(
                     "USER_ID"       =>  $userId,
                     "AMOUNT"        =>  abs($empTransact['points']),
@@ -82,9 +88,8 @@
                     "DESCRIPTION"   =>  $empTransact["title"],
                     "ORDER_ID"      =>  "",
                     "EMPLOYEE_ID"   =>  1,
-                    "TRANSACT_DATE" =>  date("d.m.Y H:i:s", $empTransact["date"])
-                );                
-
+                    "TRANSACT_DATE" =>  date("d.m.Y", $empTransact["date"])
+                );       
                 
                 // Получаем сумму на счёте
                 $arrAccount = CSaleUserAccount::GetByID($accountId);
@@ -106,8 +111,9 @@
                             "NOTES"         =>  $empTransact["title"]
                         )
                     );
+                    
                 }
-                
+                //$objTransact->Update($transactId, array("TRANSACT_DATE"=>$arFields["TRANSACT_DATE"]));
             }
 
 

@@ -5,8 +5,17 @@
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
-    $CatalogIblockId = 2;
-    $OfferIblockId = 3;
+    $CatalogIblockId = CATALOG_IB_ID;
+    $OfferIblockId = OFFER_IB_ID;
+    
+    $res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
+    while($ar = $res->GetNext()){
+        echo "<pre>";
+        print_r($ar);
+        echo "</pre>";
+    }
+    echo "1111";
+    die;
     
     // Получаем имя файла заказов
     $ordersFilename = $_GET["filename"];
@@ -17,7 +26,45 @@
                 {$ordersFilename = $filename;break;}
         closedir($dd);
     }
-
+    
+    if(preg_match("#^.*\.zip$#",$ordersFilename)){
+	$zipFilename = $uploadDir.$ordersFilename;
+	if(!file_exists($zipFilename)){
+	    echo "failed\n$zipFilename is not exists";
+	    die;
+	}
+	
+	$zip = new ZipArchive();
+	if(!$zip->open($zipFilename)){
+	    echo "failed\n";
+	    echo "Cant open $zipFilename";
+	    die;
+	}
+	if(!$nZipFilesCount = $zip->numFiles){
+	    echo "failed\n";
+	    echo "Archive hasnt any files";
+	    die;
+	}
+	if($nZipFilesCount>1){
+	    echo "failed\n";
+	    echo "Archive has more than 1 file";
+	    die;
+	}
+	$arZipStat = $zip->statIndex (0);
+	if(!$arZipStat["name"] || !preg_match("#^.*\.xml$#",$arZipStat["name"])){
+	    echo "failed\n";
+	    echo "Archive hasnt xml file";
+	    die;
+	}
+	if(!$zip->extractTo($uploadDir)){
+	    echo "failed\n";
+	    echo "Cant extract archive";
+	    die;
+	}
+	
+	$ordersFilename = $arZipStat["name"];
+    }
+    
     CModule::IncludeModule("sale");
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
@@ -28,6 +75,8 @@
     $objBasket  = new CSaleBasket;
     $objIBlockElement = new CIBlockElement;
     $objPrice = new CPrice;
+    
+    
     if(file_exists($uploadDir.$offersFilename)){
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
@@ -39,12 +88,12 @@
 
         foreach($arOrders["Документ"] as $ccc=>$arDocument){
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if(0 && $ccc>55){break;}else{echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";}
+            if(0 && $ccc>5){break;}else{echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";}
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
                 array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1),
-                array("ID","PAYED")
+                array("ID","PAYED","STATUS_ID")
             );
             $existsOrder = $res->GetNext();
 
@@ -53,7 +102,7 @@
                 $res = CSaleOrder::GetList(
                     array(),array("ADDITIONAL_INFO"=>$arDocument["Номер"]),false,
                     array("nTopCount"=>1),
-                    array("ID","PAYED")
+                    array("ID","PAYED","STATUS_ID")
                 );
                 $existsOrder = $res->GetNext();
             }
@@ -103,7 +152,7 @@
                         "IBLOCK_SECTION_ID" =>  1,//$categoryId,
                         "SECTION_ID"    =>  1,//$categoryId,
                         "PREVIEW_TEXT_TYPE" =>  'html',
-                        "DETAIL_TEXT_TYPE"  =>  'html',
+                        "DETAIL_TEXT_TYPE"  =>  'html'
                     );
                     
                     $resCatalog = CIblockElement::GetList(array(),array(
@@ -329,7 +378,7 @@
                 echo "Update order_id = $orderId ";
                 
                 CSaleOrder::Update($orderId, $arOrder);
-                if($arOrder["STATUS_ID"]!=$statusId){
+                if($existsOrder["STATUS_ID"]!=$statusId){
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                 }

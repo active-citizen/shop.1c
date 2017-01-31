@@ -4,7 +4,7 @@
 		    $headers = explode("\n",$additional_headers);
 #		    $to = 'andrey@fmf.ru';
 		    if(LOCAL_MAIL_DISK_ENABLE===true){
-                disk_custom_mail($to, $subject, $message, $additional_headers);
+            		disk_custom_mail($to, $subject, $message, $additional_headers);
 		    }
 		    if(LOCAL_MAIL_SMTP_ENABLE===false)return true;
 

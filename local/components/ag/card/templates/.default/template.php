@@ -1,4 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<? 
+    require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+?>
 
         <? if(isset($arResult["OFFERS"][0])):?>
             <script>
@@ -17,9 +20,30 @@
             </script>
         
             <div class="ag-shop-card">
-            <? if($arResult["ACCOUNT"]["CURRENT_BUDGET"] < $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]): ?>
+            <? if(
+                $arResult["ACCOUNT"]["CURRENT_BUDGET"] < $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
+                &&
+                CUser::IsAuthorized()
+            ): ?>
               <div class="ag-shop-card__container">
-                <div class="ag-shop-card__requirements">Для заказа данного поощрения необходимо набрать <?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?> <?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?>.</div>
+                <div class="ag-shop-card__requirements">
+                    Для заказа данного поощрения необходимо набрать 
+                        <?= 
+                            number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)
+                        ?> 
+                        <?= 
+                            get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))
+                        ?>.
+                </div>
+              </div>
+            <? elseif(
+                !CUser::IsAuthorized()
+            ): ?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    Для заказа данного поощрения необходимо 
+                    <a class="ag-shop-menu__link--active" href="<?= CONTOUR_URL?>">авторизоваться</a>
+                </div>
               </div>
             <? endif ?>
               <div class="grid grid--bleed">

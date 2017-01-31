@@ -10,9 +10,9 @@ $resStores = CCatalogStore::GetList();
 
 $arResult["stores"] = array();
 while($arStore = $resStores->GetNext()){
-    // Вычисляем остатки на складе
-    $res = CCatalogStoreProduct::GetList(array(),array("STORE_ID"=>$arStore["ID"]));
-    if(!$res->result->num_rows)continue;
+// Вычисляем остатки на складе
+//    $res = CCatalogStoreProduct::GetList(array(),array("STORE_ID"=>$arStore["ID"]));
+//    if(!$res->result->num_rows)continue;
     $arResult["stores"][] = $arStore;
 }
 

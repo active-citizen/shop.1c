@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  * pointsHistory.class.php
  * 
@@ -27,7 +27,7 @@
     
     class pointsHistoryBridgeMethod{
         function exec($args,$contour='uat'){
-            require_once(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
+            require(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
             $url = $AG_KEYS[$contour]["bcc_url"];
 
             $curl = new curlTool;
@@ -39,7 +39,6 @@
                     "session_id":"'.$args["session_id"].'"
                 }
             ');
-
             $curl = new curlTool;
             $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
             

@@ -26,8 +26,7 @@
     
     class enc_authBridgeMethod{
         function exec($args,$contour='uat'){
-            
-            require_once(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
+            require($secretFilename = realpath(dirname(__FILE__)."/../../../secret.inc.php"));
             
             // Алгоритм шифрования
             $method = "rijndael-128";
@@ -56,7 +55,6 @@
             mcrypt_generic_deinit($module);
             mcrypt_module_close($module);
             $session_id = rtrim($decrypted,"\0");
-
             
             if($contour=='uat')
                 $args["token"] = $EMP_TOKENS["uat"];

@@ -43,7 +43,7 @@
                     else
                         echo "http://testing.ag.mos.ru/site/";
                   ?>'">
-                  Войти
+                  <a style="text-decoration: none;" class="ag-shop-filter__trigger--active" href="<?= CONTOUR_URL?>">Войти</a>
                 </span>
                 <?endif?>
               </div>

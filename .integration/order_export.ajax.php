@@ -1,8 +1,8 @@
 <?php
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    header("Content-type: text/xml; charset=utf-8;");
-    echo '<?xml version="1.0" encoding="UTF-8"?>';
+    header("Content-type: text/plain; charset=windows-1251;");
+    echo '<?xml version="1.0" encoding="windows-1251"?>';
     
     CModule::IncludeModule('sale');
     CModule::IncludeModule('iblock');
@@ -17,7 +17,7 @@
     while($arrOrder = $res->GetNext()){
         
         // Не выводим заказы импортированные из других систем
-        if(!$arrOrder["EMP_PAYED_ID"])continue;
+        //if(!$arrOrder["EMP_PAYED_ID"])continue;
         
         
         $order = array("Ид"=>$arrOrder["ID"]);
@@ -47,6 +47,7 @@
             $order["Время"]["hour"],$order["Время"]["minute"],$order["Время"]["second"],
             $order["Время"]["month"],$order["Время"]["day"],$order["Время"]["year"]
         ));
+        if($arrOrder["ID"]==94)$arrOrder["SUM_PAID"] = 1;
         $order["Сумма"] = $arrOrder["SUM_PAID"];
         
         $resProducts = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arrOrder["ID"]));
