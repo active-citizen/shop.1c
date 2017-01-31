@@ -20,7 +20,16 @@
     define("SHOP_EMAIL","shop@ag.mos.ru");
 
     define("MAIL_TMPL_PATH",realpath(dirname(__FILE__)."/../mail_templates/"));
-
+    
+    if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
+        define("CONTOUR", "prod");
+    elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
+        define("CONTOUR", "uat");
+    else
+        define("CONTOUR", "test");
+        
+    require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+    define("CONTOUR_URL", preg_replace("#^(http://.*?)/.*$#","$1",$AG_KEYS[CONTOUR]["url"]));
 
     if(preg_match("#^/bitrix/admin#",$_SERVER["REQUEST_URI"])){
         define("ORDERS_EXCHANGE_ADMIN_MODE", true);
