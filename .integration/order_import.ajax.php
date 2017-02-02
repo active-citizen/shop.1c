@@ -335,7 +335,7 @@
 
                 
             // Если заказа нет - создаём, есть - обновляем
-            if(!$existsOrder){
+            if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
                 
                 if(!$orderId = $objOrder->Add($arOrder)){
                     echo "failed\n";

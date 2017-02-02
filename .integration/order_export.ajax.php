@@ -18,11 +18,10 @@
         
         // Не выводим заказы импортированные из других систем
         //if(!$arrOrder["EMP_PAYED_ID"])continue;
-        if(!preg_match("#^.*\-\d+$#",$arrOrder["ADDITIONAL_INFO"]))continue;
-        
+        if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
         
         $order = array("Ид"=>$arrOrder["ID"]);
-        $order["Номер"] = "БТРКС-".$arrOrder["ID"];
+        $order["Номер"] = mb_convert_encoding($arrOrder["ADDITIONAL_INFO"],"cp1251","UTF-8");
         
         $order["Дата"] = date_parse($arrOrder["DATE_INSERT"]);
         $order["Дата"] = date("Y-m-d",mktime(
