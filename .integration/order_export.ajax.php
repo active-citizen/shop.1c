@@ -18,6 +18,7 @@
         
         // Не выводим заказы импортированные из других систем
         //if(!$arrOrder["EMP_PAYED_ID"])continue;
+        if(!preg_match("#^.*\-\d+$#",$arrOrder["ADDITIONAL_INFO"]))continue;
         
         
         $order = array("Ид"=>$arrOrder["ID"]);
@@ -47,7 +48,7 @@
             $order["Время"]["hour"],$order["Время"]["minute"],$order["Время"]["second"],
             $order["Время"]["month"],$order["Время"]["day"],$order["Время"]["year"]
         ));
-        if($arrOrder["ID"]==94)$arrOrder["SUM_PAID"] = 1;
+
         $order["Сумма"] = $arrOrder["SUM_PAID"];
         
         $resProducts = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arrOrder["ID"]));

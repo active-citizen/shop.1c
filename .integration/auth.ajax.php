@@ -19,8 +19,9 @@
 
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require_once("classes/active-citizen-bridge.class.php");
-    require_once("classes/user.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
     
     $agBrige = new ActiveCitizenBridge;
     
@@ -30,7 +31,7 @@
     $args = array(
         "login"     =>  isset($_REQUEST["login"])?$_REQUEST["login"]:'',
         "password"  =>  isset($_REQUEST["password"])?$_REQUEST["password"]:'',
-        "token"     =>  "ag_uat_token3",
+        "token"     =>  $EMP_TOKENS[CONTOUR],
         "session_id"=>  isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:'',
     );
     
@@ -46,6 +47,9 @@
     if(!$answer["errors"])
         $profile = $agBrige->exec();
 
+    if(!isset($profile["session_id"]) || !trim($profile["session_id"]))
+        $answer["errors"] = 'Ошибка авторизации';
+    
     if(isset($profile['result']['personal']['phone']))
         $args["login"] = $profile['result']['personal']['phone'];
 
@@ -60,6 +64,28 @@
             $answer["errors"][] = $bxUser->error;
         }
     }
+    
+    //=========== Стягиваем баллы =========
+    $args = array(
+        "session_id"    =>  $profile["session_id"],
+        "token"         =>  $EMP_TOKENS[CONTOUR]
+    );
+    $agBrige->setMethod('pointsHistory');
+    $agBrige->setMode('emp');
+    $agBrige->setArguments($args);
+    $answer["errors"] = array_merge($agBrige->getErrors(),$answer["errors"]);
+    $profile = array();
+    if(!$answer["errors"] && !$history = $agBrige->exec()){
+        $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
+    }
+    
+    if(isset($history["errorMessage"]) && $history["errorMessage"]){
+        $answer["errors"][] = $history["errorMessage"];
+    }else{
+        $bxPoint = new bxPoint;
+        $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
+    } 
+    
     
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");

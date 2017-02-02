@@ -172,3 +172,32 @@ input.ag-balls[type="radio"]{
 .ag-shop-rules__spoiler-link span{
     font-weight: normal;
 }
+
+.screen-blocker{
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: white;
+    z-index: 9998;
+    opacity: 0.7;
+}
+
+.auth-loader{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 80px;
+    margin-top: -40px;
+    margin-left: -100px;
+    background-color: white;
+    z-index: 9999;
+    border: 1px #aaa solid;
+    border-radius: 10px;
+    background-image: url(/local/assets/images/loader1.gif);
+    background-position: 50% 35%;
+    background-size: 300px;
+    background-repeat: no-repeat;
+}

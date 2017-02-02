@@ -569,6 +569,7 @@ function agauth(encsession){
     
     if(!encsession)return false;
 
+    $('body').append('<div class="screen-blocker"></div><div class="auth-loader"></div>');
     // Отсылаем шифрованный ID сессии ajax-скрипту для расшифровки и авторизации
     $.post(
 	'/.integration/auth.ajax.php',
@@ -584,8 +585,8 @@ function agauth(encsession){
 	    
 	    // Ошибок нет - возвращаемся на страницу откуда авторизовались
 	    if(!answer.errors.length){
-		document.location.href = '/';
-		return true;
+            document.location.href = '/catalog/';
+            return true;
 	    }
 
 	    // Формируем блок ошибок

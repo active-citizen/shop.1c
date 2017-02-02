@@ -1,8 +1,4 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
-<? 
-    require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
-?>
-
         <? if(isset($arResult["OFFERS"][0])):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;

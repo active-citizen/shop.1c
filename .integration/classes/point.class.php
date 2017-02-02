@@ -63,7 +63,7 @@
 
             foreach($history as $nT=>$empTransact){
                 // Не загружаем транзакции за заказы
-                if(mb_strpos($empTransact["title"],"БТРКС-")!==false)continue;
+                //if(mb_strpos($empTransact["title"],"БТРКС-")!==false)continue;
                 
                 // Формируем ключ для поиска по индексу транзакций
                 $transactionKey = 

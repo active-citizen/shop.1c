@@ -9,13 +9,6 @@
     $OfferIblockId = OFFER_IB_ID;
     
     $res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
-    while($ar = $res->GetNext()){
-        echo "<pre>";
-        print_r($ar);
-        echo "</pre>";
-    }
-    echo "1111";
-    die;
     
     // Получаем имя файла заказов
     $ordersFilename = $_GET["filename"];
@@ -88,7 +81,9 @@
 
         foreach($arOrders["Документ"] as $ccc=>$arDocument){
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if(0 && $ccc>5){break;}else{echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";}
+            if(0 && $ccc>5){break;}else{
+                //echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
+            }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
@@ -110,7 +105,7 @@
             
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{7,11}$#",$arDocument["Телефон"])){
-                echo "Incorrect phone ".$arDocument["Телефон"]."<br/>";
+                //echo "Incorrect phone ".$arDocument["Телефон"]."<br/>";
                 $t1 = microtime(true);
                 continue;
             }
@@ -122,7 +117,7 @@
             $basketProducts = array();
             foreach($arDocument["Товары"]["Товар"] as $product){
                 if(!isset($product["Ид"])){
-                    echo "Incorrect goods id= ".$product["Ид"]."<br/>";
+                    //echo "Incorrect goods id=".$product["Ид"]."<br/>";
                     continue;
                 }
                 
@@ -229,7 +224,7 @@
             foreach($basketProducts as $product)$sum+=$product["count"]*$product["price"];
             // Бортуем заказы с нулевой суммой
             if(!$sum){
-                echo "Empty order sum, OrderId =".$arDocument["Ид"];
+                //echo "Empty order sum, OrderId =".$arDocument["Ид"];
                 $t1 = microtime(true);
                 continue;
             }
@@ -320,11 +315,13 @@
                 "TAX_VALUE"          =>  0,
                 "DATE_INSERT"        =>  $DB->FormatDate(
                     $arDocument["Дата"]." ".$arDocument["Время"],
-                    "Y-m-d H:i:s"
+                    "YYYY-MM-DD HH:MI:SS",
+                    "DD.MM.YYYY HH:MI:SS"
                 ),
                 "DATE_UPDATE"        =>  $DB->FormatDate(
-                    $arDocument["Дата"]." ".$arDocument["Время"],
-                    "Y-m-d H:i:s"
+                    trim($arDocument["Дата"])." ".trim($arDocument["Время"]),
+                    "YYYY-MM-DD HH:MI:SS",
+                    "DD.MM.YYYY HH:MI:SS"
                 )
             );
             
@@ -347,7 +344,7 @@
                     continue;
                 }
 
-                echo "Add order_id=$orderId  ";
+                //echo "Add order_id=$orderId  ";
 
                 // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
@@ -375,7 +372,7 @@
             }
             else{
                 $orderId = $existsOrder["ID"];
-                echo "Update order_id = $orderId ";
+                //echo "Update order_id = $orderId ";
                 
                 CSaleOrder::Update($orderId, $arOrder);
                 if($existsOrder["STATUS_ID"]!=$statusId){

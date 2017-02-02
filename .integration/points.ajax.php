@@ -40,7 +40,7 @@
     
     $args = array(
         "session_id"     =>  $session_id,
-        "token"     =>  "ag_uat_token3"
+        "token"     =>  $EMP_TOKENS[CONTOUR]
     );
     $agBrige->setMethod('pointsHistory');
     $agBrige->setMode('emp');

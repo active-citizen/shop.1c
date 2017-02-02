@@ -177,6 +177,29 @@ elseif(isset($_GET["add_order"])){
         echo json_encode($answer);
         die;
     }
+
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
+    $agBrige = new ActiveCitizenBridge;
+    $bxUser = new bxUser;
+
+    // Загружаем историю начисления баллов
+    $session_id = $bxUser->getEMPSessionId();
+    
+    // Обновляем историю баллов
+    $args = array(
+        "session_id"    =>  $session_id,
+        "token"         =>  $EMP_TOKENS[CONTOUR]
+    );
+    
+    
+    $agBrige->setMethod('pointsHistory');
+    $agBrige->setMode('emp');
+    $agBrige->setArguments($args);
+    $history = $agBrige->exec();
+    $bxPoint = new bxPoint;
+    $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
     
     // Проверяем сумму на счёте
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
