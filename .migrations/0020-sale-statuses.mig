@@ -78,8 +78,8 @@
                     array(
                         "ID"            =>  "AG",
                         "LID"           =>  "ru",
-                        "NAME"          =>  "Отменён",
-                        "DESCRIPTION"   =>  "Отменён",
+                        "NAME"          =>  "Отменен",
+                        "DESCRIPTION"   =>  "Отменен",
                         "STATUS_ID"     =>  7
                     ),
                     array(
@@ -89,7 +89,7 @@
                         "DESCRIPTION"   =>  "Отменён",
                         "STATUS_ID"     =>  7
                     )
-                )
+                ),
             );
 
             $DB->Query("

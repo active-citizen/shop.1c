@@ -569,7 +569,7 @@ function agauth(encsession){
     
     if(!encsession)return false;
 
-    $('body').append('<div class="screen-blocker"></div><div class="auth-loader"></div>');
+    //$('body').append('<div class="screen-blocker"></div><div class="auth-loader"></div>');
     // Отсылаем шифрованный ID сессии ajax-скрипту для расшифровки и авторизации
     $.post(
 	'/.integration/auth.ajax.php',
@@ -577,10 +577,10 @@ function agauth(encsession){
 	function(data){
 	    var answer = {};
 	    try{
-		answer = JSON.parse(data);
+            answer = JSON.parse(data);
 	    }
 	    catch(e){
-		answer.errors = new Array(e.message);
+            answer.errors = new Array(e.message);
 	    }
 	    
 	    // Ошибок нет - возвращаемся на страницу откуда авторизовались
@@ -591,7 +591,7 @@ function agauth(encsession){
 
 	    // Формируем блок ошибок
 	    for(i in answer.errors){
-            alert(answer.errors[i]);
+            //alert(answer.errors[i]);
 	    }
 	}
     );

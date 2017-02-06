@@ -88,7 +88,7 @@
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
                 array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1),
-                array("ID","PAYED","STATUS_ID")
+                array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO")
             );
             $existsOrder = $res->GetNext();
 
@@ -97,7 +97,7 @@
                 $res = CSaleOrder::GetList(
                     array(),array("ADDITIONAL_INFO"=>$arDocument["Номер"]),false,
                     array("nTopCount"=>1),
-                    array("ID","PAYED","STATUS_ID")
+                    array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO")
                 );
                 $existsOrder = $res->GetNext();
             }
@@ -223,11 +223,13 @@
             $sum = 0;
             foreach($basketProducts as $product)$sum+=$product["count"]*$product["price"];
             // Бортуем заказы с нулевой суммой
+            /*
             if(!$sum){
                 //echo "Empty order sum, OrderId =".$arDocument["Ид"];
                 $t1 = microtime(true);
                 continue;
             }
+            */
 
             // Выделяем из ФИО фамилию и Имя-Отчество
             $tmpName = explode(" ", $arDocument["Клиент"]);
@@ -304,8 +306,6 @@
                 "PAYED"              =>  isset($existsOrder["PAYED"])?$existsOrder["PAYED"]:"N",
                 "CANCELED"           =>  $canceled,
                 "STATUS_ID"          =>  $statusId,
-                "PRICE"              =>  $sum,
-                "SUM_PAID"           =>  $sum,
                 "CURRENCY"           =>  "BAL",
                 "USER_ID"            =>  $userId,
                 "PAY_SYSTEM_ID"      =>  9,
@@ -324,6 +324,10 @@
                     "DD.MM.YYYY HH:MI:SS"
                 )
             );
+            if($sum){
+                $arOrder["SUM_PAID"] = $sum;
+                $arOrder["PRICE"] = $sum;
+            }
             
             // Определяем ID склада
             $resStorage = CCatalogStore::GetList(array(),array("XML_ID"=>$arDocument["Склад"]),
@@ -332,11 +336,9 @@
             $storeId = 0;
             if(!isset($arStorage["ID"]))$storeId = $arStorage["ID"];
             if($storeId)$arOrder["STORE_ID"] = $storeId;
-
-                
+            
             // Если заказа нет - создаём, есть - обновляем
             if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
-                
                 if(!$orderId = $objOrder->Add($arOrder)){
                     echo "failed\n";
                     echo "Not created";
@@ -369,16 +371,52 @@
                 }
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
                 CSaleOrder::PayOrder($orderId,"Y",true,false); //?????
+                // Удаляем транзакцию, вызвагую этим заказом (ибо через импорт баллов она придёт)
+                $objTransact = new CSaleUserTransact;
+                $arTransact = $objTransact->GetList(array(),array("ORDER_ID"=>$orderId))->GetNext();
+                if(isset($arTransact["ID"]))$objTransact->Delete($arTransact["ID"]);
             }
-            else{
+            elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
                 //echo "Update order_id = $orderId ";
                 
+                // Обрабатываем все статусы кроме отмены
                 CSaleOrder::Update($orderId, $arOrder);
-                if($existsOrder["STATUS_ID"]!=$statusId){
+                if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                 }
+                // Обрабатываем отмену
+                elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
+                    
+    
+                    $login = "u".$arDocument["Телефон"];
+                    // Считаем сумму заказа
+                    $orderSum = $arOrder["SUM_PAID"];
+
+                    // Отменяем оплату и возвращаем баллы только если заказ сделан из битрикса
+                    $moneyBack = false;
+                    if(preg_match("#^.*\-\d+$$#", $existsOrder["ADDITIONAL_INFO"])){
+                        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+                        $obOrder = new bxOrder();
+                        if(!$obOrder->addEMPPoints($orderSum,"Отмена заказа Б-".$existsOrder["ID"]." в магазине поощрений АГ",$login)){
+                            echo "Points transaction error: ".$obOrder->error;
+                        }
+                        $moneyBack = true;
+                    }
+
+                    CSaleOrder::PayOrder($existsOrder["ID"],"N",$moneyBack,false);
+                    CSaleOrder::StatusOrder($existsOrder["ID"], $statusId);
+                    if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
+                        $answer["error"] .= "Заказ не был отменён.";
+                    }
+                    else{
+                        CSaleOrder::StatusOrder($existsOrder["ID"],"AG");
+                    }
+                    
+                }
+
+
                 
                 // Ищем корзину для этого заказа
                 //// $resBasket = CSaleBasket::GetList(array(),array("ORDER_ID"=>$orderId),false,array("nTopCount"=>1));

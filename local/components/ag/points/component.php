@@ -16,8 +16,8 @@ if(!isset($arParams["CREDIT_FOLDER"]))$arParams["CREDIT_FOLDER"] = "credit";
 
 if(!isset($arParams["SELF_FOLDER"]))$arParams["CREDIT_FOLDER"] = "/points/";
 if(!isset($arParams["USER_ID"]))$arParams["USER_ID"] = CUser::GetID();
-if(!isset($arParams["SORT"]))$arParams["SORT"] = array("TRANSACT_DATE"=>"DESC");
-if(!isset($arParams["RECORDS_ON_PAGE"]))$arParams["RECORDS_ON_PAGE"] = 10;
+if(!isset($arParams["SORT"]))$arParams["SORT"] = array("TRANSACT_DATE"=>"DESC","TIMESTAMP_X"=>"DESC");
+if(!isset($arParams["RECORDS_ON_PAGE"]))$arParams["RECORDS_ON_PAGE"] = 30;
 if(!isset($arParams["PAGE"]))$arParams["PAGE"] = 1;
 if(!isset($arParams["PAGE_BLOCK_SIZE"]))$arParams["PAGE_BLOCK_SIZE"] = 10;
 
@@ -37,12 +37,13 @@ $arPages = array("nPageSize"=>$arParams["RECORDS_ON_PAGE"], "iNumPage"=>$arParam
 if($arResult["DEBIT"])$arFilter["DEBIT"] = $arResult["DEBIT"];
 
 // Получение общего числа результатов
-$res = CSaleUserTransact::GetList($arParams["SORT"],$arFilter,false);
+$objTransact = new CSaleUserTransact;
+$res = $objTransact->GetList($arParams["SORT"],$arFilter,false);
 $total_pages = $res->SelectedRowsCount();
+
 
 // Получение записей с текущей страницы
 $res = CSaleUserTransact::GetList($arParams["SORT"],$arFilter,false,$arPages);
-
 // Получение массива пагинации
 $arResult["PAGES"] = get_pages_list(
     $total_pages,
@@ -51,12 +52,11 @@ $arResult["PAGES"] = get_pages_list(
     $arParams["PAGE_BLOCK_SIZE"]
 );
 
-
 $arResult["RECORDS"] = array();
 while($data = $res->GetNext()){
     $arResult["RECORDS"][] = $data;
 }
- 
+
 $arResult["ACCOUNT_INFO"] = CSaleUserAccount::GetByUserID($USER->GetId(),"BAL");
     
 $this->IncludeComponentTemplate();

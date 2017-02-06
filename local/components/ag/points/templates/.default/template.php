@@ -83,10 +83,10 @@
                                     echo "Внесено вручную";
                                 break;
                                 case 'ORDER_PAY':
-                                    echo 'Списано за заказ БТРКС-'.$record["ORDER_ID"]."";
+                                    echo 'Списано за заказ Б-'.$record["ORDER_ID"]."";
                                 break;
                                 case 'ORDER_UNPAY':
-                                    echo 'Отмена заказа БТРКС-'.$record["ORDER_ID"]."";
+                                    echo 'Отмена заказа Б-'.$record["ORDER_ID"]."";
                                 break;
                                 default:
                                     echo $record["DESCRIPTION"];

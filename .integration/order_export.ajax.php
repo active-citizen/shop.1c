@@ -48,8 +48,6 @@
             $order["Время"]["month"],$order["Время"]["day"],$order["Время"]["year"]
         ));
 
-        $order["Сумма"] = $arrOrder["SUM_PAID"];
-        
         $resProducts = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arrOrder["ID"]));
         $products = array();
         while($arProduct = $resProducts->GetNext()){
@@ -92,8 +90,11 @@
             $product["Продукт"] = $arOffer;
             $products[] = $product;
         }
-        $order["Товары"] = $products;
-        
+
+        //$order["Сумма"] = $arrOrder["SUM_PAID"];
+        $order["Сумма"] = 0;
+        foreach($products as $product)
+            $order["Сумма"] += $product["Количество"]*$product["ЦенаЗаЕдиницу"];
         
         $resUser = CUser::GetByID($arrOrder["USER_ID"]);
         $arUser = $resUser->GetNext();
@@ -111,8 +112,9 @@
         $order["Склад"] = $arStore["XML_ID"];
         
         $arSatatus = CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
+        $order["КодСостоянияЗаказа"] = $arrOrder["STATUS_ID"];
         $order["СостояниеЗаказа"] = mb_convert_encoding($arSatatus["NAME"],"cp1251","utf-8");
-        
+        $order["Товары"] = $products;
         $arOrders[] = $order;
     }
 ?>
@@ -132,7 +134,7 @@
     <ДатаИстеченияБронирования><? echo $arOrder["ДатаИстеченияБронирования"];?></ДатаИстеченияБронирования>
     <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
     <СтатусЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СтатусЗаказа>
-    <ЗапросНаИзменение/>
+    <ЗапросНаИзменение><? echo $arOrder["СостояниеЗаказа"];?></ЗапросНаИзменение>
     <Контрагенты>
         <Контрагент>
             <Ид>0#<? echo $arOrder["ЭлектроннаяПочта"];?></Ид>
@@ -160,6 +162,7 @@
         <Состояние>
             <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
             <СостояниеЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СостояниеЗаказа>
+            <ЗапросНаИзменение><? echo $arOrder["СостояниеЗаказа"];?></ЗапросНаИзменение>
             <Комментарий/>
             <Уведомление>Нет</Уведомление>
         </Состояние>

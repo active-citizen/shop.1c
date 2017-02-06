@@ -467,22 +467,16 @@
             
         }
         
-        function addEMPPoints($points,$comment){
+        function addEMPPoints($points,$comment, $login=''){
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curl.class.php");
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
             require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
-            
-            if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
-                $contour = 'prod';
-            elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
-                $contour = 'uat';
-            else
-                $contour = 'test';
-                
+
+            $contour = CONTOUR;
             
             $bxUser = new bxUser;
             // Загружаем историю начисления баллов
-            $session_id = $bxUser->getEMPSessionId();
+            $session_id = $bxUser->getEMPSessionId($login);
             $curl = new curlTool;
             $url = $AG_KEYS[$contour]["bcc_url"];
             $data = "request=".urlencode('
@@ -494,12 +488,15 @@
                         "debit": "'.($points<0?-1:1).'",
                         "comment":"'.$comment.'"
                     },
-                    "session_id":"'.$session_id.'"
+                    '.'"session_id":"'.$session_id.'"'.'
                 }
             ');
             $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
+
             $data = json_decode($data);
             if(property_exists($data, "errorCode") && !$data->errorCode)return true;
+            
+            $this->error = $data->errorMessage;
             return false;
         }
         

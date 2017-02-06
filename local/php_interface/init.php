@@ -23,9 +23,9 @@
 
     define("MAIL_TMPL_PATH",realpath(dirname(__FILE__)."/../mail_templates/"));
     
-    if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
+    if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru' || $_SERVER["HTTP_HOST"]=='10.89.79.58')
         define("CONTOUR", "prod");
-    elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
+    elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru' || $_SERVER["HTTP_HOST"]=='10.89.79.59')
         define("CONTOUR", "uat");
     else
         define("CONTOUR", "test");
@@ -70,9 +70,10 @@
     
     function eventOrderStatusSendEmail($orderId, &$eventName, &$arFields, $orderStatus){
         
-        return true;
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderId);
+        // Зунуляем письма о заказах с опенкарта
+        if(preg_match("#^\d+$#", $orderInfo["ORDER"]["ADDITIONAL_INFO"]))return true;
         
         $sMailText      =   '';
         $sMailAttach    =   '';
@@ -101,7 +102,7 @@
 
         $sMailTextHeaders = "--$boundary\r\n"
 ."Content-Type: text/html; UTF-8\r\n"
-."Content-Transfer-Encoding: base64\r\n"
+//."Content-Transfer-Encoding: base64\r\n"
 ."\r\n"
 ;
 
@@ -143,8 +144,10 @@
     function eventOrderNewSendEmail_normal($orderID, &$eventName, &$arFields){
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderID);
+        // Зунуляем письма о заказах с опенкарта
+        if(preg_match("#^\d+$#", $orderInfo["ORDER"]["ADDITIONAL_INFO"]))return true;
         
-        $orderInfo["ORDER"]["ADDITIONAL_INFO"] = "БТРКС-".$orderInfo["ORDER"]["ID"];
+        $orderInfo["ORDER"]["ADDITIONAL_INFO"] = "Б-".$orderInfo["ORDER"]["ID"];
 
         $sMailText      =   '';
         $sMailAttach    =   '';

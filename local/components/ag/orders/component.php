@@ -73,7 +73,6 @@ $arNavStartParams = array(
 $resOrders = CSaleOrder::GetList($arOrder, $arFilter, false, $arNavStartParams);
 
 while($arOrder = $resOrders->GetNext()){
-    
     // Склад
     $arOrder["STORE_INFO"] = CCatalogStore::GetList(
         array(),

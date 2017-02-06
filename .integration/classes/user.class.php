@@ -185,10 +185,11 @@
          * @return ID сессии или ничего
          * 
          */
-        function getEMPSessionId(){
+        function getEMPSessionId($login=''){
             global $DB;
             global $USER;
-            $login = $USER->GetLogin();
+            if(!$login)
+                $login = $USER->GetLogin();
             $login = preg_replace("#^u(\d+)$#","$1",$login);
             
             // Смотрим последнюю сессию у этого пльзователя

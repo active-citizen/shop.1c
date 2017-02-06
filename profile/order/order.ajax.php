@@ -232,8 +232,8 @@ elseif(isset($_GET["add_order"])){
         
         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
         $obOrder = new bxOrder();
-        $resOrder = $obOrder->addEMPPoints(-$totalSum,"Заказ БТРКС-$orderId в магазине поощрений АГ");
-        $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"БТРКС-$orderId"));
+        $resOrder = $obOrder->addEMPPoints(-$totalSum,"Заказ Б-$orderId в магазине поощрений АГ");
+        $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"Б-$orderId"));
         
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
@@ -383,18 +383,22 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     elseif(isset($order["USER_ID"]) && $order["USER_ID"]!=CUser::GetID()){
         $answer = array("error"=>"Это заказ другого пользователя");
     }
-    elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID()){
+    elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID() 
+        // Нельзя отменять заказы из опенкарта
+        && preg_match("#^.*\-\d+$$#", $order["ADDITIONAL_INFO"])
+    ){
 
         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
         $obOrder = new bxOrder();
-        $resOrder = $obOrder->addEMPPoints($order["SUM_PAID"],"Отмена заказа БТРКС-".$order["ID"]." в магазине поощрений АГ");
+        $resOrder = $obOrder->addEMPPoints($order["SUM_PAID"],"Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ");
+        $moneyBack = true;
 
-        CSaleOrder::PayOrder($order_id,"N",true,false);
-        if(!CSaleOrder::CancelOrder($order_id,"Y","Передумал")){
+        CSaleOrder::PayOrder($order["ID"],"N",$moneyBack,false);
+        if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
             $answer["error"] .= "Заказ не был отменён.";
         }
         else{
-            CSaleOrder::StatusOrder($order_id,"AG");
+            CSaleOrder::StatusOrder($order["ID"],"AG");
         }
     }
 }

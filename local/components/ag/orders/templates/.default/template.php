@@ -59,6 +59,9 @@
                 case 'AG':
                     echo "canceled";
                 break;
+                case 'AW':
+                    echo "canceled";
+                break;
                 // Брак стилистически аналогичен отмене
                 case 'AC':
                     echo "canceled";
@@ -75,7 +78,7 @@
                         <div class="ag-shop-profile-order__status"><?=
                         $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
                         ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= ceil($arOrder["IN_WORK"]) ?> <?= get_days(ceil($arOrder["IN_WORK"]))?>)<? endif ?></div>
-                        <div class="ag-shop-profile-order__number">Заказ БТРКС-<?= $arOrder["ID"]?></div>
+                        <div class="ag-shop-profile-order__number">Заказ <?= $arOrder["ADDITIONAL_INFO"]?></div>
                         <div class="ag-shop-profile-order__date">от <?= $arOrder["DATE_SHORT"]?></div>
                       </div>
                     </div>
@@ -84,10 +87,17 @@
                           <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
-                          <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ БТРКС-<?= $arOrder["ID"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
-                          <? if($arOrder["STATUS_ID"]=='N' && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]):?>
+                          <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ Б-<?= $arOrder["ID"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
+                          <? if(
+                            $arOrder["STATUS_ID"]=='AG'
+                            ||
+                            preg_match("#^\d+$#",$arOrder["ADDITIONAL_INFO"])
+                          ): ?>
+                          <? elseif(
+                            $arOrder["STATUS_ID"]=='N' 
+                            && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]
+                          ):?>
                           <a class="ag-shop-profile-order__control" onclick="return orderCancel(<?= $arOrder["ID"]?>,this);" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a>
-                          <? elseif($arOrder["STATUS_ID"]=='AG'): ?>
                           <? else:?>
                           <div class="ag-shop-profile-order__control"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i><span>Отмена невозможна</span></div>
                           <? endif ?>

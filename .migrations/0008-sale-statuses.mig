@@ -121,7 +121,7 @@
                         "DESCRIPTION"   =>  "Отменён",
                         "STATUS_ID"     =>  7
                     )
-                )
+                ),
             );
 
             $DB->Query("

@@ -45,9 +45,11 @@
             
             // Создаём индекс транзакций счёта, чтобы определять
             // есть ли уже начисление/списание из $history в транзакциях или нет
-            // Ключ индекса - DEBIT+TRANSACT_DATE+AMOUNT
-            
+            // Ключ индекса - DEBIT+TRANSACT_DATE+DESCRIPTION
             $transactionIndex = array();
+            // Создаём другой индекс транзакций счёта
+            // Ключ индекса - номер заказа
+            $transactionDescIndex = array();
             $res = CSaleUserTransact::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
             $objTransact = new CSaleUserTransact;
             
@@ -57,13 +59,26 @@
                     preg_replace("#^(.*)\s+.*$#","$1",$arTransaction["TRANSACT_DATE"])." ".
                     $arTransaction["DESCRIPTION"]
                 ] = $arTransaction["ID"];
+                $transactionDescIndex["Б-".$arTransaction["ORDER_ID"]] = 1;
             }
                 
             $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
 
+
             foreach($history as $nT=>$empTransact){
                 // Не загружаем транзакции за заказы
-                //if(mb_strpos($empTransact["title"],"БТРКС-")!==false)continue;
+                //if(mb_strpos($empTransact["title"],"Б-")!==false)continue;
+                
+                // Если начисление-списание связано с заказом в битриксе - пропускаем
+                $flag = 0;
+                foreach($transactionDescIndex as $key=>$value)
+                    if(preg_match("# ".$key." #",$empTransact["title"])){
+                        $flag = 1;
+                        break;
+                    }
+                if($flag){
+                    continue;
+                }
                 
                 // Формируем ключ для поиска по индексу транзакций
                 $transactionKey = 

@@ -27,7 +27,7 @@ $arUser = CUSER::GetById($USER->GetId())->GetNext();
 
 if(isset($orderInfo["OFFER"]["ID"])){
     $arBasket = array("PRODUCT_ID"=>$orderInfo["OFFER"]["ID"]);
-    $arOrder["ADDITIONAL_INFO"] = "БТРКС-".$orderInfo["OFFER"]["ID"];
+    $arOrder["ADDITIONAL_INFO"] = "Б-".$orderInfo["OFFER"]["ID"];
 }else{
     $arBasket = CSaleBasket::GetList(array(),array("ORDER_ID"=>$orderId))->GetNext();
 }
