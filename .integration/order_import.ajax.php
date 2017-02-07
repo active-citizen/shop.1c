@@ -370,11 +370,13 @@
             	    $DB->Query($strSql);
                 }
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
-                CSaleOrder::PayOrder($orderId,"Y",true,false); //?????
+                //CSaleOrder::PayOrder($orderId,"Y",false,false); //?????
                 // Удаляем транзакцию, вызвагую этим заказом (ибо через импорт баллов она придёт)
+                /*
                 $objTransact = new CSaleUserTransact;
                 $arTransact = $objTransact->GetList(array(),array("ORDER_ID"=>$orderId))->GetNext();
                 if(isset($arTransact["ID"]))$objTransact->Delete($arTransact["ID"]);
+                */
             }
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
@@ -405,15 +407,11 @@
                         $moneyBack = true;
                     }
 
-                    CSaleOrder::PayOrder($existsOrder["ID"],"N",$moneyBack,false);
+                    CSaleOrder::PayOrder($existsOrder["ID"],"N",true,false);
                     CSaleOrder::StatusOrder($existsOrder["ID"], $statusId);
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }
-                    else{
-                        CSaleOrder::StatusOrder($existsOrder["ID"],"AG");
-                    }
-                    
                 }
 
 

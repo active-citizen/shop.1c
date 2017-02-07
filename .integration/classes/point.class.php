@@ -90,7 +90,7 @@
                 if(isset($transactionsIndex[$transactionKey])){
                     $objTransact->Update(
                         $transactionsIndex[$transactionKey], 
-                        array("TRANSACT_DATE"=>date("d.m.Y", $empTransact["date"]))
+                        array("TRANSACT_DATE"=>date("d.m.Y H:i:s", $empTransact["date"]))
                     );
                     continue;
                 }
@@ -103,7 +103,7 @@
                     "DESCRIPTION"   =>  $empTransact["title"],
                     "ORDER_ID"      =>  "",
                     "EMPLOYEE_ID"   =>  1,
-                    "TRANSACT_DATE" =>  date("d.m.Y", $empTransact["date"])
+                    "TRANSACT_DATE" =>  date("d.m.Y H:i:s", $empTransact["date"])
                 );       
                 
                 // Получаем сумму на счёте
@@ -130,7 +130,6 @@
                 }
                 //$objTransact->Update($transactId, array("TRANSACT_DATE"=>$arFields["TRANSACT_DATE"]));
             }
-
 
             
         }

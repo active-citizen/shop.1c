@@ -16,6 +16,9 @@
     $arOrders = array();
     while($arrOrder = $res->GetNext()){
         
+        // Пропускаем уже отданные заказы
+        if(trim($arrOrder["DATE_UPDATE"]))continue;
+        
         // Не выводим заказы импортированные из других систем
         //if(!$arrOrder["EMP_PAYED_ID"])continue;
         if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;

@@ -238,6 +238,7 @@ elseif(isset($_GET["add_order"])){
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
         CSaleOrder::PayOrder($orderId,"Y",true,false);
+        CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
         $answer["redirect_url"] = "/profile/order/detail/$orderId/";
     }
     else{
@@ -393,13 +394,15 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
         $resOrder = $obOrder->addEMPPoints($order["SUM_PAID"],"Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ");
         $moneyBack = true;
 
-        CSaleOrder::PayOrder($order["ID"],"N",$moneyBack,false);
+        CSaleOrder::PayOrder($order["ID"],"N",true,false);
+        CSaleOrder::StatusOrder($order["ID"],"AG");
         if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
             $answer["error"] .= "Заказ не был отменён.";
         }
         else{
-            CSaleOrder::StatusOrder($order["ID"],"AG");
+            //CSaleOrder::StatusOrder($order["ID"],"AG");
         }
+        CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
     }
 }
 else{
