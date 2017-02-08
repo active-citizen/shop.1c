@@ -23,22 +23,16 @@ if(!$USER->isAdmin() && $arOrder["USER_ID"]!=$USER->GetId()){
     die;
 }
 
-$arUser = CUSER::GetById($USER->GetId())->GetNext();
+$arUser = CUSER::GetById($arOrder["USER_ID"])->GetNext();
 
 if(isset($orderInfo["OFFER"]["ID"])){
     $arBasket = array("PRODUCT_ID"=>$orderInfo["OFFER"]["ID"]);
-    $arOrder["ADDITIONAL_INFO"] = "Б-".$orderInfo["OFFER"]["ID"];
+//    $arOrder["ADDITIONAL_INFO"] = "Б-".$orderInfo["OFFER"]["ID"];
 }else{
     $arBasket = CSaleBasket::GetList(array(),array("ORDER_ID"=>$orderId))->GetNext();
 }
 
-$arOffer = CIblockElement::GetList(
-    array(),
-    array("IBLOCK_CODE"=>"clothes_offers","ID"=>$arBasket["PRODUCT_ID"]),
-    false, array(),
-    array()
-)->GetNext();
-$offerIblockId = $arOffer["IBLOCK_ID"];
+$offerIblockId = OFFER_IB_ID;
 
 $resOfferProps = CIBlockElement::GetProperty($offerIblockId, $arBasket["PRODUCT_ID"],array());
 $arOfferProps = array();
@@ -49,14 +43,7 @@ while($arOfferProp = $resOfferProps->GetNext()){
 }
 
 
-$arCatalog = CIblockElement::GetList(
-    array(),
-    $arFields = array("IBLOCK_CODE"=>"clothes","ID"=>$arOfferProps["CML2_LINK"][0]['VALUE']),
-    false,array(),
-    array()
-)->GetNext();
-$catalogIblockId = $arCatalog['IBLOCK_ID'];
-
+$catalogIblockId = CATALOG_IB_ID;
 $resCatalogProps = CIBlockElement::GetProperty($catalogIblockId, $arOfferProps["CML2_LINK"][0]['VALUE'],array());
 $arCatalogProps = array();
 while($arCatalogProp = $resCatalogProps->GetNext()){
@@ -65,6 +52,16 @@ while($arCatalogProp = $resCatalogProps->GetNext()){
     $arCatalogProps[$arCatalogProp["CODE"]][] = $arCatalogProp;
 }
 
+$arCatalog = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$catalogIblockId,"ID"=>$arOfferProps["CML2_LINK"][0]['VALUE']),false,array("nTopCount"=>1))->GetNext();
+
+$manufacturerIblockId = MANUFACTURER_IB_ID;
+$resManufacturerProps = CIBlockElement::GetProperty($manufacturerIblockId, $arCatalogProps["MANUFACTURER_LINK"][0]['VALUE'],array());
+$arManufacturerProps = array();
+while($arManufacturerProp = $resManufacturerProps->GetNext()){
+    if(!isset($arManufacturerProps[$arManufacturerProp["CODE"]]))$arManufacturerProps[$arManufacturerProp["CODE"]] = array();
+    if($arManufacturerProp["VALUE"])
+    $arManufacturerProps[$arManufacturerProp["CODE"]][] = $arManufacturerProp;
+}
 
 //$arOffer = CIblockElement::GEtList(array(),array("IBLOCK_CODE"=>"clothes_offers","ID"=>$arBasket["PRODUCT_ID"]))->GetNext();
 $data = array();
@@ -72,22 +69,13 @@ $data["CODE"] = $arOrder["ADDITIONAL_INFO"];
 $data["FIO"] = (!$arUser['NAME'] && !$arUser["LAST_NAME"]?$arUser['LOGIN']:$arUser['NAME']." ".$arUser["LAST_NAME"]);
 $data["NAME"] = $arCatalog["NAME"];
 $data["QUANTITY"] = ($arBasket["QUANTITY"]>1?$arBasket["QUANTITY"]." &times; ":"").$arCatalogProps["QUANT"][0]["VALUE"];
-$data["MANUFACTURER"] = unserialize(base64_decode($arCatalogProps["MANUFACTURER"][0]["VALUE"]));
 
-if($arManufacturer = 
-    CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"manuacturers","ID"=>$arCatalogProps["MANUFACTURER_LINK"][0]["VALUE"]),false,
-    array("nTopCount"=>1),array("PROPERTY_HOW_FIND","PROPERTY_SCHEME","ID"))->GetNext()
-){
-    $data["ADDRESS"] = $arManufacturer["PROPERTY_HOW_FIND_VALUE"];
-    $data["HOW_SEARCH"] = $arManufacturer["PROPERTY_SCHEME_VALUE"];
-}
-else{
-    $data["ADDRESS"] = '';
-    $data["HOW_SEARCH"] = '';
-}
+$data["ADDRESS"] = $arManufacturerProps["HOW_FIND"][0]["VALUE"];
+$data["HOW_SEARCH"] = $arManufacturerProps["SCHEME"][0]["VALUE"];
 
 $data["RULES"] = $arCatalogProps["RECEIVE_RULES"][0]["~VALUE"]["TEXT"];
-$data["MANUFACTURER"] = $data["MANUFACTURER"]["ПолноеНаименование"];
+$data["MANUFACTURER"] = $arManufacturerProps["FULL_NAME"][0]["VALUE"];
+$data["MANUFACTURER_ID"] = $arCatalogProps["MANUFACTURER_LINK"][0]['VALUE'];
 
 $tmp = date_parse($arOrder["DATE_INSERT"]);
 $orderTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
@@ -335,41 +323,7 @@ body {
       <div class="ag-shop-certificate__description">
         <div class="ag-shop-certificate__block-name">Описание</div>
         <figure class="ag-shop-certificate__map">
-	  <div id="YMapsID" style="width:288;height:288px;border: 1px #DDD solid;"></div>
-            <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
-                      <script>
-                        YMaps.jQuery(function () {
-                            // Создает экземпляр карты и привязывает его к созданному контейнеру
-                            var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
-                            var geocoder = new YMaps.Geocoder("'. $data["ADDRESS"].'");
-                            map.setCenter(new YMaps.GeoPoint(37.64, 55.76), 10);
-                            YMaps.Events.observe(geocoder, geocoder.Events.Load, function () {
-                                if (this.length()) {
-                            
-                                    map.setCenter(new YMaps.GeoPoint(
-                                        this.get(0).getGeoPoint().getLng(),
-                                        this.get(0).getGeoPoint().getLat()
-                                    ), 16);
-                                    
-                                    var placemark = new YMaps.Placemark(new YMaps.GeoPoint(
-                                        this.get(0).getGeoPoint().getLng(),
-                                        this.get(0).getGeoPoint().getLat()
-                                    ));
-                                    placemark.name = \''.$data["MANUFACTURER"].'\';
-                                    placemark.hideIcon = true;
-                                    
-                                    map.addOverlay(placemark);
-                                    map.panTo(placemark)
-                                }else {
-                                    console.log("Ничего не найдено")
-                                }
-                            });
-                             
-                            YMaps.Events.observe(geocoder, geocoder.Events.Fault, function (error) {
-                                console.log("Произошла ошибка: " + error.message)
-                            });                        
-                        })
-                      </script>
+	  <div id="YMapsID" style="width:288;height:288px;border: 1px #DDD solid;"><img src="data:image/png;base64,'.base64_encode(file_get_contents($_SERVER["DOCUMENT_ROOT"].'/upload/manufacturers/'.$data["MANUFACTURER_ID"].'.png')).'"></div>
           <figcaption class="ag-shop-certificate__map-description">'. $data["HOW_SEARCH"] .'</figcaption>
         </figure>
         <div class="ag-shop-certificate__description-text">

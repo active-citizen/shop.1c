@@ -2,8 +2,8 @@
 
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
 
-    define("LOCAL_MAIL_SMTP_ENABLE",false);
-    define("LOCAL_MAIL_SMTP_LOG_ENABLE",false);
+    define("LOCAL_MAIL_SMTP_ENABLE",true);
+    define("LOCAL_MAIL_SMTP_LOG_ENABLE",true);
     define("LOCAL_MAIL_SMTP_LOG_BASEDIR",$_SERVER["DOCUMENT_ROOT"]."/upload/smtplog");
     
     define("LOCAL_MAIL_SMTP_HOST",$MAIL["smtp.host"]);

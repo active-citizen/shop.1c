@@ -391,7 +391,7 @@ $(document).ready(function(){
     });
 
 
-    $('.fimage').fancybox();
+    //$('.fimage').fancybox();
     
     $('#ag-basket-amount').spinner({culture: "ru",min: "1",step: "1"});
 

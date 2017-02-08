@@ -1,0 +1,31 @@
+<?php
+    require 'common.php';
+    
+    /**
+     * Создание необходимых временных папок
+     */
+    class tmp_dirs extends Migration{
+        function Run(){
+            
+            define("ROOTDIR",$_SERVER["DOCUMENT_ROOT"]."/upload/");
+            $dirs = array("maildir","smtplog","manufacturers");
+                
+                
+                
+            foreach($dirs as $dir){
+                if(is_dir(ROOTDIR.$dir)){
+                    
+                }
+                elseif(!@mkdir(ROOTDIR.$dir)){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    
+    
+// Запускаем миграцию    
+$tmp_dirs = new tmp_dirs();
+// Откатываем, если неудачно
+if(!$tmp_dirs->Run())$tmp_dirs->RollBack();
