@@ -1,4 +1,5 @@
 <?php
+
     // Библиотаке для склонения баллов, и дней
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
     // Библиотека для отправки почты через SMTP

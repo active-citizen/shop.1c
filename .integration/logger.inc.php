@@ -7,7 +7,7 @@
 
     $filename = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".headers";
     $fd = fopen($filename, "w");
-    $headers = apache_request_headers();
+    $headers = request_headers();
     fwrite($fd, ($_POST?"POST ":"GET ")." ".$_SERVER["REQUEST_URI"]."\n");
     foreach($headers as $hname=>$hvalue)fwrite($fd, trim($hname).":".trim($hvalue)."\n");
     fclose($fd);
@@ -27,4 +27,12 @@
             $current_path = $_SERVER["DOCUMENT_ROOT"].$path;
             if(!is_dir($current_path))@mkdir($current_path);
         }
+    }
+    
+    function request_headers(){
+        $result = array();
+        foreach($_SERVER as $key=>$value)
+            if(preg_match("/^HTTP\_(.*)$/i",$key,$m))
+                $result[str_replace("_","-",$m[1])] = $value;
+        return $result;
     }
