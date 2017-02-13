@@ -17,8 +17,6 @@ upload/1c_catalog/import_files/*
 *.zip
 *.tar
 
-adminer.php
-
 docs/*.toc
 docs/*.htoc
 docs/*.log
