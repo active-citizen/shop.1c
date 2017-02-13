@@ -232,9 +232,13 @@
                           <div class="ag-shop-card__field">
                             <div class="ag-shop-card__fieldname">Количество:</div>
                             <div class="ag-shop-card__count">
+                            <!--
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--sub" type="button"></button>
-                              <div class="ag-shop-card__count-number">1</div>
+                            -->
+                              <div style="padding-top: 3px;" class="ag-shop-card__count-number">1</div>
+                            <!--
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--add" type="button"></button>
+                            -->
                             </div>
                           </div>
                         </div>
