@@ -396,6 +396,8 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
 
         CSaleOrder::PayOrder($order["ID"],"N",true,false);
         CSaleOrder::StatusOrder($order["ID"],"AG");
+        eventOrderStatusSendEmail($order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG"));
+
         if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
             $answer["error"] .= "Заказ не был отменён.";
         }

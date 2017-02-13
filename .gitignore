@@ -15,7 +15,6 @@ upload/1c_catalog/import_files/*
 *.swp
 *.swo
 *.zip
-*.tar
 
 docs/*.toc
 docs/*.htoc

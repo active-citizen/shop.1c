@@ -55,7 +55,7 @@
                           <div class="ag-shop-card__image"></div>
                           <div class="ag-shop-card__image-info">
                             <div class="ag-shop-card__image-points">
-                              <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></div>
+                              <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,",","")?></div>
                               <div class="ag-shop-item-card__points-text"><?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?></div>
                             </div>
                             
@@ -242,7 +242,7 @@
                         <div class="grid__col-shrink">
                           <div class="ag-shop-card__field ag-shop-card__field--align-right">
                             <div class="ag-shop-card__fieldname">Итого:</div>
-                            <div id="ag-shop-card__total-points" class="ag-shop-card__total-points"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></div>
+                            <div id="ag-shop-card__total-points" class="ag-shop-card__total-points"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,",","")?></div>
                           </div>
                         </div>
                       </div>

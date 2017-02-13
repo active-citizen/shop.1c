@@ -67,18 +67,20 @@
     AddEventHandler("sale", "OnSaleStatusEMail", "eventSaleStatusEMail");
     // Назначаем обработчик отправки письма о смене статуса заказа
     AddEventHandler("sale", "OnOrderStatusSendEmail", "eventOrderStatusSendEmail");
+    //AddEventHandler("sale", "OnSaleStatusOrder", "eventOrderStatusSendEmail");
     
     
     function eventOrderStatusSendEmail($orderId, &$eventName, &$arFields, $orderStatus){
         
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderId);
+        
         // Зунуляем письма о заказах с опенкарта
         if(preg_match("#^\d+$#", $orderInfo["ORDER"]["ADDITIONAL_INFO"]))return true;
         
         $sMailText      =   '';
         $sMailAttach    =   '';
-        $sTo            =   $arFields["EMAIL"];
+        $sTo            =   $orderInfo["USER"]["EMAIL"];
         $sBC            =   SHOP_EMAIL;
         $sFrom          =   SHOP_EMAIL;
         $sFilename      =   $orderInfo["ORDER"]["ADDITIONAL_INFO"]."-сертификат-АГ.html";
@@ -145,6 +147,7 @@
     function eventOrderNewSendEmail_normal($orderID, &$eventName, &$arFields){
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderID);
+
         // Зунуляем письма о заказах с опенкарта
         if(preg_match("#^\d+$#", $orderInfo["ORDER"]["ADDITIONAL_INFO"]))return true;
         
@@ -152,7 +155,7 @@
 
         $sMailText      =   '';
         $sMailAttach    =   '';
-        $sTo            =   $arFields["EMAIL"];
+        $sTo            =   $orderInfo["USER"]["EMAIL"];
         $sBC            =   SHOP_EMAIL;
         $sFrom          =   SHOP_EMAIL;
         $sFilename      =   $orderInfo["ORDER"]["ADDITIONAL_INFO"]."-сертификат-АГ.html";
