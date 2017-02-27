@@ -74,7 +74,7 @@
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
         $arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
-        
+
         // Нормализуем массив заказов
         if(!isset($arOrders["Документ"][0]))
             $arOrders["Документ"] = array($arOrders["Документ"]);
@@ -387,6 +387,7 @@
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
+                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
