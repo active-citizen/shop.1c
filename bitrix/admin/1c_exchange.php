@@ -19,6 +19,15 @@ if(
 }
 
 if(
+    isset($_GET["type"]) && isset($_GET["mode"])
+    && $_GET["type"]=='sale' && $_GET["mode"]=="success"
+){
+    include("../../.integration/order_success.ajax.php");
+    die;
+}
+
+
+if(
     isset($_GET["type"]) && isset($_GET["mode"]) && isset($_GET["filename"])
     && $_GET["type"]=='sale' && $_GET["mode"]=="file" && $_GET["filename"]
 ){

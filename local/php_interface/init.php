@@ -21,6 +21,8 @@
     define("MANUFACTURER_IB_ID",$arr["ID"]);
     
     define("SHOP_EMAIL","shop@ag.mos.ru");
+    // Количество заказов, которые выгружаются в 1С за один приём
+    define("ORDER_EXPORT_QUANT",1);
 
     define("MAIL_TMPL_PATH",realpath(dirname(__FILE__)."/../mail_templates/"));
     

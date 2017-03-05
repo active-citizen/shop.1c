@@ -12,7 +12,9 @@
 
     // Составляем справочник флагов 
     $ENUM_OFFERS = array();
-    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>$OFFERS_IBLOCK_ID));
+    $res = CIBlockPropertyEnum::GetList(
+        array(),array("IBLOCK_ID"=>$OFFERS_IBLOCK_ID)
+    );
     while($data = $res->getNext()){
         $propName = mb_strtolower(trim($data["PROPERTY_NAME"]));
         $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
@@ -23,7 +25,8 @@
                 "ITEMS"=>array()
             );
             
-        $ENUM_OFFERS[$propName]["ITEMS"][mb_strtolower($enum["VALUE"])] = $enum["ID"];
+        $ENUM_OFFERS[$propName]["ITEMS"][mb_strtolower($enum["VALUE"])] = 
+            $enum["ID"];
     }
 
     // Обнуляем остатки на складах
@@ -45,14 +48,16 @@
             isset($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"])
             && 
             !isset($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"][0])
-        )$arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"] = array($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"]);
+        )$arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"] = 
+            array($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"]);
         
         
 
         $offerFields = array(
             "IBLOCK_ID"         =>  $OFFERS_IBLOCK_ID,
             "NAME"              =>  $arOffer["Наименование"],
-            "PRICE"             =>  $productsIndexDetail[$arOffer["Ид"]]["Баллы"],
+            "PRICE"             =>  
+                $productsIndexDetail[$arOffer["Ид"]]["Баллы"],
             "XML_ID"            =>  $arOffer["Ид"],
             
 //                "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
@@ -63,7 +68,13 @@
         );
         
         // Ищем в товарных предложениях с указанным XML_ID
-        $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$OFFERS_IBLOCK_ID,"XML_ID"=>$arOffer["Ид"]));
+        $res = CIBlockElement::GetList(
+            array(),
+            array(
+                "IBLOCK_ID"=>$OFFERS_IBLOCK_ID,
+                "XML_ID"=>$arOffer["Ид"]
+            )
+        );
         // Если предложения нет - добавляем
         if(!$existsOffer = $res->GetNext()){
             // Добавляем предложение
@@ -81,7 +92,9 @@
                 $arrPriceAdd = array(
                     "PRODUCT_ID"=>$offerId,
                     "CATALOG_GROUP_ID"=>1,
-                    "PRICE"=>$productsIndexDetail[$XML_ID]["Баллы"],"CURRENCY"=>"BAL"),
+                    "PRICE"=>$productsIndexDetail[$XML_ID]["Баллы"],
+                    "CURRENCY"=>"BAL"
+                ),
                 true
             );
             
@@ -90,8 +103,12 @@
                 foreach($arOffer["Склад"] as $storage){
                     if(!$resCatalogStoreProduct->Add($arFields = array(
                         "PRODUCT_ID"=>  $offerId,
-                        "STORE_ID"=>    $arStoragesIndex[$storage["@attributes"]["ИдСклада"]],
-                        "AMOUNT"=>      $storage["@attributes"]["КоличествоНаСкладе"]
+                        "STORE_ID"=>    
+                            $arStoragesIndex[
+                                $storage["@attributes"]["ИдСклада"]
+                            ],
+                        "AMOUNT"=>      
+                            $storage["@attributes"]["КоличествоНаСкладе"]
                     ))){
                         echo "<pre>";
                         print_r($resCatalogStoreProduct);
@@ -104,7 +121,14 @@
         else{
             $offerId = $existsOffer["ID"];
             $objOffer->Update($existsOffer["ID"], $offerFields);
-            CCatalogProduct::Update($offerId, array("QUANTITY"=>$arOffer["Количество"],"QUANTITY_TRACE"=>"Y","CAN_BUY_ZERO"=>"N",));
+            CCatalogProduct::Update(
+                $offerId, 
+                array(
+                    "QUANTITY"=>$arOffer["Количество"],
+                    "QUANTITY_TRACE"=>"Y",
+                    "CAN_BUY_ZERO"=>"N"
+                )
+            );
             
             
             $res = CPrice::GetList(array(),array("PRODUCT_ID"=>$offerId));
@@ -134,16 +158,23 @@
             }
             
             // Обнуляем остатки на складах
-            //$res = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$offerId));
+            //$res = CCatalogStoreProduct::GetList(array(),
+            //array("PRODUCT_ID"=>$offerId));
             //while($store = $res->GetNext())
-            //    $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
+            //    $resCatalogStoreProduct->Update(
+            //$store["ID"],array("AMOUNT"=>0)
+            //);
                 
             // Прописываем новые остатки
             if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))
                 foreach($arOffer["Склад"] as $storage){
-                    $res = CCatalogStoreProduct::GetList(array(),$restRequest = array(
-                        "PRODUCT_ID"=>$offerId,
-                        "STORE_ID"  =>$arStoragesIndex[$storage["@attributes"]["ИдСклада"]]
+                    $res = CCatalogStoreProduct::GetList(
+                        array(),
+                        $restRequest = array(
+                            "PRODUCT_ID"=>$offerId,
+                            "STORE_ID"  =>$arStoragesIndex[
+                                $storage["@attributes"]["ИдСклада"]
+                            ]
                     ));
                     
                     // Если запись для товара на складе есть - обновляем
@@ -151,13 +182,21 @@
                     if(!$existsRest = $res->GetNext()){
                         $resCatalogStoreProduct->Add(array(
                             "PRODUCT_ID"=>$offerId,
-                            "STORE_ID"  =>$arStoragesIndex[$storage["@attributes"]["ИдСклада"]],
-                            "AMOUNT"=>$storage["@attributes"]["КоличествоНаСкладе"]
+                            "STORE_ID"  =>$arStoragesIndex[
+                                $storage["@attributes"]["ИдСклада"]
+                            ],
+                            "AMOUNT"=>
+                                $storage["@attributes"]["КоличествоНаСкладе"]
                         ));
                     }
                     else{
-                        $resCatalogStoreProduct->Update($existsRest["ID"],
-                            array("AMOUNT"=>$storage["@attributes"]["КоличествоНаСкладе"])
+                        $resCatalogStoreProduct->Update(
+                            $existsRest["ID"],
+                            array(
+                                "AMOUNT"=>$storage[
+                                    "@attributes"
+                                ]["КоличествоНаСкладе"]
+                            )
                         );
                     }
                 }
@@ -175,12 +214,18 @@
             $check_prop_value = array();
             foreach($productsIndexDetail[$XML_ID]["Картинка"] as $value){
                 $picturePath = mb_convert_encoding($value, "utf-8", "cp866");
-                $picturePath = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$picturePath;
+                $picturePath = 
+                    $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/"
+                        .$picturePath;
                 $headers = CFile::MakeFileArray($picturePath);
                 $check_prop_value[$headers["size"]] = $value; 
             }
             // Получаем размеры фотографий свойства MORE_PHOTO
-            $res = CIBlockElement::GetProperty($OFFERS_IBLOCK_ID, $offerId, array(),array("CODE"=>"MORE_PHOTO"));
+            $res = CIBlockElement::GetProperty(
+                $OFFERS_IBLOCK_ID, 
+                $offerId, 
+                array(),array("CODE"=>"MORE_PHOTO")
+            );
             while($photoItem = $res->GetNext()){
                 $res1 = CFile::GetByID($photoItem["VALUE"]);
                 $localFileInfo = $res1->GetNext(); 
@@ -195,12 +240,18 @@
             // меняем весь список изображений
             if(count($check_prop_value)){
                 // Удаляем все файлы
-                $res = CIBlockElement::GetProperty($OFFERS_IBLOCK_ID, $offerId, array(),array("CODE"=>"MORE_PHOTO"));
-                while($photoItem = $res->GetNext())CFile::Delete($photoItem["VALUE"]);
+                $res = CIBlockElement::GetProperty(
+                    $OFFERS_IBLOCK_ID, 
+                    $offerId, array(),array("CODE"=>"MORE_PHOTO")
+                );
+                while($photoItem = $res->GetNext())
+                    CFile::Delete($photoItem["VALUE"]);
                 // Делаем массив для добавления
                 foreach($productsIndexDetail[$XML_ID]["Картинка"] as $img){
                     $picturePath = mb_convert_encoding($img, "utf-8", "cp866");
-                    $picturePath = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$picturePath;
+                    $picturePath = 
+                        $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/"
+                            .$picturePath;
                     $arrFile[] = array(
                         "VALUE"=>CFile::MakeFileArray($picturePath),
                         "DESCRIPTION"=>""
@@ -214,9 +265,13 @@
             
         }
         
-        ////////////// Создаём несуществующие свойства спецпредложения //////////////////
+        ////////// Создаём несуществующие свойства спецпредложения ////////////
         if(isset($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"])){
-            foreach($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"] as $offerProp){
+            foreach(
+                $arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"] 
+                as 
+                $offerProp
+            ){
                 $nameLower  = mb_strtolower($offerProp["Наименование"]);
                 $nameTranslit = mb_strtoupper("PROP1C_".CUtil::translit(
                     $offerProp["Наименование"], "ru", 
@@ -240,12 +295,16 @@
                 );
                 if(!isset($ENUM_OFFERS[$nameLower])){
                     if($propId = $ibp->Add($arFields)){
-                        $res = CIBlockPropertyEnum::GetList(array(),array("PROPERTY_ID"=>$propId));
+                        $res = CIBlockPropertyEnum::GetList(array(),array(
+                            "PROPERTY_ID"=>$propId
+                        ));
                         $arrEnum = $res->GetNext();
                         $ENUM_OFFERS[$nameLower] = array(
                             "PROP_ID"   =>  $propId,
                             "CODE"      =>  $nameTranslit,
-                            "ITEMS"     =>  array($offerProp["Значение"]=>$arrEnum["ID"])
+                            "ITEMS"     =>  array(
+                                $offerProp["Значение"]=>$arrEnum["ID"]
+                            )
                         );
                     }
                     else{
@@ -264,7 +323,8 @@
                     );
                     
                     if($enumId = $ibpenum->Add($arrField)){
-                        $ENUM_OFFERS[$nameLower]["ITEMS"][$valueLower] = $enumId;
+                        $ENUM_OFFERS[$nameLower]["ITEMS"][$valueLower] = 
+                            $enumId;
                     }
                 }
 

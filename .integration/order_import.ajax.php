@@ -19,43 +19,44 @@
                 {$ordersFilename = $filename;break;}
         closedir($dd);
     }
-    
+   
+    // Если имя файла ZIP, распаковываем перед употреблением
     if(preg_match("#^.*\.zip$#",$ordersFilename)){
-	$zipFilename = $uploadDir.$ordersFilename;
-	if(!file_exists($zipFilename)){
-	    echo "failed\n$zipFilename is not exists";
-	    die;
-	}
+	    $zipFilename = $uploadDir.$ordersFilename;
+	    if(!file_exists($zipFilename)){
+	        echo "failed\n$zipFilename is not exists";
+	        die;
+	    }
 	
-	$zip = new ZipArchive();
-	if(!$zip->open($zipFilename)){
-	    echo "failed\n";
-	    echo "Cant open $zipFilename";
-	    die;
-	}
-	if(!$nZipFilesCount = $zip->numFiles){
-	    echo "failed\n";
-	    echo "Archive hasnt any files";
-	    die;
-	}
-	if($nZipFilesCount>1){
-	    echo "failed\n";
-	    echo "Archive has more than 1 file";
-	    die;
-	}
-	$arZipStat = $zip->statIndex (0);
-	if(!$arZipStat["name"] || !preg_match("#^.*\.xml$#",$arZipStat["name"])){
-	    echo "failed\n";
-	    echo "Archive hasnt xml file";
-	    die;
-	}
-	if(!$zip->extractTo($uploadDir)){
-	    echo "failed\n";
-	    echo "Cant extract archive";
-	    die;
-	}
-	
-	$ordersFilename = $arZipStat["name"];
+        $zip = new ZipArchive();
+        if(!$zip->open($zipFilename)){
+            echo "failed\n";
+            echo "Cant open $zipFilename";
+            die;
+        }
+        if(!$nZipFilesCount = $zip->numFiles){
+            echo "failed\n";
+            echo "Archive hasnt any files";
+            die;
+        }
+        if($nZipFilesCount>1){
+            echo "failed\n";
+            echo "Archive has more than 1 file";
+            die;
+        }
+        $arZipStat = $zip->statIndex (0);
+        if(!$arZipStat["name"] || !preg_match("#^.*\.xml$#",$arZipStat["name"])){
+            echo "failed\n";
+            echo "Archive hasnt xml file";
+            die;
+        }
+        if(!$zip->extractTo($uploadDir)){
+            echo "failed\n";
+            echo "Cant extract archive";
+            die;
+        }
+        
+        $ordersFilename = $arZipStat["name"];
     }
     
     CModule::IncludeModule("sale");
@@ -69,8 +70,11 @@
     $objIBlockElement = new CIBlockElement;
     $objPrice = new CPrice;
     
-    
-    if(file_exists($uploadDir.$offersFilename)){
+   
+    header("Content-type: text/plain; charset=UTF-8");
+//    echo file_get_contents($uploadDir.$ordersFilename);
+//    die;
+    if(file_exists($uploadDir.$ordersFilename)){
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
         $arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
@@ -105,7 +109,8 @@
             
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{7,11}$#",$arDocument["Телефон"])){
-                //echo "Incorrect phone ".$arDocument["Телефон"]."<br/>";
+                echo "Order_num=".$arDocument["Номер"].
+                        ": Incorrect phone ".print_r($arDocument["Телефон"],1)."\n";
                 $t1 = microtime(true);
                 continue;
             }
@@ -117,7 +122,9 @@
             $basketProducts = array();
             foreach($arDocument["Товары"]["Товар"] as $product){
                 if(!isset($product["Ид"])){
-                    //echo "Incorrect goods id=".$product["Ид"]."<br/>";
+                    echo "Order_num=".$arDocument["Номер"].
+                        ":  Incorrect product XML_ID
+                        ".print_r($product["Ид"],1)."\n";
                     continue;
                 }
                 
@@ -159,8 +166,8 @@
                         $id = $arCatalog["ID"];
                     }
                     elseif(!$id = $objIBlockElement->Add($arrFields)){
-                        echo "failed\n";
-                        echo "Cant create catalog item: ".__FILE__.":".__LINE__;
+                        echo "Order_num=".$arDocument["Номер"].
+                            ": Cant create catalog item ".print_r($arrFields, 1)."\n";
                         $t1 = microtime(true);
                         continue;
                     }
@@ -178,8 +185,8 @@
                     $arrFields["PRICE"] = $product["ЦенаЗаЕдиницу"];
                     $arrFields["XML_ID"] = $product["Ид"];
                     if(!$offerId = $objIBlockElement->Add($arrFields)){
-                        echo "failed\n";
-                        echo "cant create offer: ".__FILE__.":".__LINE__;
+                        echo "Order_num=".$arDocument["Номер"].
+                            ": Cant offer item ".print_r($arrFields, 1)."\n";
                         $t1 = microtime(true);
                         continue;
                     }
@@ -260,8 +267,8 @@
             if(!$existsUser){
                 // Если создание провалилось - сообщаем об ошибке
                 if(!$userId = $objUser->Add($userData)){
-                    echo "failed\n";
-                    echo "cant_create_user: ".__FILE__.":".__LINE__;
+                    echo "Order_num=".$arDocument["Номер"].
+                        ": Cant create user ".print_r($UserData, 1)."\n";
                     $t1 = microtime(true);
                     continue;
                 }
