@@ -43,7 +43,7 @@
     <meta name="keywords" content=""/>
 
     <?
-        //$APPLICATION->ShowHead();
+        $APPLICATION->ShowHead();
     ?>                                                                                                                                                           
     <?  
     //$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/colors.css");                                                                                                                       
@@ -71,6 +71,9 @@
 
   </head>
   <body>
+    <?
+	$APPLICATION->ShowPanel();
+    ?>
     <div class="ag-shop">
       <div class="ag-shop__sidebar">
         <!-- Sidebar {{{-->
