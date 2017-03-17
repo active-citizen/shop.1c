@@ -33,9 +33,13 @@ www/docs/*.jpg
 www/docs/manual/source/02_noauth_funcs/figures/*.pdf
 www/docs/manual/source/04_auth_funcs/figures/*.pdf
 
+# Игнорируем служебные пользовательские папки
 .bash_history
+.bash_logout
 .viminfo
-
+.local
+.profile
+.selected_editor
 
 # Игнорировать прочее
 *.swp
