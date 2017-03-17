@@ -73,6 +73,10 @@
 Помните, что пароль должен содержать большие и маленькие латинские буквы, цифры,
 знаки препинания и быть не короче 8 символов*
 
+- `sudo mv /etc/mysql/my.cnf /etc/mysql/my.cnf.origin` - переименовываем
+  системный конфиг
+- `sudo ln -s /home/bitrix/etc/my.cnf /etc/mysql/my.cnf`
+- `sudo service mysql restat`
 - `echo "CREATE DATABASE agshop_prod;"|sudo mysql -u root -p` - создаём БД под
   проект
 - `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@localhost IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p` - создаём пользователя БД
