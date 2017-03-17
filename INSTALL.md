@@ -4,105 +4,108 @@
 # Системные требования
 
 * Linux x86_64 (CentOS, RHEL, Debian)
-* Apache > 2.2
+* nginx > 1.8
 * PHP > 5.3 (php-fpm, cli)
     * short_open_tag = 0
     * mbstring.internal_encoding = UTF-8
     * mbstring.func_overload = 2
     * realpath_cache_size = 4096k
     * pcre.recursion_limit = 10000
+* php-fpm
 * MySQL > 5.6
     * sql_mode = ALLOW_INVALID_DATES
+* msmtp
 * git
-* Perl > 5.20
-    * модуль DBI
-    * модуль Config::IniFiles
-    * модуль Getopt::Long
-    * модуль Time::localtime
-    * модуль Email::Sender::Simple
-    * XML::Simple
 * wget
 * gzip
-
+* unzip
 
 # Установка
 
-- Перейдите в корневой каталог будущего сайта
-- Склонируйте репозиторий из github 
+- Убедиться, что установлено всё ПО, перечисленное в разделе *системные
+  требования*. Отсутствующее ПО установить
 
-    `git clone git@github.com:active-citizen/shop.1c.git .` 
-- Переключитесь на ветку **master**
+## Получение необходимого кода
+- `sudo adduser bitrix`
+- `sudo su bitrix`
+- `cd`
+- `rm -frv * .*`
+- `git clone https://github.com/active-citizen/shop.1c.git .`
+- `cd www`
+- `rm -frv local`
+- `wget -O bitrix.zip "http://www.1c-bitrix.ru/download/business_encode_php5.zip"`
+- `unzip -o bitrix.zip`
+- `rm bitrix.zip`
 
-    `git checkout master`
-- Перейдите в каталог **.install**
+## Настройка серверного ПО
 
-    `cd .install`
-- Создайте шаблонный файл конфигурации
+### Настройка nginx
+- `sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.origin`
+- `sudo ln -s /home/bitrix/etc/nginx/nginx.conf /etc/nginx/nginx.conf`
+- `sudo service nginx restart`
 
-    `./update.pl --show-template-config > config.ini`
-- Заполните все пустые параметры в **config.ini**
-- Параметр **branch** из секции **Git** нужно прописать в зависимости от того, из какой ветки нужно получить ПО
-    * **master** - для последнего вышедшего релиза
-    * **develop** - для версии разработчика
-- Запустите установщик 
-    `./update.pl --install-bitrix -sync`
-- Дождитесь завершения установки
+### Настройка php
+- `sudo mv /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.origin`
+- `sudo ln -s /home/bitrix/etc/php.ini /etc/php5/fpm/php.ini`
+- `sudo service php5-fpm restart`
 
-## Дополнительные опции установки
+### Настройка php-fpm
 
-- Подробный ход процесса установки можно наблюдать, включив режим подробного отчета
+- `sudo mv /etc/php5/fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf.origin`
+- `sudo ln -s /home/bitrix/etc/php-fpm.conf /etc/php5/fpm/php-fpm.conf`
+- `sudo service php5-fpm restart`
 
-    `./update.pl --install-bitrix -sync --verbose`
+### Настройка mysql
 
-- Запустить прохождение unit-тестов, оценку качества кода и выслать результаты на email, указанный в config.ini можно так
+*Рекомендуется имя базы, имя пользователя и пароль заменить на собственные.
+Помните, что пароль должен содержать большие и маленькие латинские буквы, цифры,
+знаки препинания и быть не короче 8 символов*
 
-    `./update.pl --install-bitrix -sync --unittests --send-report`
-    
-- Просмотреть все доступные опции
+- `echo "CREATE DATABASE agshop_prod;"|sudo mysql -u root -p`
+- `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@localhost IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p`
+- `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@127.0.0.1 IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p`
 
-    `./update.pl --help`
+### Настройка msmtp
+- `sudo cp /home/bitrix/etc/msmtprc /etc/msmtprc`
+- заполнить атрибуты подключение к SMTP-аккаунту
 
-    > --help                  помощь  
-    > --verbose               болтливый режим  
-    > --config=ФАЙЛ           задать конфиг для установки вручную (по умолчанию config.ini)  
-    > --show-template-config  показать файл конфигурации с опциями по умолчанию  
-    > --install-bitrix        установить Битрикс  
-    > --unittests             Выполнение автотестов  
-    > --sync                  Синхронизация кода и выполнение миграций между коммитами (если в удалённом репозитории появился новый коммит в заданной конфигом ветке)  
-    > --make-report           Создать отчет об обновлении в указанной папке  
-    > --send-report           Послать отчёт об обновлении на прописанные в конфиге адреса  
-    
-    
-# Обновление
 
-# Тонкая настройка web-хостинга для увеличения производительности
+## Установка Битрикс
 
-## Замена Apache на nginx
+- Далее
+- Принять условия лицинзии
+- Снять чекбокс "Я хочу зарегистрировать свою копию продукта, устанавливать решения из
+  Marketplace и получать обновления", поставить чекбокс "*Установить в кодировке
+  UTF-8*"
+- Убедиться в правильности похождения теста настроек
+- Установить параметры БД
+    - сервер *localhost*
+    - Пользователь БД - *существующий*
+    - Имя пользователя, пароль и БД из раздела "настройка mysql"
+    - Тип таблиц - *стандартный*
+    - Права на доступ к файлам - *644*
+    - Права на доступ к папкам - *755*
+- Дождаться установки ядра
+- Ввести параметры администратора сайта
+    - Логин
+    - Пароль
+    - email
+- Выбрать решение для установки *Интернет-магазин*
+- Выбрать любой шаблон, например *Адаптивный шаблон с горизонтальным меню*
+- Выбрать любую тему, например *Зеленый*
+- Снять чекбокс *установить мобильное приложение для интернет-магазина* и оставить
+  чекбокс *Добавить для группы "Все пользователи (в том числе неавторизованные)"
+  право на просмотр и на покупку по этому типу цен.*
+- Оставить чекбокс *Включить складской учет*, а полу "Когда резервировать товар на
+  складе" поставить в положение *при оплае заказа*
+- Информацию о магазине не изменять
+- Чекбоксы "тип плательщиков" - оставить только *физическое лицо*
+- Способы оплаты - не трогать
+- Способ доставки - оставить только "самовывоз"
+- Местоположение - "Россия и СНГ"
+- Дождаться установки решения
 
-## Настройка кеширования статических файлов в nginx
 
-## Настройка кеширования через memcached
 
-- Установите демон memcached доступным в вашем дистрибутиве Linuxменеджером пакетов
 
-    `apt-get install memcached`
-
-    `yum install memcached`
-    
-- Убедитесь, что memcached настроен тапим образос, что
-    - Прослушиваемый хост **127.0.0.1**
-    - Прослушиваемый порт 11211
-
-- запустите memcached
-
-    `servece memcached restart`
-    
-- Пропишите в конце файла **bitrix/php_interface/dbconn.php** следующее
-
-    > define("BX_CACHE_TYPE", "memcache");  
-    > define("BX_CACHE_SID", $_SERVER["DOCUMENT_ROOT"]."#01");  
-    > define("BX_MEMCACHE_HOST", "127.0.0.1");  
-    > define("BX_MEMCACHE_PORT", "11211");  
-    
-## Настройка MySQL
 
