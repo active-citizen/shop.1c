@@ -12,11 +12,12 @@ www/upload/1c_catalog/import_files/*
 # Игнорировать файл с паролями и ключами
 www/.integration/secret.inc.php
 
-*.swp
-*.swo
-*.zip
-*.log
-*.backup
+# Игнорировать файлы сессии
+tmp/sessions/*
+
+# Игнорировать лога
+logs/*
+
 
 # Игнорировать временные файл документации
 www/docs/*.toc
@@ -34,3 +35,10 @@ www/docs/manual/source/04_auth_funcs/figures/*.pdf
 
 .bash_history
 .viminfo
+
+
+# Игнорировать прочее
+*.swp
+*.swo
+*.zip
+*.backup
