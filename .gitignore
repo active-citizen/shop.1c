@@ -1,33 +1,37 @@
-bitrix/*
-!bitrix/.settings.php
-!bitrix/admin/1c_exchange.php
+# Игнорировать ядро битрикса
+www/bitrix/*
+!www/bitrix/.settings.php
+!www/bitrix/admin/1c_exchange.php
 
+# Игнорировать загруженные файлы
+www/upload/*
+!www/upload/1c_exchange*
+!www/upload/1c_catalog*
+www/upload/1c_exchange/logger/*
+www/upload/1c_catalog/import_files/*
 
-upload/*
-!upload/1c_exchange*
-!upload/1c_catalog*
-upload/1c_exchange/logger/*
-upload/1c_catalog/import_files/*
-
-.install/*
-.integration/secret.inc.php
+# Игнорировать файл с паролями и ключами
+www/.integration/secret.inc.php
 
 *.swp
 *.swo
 *.zip
-
-docs/*.toc
-docs/*.htoc
-docs/*.log
-docs/*.aux
-docs/*.haux
-docs/*.out
-docs/*.pdf
-docs/*.html
-docs/*.png
-docs/*.jpg
-docs/manual/source/02_noauth_funcs/figures/*.pdf
-docs/manual/source/04_auth_funcs/figures/*.pdf
+*.log
 *.backup
 
+# Игнорировать временные файл документации
+www/docs/*.toc
+www/docs/*.htoc
+www/docs/*.log
+www/docs/*.aux
+www/docs/*.haux
+www/docs/*.out
+www/docs/*.pdf
+www/docs/*.html
+www/docs/*.png
+www/docs/*.jpg
+www/docs/manual/source/02_noauth_funcs/figures/*.pdf
+www/docs/manual/source/04_auth_funcs/figures/*.pdf
+
 .bash_history
+.viminfo
