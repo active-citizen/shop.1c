@@ -10,10 +10,10 @@
 package Report;
 
 use Time::localtime;
-use Email::Sender::Simple qw(sendmail);
-use Email::Sender::Transport::SMTP;
-use Email::Simple;
-use Email::Simple::Creator;
+#use Email::Sender::Simple qw(sendmail);
+#use Email::Sender::Transport::SMTP;
+#use Email::Simple;
+#use Email::Simple::Creator;
 
 use base Common;
 

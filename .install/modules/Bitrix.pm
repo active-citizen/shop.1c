@@ -45,7 +45,6 @@ use base Common;
         $self->unpack();
         $self->checkDist();
         $self->clearDatabase();
-        `chmod -R 777 /home/r-asian/local/www/shop.ag.mos.ru.local/`;
         $self->installFromBrowser();
     }
     
