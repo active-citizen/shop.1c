@@ -26,34 +26,46 @@
   требования*. Отсутствующее ПО установить
 
 ## Получение необходимого кода
-- `sudo adduser bitrix`
-- `sudo su bitrix`
-- `cd`
-- `rm -frv * .*`
-- `git clone https://github.com/active-citizen/shop.1c.git .`
-- `cd www`
-- `rm -frv local`
-- `wget -O bitrix.zip "http://www.1c-bitrix.ru/download/business_encode_php5.zip"`
-- `unzip -o bitrix.zip`
-- `rm bitrix.zip`
+- `sudo adduser bitrix` - создаём нового пользователя;
+- `sudo su bitrix`- заходим от лица нового пользователя;
+- `cd` - переходим в домашний каталог /home/bitrix
+- `rm -frv * .*`- опустошаем домашний каталог;
+- `git clone https://github.com/active-citizen/shop.1c.git .`- клонируем в
+  домашний каталог git-репозиторий проекта
+- `cd www` - переходим в корневой каталог сайта;
+- `rm -frv local`- удаляем каталог проекта (если этого не сделать, то при
+  установки файлы из него переопределят системные и будут лезть ошибки)
+- `wget -O bitrix.zip "http://www.1c-bitrix.ru/download/business_encode_php5.zip"`- скачиваем
+  дистрибутив Битрикс-бизнес
+- `unzip -o bitrix.zip` - распаковываем дистрибутив установщик с заменой
+  существующих файлов;
+- `rm bitrix.zip` - удаляем дистрибутив Битрикса.
 
 ## Настройка серверного ПО
 
+Системные файлы настройки ПО могут располагаться в других местах в зависимости
+от дистрибутива. Данный раздел описан для Debian Linux.
+
 ### Настройка nginx
-- `sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.origin`
-- `sudo ln -s /home/bitrix/etc/nginx/nginx.conf /etc/nginx/nginx.conf`
-- `sudo service nginx restart`
+- `sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.origin`- переименовываем
+  системный конфиг;
+- `sudo ln -s /home/bitrix/etc/nginx/nginx.conf /etc/nginx/nginx.conf`- делаем
+  символическую ссылку с системного конфига на конфиг в проекте;
+- `sudo service nginx restart` - перезапускаем nginx;
 
 ### Настройка php
-- `sudo mv /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.origin`
-- `sudo ln -s /home/bitrix/etc/php.ini /etc/php5/fpm/php.ini`
-- `sudo service php5-fpm restart`
+- `sudo mv /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.origin`- переименовываем
+  системный конфиг;
+- `sudo ln -s /home/bitrix/etc/php.ini /etc/php5/fpm/php.ini`- делаем
+  символическую ссылку с системного конфига на конфиг в проекте;
 
 ### Настройка php-fpm
 
-- `sudo mv /etc/php5/fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf.origin`
-- `sudo ln -s /home/bitrix/etc/php-fpm.conf /etc/php5/fpm/php-fpm.conf`
-- `sudo service php5-fpm restart`
+- `sudo mv /etc/php5/fpm/php-fpm.conf /etc/php5/fpm/php-fpm.conf.origin`- переименовываем
+  системный конфиг;
+- `sudo ln -s /home/bitrix/etc/php-fpm.conf /etc/php5/fpm/php-fpm.conf`- делаем
+  символическую ссылку с системного конфига на конфиг в проекте;
+- `sudo service php5-fpm restart` - перезапускаем php-fpm
 
 ### Настройка mysql
 
@@ -61,13 +73,16 @@
 Помните, что пароль должен содержать большие и маленькие латинские буквы, цифры,
 знаки препинания и быть не короче 8 символов*
 
-- `echo "CREATE DATABASE agshop_prod;"|sudo mysql -u root -p`
-- `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@localhost IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p`
-- `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@127.0.0.1 IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p`
+- `echo "CREATE DATABASE agshop_prod;"|sudo mysql -u root -p` - создаём БД под
+  проект
+- `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@localhost IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p` - создаём пользователя БД
+  и даём ему пароль и права на БД.
+- `echo "GRANT ALL PRIVILEGES ON agshop_prod.* TO agshop_user@127.0.0.1 IDENTIFIED BY 'd5Rt(s0Mxq';"|sudo mysql -u root -p` - то же самое для другого
+  имени хоста
 
 ### Настройка msmtp
-- `sudo cp /home/bitrix/etc/msmtprc /etc/msmtprc`
-- заполнить атрибуты подключение к SMTP-аккаунту
+- `sudo cp /home/bitrix/etc/msmtprc /etc/msmtprc` - копируем шаблон конфига в системное место
+- заполняем атрибуты подключение к SMTP-аккаунту
 
 
 ## Установка Битрикс
