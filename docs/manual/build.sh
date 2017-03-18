@@ -1,5 +1,5 @@
 ###############################################################
-# Скрипт сборки документации. Потребуется
+#   Script for building project documentation. Requires:
 # - texlive (LaTeX)
 # - hevea
 # - dvips
@@ -35,7 +35,6 @@ find .|grep '.ist$'|xargs rm -f
 find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
-evince ../../ag_shop_manual.pdf
-#xpdf ../../ag_shop_manual.pdf
+xpdf ../../ag_shop_manual.pdf
 
 
