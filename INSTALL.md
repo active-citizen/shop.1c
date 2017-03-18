@@ -6,6 +6,12 @@
 * Linux x86_64 (CentOS, RHEL, Debian)
 * nginx > 1.8
 * PHP > 5.3
+    * php-memcache
+    * php-xml
+    * php-gd
+    * php-curl
+    * php-mysqli
+
 * php-fpm
 * MySQL > 5.6
 * msmtp
@@ -60,6 +66,17 @@
 - `sudo ln -s /home/bitrix/etc/php-fpm.conf /etc/php5/fpm/php-fpm.conf`- делаем
   символическую ссылку с системного конфига на конфиг в проекте;
 - `sudo service php5-fpm restart` - перезапускаем php-fpm
+
+### Настройка memcached
+
+- `sudo mv /etc/memcached.conf /etc/memcached.origin`- переименовываем
+  системный конфиг;
+- `sudo ln -s /home/bitrix/etc/memcached.conf /etc/memcached.conf`- делаем
+  символическую ссылку с системного конфига на конфиг в проекте;
+- `sudo service memcached restart` - перезапускаем memcached
+
+
+
 
 ### Настройка mysql
 
