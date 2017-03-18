@@ -130,6 +130,16 @@
 
 - `cd ~/www` - перейти в корневую папку сайта
 - `git checkout -- .`- восстановить удалённые файлы из репозитория
+- `cd` - вернуться к домашний каталог пользователя
+- `cp -f etc/secret.inc.php www/.integration/secret.inc.php` - копировать
+   шаблонный файл ключей и паролей
+- `vim www/.integration/secret.inc.php` - отредактировать, внеся актуальные
+  ключи и пароли
+- `cp -f etc/settings.inc.php www/local/php_interface/settings.inc.php` -
+  копировать шаблонный файл настроек
+- `vim www/local/php_interface/settings.inc.php` - отредактировать, внеся
+  актуальные настройки
+- Войти в браузере в */local/.migrations/* и авторизоваться как *admin*
 
 
 
