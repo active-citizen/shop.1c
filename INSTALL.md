@@ -5,15 +5,9 @@
 
 * Linux x86_64 (CentOS, RHEL, Debian)
 * nginx > 1.8
-* PHP > 5.3 (php-fpm, cli)
-    * short_open_tag = 0
-    * mbstring.internal_encoding = UTF-8
-    * mbstring.func_overload = 2
-    * realpath_cache_size = 4096k
-    * pcre.recursion_limit = 10000
+* PHP > 5.3
 * php-fpm
 * MySQL > 5.6
-    * sql_mode = ALLOW_INVALID_DATES
 * msmtp
 * git
 * wget
