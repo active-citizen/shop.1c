@@ -18,7 +18,11 @@ www/local/php_interface/settings.inc.php
 tmp/sessions/*
 
 # Игнорировать логи
-logs/*
+logs/*.log
+# Игнорировать логи SMTP
+logs/maildir/[0-9]*
+logs/smtplog/[0-9]*
+
 
 # Игнорировать временные файл документации
 www/docs/*.toc
