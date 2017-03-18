@@ -2,10 +2,8 @@
 
     // Библиотаке для склонения баллов, и дней
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
-    // Библиотека для отправки почты через SMTP
-    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/common.php");
     // Ключи токены и доступы
-    require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+    include($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
         
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
@@ -129,7 +127,7 @@
 
         $sMailText = $html;
         
-        custom_mail(
+        mail(
             $sTo, 
             $sSubject, 
             $sMailTextHeaders
@@ -198,7 +196,7 @@
             $sMailAttach = $sHTML;
         }
         
-        custom_mail(
+        mail(
             $sTo, 
             $sSubject, 
             $sMailTextHeaders

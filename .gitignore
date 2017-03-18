@@ -15,9 +15,8 @@ www/.integration/secret.inc.php
 # Игнорировать файлы сессии
 tmp/sessions/*
 
-# Игнорировать лога
+# Игнорировать логи
 logs/*
-
 
 # Игнорировать временные файл документации
 www/docs/*.toc
@@ -43,9 +42,13 @@ www/docs/manual/source/04_auth_funcs/figures/*.pdf
 .cache
 .config
 
-
 # Игнорировать прочее
 *.swp
 *.swo
 *.zip
+*.tar
+*.gz
+*.tgz
+*.tbz
+*.bz2
 *.backup
