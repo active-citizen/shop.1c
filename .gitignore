@@ -11,6 +11,8 @@ www/upload/1c_catalog/import_files/*
 
 # Игнорировать файл с паролями и ключами
 www/.integration/secret.inc.php
+# Игнорировать конфиг
+www/local/php_interface/settings.inc.php
 
 # Игнорировать файлы сессии
 tmp/sessions/*
