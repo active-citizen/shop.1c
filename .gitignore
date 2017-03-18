@@ -40,6 +40,9 @@ www/docs/manual/source/04_auth_funcs/figures/*.pdf
 .local
 .profile
 .selected_editor
+.cache
+.config
+
 
 # Игнорировать прочее
 *.swp

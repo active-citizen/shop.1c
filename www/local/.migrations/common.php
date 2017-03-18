@@ -11,7 +11,8 @@ class Migration{
         define ('NOT_CHECK_PERMISSIONS', true);
         define ('NO_AGENT_CHECK', true);
         $GLOBALS['DBType'] = 'mysql';
-        $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__ . '/..' );
+        $_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__ . '/../..' );
+        $_SERVER["HTTP_HOST"] = 'localhost';
         $_SERVER['REQUEST_URI'] = "/";
         require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
 
