@@ -52,6 +52,11 @@ docs/manual/source/04_auth_funcs/figures/*.pdf
 .cache
 .config
 
+# Игнорировать конфиги http-авторизации
+etc/nginx/auth/*.conf
+!etc/nginx/auth/default.conf
+etc/nginx/auth/*.passwd
+
 # Игнорировать прочее
 *.swp
 *.swo
