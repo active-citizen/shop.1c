@@ -20,6 +20,8 @@ www/local/php_interface/settings.inc.php
 
 # Игнорировать файлы сессии
 tmp/sessions/*
+# Да и не сессии тоже
+tmp/*
 
 # Игнорировать логи
 logs/*.log
@@ -51,6 +53,7 @@ docs/manual/source/04_auth_funcs/figures/*.pdf
 .selected_editor
 .cache
 .config
+.mc
 
 # Игнорировать конфиги http-авторизации
 etc/nginx/auth/*.conf
