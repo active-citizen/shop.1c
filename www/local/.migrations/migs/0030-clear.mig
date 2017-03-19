@@ -1,6 +1,6 @@
 <?php
 
-$ROOT_DIR = realpath(dirname(__FILE__)."/../..");
+$ROOT_DIR = $_SERVER["DOCUMENT_ROOT"]; 
 
 $arFiles = array(
 '/include/about.php',
