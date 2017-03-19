@@ -8,7 +8,7 @@
             if($filename =='.' || $filename =='..')continue;
             $arMigs[] = $filename;
         }
-        sort($arMigs);
+        rsort($arMigs);
     ?>
     <div style="border-bottom: 1px #AAA solid;">
         <label><input type="checkbox" value="" 
