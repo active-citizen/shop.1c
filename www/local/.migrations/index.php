@@ -6,6 +6,8 @@
         $arMigs = array();
         while($filename = readdir($resDir)){
             if($filename =='.' || $filename =='..')continue;
+            if(!preg_match("#\.mig$#",$filename))continue;
+            if(is_dir("migs/$filename"))continue;
             $arMigs[] = $filename;
         }
         rsort($arMigs);
