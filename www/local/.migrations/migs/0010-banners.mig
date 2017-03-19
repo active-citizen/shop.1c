@@ -1,5 +1,4 @@
 <?php
-    require 'common.php';
     
     /**
      * Добавление шаблона к основному сайту
@@ -130,7 +129,8 @@
                                             array(
                                                 "name" => md5($prop_value).".jpg",
                                                 "size" => $stat['size'],
-                                                "tmp_name" => $prop_value,
+                                                "tmp_name" =>
+                                                realpath(diename(__FILE__))."/".$prop_value,
                                                 "type" => "image/jpg",
                                                 "old_file" => 0,
                                                 "del" => "N",
