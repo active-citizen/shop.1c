@@ -147,7 +147,7 @@
 - Дождаться установки решения
 
 
-## Разворачивание проекта
+## Разворачивание магазина
 
 Выполнить из под пользователя bitrix
 
@@ -164,6 +164,21 @@
   актуальные настройки
 - Войти в браузере в */local/.migrations/* и авторизоваться как *admin*
 - Выделить все элементы и запустить процесс выполнения скриптов миграции
+
+##Разворачивание ККБ
+
+Рекомендуется все указанные пароли заменить на собственные
+
+- `echo "CREATE DATABASE scc;"|sudo mysql -u root -p` - создаём БД под
+  ККБ
+- `echo "GRANT ALL PRIVILEGES ON scc.* TO scc@localhost IDENTIFIED BY 'AKw5vxH_s';"|sudo mysql -u root -p` - создаём пользователя БД
+  и даём ему пароль и права на БД.
+- `echo "GRANT ALL PRIVILEGES ON scc.* TO scc@127.0.0.1 IDENTIFIED BY 'AKw5vxH_s';"|sudo mysql -u root -p` - то же самое для другого
+  имени хоста
+- `cp www/api/include/config.tmpl.php www/api/include/config.php` - скопировать
+  шаблонный конфиг БД
+- заполнить файл актуальными доступами к БД ККБ
+
 
 
 

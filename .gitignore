@@ -60,6 +60,9 @@ etc/nginx/auth/*.conf
 !etc/nginx/auth/default.conf
 etc/nginx/auth/*.passwd
 
+#Игнорировать конфиг ККБ
+www/api/include/config.php
+
 # Игнорировать прочее
 *.swp
 *.swo
