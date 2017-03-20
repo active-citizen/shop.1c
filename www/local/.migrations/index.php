@@ -2,7 +2,8 @@
 <h1>Исполнение файлов миграций</h1>
 <div class="migrations-list">
     <? 
-        $resDir = opendir("migs");
+	    $sBranch = isset($_REQUEST["branch"])?$_REQUEST["branch"]:"";
+        $resDir = opendir("migs/$sBranch");
         $arMigs = array();
         while($filename = readdir($resDir)){
             if($filename =='.' || $filename =='..')continue;
@@ -11,10 +12,27 @@
             $arMigs[] = $filename;
         }
         rsort($arMigs);
+
+        $resDir = opendir("migs");
+        $arBranches = array();
+        while($filename = readdir($resDir)){
+            if($filename =='.' || $filename =='..')continue;
+            if(!is_dir("migs/$filename"))continue;
+            $arBranches[] = $filename;
+        }
+        sort($arBranches);
     ?>
     <div style="border-bottom: 1px #AAA solid;">
         <label><input type="checkbox" value="" 
         onclick="return mig_check_all(this.checked)"> Все</label>
+	<form action=""  method="get" class="mig-branch" name="migbranches">
+	    <select name="branch" onchange="document.forms.migbranches.submit();">
+		    <option value="">--ветка--</option>
+            <? foreach($arBranches as $sB):?>
+            <option <? if($sBranch==$sB){?>selected<? }?>><?= $sB?></option>
+            <? endforeach?>
+	    </select>
+	</form>
         <input type="button" value="Запустить" id="mig-run-button"
         onclick="runMigs();">
         <input type="button" value="Остановить" style="display:none;"
@@ -23,7 +41,7 @@
     <? foreach($arMigs as $sMigFilename):?>
     <div class="migration-filename">
         <label>
-            <input type="checkbox" value="<?= $sMigFilename ?>"> 
+            <input type="checkbox" value="<? if($sBranch)echo "$sBranch/"?><?= $sMigFilename ?>"> 
             <?= $sMigFilename ?>
        </label>
        <span class="mig-result"></span>
@@ -128,7 +146,9 @@ function mig_check_all(checked){
     background-color: #FEE;
     margin: 5px;
 }
-
+.mig-branch{
+    display: inline;
+}
 </style>
 
 <? include($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php")?>
