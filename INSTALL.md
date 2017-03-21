@@ -33,7 +33,7 @@
 - `git clone https://github.com/active-citizen/shop.1c.git .`- клонируем в
   домашний каталог git-репозиторий проекта
 - `cd www` - переходим в корневой каталог сайта;
-- `rm -frv * .* local`- чистим корневую папку сайта (если этого не сделать, то при
+- `rm -frv * .*`- чистим папку корневую папку сайта (если этого не сделать, то при
   установке будут проблемы) 
 - `wget -O bitrix.zip "http://www.1c-bitrix.ru/download/business_encode_php5.zip"`- скачиваем
   дистрибутив Битрикс-бизнес
@@ -59,9 +59,10 @@
 потестировать его приватно
 - `sudo su bitrix` - заходим от имени пользователя bitrix
 - `cd` - переходим в домашний каталог пользователя
-- `cp -f etc/nginx/auth.conf.dist etc/nginx/auth.conf` копируем шаблонный конфиг
+- `cp -f etc/nginx/auth.conf.dist etc/nginx/auth/auth.conf` копируем шаблонный конфиг
   включения htt-авторизации
-- `htpasswd -c etc/nginx/auth.passwd shop` - формируем файл с паролями
+- `htpasswd -c etc/nginx/auth/auth.passwd shop` - формируем файл с паролями
+- `chmod 600 etc/nginx/auth/auth.passwd` - устанавливаем права на парольный файл
 - `sudo service nginx restart` - перезапускаем nginx;
 
 ### Настройка php
@@ -82,9 +83,16 @@
 
 - `sudo mv /etc/memcached.conf /etc/memcached.origin`- переименовываем
   системный конфиг;
-- `sudo ln -s /home/bitrix/etc/memcached.conf /etc/memcached.conf`- делаем
-  символическую ссылку с системного конфига на конфиг в проекте;
+- `sudo ln -s /home/bitrix/etc/memcached.(contos|debian).conf /etc/memcached.conf`- делаем
+  символическую ссылку с системного конфига на конфиг в проекте. Имя файла на который делаем 
+  символическую ссылку зависит от ОС сервера;
 - `sudo service memcached restart` - перезапускаем memcached
+- Проверяем корректность запуска memcached
+```
+$sudo ps aux|grep memcached
+bitrix    4073  0.0  0.0 356028  5364 ?        Ssl  13:23   0:00 memcached -d -p 11211 -u bitrix -m 2048 -c 1024 -P /var/run/memcached/memcached.pid -d -t 32 -m 256 -s /home/bitrix/tmp/memcached.sock
+root      4120  0.0  0.0 103332   892 pts/2    S+   13:23   0:00 grep memcached
+```
 
 
 
@@ -138,7 +146,7 @@
   чекбокс *Добавить для группы "Все пользователи (в том числе неавторизованные)"
   право на просмотр и на покупку по этому типу цен.*
 - Оставить чекбокс *Включить складской учет*, а полу "Когда резервировать товар на
-  складе" поставить в положение *при оплае заказа*
+  складе" поставить в положение *при оформлении заказа*
 - Информацию о магазине не изменять
 - Чекбоксы "тип плательщиков" - оставить только *физическое лицо*
 - Способы оплаты - не трогать

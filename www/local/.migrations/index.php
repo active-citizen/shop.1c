@@ -11,7 +11,7 @@
             if(is_dir("migs/$filename"))continue;
             $arMigs[] = $filename;
         }
-        rsort($arMigs);
+        sort($arMigs);
 
         $resDir = opendir("migs");
         $arBranches = array();
@@ -20,7 +20,7 @@
             if(!is_dir("migs/$filename"))continue;
             $arBranches[] = $filename;
         }
-        sort($arBranches);
+        rsort($arBranches);
     ?>
     <div style="border-bottom: 1px #AAA solid;">
         <label><input type="checkbox" value="" 

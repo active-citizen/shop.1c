@@ -11,7 +11,11 @@
     }
 
     $filename = isset($_POST["filename"]) ?  $_POST["filename"] : "" ;
-    if(!preg_match("#^[\.]?[\d\w\-]+/[\d\.]+\-[\-\w\d]+\.mig$#",$filename)){
+    if(
+        !preg_match("#^[\.]?[\d\w\-]+/[\d\.]+\-[\-\w\d]+\.mig$#",$filename)
+        &&
+        !preg_match("#^[\d\.]+\-[\-\w\d]+\.mig$#",$filename)
+    ){
         echo "Migration filename invalid";
         exit();
     }
