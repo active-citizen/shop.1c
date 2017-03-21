@@ -16,11 +16,17 @@ Score convertion controller
 
 `
 {
+
     "method":"auth",
+
     "args":{
+
         "login":"79277374026",
+
         "password":"89109"
+
     }
+
 }
  `
 
