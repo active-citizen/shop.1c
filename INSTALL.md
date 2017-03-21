@@ -1,11 +1,17 @@
 Установка магазина поощрений "Активный гражданин"
 ===
 
-# Системные требования
+# Требования к платформе
+
+## Аппаратное обеспечение
+
+FIXME
+
+## Программное обеспечение
 
 * Linux x86_64 (CentOS, RHEL, Debian)
-* nginx > 1.8
-* PHP > 5.3
+* nginx >= 1.8
+* PHP >= 5.3
     * php-memcache
     * php-memcached
     * php-xml
@@ -14,12 +20,13 @@
     * php-mysqli
     * php-opcache
 * php-fpm
-* MySQL > 5.6
+* memcached
+* MySQL >= 5.6
 * msmtp
 * git
-* wget
 * gzip
 * unzip
+* wget
 
 # Установка
 
