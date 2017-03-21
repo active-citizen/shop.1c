@@ -14,21 +14,15 @@ Score convertion controller
 ### auth. Авторизация.
 #### Запрос
 
-`
+```
 {
-
     "method":"auth",
-
     "args":{
-
         "login":"79277374026",
-
         "password":"89109"
-
     }
-
 }
- `
+ ```
 
 #### Ответ
 ### points.  Получение истории баллов
