@@ -14,5 +14,7 @@ Score convertion controller
 ### auth. Авторизация.
 ### points.  Получение истории баллов
 ### transaction. Начисление/списание баллов
+#### Запрос
+#### Ответ
 
 
