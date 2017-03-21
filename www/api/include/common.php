@@ -1,7 +1,8 @@
 <?php
 
-    $_SERVER["HTTP_HOST"] = 'bcc-dev.ag.mos.ru';
-    
+    $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/../..");
+    if(!isset($_SERVER["REQUEST_URI"]))$_SERVER["REQUEST_URI"] = '/';
+
     if(isset($_SERVER["HTTP_HOST"])){
     }
     elseif(isset($argv[1])){
@@ -12,10 +13,14 @@
         die;
     }
 
+    require($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/settings.inc.php");
+    require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+
     define("INC_PATH",realpath(dirname(__FILE__))."/");
     // Подключение общего конфига
     if(!file_exists(INC_PATH."config.php")){
-        echo "Config file not found. Create include/config.php from include/config.tmpl.php";
+        echo "Config file not found. 
+            Create include/config.php from include/config.tmpl.php";
         die;
     }
     else{
@@ -35,10 +40,7 @@
     // Соединяемся с БД
     require_once(INC_PATH."classes/wirix/db.class.php");
 
-    $GLOBALS["CONF"] = array();
-    foreach($conf as $sServerName=>$arServerConf)
-        if($sServerName==$_SERVER["HTTP_HOST"])
-            $GLOBALS["CONF"] = $arServerConf;
+    $GLOBALS["CONF"] = $conf;
 
     if(!isset($GLOBALS["CONF"]["db_host"]))die("Database host undefined");
     if(!isset($GLOBALS["CONF"]["db_user"]))die("Database user undefined");

@@ -24,7 +24,7 @@
 
     class curlTool{
         
-        var $timeout = 5;
+        var $timeout = 15;
         
         function get($url){
             $ch = curl_init();

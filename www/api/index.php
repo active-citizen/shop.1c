@@ -3,18 +3,16 @@
 
     $CSession = new CSession;
 
-    /*
     $_POST["request"] = 
         '
         {
             "method":"auth",
             "args":{
-                "login":"79277374026",
-                "password":"89109"
+                "login":"79277063223",
+                "password":"***********"
             }
         }
         ';
-    */
 
     /*
     $_POST["request"] = 

@@ -19,12 +19,28 @@ Score convertion controller
     "method":"auth",
     "args":{
         "login":"79277374026",
-        "password":"89109"
+        "password":"*************"
     }
 }
  ```
 
 #### Ответ
+
+```
+{
+    "errorCode":0,
+    "errorMessage":"",
+    "result":{
+        "session_id":"********************"
+    }
+}
+```
+
+*session_id* после этого используется в других методах для авторизации запроса
+
+
+
+
 ### points.  Получение истории баллов
 ### transaction. Начисление/списание баллов
 #### Запрос

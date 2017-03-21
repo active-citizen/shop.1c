@@ -1,8 +1,6 @@
 <?php
     require_once(realpath(dirname(__FILE__)."/../common.php"));
-
     require_once(realpath(dirname(__FILE__)."/wirix/db.class.php"));
-
 
     class CMigration{
 
