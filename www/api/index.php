@@ -3,6 +3,7 @@
 
     $CSession = new CSession;
 
+    /*
     $_POST["request"] = 
         '
         {
@@ -13,6 +14,7 @@
             }
         }
         ';
+    */
 
     /*
     $_POST["request"] = 
@@ -28,18 +30,16 @@
         }
         ';
     */
-    /*
     $_POST["request"] = 
         '
         {
                     "method":"points",
                     "args":{
                     },
-                    "session_id":"2780177665c8bb857e5c8049ecbf2637"
+                    "session_id":""
                 }        
         ';
     
-    */
     
     $sLang = 'en';
 
