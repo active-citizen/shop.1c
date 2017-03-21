@@ -177,7 +177,14 @@
   имени хоста
 - `cp www/api/include/config.tmpl.php www/api/include/config.php` - скопировать
   шаблонный конфиг БД
-- заполнить файл актуальными доступами к БД ККБ
+- `vim www/api/include/config.php` заполнить файл актуальными доступами к БД 
+    ККБ
+- ```
+$php www/api/migrations/000-sessions.mig.php dev.shop.ag.mos.ru
+$php www/api/migrations/001-users.mig.php dev.shop.ag.mos.ru
+$php www/api/migrations/002-apptications.mig.php dev.shop.ag.mos.ru
+$php www/api/migrations/003-transacts-brief.mig.php dev.shop.ag.mos.ru
+```
 
 
 
