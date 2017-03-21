@@ -179,12 +179,13 @@
   шаблонный конфиг БД
 - `vim www/api/include/config.php` заполнить файл актуальными доступами к БД 
     ККБ
-- ```
-$php www/api/migrations/000-sessions.mig.php dev.shop.ag.mos.ru
-$php www/api/migrations/001-users.mig.php dev.shop.ag.mos.ru
-$php www/api/migrations/002-apptications.mig.php dev.shop.ag.mos.ru
-$php www/api/migrations/003-transacts-brief.mig.php dev.shop.ag.mos.ru
-```
+- Выполнить скрипты миграции
+- `php www/api/migrations/000-sessions.mig.php dev.shop.ag.mos.ru`
+- `php www/api/migrations/001-users.mig.php dev.shop.ag.mos.ru`
+- `php www/api/migrations/002-apptications.mig.php dev.shop.ag.mos.ru`
+- `php www/api/migrations/003-transacts-brief.mig.php dev.shop.ag.mos.ru`
+- dev.shop.ag.mos.ru в данном случае - это домен, для которого мы разворачивает
+  ККБ
 
 
 
