@@ -2,51 +2,13 @@
     require("include/common.php");
 
     $CSession = new CSession;
-
-    /*
-    $_POST["request"] = 
-        '
-        {
-            "method":"auth",
-            "args":{
-                "login":"79277063223",
-                "password":"***********"
-            }
-        }
-        ';
-    */
-
-    /*
-    $_POST["request"] = 
-        '
-        {
-            "method":"transaction",
-            "args":{
-                "appId":"1",
-                "points":"10",
-                "debit": "-1"
-            },
-            "session_id":"1570274ff3645af9512f6b92bfcff780"
-        }
-        ';
-    */
-    $_POST["request"] = 
-        '
-        {
-                    "method":"points",
-                    "args":{
-                    },
-                    "session_id":""
-                }        
-        ';
-    
-    
     $sLang = 'en';
 
 
     $objRequest = json_decode(isset($_POST["request"])?$_POST["request"]:"{}");
     if(!$objRequest)$objRequest = json_decode("{}");
-    if($objRequest && !property_exists($objRequest, "args"))$objRequest->args = "";
+    if($objRequest && !property_exists($objRequest, "args"))
+        $objRequest->args = "";
     
     if(!isset($_POST["request"]) || !$_POST["request"]){
         echo json_encode(array(
@@ -72,7 +34,9 @@
     elseif( !$sMethodClassName = CMethod::exists($objRequest->method) ){
         echo json_encode(array(
             "errorCode" => CAll::ERROR_METHOD_NOT_EXISTS,
-            "errorMessage" => CAll::getErrorMessage(CAll::ERROR_METHOD_NOT_EXISTS)
+            "errorMessage" => CAll::getErrorMessage(
+                CAll::ERROR_METHOD_NOT_EXISTS
+            )
         ));
         exit;
     }
@@ -82,16 +46,21 @@
     ){
         echo json_encode(array(
             "errorCode" => CAll::ERROR_SESSION_INCORRECT,
-            "errorMessage" => CAll::getErrorMessage(CAll::ERROR_SESSION_INCORRECT)
+            "errorMessage" => CAll::getErrorMessage(
+                CAll::ERROR_SESSION_INCORRECT
+            )
         ));
         exit;
     }
     elseif(
-        $objRequest->method!='auth' && !property_exists($objRequest,"session_id")
+        $objRequest->method!='auth' 
+        && !property_exists($objRequest,"session_id")
     ){
         echo json_encode(array(
             "errorCode" => CAll::ERROR_SESSION_NOT_DEFINED,
-            "errorMessage" => CAll::getErrorMessage(CAll::ERROR_SESSION_NOT_DEFINED)
+            "errorMessage" => CAll::getErrorMessage(
+                CAll::ERROR_SESSION_NOT_DEFINED
+            )
         ));
         exit;
     }
@@ -108,7 +77,10 @@
         ));
         exit;
     }
-    elseif(!$objMethod = new $sMethodClassName($sLang, $objRequest->method=='auth'?"":$objRequest->session_id)){
+    elseif(!$objMethod = new $sMethodClassName(
+        $sLang, 
+        $objRequest->method=='auth'?"":$objRequest->session_id
+    )){
         echo json_encode(array(
             "errorCode" => CAll::ERROR_INIT_METHOD,
             "errorMessage" => CAll::getErrorMessage(CAll::ERROR_INIT_METHOD)
@@ -149,7 +121,9 @@
     else{
         echo json_encode(array(
             "errorCode" =>  CAll::ERROR_EXECUTE_UNKNOWN, 
-            "errorMessage" =>  CAll::getErrorMessage(CAll::ERROR_EXECUTE_UNKNOWN) 
+            "errorMessage" =>  CAll::getErrorMessage(
+                CAll::ERROR_EXECUTE_UNKNOWN
+            ) 
         ));
         exit;
     }
