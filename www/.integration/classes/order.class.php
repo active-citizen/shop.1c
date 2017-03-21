@@ -471,6 +471,7 @@
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curl.class.php");
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
             require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+            require($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/setting.inc.php");
 
             $contour = CONTOUR;
             
@@ -478,7 +479,7 @@
             // Загружаем историю начисления баллов
             $session_id = $bxUser->getEMPSessionId($login);
             $curl = new curlTool;
-            $url = $AG_KEYS[$contour]["bcc_url"];
+            $url = BCC_URL;;
             $data = "request=".urlencode('
                 {
                     "method":"transaction",

@@ -33,9 +33,10 @@
             // Метод
             $mode = 'cbc';
             // Ключ шифрования
-            $key = $AG_KEYS[$contour]["key"];
+            $key = $AG_KEYS[CONTOUR]["key"];
             // Зашифрованная сессия из скрипта
             $encData = $args["session_id"];
+            
         
             $module = mcrypt_module_open($method,'',$mode,'');
         
@@ -56,10 +57,7 @@
             mcrypt_module_close($module);
             $session_id = rtrim($decrypted,"\0");
             
-            if($contour=='uat')
-                $args["token"] = $EMP_TOKENS["uat"];
-            else
-                $args["token"] = $EMP_TOKENS["prod"];
+            $args["token"] = $EMP_TOKENS[CONTOUR];
                 
             $data = array(
                 "token"=>$args["token"],

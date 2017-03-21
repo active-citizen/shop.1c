@@ -29,15 +29,8 @@
             
             require_once(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
             
-            if($contour=='uat')
-                $args["token"] = $EMP_TOKENS["uat"];
-            if($contour=='test')
-                $args["token"] = $EMP_TOKENS["test"];
-            else
-                $args["token"] = $EMP_TOKENS["prod"];
-                
             $data = array(
-                "token"=>$args["token"],
+                "token"=>$EMP_TOKENS[CONTOUR],
                 "auth"=>array(
                     "login"     =>  $args["login"],
                     "password"  => $args["password"]

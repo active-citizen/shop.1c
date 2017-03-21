@@ -43,12 +43,13 @@
     $agBrige->setMode('emp');
     $agBrige->setArguments($args);
     $answer["errors"] = $agBrige->getErrors();
+    if(!is_array($answer["errors"]))$answer["errors"] = array();
     $profile = array();
     if(!$answer["errors"])
         $profile = $agBrige->exec();
 
     if(!isset($profile["session_id"]) || !trim($profile["session_id"]))
-        $answer["errors"] = 'Ошибка авторизации';
+        $answer["errors"][] = 'Ошибка авторизации';
     
     if(isset($profile['result']['personal']['phone']))
         $args["login"] = $profile['result']['personal']['phone'];
@@ -85,7 +86,6 @@
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
     } 
-    
     
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");

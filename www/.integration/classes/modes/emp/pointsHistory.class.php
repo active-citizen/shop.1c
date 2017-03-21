@@ -28,7 +28,8 @@
     class pointsHistoryBridgeMethod{
         function exec($args,$contour='uat'){
             require(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
-            $url = $AG_KEYS[$contour]["bcc_url"];
+            require(realpath(dirname(__FILE__)."/../../../../local/php_interface/settings.inc.php"));
+            $url = BCC_URL;
 
             $curl = new curlTool;
             $data = "request=".urlencode('
@@ -41,30 +42,6 @@
             ');
             $curl = new curlTool;
             $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
-            
-            /*
-            if($contour=='uat')
-                $args["token"] = $EMP_TOKENS["uat"];
-            if($contour=='test')
-                $args["token"] = $EMP_TOKENS["test"];
-            else
-                $args["token"] = $EMP_TOKENS["prod"];
-                
-            $data = array(
-                "token"=>$args["token"],
-                "auth"=>array(
-                    "session_id"     =>  $args["session_id"],
-                )
-            );
-            
-            $data = json_encode($data);
-            $curl = new curlTool;
-            $data = $curl->post("https://emp.mos.ru/v2.0.0/poll/getHistory", $data, array("Content-Type: application/json"));
-            echo "<pre>";
-            print_r(json_decode($data));
-            die;
-            */
-
             return $data;
         }
     }

@@ -309,16 +309,19 @@
                 $this->addError("Метод \"exec\" в классе \"$methodClass\" не найден");
                 return false;
             }
-            $data = $methodObject->exec($this->arguments,$this->contour);
-            if(!$data = json_decode($data)){
+            $data = trim($methodObject->exec($this->arguments,$this->contour));
+            $data = json_decode($data);
+            // Занулили проверку
+            if(0 && !is_object($data)){
                 $this->addError("Ошибка преобразования json к объекту");
                 return false;
             }
-            if(!$data = $this->objectToArray($data)){
+            $data = $this->objectToArray($data);
+            // Занулили проверку
+            if(0 && !$data = $this->objectToArray($data)){
                 $this->addError("Ошибка преобразования json-объекта к массиву");
                 return false;
             }
-            
             return $data;
         }
         
