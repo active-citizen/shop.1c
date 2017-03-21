@@ -7,11 +7,12 @@
 * nginx > 1.8
 * PHP > 5.3
     * php-memcache
+    * php-memcached
     * php-xml
     * php-gd
     * php-curl
     * php-mysqli
-
+    * php-opcache
 * php-fpm
 * MySQL > 5.6
 * msmtp
