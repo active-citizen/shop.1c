@@ -25,6 +25,7 @@ BBB:while($filename = readdir($dd)){
     next BBB unless $filename=~m/^.*?\.(.*?)\.(.*?)\.(.*?)\..*?\.log$/i;
     $step_filename = $1.".".$2;
     $timestamp = $3;
+    $timestamp = datetime($timestamp);
     push(@timestamps,$timestamp);
 }
 closedir($dd);
@@ -33,20 +34,16 @@ sort(@timestamps);
 foreach $type(keys %{$results}){
     foreach $timestamp(@timestamps){
         $result->{$type}->{$timestamp} = {};
-        foreach $case_step(@case_steps){$result->{$type}->{$timestamp}->{$case_step} = 0;}
+        foreach $case_step(@case_steps){$result->{$type}->{$timestamp}->{$case_step} = " ";}
     }
 }
-
-foreach $type(keys %{$results}){
-    $results->{$type} = $map;
-}
-
 
 opendir($dd,"results");
 while($filename = readdir($dd)){
     if($filename=~m/^.*?\.(.*?)\.(.*?)\.(.*?)\..*?\.log$/i){
         $step_filename = $1.".".$2;
         $timestamp = $3;
+        $timestamp = datetime($timestamp);
         open(C, "results/$filename");
         $content = join("\n",<C>);
         close(C);
@@ -59,37 +56,53 @@ while($filename = readdir($dd)){
         else{
             $results->{"sizes"}->{$timestamp}->{$step_filename} = 0
         }
-        $results->{"times"}->{$timestamp}->{$step_filename} = $1
+
+        $results->{"times"}->{$timestamp}->{$step_filename} += $1 
             if $content=~m|time=\[(\d+)\]|m;
          
     }
 }
 closedir($dd);
 
+foreach $timestamp(sort @timestamps){
+    foreach $step(sort @case_steps){
+        $a = int($results->{"times"}->{$timestamp}->{$step});
+        $b = int($results->{"requests"}->{$timestamp}->{$step});
+        $results->{"times"}->{$timestamp}->{$step.".f"} = $a/$b;
+    }
+}
 
 
-foreach $report_type(keys %{$results}){
+foreach $report_type(sort keys %{$results}){
     print "\n".("="x30);
     print " $report_type ";
     print ("="x30)."\n";
 
-    print "\n+---------------------+";
+    print "\n+------------------+";
     print "------------+" foreach @case_steps;
 
-    print "\n|      Datetime       |";
-    print "  $_   |" foreach @case_steps;
+    print "\n|    Datetime      |";
+    print "  $_   |" foreach sort @case_steps;
 
-    print "\n+---------------------+";
+    print "\n+------------------+";
     print "------------+" foreach @case_steps;
  
     foreach $timestamp(sort keys %{$results->{$report_type}}){
-        $date = datetime($timestamp);
+        #date = datetime($timestamp);
+        $date = $timestamp;
         print "\n| $date |";
-        foreach $key(sort keys %{$results->{$report_type}->{$timestamp}}){
-            print sprintf("% 12d",$results->{$report_type}->{$timestamp}->{$key})."|";
+        foreach $key(sort @case_steps){
+            print sprintf(
+                "% 12d",
+                $results->{$report_type}->{$timestamp}->{$key.".f"}
+                ?
+                $results->{$report_type}->{$timestamp}->{$key.".f"}
+                :
+                $results->{$report_type}->{$timestamp}->{$key}
+            )."|";
         }
     }
-    print "\n+---------------------+";
+    print "\n+------------------+";
     print "------------+" foreach @case_steps;
 
     print "\n";
@@ -106,5 +119,5 @@ sub datetime{
     $mon = sprintf("%02d",$mon+1);
     $year = sprintf("%04d",$year+1900);
      
-    return "$year-$mon-$mday $hour:$min:$sec";    
+    return "$year-$mon-$mday $hour:$min";    
 }

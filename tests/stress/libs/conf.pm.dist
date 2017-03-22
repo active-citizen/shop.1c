@@ -16,7 +16,7 @@ our $MINDELAY = 0;
 our $MAXDELAY = 0;
 #
 # Options string 
-our $OPTIONS = ' --header="Authorization: Basic c2hvcDpzaG9wX2FnXzI="';
+our $OPTIONS = '';
 #our $OPTIONS = '';
 
 
