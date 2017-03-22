@@ -63,6 +63,13 @@ etc/nginx/auth/*.passwd
 #Игнорировать конфиг ККБ
 www/api/include/config.php
 
+
+# Игнорировать результаты стресс-тестов и его конфиг
+tests/stress/results/*.log
+tests/stress/results/*.log.html
+tests/stress/libs/conf.pm
+
+
 # Игнорировать прочее
 *.swp
 *.swo

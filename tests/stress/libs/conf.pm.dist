@@ -1,0 +1,23 @@
+package conf;
+
+# Case name
+our $CASENAME = 'example-case';
+# Base request URL 
+our $BASEURL = 'http://127.0.0.1';
+# Powerful. 0 is 1 threat, 1 is 2 threads, 2 is 4, 3 is 8 etc
+our $POW = 4;
+# Iterations of case at one thread
+our $ITERATIONS = 3;
+# Max Pause before iteration 
+our $MINPAUSE = 1;
+our $MAXPAUSE = 5;
+# Max-min pause before each step of iteration
+our $MINDELAY = 0;
+our $MAXDELAY = 0;
+#
+# Options string 
+our $OPTIONS = ' --header="Authorization: Basic c2hvcDpzaG9wX2FnXzI="';
+#our $OPTIONS = '';
+
+
+1;

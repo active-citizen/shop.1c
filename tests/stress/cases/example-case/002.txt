@@ -1,0 +1,1 @@
+"{{BASEURL}}/catalog/index.ajax.php?&catalog_name="
