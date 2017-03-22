@@ -6,6 +6,7 @@
 #
 
 use libs::conf;
+use Time::HiRes;
 
 for($i=0;$i<$conf::POW;$i++){fork();}
 
@@ -34,7 +35,16 @@ for($i=0;$i<$conf::ITERATIONS;$i++){
             .$conf::OPTIONS
             .' '.$command;
         print "PID=".$$.';'.$conf::CASENAME.";".$filename.";\n";
+
+        ($seconds, $microseconds) = Time::HiRes::gettimeofday;
+        $t0 = ($seconds+($microseconds/1000000));
         `$command`;
+        ($seconds, $microseconds) = Time::HiRes::gettimeofday;
+        $t1 = ($seconds+($microseconds/1000000));
+        $time = ($t1-$t0)*1000;
+        open(A,">>".$output_filename);
+        print A "time=[".int($time)."]";
+        close(A);
     }
 }
 
