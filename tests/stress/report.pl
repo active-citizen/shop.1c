@@ -47,14 +47,22 @@ while($filename = readdir($dd)){
         open(C, "results/$filename");
         $content = join("\n",<C>);
         close(C);
-        $results->{"http_errors"}->{$timestamp}->{$step_filename} = $1
-            if $content=~m|HTTP/1\..\s+(\d+)|m;
+        if($content=~m|HTTP/1\..\s+(\d+)|m){
+    	    if($results->{"http_errors"}->{$timestamp}->{$step_filename}!=200 && $1==200){
+    	    }
+    	    if($results->{"http_errors"}->{$timestamp}->{$step_filename}==0 && $1==200){
+    		$results->{"http_errors"}->{$timestamp}->{$step_filename} = $1;
+    	    }
+    	    if($1!=200){
+    		$results->{"http_errors"}->{$timestamp}->{$step_filename} = $1;
+    	    }
+        }
         $results->{"requests"}->{$timestamp}->{$step_filename} += 1;
         if($content=~m|\[(\d+)[^\d]|m){
             $results->{"sizes"}->{$timestamp}->{$step_filename} = $1
         }
         else{
-            $results->{"sizes"}->{$timestamp}->{$step_filename} = 0
+            $results->{"sizes"}->{$timestamp}->{$step_filename} = 0;
         }
 
         $results->{"times"}->{$timestamp}->{$step_filename} += $1 
@@ -68,7 +76,7 @@ foreach $timestamp(sort @timestamps){
     foreach $step(sort @case_steps){
         $a = int($results->{"times"}->{$timestamp}->{$step});
         $b = int($results->{"requests"}->{$timestamp}->{$step});
-        $results->{"times"}->{$timestamp}->{$step.".f"} = $a/$b;
+        $results->{"times"}->{$timestamp}->{$step.".f"} = $b?$a/$b:"-";
     }
 }
 
@@ -78,19 +86,19 @@ foreach $report_type(sort keys %{$results}){
     print " $report_type ";
     print ("="x30)."\n";
 
-    print "\n+------------------+";
+    print "\n+---------------------+";
     print "------------+" foreach @case_steps;
 
-    print "\n|    Datetime      |";
+    print "\n|     Datetime        |";
     print "  $_   |" foreach sort @case_steps;
 
-    print "\n+------------------+";
+    print "\n+---------------------+";
     print "------------+" foreach @case_steps;
  
     foreach $timestamp(sort keys %{$results->{$report_type}}){
         #date = datetime($timestamp);
         $date = $timestamp;
-        print "\n| $date |";
+        print "\n| ".sprintf("% 19s",$date)." |";
         foreach $key(sort @case_steps){
             print sprintf(
                 "% 12d",
@@ -102,7 +110,7 @@ foreach $report_type(sort keys %{$results}){
             )."|";
         }
     }
-    print "\n+------------------+";
+    print "\n+---------------------+";
     print "------------+" foreach @case_steps;
 
     print "\n";
