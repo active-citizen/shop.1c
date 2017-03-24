@@ -111,6 +111,7 @@
                             $storage["@attributes"]["КоличествоНаСкладе"]
                     ))){
                         echo "<pre>";
+                        print_r($arFields);
                         print_r($resCatalogStoreProduct);
                         die;
                     }

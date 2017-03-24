@@ -471,7 +471,7 @@
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curl.class.php");
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
             require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
-            require($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/setting.inc.php");
+            require($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/settings.inc.php");
 
             $contour = CONTOUR;
             

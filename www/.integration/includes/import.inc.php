@@ -170,6 +170,7 @@
             // Добавляем товар
             if(!$elementId = $objIBlockElement->Add($arFields)){
                 echo "<pre>";
+                print_r($arFields);
                 print_r($objIBlockElement);
                 die;
             }

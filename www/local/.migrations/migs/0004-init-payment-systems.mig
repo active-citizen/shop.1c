@@ -14,7 +14,7 @@
             while($arResult = $dbResult->getNext()){
                 CSalePaySystem::Update($arResult["ID"], array(
                         // Внутренний счёт - ID=9
-                        "ACTIVE"=>$arResult["ID"]==9?"Y":"N"
+                        "ACTIVE"=>$arResult["NAME"]=='Внутренний счет'?"Y":"N"
                     )
                 );
             }

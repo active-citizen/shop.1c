@@ -1,0 +1,2 @@
+<?
+$PERM[".migrations"]["*"] = "D";
