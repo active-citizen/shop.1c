@@ -18,7 +18,7 @@
               </div>
               <div class="ag-shop-catalog__filter-instance">Сначала:
                 <div class="ag-shop-catalog__filter-item">
-                    <a rel="price-asc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дешевые</a>
+                    <a rel="price-asc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Недорогие</a>
                 </div>
                 <div class="ag-shop-catalog__filter-item">
                     <a rel="price-desc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Дорогие</a>
