@@ -35,14 +35,7 @@
                 </span>
                 <?else:?>
                 <span class="ag-shop-filter__login ag-shop-filter__trigger--active" 
-                    onclick="document.location.href='<? 
-                    if($_SERVER["HTTP_HOST"]=='shop.ag.mos.ru')
-                        echo "http://ag.mos.ru/site/";
-                    elseif($_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru')
-                        echo "http://testing.ag.mos.ru/site/";
-                    else
-                        echo "http://testing.ag.mos.ru/site/";
-                  ?>'">
+                    onclick="document.location.href='<?= CONTOUR_URL ?>'">
                   <a style="text-decoration: none;" class="ag-shop-filter__trigger--active" href="<?= CONTOUR_URL?>">Войти</a>
                 </span>
                 <?endif?>
@@ -69,39 +62,24 @@
 
             <div class="ag-shop-filter__variants filter-passive" id="balls-filter" style="height: 42px;">
                 <? $pureBalls = str_replace(" ","",$MY_BALLS);?>
-                <? for($i=0;pow(10,$i)<$pureBalls;$i++):?>
-                  <?
-                    $startBalls = pow(10,$i)+1; 
-                    if($startBalls==2)$startBalls=0;
-                    $endBalls = pow(10,$i+1); 
-                    if($endBalls>$pureBalls) $endBalls=$pureBalls;
-                  ?>
+                <? $arBallsLimits=
+                array(500,1000,1500,2000,2500,3000,15000);?>
+                <? foreach($arBallsLimits as $endBalls):
+                if($endBalls>intval(preg_replace("#[^\d]#","",$myBalls)))continue;
+                ?>
                   <label>
-                    <input type="radio" name="ag-balls" class="ag-balls" value="<?= $startBalls ?>,<?= $endBalls ?>" title="от <?= $startBalls ?> до <?= $endBalls ?> баллов">
-                    <div class="ag-shop-filter__variants-item">от <?= $startBalls ?> до <?= $endBalls ?> баллов</div>
+                    <input type="checkbox" name="ag-balls" class="ag-balls"
+                    value="0,<?= $endBalls ?>" title="до <?= $endBalls ?> баллов">
+                    <div class="ag-shop-filter__variants-item">до <?= $endBalls ?> баллов</div>
                   </label>
                 
-                <? endfor?>
+                <? endforeach?>
                   <label>
-                    <input 
-                        <? if($USER->IsAuthorized()):?>checked<? endif ?>
-                        type="radio" 
-                        name="ag-balls" class="ag-balls" 
-                        value="0,<?= $pureBalls?>" 
-                        title="от 0 до <?= $pureBalls?$pureBalls:0 ?> <?= get_points($pureBalls)?>"
-                    >
-                    <div class="ag-shop-filter__variants-item">от 0 до <?= $endBalls?$endBalls:0 ?> <?= get_points($pureBalls)?></div>
+                    <input type="checkbox" name="ag-balls" class="ag-balls"
+                    value="0,<?= preg_replace("#[^\d]#","",$myBalls) ?>" title="до <?= $myBalls ?>">
+                    <div class="ag-shop-filter__variants-item">до <?= $myBalls ?></div>
                   </label>
-                  <label>
-                    <input 
-                        <? if(!$USER->IsAuthorized()):?>checked<? endif ?>
-                        type="radio" 
-                        name="ag-balls" 
-                        class="ag-balls" 
-                        value="0,1000000000" title="все баллы">
-                    <div class="ag-shop-filter__variants-item">все баллы</div>
-                  </label>
-            </div>
+             </div>
 
             
             <div class="ag-shop-filter__confirm filter-passive">

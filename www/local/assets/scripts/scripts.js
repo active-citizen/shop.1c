@@ -523,7 +523,7 @@ function ag_filter(){
     $('.ag-interest').each(function(){if($(this).is(":checked"))interest.push($(this).val())});
     interest = interest.join(',');
     
-    var balls = $('input[name="ag-balls"]:checked').val();
+    var balls = $('input[name="ag-balls"]:checked').last().val();
     var flag = $('#ag-flag').val()?$('#ag-flag').val():'all';
     var sorting = $('#ag-sorting').val()?$('#ag-sorting').val():'rating-desc';
     
