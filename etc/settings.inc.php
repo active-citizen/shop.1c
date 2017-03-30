@@ -25,7 +25,7 @@
             "int_ip"    =>  "10.89.79.58",
             "ext_ip"    =>  "213.79.88.37",
             "auth_url"  =>  "http://ag.mos.ru/mvag/auth?callback=agauth",
-            "bcc_url"   =>  "http://127.0.0.1/api/",
+            "bcc_url"   =>  "http://shop.ag.mos.ru/api/",
             "name"      =>  "prod"
         ),
         array(
@@ -33,7 +33,7 @@
             "int_ip"    =>  "10.89.79.57",
             "ext_ip"    =>  "213.79.88.37",
             "auth_url"  =>  "http://uat.ag.mos.ru/mvag/auth?callback=agauth",
-            "bcc_url"   =>  "http://127.0.0.1/api/",
+            "bcc_url"   =>  "http://pre-prod02.shop.ag.mos.ru/api/",
             "name"      =>  "uat"
         ),
         array(
@@ -42,7 +42,7 @@
             "ext_ip"    =>  "213.79.88.37",
             "auth_url"  =>  
                 "http://testing.ag.mos.ru/mvag/auth?callback=agauth",
-            "bcc_url"   =>  "http://127.0.0.1/api/",
+            "bcc_url"   =>  "http://pre-prod01.shop.ag.mos.ru/api/",
             "name"      =>  "test"
         ),
         array(
@@ -51,7 +51,7 @@
             "ext_ip"    =>  "213.79.88.37",
             "auth_url"  =>  
                 "http://testing.ag.mos.ru/mvag/auth?callback=agauth",
-            "bcc_url"   =>  "http://127.0.0.1/api/",
+            "bcc_url"   =>  "http://dev.shop.ag.mos.ru/api/",
             "name"      =>  "test"
         ),
      );
