@@ -1,0 +1,37 @@
+<?php
+    
+    /**
+     * Добавление таблицы с логом профилия
+     */
+    class mail_tmpl_disable extends Migration{
+        function Run(){
+            // Если нет - добавляем
+            $arFilter = array(
+                "ENTITY_ID"     =>  "USER",
+                "FIELD_NAME"    =>  "UF_USER_ALL_POINTS",
+                "USER_TYPE_ID"  =>  "double"
+            );
+            $arEditFormLabel = array(
+                "EDIT_FORM_LABEL"=>array(
+                    "ru"=>"Все заработанные баллы",
+                    "en"=>"All received points"
+                )
+            );
+            if(!$arUserField =  CUserTypeEntity::GetList(array(),$arFilter)->GetNext()){
+                $arFields = array_merge($arFilter,$arEditFormLabel);
+                $obUserField  = new CUserTypeEntity;
+                if(!$obUserField->Add($arFields)){
+                    echo "error in ".__LINE__;
+                    die($obUserField->LAST_ERROR);
+                }
+            }
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$mail_tmpl_disable = new mail_tmpl_disable();
+// Откатываем, если неудачно
+if(!$mail_tmpl_disable->Run())$mail_tmpl_disable->RollBack();

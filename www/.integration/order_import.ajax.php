@@ -1,7 +1,7 @@
 <?php
     if(!isset($_SERVER["DOCUMENT_ROOT"]) || !$_SERVER["DOCUMENT_ROOT"])
         $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/..");
-    
+
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
@@ -58,7 +58,7 @@
         
         $ordersFilename = $arZipStat["name"];
     }
-    
+
     CModule::IncludeModule("sale");
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
@@ -86,7 +86,7 @@
         foreach($arOrders["Документ"] as $ccc=>$arDocument){
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
             if(0 && $ccc>5){break;}else{
-                //echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
+                echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
@@ -353,7 +353,7 @@
                     continue;
                 }
 
-                //echo "Add order_id=$orderId  ";
+                echo "Add order_id=$orderId  ";
 
                 // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
@@ -387,7 +387,7 @@
             }
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
-                //echo "Update order_id = $orderId ";
+                echo "Update order_id = $orderId ";
                 
                 // Обрабатываем все статусы кроме отмены
                 CSaleOrder::Update($orderId, $arOrder);

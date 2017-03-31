@@ -75,14 +75,11 @@
         ){
             // Получаем ID пользователя по сесссии
             $CSession = new CSession;
-            $CUser = new CUser;
             $arSession = $CSession->get($sSessionId);
             
             // Обновляем транзакции из ЕМП
             $this->updatePointsFromEMP($sSessionId,$arSession["user_id"]);
-            // пересчитываем баланс пользователя
-            $CUser->updateBalance($arSession["user_id"]);
-            
+           
             $sUserSuffix = CUser::getSuffix($arSession["user_id"]);
             
             // Условия для выборки
@@ -123,14 +120,20 @@
             
             $GLOBALS["DB"]->rows =array();
             $GLOBALS["DB"]->search($arTables,$arJoin,array(),$sCond, "`a`.`ctime` DESC", 0,0,$arFields);
+            $arHistory = $GLOBALS["DB"]->rows;
+            $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
                 
-            return $GLOBALS["DB"]->rows;
+            return array(
+                "history"   =>  $arHistory,
+                "status"    =>  $arUserPoints
+            );
         }
         
         /**
          *  Обновляем баллы из ЕМП в таблицах
         */
         function updatePointsFromEMP($sSessionId, $nUserId){
+            $CUser = new CUser;
 
             $data = array(
                 "token"=>$GLOBALS["CONF"]["mvag_token"],
@@ -143,9 +146,53 @@
             
             $data = json_encode($data);
             $curl = new curlTool;
-            $data = $curl->post("https://emp.mos.ru/v2.0.0/poll/getHistory", $data, array("Content-Type: application/json"));
+            $data = $curl->post(
+                "https://emp.mos.ru/v2.0.0/poll/getHistory", 
+                $data, 
+                array("Content-Type: application/json")
+            );
             
-            $data = json_decode($data);        
+            $data = json_decode($data);       
+            // Обновляем EMP поебень
+            if(
+                is_object($data) 
+                && property_exists($data,"result")
+                && is_object($data->result) 
+                && property_exists($data->result,"status")
+                && is_object($data->result->status) 
+                && property_exists($data->result->status,"current_points")
+            )
+                $CUser->updateBalance($nUserId,"current_points",$data->result->status->current_points);
+            if(
+                is_object($data) 
+                && property_exists($data,"result")
+                && is_object($data->result) 
+                && property_exists($data->result,"status")
+                && is_object($data->result->status) 
+                && property_exists($data->result->status,"all_points")
+            )
+                $CUser->updateBalance($nUserId,"all_points",$data->result->status->all_points);
+            if(
+                is_object($data) 
+                && property_exists($data,"result")
+                && is_object($data->result) 
+                && property_exists($data->result,"status")
+                && is_object($data->result->status) 
+                && property_exists($data->result->status,"spent_points")
+            )
+                $CUser->updateBalance($nUserId,"spent_points",$data->result->status->spent_points);
+            
+            if(
+                is_object($data) 
+                && property_exists($data,"result")
+                && is_object($data->result) 
+                && property_exists($data->result,"status")
+                && is_object($data->result->status) 
+                && property_exists($data->result->status,"freezed_points")
+            )
+                $CUser->updateBalance($nUserId,"freezed_points",$data->result->status->freezed_points);
+            
+
             $arPoints = '';
             if(
                 is_object($data) 
@@ -174,6 +221,8 @@
                     );
                 }
             }
+            // пересчитываем баланс пользователя
+            $CUser->updateBalance($nUserId);
         }
         
         

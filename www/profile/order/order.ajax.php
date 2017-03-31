@@ -193,13 +193,13 @@ elseif(isset($_GET["add_order"])){
         "token"         =>  $EMP_TOKENS[CONTOUR]
     );
     
-    
+    // Заливаем историю баллов и проверяем баланс пользователя 
     $agBrige->setMethod('pointsHistory');
     $agBrige->setMode('emp');
     $agBrige->setArguments($args);
     $history = $agBrige->exec();
     $bxPoint = new bxPoint;
-    $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
+    $bxPoint->updatePoints($history["result"], CUser::GetID());
     
     // Проверяем сумму на счёте
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");

@@ -32,8 +32,8 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
         $answer["errors"][] = $history["errorMessage"];
     }else{
         $bxPoint = new bxPoint;
-        $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
-    }   
+        $bxPoint->updatePoints($history["result"], CUser::GetID());
+   }   
 
 }
     include(dirname(__FILE__)."/../menu.php");

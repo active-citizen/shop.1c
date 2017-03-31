@@ -69,6 +69,11 @@ tests/stress/results/*.log
 tests/stress/results/*.log.html
 tests/stress/libs/conf.pm
 
+# Игнорировать обменные файлы
+www/upload/1c_catalog/
+www/upload/1c_exchange/
+
+
 
 # Игнорировать прочее
 *.swp

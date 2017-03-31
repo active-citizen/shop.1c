@@ -87,15 +87,48 @@
 
     $objCMigration->setColumn(
         "users",  // Table Name
-        "balance",   // Column name
+        "all_points",   // Column name
         "FLOAT",      // Column type
         "10,2",         // Size
         false,          // Default
         false,
-        'Баланс пользователя',// Comment
+        '',// Comment
         false      // IS NULL
     );
-    
+
+    $objCMigration->setColumn(
+        "users",  // Table Name
+        "current_points",   // Column name
+        "FLOAT",      // Column type
+        "10,2",         // Size
+        false,          // Default
+        false,
+        '',// Comment
+        false      // IS NULL
+    );
+
+
+    $objCMigration->setColumn(
+        "users",  // Table Name
+        "spent_points",   // Column name
+        "FLOAT",      // Column type
+        "10,2",         // Size
+        false,          // Default
+        false,
+        '',// Comment
+        false      // IS NULL
+    );
+
+    $objCMigration->setColumn(
+        "users",  // Table Name
+        "freezed_points",   // Column name
+        "FLOAT",      // Column type
+        "10,2",         // Size
+        false,          // Default
+        false,
+        '',// Comment
+        false      // IS NULL
+    );
 ///////////////////////////////////////////////////////////////////////////////
 
     // Таблица пользователей 
