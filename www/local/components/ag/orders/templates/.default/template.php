@@ -87,7 +87,9 @@
                           <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
-                          <a class="ag-shop-profile-order__control" href="#"  onclick="return showOrdersFeedbackForm('Заказ Б-<?= $arOrder["ID"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
+                          <a class="ag-shop-profile-order__control" href="#"
+                          onclick="return showOrdersFeedbackForm('Заказ <?=
+                          $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
                           <? if(
                             $arOrder["STATUS_ID"]=='AG'
                             ||
