@@ -34,13 +34,17 @@ if(
         array("ID")
     )->GetNext()
     ||
-    !CIBlockSection::GetList(
-        array(),
-        array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code),
-        false,
-        array(),
-        array("ID")
-    )->GetNext()
+    (
+        $catalog_code!='root'
+        &&
+        !CIBlockSection::GetList(
+            array(),
+            array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code),
+            false,
+            array(),
+            array("ID")
+        )->GetNext()
+    )
     )
 ){
     include($_SERVER["DOCUMENT_ROOT"]."/404.php");

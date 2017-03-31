@@ -104,7 +104,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     elseif(!isset($_REQUEST['filter_balls'])){
         $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1000000000;
     }
+    // Не выводить неактивные
     $arrFilter["ACTIVE"] = 'Y';
+    // Не выводить с нулевой и отрицательной ценой
+    $arrFilter[">PROPERTY_MINIMUM_PRICE"] = 0;
     
     // Узнаём ID инфоблока
     $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
@@ -123,7 +126,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     );
     
     while($product = $res->GetNext()){
-
         // Получение всех свойств товара
         $res2 = CIBlockElement::GetProperty($arrFilter["IBLOCK_ID"],$product["ID"]);
         $product["ALL_PROPERTIES"] = array();
@@ -186,6 +188,13 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                         $product["wishes"]
                       ?></div>
                     </button>
+                      <?
+                        // Костыль для ссылок товаров без каталога
+                        $arSplitUrl = explode("/",$product["DETAIL_PAGE_URL"]);
+                        if(count($arSplitUrl)==4 && $arSplitUrl[1]=='catalog')
+                           $product["DETAIL_PAGE_URL"] = "/catalog/root/"
+                           .$arSplitUrl[2]."/";
+                     ?>
                       <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>"
                       style="background-image: url(<?= $image_url?>);">
                       <div class="ag-shop-item-card__badges">
