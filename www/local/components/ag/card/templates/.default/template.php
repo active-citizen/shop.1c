@@ -451,8 +451,15 @@
             <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-store-id" style="display:none;"></div>
           </div>
           <div class="ag-shop-modal__row">
+            <?
+            if(
+                $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_ABILITY"][0]["VALUE_ENUM"]
+                !=
+                'да'
+            ):?>
             <div class="ag-shop-modal__alert"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>При нажатии кнопки «Оформить заказ» баллы, потраченные на данное поощрение, не возвращаются.</span></div>
           </div>
+          <? endif?>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__buttons-wrap">
               <button class="ag-shop-modal__button" id="card-order-confirm-button" type="button" onclick="return productConfirmNext();">Оформить заказ</button>
