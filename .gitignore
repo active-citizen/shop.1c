@@ -8,10 +8,11 @@ www/bitrix/
 
 # Игнорировать загруженные файлы
 www/upload/*
-!www/upload/1c_exchange*
-!www/upload/1c_catalog*
-www/upload/1c_exchange/logger/*
-www/upload/1c_catalog/import_files/*
+!www/upload/stores*
+!www/upload/manufacturers*
+www/upload/stores/*.png
+www/upload/manufacturers/*.png
+
 
 # Игнорировать файл с паролями и ключами
 www/.integration/secret.inc.php
@@ -68,12 +69,6 @@ www/api/include/config.php
 tests/stress/results/*.log
 tests/stress/results/*.log.html
 tests/stress/libs/conf.pm
-
-# Игнорировать обменные файлы
-www/upload/1c_catalog/
-www/upload/1c_exchange/
-
-
 
 # Игнорировать прочее
 *.swp

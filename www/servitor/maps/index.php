@@ -5,6 +5,7 @@ if(!$USER->IsAdmin())die;
 $APPLICATION->SetTitle("Формирование карт");
 
 CModule::IncludeModule("iblock");
+CModule::IncludeModule("catalog");
 
 $resManufacturers = CIblockElement::GetList(array(),array("IBLOCK_ID"=>MANUFACTURER_IB_ID));
 $arManufacturers = array();
@@ -25,6 +26,28 @@ while($arManufacturer = $resManufacturers->GetNext()){
 
 ?>
 <h1>Формирование карт(интерфейс администратора)</h1>
+<h2>Центры выдачи</h2>
+<? $resStore = CCatalogStore::GetList();?>
+<table class="manufacturers">
+    <tr>
+        <th width="50px">ID</th>
+        <th width="300px">Имя</th>
+        <th>Адрес</th>
+        <th width="200px">Координаты</th>
+        <th width="300px">Карта</th>
+    </tr>
+    <? while($arStore = $resStore->GetNext()):?>
+    <tr>
+        <td class="man-id"><?= $arStore["ID"];?></td>
+        <td class="man-name"><?= $arStore["TITLE"];?></td>
+        <td class="man-address"><?= $arStore["ADDRESS"];?></td>
+        <td class="man-coords"></td>
+        <td class="man-map"><img src=""></td>
+        <td class="man-store">store</td>
+    </tr>
+    <? endwhile?>
+</table>
+<h2>Производители</h2>
 <table class="manufacturers">
     <tr>
         <th width="50px">ID</th>
@@ -41,7 +64,7 @@ while($arManufacturer = $resManufacturers->GetNext()){
     <tr <? if(!trim($arManufacturer["PROPS"]["HOW_FIND"]["VALUE"])){?> class="man-error";<?} ?>>
         <td class="man-id"><?= $arManufacturer["ID"];?></td>
         <td class="man-name"><?= $arManufacturer["NAME"];?></td>
-        <td class="man-address"><?= $arManufacturer["PROPS"]["HOW_FIND"]["VALUE"];?></td>
+        <td class="man-address"><?= $arManufacturer["PROPS"]["ADDRESS"]["VALUE"];?></td>
         <td class="man-coords"></td>
         <td class="man-map"><img src=""></td>
     </tr>
@@ -90,6 +113,7 @@ td.man-id{
     $('td.man-id').each(function(){
         var row_obj = $(this).parent();
         var manid = row_obj.find('.man-id').first().html();
+        var manStore = row_obj.find('.man-store').first().html()?1:0;
         var address = row_obj.find('.man-address').first().html();
         var name  = row_obj.find('.man-name').first().html();
         var coordsObj = row_obj.find('.man-coords').first();
@@ -117,7 +141,7 @@ td.man-id{
                     Coords = Lng+','+Lat;
                     coordsObj.html(Coords);
                     
-                    url = '/servitor/maps/save.ajax.php?id='+manid+'&coords='+Coords+'&zoom='+zoom;
+                    url = '/servitor/maps/save.ajax.php?id='+manid+'&coords='+Coords+'&zoom='+zoom+'&store='+manStore;
                     
                     $.ajax({
                         async: false,

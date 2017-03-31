@@ -38,6 +38,7 @@
         );
         $arManufacturerProps = array(
             "SHORT_NAME"=>"КраткоеНаименование",
+            "ADDRESS"=>"АдресФактический",
             "FULL_NAME"=>"ПолноеНаименование",
             "HOW_FIND"=>"КакПроехать",
             "COORDS"=>"КоординатыНаКарте",

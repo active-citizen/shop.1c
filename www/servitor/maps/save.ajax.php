@@ -18,6 +18,9 @@ if(isset($_GET["zoom"]) && intval($_GET["zoom"]))$zoom = intval($_GET['zoom']);
 $id = 1;
 if(isset($_GET["id"]) && intval($_GET["id"]))$id = intval($_GET['id']);
 
+$store = 0;
+if(isset($_GET["store"]) && intval($_GET["store"]))$store = intval($_GET['store']);
+
 $answer = array();
 define("ROOTDIR",$_SERVER["DOCUMENT_ROOT"]."/upload/manufacturers/");
 
@@ -29,6 +32,8 @@ require_once(realpath(dirname(__FILE__)."/../../.integration/classes/curl.class.
 $curl = new curlTool;
 $content = $curl->get($url);
 $url = "/upload/manufacturers/$id.png";
+if($store)
+    $url = "/upload/stores/$id.png";
 $fd = fopen($_SERVER["DOCUMENT_ROOT"].$url,"w");
 fwrite($fd,$content);
 fclose($fd);
