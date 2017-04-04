@@ -56,7 +56,6 @@
             mcrypt_generic_deinit($module);
             mcrypt_module_close($module);
             $session_id = rtrim($decrypted,"\0");
-            
             $args["token"] = $EMP_TOKENS[CONTOUR];
                 
             $data = array(
