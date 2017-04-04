@@ -2,6 +2,7 @@
     /**
         Выдыча в виде XML последних невыгруженных заказов
     */
+    require("includes/datafilter.lib.php");
     require(
         $_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php"
@@ -134,13 +135,13 @@
                 )continue;
                 $product["ХарактеристикиТовара"][] = array(
                     "Наименование"  =>  
-                        mb_convert_encoding(
+                        dataNormalize(mb_convert_encoding(
                             $arrProp["NAME"],"cp1251","utf-8"
-                        ),
+                        )),
                     "Значение"      =>  
-                        mb_convert_encoding(
+                        dataNormalize(mb_convert_encoding(
                             $arrProp["VALUE_ENUM"],"cp1251","utf-8"
-                        )
+                        ))
                 );
             }
             
@@ -162,11 +163,11 @@
             
             $product["Ид"] = $arOffer["XML_ID"];
             $product["Наименование"] = 
-                mb_convert_encoding($arOffer["NAME"],"cp1251","utf-8");
+                dataNormalize(mb_convert_encoding($arOffer["NAME"],"cp1251","utf-8"));
             $product["Единица"] = 
-                mb_convert_encoding(
+                dataNormalize(mb_convert_encoding(
                     $arrCatalog["PROPERTY_QUANT_VALUE"],"cp1251","utf-8"
-                );
+                ));
             $product["Артикул"] = $arrCatalog["PROPERTY_ARTNUMBER_VALUE"];
             $product["ЦенаЗаЕдиницу"] = $arPrice["PRICE"];
             $product["Продукт"] = $arOffer;
@@ -193,18 +194,18 @@
         $order["Телефон"] = preg_replace("#^u(\d+)$#","$1",$arUser["LOGIN"]);
         $order["ЭлектроннаяПочта"] = $arUser["EMAIL"];
         $order["Клиент"] = 
-            mb_convert_encoding(
+            dataNormalize(mb_convert_encoding(
                 $arUser["LAST_NAME"]." ".$arUser["NAME"],"cp1251","utf-8"
-            );
-        $order["Имя"] = mb_convert_encoding(
+            ));
+        $order["Имя"] = dataNormalize(mb_convert_encoding(
             $arUser["NAME"],"cp1251","utf-8"
-        );
-        $order["Фамилия"] = mb_convert_encoding(
+        ));
+        $order["Фамилия"] = dataNormalize(mb_convert_encoding(
             $arUser["LAST_NAME"],"cp1251","utf-8"
-        );
-        $order["Город"] = mb_convert_encoding(
+        ));
+        $order["Город"] = dataNormalize(mb_convert_encoding(
             $arUser["PERSONAL_CITY"],"cp1251","utf-8"
-        );
+        ));
         $order["Склад"] = $arStore["XML_ID"];
         
         $arSatatus = CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
@@ -215,8 +216,7 @@
         $order["Товары"] = $products;
         $arOrders[] = $order;
     }
-?>
-<КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_205" <? 
+?><КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_205" <? 
 ?>xmlns:xs="http://www.w3.org/2001/XMLSchema" <?
 ?>xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <?
 ?>ВерсияСхемы="2.05" ДатаФормирования="<? echo date("c");?>">
