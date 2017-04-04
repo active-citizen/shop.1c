@@ -3,6 +3,7 @@
         $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/..");
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+    require("includes/datafilter.lib.php");
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
     $CatalogIblockId = CATALOG_IB_ID;
@@ -69,7 +70,6 @@
     $objBasket  = new CSaleBasket;
     $objIBlockElement = new CIBlockElement;
     $objPrice = new CPrice;
-    
    
     header("Content-type: text/plain; charset=UTF-8");
 //    echo file_get_contents($uploadDir.$ordersFilename);
@@ -85,14 +85,14 @@
 
         foreach($arOrders["Документ"] as $ccc=>$arDocument){
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if(0 && $ccc>5){break;}else{
+            if(0 && $ccc>1){break;}else{
                 echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
                 array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1),
-                array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO")
+                array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO","STORE_ID")
             );
             $existsOrder = $res->GetNext();
 
@@ -105,8 +105,7 @@
                 );
                 $existsOrder = $res->GetNext();
             }
-                        
-            
+           
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{7,11}$#",$arDocument["Телефон"])){
                 echo "Order_num=".$arDocument["Номер"].
@@ -114,7 +113,7 @@
                 $t1 = microtime(true);
                 continue;
             }
-
+ 
             // Нормализация товаров
             if(!isset($arDocument["Товары"]["Товар"][0]))
                 $arDocument["Товары"]["Товар"] = array($arDocument["Товары"]["Товар"]);
@@ -224,7 +223,7 @@
                     "price" => $product["ЦенаЗаЕдиницу"]
                 );
             }
-            
+           
             
             // Считаем сумму заказа
             $sum = 0;
@@ -252,8 +251,8 @@
                 "CONFIRM_PASSWORD"  =>  $password,
                 "EMAIL"             =>  $arDocument["ЭлектроннаяПочта"],
                 "GROUP_ID"          =>  array(2,3,4,6),
-                "NAME"              =>  $userName, 
-                "LAST_NAME"         =>  $userLastName,
+                "NAME"              =>  dataNormalize($userName), 
+                "LAST_NAME"         =>  dataNormalize($userLastName),
                 "PERSONAL_PHONE"    =>  $arDocument["Телефон"],
                 "ACTIVE"            =>  "Y"
             );
@@ -262,13 +261,14 @@
             $resUser = CUser::GetByLogin($userData["LOGIN"]);
             $existsUser = $resUser->GetNext();
             // Если пользователя нет - создаём
-            
+
+        
             
             if(!$existsUser){
                 // Если создание провалилось - сообщаем об ошибке
                 if(!$userId = $objUser->Add($userData)){
                     echo "Order_num=".$arDocument["Номер"].
-                        ": Cant create user ".print_r($UserData, 1)."\n";
+                        ": Cant create user ".print_r($userData, 1)."\n";
                     $t1 = microtime(true);
                     continue;
                 }
@@ -276,6 +276,41 @@
             else{
                 $userId = $existsUser["ID"];
                 $objUser->Update($userId, $userData);
+            }
+
+            // Нормализуем историю
+            if(
+                isset($arDocument["История"]["Состояние"])
+                &&
+                $arDocument["История"]["Состояние"]
+                &&
+                !$arDocument["История"]["Состояние"][0]
+            )
+               $arDocument["История"]["Состояние"][0]
+               =$arDocument["История"]["Состояние"];  
+
+            // Определяем склад заказа
+            if(
+                !isset($arDocument["История"]["Состояние"][0]["Склад"])
+                ||
+                !trim($arDocument["История"]["Состояние"][0]["Склад"])
+            ){
+                echo "Store ID undefined ".$arDocument["История"]["Состояние"][0]["Склад"]."\n";
+                $t1 = microtime(true);
+                continue;
+            }
+            
+            $sStoreId = $arDocument["История"]["Состояние"][0]["Склад"];
+            if(!$arStore = CCatalogStore::GetList(
+                array(),
+                array("XML_ID"=>$sStoreId),
+                false,
+                array("nTopCount"=>1),
+                array("ID")
+            )->GetNext()){
+                echo "Store ID not found ".$arDocument["История"]["Состояние"][0]["Склад"]."\n";
+                $t1 = microtime(true);
+                continue;
             }
             
             // Вычисляем флаги статуса
@@ -306,36 +341,39 @@
             }
             
             $arOrder = array(
-                "ADDITIONAL_INFO"    =>  $arDocument["Номер"],
-                "LID"                =>  "s1",
-                "XML_ID"             =>  $arDocument["Ид"],
-                "PERSON_TYPE_ID"     =>  1,
-                "PAYED"              =>  isset($existsOrder["PAYED"])?$existsOrder["PAYED"]:"N",
-                "CANCELED"           =>  $canceled,
-                "STATUS_ID"          =>  $statusId,
-                "CURRENCY"           =>  "BAL",
-                "USER_ID"            =>  $userId,
-                "PAY_SYSTEM_ID"      =>  9,
-                "PRICE_DELIVERY"     =>  0,
-                "DELIVERY_ID"        =>  3,
-                "DISCOUNT_VALUE"     =>  0,
-                "TAX_VALUE"          =>  0,
-                "DATE_INSERT"        =>  $DB->FormatDate(
+                "ADDITIONAL_INFO"   =>  $arDocument["Номер"],
+                "LID"               =>  "s1",
+                "XML_ID"            =>  $arDocument["Ид"],
+                "PERSON_TYPE_ID"    =>  1,
+                "PAYED"             =>  isset($existsOrder["PAYED"])?$existsOrder["PAYED"]:"N",
+                "CANCELED"          =>  $canceled,
+                "STATUS_ID"         =>  $statusId,
+                "CURRENCY"          =>  "BAL",
+                "USER_ID"           =>  $userId,
+                "PAY_SYSTEM_ID"     =>  9,
+                "PRICE_DELIVERY"    =>  0,
+                "DELIVERY_ID"       =>  3,
+                "DISCOUNT_VALUE"    =>  0,
+                "TAX_VALUE"         =>  0,
+                "STORE_ID"          =>  $arStore["ID"]
+                ,
+                "DATE_INSERT"       =>  $DB->FormatDate(
                     $arDocument["Дата"]." ".$arDocument["Время"],
                     "YYYY-MM-DD HH:MI:SS",
                     "DD.MM.YYYY HH:MI:SS"
                 ),
-                "DATE_UPDATE"        =>  $DB->FormatDate(
+                "DATE_UPDATE"       =>  $DB->FormatDate(
                     trim($arDocument["Дата"])." ".trim($arDocument["Время"]),
                     "YYYY-MM-DD HH:MI:SS",
                     "DD.MM.YYYY HH:MI:SS"
                 )
             );
+
             if($sum){
                 $arOrder["SUM_PAID"] = $sum;
                 $arOrder["PRICE"] = $sum;
             }
-            
+             
             // Определяем ID склада
             $resStorage = CCatalogStore::GetList(array(),array("XML_ID"=>$arDocument["Склад"]),
                 false,array("nTopCount"=>1),array("ID"));
@@ -343,7 +381,7 @@
             $storeId = 0;
             if(!isset($arStorage["ID"]))$storeId = $arStorage["ID"];
             if($storeId)$arOrder["STORE_ID"] = $storeId;
-            
+           
             // Если заказа нет - создаём, есть - обновляем
             if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
                 if(!$orderId = $objOrder->Add($arOrder)){
@@ -388,24 +426,24 @@
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
                 echo "Update order_id = $orderId ";
-                
                 // Обрабатываем все статусы кроме отмены
-                CSaleOrder::Update($orderId, $arOrder);
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
+                    CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
-                    
-    
+                    CSaleOrder::Update($orderId, $arOrder);
+   
                     $login = "u".$arDocument["Телефон"];
                     // Считаем сумму заказа
                     $orderSum = $arOrder["SUM_PAID"];
 
                     // Отменяем оплату и возвращаем баллы только если заказ сделан из битрикса
                     $moneyBack = false;
+
                     if(preg_match("#^.*\-\d+$$#", $existsOrder["ADDITIONAL_INFO"])){
                         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
                         $obOrder = new bxOrder();
@@ -414,14 +452,13 @@
                         }
                         $moneyBack = true;
                     }
-
                     CSaleOrder::PayOrder($existsOrder["ID"],"N",true,false);
                     CSaleOrder::StatusOrder($existsOrder["ID"], $statusId);
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }
-                }
 
+                }
 
                 
                 // Ищем корзину для этого заказа
@@ -457,6 +494,8 @@
     }
     
     echo "success";
+
+
 ?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");?>

@@ -61,7 +61,8 @@ while($arManufacturer = $resManufacturers->GetNext()){
         $arManufacturer["PROPS"]["HOW_FIND"]["VALUE"] = html_entity_decode($arManufacturer["PROPS"]["HOW_FIND"]["VALUE"]);
         $arManufacturer["PROPS"]["HOW_FIND"]["VALUE"] = str_replace("\n","",$arManufacturer["PROPS"]["HOW_FIND"]["VALUE"]);
     ?>
-    <tr <? if(!trim($arManufacturer["PROPS"]["HOW_FIND"]["VALUE"])){?> class="man-error";<?} ?>>
+    <tr <?
+    if(!trim(html_entity_decode($arManufacturer["PROPS"]["ADDRESS"]["VALUE"]))){?> class="man-error";<?} ?>>
         <td class="man-id"><?= $arManufacturer["ID"];?></td>
         <td class="man-name"><?= $arManufacturer["NAME"];?></td>
         <td class="man-address"><?= $arManufacturer["PROPS"]["ADDRESS"]["VALUE"];?></td>
