@@ -56,13 +56,18 @@
                 "EMAIL"             =>  $email,
                 "GROUP_ID"          =>  array(2,3,4,6),
                 "PERSONAL_GENDER"   =>  isset($profile["personal"]["sex"]) && $profile["personal"]["sex"]=='male'?'M':'F',
-                "NAME"              =>  isset($profile["personal"]["firstname"]) && isset($profile["personal"]["middlename"])?$profile["personal"]["firstname"]." ".$profile["personal"]["middlename"]:'',
+                "NAME"              =>  
+                    isset($profile["personal"]["firstname"]) && isset($profile["personal"]["middlename"])
+                        ?
+                    $profile["personal"]["firstname"]." ".$profile["personal"]["middlename"]
+                        :
+                    $profile["personal"]["firstname"],
                 "LAST_NAME"         =>  isset($profile["personal"]["surname"])?$profile["personal"]["surname"]:'',
                 "PERSONAL_PHONE"    =>  isset($profile["personal"]["phone"])?$profile["surname"]["phone"]:'',
                 "PERSONAL_BIRTHDAY" =>  isset($profile["personal"]["birthday"])?$profile["surname"]["birthday"]:'',
                 "ACTIVE"            =>  "Y"
             );
-            
+
             $objUser = new CUser;
             CModule::IncludeModule("sale");
             $objAccount = new CSaleUserAccount;

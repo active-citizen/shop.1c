@@ -61,15 +61,31 @@
             return $nUserId;
         }
         
-        function updateBalance($nUserId){
-            $fBalance = $this->getBalance($nUserId);
+        function updateBalance($nUserId,$field = "balance",$value=""){
+
+            if($field=="balance")
+                $fBalance = $this->getBalance($nUserId);
+            else
+                $fBalance = $value;
+
             $GLOBALS["DB"]->update("users",array(
-                "balance"=>$fBalance
+                $field=>$fBalance
             ),array(
                 "id"=>$nUserId
             ));
         }
-        
+
+
+        static function getUserPoints($nUserId){
+            $GLOBALS["DB"]->search_one(
+                "users",
+                array("id"=>$nUserId),
+                "",
+                "`current_points`,`all_points`,`freezed_points`,`spent_points`"
+            );
+            return $GLOBALS["DB"]->record;
+        }
+
         function getBalance($nUserId){
             $GLOBALS["DB"]->search_one(
                 "transacts_brief_".self::getSuffix($nUserId),

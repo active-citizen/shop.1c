@@ -8,10 +8,6 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
 
-/*
-        print_r($data);
-    die;
-*/
     $agBrige = new ActiveCitizenBridge;
     $bxUser = new bxUser;
 
@@ -31,13 +27,13 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     if(!$answer["errors"] && !$history = $agBrige->exec()){
         $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
     }
-    
+
     if(isset($history["errorMessage"]) && $history["errorMessage"]){
         $answer["errors"][] = $history["errorMessage"];
     }else{
         $bxPoint = new bxPoint;
-        $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
-    }   
+        $bxPoint->updatePoints($history["result"], CUser::GetID());
+   }   
 
 }
     include(dirname(__FILE__)."/../menu.php");

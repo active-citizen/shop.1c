@@ -31,8 +31,6 @@
                 property_exists($args, "to") && $args->to?intval($args->to):false,
                 property_exists($args, "accepted") && $args->accepted?$args->accepted:false
             );
-            return array(
-                "history"=>$result
-            );
+            return $result;
         }
     }

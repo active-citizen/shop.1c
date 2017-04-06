@@ -6,7 +6,15 @@ $RU = $_SERVER["REQUEST_URI"];
 CModule::IncludeModule('catalog');
 
 
-$resStores = CCatalogStore::GetList();
+$resStores = CCatalogStore::GetList(
+    array("TITLE"=>"asc"),
+    array(
+        "!ADDRESS"=>''
+    ),
+    false,
+    false,
+    array("TITLE","ADDRESS","ID","PHONE","SCHEDULE","EMAIL","DESCRIPTION")
+);
 
 $arResult["stores"] = array();
 while($arStore = $resStores->GetNext()){

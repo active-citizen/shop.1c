@@ -1,11 +1,14 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+
 $RU = $_SERVER["REQUEST_URI"];
 // Значения по умолчанию
 if(!isset($arParams["PRODUCT_CODE"]))$arParams["PRODUCT_CODE"] = '';
 if(!isset($arParams["CATALOG_IBLOCK_ID"]))$arParams["CATALOG_IBLOCK_ID"] = 2;
 if(!isset($arParams["OFFER_IBLOCK_ID"]))$arParams["OFFER_IBLOCK_ID"] = 3;
 if(!isset($arParams["USER_ID"]))$arParams["USER_ID"] = $USER->GetId();
+if(!isset($arParams["ALL_POINTS_LIMIT"]))$arParams["ALL_POINTS_LIMIT"] = 1000;
+
 
 //Определяем сумму на счету пользователя
 CModule::IncludeModule("sale");
@@ -150,5 +153,14 @@ $arResult["MARK"] = CIBlockElement::GetList(
 $resComments = CForumMessage::GetList(array("POST_DATE"=>"DESC"),array("TOPIC_ID"=>$arResult["CATALOG_ITEM"]["PROPERTIES"]["FORUM_TOPIC_ID"][0]["VALUE"]));
 $arResult["MESSAGES"] = $resComments->SelectedRowsCount();
 
+// Узнаём число заработанных баллов
+$arResult["USER_INFO"] = CUser::GetList(
+    ($by="personal_country"), ($order="desc"),
+    array("ID"=>CUser::GetId()),
+    array(
+        "SELECT"=>array("UF_USER_ALL_POINTS"),
+        "NAV_PARAMS"=>array("nTopCount"=>1)
+    )
+)->GetNext();
 
 $this->IncludeComponentTemplate();

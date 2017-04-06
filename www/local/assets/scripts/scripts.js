@@ -398,12 +398,6 @@ $(document).ready(function(){
     $('#ag-basket-amount').spinner("enable");
     $('#ag-basket-amount').spinner("value",1);
 
-    if(document.location.pathname=='/catalog/'){
-        $.get(
-            "/.integration/orders.ajax.php"
-        );
-    }
-    
 });
 
 function next_page(){

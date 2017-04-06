@@ -65,17 +65,29 @@ while($arManufacturerProp = $resManufacturerProps->GetNext()){
 
 //$arOffer = CIblockElement::GEtList(array(),array("IBLOCK_CODE"=>"clothes_offers","ID"=>$arBasket["PRODUCT_ID"]))->GetNext();
 $data = array();
+
 $data["CODE"] = $arOrder["ADDITIONAL_INFO"];
 $data["FIO"] = (!$arUser['NAME'] && !$arUser["LAST_NAME"]?$arUser['LOGIN']:$arUser['NAME']." ".$arUser["LAST_NAME"]);
 $data["NAME"] = $arCatalog["NAME"];
 $data["QUANTITY"] = ($arBasket["QUANTITY"]>1?$arBasket["QUANTITY"]." &times; ":"").$arCatalogProps["QUANT"][0]["VALUE"];
+$data["MANUFACTURER_ID"] = $arCatalogProps["MANUFACTURER_LINK"][0]['VALUE'];
 
-$data["ADDRESS"] = $arManufacturerProps["HOW_FIND"][0]["VALUE"];
-$data["HOW_SEARCH"] = $arManufacturerProps["SCHEME"][0]["VALUE"];
+$arStorage =CCatalogStore::GetList(
+    array(),
+    array("ID"=>$arOrder["STORE_ID"]),false,array("nTopCount"=>1),
+    array("ADDRESS","TITLE","ID")
+)->GetNext();
+$data["ADDRESS"] = $arStorage["ADDRESS"];
+$data["MAP_FILENAME"] = $_SERVER["DOCUMENT_ROOT"].'/upload/stores/'.$arStorage["ID"].'.png';
+if($arStorage["TITLE"]=='На электронную почту' || !$arStorage["TITLE"]){
+    $data["ADDRESS"] = $arManufacturerProps["ADDRESS"][0]["VALUE"];
+    $data["MAP_FILENAME"] = $_SERVER["DOCUMENT_ROOT"].'/upload/manufacturers/'.$data["MANUFACTURER_ID"].'.png';
+}
+$data["HOW_SEARCH"] = $arManufacturerProps["HOW_FIND"][0]["VALUE"];
 
 $data["RULES"] = $arCatalogProps["RECEIVE_RULES"][0]["~VALUE"]["TEXT"];
 $data["MANUFACTURER"] = $arManufacturerProps["FULL_NAME"][0]["VALUE"];
-$data["MANUFACTURER_ID"] = $arCatalogProps["MANUFACTURER_LINK"][0]['VALUE'];
+
 
 $tmp = date_parse($arOrder["DATE_INSERT"]);
 $orderTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
@@ -323,7 +335,9 @@ body {
       <div class="ag-shop-certificate__description">
         <div class="ag-shop-certificate__block-name">Описание</div>
         <figure class="ag-shop-certificate__map">
-	  <div id="YMapsID" style="width:288;height:288px;border: 1px #DDD solid;"><img src="data:image/png;base64,'.base64_encode(file_get_contents($_SERVER["DOCUMENT_ROOT"].'/upload/manufacturers/'.$data["MANUFACTURER_ID"].'.png')).'"></div>
+	  <div id="YMapsID" style="width:288;height:288px;border: 1px #DDD solid;">
+        <img
+        src="data:image/png;base64,'.base64_encode(file_get_contents($data["MAP_FILENAME"])).'"></div>
           <figcaption class="ag-shop-certificate__map-description">'. $data["HOW_SEARCH"] .'</figcaption>
         </figure>
         <div class="ag-shop-certificate__description-text">

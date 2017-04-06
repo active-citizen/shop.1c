@@ -84,7 +84,7 @@
         $answer["errors"][] = $history["errorMessage"];
     }else{
         $bxPoint = new bxPoint;
-        $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
+        $bxPoint->updatePoints($history["result"], CUser::GetID());
     } 
     
     echo json_encode($answer);

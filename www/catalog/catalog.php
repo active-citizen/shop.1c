@@ -34,13 +34,17 @@ if(
         array("ID")
     )->GetNext()
     ||
-    !CIBlockSection::GetList(
-        array(),
-        array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code),
-        false,
-        array(),
-        array("ID")
-    )->GetNext()
+    (
+        $catalog_code!='root'
+        &&
+        !CIBlockSection::GetList(
+            array(),
+            array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code),
+            false,
+            array(),
+            array("ID")
+        )->GetNext()
+    )
     )
 ){
     include($_SERVER["DOCUMENT_ROOT"]."/404.php");
@@ -64,7 +68,9 @@ if(
             <?$APPLICATION->IncludeComponent("ag:card", "", array(
                 "CATALOG_IBLOCK_ID" =>  $catalogIblockId,
                 "OFFER_IBLOCK_ID"   =>  $offerIblockId,
-                "PRODUCT_CODE"      =>  $product_code
+                "PRODUCT_CODE"      =>  $product_code,
+                "ALL_POINTS_LIMIT"  =>  1000 // Сколько нужно набрать баллов за
+                //          время регистрации для покупок в магазине
                 ),
                 false
             );?>

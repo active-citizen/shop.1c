@@ -31,15 +31,27 @@
          * Обновление в битриксе транзакций личного счёта из занных EМП
          */
         function updatePoints($history, $userId){
+           
+            $arPointsStatus = $history["status"];
+            $history = $history["history"];
             
             CModule::IncludeModule("sale");
             
             // Получаем номер счёта данного пользователя
-            $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
+            $objSaleUserAccount = new CSaleUserAccount;
+            $res = $objSaleUserAccount->GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
             $accountId = 0;
             $accountAmount = 0;
+            // Создаём личный счет если ещё нет
             if($arrAccount = $res->getNext()){
                 $accountId = $arrAccount["ID"];
+            }
+            else{
+        	$accountId = $objSaleUserAccount->Add(array(
+        	    "USER_ID"=>$userId,
+        	    "CURRENCY"=>"BAL",
+        	    "CURRENT_BUDGET"=>0
+        	));
             }
             
             
@@ -57,17 +69,13 @@
                 $transactionsIndex[
                     $arTransaction["DEBIT"]." ".
                     preg_replace("#^(.*)\s+.*$#","$1",$arTransaction["TRANSACT_DATE"])." ".
-                    $arTransaction["DESCRIPTION"]
+                    $arTransaction["~DESCRIPTION"]
                 ] = $arTransaction["ID"];
                 $transactionDescIndex["Б-".$arTransaction["ORDER_ID"]] = 1;
             }
                 
-            $res = CSaleUserAccount::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
-
-
             foreach($history as $nT=>$empTransact){
                 // Не загружаем транзакции за заказы
-                //if(mb_strpos($empTransact["title"],"Б-")!==false)continue;
                 
                 // Если начисление-списание связано с заказом в битриксе - пропускаем
                 $flag = 0;
@@ -97,18 +105,14 @@
 
                 $arFields = array(
                     "USER_ID"       =>  $userId,
-                    "AMOUNT"        =>  abs($empTransact['points']),
+                    "AMOUNT"        =>  abs(intval($empTransact['points'])),
                     "CURRENCY"      =>  "BAL",
                     "DEBIT"         =>  ($empTransact['action']=='debit'?'Y':'N'),
                     "DESCRIPTION"   =>  $empTransact["title"],
                     "ORDER_ID"      =>  "",
                     "EMPLOYEE_ID"   =>  1,
                     "TRANSACT_DATE" =>  date("d.m.Y H:i:s", $empTransact["date"])
-                );       
-                
-                // Получаем сумму на счёте
-                $arrAccount = CSaleUserAccount::GetByID($accountId);
-                $accountAmount = $arrAccount["CURRENT_BUDGET"];
+                );      
                 
                 // ДОбавляем транзакцию
                 if(!$transactId = $objTransact->Add($arFields)){
@@ -116,21 +120,25 @@
                     return false;
                 }
                 else{
-                    // Изменяем размер счёта
-                    CSaleUserAccount::Update(
-                        $accountId,
-                        array(
-                            "USER_ID"       =>  $arFields["USER_ID"],
-                            "CURRENT_BUDGET"=>  $accountAmount+($arFields["DEBIT"]=='Y'?'+1':'-1')*$arFields["AMOUNT"],
-                            "CURRENCY"      =>  "BAL",
-                            "NOTES"         =>  $empTransact["title"]
-                        )
-                    );
                     
                 }
-                //$objTransact->Update($transactId, array("TRANSACT_DATE"=>$arFields["TRANSACT_DATE"]));
+                   
             }
 
-            
+            // Изменяем размер счёта
+            CSaleUserAccount::Update(
+                $accountId,
+                array(
+                    "USER_ID"       =>  $userId,
+                    "CURRENT_BUDGET"=>  $arPointsStatus["current_points"],
+                    "CURRENCY"      =>  "BAL",
+                    "NOTES"         =>  "" 
+                )
+            );
+
+            // Обновляем число заработанных баллов
+            $user = new CUser;
+            $user->Update($userId, array("UF_USER_ALL_POINTS" => $arPointsStatus["all_points"]));
+
         }
     }

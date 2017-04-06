@@ -28,8 +28,16 @@
                             number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)
                         ?> 
                         <?= 
-                            get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))
+                            get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," "))
                         ?>.
+                </div>
+              </div>
+            <? elseif($arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arParams["ALL_POINTS_LIMIT"]):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    Для заказа поощрений необходимо за всё время участия
+                    заработать не менее <?= $arParams["ALL_POINTS_LIMIT"]?>
+                    баллов
                 </div>
               </div>
             <? elseif(
@@ -56,7 +64,8 @@
                           <div class="ag-shop-card__image-info">
                             <div class="ag-shop-card__image-points">
                               <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,",","")?></div>
-                              <div class="ag-shop-item-card__points-text"><?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?></div>
+                              <div class="ag-shop-item-card__points-text"><?=
+                              get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," "))?></div>
                             </div>
                             
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["NEWPRODUCT"][0]["VALUE_ENUM"]=='да'):?>
@@ -353,8 +362,15 @@
                 <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]):?>
                 <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
                 <? endif ?>
-                <? if(count($arResult["OFFERS"][0]["STORAGES"]) &&  $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]):?>
-                <button class="ag-shop-card__submit-button" onclick="return productConfirm();" type="button">Заказать за <strong><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)?></strong> <?= get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0))?></button>
+                <? if(
+                    count($arResult["OFFERS"][0]["STORAGES"]) 
+                    &&  $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
+                    &&  $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]>=$arParams["ALL_POINTS_LIMIT"]
+                ):?>
+                <button class="ag-shop-card__submit-button" onclick="return productConfirm();" 
+                    type="button">Заказать за <strong><?= 
+                        number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")
+                    ?></strong> <?= get_points($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"])?></button>
                 <? endif ?>
                 <div class="ag-shop-card__additional-info">
                   <div class="ag-shop-card__tabs">
@@ -435,8 +451,15 @@
             <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-store-id" style="display:none;"></div>
           </div>
           <div class="ag-shop-modal__row">
+            <?
+            if(
+                $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_ABILITY"][0]["VALUE_ENUM"]
+                !=
+                'да'
+            ):?>
             <div class="ag-shop-modal__alert"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>При нажатии кнопки «Оформить заказ» баллы, потраченные на данное поощрение, не возвращаются.</span></div>
           </div>
+          <? endif?>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__buttons-wrap">
               <button class="ag-shop-modal__button" id="card-order-confirm-button" type="button" onclick="return productConfirmNext();">Оформить заказ</button>
