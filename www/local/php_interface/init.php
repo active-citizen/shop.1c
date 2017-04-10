@@ -25,7 +25,24 @@
     // Определяем ID инфоблока производителей
     $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
     define("MANUFACTURER_IB_ID",$arr["ID"]);
-    
+    // Определяем ID свойства ХОЧУ
+    $arr = CIBlockProperty::GetList(
+        array(), array(
+            "IBLOCK_ID"=>CATALOG_IB_ID,
+            "NAME"=>"Хочу"
+        )
+    )->GetNext();
+    define("IWANT_PROPERTY_ID",$arr["ID"]);
+    // Определяем ID свойства ИНТЕРЕСУЮСЬ 
+    $arr = CIBlockProperty::GetList(
+        array(), array(
+            "IBLOCK_ID"=>CATALOG_IB_ID,
+            "NAME"=>"Интересуюсь"
+        )
+    )->GetNext();
+    define("INTEREST_PROPERTY_ID",$arr["ID"]);
+      
+     
      // Если режим обмена заказами - глушим отправку письма при создании заказа
     if(ORDERS_EXCHANGE_ADMIN_MODE){
         AddEventHandler(

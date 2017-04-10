@@ -13,6 +13,13 @@
     // Получаем из XML массив производителей
     $arManufacturers = $arImport["Классификатор"]["Производители"]["Производитель"];
     if(!isset($arManufacturers[0]))$arManufacturers = array($arManufacturers);
+    // Получаем из XML массив хотелок
+    $arIwant = $arImport["Классификатор"]["Хотелки"]["Хочу"];
+    if(!isset($arIwant[0]))$arIwant = array($arIwant);
+    // Получаем из XML массив интересов
+    $arInterests = $arImport["Классификатор"]["Интересы"]["Интересуюсь"];
+    if(!isset($arInterests[0]))$arInterests = array($arInterests);
+     
     // Получаем из XML массив товаров
     $arProducts = $arImport["Каталог"]["Товары"]["Товар"];
     if(!isset($arProducts[0]))$arProducts = array($arProducts);
@@ -21,7 +28,52 @@
     foreach($arProducts as $k=>$arProduct)
         if(isset($arProducts[$k]["Картинка"]) && !is_array($arProducts[$k]["Картинка"]))
             $arProducts[$k]["Картинка"] = array($arProducts[$k]["Картинка"]);
-    
+
+    /////////////////////////////////////////////////////////////////////////
+    // Импортируем хотелки и интересы и составляем индекс
+    ////////////////////////////////////////////////////////////////////////
+    $arIwantIndex = array();
+    // Чистим от предыдущих значений 
+    $resPropertiesEnum = CIBlockPropertyEnum::GetList(
+        array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
+        "PROPERTY_ID"=>IWANT_PROPERTY_ID)
+    );
+    while($arPropertyEnum = $resPropertiesEnum->getNext())
+        CIBlockPropertyEnum::Delete($arPropertyEnum["ID"]);
+    // Добавляем значения флагов из XML
+    $arIwantIndex = array();
+    foreach($arIwant as $arIW){
+        $nIWID = CIBlockPropertyEnum::Add(array(
+            "PROPERTY_ID"   =>  IWANT_PROPERTY_ID,
+            "VALUE"         =>  $arIW["Наименование"],
+            "XML_ID"        =>  $arIW["Ид"]
+        ));
+        $arIwantIndex[$arIW["Ид"]] = array(
+            "NAME"  =>  $arIW["Наименование"],
+            "ID"    =>  $nIWID
+        );
+    }
+    // Чистим от предыдущих значений 
+    $resPropertiesEnum = CIBlockPropertyEnum::GetList(
+        array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
+        "PROPERTY_ID"=>INTEREST_PROPERTY_ID)
+    );
+    while($arPropertyEnum = $resPropertiesEnum->getNext())
+        CIBlockPropertyEnum::Delete($arPropertyEnum["ID"]);
+    // Добавляем значения флагов из XML
+    $arInterestIndex = array();
+    foreach($arInterests as $arInt){
+        $nIntID = CIBlockPropertyEnum::Add(array(
+            "PROPERTY_ID"   =>  INTEREST_PROPERTY_ID,
+            "VALUE"         =>  $arInt["Наименование"],
+            "XML_ID"        =>  $arInt["Ид"]
+        ));
+        $arInterestIndex[$arInt["Ид"]] = array(
+            "NAME"  =>  $arInt["Наименование"],
+            "ID"    =>  $nIntID
+        );
+    }
+
     ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем производителей
     ///////////////////////////////////////////////////////////////////////
@@ -122,7 +174,6 @@
         $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
     }
     
-
     // Проходим по каждому товару в XML
     foreach($arProducts as $arProduct){
         ////////////////////////////////////////////////////////////////////////
@@ -285,10 +336,38 @@
         // Лидер продаж
         $arProperties["SPECIALOFFER"] = 
             $arProduct["ДоступенПоАкции"]=='Да'?$ENUM["SPECIALOFFER"]["да"]:0;
-        // Интересуюсь
-        $arProperties["INTERESTS"] = $ENUM["INTERESTS"][$arProduct["Интересуюсь"]];
+        // Вычисляем массив хотелок
+        $arIwantIds = array();
+        if($arProduct["Хотелки"]["Хочу"]){
+            if(!isset($arProduct["Хотелки"]["Хочу"][0]))
+                $arProduct["Хотелки"]["Хочу"] = array($arProduct["Хотелки"]["Хочу"]);
+            $tmp = $arProduct["Хотелки"]["Хочу"];
+            foreach($tmp as $t) 
+                if(
+                    isset($t["@attributes"]["Ид"]) 
+                    &&
+                    $arIwantIndex[$t["@attributes"]["Ид"]]["ID"]
+                )
+                $arIwantIds[] = $arIwantIndex[$t["@attributes"]["Ид"]]["ID"];
+        }
+        // Вычисляем массив интересов
+        $arInterestsIds = array();
+        if($arProduct["Интересы"]["Интересуюсь"]){
+            if(!isset($arProduct["Интересы"]["Интересуюсь"][0]))
+                $arProduct["Интересы"]["Интересуюсь"] = array($arProduct["Интересы"]["Интересуюсь"]);
+            $tmp = $arProduct["Интересы"]["Интересуюсь"];
+            foreach($tmp as $t) 
+                if(
+                    isset($t["@attributes"]["Ид"]) 
+                    &&
+                    $arInterestIndex[$t["@attributes"]["Ид"]]["ID"]
+                )
+                $arInterestsIds[] = $arInterestIndex[$t["@attributes"]["Ид"]]["ID"];
+        }
         // Хочу
-        $arProperties["WANTS"] = $ENUM["WANTS"][$arProduct["Хочу"]];
+        $arProperties["WANTS"] = $arIwantIds;
+        // Интересуюсь
+        $arProperties["INTERESTS"] = $arInterestsIds; 
         // Тип поощрений
         $arProperties["TYPES"] = $ENUM["TYPES"][$arProduct["ТипПоощрения"]];
         // Правила получения
