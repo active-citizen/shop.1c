@@ -70,6 +70,32 @@
     $objBasket  = new CSaleBasket;
     $objIBlockElement = new CIBlockElement;
     $objPrice = new CPrice;
+    
+    // Определяем ID платёжной системы "Внутренний счёт", если такого
+    // нет - берём первый же активный
+    $arPaySystem = CSalePaySystem::GetList(
+        array("ID"=>"ASC"),
+        array("NAME"=>"Внутренний счет"),
+        false,array("nTopCount"=>1),array("ID")
+    )->GetNext();
+    if(!$arPaySystem)
+        $arPaySystem = CSalePaySystem::GetList(
+            array("ID"=>"ASC"),
+            array("ACTIVE"=>"Y"),
+            false,array("nTopCount"=>1),array("ID")
+        )->GetNext();
+    
+    // Определяем ID системы доставки "Самовывоз"
+    // нет - берём первый же активный
+    $arDelivery = CSaleDelivery::GetList(
+        array("ID"=>"ASC"),
+        array("NAME"=>"Самовывоз"),
+        false,array("nTopCount"=>1,array("ID"))
+    )->GetNext();
+    if(!$arDelivery)
+        $arDelivery = CSaleDelivery::GetList(
+            array("ID"=>"ASC"),array("ACTIVE"=>"Y"),false,array("nTopCount"=>1,array("ID"))
+        )->GetNext();
    
     header("Content-type: text/plain; charset=UTF-8");
 //    echo file_get_contents($uploadDir.$ordersFilename);
@@ -85,8 +111,8 @@
 
         foreach($arOrders["Документ"] as $ccc=>$arDocument){
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if(0 && $ccc>1){break;}else{
-                echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
+            if(0 && $ccc>100){break;}else{
+                //echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
@@ -107,7 +133,7 @@
             }
            
             // Бортуем заказы с неверно указанным телефоном
-            if(!preg_match("#^\d{7,11}$#",$arDocument["Телефон"])){
+            if(!preg_match("#^\d{5,11}$#",$arDocument["Телефон"])){
                 echo "Order_num=".$arDocument["Номер"].
                         ": Incorrect phone ".print_r($arDocument["Телефон"],1)."\n";
                 $t1 = microtime(true);
@@ -243,17 +269,27 @@
             $userName = implode(" ",$tmpName);
             // Делаем пользователю случайный пароль
             $password = mb_substr(md5(rand()),0,10);
-            
+            $sEmailRegister =  
+                preg_match(
+                    "#^[\d\w\-\_\.]{2,}\@[\d\w\-\_]{2,}(\.[\d\w\-\_]{2,})*$#",
+                    $arDocument["ЭлектроннаяПочта"]
+                )
+                ?
+                $arDocument["ЭлектроннаяПочта"]
+                :
+                "u".$arDocument["Телефон"]."@shop.ag.mos.ru"
+                ;
             // Данные для добавления пользователя
             $userData = array(
                 "LOGIN"             =>  "u".$arDocument["Телефон"],
                 "PASSWORD"          =>  $password,
                 "CONFIRM_PASSWORD"  =>  $password,
-                "EMAIL"             =>  $arDocument["ЭлектроннаяПочта"],
+                "EMAIL"             =>  $sEmailRegister,
                 "GROUP_ID"          =>  array(2,3,4,6),
                 "NAME"              =>  dataNormalize($userName), 
                 "LAST_NAME"         =>  dataNormalize($userLastName),
                 "PERSONAL_PHONE"    =>  $arDocument["Телефон"],
+                "PERSONAL_NOTES"    =>  "original email: ".$arDocument["ЭлектроннаяПочта"],
                 "ACTIVE"            =>  "Y"
             );
             
@@ -275,7 +311,7 @@
             }
             else{
                 $userId = $existsUser["ID"];
-                $objUser->Update($userId, $userData);
+                //$objUser->Update($userId, $userData);
             }
 
             // Нормализуем историю
@@ -339,7 +375,7 @@
                     $statusId = "AG";$canceled = "Y";
                 break;
             }
-            
+           
             $arOrder = array(
                 "ADDITIONAL_INFO"   =>  $arDocument["Номер"],
                 "LID"               =>  "s1",
@@ -350,9 +386,9 @@
                 "STATUS_ID"         =>  $statusId,
                 "CURRENCY"          =>  "BAL",
                 "USER_ID"           =>  $userId,
-                "PAY_SYSTEM_ID"     =>  9,
+                "PAY_SYSTEM_ID"     =>  $arPaySystem["ID"],
                 "PRICE_DELIVERY"    =>  0,
-                "DELIVERY_ID"       =>  3,
+                "DELIVERY_ID"       =>  $arDelivery["ID"],
                 "DISCOUNT_VALUE"    =>  0,
                 "TAX_VALUE"         =>  0,
                 "STORE_ID"          =>  $arStore["ID"]
@@ -386,12 +422,14 @@
             if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
                 if(!$orderId = $objOrder->Add($arOrder)){
                     echo "failed\n";
-                    echo "Not created";
+                    echo "Not created:";
+                    print_r($arOrder);
+                    print_r($objOrder);
                     $t1 = microtime(true);
                     continue;
                 }
 
-                echo "Add order_id=$orderId  ";
+                //echo "Add order_id=$orderId  ";
 
                 // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
@@ -425,7 +463,7 @@
             }
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
-                echo "Update order_id = $orderId ";
+                //echo "Update order_id = $orderId ";
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
                     CSaleOrder::Update($orderId, $arOrder);

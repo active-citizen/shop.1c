@@ -135,13 +135,13 @@
                 )continue;
                 $product["ХарактеристикиТовара"][] = array(
                     "Наименование"  =>  
-                        dataNormalize(mb_convert_encoding(
-                            $arrProp["NAME"],"cp1251","utf-8"
-                        )),
+                        mb_convert_encoding(
+                            dataNormalize($arrProp["NAME"]),"cp1251","utf-8"
+                        ),
                     "Значение"      =>  
-                        dataNormalize(mb_convert_encoding(
-                            $arrProp["VALUE_ENUM"],"cp1251","utf-8"
-                        ))
+                        mb_convert_encoding(
+                            dataNormalize($arrProp["VALUE_ENUM"]),"cp1251","utf-8"
+                        )
                 );
             }
             
@@ -163,11 +163,11 @@
             
             $product["Ид"] = $arOffer["XML_ID"];
             $product["Наименование"] = 
-                dataNormalize(mb_convert_encoding($arOffer["NAME"],"cp1251","utf-8"));
+                mb_convert_encoding(dataNormalize($arOffer["NAME"]),"cp1251","utf-8");
             $product["Единица"] = 
-                dataNormalize(mb_convert_encoding(
-                    $arrCatalog["PROPERTY_QUANT_VALUE"],"cp1251","utf-8"
-                ));
+                mb_convert_encoding(
+                    dataNormalize($arrCatalog["PROPERTY_QUANT_VALUE"]),"cp1251","utf-8"
+                );
             $product["Артикул"] = $arrCatalog["PROPERTY_ARTNUMBER_VALUE"];
             $product["ЦенаЗаЕдиницу"] = $arPrice["PRICE"];
             $product["Продукт"] = $arOffer;
@@ -194,18 +194,18 @@
         $order["Телефон"] = preg_replace("#^u(\d+)$#","$1",$arUser["LOGIN"]);
         $order["ЭлектроннаяПочта"] = $arUser["EMAIL"];
         $order["Клиент"] = 
-            dataNormalize(mb_convert_encoding(
-                $arUser["LAST_NAME"]." ".$arUser["NAME"],"cp1251","utf-8"
-            ));
-        $order["Имя"] = dataNormalize(mb_convert_encoding(
-            $arUser["NAME"],"cp1251","utf-8"
-        ));
-        $order["Фамилия"] = dataNormalize(mb_convert_encoding(
-            $arUser["LAST_NAME"],"cp1251","utf-8"
-        ));
-        $order["Город"] = dataNormalize(mb_convert_encoding(
-            $arUser["PERSONAL_CITY"],"cp1251","utf-8"
-        ));
+            mb_convert_encoding(
+                dataNormalize($arUser["LAST_NAME"]." ".$arUser["NAME"]),"cp1251","utf-8"
+            );
+        $order["Имя"] = mb_convert_encoding(
+            dataNormalize($arUser["NAME"]),"cp1251","utf-8"
+        );
+        $order["Фамилия"] = mb_convert_encoding(
+            dataNormalize($arUser["LAST_NAME"]),"cp1251","utf-8"
+        );
+        $order["Город"] = mb_convert_encoding(
+            dataNormalize($arUser["PERSONAL_CITY"]),"cp1251","utf-8"
+        );
         $order["Склад"] = $arStore["XML_ID"];
         
         $arSatatus = CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
