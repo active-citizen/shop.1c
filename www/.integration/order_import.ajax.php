@@ -84,9 +84,9 @@
             array("ACTIVE"=>"Y"),
             false,array("nTopCount"=>1),array("ID")
         )->GetNext();
-    
     // Определяем ID системы доставки "Самовывоз"
     // нет - берём первый же активный
+    //echo "asd";
     $arDelivery = CSaleDelivery::GetList(
         array("ID"=>"ASC"),
         array("NAME"=>"Самовывоз"),
@@ -103,16 +103,17 @@
     if(file_exists($uploadDir.$ordersFilename)){
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
-        $arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
+        //$arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
 
         // Нормализуем массив заказов
         if(!isset($arOrders["Документ"][0]))
             $arOrders["Документ"] = array($arOrders["Документ"]);
 
-        foreach($arOrders["Документ"] as $ccc=>$arDocument){
+        foreach($arOrders->Документ as $ccc=>$arDocument){
+            $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if(0 && $ccc>100){break;}else{
-                //echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
+            if($ccc>100){break;}else{
+                echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
