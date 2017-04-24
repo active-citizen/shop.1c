@@ -1,24 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
     
-    // Получаем корневых разделов
-    CModule::IncludeModule("iblock");
-    $res = CIBlockSection::GetList(
-        array(),
-        array("ACTIVE"=>"Y","IBLOCK_CODE"=>"clothes","SECTION_ID"=>0),
-        false,
-        false
-    );
 
-    $SECTIONS = array();
-    while($section = $res->getNext()){
-        $SECTIONS[$section["ID"]] = $section;
-        $res1 = CIBlockElement::GetList(
-            array(),array("SECTION_ID"=>$section["ID"]),false
-        );
-        $SECTIONS[$section["ID"]]["products"]=$res1->SelectedRowsCount();
-    }
-    
+   
     CModule::IncludeModule("sale");
     $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
     $account = $res->GetNext();
@@ -139,34 +123,10 @@
         <!-- }}} Top Nav-->
 
 
-        <!-- Menu {{{-->
-        <div class="ag-shop-menu">
-          <div class="ag-shop-menu__container">
-            <div class="ag-shop-menu__header">
-              <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
-                <div class="grid__col grid__col-shrink">
-                  <h2 class="ag-shop-menu__current">Все&nbsp;категории</h2>
-                </div>
-                <div class="grid__col grid__col-shrink">
-                  <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" type="button"><span></span></button>
-                </div>
-              </div>
-            </div>
-            <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):?>
-            <div class="ag-shop-menu__items js-menu__list">
-                <?php foreach($SECTIONS as $section):?>
-                <? if(!$section["products"])continue;?>
-                <div class="ag-shop-menu__item">
-                    <a class="ag-shop-menu__link<? if(preg_match("#^".$section["SECTION_PAGE_URL"]."#",$_SERVER["REQUEST_URI"])):?> ag-shop-menu__link--active<? endif?>" 
-                        href="<?= $section["SECTION_PAGE_URL"];?>">
-                        <?= $section["NAME"];?>
-                    </a>
-                </div>
-                <?endforeach?>
-            </div>
-            <? endif?>
-          </div>
-        </div>
-        <!-- }}} Menu-->
+    <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
+            "CACHE_TIME"      =>  COMMON_CACHE_TIME
+        ),
+        false
+    );?>
 
 

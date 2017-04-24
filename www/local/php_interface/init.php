@@ -14,6 +14,9 @@
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
 
+    //
+    define("COMMON_CACHE_TIME",3600);
+
     // Определяем ID инфоблока каталога
     $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
     define("CATALOG_IB_ID",$arr["ID"]);
