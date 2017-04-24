@@ -41,7 +41,10 @@
                 }
             ');
             $curl = new curlTool;
-            $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
+            $data = $curl->post($url, $data, array(
+                "Content-Type: application/x-www-form-urlencoded"
+            ));
+            
             return $data;
         }
     }

@@ -201,3 +201,56 @@ input.ag-balls[type="radio"]{
     background-size: 300px;
     background-repeat: no-repeat;
 }
+
+.ag-shop-sidebar__logo{
+    background-size: 40% !important;
+}
+
+.ag-shop-nav__link--active, .ag-shop-footer__copy{
+    background-color: rgba(0,122,108,1) !important;
+}
+
+.ag-shop-footer__links{
+    background-color: rgba(0,122,108,0.9) !important;
+}
+
+.next-page, 
+.ag-shop-catalog__more-button,
+.ag-shop-profile-order__points,
+.ag-shop-menu__link--active, 
+.ag-shop-item-card__name,
+.ag-shop-card__header-title,
+.ag-shop-card__total-points,
+.ag-shop-card__count-number,
+.ag-shop-modal__button--cancel
+.ag-shop-rules__spoiler-link, 
+.js-spoiler__link, 
+.hash-navigation
+{
+    color: rgba(0,122,108,1) !important;
+}
+
+.next-page, 
+.ag-shop-catalog__more-button,
+.ag-shop-modal__button, 
+.ag-shop-card__review-form-button, 
+.ag-shop-card__submit-button,
+.ag-shop-modal__button--cancel,
+.ag-shop-modal__container
+{
+    border: 1px rgba(0,122,108,1) solid !important;
+}
+
+.ag-shop-modal__button, .ag-shop-card__review-form-button, .ag-shop-card__submit-button{
+    background-color: rgba(0,122,108,1) !important;
+}
+
+.next-page, 
+.ag-shop-catalog__more-button,
+.ag-shop-modal__button--cancel{
+    background-color: rgba(255,255,255,1) !important;
+}
+
+
+
+
