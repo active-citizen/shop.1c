@@ -7,7 +7,10 @@ $APPLICATION->SetTitle("Формирование карт");
 CModule::IncludeModule("iblock");
 CModule::IncludeModule("catalog");
 
-$resManufacturers = CIblockElement::GetList(array(),array("IBLOCK_ID"=>MANUFACTURER_IB_ID));
+$resManufacturers = CIblockElement::GetList(
+    array(),
+    array("IBLOCK_ID"=>MANUFACTURER_IB_ID)
+);
 $arManufacturers = array();
 while($arManufacturer = $resManufacturers->GetNext()){
     $resProps = CIBlockElement::GetProperty(MANUFACTURER_IB_ID,$arManufacturer["ID"]);
@@ -55,8 +58,25 @@ while($arManufacturer = $resManufacturers->GetNext()){
         <th>Адрес</th>
         <th width="200px">Координаты</th>
         <th width="300px">Карта</th>
+        <th>Товар</th>
     </tr>
-    <? foreach($arManufacturers as $k=>$arManufacturer):
+    <?  
+        foreach($arManufacturers as $k=>$arManufacturer):
+        if(!$arProduct = CIBlockElement::GetList(
+            array(),
+            $arFilter = array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "PROPERTY_MANUFACTURER_LINK"=>$arManufacturer["ID"],
+                "ACTIVE"=>"Y"
+            ),
+            false,
+            array("nTopCount"=>1),
+            array("ID","DETAIL_PAGE_URL")
+        )->GetNext())continue;
+//        echo "<pre>";
+//        print_r($arManufacturer);
+//        print_r($arProduct);
+//        die;
         //if($k>0)break;
         $arManufacturer["PROPS"]["HOW_FIND"]["VALUE"] = html_entity_decode($arManufacturer["PROPS"]["HOW_FIND"]["VALUE"]);
         $arManufacturer["PROPS"]["HOW_FIND"]["VALUE"] = str_replace("\n","",$arManufacturer["PROPS"]["HOW_FIND"]["VALUE"]);
@@ -68,6 +88,7 @@ while($arManufacturer = $resManufacturers->GetNext()){
         <td class="man-address"><?= $arManufacturer["PROPS"]["ADDRESS"]["VALUE"];?></td>
         <td class="man-coords"></td>
         <td class="man-map"><img src=""></td>
+        <td><a target="blank" href="<?= $arProduct["DETAIL_PAGE_URL"]?>">тыц</a></td>
     </tr>
     <? endforeach ?>
 </table>

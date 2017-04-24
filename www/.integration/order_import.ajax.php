@@ -1,9 +1,16 @@
 <?php
+    
+    // Output debug messages to 1C exchange
+    define("IMPORT_DEBUG",false);
+
     if(!isset($_SERVER["DOCUMENT_ROOT"]) || !$_SERVER["DOCUMENT_ROOT"])
         $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/..");
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
     require("includes/datafilter.lib.php");
+
+//    echo "failure\nAs planned\n";
+//    die;
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
     $CatalogIblockId = CATALOG_IB_ID;
@@ -113,7 +120,8 @@
             $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
             if($ccc>100){break;}else{
-                echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
+                //if(IMPORT_DEBUG)
+                //    echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
@@ -135,7 +143,8 @@
            
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{5,11}$#",$arDocument["Телефон"])){
-                echo "Order_num=".$arDocument["Номер"].
+                if(IMPORT_DEBUG)
+                    echo "Order_num=".$arDocument["Номер"].
                         ": Incorrect phone ".print_r($arDocument["Телефон"],1)."\n";
                 $t1 = microtime(true);
                 continue;
@@ -148,6 +157,7 @@
             $basketProducts = array();
             foreach($arDocument["Товары"]["Товар"] as $product){
                 if(!isset($product["Ид"])){
+                if(IMPORT_DEBUG)
                     echo "Order_num=".$arDocument["Номер"].
                         ":  Incorrect product XML_ID
                         ".print_r($product["Ид"],1)."\n";
@@ -192,8 +202,9 @@
                         $id = $arCatalog["ID"];
                     }
                     elseif(!$id = $objIBlockElement->Add($arrFields)){
-                        echo "Order_num=".$arDocument["Номер"].
-                            ": Cant create catalog item ".print_r($arrFields, 1)."\n";
+                        if(IMPORT_DEBUG)
+                            echo "Order_num=".$arDocument["Номер"].
+                                ": Cant create catalog item ".print_r($arrFields, 1)."\n";
                         $t1 = microtime(true);
                         continue;
                     }
@@ -211,8 +222,9 @@
                     $arrFields["PRICE"] = $product["ЦенаЗаЕдиницу"];
                     $arrFields["XML_ID"] = $product["Ид"];
                     if(!$offerId = $objIBlockElement->Add($arrFields)){
-                        echo "Order_num=".$arDocument["Номер"].
-                            ": Cant offer item ".print_r($arrFields, 1)."\n";
+                        if(IMPORT_DEBUG)
+                            echo "Order_num=".$arDocument["Номер"].
+                                "   : Cant offer item ".print_r($arrFields, 1)."\n";
                         $t1 = microtime(true);
                         continue;
                     }
@@ -304,8 +316,9 @@
             if(!$existsUser){
                 // Если создание провалилось - сообщаем об ошибке
                 if(!$userId = $objUser->Add($userData)){
-                    echo "Order_num=".$arDocument["Номер"].
-                        ": Cant create user ".print_r($userData, 1)."\n";
+                    if(IMPORT_DEBUG)
+                        echo "Order_num=".$arDocument["Номер"].
+                            ": Cant create user ".print_r($userData, 1)."\n";
                     $t1 = microtime(true);
                     continue;
                 }
@@ -332,7 +345,8 @@
                 ||
                 !trim($arDocument["История"]["Состояние"][0]["Склад"])
             ){
-                echo "Store ID undefined ".$arDocument["История"]["Состояние"][0]["Склад"]."\n";
+                if(IMPORT_DEBUG)
+                    echo "Store ID undefined ".print_r($arDocument,1)."\n";
                 $t1 = microtime(true);
                 continue;
             }
@@ -345,7 +359,9 @@
                 array("nTopCount"=>1),
                 array("ID")
             )->GetNext()){
-                echo "Store ID not found ".$arDocument["История"]["Состояние"][0]["Склад"]."\n";
+                if(IMPORT_DEBUG)
+                    echo "Store ID not found ".
+                        $arDocument["История"]["Состояние"][0]["Склад"]."\n";
                 $t1 = microtime(true);
                 continue;
             }
@@ -422,12 +438,14 @@
             // Если заказа нет - создаём, есть - обновляем
             if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
                 if(!$orderId = $objOrder->Add($arOrder)){
-                    echo "failed\n";
-                    echo "Not created:";
-                    print_r($arOrder);
-                    print_r($objOrder);
-                    $t1 = microtime(true);
-                    continue;
+                    if(IMPORT_DEBUG){
+                        echo "failed\n";
+                        echo "Not created:";
+                        print_r($arOrder);
+                        print_r($objOrder);
+                        $t1 = microtime(true);
+                        continue;
+                    }
                 }
 
                 //echo "Add order_id=$orderId  ";

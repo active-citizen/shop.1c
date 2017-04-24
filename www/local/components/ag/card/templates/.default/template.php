@@ -214,7 +214,7 @@
 
                         
                       </div>
-                      <? if($arResult["CATALOG_ITEM"]["SECTION_INFO"]["CODE"]=='transport'):?>
+                      <? if(0 && $arResult["CATALOG_ITEM"]["SECTION_INFO"]["CODE"]=='transport'):?>
                       <div class="ag-shop-card__field">
                         <div class="ag-shop-card__fieldname">Введите номер карты Тройка:</div>
                         <div class="ag-shop-card__card-number">
