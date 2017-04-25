@@ -1,4 +1,8 @@
 <?
+// Включаем безбитриксовое кеширование
+require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
+customCache();
+
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
@@ -14,7 +18,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     
     // Составляем справочник флагов
     $ENUMS = array();
-    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>2));
+    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>CATALOG_IB_ID));
     while($data = $res->getNext()){
         $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
         if(!isset($ENUMS[$data["PROPERTY_CODE"]]))$ENUMS[$data["PROPERTY_CODE"]] = array();
@@ -110,9 +114,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     $arrFilter[">PROPERTY_MINIMUM_PRICE"] = 0;
     
     // Узнаём ID инфоблока
-    $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
-    $iblock = $res->GetNext();
-    $arrFilter["IBLOCK_ID"] = $iblock["ID"];
+    $arrFilter["IBLOCK_ID"] = CATALOG_IB_ID;
     
     $res = CIBlockElement::GetList(
         $arrSorting,
@@ -148,7 +150,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $resCatalogSection = CIBlockSection::GetList(
             array(),
             array(
-                "IBLOCK_CODE"   =>  "clothes",
+                "IBLOCK_ID"   =>  CATALOG_IB_ID,
                 "ID"=>$product["IBLOCK_SECTION_ID"]
             ),
             false,
@@ -165,12 +167,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 
         $product["mark"] = $product["PROPERTY_RATING_VALUE"];
-
-//        echo "<pre>";
-//        print_r($image_url);
-//        print_r($product);
-//        echo "</pre>";
-//        die;
         ?>
         
                 <div class="grid__col-shrink">

@@ -55,6 +55,7 @@ docs/manual/source/04_auth_funcs/figures/*.pdf
 .cache
 .config
 .mc
+.elinks
 
 # Игнорировать конфиги http-авторизации
 etc/nginx/auth/*.conf
