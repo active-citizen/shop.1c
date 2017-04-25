@@ -13,7 +13,9 @@ include("../menu.php")
               </div>
             </div>
 
-                <?$APPLICATION->IncludeComponent("ag:stores","",Array(),false);?> 
+                <?$APPLICATION->IncludeComponent("ag:stores","",Array(
+                    "CACHE_TIME"=>COMMON_CACHE_TIME
+                ),false);?> 
 
           </div>
         </div>

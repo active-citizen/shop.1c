@@ -1,4 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<?
+    $this->createFrame()->begin("Загрузка");
+?>
 
 
             <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
