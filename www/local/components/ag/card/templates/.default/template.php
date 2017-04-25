@@ -1,4 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<?
+    $this->createFrame()->begin("Загрузка");
+?>
+
         <? if(isset($arResult["OFFERS"][0])):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
