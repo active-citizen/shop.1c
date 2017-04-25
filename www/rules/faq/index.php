@@ -5,7 +5,9 @@ include("../menu.php");
 ?>
         <div class="ag-shop-content">
           <div class="ag-shop-content__limited-container">
-            <?$APPLICATION->IncludeComponent("ag:faq","",array(),false);?> 
+            <?$APPLICATION->IncludeComponent("ag:faq","",array(
+                "CACHE_TIME"=>COMMON_CACHE_TIME
+            ),false);?> 
           </div>
         </div>
 
