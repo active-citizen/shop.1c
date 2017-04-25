@@ -8,7 +8,8 @@ include("../menu.php");
             <div class="ag-shop-rules">
               <div class="ag-shop-rules__content">
                 <?$APPLICATION->IncludeComponent("ag:articles","",array(
-                    "ID"=>1
+                    "ID"=>1,
+                    "CACHE_TIME"=>COMMPN_CACHE_TIME
                 ),false);?> 
               </div>
             </div>
