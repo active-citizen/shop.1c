@@ -9,8 +9,10 @@
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
     require("includes/datafilter.lib.php");
 
-//    echo "failure\nAs planned\n";
-//    die;
+    if(!$USER->IsAdmin()){
+        echo "failure\nAccess Denied\n";
+        die;
+    }
 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
     $CatalogIblockId = CATALOG_IB_ID;

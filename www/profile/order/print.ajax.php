@@ -195,7 +195,7 @@ body {
   font-weight: 700;
   font-size: 16px;
   font-size: 1rem;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-certificate__fieldname {
   font-size: 14px;
@@ -237,7 +237,7 @@ body {
   font-size: 29px;
   font-size: 1.8125rem;
   font-weight: 700;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-certificate__expiration-date {
   font-family: PT Mono, monospace;
@@ -370,7 +370,7 @@ body {
   </body>
 </html>
 <script>
-window.print();
+//window.print();
 </script>';
 
 if(!isset($orderInfo["ORDER"]["ID"]))echo $sHTML;

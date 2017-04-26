@@ -8,6 +8,12 @@
         "/bitrix/modules/main/include/prolog_before.php"
     );
     header("Content-type: text/plain; charset=windows-1251;");
+    if(!$USER->IsAdmin()){
+        echo "Failed\nAccess denied";
+        die;
+    }
+
+
     // Получаем DI сессии обмена
     $session_id = 
         isset($_COOKIE['PHPSESSID'])

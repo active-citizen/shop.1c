@@ -1,6 +1,6 @@
 <?php
 
-    function customCache($lifetime = 1){
+    function customCache($lifetime = 3600){
         $sCacheDir = $_SERVER["DOCUMENT_ROOT"]."/upload/custom_cache";
         $sHash = md5($_SERVER["REQUEST_URI"]);
         
