@@ -4,6 +4,11 @@
         $_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php"
     );
+    if(!$USER->IsAdmin()){
+        echo "failure\nAccess Denied\n";
+        die;
+    }
+
     header("Content-type: text/plain; charset=windows-1251;");
     $session_id = 
         isset($_COOKIE['PHPSESSID'])
