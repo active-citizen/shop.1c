@@ -55,22 +55,17 @@
         Чистка ручного кэша
     */
     function customCacheClear($sDir = ''){
-        header("Content-type: text/plain;");
         if(!$sDir)$sDir = CUSTOM_CACHE_DIR;
         $dd = opendir($sDir);
-        echo "\nProcessed $sDir";
         while($filename = readdir($dd)){
             if($filename=='.' || $filename=='..' || $filename=='.htaccess')
                 continue;
-            echo "\nWatching $filename";
             $sCurrentFilename = $sDir."/".$filename;
             if(is_dir($sCurrentFilename)){
-                echo "\nEnter to $sCurrentFilename";
                 customCacheClear($sCurrentFilename);
                 rmdir($sCurrentFilename);
             }
             else{
-                echo "\nUnlink $sCurrentFilename";
                 unlink($sCurrentFilename);
             }
         }

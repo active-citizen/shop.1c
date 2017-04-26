@@ -25,6 +25,10 @@
         $_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php"
     );
+    if(!$USER->IsAdmin()){
+        echo "failure\nAccess Denied\n";
+        die;
+    }
     require(
         $_SERVER["DOCUMENT_ROOT"].
         "/local/libs/customcache.lib.php"
