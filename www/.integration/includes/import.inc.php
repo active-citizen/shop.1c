@@ -32,27 +32,76 @@
     /////////////////////////////////////////////////////////////////////////
     // Импортируем хотелки и интересы и составляем индекс
     ////////////////////////////////////////////////////////////////////////
-    $arIwantIndex = array();
-    // Чистим от предыдущих значений 
+
+    // Составляем индекс уже существующих в битриксе хотелок
     $resPropertiesEnum = CIBlockPropertyEnum::GetList(
         array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
         "PROPERTY_ID"=>IWANT_PROPERTY_ID)
     );
-    while($arPropertyEnum = $resPropertiesEnum->getNext())
-        CIBlockPropertyEnum::Delete($arPropertyEnum["ID"]);
-    // Добавляем значения флагов из XML
-    $arIwantIndex = array();
-    foreach($arIwant as $arIW){
-        $nIWID = CIBlockPropertyEnum::Add(array(
-            "PROPERTY_ID"   =>  IWANT_PROPERTY_ID,
-            "VALUE"         =>  $arIW["Наименование"],
-            "XML_ID"        =>  $arIW["Ид"]
-        ));
-        $arIwantIndex[$arIW["Ид"]] = array(
-            "NAME"  =>  $arIW["Наименование"],
-            "ID"    =>  $nIWID
-        );
-    }
+    $arAlreadyBxIWantIndex = array();
+    while($arWant = $resPropertiesEnum->getNext())$arAlreadyBxIWantIndex[$arWant["XML_ID"]] = $arWant;
+
+    // Составляем индекс пришедших в XML хотелок
+    $arXMLWantsIndex = array();
+    foreach($arIwant as $index)$arXMLWantsIndex[$index["Ид"]] = $index;
+
+    // Находим среди битриксовых хотел те, которых нет в XML и удаляем их
+    foreach($arAlreadyBxIWantIndex as $XML_ID=>$arWantItem)
+        if(!isset($arXMLWantsIndex[$XML_ID]))
+            CIBlockPropertyEnum::Delete($arWantItem["ID"]);
+
+    // Находим среди XML хотелки, которых нет среди битриксовых и добавляем
+    // И вносим в индекс
+    foreach($arXMLWantsIndex as $XML_ID=>$arWantItem)
+        if(!isset($arAlreadyBxIWantIndex[$XML_ID])){
+            $nIWID = CIBlockPropertyEnum::Add(array(
+                "PROPERTY_ID"   =>  IWANT_PROPERTY_ID,
+                "VALUE"         =>  $arWantItem["Наименование"],
+                "XML_ID"        =>  $arWantItem["Ид"]
+            ));
+            $arAlreadyBxIWantIndex[$arWantItem["Ид"]] = array(
+                "NAME"  =>  $arWantItem["Наименование"],
+                "ID"    =>  $nIWID
+            );
+        }
+    $arIwantIndex = $arAlreadyBxIWantIndex;
+
+
+    // Составляем индекс уже существующих в битриксе интересов
+    $resPropertiesEnum = CIBlockPropertyEnum::GetList(
+        array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
+        "PROPERTY_ID"=>INTEREST_PROPERTY_ID)
+    );
+    $arAlreadyBxInterestIndex = array();
+    while($arInterest = $resPropertiesEnum->getNext())
+        $arAlreadyBxInterestIndex[$arInterest["XML_ID"]] = $arInterest;
+
+    // Составляем индекс пришедших в XML интересов 
+    $arXMLInterestIndex = array();
+    foreach($arInterests as $index)$arXMLInterestIndex[$index["Ид"]] = $index;
+
+
+    // Находим среди битриксовых интересов те, которых нет в XML и удаляем их
+    foreach($arAlreadyBxInterestIndex as $XML_ID=>$arInterestItem)
+        if(!isset($arXMLInterestIndex[$XML_ID]))
+            CIBlockPropertyEnum::Delete($arInterestItem["ID"]);
+
+    // Находим среди XML хотелки, которых нет среди битриксовых и добавляем
+    // И вносим в индекс
+    foreach($arXMLInterestIndex as $XML_ID=>$arInterest)
+        if(!isset($arAlreadyBxInterestIndex[$XML_ID])){
+            $nInterestID = CIBlockPropertyEnum::Add(array(
+                "PROPERTY_ID"   =>  INTEREST_PROPERTY_ID,
+                "VALUE"         =>  $arInterest["Наименование"],
+                "XML_ID"        =>  $arInterest["Ид"]
+            ));
+            $arAlreadyBxIWantIndex[$arInterest["Ид"]] = array(
+                "NAME"  =>  $arInterest["Наименование"],
+                "ID"    =>  $nInterestID
+            );
+        }
+    $arInterestIndex = $arAlreadyBxInterestIndex;
+
     // Чистим от предыдущих значений 
     $resPropertiesEnum = CIBlockPropertyEnum::GetList(
         array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
@@ -285,35 +334,6 @@
         $arProperties["MANUFACTURER"]   = base64_encode(serialize($manufacturersIndex[$arProduct["Производитель"]["Ид"]]));
         // Привязка к инфоблоку
         $arProperties["MANUFACTURER_LINK"] = $manufacturersIndex[$arProduct["Производитель"]["Ид"]]["ID"];
-
-        /*
-        foreach($arManufactersTags as $tagName=>$fieldName){
-            // Пропускае пустые
-            if(!trim($manufacturersIndex[$arProduct["Производитель"]["Ид"]][$tagName]))continue;
-            // Определяем имя поля и тип
-            $nameArgs = explode("::",$fieldName);
-            $name = $nameArgs[0];
-            $type = isset($nameArgs[1]) && $nameArgs[1]?$nameArgs[1]:text;
-            // В зависимости от типа что-то выводим 
-            switch($type){
-                case 'url':
-                    $arProperties["MANUFACTURER"].=
-                        '<tr><th>'.$name.'</th><td><a href="'.$manufacturersIndex[$arProduct["Производитель"]["Ид"]][$tagName].'">'
-                            .$manufacturersIndex[$arProduct["Производитель"]["Ид"]][$tagName]
-                        .'</a></td></tr>';
-                break;
-                default:
-                    $arProperties["MANUFACTURER"].=
-                        '<tr><th>'.$name.'</th><td>'
-                            .$manufacturersIndex[$arProduct["Производитель"]["Ид"]][$tagName]
-                        .'</td></tr>';
-                break;
-            }
-            
-        }
-        $arProperties["MANUFACTURER"]   .= '</table>';
-        */
-        
         // Срок исполнения
         $arProperties["DAYS_TO_EXPIRE"] = isset($arProduct["СрокИсполнения"])?intval($arProduct["СрокИсполнения"]):0;
         // Базовая единица
