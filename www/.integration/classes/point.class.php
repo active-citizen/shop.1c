@@ -140,5 +140,15 @@
             $user = new CUser;
             $user->Update($userId, array("UF_USER_ALL_POINTS" => $arPointsStatus["all_points"]));
 
+    // Чистим кэш компонента фильтра для пользователя 
+    $objComponent = new CBitrixComponent();
+    $objComponent->initComponent("ag:filter");
+    $objComponent->clearResultCache(CUser::GetID());
+    
+    // Чистим кэш компонента главного меню 
+    $objComponent = new CBitrixComponent();
+    $objComponent->initComponent("ag:menu.top");
+    $objComponent->clearResultCache(CUser::GetID());
+ 
         }
     }

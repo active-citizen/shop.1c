@@ -29,11 +29,7 @@
         echo "failure\nAccess Denied\n";
         die;
     }
-    require(
-        $_SERVER["DOCUMENT_ROOT"].
-        "/local/libs/customcache.lib.php"
-    );
-    
+   
     
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/";
     $LOCK_FILENAME = $uploadDir."lock";
@@ -98,8 +94,6 @@
     }
     unlink($LOCK_FILENAME);
 
-    // Чистим кэш плитки тизеров
-    customCacheClear();
     echo "success";
     die;
 

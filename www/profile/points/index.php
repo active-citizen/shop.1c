@@ -11,7 +11,6 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     $agBrige = new ActiveCitizenBridge;
     $bxUser = new bxUser;
 
-
     // Загружаем историю начисления баллов
     $session_id = $bxUser->getEMPSessionId();
     

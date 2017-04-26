@@ -49,10 +49,5 @@
         }
     }
 
-    // Чистим кэш компонента складов после обновления
-    $objComponent = new CBitrixComponent();
-    $objComponent->initComponent("ag:stores");
-    $objComponent->clearResultCache();
-
 
     

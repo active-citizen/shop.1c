@@ -1,5 +1,10 @@
 <?php
-    ///////////////////////////////////////////////////////////////////////
+    // Либа ручного кэша
+    require(
+        $_SERVER["DOCUMENT_ROOT"].
+        "/local/libs/customcache.lib.php"
+    );
+     ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем торговые предложения
     ///////////////////////////////////////////////////////////////////////
     $objPrice = new CPrice;
@@ -349,4 +354,24 @@
 
     unset($ibp);
     unset($ibpenum);
+    // Чистим кэш компонента складов после обновления
+    $objComponent = new CBitrixComponent();
+    $objComponent->initComponent("ag:stores");
+    $objComponent->clearResultCache();
+
+    // Чистим кэш компонента меню разделов 
+    $objComponent = new CBitrixComponent();
+    $objComponent->initComponent("ag:menu.catalog");
+    $objComponent->clearResultCache();
+
+    // Чистим кэш компонента фильтра 
+    $objComponent = new CBitrixComponent();
+    $objComponent->initComponent("ag:filter");
+    $objComponent->clearResultCache();
+
+    // Чистим кэш плитки тизеров
+    customCacheClear();
+
+    
+
 
