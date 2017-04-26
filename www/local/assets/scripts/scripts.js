@@ -497,7 +497,7 @@ function mywish(object){
             if(!answer.error){
                 $('#wishid'+product_id).html(answer.wishes);
             }
-            elseh
+            else{
                 alert(answer.error);
             }
         }
