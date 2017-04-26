@@ -25,6 +25,10 @@
         $_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php"
     );
+    require(
+        $_SERVER["DOCUMENT_ROOT"].
+        "/local/libs/customcache.lib.php"
+    );
     
     
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/";
@@ -89,6 +93,9 @@
         include("includes/offers.inc.php");
     }
     unlink($LOCK_FILENAME);
+
+    // Чистим кэш плитки тизеров
+    customCacheClear();
     echo "success";
     die;
 

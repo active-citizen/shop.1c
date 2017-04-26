@@ -1,17 +1,19 @@
 <?php
+    /*
+        Работа с ручным html-кешем страниц (в обход битрикса)
+    */
+    define("CUSTOM_CACHE_DIR", $_SERVER["DOCUMENT_ROOT"]."/upload/custom_cache");
 
-    function customCache($lifetime = 3600){
-        $sCacheDir = $_SERVER["DOCUMENT_ROOT"]."/upload/custom_cache";
+    function customCache($lifetime = 86400){
         $sHash = md5($_SERVER["REQUEST_URI"]);
         
-        $sHashFilename = $sCacheDir."/"
+        $sHashFilename = CUSTOM_CACHE_DIR."/"
             .mb_substr($sHash, 0, 1)."/"
             .mb_substr($sHash, 1, 1)."/"
             .mb_substr($sHash, 2, 1)."/"
             .$sHash.".html";
 
         define("CUSTOM_CACHE_HASH_FILENAME", $sHashFilename);
-        define("CUSTOM_CACHE_DIR", $sCacheDir);
 
         $bRefresh = true;
         if(file_exists($sHashFilename)){
@@ -29,10 +31,11 @@
         }
 
     }
-
-    function customCacheStore($data){
-  
     
+    /**
+        Сохранение вывода скрипта в кэш
+    */
+    function customCacheStore($data){
         $sFilepath = str_replace(CUSTOM_CACHE_DIR,"",CUSTOM_CACHE_HASH_FILENAME);
         $arPath = explode("/",$sFilepath);
         $sCurrentDir = CUSTOM_CACHE_DIR;
@@ -44,8 +47,31 @@
         $fd = fopen(CUSTOM_CACHE_HASH_FILENAME,"w");
         fwrite($fd, $data);
         fclose($fd);
-            
-       
                  
         return $data;
+    }
+
+    /**
+        Чистка ручного кэша
+    */
+    function customCacheClear($sDir = ''){
+        header("Content-type: text/plain;");
+        if(!$sDir)$sDir = CUSTOM_CACHE_DIR;
+        $dd = opendir($sDir);
+        echo "\nProcessed $sDir";
+        while($filename = readdir($dd)){
+            if($filename=='.' || $filename=='..' || $filename=='.htaccess')
+                continue;
+            echo "\nWatching $filename";
+            $sCurrentFilename = $sDir."/".$filename;
+            if(is_dir($sCurrentFilename)){
+                echo "\nEnter to $sCurrentFilename";
+                customCacheClear($sCurrentFilename);
+                rmdir($sCurrentFilename);
+            }
+            else{
+                echo "\nUnlink $sCurrentFilename";
+                unlink($sCurrentFilename);
+            }
+        }
     }
