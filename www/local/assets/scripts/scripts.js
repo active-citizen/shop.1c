@@ -578,8 +578,8 @@ function agauth(encsession){
 	    }
 	    
 	    // Ошибок нет - возвращаемся на страницу откуда авторизовались
-	    if(!answer.errors.length){
-            document.location.href = '/catalog/';
+	    if(!answer.errors.length && answer.redirect){
+            document.location.href = answer.redirect;
             return true;
 	    }
 

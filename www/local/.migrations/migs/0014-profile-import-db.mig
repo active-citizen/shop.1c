@@ -21,7 +21,7 @@
                     `last_update` BIGINT NOT NULL,
                     `session_id` CHAR(128),
                     PRIMARY KEY `id`(`id`),
-                    UNIQUE KEY `login` (`login`,`email`),
+                    UNIQUE KEY `login` (`login`),
                     KEY `email` (`email`),
                     KEY `last_update` (`last_update`),
                     KEY `session_id` (`session_id`)

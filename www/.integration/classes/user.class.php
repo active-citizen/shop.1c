@@ -118,7 +118,8 @@
             if(!$arUser = $res->GetNext()){
 
                 if(!$userId = $objUser->Add($userData)){
-                    $this->error = "Ошибка добавления пользователя: ". print_r($objUser,1);
+                    $this->error = 
+                        "Ошибка добавления пользователя: ". print_r($objUser,1);
                     return false;
                 }
                 // Добавляем счёт
@@ -127,7 +128,8 @@
                     "CURRENT_BUDGET"=>0,
                     "CURRENCY"=>"BAL"
                 ))){
-                    $this->error = "Ошибка добавления аккаунта: ". print_r($objAccount,1);
+                    $this->error = "Ошибка добавления аккаунта: ". 
+                        print_r($objAccount,1);
                     return false;
                 }
                 
@@ -149,7 +151,8 @@
                         "CURRENT_BUDGET"=>0,
                         "CURRENCY"=>"BAL"
                     ))){
-                        $this->error = "Ошибка добавления счёта: ". print_r($objAccount,1);
+                        $this->error = "Ошибка добавления счёта: ". 
+                            print_r($objAccount,1);
                         return false;
                     }
                 }
@@ -165,7 +168,10 @@
                 $updateRecord = $this->getUpdateRecord($login,$email);
             }
             else{
-                $this->setLastUpdateTime($login, $email);
+                echo $sessionId;
+                print_r($updateRecord);
+                $this->setLastUpdateTime($login, $email, $sessionId);
+                die;
             }
             
             // Авторизуемся
@@ -182,9 +188,10 @@
          * @return массив с записью о последнем обновлении
         */
         
-        private function getUpdateRecord($login, $email){
+        function getUpdateRecord($login, $email){
             global $DB;
-            $query = "SELECT * FROM int_profile_import WHERE login='$login' AND email='$email' ORDER BY last_update DESC LIMIT 1";
+            $query = "SELECT * FROM int_profile_import WHERE login='$login' AND
+            email='$email' ORDER BY `last_update` DESC LIMIT 1";
             $res = $DB->Query($query);
             return $res->GetNext();
         }
@@ -197,7 +204,7 @@
          * @param $email - email         
          * @return ID вставленной записи
         */
-        private function createUpdateRecord($login, $email, $sessionId){
+        function createUpdateRecord($login, $email, $sessionId){
             global $DB;
             $query = "INSERT INTO `int_profile_import`(`login`,`email`,`session_id`,`last_update`)
             VALUES('$login', '$email', '$sessionId',UNIX_TIMESTAMP(NOW()))";
@@ -213,10 +220,20 @@
          * @param $timeStamp - время, которое надо установить (если пусто - вставляется текущее)
          * @return 
         */
-        private function setLastUpdateTime($login, $email, $timeStamp = ''){
+        function setLastUpdateTime(
+            $login, $email, $sSessionId, $timeStamp = ''
+        ){
             global $DB;
-            $query = "UPDATE `int_profile_import` SET `last_update`=".($timeStamp?$timeStamp:"UNIX_TIMESTAMP(NOW())")."
-            WHERE `login`='$login' AND `email`='$email' LIMIT 1";
+            $query = "
+                UPDATE 
+                    `int_profile_import` 
+                SET 
+                    `last_update`="
+                        .($timeStamp?$timeStamp:"UNIX_TIMESTAMP(NOW())")."
+                    ,session_id='$sSessionId' 
+                WHERE 
+                    `login`='$login' AND `email`='$email' 
+                LIMIT 1";
             $DB->Query($query);
             return true;
         }
@@ -236,7 +253,9 @@
             $login = preg_replace("#^u(\d+)$#","$1",$login);
             
             // Смотрим последнюю сессию у этого пльзователя
-            $res = $DB->Query($query = "SELECT `session_id` FROM `int_profile_import` WHERE `login`='".$login."' ORDER BY `id` DESC");
+            $res = $DB->Query($query = "SELECT `session_id` FROM
+            `int_profile_import` WHERE `login`='".$login."' ORDER BY `id` DESC
+            LIMIT 1");
             if(!$result = $res->GetNext()){return false;}
             if(!isset($result["session_id"])){return false;}
             

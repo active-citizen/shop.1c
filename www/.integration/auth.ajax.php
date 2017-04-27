@@ -32,7 +32,8 @@
         "login"     =>  isset($_REQUEST["login"])?$_REQUEST["login"]:'',
         "password"  =>  isset($_REQUEST["password"])?$_REQUEST["password"]:'',
         "token"     =>  $EMP_TOKENS[CONTOUR],
-        "session_id"=>  isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:'',
+        "session_id"=>  
+            isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:'',
     );
     
     if($args["session_id"])
@@ -48,8 +49,10 @@
     if(!$answer["errors"])
         $profile = $agBrige->exec();
 
-    if(!isset($profile["session_id"]) || !trim($profile["session_id"]))
+    if(!isset($profile["session_id"]) || !trim($profile["session_id"])){
+        $USER->Logout();
         $answer["errors"][] = 'Ошибка авторизации';
+    }
     
     if(isset($profile['result']['personal']['phone']))
         $args["login"] = $profile['result']['personal']['phone'];
@@ -58,12 +61,46 @@
         $answer["errors"][] = $profile["errorMessage"];
         
     if(isset($profile["result"]))$answer["profile"] = $profile["result"];
+
+
+    // Проверяем есть ли в жкрнале записи о его последних обновлениях профиля
+    // Если информации об обновления профиля нет - заводим новую
+    $bxUser = new bxUser;
+    $login = $args["login"];
+    $email = $profile["result"]["personal"]["email"];
+    // Проверяем корректност email
+    $sOriginalEmail = "";
+    if(
+        !isset(
+            $profile["result"]["personal"]["email"]
+        ) 
+        || 
+        !preg_match(
+            "#^[\d\w\-\.\_]+@[\d\w\-\.\_]+$#",
+            $profile["result"]["personal"]["email"]
+        )
+    )$email = "u".$login."@shop.ag.mos.ru";
     
-    if(isset($profile["result"]) && $profile["result"] && isset($profile["session_id"]) && isset($profile["session_id"])){
-        $bxUser = new bxUser;
-        if(!$bxUser->login($args["login"],$profile["session_id"], $profile["result"])){
+
+    if($updateRecord = $bxUser->getUpdateRecord($login,$email)){
+        $bxUser->setLastUpdateTime($login, $email, $profile["session_id"]);
+    }
+
+    if(
+        isset($profile["result"]) 
+        && $profile["result"] 
+        && isset($profile["session_id"]) 
+        && isset($profile["session_id"])
+        && !$USER->isAuthorized()
+    ){
+       if(!$bxUser->login(
+            $args["login"],
+            $profile["session_id"], 
+            $profile["result"])
+        ){
             $answer["errors"][] = $bxUser->error;
         }
+        $answer["redirect"] = '/catalog/';
     }
     
     //=========== Стягиваем баллы =========

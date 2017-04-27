@@ -57,7 +57,7 @@
     </div>
 
 
-        <? if(!CUser::IsAuthorized()):?>
+        <? if(1 || !CUser::IsAuthorized()):?>
         <script src="<?php echo CONTOUR_URL; ?>"></script>
         <? endif?>
 

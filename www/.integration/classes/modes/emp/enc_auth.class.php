@@ -26,7 +26,10 @@
     
     class enc_authBridgeMethod{
         function exec($args,$contour='uat'){
-            require($secretFilename = realpath(dirname(__FILE__)."/../../../secret.inc.php"));
+            require(
+                $secretFilename = 
+                    realpath(dirname(__FILE__)."/../../../secret.inc.php")
+            );
             
             // Алгоритм шифрования
             $method = "rijndael-128";
@@ -51,7 +54,10 @@
             mcrypt_generic_init($module, $key, $iv);
             
             // Расшифровываем строку без IV
-            $decrypted=mdecrypt_generic($module,mb_substr($encData,$ivSize,mb_strlen($encData,'8bit'),'8bit'));
+            $decrypted=mdecrypt_generic(
+                $module,
+                mb_substr($encData,$ivSize,mb_strlen($encData,'8bit'),'8bit')
+            );
             
             mcrypt_generic_deinit($module);
             mcrypt_module_close($module);
@@ -67,7 +73,13 @@
             
             $data = json_encode($data);
             $curl = new curlTool;
-            $data = $curl->post("https://emp.mos.ru/v2.0.0/agprofile/getProfile", $data, array("Content-Type: application/json"));
+            $data = $curl->post(
+                "https://emp.mos.ru/v2.0.0/agprofile/getProfile", 
+                $data, 
+                array(
+                    "Content-Type: application/json"
+                )
+            );
             return $data;
         }
     }
