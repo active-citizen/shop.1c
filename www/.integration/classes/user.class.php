@@ -41,9 +41,22 @@
             $bitrixLogin = "u$login";
 
             // Проверяем корректност email
-            if(!isset($profile["personal"]["email"]) || !preg_match("#^[\d\w\-\.\_]+@[\d\w\-\.\_]+$#",$profile["personal"]["email"])){
-                $this->error = 'Профиль пользователя не содержит корректный email';
-                return false;
+            $sOriginalEmail = "";
+            if(
+                !isset(
+                    $profile["personal"]["email"]
+                ) 
+                || 
+                !preg_match(
+                    "#^[\d\w\-\.\_]+@[\d\w\-\.\_]+$#",
+                    $profile["personal"]["email"]
+                )
+            ){
+                $sOriginalEmail = $profile["personal"]["email"];
+                $profile["personal"]["email"] = 
+                    $bitrixLogin."@shop.ag.mos.ru";
+                //$this->error = 'Профиль пользователя не содержит корректный email';
+                //return false;
             }
             
             // ДЕлаем для битрикса случайный пароль
@@ -55,17 +68,42 @@
                 "CONFIRM_PASSWORD"  =>  $password,
                 "EMAIL"             =>  $email,
                 "GROUP_ID"          =>  array(2,3,4,6),
-                "PERSONAL_GENDER"   =>  isset($profile["personal"]["sex"]) && $profile["personal"]["sex"]=='male'?'M':'F',
+                "PERSONAL_GENDER"   =>  
+                    isset($profile["personal"]["sex"]) 
+                        && 
+                    $profile["personal"]["sex"]=='male'
+                    ?
+                    'M'
+                    :'F',
                 "NAME"              =>  
-                    isset($profile["personal"]["firstname"]) && isset($profile["personal"]["middlename"])
-                        ?
-                    $profile["personal"]["firstname"]." ".$profile["personal"]["middlename"]
-                        :
+                    isset($profile["personal"]["firstname"]) 
+                        && 
+                    isset($profile["personal"]["middlename"])
+                    ?
+                    $profile["personal"]["firstname"]
+                        ." ".$profile["personal"]["middlename"]
+                    :
                     $profile["personal"]["firstname"],
-                "LAST_NAME"         =>  isset($profile["personal"]["surname"])?$profile["personal"]["surname"]:'',
-                "PERSONAL_PHONE"    =>  isset($profile["personal"]["phone"])?$profile["surname"]["phone"]:'',
-                "PERSONAL_BIRTHDAY" =>  isset($profile["personal"]["birthday"])?$profile["surname"]["birthday"]:'',
-                "ACTIVE"            =>  "Y"
+                "LAST_NAME"         =>  
+                    isset($profile["personal"]["surname"])
+                    ?
+                    $profile["personal"]["surname"]
+                    :
+                    '',
+                "PERSONAL_PHONE"    =>  
+                    isset($profile["personal"]["phone"])
+                    ?
+                    $profile["surname"]["phone"]
+                    :
+                    '',
+                "PERSONAL_BIRTHDAY" =>  
+                    isset($profile["personal"]["birthday"])
+                    ?
+                    $profile["surname"]["birthday"]
+                    :
+                    '',
+                "ACTIVE"            =>  "Y",
+                "PERSONAL_NOTES"    => "original email: ".$sOriginalEmail
             );
 
             $objUser = new CUser;
