@@ -1,7 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 
-if ($this->StartResultCache(false,CUser::GetID())) {
+//if ($this->StartResultCache(false,CUser::GetID())) {
 
     CModule::IncludeModule("sale");
     $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
@@ -16,5 +16,5 @@ if ($this->StartResultCache(false,CUser::GetID())) {
 
 
     $this->IncludeComponentTemplate();
-}
+//}
 

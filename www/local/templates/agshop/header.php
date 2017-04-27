@@ -1,4 +1,24 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/fonts.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/components.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/profile.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/catalog.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/rules.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/card.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/libs/jquery-ui.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/libs/slick.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
+
+$APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");
+$APPLICATION->AddHeadScript("/local/assets/libs/jquery-ui.js");
+$APPLICATION->AddHeadScript("/local/assets/libs/slick.min.js");
+$APPLICATION->AddHeadScript("/local/assets/scripts/index.js");
+$APPLICATION->AddHeadScript("/local/assets/scripts/scripts.js");
+$APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -21,6 +41,8 @@
     //$APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
     ?>
 
+    <?
+    /*
     <link rel="stylesheet" href="/local/assets/styles/fonts.css">
     <link rel="stylesheet" href="/local/assets/styles/components.css">
     <link rel="stylesheet" href="/local/assets/styles/profile.css">
@@ -37,6 +59,8 @@
     <script src="/local/assets/scripts/index.js"></script>
     <script src="/local/assets/scripts/scripts.js"></script>
     <script src="/local/assets/scripts/common.js"></script>
+    */
+    ?>
     
     <title><?$APPLICATION->ShowTitle()?></title>
 

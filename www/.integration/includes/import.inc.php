@@ -289,13 +289,12 @@
             
             $arFields = array();
             $picturePath = isset($arProduct["Картинка"][0])?$arProduct["Картинка"][0]:'';
-
             // Если у товара есть картинка - пробуем обновить её
             if($existsElement["DETAIL_PICTURE"] && $picturePath){
                 $res = CFile::GetByID($existsElement["DETAIL_PICTURE"]);
                 $existsFileInfo = $res->GetNext();
                 // Получаем информацию о загруженном файле
-                $picturePath = mb_convert_encoding($picturePath, "utf-8", "cp866");
+                //$picturePath = mb_convert_encoding($picturePath, "utf-8", "cp866");
                 $picturePath = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$picturePath;
                 $downlodedFileInfo = CFile::MakeFileArray($picturePath);
                 // Если размер не совпадает - грузим новый
@@ -308,7 +307,7 @@
             // Если у товара нет картинки - добавляем её
             elseif(!$existsElement["DETAIL_PICTURE"] && $picturePath){
                 // В ZIP кириллица нуждается в перекодировании
-                $picturePath = mb_convert_encoding($picturePath, "utf-8", "cp866");
+                //$picturePath = mb_convert_encoding($picturePath, "utf-8", "cp866");
                 $picturePath = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$picturePath;
                 $arFields["DETAIL_PICTURE"] = $arFields["PREVIEW_PICTURE"] = CFile::MakeFileArray($picturePath);
                 $objIBlockElement->Update($elementId, $arFields);

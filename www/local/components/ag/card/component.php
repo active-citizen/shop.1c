@@ -1,6 +1,6 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-if ($this->StartResultCache(false,CUser::GetID())) {
+//if ($this->StartResultCache(false,CUser::GetID())) {
     $RU = $_SERVER["REQUEST_URI"];
     // Значения по умолчанию
     if(!isset($arParams["PRODUCT_CODE"]))$arParams["PRODUCT_CODE"] = '';
@@ -163,6 +163,6 @@ if ($this->StartResultCache(false,CUser::GetID())) {
     )->GetNext();
 
     $this->IncludeComponentTemplate();
-}
+//}
 
 

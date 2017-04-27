@@ -127,7 +127,5 @@
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
     
-    //echo "<pre>";
-    //print_r($profile);
     
     

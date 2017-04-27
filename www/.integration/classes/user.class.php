@@ -168,10 +168,7 @@
                 $updateRecord = $this->getUpdateRecord($login,$email);
             }
             else{
-                echo $sessionId;
-                print_r($updateRecord);
                 $this->setLastUpdateTime($login, $email, $sessionId);
-                die;
             }
             
             // Авторизуемся

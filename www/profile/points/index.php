@@ -26,14 +26,12 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     if(!$answer["errors"] && !$history = $agBrige->exec()){
         $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
     }
-
     if(isset($history["errorMessage"]) && $history["errorMessage"]){
         $answer["errors"][] = $history["errorMessage"];
     }else{
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"], CUser::GetID());
-   }   
-
+    }   
 }
     include(dirname(__FILE__)."/../menu.php");
 
