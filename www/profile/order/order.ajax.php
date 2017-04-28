@@ -19,7 +19,11 @@ elseif(isset($_GET["mark"]) && isset($_GET["product"])){
     // Смотрим, не было ли уже оценки у этого пользователя
     $res = CIBlockElement::GetList(
         array(),
-        array("IBLOCK_CODE"=>"marks","PROPERTY_MARK_PRODUCT"=>$product,"PROPERTY_MARK_USER"=>CUser::GetID()),
+        array(
+            "IBLOCK_CODE"=>"marks",
+            "PROPERTY_MARK_PRODUCT"=>$product,
+            "PROPERTY_MARK_USER"=>CUser::GetID()
+        ),
         false,
         array("nTopCount"=>1),
         array("PROPERTY_MARK")
@@ -60,7 +64,10 @@ elseif(isset($_GET["mark"]) && isset($_GET["product"])){
         "NAME"=>$product."_".CUser::GetID(),
         "IBLOCK_ID"=>$iblockId
     ))){
-        echo json_encode(array("error"=>"Ошибка добавления".print_r($objIBlockElement,1)));
+        echo json_encode(
+            array("error"=>"Ошибка добавления"
+                .print_r($objIBlockElement,1))
+        );
         die;
     }
     CIBlockElement::SetPropertyValues($elementId,$iblockId,array(
@@ -88,7 +95,12 @@ elseif(isset($_GET["add_to_basket"])){
     CModule::IncludeModule('catalog');
     CModule::IncludeModule('price');
     CModule::IncludeModule('iblock');
-    $res = CCatalogProduct::GetList(array(),array("ID"=>intval($_GET['id'])),false,array("nTopCount"=>1));
+    $res = CCatalogProduct::GetList(
+        array(),
+        array("ID"=>intval($_GET['id'])),
+        false,
+        array("nTopCount"=>1)
+    );
     $product = $res->GetNext();
     if(!$product){
         echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Товар не найден"));
@@ -140,11 +152,21 @@ elseif(isset($_GET["add_to_basket"])){
     $resBasket->DeleteAll(CSaleBasket::GetBasketUserID());
     // Добавляем в корзину товар
     if(!$resBasket->Add($arFields)){
-        echo json_encode(array("STATUS"=>"FAILED","MESSAGE"=>"Товар не добавлен:".print_r($resBasket)));
+        echo json_encode(
+            array(
+                "STATUS"=>"FAILED",
+                "MESSAGE"=>"Товар не добавлен:"
+                    .print_r($resBasket)
+            )
+        );
         die;    
     }
 
-    $answer = array("STATUS"=>"OK","MESSAGE"=>"Товар добавлен","store_id"=>intval($_GET["store_id"]));
+    $answer = array(
+        "STATUS"=>"OK",
+        "MESSAGE"=>"Товар добавлен",
+        "store_id"=>intval($_GET["store_id"])
+    );
 }
 elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
@@ -178,7 +200,10 @@ elseif(isset($_GET["add_order"])){
         die;
     }
 
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+            ."/.integration/classes/active-citizen-bridge.class.php"
+    );
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
     $agBrige = new ActiveCitizenBridge;
@@ -230,9 +255,15 @@ elseif(isset($_GET["add_order"])){
     $resCSaleOrder = new CSaleOrder;
     if($orderId = $resCSaleOrder->Add($arFields)){
         
-        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"]
+                ."/.integration/classes/order.class.php"
+        );
         $obOrder = new bxOrder();
-        $resOrder = $obOrder->addEMPPoints(-$totalSum,"Заказ Б-$orderId в магазине поощрений АГ");
+        $resOrder = $obOrder->addEMPPoints(
+            -$totalSum,
+            "Заказ Б-$orderId в магазине поощрений АГ"
+        );
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"Б-$orderId"));
         
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);

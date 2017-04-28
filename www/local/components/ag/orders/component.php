@@ -40,6 +40,7 @@ else
 
 CModule::IncludeModule("sale");
 CModule::IncludeModule("price");
+CModule::IncludeModule("catalog");
 $arResult = array("ORDERS"=>array(),"STATUSES"=>array(),"PAGES"=>array());
 
 

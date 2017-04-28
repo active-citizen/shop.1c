@@ -39,7 +39,10 @@
             
             // Получаем номер счёта данного пользователя
             $objSaleUserAccount = new CSaleUserAccount;
-            $res = $objSaleUserAccount->GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
+            $res = $objSaleUserAccount->GetList(
+                array(),
+                array("USER_ID"=>$userId,"CURRENCY"=>"BAL")
+             );
             $accountId = 0;
             $accountAmount = 0;
             // Создаём личный счет если ещё нет
@@ -62,13 +65,20 @@
             // Создаём другой индекс транзакций счёта
             // Ключ индекса - номер заказа
             $transactionDescIndex = array();
-            $res = CSaleUserTransact::GetList(array(),array("USER_ID"=>$userId,"CURRENCY"=>"BAL"));
+            $res = CSaleUserTransact::GetList(
+                array(),
+                array("USER_ID"=>$userId,"CURRENCY"=>"BAL")
+            );
             $objTransact = new CSaleUserTransact;
             
             while($arTransaction = $res->GetNext()){
                 $transactionsIndex[
                     $arTransaction["DEBIT"]." ".
-                    preg_replace("#^(.*)\s+.*$#","$1",$arTransaction["TRANSACT_DATE"])." ".
+                    preg_replace(
+                        "#^(.*)\s+.*$#",
+                        "$1",
+                        $arTransaction["TRANSACT_DATE"]
+                    )." ".
                     $arTransaction["~DESCRIPTION"]
                 ] = $arTransaction["ID"];
                 $transactionDescIndex["Б-".$arTransaction["ORDER_ID"]] = 1;
