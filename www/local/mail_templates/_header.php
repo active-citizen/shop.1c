@@ -6,4 +6,6 @@ $html =
 </head>
 <body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
 <div style="width: 680px;">
+Здравствуйте, '.$orderInfo["USER"]["LAST_NAME"].'
+'.$orderInfo["USER"]["NAME"].'.
 ';

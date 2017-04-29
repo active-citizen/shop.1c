@@ -5,7 +5,7 @@
     // Подключение библиотеки почтового SMTP-клиента (закомментарить, если
     // понадобится системный SMTP-клиен). Не шустрого, но позволяющего писать
     // все логи в /upload/smtplog и все письма в /upload/maildir 
-    include($_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/commonn.php");
+    include($_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/common.php");
     // Ключи токены и доступы
     include($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
     // Constants and settings
@@ -187,6 +187,9 @@
     function eventSaleStatusEMail($orderId, $orderStatus){
     }
 
+    /**
+        Функция вызывается при создании заказа
+    */
     function eventOrderNewSendEmail_normal($orderID, &$eventName, &$arFields){
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderID);
@@ -234,7 +237,7 @@
 
         $sMailTextHeaders = "--$boundary\r\n"
             ."Content-Type: text/html; UTF-8\r\n"
-            //."Content-Transfer-Encoding: base64\r\n"
+            ."Content-Transfer-Encoding: base64\r\n"
             ."\r\n"
         ;
 
@@ -244,6 +247,9 @@
         
         $sMailText = $html;
 
+        /**
+            Если для заказа надо отправить сертификат
+        */
         if($orderInfo["SEND_CERT"]){
             require($_SERVER["DOCUMENT_ROOT"]."/profile/order/print.ajax.php");
             $sMailAttach = $sHTML;
@@ -256,8 +262,8 @@
             $sTo, 
             $sSubject, 
             $sMailTextHeaders
-                //.chunk_split(base64_encode($sMailText))
-                .$sMailText
+                .chunk_split(base64_encode($sMailText))
+                //.$sMailText
                 .(
                     $orderInfo["SEND_CERT"]
                     ?
@@ -294,6 +300,7 @@
      * Получаем информацию о заказе
     */
     function initOrderGetInfo($orderID){
+        global $USER;
         
         $arOrder = CSaleOrder::GetList(
             array(), 
@@ -309,14 +316,35 @@
             = sprintf("%02d",$tmp["day"])
             .".".sprintf("%02d",$tmp["month"])
             .".".$tmp["year"];
-        
-        $arBasket = CSaleBasket::GetList(
-            array(),
+
+        /**
+            Костыль для корректного выбора товара при заказе на сайте и при
+            обмене из 1С. 
+            
+            Суть в том, что в момент заказа на сайте ID заказа 
+            при вызове события отправки письма ещё не известен, и приходится
+            опираться на FUSER
+
+            А при обмене - обмен идёт от пользователя, который этого не
+            заказывал, но известен номер заказа, поэтому опора на ORDER_ID
+        */
+        if(!$USER->isAdmin()){
             $arFilter = array(
                 "FUSER_ID"=>CSaleBasket::GetBasketUserID(),
-                "LID" => SITE_ID,
-                "ORDER_ID" => "NULL"
-            ),
+                "LID"=>SITE_ID,
+                "ORDER_ID"=>"NULL"
+            );
+        }
+        else{
+            $arFilter = array(
+                "ORDER_ID" => $arOrder["ID"],
+                "LID"=>SITE_ID
+            );
+        }
+ 
+        $arBasket = CSaleBasket::GetList(
+            array(),
+            $arFilter,
             false,
             array("nTopCount"=>1)
         )->GetNext();
@@ -342,6 +370,7 @@
             array("nTopCount"=>1),            
             array()
         )->GetNext();
+
         $arCatalogManufacturer = CIBlockElement::GetList(
             array(),
             array(

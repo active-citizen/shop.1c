@@ -3,10 +3,10 @@
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
 
     define("LOCAL_MAIL_SMTP_ENABLE",true);
-    define("LOCAL_MAIL_SMTP_LOG_ENABLE",true);
+    define("LOCAL_MAIL_SMPT_LOG_ENABLE",true);
     
     define("LOCAL_MAIL_SMTP_LOG_BASEDIR",
-        realpath(dirname($_SERVER["DOCUMENT_ROOT"]."/../logs/smtplog"))
+        $_SERVER["DOCUMENT_ROOT"]."/upload/smtplog/"
     );
     
     define("LOCAL_MAIL_SMTP_HOST",$MAIL["smtp.host"]);
@@ -21,14 +21,14 @@
 
     define("LOCAL_MAIL_DISK_ENABLE",true);
     define("LOCAL_MAIL_DISK_BASEDIR", 
-        realpath(dirname($_SERVER["DOCUMENT_ROOT"]."/../logs/maildir"))
+        $_SERVER["DOCUMENT_ROOT"]."/upload/maildir/"
     );
 
     define("MAIL_ROOT_DIR",realpath(dirname(__FILE__)));
 
     $DISKMAIL_FILENAME = MAIL_ROOT_DIR."/disk_mailer.php";
     $SMTPMAIL_FILENAME = MAIL_ROOT_DIR."/smtp_mailer.php";
-    
+   
     if(file_exists($DISKMAIL_FILENAME) && file_exists($SMTPMAIL_FILENAME)){
         require($DISKMAIL_FILENAME);
         require($SMTPMAIL_FILENAME);

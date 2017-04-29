@@ -273,6 +273,8 @@ class SMTP
         if ($streamok) {
             $socket_context = stream_context_create($options);
             set_error_handler(array($this, 'errorHandler'));
+    	    $host = str_replace("ssl://","",$host);
+        
             $this->smtp_conn = stream_socket_client(
                 $host . ":" . $port,
                 $errno,

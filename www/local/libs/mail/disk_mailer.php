@@ -11,6 +11,7 @@
         $sMonth = date("m");    $sDay = date("d");  $sYear = date("Y"); 
         $sHour = date("Y");     $sMin = date("i");  $sSec = date("s");
         $sBaseDir = LOCAL_MAIL_DISK_BASEDIR;
+
         $arPath = array(
             "$sYear-$sMonth",
             "$sYear-$sMonth-$sDay",

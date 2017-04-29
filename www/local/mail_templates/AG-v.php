@@ -1,7 +1,7 @@
 <?
 $html .= '
         <p>
-            Антон Петрович,
+            '.$orderInfo["USER"]["LAST_NAME"].' '.$orderInfo["USER"]["NAME"].',
             Ваш заказ № '.
             (
                 $orderInfo["ORDER"]["ADDITIONAL_INFO"]

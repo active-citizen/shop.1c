@@ -1,10 +1,12 @@
 <?php
-        function custom_mail($to, $subject, $message, $additional_headers, $additional_parameters){
+        function custom_mail($sTo, $subject, $message, $additional_headers, $additional_parameters){
 
-		    $headers = explode("\n",$additional_headers);
+		    $headers =array();
+		    if(trim($additional_headers))$headers = explode("\n",$additional_headers);
 #		    $to = 'andrey@fmf.ru';
+
 		    if(LOCAL_MAIL_DISK_ENABLE===true){
-            		disk_custom_mail($to, $subject, $message, $additional_headers);
+            		disk_custom_mail($sTo, $subject, $message, $additional_headers);
 		    }
 		    if(LOCAL_MAIL_SMTP_ENABLE===false)return true;
 
@@ -40,7 +42,7 @@
 		    }
 		
 		    $contentType = "";
-		    foreach($headers as $k=>$v){
+		    if($headers)foreach($headers as $k=>$v){
 			$v = trim($v);
 			if(preg_match("/^FROM/i",$v)){
 			    unset($headers[$k]);
@@ -72,10 +74,12 @@
                     $mail->FromName = LOCAL_MAIL_SMTP_FROM_NAME;
                     $mail->Subject = $subject;
                     $mail->Body    = $message;
-                    $mail->addAddress($to);
+                    $mail->addAddress($sTo);
+
+
                     if(!$mail->send()) {
                         echo $mail->ErrorInfo;
-			return false;
+			            return false;
                     }
                     $mail->clearAddresses();
                     $mail->ClearCustomHeaders();

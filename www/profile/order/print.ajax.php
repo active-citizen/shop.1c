@@ -370,7 +370,7 @@ body {
   </body>
 </html>
 <script>
-//window.print();
+window.print();
 </script>';
 
 if(!isset($orderInfo["ORDER"]["ID"]))echo $sHTML;
