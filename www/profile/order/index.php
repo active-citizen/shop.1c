@@ -3,15 +3,6 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы");
 
-$resIblock = CIblock::GetList(array(),array("CODE"=>"clothes"));
-$arIblock = $resIblock->GetNext();
-$catalogIblockId = $arIblock["ID"];
-
-$resIblock = CIblock::GetList(array(),array("CODE"=>"clothes_offers"));
-$arIblock = $resIblock->GetNext();
-$offerIblockId = $arIblock["ID"];
-
-
 include("../menu.php");
 ?><div class="ag-shop-content">
 	<div class="ag-shop-content__limited-container">
@@ -19,9 +10,9 @@ include("../menu.php");
 	"ag:orders",
 	"",
 	Array(
-		"CATALOG_IBLOCK_ID" => $catalogIblockId,
+		"CATALOG_IBLOCK_ID" => CATALOG_IB_ID,
 		"NAV_TEMPLATE" => "arrows",
-		"OFFER_IBLOCK_ID" => $offerIblockId,
+		"OFFER_IBLOCK_ID" => OFFER_IB_ID,
 		"ORDERS_PER_PAGE" => "10",
 		"PATH_TO_PAYMENT" => "/profile/order/payment/",
 		"RECORDS_ON_PAGE" => 10,

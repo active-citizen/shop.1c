@@ -216,10 +216,11 @@
 
     // Составляем справочник флагов
     $ENUM = array();
-    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>2));
+    $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>CATALOG_IB_ID));
     while($data = $res->getNext()){
         $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
-        if(!isset($ENUM[$data["PROPERTY_CODE"]]))$ENUM[$data["PROPERTY_CODE"]] = array();
+        if(!isset($ENUM[$data["PROPERTY_CODE"]]))
+            $ENUM[$data["PROPERTY_CODE"]] = array();
         $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
     }
     
@@ -286,7 +287,6 @@
         
         // Если в XML у товара заполнен тег "Картинка"
         if($arProduct["Картинка"]){
-            
             $arFields = array();
             $picturePath = isset($arProduct["Картинка"][0])?$arProduct["Картинка"][0]:'';
             // Если у товара есть картинка - пробуем обновить её

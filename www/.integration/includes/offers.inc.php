@@ -4,7 +4,8 @@
         $_SERVER["DOCUMENT_ROOT"].
         "/local/libs/customcache.lib.php"
     );
-     ///////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем торговые предложения
     ///////////////////////////////////////////////////////////////////////
     $objPrice = new CPrice;
@@ -44,6 +45,7 @@
         
         $XML_ID = explode("#", $arOffer["Ид"]);
         $XML_ID = $XML_ID[0];
+
         
         // Если склад еданственный
         if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))
@@ -62,7 +64,7 @@
             "IBLOCK_ID"         =>  $OFFERS_IBLOCK_ID,
             "NAME"              =>  $arOffer["Наименование"],
             "PRICE"             =>  
-                $productsIndexDetail[$arOffer["Ид"]]["Баллы"],
+                $productsIndexDetail[$XML_ID]["Баллы"],
             "XML_ID"            =>  $arOffer["Ид"],
             
 //                "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
@@ -210,6 +212,12 @@
             
         }
         
+//        if($XML_ID=='882625c5-024e-11e7-ad0b-0050568051b4'){
+//            echo "<pre>";
+//          print_r($productsIndexDetail[$XML_ID]["Картинка"]);
+//          die;
+//      }
+
 
         ///////////////////////  Дополнительные изображения
         if(count($productsIndexDetail[$XML_ID]["Картинка"])){
@@ -219,7 +227,7 @@
             // Составляем индекс размеров файлов
             $check_prop_value = array();
             foreach($productsIndexDetail[$XML_ID]["Картинка"] as $value){
-                $picturePath = mb_convert_encoding($value, "utf-8", "cp866");
+                $picturePath = $value;//mb_convert_encoding($value, "utf-8", "cp866");
                 $picturePath = 
                     $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/"
                         .$picturePath;
@@ -254,7 +262,7 @@
                     CFile::Delete($photoItem["VALUE"]);
                 // Делаем массив для добавления
                 foreach($productsIndexDetail[$XML_ID]["Картинка"] as $img){
-                    $picturePath = mb_convert_encoding($img, "utf-8", "cp866");
+                    $picturePath = $img;//mb_convert_encoding($img, "utf-8", "cp866");
                     $picturePath = 
                         $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/"
                             .$picturePath;

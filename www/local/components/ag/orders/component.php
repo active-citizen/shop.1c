@@ -2,21 +2,6 @@
 
 $RU = $_SERVER["REQUEST_URI"];
 // Значения по умолчанию
-
-/*
-if(!isset($arParams["ALL_TITLE"]))$arParams["ALL_TITLE"] = "Все начисления и списания";
-if(!isset($arParams["DEBIT_TITLE"]))$arParams["DEBIT_TITLE"] = "Все начисления";
-if(!isset($arParams["CREDIT_TITLE"]))$arParams["CREDIT_TITLE"] = "Все списания";
-
-
-if(!isset($arParams["ALL_FOLDER"]))$arParams["ALL_FOLDER"] = "all";
-if(!isset($arParams["DEBIT_FOLDER"]))$arParams["DEBIT_FOLDER"] = "debit";
-if(!isset($arParams["CREDIT_FOLDER"]))$arParams["CREDIT_FOLDER"] = "credit";
-
-if(!isset($arParams["SELF_FOLDER"]))$arParams["CREDIT_FOLDER"] = "/points/";
-if(!isset($arParams["USER_ID"]))$arParams["USER_ID"] = CUser::GetID();
-if(!isset($arParams["SORT"]))$arParams["SORT"] = array("TRANSACT_DATE"=>"DESC");
-*/
 if(!isset($arParams["RECORDS_ON_PAGE"]))$arParams["RECORDS_ON_PAGE"] = 10;
 if(!isset($arParams["SHOW_TOP_PAGINATION"]))$arParams["SHOW_TOP_PAGINATION"] = 1;
 if(!isset($arParams["SHOW_BOTTOM_PAGINATION"]))$arParams["SHOW_BOTTOM_PAGINATION"] = 1;
@@ -107,12 +92,18 @@ while($arOrder = $resOrders->GetNext()){
         ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE","PROPERTY_USE_BEFORE_DATE"))->GetNext();
         
         // Картинка продукта
-        $arProp = CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNExt();
+        /*
+        $arProp =
+        CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNext();
         $catalogElementId = $arProp["VALUE"];
         
         $arCatalogItem = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$catalogElementId))->GetNext();
         
         $arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"MORE_PHOTO"))->GetNExt();
+        */
+        $arProp =
+        CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"MORE_PHOTO"))->GetNext();
+
         $arProduct["PIC_PATH"] = CFile::GetPath($arProp["VALUE"]);
         $arProduct["CATALOG_URL"] = $arCatalogItem["DETAIL_PAGE_URL"];
         
@@ -150,7 +141,6 @@ while($arOrder = $resOrders->GetNext()){
     
     $arResult["ORDERS"][] = $order;
 }
-
 $res = CSaleOrder::GetList(array(),$arFilter,false);
 $total_pages = $res->SelectedRowsCount();
  
