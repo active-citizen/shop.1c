@@ -6,7 +6,7 @@
     define("LOCAL_MAIL_SMPT_LOG_ENABLE",true);
     
     define("LOCAL_MAIL_SMTP_LOG_BASEDIR",
-        $_SERVER["DOCUMENT_ROOT"]."/upload/smtplog/"
+        realpath($_SERVER["DOCUMENT_ROOT"]."/../logs/smtplog/")
     );
     
     define("LOCAL_MAIL_SMTP_HOST",$MAIL["smtp.host"]);
@@ -21,7 +21,7 @@
 
     define("LOCAL_MAIL_DISK_ENABLE",true);
     define("LOCAL_MAIL_DISK_BASEDIR", 
-        $_SERVER["DOCUMENT_ROOT"]."/upload/maildir/"
+        realpath($_SERVER["DOCUMENT_ROOT"]."/../logs/maildir/")
     );
 
     define("MAIL_ROOT_DIR",realpath(dirname(__FILE__)));

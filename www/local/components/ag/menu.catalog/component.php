@@ -1,7 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 
-if ($this->StartResultCache(false)) {
+//if ($this->StartResultCache(false)) {
     // Получаем корневых разделов
     CModule::IncludeModule("iblock");
     $res = CIBlockSection::GetList(
@@ -20,5 +20,5 @@ if ($this->StartResultCache(false)) {
     }
  
     $this->IncludeComponentTemplate();
-}
+//}
 
