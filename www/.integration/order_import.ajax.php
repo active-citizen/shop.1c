@@ -490,7 +490,7 @@
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
-                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                    //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
