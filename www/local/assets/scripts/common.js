@@ -336,7 +336,9 @@ function productConfirmNext(){
     +"&store_id="+$('#confirm-store-id').html();
     
     // добавляем в корзину
-    $('#card-order-confirm-button').html('Обработка заказа...')
+    $('#card-order-confirm-button').html('Обработка заказа...');
+    $('#card-order-confirm-button').attr( "onclick" ,"return false;");
+    $('#card-order-confirm-button').css("opacity","0.6");
     $.get(
         add_basket_url,
         function(data){
