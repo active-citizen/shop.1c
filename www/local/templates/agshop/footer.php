@@ -58,7 +58,9 @@
 
 
         <? if(1 || !CUser::IsAuthorized()):?>
+        <? if(!preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])):?>
         <script src="<?php echo CONTOUR_URL; ?>"></script>
+        <? endif ?>
         <? endif?>
 
 

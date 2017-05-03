@@ -1,0 +1,92 @@
+.partners-main{
+    margin: 20px;
+}
+    
+    .partners-main table{
+        margin-top: 10px;
+    }
+
+    .partners-main th{
+        text-align: center;
+        vertical-align: middle !important;
+        position: relative;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+        .partners-main th .partners-sort-down{
+            position: absolute;
+            top: 50%;
+            height: 24px;
+            margin-top: -12px;
+            left: 0px;
+            width: 20px;
+            padding: 0px !important;
+            border: 1px transparent solid;
+            background-color: transparent;
+        }
+        .partners-main th .partners-sort-up{
+            position: absolute;
+            top: 50%;
+            height: 24px;
+            margin-top: -12px;
+            right: 0px;
+            width: 20px;
+            padding: 0px !important;
+            border: 1px transparent solid;
+            background-color: transparent;
+        }
+
+.partners-menu{
+    margin-bottom: 10px !important;
+}
+
+div.partners-date{
+    width: 120px;
+    position: relative;
+}
+
+.partners-date img{
+    float: left;
+    position: absolute;
+    top: 7px;
+    left: 5px;
+}
+
+.partners-date input{
+    float: right;
+    width: 120px;
+    padding-left: 28px;  
+
+}
+
+.order-status-N{
+
+}
+
+.order-status-AG{
+    background-color: #FDD !important;
+}
+
+.order-status-F{
+    background-color: #DFD !important;
+}
+
+.order-status-AI{
+    background-color: #EEE !important;
+}
+
+
+#filter-status{
+    width: 100px;
+}
+
+#filter-storage{
+    width: 50%;
+    float: left;
+}
+
+#filter-manufacturer{
+    width: 50%;
+    float: left;
+}

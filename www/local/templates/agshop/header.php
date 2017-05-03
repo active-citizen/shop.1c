@@ -1,5 +1,12 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+if(preg_match("#^/partners#",$_SERVER["REQUEST_URI"])){
+    $APPLICATION->SetAdditionalCSS("/local/assets/styles/partners.css");
+    $APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap.min.css");
+    $APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap-theme.min.css");
+}
+
+
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/fonts.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/components.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/profile.css");
@@ -9,6 +16,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/styles/card.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/libs/jquery-ui.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/libs/slick.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
+
 
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery-ui.js");
