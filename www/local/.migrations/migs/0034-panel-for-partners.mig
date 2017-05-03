@@ -1,0 +1,111 @@
+<?php
+
+$objMigration = new MigrationToolkit;
+
+$objMigration->setUserUF(
+    "UF_USER_STORAGE_ALL",
+    "boolean",
+    "Доступ к заказам со всех складов",
+    "",
+    array(
+        "SORT"      =>  10
+    )
+);
+
+
+$objMigration->setUserUF(
+    "UF_USER_STORAGE_ID",
+    "integer",
+    "Доступ к заказам со следующих складов",
+    "",
+    array(
+        "MULTIPLE"  =>  "Y",
+        "SORT"      =>  20
+    )
+);
+
+$objMigration->setUserUF(
+    "UF_USER_MAN_ALL",
+    "boolean",
+    "Доступ к заказам у всех производителей",
+    "",
+    array(
+        "SORT"      =>  30
+    )
+);
+
+
+$arManufacturer = 
+    CIBlock::GetList(array(),array("CODE"=>"manuacturers"))
+    ->GetNext();
+
+$nManufacturerIBID = $arManufacturer["ID"];
+
+$objMigration->setUserUF(
+    "UF_USER_MAN_ID",
+    "iblock_element",
+    "Доступ к заказам у следующих производителей",
+    "",
+    array(
+        "MULTIPLE"  =>  "Y",
+        "SORT"      =>  40,
+        "SETTINGS"  =>  array(
+            "IBLOCK_ID" =>  $nManufacturerIBID,
+            "LIST_HEIGHT"      =>  10,
+        )
+    )
+);
+
+$objMigration->setUserUF(
+    "UF_USER_ORDER_CANCEL",
+    "boolean",
+    "Пользователь может отменить заказ",
+    "",
+    array(
+        "SORT"      =>  50
+    )
+);
+
+$objMigration->setUserUF(
+    "UF_USER_ORDER_DONE",
+    "boolean",
+    "Пользователь может выполнить заказ",
+    "",
+    array(
+        "SORT"      =>  60
+    )
+);
+
+
+$arGroups = array(
+    array(
+        "STRIND_ID" =>  "PARTNER",
+        "NAME"      =>  "Партнёры",
+        "ACTIVE"    =>  "Y",
+        "C_SORT"    =>  "500",
+        "DESCRIPTION"=> "Партнёры"
+    ),
+    array(
+        "STRIND_ID" =>  "OPERATOR",
+        "NAME"      =>  "Операторы МФЦ",
+        "ACTIVE"    =>  "Y",
+        "C_SORT"    =>  "600",
+        "DESCRIPTION"=> "Операторы МФЦ"
+    ),
+);
+// Добавляем специальные группы
+$objGroup = new CGroup;
+foreach($arGroups as $arGroup){
+    $arFilter = array( "NAME"=>$arGroup["NAME"]);
+    if($arExistsGroup = $objGroup->GetList(
+        ($by="c_sort"), ($order="desc"),
+        $arFilter        
+    )->GetNext()){
+    }
+    else{
+        $objGroup = $objGroup->Add($arGroup); 
+    }
+}
+
+
+

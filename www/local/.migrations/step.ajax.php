@@ -9,6 +9,7 @@
         echo "Access denied";
         exit();
     }
+    require('migration.class.php');
 
     $filename = isset($_POST["filename"]) ?  $_POST["filename"] : "" ;
     if(
