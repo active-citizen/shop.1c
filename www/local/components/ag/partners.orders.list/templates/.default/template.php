@@ -6,17 +6,31 @@
 id="filter-storage"
 onchange="document.getElementById('form_filter').submit();"
 >
-    <option name="">-все склады-</option>
-    <option></option>
+    <? if(count($arResult["STORES"])):?>
+        <option value="all">-все доступные мне склады-</option>
+    <? endif ?>
+    <? foreach($arResult["STORES"] as $arStore):?>
+        <option value="<?= $arStore["ID"]?>"
+            <? if($arResult["FILTER"]["STORE"]==$arStore["ID"]):?>
+            selected
+            <? endif?>
+        ><?= $arStore["TITLE"]?></option>
+    <? endforeach ?>
 </select>
-<select name="filter_manufacturer" class="form-control"
-id="filter-manufacturer"
+<select name="filter_man" class="form-control"
+id="filter-man"
 onchange="document.getElementById('form_filter').submit();"
 >
-    <option name="">-все производители-</option>
-    <option></option>
+    <option value="all">-все доступные мне производители-</option>
+    <? foreach($arResult["MANS"] as $arMan):?>
+        <option value="<?= $arMan["ID"]?>"
+            <? if($arResult["FILTER"]["MAN"]==$arMan["ID"]):?>
+            selected
+            <? endif?>
+        ><?= $arMan["NAME"]?></option>
+    <? endforeach ?>
 </select>
-<table class="table table-striped table-bordered">
+<table class="table table-bordered">
     <tr>
         <th><input type="checkbox" name="selectall" id="selectall"></th>
         <th width="120px">
@@ -33,7 +47,7 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_name" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
-        <th width="100px">
+        <th width="80px">
             Статус
             <input name="sort_status" type="submit" value="&#9650;" 
             class="partners-sort-up">
@@ -63,10 +77,12 @@ onchange="document.getElementById('form_filter').submit();"
         </th>
         <th width="120px">
             Номер Тройки
+            <!--
             <input name="sort_troika" type="submit" value="&#9650;" 
             class="partners-sort-up">
             <input name="sort_troika" type="submit" value="&#9660;" 
             class="partners-sort-down">
+            -->
         </th>
         <th width="150px">
             Телефон
@@ -92,100 +108,150 @@ onchange="document.getElementById('form_filter').submit();"
         <th>Действие</th>
     </tr>
     <tr>
-        <th>
-        </th>
-        <th>
+        <td>
+        </td>
+        <td>
             <input type="text" name="filter_num" id="filter-num" 
-            class="form-control">
-        </th>
-        <th>
+            class="form-control"
+            value="<?= $arResult["FILTER"]["NUM"]?>"
+            >
+        </td>
+        <td>
             <input type="text" name="filter_name" id="filter-name" 
-            class="form-control">
-        </th>
-        <th>
+            class="form-control"
+            value="<?= $arResult["FILTER"]["LAST_NAME"]?>"
+            >
+        </td>
+        <td>
             <select name="filter_status" id="filter-status" class="form-control">
-                <option name="">-все-</option>
-                <option name="F" style="background-color: #AFA">Новый</option>
+                <option value="">-все-</option>
+                <? foreach($arResult["STATUSES"]as $arStatus):?>
+                <option value="<?= $arStatus["ID"]?>" style="color:
+                <?= $arStatus["COLOR"]?>"
+                <? if($arStatus["ID"]==$arResult["FILTER"]["STATUS"]):?>selected<? endif?>
+                ><?= $arStatus["NAME"]?></option>
+                <? endforeach?>
             </select>
-        </th>
-        <th>
+        </td>
+        <td>
             <div class="partners-date">
             <input type="text" name="filter_adddate" id="filter-adddate" 
-            class="form-control" >
+            class="form-control" 
+            value="<?= $arResult["FILTER"]["ADDDATE"]?>"
+            >
             <?
             echo Calendar( 'filter_adddate', '','form_filter');
             ?></div>
-        </th>
-        <th>
+        </td>
+        <td>
             <input type="text" name="filter_email" id="filter-email" 
-            class="form-control">
-        </th>
-        <th>
+            class="form-control"
+            value="<?= $arResult["FILTER"]["EMAIL"]?>"
+            >
+        </td>
+        <td>
+            
             <input type="text" name="filter_product" id="filter-product" 
-            class="form-control">
-        </th>
-        <th>
+            class="form-control"
+            value="<?= $arResult["FILTER"]["PRODUCT"]?>"
+            >
+            
+        </td>
+        <td>
+            <!--
             <input type="text" name="filter_troika" id="filter-troika" 
             class="form-control">
-        </th>
-        <th>
+            -->
+        </td>
+        <td>
             <input type="text" name="filter_phone" id="filter-phone" 
-            class="form-control">
-        </th>
-        <th>
+            class="form-control"
+            value="<?= $arResult["FILTER"]["PNONE"]?>"
+            >
+        </td>
+        <td>
+            
             <select name="filter_cat" id="filter-cat" class="form-control">
-                <option name="">-все-</option>
+                <option value="">-все-</option>
+                <? foreach($arResult["SECTIONS"] as $arSection):?>
+                <option value="<?= $arSection["ID"]?>"
+                <? if($arSection["ID"]==$arResult["FILTER"]["SECTION"]):?>
+                selected
+                <? endif?>
+                >
+                    <?= $arSection["NAME"]?>
+                </option>
+                <? endforeach ?>
             </select>
-        </th>
-        <th>
+        </td>
+        <td>
             <div class="partners-date">
             <input type="text" name="filter_closedate" id="filter-closedate" 
-            class="form-control" >
+            class="form-control" 
+            value="<?= $arResult["FILTER"]["CLOSE_DATE"]?>"
+            >
             <?
             echo Calendar( 'filter_closedate', '','form_filter');
             ?></div>
-        </th>
-        <th>
+        </td>
+        <td>
             <input type="submit" name="filter" id="filter" 
             class="btn btn-primary" value="Фильтровать">
-        </th>
+        </td>
     </tr>
     <? foreach($arResult["ORDERS"] as $arOrder):?>
-    <tr class="order-status-<?= $arOrder["STATUS_ID"]?>">
-        <td>
+    <tr style="color:<?= $arResult["STATUSES"][$arOrder["STATUS_ID"]]["COLOR"]?>">
+        <td class="td-checkbox">
             <input type="checkbox" name="chk[<?= $arOrder["ID"]?>]">
         </td>
-        <td>
+        <td class="td-num">
             <?= $arOrder["ADDITIONAL_INFO"]?>
         </td>
-        <td>
-            <?= $arOrder["USER_LAST_NAME"]?>
-            <?= $arOrder["USER_NAME"]?>
+        <td class="td-fio">
+            <?= $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["VALUE"]?>
         </td>
-        <td>
-            <?= $arOrder["STATUS_ID"]?>
+        <td class="td-status">
+            <?= $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]?><?
+            if($arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]):?><br/>
+            &#8595;<br/>
+            <?= $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]?>
+            <? endif ?>
         </td>
-        <td>
+        <td class="td-date">
             <?= $arOrder["DATE_INSERT"]?>
         </td>
-        <td>
-            <?= $arOrder["USER_EMAIL"]?>
+        <td class="td-email">
+                <?= $arOrder["USER_EMAIL"]?>
         </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-            <?= $arOrder["USER_LOGIN"]?>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-            <a href="/partners/order/<?= $arOrder["ID"]?>">
-                Просмотр
+        <td class="td-product">
+            <a href="<?= $arOrder["PROPERTIES"]["PRODUCT_URL"]["VALUE"]?>" 
+            target="_blank">
+                <?= $arOrder["PROPERTIES"]["PRODUCT_NAME"]["VALUE"]?>
             </a>
+        </td>
+        <td>
+            <?= $arOrder["PROPERTIES"]["TROIKA"]["VALUE"]?>
+        </td>
+        <td class="td-phone">
+            <?= str_replace("u","",$arOrder["USER_LOGIN"])?>
+        </td>
+        <td class="td-section">
+            <a href="<?= $arOrder["PROPERTIES"]["SECTION_URL"]["VALUE"]?>" 
+            target="_blank">
+                <?= $arOrder["PROPERTIES"]["SECTION_NAME"]["VALUE"]?>
+            </a>
+        </td>
+        <td class="td-date">
+            <?= date(
+                    "d.m.Y",
+                    $arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"]
+                );
+            ?>
+        </td>
+        <td class="td-action">
+            [<a href="/partners/order/<?= $arOrder["ID"]?>">
+                Просмотр
+            </a>]
         </td>
     </tr>
     <? endforeach?>
