@@ -271,6 +271,8 @@ elseif(isset($_GET["add_order"])){
         CSaleOrder::PayOrder($orderId,"Y",true,false);
         CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
         $answer["redirect_url"] = "/profile/order/detail/$orderId/";
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+        orderPropertiesUpdate($orderId);
     }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);

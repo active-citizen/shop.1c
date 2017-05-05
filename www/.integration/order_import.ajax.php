@@ -6,30 +6,37 @@
     if(!isset($_SERVER["DOCUMENT_ROOT"]) || !$_SERVER["DOCUMENT_ROOT"])
         $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/..");
 
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php"
+    );
     require("includes/datafilter.lib.php");
+    require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
     if(!$USER->IsAdmin()){
         echo "failure\nAccess Denied\n";
         die;
     }
-
+ 
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
     $CatalogIblockId = CATALOG_IB_ID;
     $OfferIblockId = OFFER_IB_ID;
     
-    $res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
+    //$res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
     
     // Получаем имя файла заказов
     $ordersFilename = $_GET["filename"];
     if(!$ordersFilename){
         $dd = opendir($uploadDir);
         while($filename = readdir($dd))
-            if(preg_match("#^orders.*\.xml$#",$filename))
+            if(
+                preg_match("#^orders.*\.xml$#",$filename)
+                ||
+                preg_match("#^orders.*\.zip$#",$filename)
+           )
                 {$ordersFilename = $filename;break;}
         closedir($dd);
     }
-   
+  
     // Если имя файла ZIP, распаковываем перед употреблением
     if(preg_match("#^.*\.zip$#",$ordersFilename)){
 	    $zipFilename = $uploadDir.$ordersFilename;
@@ -474,6 +481,7 @@
             	    $DB->Query($strSql);
                 }
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
+                orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                 //CSaleOrder::PayOrder($orderId,"Y",false,false); //?????
                 // Удаляем транзакцию, вызвагую этим заказом (ибо через импорт баллов она придёт)
                 /*

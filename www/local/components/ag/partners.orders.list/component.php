@@ -8,7 +8,7 @@ $arParams["PAGE"] =
     intval($_REQUEST["PAGEN_1"])
     :
     1;
-$arParams["ON_PAGE"]=30;
+$arParams["ON_PAGE"]=20;
 
 // Список складов, доступных пользователю
 $arUser = CUser::GetList(
@@ -395,10 +395,10 @@ if($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▲')
 elseif($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▼')
     $arOrder["USER_LOGIN"] = 'ASC';
 
-echo "<pre>";
-print_r($arOrder);
-print_r($arFilter);
-echo "</pre>";
+//echo "<pre>";
+//print_r($arOrder);
+//print_r($arFilter);
+//echo "</pre>";
 
 
 

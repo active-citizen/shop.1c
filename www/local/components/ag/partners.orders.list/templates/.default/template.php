@@ -100,10 +100,12 @@ onchange="document.getElementById('form_filter').submit();"
         </th>
         <th width="120px">
             Дата истечения бронирования
+            <!--
             <input name="sort_closedate" type="submit" value="&#9650;" 
             class="partners-sort-up">
             <input name="sort_closedate" type="submit" value="&#9660;" 
             class="partners-sort-down">
+            -->
         </th>
         <th>Действие</th>
     </tr>
@@ -242,10 +244,16 @@ onchange="document.getElementById('form_filter').submit();"
             </a>
         </td>
         <td class="td-date">
-            <?= date(
-                    "d.m.Y",
-                    $arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"]
-                );
+            <?= 
+                preg_match(
+                    "#^(\d+)\-(\d+)\-(\d+)$#",
+                    $arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"],
+                    $m
+                )
+                ?
+                $m[3].".".$m[2].".".$m[1]
+                :
+                ""
             ?>
         </td>
         <td class="td-action">
