@@ -417,7 +417,7 @@ $arSelect = array(
 
 
 $arResult["resOrders"] = CSaleOrder::GetList(
-    $arOrder,
+    $arOrder?$arOrder:array("ID"=>"DESC"),
     $arFilter,
     false,
     array(

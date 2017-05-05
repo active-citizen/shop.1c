@@ -75,15 +75,15 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_product" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
+        <!--
         <th width="120px">
             Номер Тройки
-            <!--
             <input name="sort_troika" type="submit" value="&#9650;" 
             class="partners-sort-up">
             <input name="sort_troika" type="submit" value="&#9660;" 
             class="partners-sort-down">
-            -->
         </th>
+        -->
         <th width="150px">
             Телефон
             <input name="sort_phone" type="submit" value="&#9650;" 
@@ -159,12 +159,12 @@ onchange="document.getElementById('form_filter').submit();"
             >
             
         </td>
+        <!--
         <td>
-            <!--
             <input type="text" name="filter_troika" id="filter-troika" 
             class="form-control">
-            -->
         </td>
+        -->
         <td>
             <input type="text" name="filter_phone" id="filter-phone" 
             class="form-control"
@@ -231,9 +231,11 @@ onchange="document.getElementById('form_filter').submit();"
                 <?= $arOrder["PROPERTIES"]["PRODUCT_NAME"]["VALUE"]?>
             </a>
         </td>
+        <!--
         <td>
             <?= $arOrder["PROPERTIES"]["TROIKA"]["VALUE"]?>
         </td>
+        -->
         <td class="td-phone">
             <?= str_replace("u","",$arOrder["USER_LOGIN"])?>
         </td>
@@ -257,7 +259,7 @@ onchange="document.getElementById('form_filter').submit();"
             ?>
         </td>
         <td class="td-action">
-            [<a href="/partners/order/<?= $arOrder["ID"]?>">
+            [<a href="/partners/orders/<?= $arOrder["ID"]?>/">
                 Просмотр
             </a>]
         </td>

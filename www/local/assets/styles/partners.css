@@ -157,3 +157,32 @@ div.partners-date{
     width: 50%;
     float: left;
 }
+
+
+
+
+
+
+
+.partners-order-menu{
+    float: left;
+    width: 200px;
+}
+
+.partners-order-main{
+    padding-top: 20px;
+    padding-left: 220px;
+}
+
+.partners-order-main td.field-name{
+    width: 250px;
+}
+
+#order-products{
+    display:none;
+}
+
+#order-history{
+    display:none;
+}
+

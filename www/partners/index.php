@@ -1,2 +1,2 @@
 <?
-    header("Location: /partners/list/");
+    header("Location: /partners/orders/");

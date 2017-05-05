@@ -8,11 +8,11 @@ header("Content-type: text/plain");
 $resOrder = CSaleOrder::GetList(
     array("ID"=>"DESC"),
     $arFilter = array(
-//	"ID"=>$_REQUEST["id"]
+        "ID"=>$_REQUEST["id"]
     ),
     false,
     array(
-        "nTopCount"=>2000
+        "nTopCount"=>1
     ),
     array() 
 );
