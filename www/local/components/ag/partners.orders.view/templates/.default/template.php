@@ -97,17 +97,59 @@
     </table>
 </div>
 <div class="partners-order-main" id="order-products">
-adasdasdasdasd
-asdadsasdasdasd
-asdasdasdasda
-
+    <div class="product-image">
+       <img src="<?= $arResult["ORDER"]["PRODUCT"]["IMAGE"]?>"
+       class="img-thumbnail" alt="Responsive image"> 
+    </div>
 </div>
 <div class="partners-order-main" id="order-history">
-<pre>
-<?
-    print_r($arResult["ORDER"]["HISTORY"]);
-?>
-</pre>
+<table class="table">
+    <tr>
+        <th>
+            Дата
+        </th>
+        <th>
+            Тип события
+        </th>
+        <th>
+            Статус
+        </th>
+        <th>
+            Предыдущий статус
+        </th>
+    </tr>
+    <? foreach($arResult["ORDER"]["HISTORY"] as $arItem):?>
+    <tr>
+        <td>
+            <?=$arItem["DATE_CREATE"] ?>
+        </td>
+        <td>
+            <?=
+                isset($arResult["HISTORY_TYPES"][$arItem["TYPE"]])
+                ?
+                $arResult["HISTORY_TYPES"][$arItem["TYPE"]]
+                :
+                $arItem["TYPE"]
+            ?>
+        </td>
+        <? if(isset($arItem["DATA"]["OLD_STATUS_ID"])):?>
+            <td style="color: <?=
+                $arResult["STATUSES"][$arItem["DATA"]["STATUS_ID"]]["COLOR"]
+            ?>">
+                <?= $arResult["STATUSES"][$arItem["DATA"]["STATUS_ID"]]["NAME"]?>
+            </td>
+            <td style="color: <?=
+                $arResult["STATUSES"][$arItem["DATA"]["OLD_STATUS_ID"]]["COLOR"]
+            ?>">
+                <?= $arResult["STATUSES"][$arItem["DATA"]["OLD_STATUS_ID"]]["NAME"]?>
+            </td>
+        <? else:?>
+            <td colspan="2">
+            </td>
+        <? endif ?>
+    </tr>
+    <? endforeach ?>
+</table>
 </div>
 
 

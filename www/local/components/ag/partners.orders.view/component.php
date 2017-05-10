@@ -52,13 +52,28 @@ $arResult["ORDER"]["PRODUCT"] = CIBlockElement::GetList(
     ),
     false,
     array("nTopCount"=>1),
-    array("PROPERTY_SEND_CERT")
+    array(
+        "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE",
+        "PROPERTY_MINIMUM_PRICE"
+    )
+//  array()
 )->Fetch();
+$arResult["ORDER"]["PRODUCT"]["IMAGE"] = CFile::GetPath(
+    $arResult["ORDER"]["PRODUCT"]["PREVIEW_PICTURE"]
+);
+
+
 
 //echo "<pre>";
 //print_r($arResult["ORDER"]["PRODUCT"]);
 //echo "</pre>";
 
+
+$arResult["HISTORY_TYPES"] = array(
+    "ORDER_STATUS_CHANGED"  =>  "Изменение статуса заказа",
+    "ORDER_UPDATED"         =>  "Изменение заказа",
+    "ORDER_ADDED"           =>  "Добавление заказа"
+);
 
 
 
@@ -75,7 +90,7 @@ $resHistory = CSaleOrderChange::GetList(
 while($arHistoryItem = $resHistory->Fetch()){
     if($arHistoryItem["ENTITY"] != "ORDER")continue;
     $arHistoryItem["DATA"] = unserialize($arHistoryItem["DATA"]);
-    if($arHistoryItem["TYPE"]!="ORDER_STATUS_CHANGED")continue;
+    if(!isset($arResult["HISTORY_TYPES"][$arHistoryItem["TYPE"]]))continue;
     $arResult["ORDER"]["HISTORY"][] = $arHistoryItem;
 }
 

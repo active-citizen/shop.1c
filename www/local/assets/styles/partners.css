@@ -180,9 +180,14 @@ div.partners-date{
 
 #order-products{
     display:none;
+//    padding-bottom: 20px;
 }
 
 #order-history{
     display:none;
+}
+
+#order-history table td{
+    text-align: center;
 }
 
