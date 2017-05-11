@@ -211,3 +211,15 @@ div.partners-date{
     font-size: 24px;
 }
 
+.print-buttons{
+    text-align: right;
+}
+.print-buttons span{
+    margin: 0px 10px 0px 10px;
+}
+.print-buttons span a{
+    margin-left: 5px;
+}
+
+
+
