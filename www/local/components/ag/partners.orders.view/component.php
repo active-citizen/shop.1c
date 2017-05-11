@@ -19,6 +19,18 @@ if(!$arResult["ORDER"]){
     die;
 }
 
+// Склад
+$arResult["ORDER"]["STORE_INFO"] = CCatalogStore::GetList(
+    array(),
+    array("ID"=>$arResult["ORDER"]["STORE_ID"]),
+    false,array("nTopCount"=>1)
+)->Fetch();
+
+
+//echo "<pre>";
+//print_r($arResult);
+//die;
+
 $arResult["STATUSES"] = array();
 $resStatuses = CSaleStatus::GetList();
 while($arStatus = $resStatuses->Fetch())
@@ -26,47 +38,60 @@ while($arStatus = $resStatuses->Fetch())
     
 
 
-$arResult["ORDER"]["BASKET"] = CSaleBasket::GetList(
+$resBasket = CSaleBasket::GetList(
     array(),
     array("ORDER_ID"=>$arResult["ORDER"]["ID"]),
     false,
     array("nTopCount"=>1)
-)->Fetch();
-
-$arResult["ORDER"]["OFFER"] = CIBlockElement::GetList(
-    array(),
-    array(
-        "IBLOCK_ID"=>OFFER_IB_ID,
-        "ID"=>$arResult["ORDER"]["BASKET"]["PRODUCT_ID"]
-    ),
-    false,
-    array("nTopCount"=>1),
-    array("PROPERTY_CML2_LINK")
-)->Fetch();
-
-$arResult["ORDER"]["PRODUCT"] = CIBlockElement::GetList(
-    array(),
-    array(
-        "IBLOCK_ID"=>CATALOG_IB_ID,
-        "ID"=>$arResult["ORDER"]["OFFER"]["PROPERTY_CML2_LINK_VALUE"]
-    ),
-    false,
-    array("nTopCount"=>1),
-    array(
-        "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE",
-        "PROPERTY_MINIMUM_PRICE"
-    )
-//  array()
-)->Fetch();
-$arResult["ORDER"]["PRODUCT"]["IMAGE"] = CFile::GetPath(
-    $arResult["ORDER"]["PRODUCT"]["PREVIEW_PICTURE"]
 );
 
+$arResult["ORDER"]["BASKET"] = array();
+
+while($arBasket = $resBasket->Fetch()){
+    $arOffer = CIBlockElement::GetList(
+        array(),
+        array(
+            "IBLOCK_ID"=>OFFER_IB_ID,
+            "ID"=>$arBasket["PRODUCT_ID"]
+        ),
+        false,
+        array("nTopCount"=>1),
+        array("PROPERTY_CML2_LINK")
+    )->Fetch();
+
+    $arProduct = CIBlockElement::GetList(
+        array(),
+        array(
+            "IBLOCK_ID"=>CATALOG_IB_ID,
+            "ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
+        ),
+        false,
+        array("nTopCount"=>1),
+        array(
+            "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE",
+            "PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
+        )
+    //  array()
+    )->Fetch();
+
+    $arSection = CIBlockSection::GetList(
+        array(),
+        array("ID"=>$arProduct["IBLOCK_SECTION_ID"]),
+        false,
+        array(),
+        array("nTopCount"=>1)
+    )->Fetch();
 
 
-//echo "<pre>";
-//print_r($arResult["ORDER"]["PRODUCT"]);
-//echo "</pre>";
+    $arProduct["IMAGE"] = CFile::GetPath(
+        $arProduct["PREVIEW_PICTURE"]
+    );
+    $arResult["ORDER"]["BASKET"][] = array(
+        "BASKET_ITEM"   =>  $arBasket,
+        "PRODUCT"       =>  $arProduct,
+        "SECTION"       =>  $arSection
+    );
+}
 
 
 $arResult["HISTORY_TYPES"] = array(

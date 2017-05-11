@@ -180,14 +180,34 @@ div.partners-date{
 
 #order-products{
     display:none;
-//    padding-bottom: 20px;
 }
-
+#order-detail{
+//    display:none;
+}
 #order-history{
     display:none;
 }
 
 #order-history table td{
     text-align: center;
+}
+
+.partners-product-photo{
+    float: left;
+    margin: 10px;
+}
+
+#order-products table{
+    width: 98%;
+}
+
+#order-products .total{
+    text-align: right;
+    font-size: 24px;
+}
+
+#order-products .total-sum{
+    text-align: right;
+    font-size: 24px;
 }
 

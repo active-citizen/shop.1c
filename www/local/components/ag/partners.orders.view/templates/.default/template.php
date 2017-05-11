@@ -52,9 +52,7 @@
                  Итого:  
             </td><td>
                 <?= 
-                    $arResult["ORDER"]["BASKET"]["PRICE"]
-                    *
-                    $arResult["ORDER"]["BASKET"]["QUANTITY"]
+                    $arResult["ORDER"]["PRICE"]
                 ?>
                 б.
             </td>
@@ -97,10 +95,78 @@
     </table>
 </div>
 <div class="partners-order-main" id="order-products">
+<? $nTotal = 0;?>
+<?foreach($arResult["ORDER"]["BASKET"] as $arBasket):?>
+<table><tr><td style="width:450px;">
     <div class="product-image">
-       <img src="<?= $arResult["ORDER"]["PRODUCT"]["IMAGE"]?>"
-       class="img-thumbnail" alt="Responsive image"> 
+        <img src="<?= $arBasket["PRODUCT"]["IMAGE"]?>"
+        class="img-thumbnail partners-product-photo" alt="Responsive image"> 
     </div>
+</td><td style="vertical-align: top;">
+    <table class="table table-striped">
+        <tr>
+            <td style="width:200px;">
+                Товар
+            </td>
+            <td>
+                <a href="/catalog/<?= 
+                    $arBasket["SECTION"]["CODE"]?>/<?= 
+                    $arBasket["PRODUCT"]["CODE"]?>/<? 
+                ?>" target="_blank">
+                <?= $arBasket["PRODUCT"]["NAME"]?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;">
+                Категория
+            </td>
+            <td>
+                <a href="/catalog/<?= 
+                    $arBasket["SECTION"]["CODE"]?>/<? 
+                ?>" target="_blank">
+                <?= $arBasket["SECTION"]["NAME"]?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;">
+                Получение
+            </td>
+            <td>
+                <a href="/rules/stores/#<?= $arResult["ORDER"]["STORE_INFO"]["ID"]
+                ?>" target="_blank">
+                <?= $arResult["ORDER"]["STORE_INFO"]["TITLE"]?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;">
+                Количество
+            </td>
+            <td>
+                <?= $arBasket["BASKET_ITEM"]["QUANTITY"]?> &times; 
+                <?= $arBasket["PRODUCT"]["PROPERTY_QUANT_VALUE"]?> 
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;">
+                Цена за единицу
+            </td>
+            <td>
+                <?= intval($arBasket["BASKET_ITEM"]["PRICE"])?> б. 
+             </td>
+        </tr>
+    </table>
+</td></tr></table>
+<? $nTotal+=$arBasket["BASKET_ITEM"]["QUANTITY"]*$arBasket["BASKET_ITEM"]["PRICE"]?>
+<? endforeach ?>
+<div class="total">
+    Итого:
+    <span class="total-sum">
+    <?= intval($nTotal) ?> б.
+    </span>
+</div>
 </div>
 <div class="partners-order-main" id="order-history">
 <table class="table">
