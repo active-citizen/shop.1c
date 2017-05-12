@@ -194,7 +194,7 @@
         <tr>
             <td colspan="2" style="text-align: right;">
                 <input type="submit" name="download" class="btn btn-primary"
-                value="Выгрузить">
+                value="Выгрузить" onclick="this.style.display='none';">
             </td>
         </tr>
     </table>
