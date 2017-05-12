@@ -7,8 +7,18 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 CModule::IncludeModule('catalog');
 
+$sPrintType = $_REQUEST["print"];
 
-$sInFile = realpath(dirname(__FILE__))."/print_tmpl/act.xlsx";
+if(!preg_match("/^[\d\w]+$/",$sPrintType)){
+    echo "Неверный формат типа печатной формы";
+    die;
+}
+
+$sInFile = realpath(dirname(__FILE__))."/print_tmpl/".$sPrintType.".xlsx";
+if(!file_exists($sInFile)){
+    echo "Файл шаблона печатной формы отсутствует";
+    die;
+}
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/phpexcel/PHPExcel.php");
 $oExcel = PHPExcel_IOFactory::load($sInFile);
@@ -115,61 +125,92 @@ while($arBasket = $resBasket->Fetch()){
     );
 }
 
-$oExcel->getActiveSheet()->setCellValue('H3', get_date(date("d.m.Y")));
-$oExcel->getActiveSheet()->setCellValue('C5',
-    $arResult["ORDER"]["STORE_INFO"]["TITLE"]." ".
-    $arResult["ORDER"]["STORE_INFO"]["ADDRESS"]
-);
-$oExcel->getActiveSheet()->setCellValue('C7', "«МФЦ07/15-132»");
-$oExcel->getActiveSheet()->setCellValue('C8', 
-    $arResult["USER"]["LAST_NAME"]
-    ." ".$arResult["USER"]["NAME"]
-    .", действующий на основании: «№01-1-363/15 от 17.07.2015»"); 
-$oExcel->getActiveSheet()->setCellValue('A12', 
-    "по заказу № "
-    .$arResult["ORDER"]["ADDITIONAL_INFO"]
-    ."  от ".get_date($arResult["ORDER"]["DATE_INSERT"])
-);
-$oExcel->getActiveSheet()->setCellValue('B14', 
-    $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["NAME"]
-);
-$oExcel->getActiveSheet()->setCellValue('D14', 
-    intval($arResult["ORDER"]["ADDITIONAL_INFO"])
-    ?
-    "AКТА-".$arResult["ORDER"]["ADDITIONAL_INFO"]
-    :
-    "AКТ".$arResult["ORDER"]["ADDITIONAL_INFO"]
-);
-$oExcel->getActiveSheet()->setCellValue('E14', 
-    $arResult["ORDER"]["BASKET"][0]["PRODUCT"]["PROPERTY_QUANT_VALUE"]
-);
-$oExcel->getActiveSheet()->setCellValue('F14', 
-    $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["QUANTITY"]
-);
-$oExcel->getActiveSheet()->setCellValue('G14', 
-    intval($arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["PRICE"])
-);
-$oExcel->getActiveSheet()->setCellValue('F15', 
-    $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["QUANTITY"]
-);
-$oExcel->getActiveSheet()->setCellValue('G15', 
-    intval($arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["PRICE"])
-);
-$oExcel->getActiveSheet()->setCellValue('C18', 
-    $arResult["USER"]["LAST_NAME"]
-    ." ".$arResult["USER"]["NAME"]
-); 
-$oExcel->getActiveSheet()->setCellValue('C23', 
-    $arResult["SALER"]["LAST_NAME"]
-    ." ".$arResult["SALER"]["NAME"]
-); 
-$oExcel->getActiveSheet()->setCellValue('B25', 
-    str_replace("u","8",$arResult["SALER"]["LOGIN"])
-); 
-$oExcel->getActiveSheet()->setCellValue('B26', 
-    str_replace("u","8",$arResult["SALER"]["EMAIL"])
-); 
+// Заполняем данные для печатной формы act
+if($_REQUEST["print"]=='act'){
+    $oExcel->getActiveSheet()->setCellValue('H3', get_date(date("d.m.Y")));
+    $oExcel->getActiveSheet()->setCellValue('C5',
+        $arResult["ORDER"]["STORE_INFO"]["TITLE"]." ".
+        $arResult["ORDER"]["STORE_INFO"]["ADDRESS"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('C7', "«МФЦ07/15-132»");
+    $oExcel->getActiveSheet()->setCellValue('C8', 
+        $arResult["USER"]["LAST_NAME"]
+        ." ".$arResult["USER"]["NAME"]
+        .", действующий на основании: «№01-1-363/15 от 17.07.2015»"); 
+    $oExcel->getActiveSheet()->setCellValue('A12', 
+        "по заказу № "
+        .$arResult["ORDER"]["ADDITIONAL_INFO"]
+        ."  от ".get_date($arResult["ORDER"]["DATE_INSERT"])
+    );
+    $oExcel->getActiveSheet()->setCellValue('B14', 
+        $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["NAME"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('D14', 
+        intval($arResult["ORDER"]["ADDITIONAL_INFO"])
+        ?
+        "AКТА-".$arResult["ORDER"]["ADDITIONAL_INFO"]
+        :
+        "AКТ".$arResult["ORDER"]["ADDITIONAL_INFO"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('E14', 
+        $arResult["ORDER"]["BASKET"][0]["PRODUCT"]["PROPERTY_QUANT_VALUE"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('F14', 
+        $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["QUANTITY"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('G14', 
+        intval($arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["PRICE"])
+    );
+    $oExcel->getActiveSheet()->setCellValue('F15', 
+        $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["QUANTITY"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('G15', 
+        intval($arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["PRICE"])
+    );
+    $oExcel->getActiveSheet()->setCellValue('C18', 
+        $arResult["USER"]["LAST_NAME"]
+        ." ".$arResult["USER"]["NAME"]
+    ); 
+    $oExcel->getActiveSheet()->setCellValue('C23', 
+        $arResult["SALER"]["LAST_NAME"]
+        ." ".$arResult["SALER"]["NAME"]
+    ); 
+    $oExcel->getActiveSheet()->setCellValue('B25', 
+        str_replace("u","8",$arResult["SALER"]["LOGIN"])
+    ); 
+    $oExcel->getActiveSheet()->setCellValue('B26', 
+        str_replace("u","8",$arResult["SALER"]["EMAIL"])
+    ); 
+}
 
+
+if($_REQUEST["print"]=='cancel'){
+    $oExcel->getActiveSheet()->setCellValue('C4', 
+        $arResult["SALER"]["LAST_NAME"]
+        ." ".$arResult["SALER"]["NAME"]
+    ); 
+    $oExcel->getActiveSheet()->setCellValue('C2',
+        $arResult["ORDER"]["STORE_INFO"]["TITLE"]." ".
+        $arResult["ORDER"]["STORE_INFO"]["ADDRESS"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('B10',
+        "Я, "
+        .$arResult["SALER"]["LAST_NAME"]
+        ." ".$arResult["SALER"]["NAME"]
+        .", отказываюсь от получения заказа № "
+        .$arResult["ORDER"]["ADDITIONAL_INFO"]
+    );
+    $oExcel->getActiveSheet()->setCellValue('D25', date("d.m.Y"));
+    $oExcel->getActiveSheet()->setCellValue('J25', 
+        $arResult["SALER"]["LAST_NAME"]
+        ." ".$arResult["SALER"]["NAME"]
+    ); 
+    $oExcel->getActiveSheet()->setCellValue('J29', 
+        $arResult["USER"]["LAST_NAME"]
+        ." ".$arResult["USER"]["NAME"]
+    ); 
+
+}
 
 //echo "<pre>";
 //print_r($arResult);
@@ -177,8 +218,8 @@ $oExcel->getActiveSheet()->setCellValue('B26',
 
 $objWriter = PHPExcel_IOFactory::createWriter($oExcel,"Excel2007");
 header("Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-header('Content-disposition: attachment;filename="'.
-    $arResult["ORDER"]["ADDITIONAL_INFO"].'.xlsx"');
+header('Content-disposition: attachment;filename="'.$_REQUEST["print"]."_"
+    .$arResult["ORDER"]["ADDITIONAL_INFO"].'.xlsx"');
 $objWriter->save('php://output');
 die;
 

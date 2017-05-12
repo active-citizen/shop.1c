@@ -195,6 +195,7 @@ div.partners-date{
 .partners-product-photo{
     float: left;
     margin: 10px;
+    width: 420px;
 }
 
 #order-products table{
