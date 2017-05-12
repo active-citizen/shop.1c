@@ -48,6 +48,12 @@ $arUrlRewrite = array(
 		"ID" => "ag:partners.orders.view",
 		"PATH" => "/partners/orders/order.php",
 	),
+	array(
+		"CONDITION" => "#^/partners/download/#",
+		"RULE" => "",
+		"ID" => "ag:partners.orders.download",
+		"PATH" => "/partners/orders/download.php",
+	),
 );
 
 ?>

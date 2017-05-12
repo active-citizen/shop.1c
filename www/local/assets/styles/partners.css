@@ -222,5 +222,10 @@ div.partners-date{
     margin-left: 5px;
 }
 
-
+#download-iframe{
+    width: 98%;
+    margin: 1%;
+    height: 48px;
+    border: 1px transparent solid;
+}
 
