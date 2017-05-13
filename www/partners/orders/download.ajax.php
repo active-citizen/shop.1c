@@ -22,13 +22,127 @@ if(
 
 // Если поступила команда на формирование файла
 if(isset($_REQUEST["download"])){
-
+    
     // Формируем имя файла, в который будем писать CSV
     $sFilename = $_SERVER["DOCUMENT_ROOT"].
         "/upload/user".$USER->GetID()."_".time()."_".rand().".csv";
     $sDownloadFilename = 'orders_'.date("Y_m_d_H_i_s").".csv";
     $arOrder    = array();
     $arFilter   = array();
+
+
+    if(isset($_REQUEST["filter_phone"]) && $_REQUEST["filter_phone"])
+        $arFilter["%USER_LOGIN"] = $_REQUEST["filter_phone"];
+    if(isset($_REQUEST["filter_fio"]) && $_REQUEST["filter_fio"])
+        $arFilter["%PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"] =
+        $_REQUEST["filter_fio"];
+    if(isset($_REQUEST["filter_status"]) && $_REQUEST["filter_status"])
+        $arFilter["STATUS_ID"] =
+        $_REQUEST["filter_status"];
+    if(
+        isset($_REQUEST["filter_man"])
+        && 
+        $_REQUEST["filter_man"]
+        && 
+        $_REQUEST["filter_man"]!='all'
+    )
+        $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] =
+        $_REQUEST["filter_man"];
+
+    if(
+        isset($_REQUEST["filter_adddate_from"]) 
+        && $_REQUEST["filter_adddate_from"]
+        && isset($_REQUEST["filter_adddate_to"]) 
+        && $_REQUEST["filter_adddate_to"]
+    )
+        $arFilter["><DATE_INSERT"] = array(
+            $_REQUEST["filter_adddate_from"]." 00:00:00",
+            $_REQUEST["filter_adddate_to"]." 23:59:59"
+        );
+    elseif(
+        isset($_REQUEST["filter_adddate_from"]) 
+        && $_REQUEST["filter_adddate_from"]
+        && (
+            isset($_REQUEST["filter_adddate_to"]) 
+            || 
+            !$_REQUEST["filter_adddate_to"]
+        )
+     )
+        $arFilter[">DATE_INSERT"] = $_REQUEST["filter_adddate_from"]." 00:00:00";
+    elseif(
+        isset($_REQUEST["filter_adddate_to"]) 
+        && $_REQUEST["filter_adddate_to"]
+        && (!
+            isset($_REQUEST["filter_adddate_from"]) 
+            || !$_REQUEST["filter_adddate_from"]
+        )
+     )
+        $arFilter["<DATE_INSERT"] = $_REQUEST["filter_adddate_to"]." 23:59:59";
+ 
+
+
+    if(
+        isset($_REQUEST["filter_update_from"]) 
+        && $_REQUEST["filter_update_from"]
+        && isset($_REQUEST["filter_update_to"]) 
+        && $_REQUEST["filter_update_to"]
+    )
+        $arFilter["><DATE_UPDATE"] = array(
+            $_REQUEST["filter_update_from"]." 00:00:00",
+            $_REQUEST["filter_update_to"]." 23:59:59"
+        );
+    elseif(
+        isset($_REQUEST["filter_update_from"]) 
+        && $_REQUEST["filter_update_from"]
+        && (!
+            isset($_REQUEST["filter_update_to"]) 
+            || !$_REQUEST["filter_update_to"]
+        )
+     )
+        $arFilter[">DATE_UPDATE"] = $_REQUEST["filter_update_from"]." 00:00:00";
+    elseif(
+        isset($_REQUEST["filter_update_to"]) 
+        && $_REQUEST["filter_update_to"]
+        && (!
+            isset($_REQUEST["filter_update_from"]) 
+            || !$_REQUEST["filter_update_from"]
+        )
+     )
+        $arFilter["<DATE_UPDATE"] = $_REQUEST["filter_update_to"]." 23:59:59";
+ 
+    if(
+        isset($_REQUEST["filter_lockdate_from"]) 
+        && $_REQUEST["filter_lockdate_from"]
+        && isset($_REQUEST["filter_lockdate_to"]) 
+        && $_REQUEST["filter_lockdate_to"]
+    )
+        $arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"] = array(
+            $_REQUEST["filter_lockdate_from"]." 00:00:00",
+            $_REQUEST["filter_lockdate_to"]." 23:59:59"
+        );
+    elseif(
+        isset($_REQUEST["filter_lockdate_from"]) 
+        && $_REQUEST["filter_lockdate_from"]
+        && (!
+            isset($_REQUEST["filter_lockdate_to"]) 
+            || !$_REQUEST["filter_lockdate_to"]
+        )
+     )
+        $arFilter[">PROPERTY_VAL_BY_CODE_CLOSE_DATE"] = 
+            $_REQUEST["filter_lockdate_from"]." 00:00:00";
+    elseif(
+        isset($_REQUEST["filter_lockdate_to"]) 
+        && $_REQUEST["filter_lockdate_to"]
+        && (!
+            isset($_REQUEST["filter_lockdate_from"]) 
+            || !$_REQUEST["filter_lockdate_from"]
+        )
+     )
+        $arFilter["<PROPERTY_VAL_BY_CODE_CLOSE_DATE"] = 
+            $_REQUEST["filter_lockdate_to"]." 23:59:59";
+
+
+    
 
     // Запрашиваем
     $resOrders = CSaleOrder::GetList(
