@@ -171,7 +171,6 @@
                     <option value="date_added">Дата оформления заказа</option>
                     <option value="date_modified">Дата изменения заказа</option>
                     <option value="telephone">Телефон</option>
-                    <option value="product_name">Наименование продукта</option>
                     <option value="storage_name">Центр выдачи</option>
                     <option value="expire_date">Дата истечения бронирования</option>
                     <option value="category_name">Категория</option>
@@ -185,7 +184,7 @@
                 Направление сортировки
             </td>
             <td>
-                <select name="filter_sort" id="filter-sort" class="form-control">
+                <select name="filter_order" id="filter-order" class="form-control">
                     <option value="ASC">По возрастанию</option>
                     <option value="DESC">По убыванию</option>
                 </select>
@@ -193,7 +192,7 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align: right;">
-                <input type="submit" name="download" class="btn btn-primary"
+                <input type="submit" name="download" id="download_submit" class="btn btn-primary"
                 value="Выгрузить" onclick="this.style.display='none';">
             </td>
         </tr>

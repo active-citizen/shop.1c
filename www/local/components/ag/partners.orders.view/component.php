@@ -3,7 +3,7 @@
 $arParams["ORDER_ID"] = 
     isset($arParams["ORDER_ID"]) && intval($arParams["ORDER_ID"])
     ?
-    intval($arParams["ORDER_ID"])
+        intval($arParams["ORDER_ID"])
     :
     0;
 

@@ -60,7 +60,7 @@
         }
     }
 
-    function get_date($date=''){
+    function get_date($date='',$rus = true){
         $mons = array(
             1=>"января",
             2=>"февраля",
@@ -79,10 +79,16 @@
         if(!$date)$date = date("d.m.Y");
         $tmp = date_parse($date);
         
-        return 
-            $tmp["day"]
-            ." ".$mons[intval($tmp["month"])]
-            ." ".$tmp["year"];
+        if($rus)
+            return 
+                $tmp["day"]
+                ." ".$mons[intval($tmp["month"])]
+                ." ".$tmp["year"];
+        else
+            return 
+                $tmp["day"]
+                .".".$tmp["month"]
+                .".".$tmp["year"];
 
     }
 
