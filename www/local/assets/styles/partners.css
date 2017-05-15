@@ -229,3 +229,8 @@ div.partners-date{
     border: 1px transparent solid;
 }
 
+#status_id{
+    width: 200px;
+    float: left;
+    margin-right: 10px;
+}

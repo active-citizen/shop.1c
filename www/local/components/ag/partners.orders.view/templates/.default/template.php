@@ -17,6 +17,23 @@
     </li>
 </ul>
 <div class="partners-order-main" id="order-detail">
+    <? if(
+        isset($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
+        &&
+        trim($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
+    ):?>
+    <p class="alert alert-warning">Отправлен запрос изменения статуса на &laquo;
+        <span style="color:<?= 
+        $arResult["STATUSES"][
+            $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
+        ]["COLOR"]
+    ?>"><?= 
+        $arResult["STATUSES"][
+            $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
+        ]["NAME"]
+    ?></span>&raquo;</p>
+    <? endif ?>
+
     <table class="table table-striped" >
         <tr>
             <td class="field-name">
@@ -177,18 +194,22 @@ href="/partners/orders/print.php?print=cancel&order=<?=
 </div>
 </div>
 <div class="partners-order-main" id="order-history">
+<form method="post">
 <table class="table">
     <tr>
-        <th>
+        <th style="width:100px;">
             Дата
         </th>
-        <th>
+        <th style="width: 300px;">
+            Инициатор
+        </th>
+        <th style="width:100px;">
             Тип события
         </th>
-        <th>
+        <th style="width:100px;">
             Статус
         </th>
-        <th>
+        <th style="width:100px;">
             Предыдущий статус
         </th>
     </tr>
@@ -196,6 +217,10 @@ href="/partners/orders/print.php?print=cancel&order=<?=
     <tr>
         <td>
             <?=$arItem["DATE_CREATE"] ?>
+        </td>
+        <td>
+            <?= $arItem["USER_INFO"]["LAST_NAME"]?>
+            <?= $arItem["USER_INFO"]["NAME"]?>
         </td>
         <td>
             <?=
@@ -224,6 +249,13 @@ href="/partners/orders/print.php?print=cancel&order=<?=
     </tr>
     <? endforeach ?>
 </table>
+<select name="status_id" class="form-control" id="status_id">
+    <option value="AA">Новый</option>
+    <option value="F">Выполнен</option>
+</select>
+<input type="submit" name="chansge_status" value="Запросить смену статуса"
+class="btn btn-primary">
+</form>
 </div>
 
 

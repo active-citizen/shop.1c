@@ -216,7 +216,10 @@ onchange="document.getElementById('form_filter').submit();"
             <?= $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]?><?
             if($arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]):?><br/>
             &#8595;<br/>
-            <?= $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]?>
+            <span style="color:<?=
+            $arResult["STATUSES"][$arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]]["COLOR"]?>">
+            <?= $arResult["STATUSES"][$arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]]["NAME"]?>
+            </span>
             <? endif ?>
         </td>
         <td class="td-date">

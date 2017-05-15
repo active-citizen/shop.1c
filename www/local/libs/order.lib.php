@@ -218,3 +218,18 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
     }
     return true;
 }
+
+/*
+    Отправка запроса на изменение
+*/
+function orderZNI($nOrderId,$sStatusId,$sOldStatusId){
+    CSaleOrderChange::AddRecord(
+        $nOrderId,
+        "ORDER_ZNI",
+        array(
+            "STATUS_ID"=>$sStatusId,
+            "OLD_STATUS_ID"=>$sOldStatusId
+        ),
+        "ORDER"
+    );
+}

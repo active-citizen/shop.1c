@@ -414,7 +414,7 @@ type="text/css"  rel="stylesheet" />
 
 <?
     $percent =
-    round(100*(($nextPage*ORDERS_QUANT)/$_SESSION["ORDER_DOWNLOAD"]["NUM_ROWS"]),0);
+    round(100*(($nextPage*ORDERS_QUANT)/$_SESSION["ORDER_DOWNLOAD"]["NUM_ROWS"]),1);
     if($percent>100)$percent = 100;
 ?>
 <div class="progress" style="float: left; width:60%;margin-right:10px;">
