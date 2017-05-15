@@ -1,4 +1,20 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+    <? if(
+        isset($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
+        &&
+        trim($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
+    ):?>
+    <p class="alert alert-warning">Отправлен запрос изменения статуса на &laquo;<span style="color:<?= 
+        $arResult["STATUSES"][
+            $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
+        ]["COLOR"]
+    ?>"><?= 
+        $arResult["STATUSES"][
+            $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
+        ]["NAME"]
+    ?></span>&raquo;</p>
+    <? endif ?>
+
 <ul class="nav nav-pills nav-stacked partners-order-menu">
     <li class="active">
         <a href="#" rel="order-detail">
@@ -17,23 +33,6 @@
     </li>
 </ul>
 <div class="partners-order-main" id="order-detail">
-    <? if(
-        isset($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
-        &&
-        trim($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
-    ):?>
-    <p class="alert alert-warning">Отправлен запрос изменения статуса на &laquo;
-        <span style="color:<?= 
-        $arResult["STATUSES"][
-            $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
-        ]["COLOR"]
-    ?>"><?= 
-        $arResult["STATUSES"][
-            $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
-        ]["NAME"]
-    ?></span>&raquo;</p>
-    <? endif ?>
-
     <table class="table table-striped" >
         <tr>
             <td class="field-name">

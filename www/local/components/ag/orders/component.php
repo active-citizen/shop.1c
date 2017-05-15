@@ -81,6 +81,38 @@ while($arOrder = $resOrders->GetNext()){
     
     $order["PRODUCTS"] = array();
     $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
+    // ID группы свойств
+    $arPropGroup = CSaleOrderPropsGroup::GetList(
+        array(),
+        $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+        false,
+        array("nTopCount"=>1)
+    )->GetNext();
+    $nPropGroup = $arPropGroup["ID"];
+    // Получаем свойства заказа
+    $resPropValues = CSaleOrderProps::GetList(
+        array("SORT" => "ASC"),
+        array(
+                "ORDER_ID"       => $order["ID"],
+                "PERSON_TYPE_ID" => 1,
+                "PROPS_GROUP_ID" => $nPropGroup,
+            ),
+        false,
+        false,
+        array("ID","CODE","NAME")
+    );
+    $order["PROPERTIES"] = array();
+    while($arProp = $resPropValues->GetNext()){
+        $order["PROPERTIES"][$arProp["CODE"]] = 
+            CSaleOrderPropsValue::GetList(
+                array(),
+                $arFilterProp = array(
+                    "ORDER_ID"=>$order["ID"],
+                    "ORDER_PROPS_ID"=>$arProp["ID"]
+                )
+            )->GetNext();
+    }
+
     while($arProduct = $resProduct->GetNext()){
         
         $arOffer = CIblockElement::GetList(array(),array(
@@ -90,17 +122,17 @@ while($arOrder = $resOrders->GetNext()){
         $arCatalog = CIblockElement::GetList(array(),array(
             "IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
         ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE","PROPERTY_USE_BEFORE_DATE"))->GetNext();
-        
+
         // Картинка продукта
-        /*
+        /////////////////
         $arProp =
         CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNext();
         $catalogElementId = $arProp["VALUE"];
         
-        $arCatalogItem = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$catalogElementId))->GetNext();
+        //$arCatalogItem = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$catalogElementId))->GetNext();
         
-        $arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"MORE_PHOTO"))->GetNExt();
-        */
+        //$arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"MORE_PHOTO"))->GetNExt();
+        /////////
         $arProp =
         CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"MORE_PHOTO"))->GetNext();
 

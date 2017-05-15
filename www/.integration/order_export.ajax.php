@@ -13,7 +13,6 @@
         die;
     }
 
-
     // Получаем DI сессии обмена
     $session_id = 
         isset($_COOKIE['PHPSESSID'])
@@ -43,19 +42,92 @@
     CModule::IncludeModule('sale');
     CModule::IncludeModule('iblock');
    
+    $arOrderses = array();
     $res = CSaleOrder::GetList(
         array("ID"=>"ASC"),
         array(
             //">ID"=>783
-            "DATE_UPDATE"=>""
+            //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AG" 
         ), // Выводить только не отданные заказы
         false
         ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
-   
+    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    $res = CSaleOrder::GetList(
+        array("ID"=>"ASC"),
+        array(
+            //">ID"=>783
+            //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"F" 
+        ), // Выводить только не отданные заказы
+        false
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+    );
+    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    $res = CSaleOrder::GetList(
+        array("ID"=>"ASC"),
+        array(
+            //">ID"=>783
+            //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"N" 
+        ), // Выводить только не отданные заказы
+        false
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+    );
+    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    $res = CSaleOrder::GetList(
+        array("ID"=>"ASC"),
+        array(
+            //">ID"=>783
+            //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AI" 
+        ), // Выводить только не отданные заказы
+        false
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+    );
+    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+     
+  
+
+    /*
+    $arPropGroup = CSaleOrderPropsGroup::GetList(
+        array(),
+        $arPropGroupFilter = array(),
+        false,
+        array("nTopCount"=>1)
+    )->GetNext();
+    */
+    $nPropGroup = 5;//$arPropGroup["ID"];
+
     $objOrder = new CSaleOrder;
     $arOrders = array();
-    while($arrOrder = $res->GetNext()){
+    foreach($arOrderses as $arrOrder){
+
+        $resPropValues = CSaleOrderProps::GetList(
+            array("SORT" => "ASC"),
+            $arF = array(
+                    "ORDER_ID"       => $arrOrder["ID"],
+                    "PERSON_TYPE_ID" => 1,
+                    "PROPS_GROUP_ID" => $nPropGroup,
+                    "CODE"=>"CHANGE_REQUEST"
+                ),
+            false,
+            false,
+            array("ID","CODE","NAME")
+        );
+        $arrOrder["PROPERTIES"] = array();
+        while($arProp = $resPropValues->GetNext()){
+            $arrOrder["PROPERTIES"][$arProp["CODE"]] = 
+                CSaleOrderPropsValue::GetList(
+                    array(),
+                    $arFilterProp = array(
+                        "ORDER_ID"=>$arrOrder["ID"],
+                        "ORDER_PROPS_ID"=>$arProp["ID"]
+                    )
+                )->GetNext();
+        }
+
         // Не выводим заказы импортированные из других систем
         //if(!$arrOrder["EMP_PAYED_ID"])continue;
         if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
@@ -214,7 +286,13 @@
         );
         $order["Склад"] = $arStore["XML_ID"];
         
-        $arSatatus = CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
+        $arSatatus =
+        CSaleStatus::GetByID($arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]);
+        $order["ЗНИ"] = mb_convert_encoding(
+            $arSatatus["NAME"],"cp1251","utf-8"
+        );
+        $arSatatus =
+        CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
         $order["КодСостоянияЗаказа"] = $arrOrder["STATUS_ID"];
         $order["СостояниеЗаказа"] = mb_convert_encoding(
             $arSatatus["NAME"],"cp1251","utf-8"
@@ -244,7 +322,7 @@
     <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
     <СтатусЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СтатусЗаказа>
     <ЗапросНаИзменение><? 
-        echo $arOrder["СостояниеЗаказа"];
+        echo $arOrder["ЗНИ"];
     ?></ЗапросНаИзменение>
     <Контрагенты>
         <Контрагент>

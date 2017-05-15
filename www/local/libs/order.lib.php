@@ -222,8 +222,70 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
 /*
     Отправка запроса на изменение
 */
-function orderZNI($nOrderId,$sStatusId,$sOldStatusId){
-    CSaleOrderChange::AddRecord(
+function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
+
+    // ID группы свойств
+    $arPropGroup = CSaleOrderPropsGroup::GetList(
+        array(),
+        $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+        false,
+        array("nTopCount"=>1)
+    )->GetNext();
+    $nPropGroup = $arPropGroup["ID"];
+    // Получаем свойства заказа
+    $resPropValues = CSaleOrderProps::GetList(
+        array("SORT" => "ASC"),
+        array(
+                "ORDER_ID"       => $nOrderId,
+                "PERSON_TYPE_ID" => 1,
+                "PROPS_GROUP_ID" => $nPropGroup,
+            ),
+        false,
+        false,
+        array("ID","CODE","NAME")
+    );
+    $PROPERTIES = array();
+    while($arProp = $resPropValues->GetNext()){
+        $PROPERTIES[$arProp["CODE"]] = $arProp;
+    }
+
+
+    $objCSaleOrderPropsValue = new CSaleOrderPropsValue; 
+
+    $arFilter = array(
+        "ORDER_ID"      =>  $nOrderId,
+        "ORDER_PROPS_ID"=>  $PROPERTIES["CHANGE_REQUEST"]["ID"],
+        "CODE"          =>  "CHANGE_REQUEST",
+        "NAME"          =>  $PROPERTIES["CHANGE_REQUEST"]["NAME"],
+    );
+
+    if(
+        $arExistPropValue = 
+        CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
+    ){
+        $arFilter["VALUE"] = $sStatusId;
+        if(!CSaleOrderPropsValue::Update(
+            $arExistPropValue["ID"],
+            $arFilter 
+        ) && $bDebug){
+            ShowMessage(array(
+                "TYPE"=>"ERROR",
+                "MESSAGE"=>"Ошибка добавления свойства ЗНИ"
+            ));
+            die;
+        }
+    }
+    elseif($sStatusId){
+        $arFilter["VALUE"] = $sStatusId;
+        if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
+            ShowMessage(array(
+                "TYPE"=>"ERROR",
+                "MESSAGE"=>"Ошибка изменения свойства ЗНИ"
+            ));
+            die;
+        }
+    }
+    if(!CSaleOrderChange::AddRecord(
         $nOrderId,
         "ORDER_ZNI",
         array(
@@ -231,5 +293,7 @@ function orderZNI($nOrderId,$sStatusId,$sOldStatusId){
             "OLD_STATUS_ID"=>$sOldStatusId
         ),
         "ORDER"
-    );
+    )){
+        
+    }
 }

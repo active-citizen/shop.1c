@@ -170,6 +170,7 @@ elseif(isset($_GET["add_to_basket"])){
 }
 elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
+    require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
     
     $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"), array(
         "FUSER_ID" => CSaleBasket::GetBasketUserID(),
@@ -269,9 +270,12 @@ elseif(isset($_GET["add_order"])){
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
         CSaleOrder::PayOrder($orderId,"Y",true,false);
+
         CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
         $answer["redirect_url"] = "/profile/order/detail/$orderId/";
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
+        orderSetZNI($orderId,'N','AA');
         orderPropertiesUpdate($orderId);
     }
     else{
@@ -372,7 +376,7 @@ elseif(isset($_GET["wish"])){
     
 }
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
-    
+    require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
     
     // Проверить принадлежит ли заказ пользователю
     CModule::IncludeModule('sale');
@@ -427,6 +431,9 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
         $resOrder = $obOrder->addEMPPoints($order["SUM_PAID"],"Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ");
         $moneyBack = true;
 
+        OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
+        /*
+        ЗНИ такое ЗНИ
         CSaleOrder::PayOrder($order["ID"],"N",true,false);
         CSaleOrder::StatusOrder($order["ID"],"AG");
         eventOrderStatusSendEmail($order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG"));
@@ -438,6 +445,7 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
             //CSaleOrder::StatusOrder($order["ID"],"AG");
         }
         CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
+        */
     }
 }
 else{

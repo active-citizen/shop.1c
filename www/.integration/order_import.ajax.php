@@ -498,6 +498,7 @@
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
+                    setOrderZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
@@ -521,6 +522,7 @@
                     }
                     CSaleOrder::PayOrder($existsOrder["ID"],"N",true,false);
                     CSaleOrder::StatusOrder($existsOrder["ID"], $statusId);
+//                    setOrderZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }

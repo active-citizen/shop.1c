@@ -54,46 +54,12 @@ while($arProp = $resPropValues->GetNext()){
 
 if(isset($_REQUEST["chansge_status"])){
 
-    $objCSaleOrderPropsValue = new CSaleOrderPropsValue; 
-
-    $arFilter = array(
-        "ORDER_ID"      =>  $arResult["ORDER"]["ID"],
-        "ORDER_PROPS_ID"=>  $arResult["PROPERTIES"]["CHANGE_REQUEST"]["ID"],
-        "CODE"          =>  "CHANGE_REQUEST",
-        "NAME"          =>  $arResult["PROPERTIES"]["CHANGE_REQUEST"]["NAME"],
-    );
-
-    if(
-        $arExistPropValue = 
-        CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
-    ){
-        $arFilter["VALUE"] = $_REQUEST["status_id"];
-        if(!CSaleOrderPropsValue::Update(
-            $arExistPropValue["ID"],
-            $arFilter 
-        ) && $bDebug){
-            ShowMessage(array(
-                "TYPE"=>"ERROR",
-                "MESSAGE"=>"Ошибка добавления свойства ЗНИ"
-            ));
-            die;
-        }
-    }
-    elseif($arPropValue["PROPERTY_VALUE"]){
-        $arFilter["VALUE"] = $_REQUEST["status_id"];
-        if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
-            ShowMessage(array(
-                "TYPE"=>"ERROR",
-                "MESSAGE"=>"Ошибка изменения свойства ЗНИ"
-            ));
-            die;
-        }
-    }
-    orderZNI(
+    orderSetZNI(
         $arResult["ORDER"]["ID"],
         $_REQUEST["status_id"],
         $arResult["ORDER"]["STATUS_ID"]
     );
+    LocalRedirect("/partners/orders/".$arResult["ORDER"]["ID"]."/");
 }
 
 
@@ -174,9 +140,10 @@ while($arBasket = $resBasket->Fetch()){
 
 $arResult["HISTORY_TYPES"] = array(
     "ORDER_STATUS_CHANGED"  =>  "Изменение статуса заказа",
-    "ORDER_UPDATED"         =>  "Изменение заказа",
+//    "ORDER_UPDATED"         =>  "Изменение заказа",
     "ORDER_ADDED"           =>  "Добавление заказа",
-    "ORDER_ZNI"             =>  "Запрос на изменение статуса"
+    "ORDER_ZNI"             =>  "Запрос на изменение статуса",
+    "ORDER_CANCELED"        =>  "Заказ изменён"
 );
 
 
@@ -188,10 +155,13 @@ $resHistory = CSaleOrderChange::GetList(
         "ORDER_ID"=>$arResult["ORDER"]["ID"]
     ),
     false,
-    array("nTopCount"=>10)
+    false//array("nTopCount"=>10)
 
 );
 while($arHistoryItem = $resHistory->Fetch()){
+//    echo "<pre>";
+//    print_r($arHistoryItem);
+//    echo "</pre>";
     if(
         $arHistoryItem["ENTITY"] != "ORDER"
     )continue;
@@ -200,7 +170,9 @@ while($arHistoryItem = $resHistory->Fetch()){
     // Имя пользователя
     $arHistoryItem["USER_INFO"] =
     CUser::GetById($arHistoryItem["USER_ID"])->Fetch();
-    $arResult["ORDER"]["HISTORY"][] = $arHistoryItem;
+    $arResult["ORDER"]["HISTORY"][
+        $arHistoryItem["TYPE"].mb_substr($arHistoryItem["DATE_CREATE"],0,16)
+    ] = $arHistoryItem;
 }
 
 $this->IncludeComponentTemplate();
