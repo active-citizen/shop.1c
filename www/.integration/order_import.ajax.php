@@ -498,7 +498,7 @@
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
-                    setOrderZNI($orderId,'',$existsOrder["STATUS_ID"]);
+                    orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену

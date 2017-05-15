@@ -8,6 +8,7 @@
         echo "failure\nAccess Denied\n";
         die;
     }
+    require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
     header("Content-type: text/plain; charset=windows-1251;");
     $session_id = 
@@ -54,14 +55,13 @@
         if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
 
         // Отмечаем заказ как "отданный в рамках транзакции $session_id"
-        
+        orderSetZNI($arrOrder["ID"],'',$arrOrder["STATUS_ID"]);
         $objOrder->Update(
             $arrOrder["ID"],
             array(
                 "COMMENTS"=>""
             )
         );
-        
     }
     echo "success";
         
