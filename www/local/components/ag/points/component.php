@@ -33,6 +33,7 @@ if(preg_match("#^".$arParams["SELF_FOLDER"].".*?/(\d+)/#",$RU,$m))
 CModule::IncludeModule("sale");
 $arFilter = array();
 $arFilter["USER_ID"] = $arParams["USER_ID"];
+$arFilter["!DESCRIPTION"] = 'EXCESS_SUM_PAID';
 $arPages = array("nPageSize"=>$arParams["RECORDS_ON_PAGE"], "iNumPage"=>$arParams["PAGE"]);
 if($arResult["DEBIT"])$arFilter["DEBIT"] = $arResult["DEBIT"];
 

@@ -24,9 +24,11 @@
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
     
     $agBrige = new ActiveCitizenBridge;
+    $bxUser = new bxUser;
     
     $answer = array("errors"=>"");
-    
+
+     
     
     $args = array(
         "login"     =>  isset($_REQUEST["login"])?$_REQUEST["login"]:'',
@@ -35,7 +37,10 @@
         "session_id"=>  
             isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:'',
     );
-    
+    $login = $args["login"];
+     
+    // Получаем от EMP сессию и профиль текущего залогиненного на АГ
+    // пользователя
     if($args["session_id"])
         $agBrige->setMethod('enc_auth');
     else
@@ -49,24 +54,6 @@
     if(!$answer["errors"])
         $profile = $agBrige->exec();
 
-    if(!isset($profile["session_id"]) || !trim($profile["session_id"])){
-        $USER->Logout();
-        $answer["errors"][] = 'Ошибка авторизации';
-    }
-    
-    if(isset($profile['result']['personal']['phone']))
-        $args["login"] = $profile['result']['personal']['phone'];
-
-    if(isset($profile["errorMessage"]) && $profile["errorMessage"])
-        $answer["errors"][] = $profile["errorMessage"];
-        
-    if(isset($profile["result"]))$answer["profile"] = $profile["result"];
-
-
-    // Проверяем есть ли в жкрнале записи о его последних обновлениях профиля
-    // Если информации об обновления профиля нет - заводим новую
-    $bxUser = new bxUser;
-    $login = $args["login"];
     $email = $profile["result"]["personal"]["email"];
     // Проверяем корректност email
     $sOriginalEmail = "";
@@ -80,49 +67,82 @@
             $profile["result"]["personal"]["email"]
         )
     )$email = "u".$login."@shop.ag.mos.ru";
-    
 
-    if($updateRecord = $bxUser->getUpdateRecord($login,$email)){
-        $bxUser->setLastUpdateTime($login, $email, $profile["session_id"]);
+    if(isset($profile['result']['personal']['phone']))
+        $args["login"] = $profile['result']['personal']['phone'];
+
+    if(isset($profile["errorMessage"]) && $profile["errorMessage"])
+        $answer["errors"][] = $profile["errorMessage"];
+        
+    if(isset($profile["result"]))$answer["profile"] = $profile["result"];
+    // Если пользователь разлогинился на АГ, но залогинен в битриксомом магазина 
+    // - разлогиниваем и в битриксе и редиректимся
+    if(
+        $USER->isAuthorized() 
+        && (
+            !isset($profile["session_id"]) 
+            || 
+            !trim($profile["session_id"])
+        )
+    ){
+        $USER->Logout();
+        $answer["errors"] = array();
+        $answer["redirect"] = '/catalog/';
+        echo json_encode($answer);
+        die;
+        //$answer["errors"][] = 'Ошибка авторизации';
     }
+  
+    // Если в полученном профиле сессия пользователя отличается от текущей
+    // создаём новую сессию, перелогиниваемся, получаем баллы и редиректимся
 
+    $sCurrentSessionId =
+        $bxUser->getEMPSessionId(
+        );
     if(
         isset($profile["result"]) 
         && $profile["result"] 
-        && isset($profile["session_id"]) 
-        && isset($profile["session_id"])
-        && !$USER->isAuthorized()
+        && preg_match("#^[0-9a-f]{32,40}$#i",$profile['session_id']) 
+        && $sCurrentSessionId!=$profile["session_id"]
     ){
-       if(!$bxUser->login(
+        $args["login"] = $profile["result"]["personal"]["phone"];
+        if(!$bxUser->login(
             $args["login"],
             $profile["session_id"], 
             $profile["result"])
         ){
             $answer["errors"][] = $bxUser->error;
         }
-        $answer["redirect"] = '/catalog/';
+        else{
+            //=========== Стягиваем баллы =========
+            $args = array(
+                "session_id"    =>  $profile["session_id"],
+                "token"         =>  $EMP_TOKENS[CONTOUR]
+            );
+            $agBrige->setMethod('pointsHistory');
+            $agBrige->setMode('emp');
+            $agBrige->setArguments($args);
+            $answer["errors"] = array_merge($agBrige->getErrors(),$answer["errors"]);
+            $profile = array();
+            if(!$answer["errors"] && !$history = $agBrige->exec()){
+                $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
+            }
+            
+            if(isset($history["errorMessage"]) && $history["errorMessage"]){
+                $answer["errors"][] = $history["errorMessage"];
+            }else{
+                $bxPoint = new bxPoint;
+                $bxPoint->updatePoints($history["result"], CUser::GetID());
+            }
+            $answer["redirect"] = '/catalog/';
+            echo json_encode($answer);
+            die;
+        }
     }
-    
-    //=========== Стягиваем баллы =========
-    $args = array(
-        "session_id"    =>  $profile["session_id"],
-        "token"         =>  $EMP_TOKENS[CONTOUR]
-    );
-    $agBrige->setMethod('pointsHistory');
-    $agBrige->setMode('emp');
-    $agBrige->setArguments($args);
-    $answer["errors"] = array_merge($agBrige->getErrors(),$answer["errors"]);
-    $profile = array();
-    if(!$answer["errors"] && !$history = $agBrige->exec()){
-        $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
+
+   
+    if($USER->isAuthorized()){
     }
-    
-    if(isset($history["errorMessage"]) && $history["errorMessage"]){
-        $answer["errors"][] = $history["errorMessage"];
-    }else{
-        $bxPoint = new bxPoint;
-        $bxPoint->updatePoints($history["result"], CUser::GetID());
-    } 
     
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");

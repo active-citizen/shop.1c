@@ -247,7 +247,7 @@
             global $USER;
             if(!$login)
                 $login = $USER->GetLogin();
-            $login = preg_replace("#^u(\d+)$#","$1",$login);
+            $login = preg_replace("#^u+(\d+)$#","$1",$login);
             
             // Смотрим последнюю сессию у этого пльзователя
             $res = $DB->Query($query = "SELECT `session_id` FROM

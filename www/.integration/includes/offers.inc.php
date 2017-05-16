@@ -40,9 +40,10 @@
     while($store = $res->GetNext()){
         $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
     }
+    if(!isset($arOffers[0]))$arOffers = array($arOffers);
 
     foreach($arOffers as $arOffer){
-        
+       
         $XML_ID = explode("#", $arOffer["Ид"]);
         $XML_ID = $XML_ID[0];
 
@@ -59,7 +60,6 @@
             array($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"]);
         
         
-
         $offerFields = array(
             "IBLOCK_ID"         =>  $OFFERS_IBLOCK_ID,
             "NAME"              =>  $arOffer["Наименование"],
@@ -73,7 +73,7 @@
 //                "PREVIEW_PICTURE"   =>  (
 //                "DETAIL_PICTURE"    =>  (
         );
-        
+
         // Ищем в товарных предложениях с указанным XML_ID
         $res = CIBlockElement::GetList(
             array(),
