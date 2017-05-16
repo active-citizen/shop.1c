@@ -248,12 +248,13 @@ href="/partners/orders/print.php?print=cancel&order=<?=
     </tr>
     <? endforeach ?>
 </table>
+<? if($arResult["ORDER"]["STATUS_ID"]=='N'):?>
 <select name="status_id" class="form-control" id="status_id">
-    <option value="AA">Новый</option>
     <option value="F">Выполнен</option>
 </select>
 <input type="submit" name="chansge_status" value="Запросить смену статуса"
 class="btn btn-primary">
+<? endif ?>
 </form>
 </div>
 

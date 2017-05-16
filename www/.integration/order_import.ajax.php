@@ -435,7 +435,7 @@
                 $arOrder["SUM_PAID"] = $sum;
                 $arOrder["PRICE"] = $sum;
             }
-             
+            
             // Определяем ID склада
             $resStorage = CCatalogStore::GetList(array(),array("XML_ID"=>$arDocument["Склад"]),
                 false,array("nTopCount"=>1),array("ID"));
@@ -522,7 +522,7 @@
                     }
                     CSaleOrder::PayOrder($existsOrder["ID"],"N",true,false);
                     CSaleOrder::StatusOrder($existsOrder["ID"], $statusId);
-//                    setOrderZNI($orderId,'',$existsOrder["STATUS_ID"]);
+                    orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }

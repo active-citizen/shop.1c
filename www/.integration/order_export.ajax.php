@@ -48,12 +48,29 @@
         array(
             //">ID"=>783
             //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AA" 
+        ), // Выводить только не отданные заказы
+        false
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+    );
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
+    $res = CSaleOrder::GetList(
+        array("ID"=>"ASC"),
+        array(
+            //">ID"=>783
+            //"DATE_UPDATE"=>""
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AG" 
         ), // Выводить только не отданные заказы
         false
-        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
-    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
     $res = CSaleOrder::GetList(
         array("ID"=>"ASC"),
         array(
@@ -62,9 +79,12 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"F" 
         ), // Выводить только не отданные заказы
         false
-        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
-    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
     $res = CSaleOrder::GetList(
         array("ID"=>"ASC"),
         array(
@@ -73,9 +93,12 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"N" 
         ), // Выводить только не отданные заказы
         false
-        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
-    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
     $res = CSaleOrder::GetList(
         array("ID"=>"ASC"),
         array(
@@ -84,9 +107,12 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AI" 
         ), // Выводить только не отданные заказы
         false
-        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
-    while($arOrder = $res->GetNext())$arOrderses[] = $arOrder;
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
      
   
 
@@ -287,16 +313,20 @@
         $order["Склад"] = $arStore["XML_ID"];
         
         $arSatatus =
-        CSaleStatus::GetByID($arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]);
-        $order["ЗНИ"] = mb_convert_encoding(
-            $arSatatus["NAME"],"cp1251","utf-8"
-        );
-        $arSatatus =
         CSaleStatus::GetByID($arrOrder["STATUS_ID"]);
         $order["КодСостоянияЗаказа"] = $arrOrder["STATUS_ID"];
         $order["СостояниеЗаказа"] = mb_convert_encoding(
             $arSatatus["NAME"],"cp1251","utf-8"
         );
+        $arSatatus =
+        CSaleStatus::GetByID($arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]);
+        $order["ЗНИ"] = mb_convert_encoding(
+            $arSatatus["NAME"],"cp1251","utf-8"
+        );
+
+
+        $order["СостояниеЗаказа"] = $order["ЗНИ"];
+
         $order["Товары"] = $products;
         $arOrders[] = $order;
     }

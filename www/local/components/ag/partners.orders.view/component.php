@@ -143,7 +143,8 @@ $arResult["HISTORY_TYPES"] = array(
 //    "ORDER_UPDATED"         =>  "Изменение заказа",
     "ORDER_ADDED"           =>  "Добавление заказа",
     "ORDER_ZNI"             =>  "Запрос на изменение статуса",
-    "ORDER_CANCELED"        =>  "Заказ изменён"
+    "ORDER_ZNI_CHECK"             =>  "Заказ выгружен 1С",
+    "ORDER_CANCELED"        =>  "Заказ отменён"
 );
 
 

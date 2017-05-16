@@ -287,7 +287,7 @@ function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
     }
     if(!CSaleOrderChange::AddRecord(
         $nOrderId,
-        "ORDER_ZNI",
+        $sStatusId?"ORDER_ZNI":"ORDER_ZNI_CHECK",
         array(
             "STATUS_ID"=>$sStatusId,
             "OLD_STATUS_ID"=>$sOldStatusId

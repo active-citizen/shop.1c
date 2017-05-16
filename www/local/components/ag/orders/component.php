@@ -81,38 +81,6 @@ while($arOrder = $resOrders->GetNext()){
     
     $order["PRODUCTS"] = array();
     $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
-    // ID группы свойств
-    $arPropGroup = CSaleOrderPropsGroup::GetList(
-        array(),
-        $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
-        false,
-        array("nTopCount"=>1)
-    )->GetNext();
-    $nPropGroup = $arPropGroup["ID"];
-    // Получаем свойства заказа
-    $resPropValues = CSaleOrderProps::GetList(
-        array("SORT" => "ASC"),
-        array(
-                "ORDER_ID"       => $order["ID"],
-                "PERSON_TYPE_ID" => 1,
-                "PROPS_GROUP_ID" => $nPropGroup,
-            ),
-        false,
-        false,
-        array("ID","CODE","NAME")
-    );
-    $order["PROPERTIES"] = array();
-    while($arProp = $resPropValues->GetNext()){
-        $order["PROPERTIES"][$arProp["CODE"]] = 
-            CSaleOrderPropsValue::GetList(
-                array(),
-                $arFilterProp = array(
-                    "ORDER_ID"=>$order["ID"],
-                    "ORDER_PROPS_ID"=>$arProp["ID"]
-                )
-            )->GetNext();
-    }
-
     while($arProduct = $resProduct->GetNext()){
         
         $arOffer = CIblockElement::GetList(array(),array(
