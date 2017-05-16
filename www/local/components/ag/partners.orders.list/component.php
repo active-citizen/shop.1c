@@ -299,14 +299,18 @@ elseif(
     $arFilter["STORE_ID"] = 0;
 }
 elseif(
-    $arParams["FILTER"]["STORE"] 
-    && !$arUser["UF_USER_STORAGE_ALL"]
-    && $arParams["FILTER"]["STORE"] == 'all'
+    !$arParams["FILTER"]["STORE"]
+    ||
+    (
+        $arParams["FILTER"]["STORE"] 
+        && !$arUser["UF_USER_STORAGE_ALL"]
+        && $arParams["FILTER"]["STORE"] == 'all'
+    )
 ){
     $arFilter["STORE_ID"] = $arParams["MY_STORES_IDS"];
 }
 elseif(
-    $arParams["FILTER"]["STORE"] 
+    arParams["FILTER"]["STORE"] 
     && intval($arParams["FILTER"]["STORE"])
     && $arUser["UF_USER_STORAGE_ALL"]
     && $arParams["FILTER"]["STORE"] != 'all'
@@ -331,9 +335,13 @@ elseif(
      $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = 0;
 }
 elseif(
-    $arParams["FILTER"]["MAN"] 
-    && !$arUser["UF_USER_MAN_ALL"]
-    && $arParams["FILTER"]["MAN"] == 'all'
+    !$arParams["FILTER"]["MAN"]
+    ||
+    (
+       $arParams["FILTER"]["MAN"] 
+        & !$arUser["UF_USER_MAN_ALL"]
+       && $arParams["FILTER"]["MAN"] == 'all'
+    )
 ){
    $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $arParams["MY_MANS_IDS"];
 }
@@ -414,7 +422,6 @@ $arSelect = array(
     "STORE_ID",
 );
 //$arSelect = array();
-
 
 $arResult["resOrders"] = CSaleOrder::GetList(
     $arOrder?$arOrder:array("ID"=>"DESC"),

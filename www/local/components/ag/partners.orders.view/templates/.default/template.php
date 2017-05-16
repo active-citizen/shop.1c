@@ -200,7 +200,7 @@ href="/partners/orders/print.php?print=cancel&order=<?=
             Дата
         </th>
         <th style="width: 300px;">
-            Инициатор
+            Автор
         </th>
         <th style="width:100px;">
             Тип события
