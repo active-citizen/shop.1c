@@ -3,11 +3,11 @@
     /**
         Создаём web-формы
     */
-    class form_support extends Migration{
+    class order_form_support extends Migration{
         function Run(){
         
-            define("FROM","inutcin@yandex.ru");
-            define("TO","fmf@14.rospotrebnadzor.ru");
+            define("FROM","shop@ag.mos.ru");
+            define("TO","saluki2011@yandex.ru");
         
             CModule::IncludeModule("form");
         
@@ -23,18 +23,18 @@
                     "#ISSUE_TYPE# - тип обращения\n".
                     "#ISSUE_AUTHOR# - Автор обращения\n".
                     "#ISSUE_TEXT# - текст обращения",
-                "STAT_EVENT1"       =>  "feedback_support_form_order",
-                "STAT_EVENT1"       =>  "feedback_support_form2_order",
+                "STAT_EVENT1"       =>  "feedback_order_support_form_order",
+                "STAT_EVENT2"       =>  "feedback_order_support_form2_order",
                 "arSITE"            =>  array("s1"),
                 "arMENU"            =>  array("ru" => "Обращение по заказу", "en" => "Issue for order")
             );
             
             if(!$arForm = CForm::GetList($by = "s_sort", $order = 'desc', array(
-                "NAME"=>$arFields["NAME"]
+                "SID"=>$arFields["SID"]
                 ))->GetNext()){
                 CForm::Set($arFields);
                 $arForm = CForm::GetList($by = "s_sort", $order = 'desc', array(
-                    "NAME"=>$arFields["NAME"]
+                    "SID"=>$arFields["SID"]
                 ))->GetNext();
             }
             else{
@@ -44,7 +44,9 @@
             $arStatusFields = array(
                 "FORM_ID"=>$arForm["ID"],
                 "DEFAULT_VALUE"=>"Y",
-                "TITLE"=>"Новое"
+                "TITLE"=>"Новое",
+                "arPERMISSION_VIEW"=>array(2),
+                "arPERMISSION_MOVE"=>array(6)
             );
             if(!$arStatus = CFormStatus::GetList(
                 $arForm["ID"],
@@ -149,12 +151,11 @@
             
 
 
-            /*
 
             // Создаём тип почтового события
             $arr = array();
             $arr["EVENT_NAME"] = $arForm["MAIL_EVENT_TYPE"];
-            $arr["NAME"] = 'Новый вопрос в службу поддержки';
+            $arr["NAME"] = 'Новый вопрос в службу поддержки по заказу ';
             $arr["LID"] = 'ru';
             $arr["DESCRIPTION"]       =  
                     "#ISSUE_TYPE# - тип обращения\n".
@@ -183,20 +184,23 @@
             $arr = array();
             $arr["ACTIVE"]      = "Y";
             $arr["EVENT_NAME"]  = $arrEventType["EVENT_NAME"];
-            $arr["LID"]         = "s1";
+            $arr["LID"]         = 's1';
             $arr["EMAIL_FROM"]  = FROM;
             $arr["EMAIL_TO"]    = TO;
-            $arr["BCC"]         = "";
-            $arr["SUBJECT"]     = "Новый вопрос службе поддержки";
-            $arr["BODY_TYPE"]   = "text";
-            $arr["MESSAGE"]     = 
-                    "Тип обращения: #ISSUE_TYPE#\n".
-                    "Автор обращения: #ISSUE_AUTHOR#\n".
-                    "Логин пользователя: #ISSUE_AUTHOR_LOGIN#\n".
-                    "ID автора обращения: #ISSUE_AUTHOR_ID#\n".
-                    "Текст обращения:\n\n#ISSUE_TEXT#";
-            
-            
+            $arr["SUBJECT"]     = "Новый вопрос службе поддержки по заказу #ISSUE_ORDER_NUM_RAW#";
+            $arr["BODY_TYPE"]   = "html";
+            $arr["LANGUAGE_ID"] = 'ru';
+            $arr["MESSAGE"]     = '  
+<table border="1" width="100%">
+<tr><th width="200px">Дата заполнения формы</th><td> #RS_DATE_CREATE# </td></tr>
+<tr><th>ID пользователя</th><td> #RS_USER_ID# </td></tr>
+<tr><th>EMail пользователя</th><td> #RS_USER_EMAIL# </td></tr>
+<tr><th>Фамилия, имя пользователя</th><td> #RS_USER_NAME# </td></tr>
+<tr><th>Текст обращения</th><td> #ISSUE_ORDER_TEXT_RAW# </td></tr>
+<tr><th>Тип обращения</th><td>#ISSUE_ORDER_TYPE_RAW# </td></tr>
+<tr><th>Номер заказа</th><td>#ISSUE_ORDER_NUM_RAW# </td></tr>
+</table>
+';
             $obTemplate = new CEventMessage;
             if(!$arTemplate = $obTemplate->GetList($by="id",$order="desc",array("EVENT_NAME"=>$arr["EVENT_NAME"]))->GetNext()){
                 if(!$id = $obTemplate->Add($arr)){
@@ -211,16 +215,15 @@
             else{
                 $obTemplate->Update($arTemplate["ID"], $arr);            
             }
-            */
 
-
+            CForm::Set(array("arMAIL_TEMPLATE" => array($arTemplate["ID"])), $arForm["ID"]);
 
             return true;
         }
     }
     
 // Запускаем миграцию    
-$form_support = new form_support();
+$order_form_support = new order_form_support();
 // Откатываем, если неудачно
-if(!$form_support->Run())
-    $form_support>RollBack();
+if(!$order_form_support->Run())
+    $order_form_support>RollBack();

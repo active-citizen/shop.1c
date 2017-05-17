@@ -87,7 +87,8 @@
     ){
         $USER->Logout();
         $answer["errors"] = array();
-        $answer["redirect"] = '/catalog/';
+        $answer["redirect"] =
+        trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
         echo json_encode($answer);
         die;
         //$answer["errors"][] = 'Ошибка авторизации';
@@ -134,7 +135,8 @@
                 $bxPoint = new bxPoint;
                 $bxPoint->updatePoints($history["result"], CUser::GetID());
             }
-            $answer["redirect"] = '/catalog/';
+            $answer["redirect"] =
+            trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
             echo json_encode($answer);
             die;
         }

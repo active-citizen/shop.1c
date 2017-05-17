@@ -5,8 +5,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 $answer = array("error"=>"");
 
 CModule::IncludeModule("form");
-
 $arForm = CForm::GetBySID("order_support_feedback")->GetNext();
+CEvent::CheckEvents();
 
 $arFieldIssueOrderNum = CFormField::GetBySID("ISSUE_ORDER_NUM")->GetNext();
 $arAnswerIssueOrderNum = CFormAnswer::GetList($arFieldIssueOrderNum["ID"])->GetNext();
@@ -20,9 +20,8 @@ $arAnswerIssueAuthor = CFormAnswer::GetList($arFieldIssueAuthor["ID"])->GetNext(
 $arFieldIssueText = CFormField::GetBySID("ISSUE_ORDER_TEXT")->GetNext();
 $arAnswerIssueText = CFormAnswer::GetList($arFieldIssueText["ID"])->GetNext();
 
-
 $CFormResult = new CFormResult;
-if(!$CFormResult->Add($arForm["ID"],$arFormData = array(
+if(!$nResultId = $CFormResult->Add($arForm["ID"],$arFormData = array(
     "form_".$arAnswerIssueType["FIELD_TYPE"]."_".$arAnswerIssueType["ID"]      
         =>$DB->ForSql($_REQUEST['type']),
     "form_".$arAnswerIssueAuthor["FIELD_TYPE"]."_".$arAnswerIssueAuthor["ID"]      
@@ -32,9 +31,16 @@ if(!$CFormResult->Add($arForm["ID"],$arFormData = array(
     "form_".$arAnswerIssueOrderNum["FIELD_TYPE"]."_".$arAnswerIssueOrderNum["ID"]      
         =>$DB->ForSql($_REQUEST['order']),
 ))){
-    $answer['error'] = print_r($arFormData, 1).print_r($arForm["ID"], 1);;
+    $answer['error'] = print_r($CFormResult,1).print_r($arFormData, 1).print_r($arForm["ID"], 1);;
 }
 else{
+    if(!$nEvent = CFormResult::Mail($nResultId)){
+        global $strError;
+        $answer["error"] = $strError;
+    }
+    else{
+        $answer["mail_event_id"] = $nEvent;
+    }
 }
 
 

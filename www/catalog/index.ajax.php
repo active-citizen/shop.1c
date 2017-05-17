@@ -164,7 +164,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $product["SECTION_NAME"] = $arCatalogSection["NAME"];
 
         // Вычисляем рейтинг
-        $product["RATING"] = round($product["PROPERTY_RATING_VALUE"]*5,2);
+        $product["RATING"] = round($product["PROPERTY_RATING_VALUE"],2);
         // Обеззараживаем текст описания
         $product["PREVIEW_TEXT"] = strip_tags($product["PREVIEW_TEXT"]);
 

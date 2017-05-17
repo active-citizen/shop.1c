@@ -560,13 +560,13 @@ function ag_filter(){
 
 
 function agauth(encsession){
-    
+
     if(!encsession)return false;
 
     //$('body').append('<div class="screen-blocker"></div><div class="auth-loader"></div>');
     // Отсылаем шифрованный ID сессии ajax-скрипту для расшифровки и авторизации
     $.post(
-	'/.integration/auth.ajax.php',
+	'/.integration/auth.ajax.php?backurl='+document.location.href,
 	{"enc_session_id":encsession},
 	function(data){
 	    var answer = {};

@@ -58,7 +58,12 @@
 
 
         <? if(1 || !CUser::IsAuthorized()):?>
-        <? if(!preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])):?>
+        <? if(
+            !preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])
+            && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
+            && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
+
+        ):?>
         <script src="<?php echo CONTOUR_URL; ?>"></script>
         <? endif ?>
         <? endif?>

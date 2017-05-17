@@ -6,8 +6,8 @@
     class form_support extends Migration{
         function Run(){
         
-            define("FROM","inutcin@yandex.ru");
-            define("TO","fmf@14.rospotrebnadzor.ru");
+            define("FROM","shop@ag.mos.ru");
+            define("TO","saluki2011@yandex.ru");
         
             CModule::IncludeModule("form");
         
@@ -23,17 +23,18 @@
                     "#ISSUE_AUTHOR# - Автор обращения\n".
                     "#ISSUE_TEXT# - текст обращения",
                 "STAT_EVENT1"       =>  "feedback_support_form",
-                "STAT_EVENT1"       =>  "feedback_support_form2",
+                "STAT_EVENT2"       =>  "feedback_support_form2",
                 "arSITE"            =>  array("s1"),
                 "arMENU"            =>  array("ru" => "Вопрос службе поддержки", "en" => "Answer for support")
             );
-            
+        
             if(!$arForm = CForm::GetList($by = "s_sort", $order = 'desc', array(
-                "NAME"=>$arFields["NAME"]
+                "SID"=>$arFields["SID"]
                 ))->GetNext()){
                 CForm::Set($arFields);
+
                 $arForm = CForm::GetList($by = "s_sort", $order = 'desc', array(
-                    "NAME"=>$arFields["NAME"]
+                    "SID"=>$arFields["SID"]
                 ))->GetNext();
             }
             else{
@@ -43,7 +44,9 @@
             $arStatusFields = array(
                 "FORM_ID"=>$arForm["ID"],
                 "DEFAULT_VALUE"=>"Y",
-                "TITLE"=>"Новое"
+                "TITLE"=>"Новое",
+                "arPERMISSION_VIEW"=>array(2),
+                "arPERMISSION_MOVE"=>array(6)
             );
             if(!$arStatus = CFormStatus::GetList(
                 $arForm["ID"],
@@ -132,13 +135,12 @@
             
 
 
-            /*
 
             // Создаём тип почтового события
             $arr = array();
             $arr["EVENT_NAME"] = $arForm["MAIL_EVENT_TYPE"];
             $arr["NAME"] = 'Новый вопрос в службу поддержки';
-            $arr["LID"] = 'ru';
+            $arr["LID"] = array("ru","en");
             $arr["DESCRIPTION"]       =  
                     "#ISSUE_TYPE# - тип обращения\n".
                     "#ISSUE_AUTHOR# - Автор обращения\n".
@@ -194,9 +196,9 @@
             else{
                 $obTemplate->Update($arTemplate["ID"], $arr);            
             }
-            */
 
-
+            CForm::Set(array("arMAIL_TEMPLATE" => array($arTemplate["ID"])),
+            $arForm["ID"]);
 
             return true;
         }
