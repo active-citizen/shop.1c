@@ -10,7 +10,8 @@
     }
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
-    header("Content-type: text/plain; charset=windows-1251;");
+    header("Content-type: text/plain; charset=utf-8;");
+//    header("Content-type: text/plain; charset=windows-1251;");
     $session_id = 
         isset($_COOKIE['PHPSESSID'])
         ?
@@ -41,27 +42,63 @@
     $res = CSaleOrder::GetList(
         array(),
         array(
-            "DATE_UPDATE"=>"",
-            "COMMENTS"=>$session_id
+            "PROPERTY_VAL_BY_CODE_SESSION_ID"=>$session_id
         ), // Выводить только не отданные заказы
         false
     );
-   
+  
     $objOrder = new CSaleOrder;
     $arOrders = array();
     while($arrOrder = $res->GetNext()){
         // Не выводим заказы импортированные из других систем
-        //if(!$arrOrder["EMP_PAYED_ID"])continue;
-        if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
+        // if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
+
+        $arrOrder["PROPERTIES"] = orderGetProperties($arrOrder["ID"]);
+
+        // Если ЗНИ меняет статус заказа
+        if(
+            $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
+            !=
+            $arrOrder["STATUS_ID"]
+        ){
+            // Если отменяем заказ - ещё и бабло возвращаем
+            // НО ТОЛЬКО ДЛЯ ЗАКАЗОВ БИТРИКСА
+            if(
+                $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'
+                && 
+                preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"])
+            ){
+                require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
+                require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+                require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
+                
+                $obOrder = new bxOrder();
+                $resOrder = $obOrder->addEMPPoints(
+                    $arrOrder["SUM_PAID"],
+                    "Отмена заказа ".$arrOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",
+                    $arrOrder["USER_LOGIN"]
+                );
+                $moneyBack = true;
+                CSaleOrder::PayOrder($arrOrder["ID"],"N",true,false);
+            }
+            CSaleOrder::StatusOrder(
+                $arrOrder["ID"],
+                $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
+            );
+            /*
+            eventOrderStatusSendEmail(
+                $arrOrder["ID"], 
+                ($ename=$arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]), 
+                ($arFields = array()), 
+                ($stat= $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
+            );
+            */
+        }
 
         // Отмечаем заказ как "отданный в рамках транзакции $session_id"
         orderSetZNI($arrOrder["ID"],'',$arrOrder["STATUS_ID"]);
-        $objOrder->Update(
-            $arrOrder["ID"],
-            array(
-                "COMMENTS"=>""
-            )
-        );
+        // Убираем сеансовую сессию
+        orderSetSessionId($arrOrder["ID"],$session_id);
     }
     echo "success";
         

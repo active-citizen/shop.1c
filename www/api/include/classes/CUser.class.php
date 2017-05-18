@@ -81,7 +81,7 @@
                 "users",
                 array("id"=>$nUserId),
                 "",
-                "`current_points`,`all_points`,`freezed_points`,`spent_points`"
+                "`current_points`,`all_points`,`freezed_points`,`spent_points`,`ag_status`"
             );
             return $GLOBALS["DB"]->record;
         }

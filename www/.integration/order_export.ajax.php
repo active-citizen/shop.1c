@@ -7,6 +7,7 @@
         $_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php"
     );
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
     header("Content-type: text/plain; charset=windows-1251;");
     if(!$USER->IsAdmin()){
         echo "Failed\nAccess denied";
@@ -36,6 +37,7 @@
         echo "Failed\nPHPSESSID incorrect";
         die;
     }
+   
 
     echo '<?xml version="1.0" encoding="windows-1251"?>';
     
@@ -129,7 +131,6 @@
     $objOrder = new CSaleOrder;
     $arOrders = array();
     foreach($arOrderses as $arrOrder){
-
         $resPropValues = CSaleOrderProps::GetList(
             array("SORT" => "ASC"),
             $arF = array(
@@ -155,18 +156,17 @@
         }
 
         // Не выводим заказы импортированные из других систем
-        //if(!$arrOrder["EMP_PAYED_ID"])continue;
-        if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
-
+        // if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
         // Отмечаем заказ как "отданный в рамках сессии обмена 
-        $objOrder->Update(
-            $arrOrder["ID"],
-            array(
-                "COMMENTS"=>$session_id,
-                "DATE_UPDATE"=>"00.00.00 00:00:00"
-            )
-        );
-        
+        orderSetSessionId($arrOrder["ID"],$session_id);
+         /*
+        CSaleOrder::Update($arrOrder["ID"], array(
+            "COMMENTS"=>$session_id,
+            "DATE_UPDATE"=>Date(
+                CDatabase::DateFormatToPHP(CLang::GetDateFormat("FULL", LANG))
+             )
+        ));
+        */
         
         $order = array("Ид"=>$arrOrder["ID"]);
         $order["Номер"] = mb_convert_encoding(
@@ -323,7 +323,6 @@
         $order["ЗНИ"] = mb_convert_encoding(
             $arSatatus["NAME"],"cp1251","utf-8"
         );
-
 
         $order["СостояниеЗаказа"] = $order["ЗНИ"];
 

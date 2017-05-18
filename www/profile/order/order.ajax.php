@@ -242,7 +242,7 @@ elseif(isset($_GET["add_order"])){
     $arFields["STORE_ID"] = intval($_GET["store_id"]);
     $arFields["PAYED"] = 'N';
     $arFields["CANCELED"] = "N";
-    $arFields["STATUS_ID"] = "N";
+    $arFields["STATUS_ID"] = "AA";
     $arFields["PRICE"] = $totalSum;
     $arFields["CURRENCY"] = "BAL";
     $arFields["USER_ID"] = CUSer::GetID();
@@ -277,7 +277,14 @@ elseif(isset($_GET["add_order"])){
 
         orderSetZNI($orderId,'N','AA');
         orderPropertiesUpdate($orderId);
-    }
+        // Снова заливаем историю баллов
+        $agBrige->setMethod('pointsHistory');
+        $agBrige->setMode('emp');
+        $agBrige->setArguments($args);
+        $history = $agBrige->exec();
+        $bxPoint = new bxPoint;
+        $bxPoint->updatePoints($history["result"], CUser::GetID());
+     }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);
     }
@@ -384,11 +391,23 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     $order = CSaleOrder::GetByID($order_id);
     
     // Определяем для каждого заказа возможность его отменить
-    $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes_offers"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+    $res = CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_ID"=>OFFER_IB_ID),
+        false,
+        array("nTopCount"=>1),
+        array("IBLOCK_ID")
+    );
     $res = $res->GetNext();
     $IBlockId = $res["IBLOCK_ID"];
     
-    $res = CIBlockElement::GetList(array(),array("IBLOCK_CODE"=>"clothes"),false,array("nTopCount"=>1),array("IBLOCK_ID"));
+    $res = CIBlockElement::GetList(
+        array(),
+        array("IBLOCK_ID"=>CATALOG_IB_ID),
+        false,
+        array("nTopCount"=>1),
+        array("IBLOCK_ID")
+    );
     $res = $res->GetNext();
     $IBlockId2 = $res["IBLOCK_ID"];
 
@@ -397,10 +416,14 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     $canCancel = true;
     while($product = $res->GetNext()){
 
-        $res = CIBlockElement::GetProperty($IBlockId,$product["PRODUCT_ID"],array(), array("CODE"=>"CML2_LINK"));
+        $res = CIBlockElement::GetProperty(
+            $IBlockId,$product["PRODUCT_ID"],array(), array("CODE"=>"CML2_LINK")
+        );
         $res = $res->GetNExt();
         
-        $res = CIBlockElement::GetProperty($IBlockId2,$res["VALUE"],array(), array("CODE"=>"CANCEL_ABILITY"));
+        $res = CIBlockElement::GetProperty(
+            $IBlockId2,$res["VALUE"],array(), array("CODE"=>"CANCEL_ABILITY")
+        );
         $prop = $res->GetNext();
         
         if(!$prop["VALUE_ENUM"]){
@@ -427,25 +450,33 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     ){
         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
         OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
-        
+       
+        /*
         if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
-            $answer["error"] .= "Заказ не был отменён.";
+            //$answer["error"] .= "Заказ не был отменён.";
         }
         else{
             //CSaleOrder::StatusOrder($order["ID"],"AG");
         }
+        */
+
+        /*
+
+        Смена статуса и манебэк перенесены в success - ответ
+
         $obOrder = new bxOrder();
         $resOrder = $obOrder->addEMPPoints(
             $order["SUM_PAID"],
             "Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ"
         );
         $moneyBack = true;
-
         CSaleOrder::PayOrder($order["ID"],"N",true,false);
         CSaleOrder::StatusOrder($order["ID"],"AG");
         eventOrderStatusSendEmail(
             $order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG")
         );
+
+        */
 
         //CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
    }

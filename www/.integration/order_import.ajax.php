@@ -520,7 +520,7 @@
                         }
                         $moneyBack = true;
                     }
-                    CSaleOrder::PayOrder($existsOrder["ID"],"N",true,false);
+                    //CSaleOrder::PayOrder($existsOrder["ID"],"N",true,false);
                     CSaleOrder::StatusOrder($existsOrder["ID"], $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){

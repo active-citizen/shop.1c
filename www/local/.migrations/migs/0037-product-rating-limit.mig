@@ -1,9 +1,10 @@
 <?php
     
     /**
-     * Добавление доаолнительного свойства инфоблоку товаров - возможность отмены заказа
+     * Добавление доаолнительного свойства инфоблоку товаров - лимита баллов на
+     заказ
      */
-    class cancel_property extends Migration{
+    class ag_rating_property extends Migration{
         function Run(){
             
             //Код валюты балл
@@ -13,28 +14,24 @@
             CModule::IncludeModule("iblock");
 
             // Проверяем наличие свойства у инфоблока clothes
-            $res = CIBlockProperty::GetByID("CANCEL_ABILITY",false,"clothes");
+            $res = CIBlockProperty::GetByID("RATING_LIMIT",false,"clothes");
             // Выходим, если свойство есть
             if($res->GetNext())return true;
             
             // Собираем массив для добавления свойства
             $arFields = Array(
                 // Название свойства
-                "NAME" => "Возможность отмены",
+                "NAME" => "Лимит баллов для заказа",
                 // Активность
                 "ACTIVE" => "Y",
                 // Порядок сортировки
                 "SORT" => "1500",
                 // Кодовое обозначение
-                "CODE" => "CANCEL_ABILITY",
+                "CODE" => "RATING_LIMIT",
                 // Тип свойства (L-список)
-                "PROPERTY_TYPE" => "L",
+                "PROPERTY_TYPE" => "N",
                 // ID инфоблока для которого свойство
                 "IBLOCK_ID" => CATALOG_IB_ID
-            );
-            // Список значений свойства
-            $arFields["VALUES"][] = array(
-                "VALUE" => "да","DEF" => "Y","SORT" => "100"
             );
             
             // Создаём объект инфоблока
@@ -53,6 +50,6 @@
     
     
 // Запускаем миграцию    
-$cancel_property = new cancel_property();
+$ag_rating_property = new ag_rating_property();
 // Откатываем, если неудачно
-if(!$cancel_property->Run())$cancel_property->RollBack();
+if(!$ag_rating_property->Run())$ag_rating_property->RollBack();

@@ -1,0 +1,37 @@
+<?php
+    
+    /**
+     * Добавление таблицы с логом профилия
+     */
+    class ag_status_uf extends Migration{
+        function Run(){
+            // Если нет - добавляем
+            $arFilter = array(
+                "ENTITY_ID"     =>  "USER",
+                "FIELD_NAME"    =>  "UF_USER_AG_STATUS",
+                "USER_TYPE_ID"  =>  "string"
+            );
+            $arEditFormLabel = array(
+                "EDIT_FORM_LABEL"=>array(
+                    "ru"=>"Статус активного гражданина",
+                    "en"=>"Active citizen status"
+                )
+            );
+            if(!$arUserField =  CUserTypeEntity::GetList(array(),$arFilter)->GetNext()){
+                $arFields = array_merge($arFilter,$arEditFormLabel);
+                $obUserField  = new CUserTypeEntity;
+                if(!$obUserField->Add($arFields)){
+                    echo "error in ".__LINE__;
+                    die($obUserField->LAST_ERROR);
+                }
+            }
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$ag_status_uf = new ag_status_uf();
+// Откатываем, если неудачно
+if(!$ag_status_uf->Run())$ag_status_uf->RollBack();

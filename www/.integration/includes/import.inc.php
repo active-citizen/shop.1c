@@ -400,7 +400,9 @@
             $arProduct["ОтправлятьСертификат"]=='Да'?$ENUM["SEND_CERT"]["да"]:0;
         // Месячный лимит
         $arProperties["MON_LIMIT"] = $arProduct["МесячныйЛимит"];
-        
+        // Месячный лимит
+        $arProperties["RATING_LIMIT"] = $arProduct["РейтингДляПокупки"];
+         
         // Дата мероприятия
         if(trim($arProduct["ДатаМероприятия"])){
             $tmp = date_parse($arProduct["ДатаМероприятия"]);

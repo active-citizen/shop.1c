@@ -29,6 +29,7 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     if(isset($history["errorMessage"]) && $history["errorMessage"]){
         $answer["errors"][] = $history["errorMessage"];
     }else{
+
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"], CUser::GetID());
     }  

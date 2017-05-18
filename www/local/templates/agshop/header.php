@@ -25,8 +25,6 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/index.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/scripts.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
 
-
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">

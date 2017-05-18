@@ -248,8 +248,6 @@ function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
     while($arProp = $resPropValues->GetNext()){
         $PROPERTIES[$arProp["CODE"]] = $arProp;
     }
-
-
     $objCSaleOrderPropsValue = new CSaleOrderPropsValue; 
 
     $arFilter = array(
@@ -259,6 +257,7 @@ function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
         "NAME"          =>  $PROPERTIES["CHANGE_REQUEST"]["NAME"],
     );
 
+   
     if(
         $arExistPropValue = 
         CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
@@ -296,4 +295,115 @@ function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
     )){
         
     }
+}
+
+/*
+    Установка сесси обмена
+*/
+function orderSetSessionId($nOrderId,$sSessionId){
+
+    // ID группы свойств
+    $arPropGroup = CSaleOrderPropsGroup::GetList(
+        array(),
+        $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+        false,
+        array("nTopCount"=>1)
+    )->GetNext();
+    $nPropGroup = $arPropGroup["ID"];
+    // Получаем свойства заказа
+    $resPropValues = CSaleOrderProps::GetList(
+        array("SORT" => "ASC"),
+        array(
+                "ORDER_ID"       => $nOrderId,
+                "PERSON_TYPE_ID" => 1,
+                "PROPS_GROUP_ID" => $nPropGroup,
+            ),
+        false,
+        false,
+        array("ID","CODE","NAME")
+    );
+    $PROPERTIES = array();
+    while($arProp = $resPropValues->GetNext()){
+        $PROPERTIES[$arProp["CODE"]] = $arProp;
+    }
+    $objCSaleOrderPropsValue = new CSaleOrderPropsValue; 
+
+    $arFilter = array(
+        "ORDER_ID"      =>  $nOrderId,
+        "ORDER_PROPS_ID"=>  $PROPERTIES["SESSION_ID"]["ID"],
+        "CODE"          =>  "SESSION_ID",
+        "NAME"          =>  $PROPERTIES["SESSION_ID"]["NAME"],
+    );
+
+   
+    if(
+        $arExistPropValue = 
+        CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
+    ){
+        $arFilter["VALUE"] = $sSessionId;
+        if(!CSaleOrderPropsValue::Update(
+            $arExistPropValue["ID"],
+            $arFilter 
+        ) && $bDebug){
+            ShowMessage(array(
+                "TYPE"=>"ERROR",
+                "MESSAGE"=>"Ошибка добавления свойства ЗНИ"
+            ));
+            die;
+        }
+    }
+    else{
+        $arFilter["VALUE"] = $sSessionId;
+        if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
+            ShowMessage(array(
+                "TYPE"=>"ERROR",
+                "MESSAGE"=>"Ошибка изменения свойства ЗНИ"
+            ));
+            die;
+        }
+    }
+}
+
+
+
+/**
+    Получение свойств у заказа
+*/
+function orderGetProperties(
+    $nOrderId,  //<! ID заказа
+    $arSelect = array() // Массив имён свойст, то надо вытащить
+){
+   // ID группы свойств     
+   $arPropGroup = CSaleOrderPropsGroup::GetList(     
+       array(),      
+       $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),       
+       false,        
+       array("nTopCount"=>1)     
+   )->GetNext();     
+   $nPropGroup = $arPropGroup["ID"];     
+   // Получаем свойства заказа       
+   $resPropValues = CSaleOrderProps::GetList(        
+       array("SORT" => "ASC"),       
+       array(        
+               "ORDER_ID"       => $nOrderId,     
+               "PERSON_TYPE_ID" => 1,        
+               "PROPS_GROUP_ID" => $nPropGroup,      
+           ),        
+       false,        
+       false,        
+       array("ID","CODE","NAME")     
+   );        
+   $PROPERTIES = array();       
+   while($arProp = $resPropValues->GetNext()){       
+       $PROPERTIES[$arProp["CODE"]] =       
+           CSaleOrderPropsValue::GetList(        
+               array(),      
+               $arFilterProp = array(        
+                   "ORDER_ID"=>$nOrderId,     
+                   "ORDER_PROPS_ID"=>$arProp["ID"]       
+               )     
+           )->GetNext();     
+   }
+   return $PROPERTIES;
+    
 }

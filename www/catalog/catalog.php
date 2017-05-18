@@ -69,8 +69,8 @@ if(
                 "CATALOG_IBLOCK_ID" =>  $catalogIblockId,
                 "OFFER_IBLOCK_ID"   =>  $offerIblockId,
                 "PRODUCT_CODE"      =>  $product_code,
-                "ALL_POINTS_LIMIT"  =>  10 // Сколько нужно набрать баллов за
-                //          время регистрации для покупок в магазине
+                "ALL_POINTS_LIMIT"  =>  1000    // Сколько нужно набрать баллов за
+                                                // время регистрации для покупок в магазине
                 ),
                 false
             );?>

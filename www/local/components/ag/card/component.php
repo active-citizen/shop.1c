@@ -157,7 +157,7 @@
         ($by="personal_country"), ($order="desc"),
         array("ID"=>CUser::GetId()),
         array(
-            "SELECT"=>array("UF_USER_ALL_POINTS"),
+            "SELECT"=>array("UF_USER_ALL_POINTS","UF_USER_AG_STATUS"),
             "NAV_PARAMS"=>array("nTopCount"=>1)
         )
     )->GetNext();

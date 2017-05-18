@@ -98,11 +98,28 @@
                           <? elseif(
                             $arOrder["STATUS_ID"]=='N' 
                             && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]
-                          ):?>
-                          <a class="ag-shop-profile-order__control" onclick="return orderCancel(<?= $arOrder["ID"]?>,this);" href="#"><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a>
-                          <? else:?>
-                          <div class="ag-shop-profile-order__control"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i><span>Отмена невозможна</span></div>
-                            <? endif ?>
+                            && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]!='AG'):
+                          ?><a 
+                                class="ag-shop-profile-order__control" 
+                                onclick="return orderCancel(<?= $arOrder["ID"]?>,this);" 
+                                href="#"
+                            ><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a>
+                        <? elseif(      
+                            $arOrder["STATUS_ID"]=='N'        
+                            && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]     
+                            && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'):
+                        ?>        
+                              <a
+                                class="ag-shop-profile-order__control"        
+                                onclick="return false;" href="#">
+                                <span>Заявка на отмену принята</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
+                              </a>
+                        <? elseif( $arOrder["STATUS_ID"]!='AA'):?>
+                            <div class="ag-shop-profile-order__control">
+                                <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i>
+                                <span>Отмена невозможна</span>
+                            </div>
+                          <? endif ?>
                       </div>
                     </div>
                   </div>

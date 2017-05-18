@@ -1,5 +1,8 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
+
 $RU = $_SERVER["REQUEST_URI"];
 // Значения по умолчанию
 if(!isset($arParams["RECORDS_ON_PAGE"]))$arParams["RECORDS_ON_PAGE"] = 10;
@@ -67,6 +70,7 @@ while($arOrder = $resOrders->GetNext()){
         array("nTopCount"=>1),
         array()
     )->GetNext();
+    $arOrder["PROPERTIES"] = orderGetProperties($arOrder["ID"]);
     
     $order = array();
     $order = $arOrder;

@@ -192,7 +192,16 @@
             )
                 $CUser->updateBalance($nUserId,"freezed_points",$data->result->status->freezed_points);
             
-
+            if(
+                is_object($data) 
+                && property_exists($data,"result")
+                && is_object($data->result) 
+                && property_exists($data->result,"status")
+                && is_object($data->result->status) 
+                && property_exists($data->result->status,"state")
+            )
+                $CUser->updateBalance($nUserId,"ag_status",$data->result->status->state);
+ 
             $arPoints = '';
             if(
                 is_object($data) 

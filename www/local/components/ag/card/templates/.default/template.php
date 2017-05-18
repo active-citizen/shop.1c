@@ -36,12 +36,17 @@
                         ?>.
                 </div>
               </div>
-            <? elseif($arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arParams["ALL_POINTS_LIMIT"]):?>
+            <? elseif(
+                !trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
+                &&
+                !trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
+            ):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
-                    Для заказа поощрений необходимо за всё время участия
-                    заработать не менее <?= $arParams["ALL_POINTS_LIMIT"]?>
-                    баллов
+                    Обращаем Ваше внимание, что заказать данное поощрение вы
+                    сможете только после получения статуса &laquo;Активный
+                    гражданин&raquo;. Статус присваивается пользователям,
+                    набравшим <?= $arParams["ALL_POINTS_LIMIT"]?> баллов
                 </div>
               </div>
             <? elseif(
@@ -232,7 +237,21 @@
                         </div>
                       </div>
                       <? endif ?>
-                      <? if(count($arResult["OFFERS"][0]["STORAGES"]) &&  $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]):?>
+                      <? if(
+                        // Если есть на складе
+                        count($arResult["OFFERS"][0]["STORAGES"]) 
+                        // И у тебя достаточно баллов
+                        &&  
+                        $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
+                        // И либо ты активный гражданин, либо на товар
+                        // установлен рейтинг
+                        && 
+                        (
+                            trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
+                            ||
+                            trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
+                        )
+                      ):?>
                       <div class="grid grid--bleed">
 
                         <div class="grid__col-shrink">
@@ -370,7 +389,12 @@
                 <? if(
                     count($arResult["OFFERS"][0]["STORAGES"]) 
                     &&  $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
-                    &&  $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]>=$arParams["ALL_POINTS_LIMIT"]
+                    &&  
+                    (
+                        trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
+                        ||
+                        trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
+                    )
                 ):?>
                 <button class="ag-shop-card__submit-button" onclick="return productConfirm();" 
                     type="button">Заказать за <strong><?= 

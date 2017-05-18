@@ -38,7 +38,8 @@
         "CLOSE_DATE"        =>  "Дата истечения бронирования",
         "MANUFACTURER_ID"   =>  "ID производителя",
         "MANUFACTURER_NAME" =>  "Имя производителя",
-        "CHANGE_REQUEST"    =>  "Запрос на изменение"
+        "CHANGE_REQUEST"    =>  "Запрос на изменение",
+        "SESSION_ID"        =>  "Сессия обмена"
     );
 
     foreach($arProperties as $sCode=>$sName){

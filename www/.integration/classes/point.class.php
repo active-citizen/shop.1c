@@ -148,7 +148,12 @@
 
             // Обновляем число заработанных баллов
             $user = new CUser;
-            $user->Update($userId, array("UF_USER_ALL_POINTS" => $arPointsStatus["all_points"]));
+            $user->Update($userId, array("UF_USER_ALL_POINTS" => 
+                $arPointsStatus["all_points"]
+            ));
+            $user->Update($userId, array("UF_USER_AG_STATUS" =>
+                $arPointsStatus["ag_status"]
+            ));
 
     // Чистим кэш компонента фильтра для пользователя 
     $objComponent = new CBitrixComponent();

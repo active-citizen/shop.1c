@@ -129,6 +129,16 @@
         '',// Comment
         false      // IS NULL
     );
+    $objCMigration->setColumn(
+        "users",  // Table Name
+        "ag_status",   // Column name
+        "CHAR",      // Column type
+        "16",         // Size
+        false,          // Default
+        false,
+        '',// Comment
+        false      // IS NULL
+    );
 ///////////////////////////////////////////////////////////////////////////////
 
     // Таблица пользователей 

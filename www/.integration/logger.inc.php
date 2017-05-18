@@ -1,7 +1,7 @@
 <?php
 
     ob_start("logger_save_buffer");
-    $REQUEST_FOLDER = "upload/1c_exchange/logger";
+    $REQUEST_FOLDER = "upload/logger";
     $REQUEST_KEY = date("Y-m-d-H-i-s-").microtime(true);
 
     $filename =

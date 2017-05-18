@@ -525,7 +525,7 @@ function orderCancel(orderId, obj){
                 alert(answer.error);
                 return false;
             }
-            document.location.href='/profile/order/?tab=use';
+            document.location.href='/profile/order/';
         }
     );
     return false;
