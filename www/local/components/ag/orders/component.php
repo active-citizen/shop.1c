@@ -164,6 +164,10 @@ function get_pages_list(
     $perpage=10,        //!< число записей на страницу
     $blocksize = 10     //!< размер блока сраниц
 ){
+    // Временно подкостылим
+    $perpage=20;
+    $blocksize = 100;
+    // end: временно подкостылим
     if(!intval($perpage))$perpage = 10;
     
     $page = floor($offset/$perpage)+1;
@@ -182,13 +186,13 @@ function get_pages_list(
     $result = array();
     if($blocknum>1){
         $result[0] = '1';
-        $result[($blocknum-2)*$blocksize*$perpage] = '..';
+        $result[($blocknum-2)*$blocksize+($blocksize-1)] = '..';
     }
     for($i=($blocknum-1)*$blocksize+1;$i<=$blocknum*$blocksize && $i<=$total_pages;$i++){
-        $result[($i-1)*$perpage] = $i;
+        $result[($i-1)] = $i;
     }
-    if($blocknum*$blocksize<$total_pages)$result[($blocknum*$blocksize)*$perpage] = '..';
-    if($blocknum*$blocksize<$total_pages)$result[($total_pages-1)*$perpage] = $total_pages;
+    if($blocknum*$blocksize<$total_pages)$result[($blocknum*$blocksize)] = '..';
+    if($blocknum*$blocksize<$total_pages)$result[($total_pages-1)] = $total_pages;
     
     
     return $result;

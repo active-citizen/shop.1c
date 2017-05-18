@@ -35,7 +35,7 @@
                         echo "all";
                     break;
                 }    
-            ?>&page=<?= $pagenum?>"><?= $pagenum?></a>
+            ?>&page=<?= $offset+1?>"><?= $pagenum?></a>
             </div>
         <? }else{?>
             <div class="ag-shop-profile-tabs__link  ag-shop-profile-tabs__link--active">
@@ -180,7 +180,7 @@
                         echo "all";
                     break;
                 }    
-            ?>&page=<?= $pagenum?>"><?= $pagenum?></a>
+            ?>&page=<?= $offset+1?>"><?= $pagenum?></a>
             </div>
         <? }else{?>
             <div class="ag-shop-profile-tabs__link  ag-shop-profile-tabs__link--active">
