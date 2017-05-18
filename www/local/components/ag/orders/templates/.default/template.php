@@ -88,7 +88,7 @@
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
                           <a class="ag-shop-profile-order__control" href="#"
-                          onclick="return showOrdersFeedbackForm('Заказ <?=
+                          onclick="return showOrdersFeedbackForm('<?=
                           $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
                           <? if(
                             $arOrder["STATUS_ID"]=='AG'
