@@ -97,7 +97,7 @@ while($arOrder = $resOrders->GetNext()){
         CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNext();
         $catalogElementId = $arProp["VALUE"];
         
-        //$arCatalogItem = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$catalogElementId))->GetNext();
+        $arCatalogItem = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$catalogElementId))->GetNext();
         
         //$arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"MORE_PHOTO"))->GetNExt();
         /////////
