@@ -1,5 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+echo $USER->GetID();
 if($USER->GetID()!=5)die;
 
 if(

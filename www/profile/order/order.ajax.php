@@ -269,7 +269,7 @@ elseif(isset($_GET["add_order"])){
         
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 //        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
-        CSaleOrder::PayOrder($orderId,"Y",true,false);
+//        CSaleOrder::PayOrder($orderId,"Y",true,false);
 
         CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
         $answer["redirect_url"] = "/profile/order/detail/$orderId/";
@@ -278,12 +278,15 @@ elseif(isset($_GET["add_order"])){
         orderSetZNI($orderId,'N','AA');
         orderPropertiesUpdate($orderId);
         // Снова заливаем историю баллов
+        // пока не надо. слишком тормозит процесс заказа
+        /**
         $agBrige->setMethod('pointsHistory');
         $agBrige->setMode('emp');
         $agBrige->setArguments($args);
         $history = $agBrige->exec();
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"], CUser::GetID());
+        */
      }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);

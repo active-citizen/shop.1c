@@ -3,6 +3,9 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
+<?
+//$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
+?>
         <? if(isset($arResult["OFFERS"][0])):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;

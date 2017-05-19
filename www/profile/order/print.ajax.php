@@ -11,6 +11,8 @@ elseif(isset($_GET['id']) && intval($_GET['id'])){
     $orderId = intval($_GET['id']);
 }
 
+if(!isset($orderInfo["ORDER"]))$orderInfo = initOrderGetInfo($orderId);
+
 CModule::IncludeModule('sale');
 CModule::IncludeModule('iblock');
 
@@ -55,7 +57,11 @@ while($arCatalogProp = $resCatalogProps->GetNext()){
 $arCatalog = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$catalogIblockId,"ID"=>$arOfferProps["CML2_LINK"][0]['VALUE']),false,array("nTopCount"=>1))->GetNext();
 
 $manufacturerIblockId = MANUFACTURER_IB_ID;
-$resManufacturerProps = CIBlockElement::GetProperty($manufacturerIblockId, $arCatalogProps["MANUFACTURER_LINK"][0]['VALUE'],array());
+$resManufacturerProps = CIBlockElement::GetProperty(
+    $manufacturerIblockId, 
+    $orderInfo["PROPERTIES"]["MANUFACTURER_LINK"]["VALUE"]
+);
+
 $arManufacturerProps = array();
 while($arManufacturerProp = $resManufacturerProps->GetNext()){
     if(!isset($arManufacturerProps[$arManufacturerProp["CODE"]]))$arManufacturerProps[$arManufacturerProp["CODE"]] = array();
@@ -66,15 +72,18 @@ while($arManufacturerProp = $resManufacturerProps->GetNext()){
 //$arOffer = CIblockElement::GEtList(array(),array("IBLOCK_CODE"=>"clothes_offers","ID"=>$arBasket["PRODUCT_ID"]))->GetNext();
 $data = array();
 
-$data["CODE"] = $arOrder["ADDITIONAL_INFO"];
+$data["CODE"] =
+$arOrder["ADDITIONAL_INFO"]?$arOrder["ADDITIONAL_INFO"]:$orderInfo["ORDER"]["ADDITIONAL_INFO"];
 $data["FIO"] = (!$arUser['NAME'] && !$arUser["LAST_NAME"]?$arUser['LOGIN']:$arUser['NAME']." ".$arUser["LAST_NAME"]);
-$data["NAME"] = $arCatalog["NAME"];
+$data["NAME"] = $orderInfo["CATALOG"]["NAME"];
 $data["QUANTITY"] = ($arBasket["QUANTITY"]>1?$arBasket["QUANTITY"]." &times; ":"").$arCatalogProps["QUANT"][0]["VALUE"];
 $data["MANUFACTURER_ID"] = $arCatalogProps["MANUFACTURER_LINK"][0]['VALUE'];
 
 $arStorage =CCatalogStore::GetList(
     array(),
-    array("ID"=>$arOrder["STORE_ID"]),false,array("nTopCount"=>1),
+    array(
+        "ID"=>
+            $orderInfo["ORDER"]["STORE_ID"]),false,array("nTopCount"=>1),
     array("ADDRESS","TITLE","ID")
 )->GetNext();
 $data["ADDRESS"] = $arStorage["ADDRESS"];
@@ -87,41 +96,7 @@ $data["HOW_SEARCH"] = $arManufacturerProps["HOW_FIND"][0]["VALUE"];
 
 $data["RULES"] = $arCatalogProps["RECEIVE_RULES"][0]["~VALUE"]["TEXT"];
 $data["MANUFACTURER"] = $arManufacturerProps["FULL_NAME"][0]["VALUE"];
-
-
-$tmp = date_parse($arOrder["DATE_INSERT"]);
-$orderTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
-
-
-if($arCatalogProps["USE_BEFORE_DATE"][0]["VALUE"] && !$arCatalogProps["PERFOMANCE_DATE"][0]["VALUE"]){
-    $tmp = date_parse($arOrder["USE_BEFORE_DATE"]);
-    $useBeforeTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
-    $data["expire"] = date("d.m.Y",$useBeforeTimestamp);
-}
-elseif(!$arCatalogProps["USE_BEFORE_DATE"][0]["VALUE"] && $arCatalogProps["PERFOMANCE_DATE"][0]["VALUE"]){
-    $tmp = date_parse($arOrder["PERFOMANCE_DATE"]);
-    $perfomanseTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
-    $data["expire"] = date("d.m.Y",$perfomanseTimestamp);
-    
-}
-elseif($arCatalogProps["USE_BEFORE_DATE"][0]["VALUE"] && $arCatalogProps["PERFOMANCE_DATE"][0]["VALUE"]){
-    $tmp = date_parse($arOrder["PERFOMANCE_DATE"]);
-    $perfomanseTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
-    $tmp = date_parse($arOrder["USE_BEFORE_DATE"]);
-    $useBeforeTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
-    $data["expire"] = $perfomanseTimestamp<$useBeforeTimestamp?date("d.m.Y",$perfomanseTimestamp):date("d.m.Y",$useBeforeTimestamp);
-}
-elseif($arCatalogProps["DAYS_TO_EXPIRE"][0]["VALUE"]){
-    $tmp = date_parse($arOrder["DATE_INSERT"]);
-    $orderTimestamp =  mktime($tmp["hour"],$tmp["minute"],$tmp["second"],$tmp["month"],$tmp["day"],$tmp["year"]);
-    $data["expire"] = date(
-	"d.m.Y",
-	$orderTimestamp+($arCatalogProps["DAYS_TO_EXPIRE"][0]["VALUE"])*24*60*60
-    );
-}
-else{
-    $data["expire"] = '';
-}
+$data["expire"] = $orderInfo["CATALOG"]['EXPIRES'];
 
 
 $sHTML = '
@@ -371,8 +346,11 @@ body {
 </html>
 <script>
 window.print();
-</script>';
+</script>'
+;
 
-if(!isset($orderInfo["ORDER"]["ID"]))echo $sHTML;
+if($_SERVER["SCRIPT_NAME"]=='/profile/order/print.ajax.php')echo $sHTML;
+
+//if(!isset($orderInfo["ORDER"]["ID"]))echo $sHTML;
 
 

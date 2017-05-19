@@ -301,7 +301,8 @@
     */
     function initOrderGetInfo($orderID){
         global $USER;
-        
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
         $arOrder = CSaleOrder::GetList(
             array(), 
             array("ID"=>$orderID),
@@ -328,7 +329,17 @@
             А при обмене - обмен идёт от пользователя, который этого не
             заказывал, но известен номер заказа, поэтому опора на ORDER_ID
         */
-        if(!$USER->isAdmin()){
+        if(
+            $_SERVER["SCRIPT_NAME"]=='/profile/order/print.ajax.php'
+        ){
+            $arFilter = array(
+                "ORDER_ID" => $arOrder["ID"],
+                "LID"=>SITE_ID
+            );
+        }
+        elseif(
+            !$USER->isAdmin() 
+        ){
             $arFilter = array(
                 "FUSER_ID"=>CSaleBasket::GetBasketUserID(),
                 "LID"=>SITE_ID,
@@ -427,7 +438,10 @@
         else{
             $arCatalog["EXPIRES"] = $date2;
         }
-        
+
+        $arOrderProperties = orderGetProperties($orderID);
+
+       
         $send_cert = (
                 (
                     isset($arProperties["SEND_CERT"]["VALUE"])
@@ -457,8 +471,10 @@
             // V - виртуальное поощрение
             // R - поощрение-ресурс
             "TYPE"          =>  $type,
-            "SEND_CERT"     =>  $send_cert
-
+            "SEND_CERT"     =>  $send_cert,
+            "ORDER_PROPERTIES"    =>  $arOrderProperties,
+            "AR_FILTER"     => $arFilter,
+            "AR_BASKET"     =>  $arBasket
         );
     }
 

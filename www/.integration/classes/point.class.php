@@ -31,7 +31,7 @@
          * Обновление в битриксе транзакций личного счёта из занных EМП
          */
         function updatePoints($history, $userId){
-           
+          
             $arPointsStatus = $history["status"];
             $history = $history["history"];
             
@@ -66,7 +66,7 @@
             // Ключ индекса - номер заказа
             $transactionDescIndex = array();
             $res = CSaleUserTransact::GetList(
-                array(),
+                array("ID"=>"DESC"),
                 array("USER_ID"=>$userId,"CURRENCY"=>"BAL")
             );
             $objTransact = new CSaleUserTransact;
@@ -81,7 +81,7 @@
                     )." ".
                     $arTransaction["~DESCRIPTION"]
                 ] = $arTransaction["ID"];
-                $transactionDescIndex["Б-".$arTransaction["ORDER_ID"]] = 1;
+                $transactionDescIndex[$arTransaction["ORDER_ID"]] = 1;
             }
                 
             foreach($history as $nT=>$empTransact){
@@ -148,12 +148,14 @@
 
             // Обновляем число заработанных баллов
             $user = new CUser;
-            $user->Update($userId, array("UF_USER_ALL_POINTS" => 
-                $arPointsStatus["all_points"]
-            ));
-            $user->Update($userId, array("UF_USER_AG_STATUS" =>
-                $arPointsStatus["ag_status"]
-            ));
+            if(isset($arPointsStatus["all_points"]) && $arPointsStatus["all_points"])
+                $user->Update($userId, array("UF_USER_ALL_POINTS" => 
+                    $arPointsStatus["all_points"]
+                ));
+            if(isset($arPointsStatus["ag_status"]))
+                $user->Update($userId, array("UF_USER_AG_STATUS" =>
+                    $arPointsStatus["ag_status"]
+                ));
 
     // Чистим кэш компонента фильтра для пользователя 
     $objComponent = new CBitrixComponent();
