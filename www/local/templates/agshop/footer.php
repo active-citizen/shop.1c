@@ -18,9 +18,7 @@
             <div class="ag-shop-modal__select-wrap">
               <select class="ag-shop-modal__select" id="feedback_type">
                 <option disabled selected>Тип обращения</option>
-                <option>Тип 1</option>
-                <option>Тип 2</option>
-                <option>Тип 3</option>
+                <option>Общие вопросы</option>
               </select>
             </div>
           </div>

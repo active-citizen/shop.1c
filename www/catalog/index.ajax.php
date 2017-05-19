@@ -28,6 +28,12 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $ENUMS[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
     }
 
+    // Составляем список разделов, из которых будем выводить
+    $res = CIBlockSection::GetList(array(),array("ACTIVE"=>"Y"),false,array("ID"));
+    $arSectionsIds = array();
+    while($arSection = $res->Fetch())$arSectionsIds[] = $arSection["ID"];
+    
+
     
     if(!isset($_REQUEST['sorting']) || !$_REQUEST['sorting'])$_REQUEST['sorting']='rating-desc';
     if(isset($_REQUEST['sorting']) && $_REQUEST['sorting']=='rating-desc'){
@@ -67,7 +73,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         }
     }
     
-    if(isset($_REQUEST['filter_interest']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_interest'])){
+    if(
+        isset($_REQUEST['filter_interest']) 
+        && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_interest']
+    )){
         $interest = explode(",",$_REQUEST['filter_interest']);
         if(!count($interest)){
         }else{
@@ -75,9 +84,17 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         }
     }
 
-    if(isset($_REQUEST['catalog_name']) && preg_match("#^[\d\w\-]+$#i",$_REQUEST['catalog_name'])){
+    if(
+        isset($_REQUEST['catalog_name']) 
+        && preg_match("#^[\d\w\-]+$#i",$_REQUEST['catalog_name'])
+    ){
 
-        $resCatalogSection = CIBlockSection::GetList(array(),array("CODE"=>$_REQUEST['catalog_name']),false,array("nTopCount"=>1),array("ID"));
+        $resCatalogSection = CIBlockSection::GetList(
+            array(),
+            array("CODE"=>$_REQUEST['catalog_name']),
+            false,
+            array("nTopCount"=>1),array("ID")
+        );
         $arCatalogSection = $resCatalogSection->GetNext();
         
         if(!isset($arCatalogSection["ID"])){
@@ -88,7 +105,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     }
 
 
-    if(isset($_REQUEST['filter_balls']) && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])){
+    if(
+        isset($_REQUEST['filter_balls']) 
+        && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])
+    ){
         $balls = explode(",",$_REQUEST['filter_balls']);
         $arrFilter[">=PROPERTY_MINIMUM_PRICE"] = $balls[0];
         $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = $balls[1];
@@ -118,6 +138,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     
     // Узнаём ID инфоблока
     $arrFilter["IBLOCK_ID"] = CATALOG_IB_ID;
+    $arrFilter["SECTION_ID"] = $arSectionsIds;
     
     $res = CIBlockElement::GetList(
         $arrSorting,
