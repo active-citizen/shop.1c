@@ -222,6 +222,12 @@
                         <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
                             $ts1<$ts2?$date1:$date2
                         ?></strong></div>
+                        <? if($ts1+24*60*60<time()):?>
+                            <div class="ag-shop-card__requirements">
+                                Мероприятие завершено. Поощрение недоступно для
+                                заказа.
+                            </div>
+                        <? endif ?>
                         <? endif ?>
 
 
@@ -241,6 +247,9 @@
                       </div>
                       <? endif ?>
                       <? if(
+                        // Если дата мероприятия ещё не вышла
+                        $ts1+24*60*60>time()
+                        &&
                         // Если есть на складе
                         count($arResult["OFFERS"][0]["STORAGES"]) 
                         // И у тебя достаточно баллов
@@ -390,8 +399,14 @@
                 <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
                 <? endif ?>
                 <? if(
+                    // Если дата мероприятия не вышла
+                    $ts1+24*60*60>time()
+                    &&
+                    // Если есть на складе
                     count($arResult["OFFERS"][0]["STORAGES"]) 
-                    &&  $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
+                    &&  
+                    // Если достаточно средств
+                    $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
                     &&  
                     (
                         trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
