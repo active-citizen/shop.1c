@@ -29,7 +29,6 @@
     $answer = array("errors"=>"");
 
      
-    
     $args = array(
         "login"     =>  isset($_REQUEST["login"])?$_REQUEST["login"]:'',
         "password"  =>  isset($_REQUEST["password"])?$_REQUEST["password"]:'',
@@ -87,8 +86,8 @@
     ){
         $USER->Logout();
         $answer["errors"] = array();
-        $answer["redirect"] =
-        trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
+//        $answer["redirect"] =
+//        trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
         echo json_encode($answer);
         die;
         //$answer["errors"][] = 'Ошибка авторизации';
@@ -135,8 +134,8 @@
                 $bxPoint = new bxPoint;
                 $bxPoint->updatePoints($history["result"], CUser::GetID());
             }
-            $answer["redirect"] =
-            trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
+//            $answer["redirect"] =
+//            trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
             echo json_encode($answer);
             die;
         }
