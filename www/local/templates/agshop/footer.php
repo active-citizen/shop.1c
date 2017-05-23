@@ -18,7 +18,12 @@
             <div class="ag-shop-modal__select-wrap">
               <select class="ag-shop-modal__select" id="feedback_type">
                 <option disabled selected>Тип обращения</option>
-                <option>Общие вопросы</option>
+                <option>взаимодействие с МФЦ</option>
+                <option>проблемы с сертификатом (письмо)</option>
+                <option>проблемы с Тройкой, Парковками</option>
+                <option>узнать про поощрения</option>
+                <option>технические ошибки</option>
+                <option>прочее</option>
               </select>
             </div>
           </div>
