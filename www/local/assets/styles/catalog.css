@@ -1332,6 +1332,7 @@ input:checked + .ag-shop-filter__variants-item {
     -webkit-justify-content: space-around;
     -ms-flex-pack: distribute;
     justify-content: space-around;
+    min-height: 50px;
   }
 
   .ag-shop-filter__variants::before {
