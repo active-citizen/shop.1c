@@ -4,6 +4,7 @@
  */
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/includes/datafilter.lib.php");
 
 // Количество заказов, выгружаемых за квант
 define("ORDERS_QUANT",100);
@@ -193,7 +194,7 @@ if(isset($_REQUEST["download"])){
     );
 
     $fd = fopen($sFilename,"w");
-    fwrite($fd,
+    $row = mb_convert_encoding( 
         '"№"'
         .";".'"ФИО покупателя"'
         .";".'"Email"'   
@@ -214,8 +215,11 @@ if(isset($_REQUEST["download"])){
         .";".'"Производитель"'   
         .";".'"Стоимость в баллах"'  
         .";".'"Стоимость в рублях"'
-        ."\r\n"
+        ."\r\n",
+        "cp1251",
+        "utf-8"
     );
+    fwrite($fd,$row);
     fclose($fd);
 
     header("Location: ".$_SERVER["SCRIPT_NAME"]."?continue=1&page=1");
@@ -346,12 +350,12 @@ if(isset($_REQUEST["continue"])){
         }
    
         $nNum++;
-        fwrite($fd,
+        $row = mb_convert_encoding( 
             '"'.$arOrder["ADDITIONAL_INFO"].'"'
             .";".'"'
-                .$arOrder["USER_LAST_NAME"]
+                .dataNormalize($arOrder["USER_LAST_NAME"])
                 ." "
-                .$arOrder["USER_NAME"]
+                .dataNormalize($arOrder["USER_NAME"])
                 .'"'
             .";".'"'.$arOrder["USER_EMAIL"].'"'   
             .";".'"'.$arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"].'"'  
@@ -370,25 +374,27 @@ if(isset($_REQUEST["continue"])){
             .";".'"'.str_replace("u","8",$arOrder["USER_LOGIN"]).'"' 
             .";".'" "'//'"Тип товара"'  
             .";".'"'.
-                    $arOrder["PROPERTIES"]["PRODUCT_NAME"]["VALUE"]
+                dataNormalize($arOrder["PROPERTIES"]["PRODUCT_NAME"]["VALUE"])
             .'"'   
             .";".'""'//'"Модель"'  
-            .";".'"'.$arStores[$arOrder["STORE_ID"]]["TITLE"].' "'
+            .";".'"'.dataNormalize($arStores[$arOrder["STORE_ID"]]["TITLE"]).'"'
             .";".get_date($arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"],false)
-            .";".'"'.$arOrder["PROPERTIES"]["SECTION_NAME"]["VALUE"].'"'
-            .";".'"'.$arOrder["PROPERTIES"]["MANUFACTURER_NAME"]["VALUE"].
-                '"'   
+            .";".'"'.dataNormalize($arOrder["PROPERTIES"]["SECTION_NAME"]["VALUE"]).'"'
+            .";".'"'.dataNormalize($arOrder["PROPERTIES"]["MANUFACTURER_NAME"]["VALUE"]).'"'   
             .";".round($arOrder["PRICE"])
             .";".'""'//'"Стоимость в рублях"'
-            ."\r\n"
+            ."\r\n",
+            "cp1251",
+            "utf-8"
         );
+        fwrite( $fd, $row);
     }
     fclose($fd);
 }
 
 // Шаг скачивания файла
 if(isset($_REQUEST["getfile"])){
-    header("Content-type: text/csv");
+    header("Content-type: text/csv; charset=windows-1251");
     header('Content-disposition: attachment;filename="'.
         $_SESSION["ORDER_DOWNLOAD"]["DOWNLOAD_FILENAME"]
     .'"');
