@@ -223,7 +223,8 @@
                             $ts1<$ts2?$date1:$date2
                         ?></strong></div>
                         <? if($ts1+24*60*60<time()):?>
-                            <div class="ag-shop-card__requirements">
+                            <div class="ag-shop-card__requirements"
+                            style="margin-left: -12px;">
                                 Мероприятие завершено. Поощрение недоступно для
                                 заказа.
                             </div>
