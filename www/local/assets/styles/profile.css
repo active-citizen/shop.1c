@@ -970,7 +970,7 @@ body {
   border-right: 1px solid #c7c9cc;
 }
 .ag-shop-profile-points__header td:last-child {
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-profile-points__table {
   font-family: 'SF UI Text', Arial, sans-serif;
@@ -1023,7 +1023,7 @@ body {
 }
 .ag-shop-profile-points__row--add td:nth-child(3),
 .ag-shop-profile-points__row--add td:last-child {
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-profile-points__row--sub td:nth-child(3),
 .ag-shop-profile-points__row--sub td:last-child {
@@ -1071,7 +1071,7 @@ body {
   background: #fff;
 }
 .ag-shop-profile-order--active:hover .ag-shop-profile-order__container {
-  border-color: #0eb0a0;
+  border-color: rgba(0,122,108,1);
 }
 .ag-shop-profile-order--annuled:hover .ag-shop-profile-order__container {
   border-color: #626e7d;
@@ -1140,7 +1140,7 @@ body {
   padding-left: 10px;
 }
 .ag-shop-profile-order--active .ag-shop-profile-order__status {
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-profile-order--annuled .ag-shop-profile-order__status {
   color: #626e7d;
@@ -1162,7 +1162,7 @@ body {
   top: 5px;
 }
 .ag-shop-profile-order--active .ag-shop-profile-order__status::before {
-  background: #0eb0a0;
+  background: rgba(0,122,108,1);
 }
 .ag-shop-profile-order--annuled .ag-shop-profile-order__status::before {
   background: #626e7d;

@@ -41,7 +41,7 @@
 }
 .ag-shop-nav__link--active {
   cursor: default;
-  background: #0eb0a0;
+  background: rgba(0,122,108,1);
 }
 .ag-shop-nav__link-icon {
   display: block;
@@ -93,7 +93,7 @@
   text-align: center;
 }
 .ag-shop-nav__link:hover .ag-shop-nav__link-caption {
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-nav__link--active .ag-shop-nav__link-caption {
   color: #fff !important;
@@ -146,7 +146,7 @@
   font-weight: 500;
   font-size: 14px;
   font-size: 0.875rem;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-menu__items {
   position: absolute;
@@ -199,14 +199,14 @@
   display: none;
 }
 .ag-shop-menu__link:hover {
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-menu__link:focus {
   opacity: 0.7;
 }
 .ag-shop-menu__link:active,
 .ag-shop-menu__link--active {
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-menu__link:active::after,
 .ag-shop-menu__link--active::after {
@@ -216,7 +216,7 @@
   display: block;
   height: 1px;
   width: 100%;
-  background: #0eb0a0;
+  background: rgba(0,122,108,1);
 }
 .ag-shop-menu__button {
   background: none;
@@ -460,7 +460,7 @@
 .ag-shop-footer__links {
   box-sizing: border-box;
   padding: 2px 20px;
-  background: #0eb0a0;
+  background: rgba(0,122,108,1);
 }
 .ag-shop-footer__link {
   background: none;
@@ -749,7 +749,7 @@
   font-size: 18px;
   font-size: 1.125rem;
   font-weight: 700;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-item-card--dark .ag-shop-item-card__name,
 .ag-shop-item-card:hover .ag-shop-item-card__name {
@@ -869,7 +869,7 @@
   cursor: pointer;
   height: 8px;
   width: 8px;
-  background: #0eb0a0;
+  background: rgba(0,122,108,1);
   font-size: 0;
   border-radius: 50%;
   border: 2px solid #fff;
@@ -1123,7 +1123,7 @@
   font-size: 15px;
   font-size: 0.9375rem;
   font-weight: 700;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
 }
 .ag-shop-slider-card__category {
   display: inline-block;
@@ -1837,7 +1837,7 @@
     font-size: 40px;
     font-size: 2.5rem;
     font-weight: 900;
-    color: #0eb0a0;
+    color: rgba(0,122,108,1);
   }
   .ag-shop-slider-card__category {
     font-size: 14px;

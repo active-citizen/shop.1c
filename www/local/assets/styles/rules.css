@@ -936,7 +936,7 @@ body {
 }
 .ag-shop-rules__content a {
   font-weight: 500;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
   text-decoration: none;
 }
 .ag-shop-rules__content a:hover {
@@ -949,7 +949,7 @@ body {
   font-size: 16px;
   font-size: 1rem;
   font-weight: 700 !important;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
   text-decoration: none;
   line-height: 24px;
   transition: 0.2s ease-out;
@@ -1006,7 +1006,7 @@ body {
 }
 .ag-shop-rules__address-info a {
   font-weight: 500;
-  color: #0eb0a0;
+  color: rgba(0,122,108,1);
   text-decoration: none;
 }
 @media (min-width: 480px) {

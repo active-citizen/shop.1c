@@ -129,7 +129,7 @@ input.ag-balls[type="radio"]{
 }
 
 .form-success{
-    color: #0eb0a0;
+    color: rgba(0,122,108,1);
     text-align: center;
 }
 

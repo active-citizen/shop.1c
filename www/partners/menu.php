@@ -10,9 +10,16 @@
             <a href="/partners/download/">Выгрузка заказов</a>
         </li>
         <li class="<?
+        if(preg_match("#^/partners/help/#",$_SERVER["REQUEST_URI"]))echo
+        "active";?>">
+            <a href="/partners/help/">Помощь</a>
+        </li>
+        <!--
+        <li class="<?
         if(preg_match("#^/partners/users/#",$_SERVER["REQUEST_URI"]))echo
         "active";?>">
             <a href="/partners/users/">Пользователи</a>
         </li>
+        -->
     </ul>
 

@@ -11,7 +11,7 @@ if ($this->StartResultCache(false)) {
         array(
             "IBLOCK_CODE"   =>  "content_articles",
             "ACTIVE"        =>  "Y",
-            "ID"            =>  $arParams["PRODUCT_CODE"]
+            "CODE"            =>  $arParams["CODE"]
         )
     )->GetNext();
 
