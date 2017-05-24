@@ -62,7 +62,7 @@ if ($this->StartResultCache(false)) {
                     $arCatalogLinkItem["DETAIL_PAGE_URL"];
                 // Вычисляем рейтинг
                 $arResult["BANNERS"][$baner["ID"]]["CATALOG_LINK_DATA"]["RATING"] = 
-                    round($arCatalogLinkItem["PROPERTY_RATING_VALUE"]*5,2);
+                    round($arCatalogLinkItem["PROPERTY_RATING_VALUE"],2);
                 // Вычисляем ИМЯ
                 $arResult["BANNERS"][$baner["ID"]]["CATALOG_LINK_DATA"]["NAME"] = 
                     $arCatalogLinkItem["NAME"];
