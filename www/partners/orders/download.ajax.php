@@ -308,6 +308,7 @@ if(isset($_REQUEST["continue"])){
     while($arOrder = $resOrders->Fetch()){
 
         // Получаем историю заказа
+        
         $arHistory = array();
         $resHistory = CSaleOrderChange::GetList(
             array("ID"=>"DESC"),
@@ -321,20 +322,23 @@ if(isset($_REQUEST["continue"])){
         while($arHistoryItem = $resHistory->Fetch()){
             $arHistory[] = $arHistoryItem;
         }
-
         // Получаем свойства 
+        /*
         $resPropValues = CSaleOrderProps::GetList(
             array("SORT" => "ASC"),
             array(
                     "ORDER_ID"       => $arOrder["ID"],
                     "PERSON_TYPE_ID" => 1,
                     "PROPS_GROUP_ID" => $nPropGroup,
+                    "CODE"           =>
+                        $arCodes = array("PRODUCT_NAME", "CLOSE_DATE", "SECTION_NAME",
+                        "MANUFACTURER_NAME") 
                 ),
             false,
-            false,
+            array("nTopCount"=>4),
             array("ID","CODE")
         );
-
+        //    PRODUCT_NAME, CLOSE_DATE, SECTION_NAME, MANUFACTURER_NAME, 
 
         $arOrder["PROPERTIES"] = array();
         while($arProp = $resPropValues->GetNext()){
@@ -345,10 +349,31 @@ if(isset($_REQUEST["continue"])){
                     $arFilterProp = array(
                         "ORDER_ID"=>$arOrder["ID"],
                         "ORDER_PROPS_ID"=>$arProp["ID"]
-                    )
+                    ),false, array("nTopCount"=>1),
+                    array("VALUE")
                 )->GetNext();
         }
-   
+        */
+        $sSql = "
+            SELECT 
+                `CODE`,`VALUE` 
+            FROM 
+                `b_sale_order_props_value` 
+            WHERE
+                `ORDER_ID`=".$arOrder["ID"]." 
+                AND 
+                `CODE` IN
+                (
+                    'CLOSE_DATE'
+                    ,'MANUFACTURER_NAME'
+                    ,'PRODUCT_NAME'
+                    ,'SECTION_NAME'
+                );";
+        $res = $DB->query($sSql);
+        $arOrder["PROPERTIES"] = array();
+        while($arProp = $res->Fetch())
+            $arOrder["PROPERTIES"][$arProp["CODE"]] = $arProp;
+
         $nNum++;
         $row = mb_convert_encoding( 
             '"'.$arOrder["ADDITIONAL_INFO"].'"'

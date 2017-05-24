@@ -7,16 +7,196 @@
         function Run(){
 	    global $DB;
 	    
+        /*
+            Описание таблиц и полей, которым надо сделать поисковые индексы
+        */
 	    $arIndexes = array(
-		"b_sale_basket"=>array(
-		
-		)
+            "b_sale_order_props"=>array(
+                "NAME","TYPE","SORT","USER_PROPS","PROPS_GROUP_ID","ACTIVE",
+            ),
+            /*
+            "b_sale_order_props_value"=>array(
+                "ORDER_ID","ORDER_PROPS_ID","NAME","VALUE","CODE"
+            ),
+            "b_sale_order"=>array(
+                "LID", "PERSON_TYPE_ID", "PAYED", "CANCELED", "STATUS_ID",
+                "CURRENCY", "USER_ID", "PAY_SYSTEM_ID", "DATE_INSERT",
+                "DATE_UPDATE", "ADDITIONAL_INFO", "PS_STATUS", "COMMENTS",
+                "SUM_PAID", "RECURRING_ID", "LOCKED_BY", "STORE_ID",
+                "CREATED_BY", "XML_ID", "ID_1C", "BX_USER_ID", "COMPANY_ID"
+            ),
+            "b_catalog_product"=>array(
+                "PRICE_TYPE","TRIAL_PRICE_ID","VAT_ID","AVAILABLE","TYPE"
+            ),
+            "b_catalog_store_product"=>array(
+                "AMOUNT","PRODUCT_ID","STORE_ID"
+            ),
+            "b_catalog_price"=>array(
+               "PRODUCT_ID","EXTRA_ID","CATALOG_GROUP_ID","CURRENCY","TMP_ID",
+               "PRICE","QUANTITY_FROM","QUANTITY_TO"
+            ),
+            "b_conv_context_entity_item"=>array(
+                "ENTITY","ITEM","CONTEXT_ID"
+            ),
+            "b_event"=>array(
+               "EVENT_NAME","MESSAGE_ID","LID","DATE_INSERT","LANGUAGE_ID"
+            ),
+            "b_file"=>array(),
+            "b_iblock_3_index"=>array(
+                "SECTION_ID","ELEMENT_ID","FACET_ID","VALUE","VALUE_NUM","INCLUDE_SUBSECTIONS"
+            ),
+            "b_iblock_element_property"=>array(
+                "IBLOCK_ELEMENT_ID","VALUE","VALUE_TYPE","VALUE_ENUM","VALUE_NUM"
+            ),
+            "b_iblock_section_element"=>array(
+               "IBLOCK_SECTION_ID","ADDITIONAL_PROPERTY_ID"
+            ),
+            "b_iblock_element"=>array(
+                "TIMESTAMP_X","MODIFIED_BY","DATE_CREATE","CREATED_BY","IBLOCK_ID",
+                "IBLOCK_SECTION_ID", "ACTIVE", "ACTIVE_FROM", "ACTIVE_TO",
+                "SORT", "XML_ID","CODE","TMP_ID"
+
+            ),
+            "b_module_to_module"=>array(
+                "TIMESTAMP_X","SORT"
+            ),
+            "b_rating_user"=>array(
+                "RATING_ID","ENTITY_ID"
+            ),
+            "b_sale_order_dlv_basket"=>array(),
+            "b_sale_loc_ext"=>array(),
+            "b_sale_order_processing"=>array(),
+            "b_sale_user_transact"=>array(),
+            "b_sale_order_payment"=>array(),
+            "b_sale_location"=>array(),
+            "b_sale_order_delivery_es"=>array(),
+            "b_sale_basket"=>array(),
+            "b_sale_order_delivery"=>array(),
+            "b_sale_order_change"=>array(),
+            "b_search_content_stem"=>array(),
+            "b_search_stem"=>array(),
+            "b_search_content"=>array(),
+            "b_user_group"=>array(),
+            "b_user"=>array(),
+            */
 	    );
-	    
+        /*
+           Список таблиц и полей, которые надо трансформировать 
+        */
+        $arTransform = array(
+            "b_sale_order_props"=>array(
+                "NAME"      =>  "CHAR(64)",
+                "TYPE"      =>  "CHAR(30)",
+                "DEFAULT_VALUE"=>"CHAR(255)",
+                "DESCRIPTION"=>"CHAR(255)",
+                "CODE"      =>  "CHAR(32)",
+                "UTIL"      =>  "CHAR(1)",
+                "SETTINGS"  =>  "CHAR(255)"
+            ),
+            /*
+            "b_sale_order_props_value"=>array(
+                "NAME"  =>  "CHAR(32)",
+                "VALUE" =>  "CHAR(255)",
+                "CODE"  =>  "CHAR(32)"
+            ),
+            "b_sale_order"=>array(
+                "REASON_CANCELED"   =>  "CHAR(16)",
+                "STATUS_ID"         =>  "CHAR(2)",
+                "REASON_UNDO_DEDUCTED"=>"CHAR(16)",
+                "REASON_MARKED"     =>  "CHAR(16)",
+                "DELIVERY_ID"       =>  "CHAR(50)",
+                "USER_DESCRIPTION"  =>  "CHAR(32)",
+                "ADDITIONAL_INFO"   =>  "CHAR(16)",
+                "PS_STATUS_DESCRIPTION"=> "CHAR(32)",
+                "PS_STATUS_MESSAGE"     =>  "CHAR(32)",
+                "COMMENTS"          =>  "CHAR(32)",
+                "PAY_VOUCHER_NUM"   =>  "CHAR(20)",
+                "DELIVERY_DOC_NUM"  =>  "CHAR(20)",
+                "ORDER_TOPIC"       =>  "CHAR(64)",
+                "ACCOUNT_NUMBER"    =>  "CHAR(100)",
+                "TRACKING_NUMBER"   =>  "CHAR(128)",
+                "XML_ID"            =>  "CHAR(150)",
+                "ID_1C"             =>  "CHAR(36)",
+                "VERSION_1C"        =>  "CHAR(15)",
+                "BX_USER_ID"        =>  "CHAR(32)",
+            ),
+            "b_catalog_product"=>array(
+                "TMP_ID"=>"CHAR(40)"
+            ),
+            "b_catalog_store_product"=>array(),
+            "b_catalog_price"=>array(
+                "TMP_ID"=>"CHAR(40)"
+            ),
+            "b_conv_context_entity_item"=>array(
+                "ENTITY"=>"CHAR(30)",
+                "ITEM"=>"CHAR(30)",
+            ),
+            "b_event"=>array(
+            ),
+            "b_file"=>array(),
+            "b_iblock_3_index"=>array(),
+            "b_iblock_element_property"=>array(),
+            "b_iblock_section_element"=>array(),
+            "b_iblock_element"=>array(),
+            "b_module_to_module"=>array(
+                "FROM_MODULE_ID"=>"CHAR(50)",
+                "MESSAGE_ID"=>"CHAR(255)",
+                "TO_MODULE_ID"=>"CHAR(50)",
+                "TO_PATH"=>"CHAR(255)",
+                "TO_CLASS"=>"CHAR(255)",
+                "TO_METHOD"=>"CHAR(255)",
+                "TO_METHOD_ARG"=>"CHAR(255)",
+            ),
+            "b_rating_user"=>array(),
+            "b_sale_order_dlv_basket"=>array(),
+            "b_sale_loc_ext"=>array(),
+            "b_sale_order_processing"=>array(),
+            "b_sale_user_transact"=>array(),
+            "b_sale_order_payment"=>array(),
+            "b_sale_location"=>array(),
+            "b_sale_order_delivery_es"=>array(),
+            "b_sale_basket"=>array(),
+            "b_sale_order_delivery"=>array(),
+            "b_sale_order_change"=>array(),
+            "b_search_content_stem"=>array(),
+            "b_search_stem"=>array(),
+            "b_search_content"=>array(),
+            "b_user_group"=>array(),
+            "b_user"=>array(),
+            */
+        );
+	   
+	    foreach($arTransform as $sTableName=>$arColumns){
+            foreach($arColumns as $sColumnName=>$sColumnDef){
+                $sSql = "ALTER TABLE `$sTableName` MODIFY `$sColumnName` $sColumnDef";
+                if(!$DB->query($sSql)){
+                    print_r($DB);
+                    die;
+                }
+            }
+        }
+        
+        // Ставим индексы
 	    foreach($arIndexes as $sTableName=>$arTableIndexes){
-    		$res = $DB->query("SHOW CREATE TABLE $sTableName");
-    		print_r($res);
-    	    }
+    		if(!$arTable = $DB->query(
+                "SHOW CREATE TABLE $sTableName"
+                )->GetNext()
+            )continue;
+            $sShowCreateTable = str_replace("\n","{break}",$arTable["Create Table"]);
+            foreach($arTableIndexes as $sColumn){
+                // Ставим индекс только если подобного нет
+                if(!preg_match("#KEY\s*`.*?`\s*\(\s*`$sColumn`\s*\)#",$sShowCreateTable)){
+                    $sSql = "ALTER TABLE `$sTableName` ADD INDEX
+                    `$sTableName"."_"."$sColumn`(`$sColumn`)";
+                    if(!$DB->query($sSql)){
+                        print_r($DB);
+                        die;
+                    }
+                }
+            }
+
+        }
+        
                 
             return true;
         }
