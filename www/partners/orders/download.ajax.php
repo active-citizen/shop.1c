@@ -187,7 +187,7 @@ if(isset($_REQUEST["download"])){
     // Сохраняем параметры в сессию
     $_SESSION["ORDER_DOWNLOAD"] = array(
         "FILENAME"=>$sFilename,
-        "DOWNLOAD_FILENAME"=>$sDownloadFilename,
+        "DOWNLOAD_FILENAME"=>trim($sDownloadFilename),
         "FILTER"=>$arFilter,
         "ORDER"=>$arOrder,
         "NUM_ROWS"=>$nNumRows
@@ -416,18 +416,18 @@ if(isset($_REQUEST["continue"])){
     }
     fclose($fd);
 }
-
 // Шаг скачивания файла
 if(isset($_REQUEST["getfile"])){
+    header('Content-disposition: attachment;filename="'.trim($_SESSION["ORDER_DOWNLOAD"]["DOWNLOAD_FILENAME"]).'"');
     header("Content-type: text/csv; charset=windows-1251");
-    header('Content-disposition: attachment;filename="'.
-        $_SESSION["ORDER_DOWNLOAD"]["DOWNLOAD_FILENAME"]
-    .'"');
     $fd = fopen($_SESSION["ORDER_DOWNLOAD"]["FILENAME"],'r');
     while(!feof($fd)){
-        echo fread($fd,1000);
+        $buffer = fread($fd,1000);
+        if(!trim($buffer))continue;
+        echo $buffer; 
     }
     fclose($fd);
+    die;
     unlink($_SESSION["ORDER_DOWNLOAD"]["FILENAME"]);
     die;
 }
