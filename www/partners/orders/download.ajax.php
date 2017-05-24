@@ -7,7 +7,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/includes/datafilter.lib.php");
 
 // Количество заказов, выгружаемых за квант
-define("ORDERS_QUANT",100);
+define("ORDERS_QUANT",1000);
 
 CModule::IncludeModule('catalog');
 
