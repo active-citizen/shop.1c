@@ -97,10 +97,11 @@ $arGroups = array(
 $objGroup = new CGroup;
 foreach($arGroups as $arGroup){
     $arFilter = array( "NAME"=>$arGroup["NAME"]);
-    if($arExistsGroup = $objGroup->GetList(
+    $resGroup = $objGroup->GetList(
         ($by="c_sort"), ($order="desc"),
         $arFilter        
-    )->GetNext()){
+    );
+    if($resGroup->Fetch()){
     }
     else{
         $objGroup = $objGroup->Add($arGroup); 

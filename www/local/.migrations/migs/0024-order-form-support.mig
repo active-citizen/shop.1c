@@ -189,7 +189,7 @@
             $arr["EMAIL_TO"]    = TO;
             $arr["SUBJECT"]     = "Новый вопрос службе поддержки по заказу #ISSUE_ORDER_NUM_RAW#";
             $arr["BODY_TYPE"]   = "html";
-            $arr["LANGUAGE_ID"] = 'ru';
+//            $arr["LANGUAGE_ID"] = 'RU';
             $arr["MESSAGE"]     = '  
 <table border="1" width="100%">
 <tr><th width="200px">Дата заполнения формы</th><td> #RS_DATE_CREATE# </td></tr>
@@ -202,7 +202,12 @@
 </table>
 ';
             $obTemplate = new CEventMessage;
-            if(!$arTemplate = $obTemplate->GetList($by="id",$order="desc",array("EVENT_NAME"=>$arr["EVENT_NAME"]))->GetNext()){
+            if(!$arTemplate = $obTemplate->GetList(
+                $by="id",$order="desc",
+                array(
+                    "EVENT_NAME"=>$arr["EVENT_NAME"],
+                )
+            )->GetNext()){
                 if(!$id = $obTemplate->Add($arr)){
                     print_r($obTemplate->LAST_ERROR);
                     echo "::".__LINE__;
