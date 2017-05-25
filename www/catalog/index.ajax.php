@@ -2,7 +2,7 @@
 // Включаем безбитриксовое кеширование
 require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
 // Запись в ручной кэш (в обход битрикса)
-customCache();
+//customCache();
 //customCacheClear();
 
 
@@ -147,7 +147,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
         array(
             "PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE",
-            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME"
+            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME","WANTS"
             )
     );
     
@@ -188,9 +188,34 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $product["RATING"] = round($product["PROPERTY_RATING_VALUE"],2);
         // Обеззараживаем текст описания
         $product["PREVIEW_TEXT"] = strip_tags($product["PREVIEW_TEXT"]);
-
-
         $product["mark"] = $product["PROPERTY_RATING_VALUE"];
+
+        // Выбираем цвет настроения
+        /*
+            ЗЕЛЕНЫЙ
+            На природу  
+            Кататься
+
+            ЖЕЛТЫЙ
+            Подарок детям
+            Что-то на память
+
+            РОЗОВЫЙ
+            Романтики
+            Развлечься
+
+            ГОЛУБОЙ
+            Отдохнуть
+            Развиваться
+        */
+        $sWant = $product["ALL_PROPERTIES"]["WANTS"]["VALUE_ENUM"];
+        $sClassName = "feel_so_green";
+        if($sWant=='Подарок детям' || $sWant=='Что-то на память')
+            $sClassName = 'feel_so_yellow';
+        elseif($sWant=='Романтики' || $sWant=='Развлечься')
+            $sClassName = 'feel_so_pink';
+        elseif($sWant=='Отдохнуть' || $sWant=='Развиваться')
+            $sClassName = 'feel_so_blue';
         ?>
         
                 <div class="grid__col-shrink">
@@ -217,6 +242,12 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                      ?>
                       <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>"
                       style="background-image: url(<?= $image_url?>);">
+                        <div class="ag-shop-item-card-cover <?= $sClassName?>"></div>
+                        <div class="ag-shop-item-card__points">
+                          <div class="ag-shop-item-card__points-count"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?></div>
+                          <div class="ag-shop-item-card__points-text"><?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
+                        </div>
+                          <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
                       <div class="ag-shop-item-card__badges">
                       <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png">
@@ -229,10 +260,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                       <? endif?>
                       </div>
                       <div class="ag-shop-item-card__info-layer">
-                        <div class="ag-shop-item-card__points">
-                          <div class="ag-shop-item-card__points-count"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?></div>
-                          <div class="ag-shop-item-card__points-text"><?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
-                        </div>
                         <div class="ag-shop-item-card__colors">
                           <!--
                           <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
