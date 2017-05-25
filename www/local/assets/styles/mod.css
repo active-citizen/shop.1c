@@ -258,4 +258,19 @@ input.ag-balls[type="radio"]{
     border-bottom: 1px dashed rgba(255, 194, 14, 1) !important;
 }
 
+.ag-shop-item-card__points{
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: -82px;
+    display: block;
+    width: 180px;
+    height: 150px;
+    border-radius: 50%;
+    background: #f6ef8a;
+    z-index: -1;
+    padding-left: 90px;
+    padding-top: 80px;
+}
+
 
