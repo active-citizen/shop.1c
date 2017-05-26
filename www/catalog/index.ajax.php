@@ -247,7 +247,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                           <div class="ag-shop-item-card__points-count"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?></div>
                           <div class="ag-shop-item-card__points-text"><?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
                         </div>
-                          <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
                       <div class="ag-shop-item-card__badges">
                       <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png">
@@ -259,6 +258,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png">
                       <? endif?>
                       </div>
+                          <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
                       <div class="ag-shop-item-card__info-layer">
                         <div class="ag-shop-item-card__colors">
                           <!--
