@@ -267,10 +267,82 @@ input.ag-balls[type="radio"]{
     width: 180px;
     height: 150px;
     border-radius: 50%;
-    background: #f6ef8a;
-    z-index: -1;
+    background: rgb(255,194,4);
+    z-index: 110;
     padding-left: 90px;
     padding-top: 80px;
 }
 
+h3.ag-shop-item-card__name{
+    //text-shadow: 1px .5px .5px #ffffff;
+    text-shadow: 0 0 3px rgba(0,0,0,0.4); 
+    color: white !important;
+    width: 300px;
+}
 
+a.ag-shop-item-card > h3.ag-shop-item-card__name{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 105;
+}
+
+.ag-shop-item-card__info > h3.ag-shop-item-card__name{
+    display:none;
+}
+
+.ag-shop-catalog__item{
+    position: relative;
+    z-index: 100;
+}
+
+.ag-shop-item-card-cover{
+    position: absolute;
+    top:0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 101;
+}
+
+.feel_so_green{
+//    background-image: linear-gradient(20deg, rgba(0,122,108,1) 2%,rgba(0,122,108,0.44) 40%,rgba(0,122,108,0.22) 60%,rgba(0,122,108,0) 100%) !important;
+    background-image: linear-gradient(0deg, rgba(0,122,108,0.6) 2%,rgba(0,122,108,0.44) 10%,rgba(0,122,108,0.22) 20%,rgba(0,122,108,0) 30%) !important;
+}
+.feel_so_pink{
+//    background-image: linear-gradient(20deg, rgba(239,77,148,1) 2%,rgba(239,77,148,0.44) 40%,rgba(239,77,148,0.22) 60%,rgba(239,77,148,0) 100%) !important;
+    background-image: linear-gradient(0deg, rgba(239,77,148,0.6) 2%,rgba(239,77,148,0.44) 10%,rgba(239,77,148,0.22) 20%,rgba(239,77,148,0) 30%) !important;
+}
+.feel_so_yellow{
+//    background-image: linear-gradient(20deg, rgba(255,194,14,1) 2%,rgba(255,194,14,0.44) 40%,rgba(255,194,14,0.22) 60%,rgba(255,194,14,0) 100%) !important;
+    background-image: linear-gradient(0deg, rgba(161,164,169,0.6) 2%,rgba(161,164,169,0.44) 10%,rgba(161,164,169,0.22) 20%,rgba(161,164,169,0) 30%) !important;
+}
+.feel_so_blue{
+//    background-image: linear-gradient(20deg, rgba(0,192,243,1) 2%,rgba(0,192,243,0.44) 40%,rgba(0,192,243,0.22) 60%,rgba(0,192,243,0) 100%) !important;
+    background-image: linear-gradient(0deg, rgba(0,192,243,0.6) 2%,rgba(0,192,243,0.44) 10%,rgba(0,192,243,0.22) 20%,rgba(0,192,243,0) 30%) !important;
+}
+
+
+
+
+a.ag-shop-item-card:hover .ag-shop-item-card-cover{
+    display:none;
+}
+
+a.ag-shop-item-card:hover h3.ag-shop-item-card__name{
+    position: initial;
+    display: block;
+}
+
+.ag-shop-item-card__badges{
+    //z-index: 120 !important;
+}
+
+.ag-shop-slider-card__points{
+    background-color: rgba(255,194,14,1) !important;
+}
+
+input:checked + .ag-shop-filter__variants-item {
+    background: #ffc20e !important;
+    border: 1px solid #ffc20e !important;
+}
