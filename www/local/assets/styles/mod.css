@@ -394,3 +394,7 @@ input:checked + .ag-shop-filter__variants-item {
     padding-top: 90px;
     padding-left: 60px;
 }
+
+.ag-shop-profile-tabs__link{
+    display: inline;
+}
