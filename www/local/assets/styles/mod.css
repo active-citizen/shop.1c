@@ -291,6 +291,10 @@ a.ag-shop-item-card > h3.ag-shop-item-card__name{
     display:none;
 }
 
+
+
+
+
 .ag-shop-catalog__item{
     position: relative;
     z-index: 100;
@@ -333,6 +337,11 @@ a.ag-shop-item-card:hover h3.ag-shop-item-card__name{
     position: initial;
     display: block;
 }
+
+a.ag-shop-item-card:hover > h3.ag-shop-item-card__name{
+    display:none;
+}
+
 
 .ag-shop-item-card__badges{
     //z-index: 120 !important;
