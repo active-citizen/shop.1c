@@ -100,10 +100,15 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
         false
     );?>
 
+    <? if(
+        preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
+    ):?>
     <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
             "CACHE_TIME"      =>  COMMON_CACHE_TIME
         ),
         false
     );?>
+    <? endif ?>
+
 
 
