@@ -346,3 +346,28 @@ input:checked + .ag-shop-filter__variants-item {
     background: #ffc20e !important;
     border: 1px solid #ffc20e !important;
 }
+
+.ag-shop-slider-card__points-count{
+    margin-top: -15px;
+}
+
+.ag-shop-slider-card__points-text{
+    display: block;
+}
+
+.ag-shop-slider-card__points::before{
+}
+
+.ag-shop-slider-card__points-count{
+//    font-size: 38px;
+}
+
+.ag-shop-slider-card__points-text{
+//    font-size: 18px;
+}
+
+.ag-shop-slider-card, .ag-shop-slider-card-dark{
+    background-repeat: no-repeat;
+    background-position: 100%  100%;
+    background-size: contain;
+}
