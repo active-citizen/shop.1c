@@ -25,10 +25,19 @@
                     <div class="grid__col-shrink">
                       <div class="ag-shop-rules__address-container" id="YMapsID<?= $arStore["ID"] ?>" style="width:420px;height:150px"></div>
                       <script>
+                      <?
+                        foreach($arStore as $k=>$v)
+                            $arStore[$k] = str_replace("\r"," ",$v);
+                        foreach($arStore as $k=>$v)
+                            $arStore[$k] = str_replace("\n"," ",$v);
+                        foreach($arStore as $k=>$v)
+                            $arStore[$k] = str_replace("\t"," ",$v);
+                      ?>
                         YMaps.jQuery(function () {
                             // Создает экземпляр карты и привязывает его к созданному контейнеру
                             var map = new YMaps.Map(YMaps.jQuery("#YMapsID<?= $arStore["ID"] ?>")[0]);
-                            var geocoder = new YMaps.Geocoder("<?= $arStore["ADDRESS"]?>");
+                            var geocoder = new YMaps.Geocoder("<?=
+                            htmlspecialchars($arStore["ADDRESS"])?>");
                             map.setCenter(new YMaps.GeoPoint(37.64, 55.76), 10);
                             YMaps.Events.observe(geocoder, geocoder.Events.Load, function () {
                                 if (this.length()) {
@@ -42,8 +51,11 @@
                                         this.get(0).getGeoPoint().getLng(),
                                         this.get(0).getGeoPoint().getLat()
                                     ));
-                                    placemark.name = '<?= $arStore["TITLE"]?>';
-                                    placemark.description = '<?= $arStore["SCHEDULE"]?>.<br/> Тел: <?= $arStore["PHONE"]?>';
+                                    placemark.name = '<?=
+                                    htmlspecialchars($arStore["TITLE"])?>';
+                                    placemark.description = '<?=
+                                    htmlspecialchars($arStore["SCHEDULE"])?>.<br/> Тел: <?=
+                                    htmlspecialchars($arStore["PHONE"])?>';
                                     placemark.hideIcon = true;
                                     
                                     map.addOverlay(placemark);
