@@ -1,4 +1,10 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+
+    <? if(
+        !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+    ):?>
+    <!-- Не выводим футер для ЛК -->
+
         <!-- Footer {{{-->
         <footer class="ag-shop-footer">
           <div class="ag-shop-footer__links">
@@ -58,7 +64,8 @@
         </div>
       </div>
     </div>
-
+    <!-- Конец: не выводим футер для ЛК -->
+    <? endif ?>
 
         <? if(1 || !CUser::IsAuthorized()):?>
         <? if(
