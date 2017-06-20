@@ -177,12 +177,19 @@ if($_REQUEST["print"]=='act'){
     $oExcel->getActiveSheet()->setCellValue('C23', 
         $arResult["SALER"]["LAST_NAME"]
         ." ".$arResult["SALER"]["NAME"]
-    ); 
-    $oExcel->getActiveSheet()->setCellValue('B25',
-        str_replace("u","8",$arResult["SALER"]["LOGIN"])
-    ); 
+    );
+    $oExcel->getActiveSheet()->getCell('B25')->setValueExplicit('1.1',
+    PHPExcel_Cell_DataType::TYPE_STRING);
+    $sPhone = str_replace("u7","  ",$arResult["SALER"]["LOGIN"]);
+    $sPhone =
+        ' 8 '.
+        substr($sPhone,2,3)
+        ." ".substr($sPhone,5,3)
+        ." ".substr($sPhone,8,2)
+        ." ".substr($sPhone,10);
+    $oExcel->getActiveSheet()->setCellValue('B25',$sPhone); 
     $oExcel->getActiveSheet()->setCellValue('B26', 
-        str_replace("u","8",$arResult["SALER"]["EMAIL"])
+        str_replace("u","u",$arResult["SALER"]["EMAIL"])
     ); 
 }
 
