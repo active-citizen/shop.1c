@@ -144,7 +144,8 @@ if($_REQUEST["print"]=='act'){
         ."  от ".get_date($arResult["ORDER"]["DATE_INSERT"])
     );
     $oExcel->getActiveSheet()->setCellValue('B14', 
-        $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["NAME"]
+//        $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["NAME"]
+        $arProduct["NAME"]
     );
     $oExcel->getActiveSheet()->setCellValue('D14', 
         intval($arResult["ORDER"]["ADDITIONAL_INFO"])
@@ -176,7 +177,7 @@ if($_REQUEST["print"]=='act'){
         $arResult["SALER"]["LAST_NAME"]
         ." ".$arResult["SALER"]["NAME"]
     ); 
-    $oExcel->getActiveSheet()->setCellValue('B25', 
+    $oExcel->getActiveSheet()->setCellValue('B25',
         str_replace("u","8",$arResult["SALER"]["LOGIN"])
     ); 
     $oExcel->getActiveSheet()->setCellValue('B26', 
