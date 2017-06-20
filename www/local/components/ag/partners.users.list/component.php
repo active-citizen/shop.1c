@@ -106,11 +106,22 @@ $arFilter["GROUPS_ID"] =
         OPERATORS_GROUP_ID
     )    
     ;
-if($arParams["FILTER"]["MAN_ID"])$arFilter["UF_USER_MAN_ID"] = 
-    intval($arParams["FILTER"]["MAN_ID"]);
-if($arParams["FILTER"]["STORES"])$arFilter["UF_USER_STORAGE_ID"] = 
-    intval($arParams["FILTER"]["STORES"]);
-    
+if($arParams["FILTER"]["MAN_ID"])$arFilter[] = array(
+    "LOGIC"=>"OR",
+    array("UF_USER_MAN_ID" => $arParams["FILTER"]["MAN_ID"]),
+    array("UF_USER_MAN_ALL"=> true)
+
+);
+
+if($arParams["FILTER"]["STORES"])$arFilter[] = array(
+    "LOGIC"=>"OR",
+    array("UF_USER_STORAGE_ID" => $arParams["FILTER"]["STORES"]),
+    array("UF_USER_STORAGE_ALL"=> true)
+
+);
+
+
+
 if($arParams["FILTER"]["LOGIN"])$arFilter["LOGIN"] = 
     $arParams["FILTER"]["LOGIN"];
 if($arParams["FILTER"]["SURNAME"])
@@ -118,9 +129,10 @@ if($arParams["FILTER"]["SURNAME"])
 if($arParams["FILTER"]["NAME"])
     $arFilter["NAME"] = $arParams["FILTER"]["NAME"];
 
+$arResult["FILTER_ARRAY"] = $arFilter;
 
 $resUser = CUser::GetList(
-    ($by="personal_country"), ($order="desc"),
+    ($by="LAST_NAME"), ($order="ASC"),
     $arFilter,
     array(
         "SELECT"    =>  array(
@@ -133,7 +145,8 @@ $resUser = CUser::GetList(
         "NAV_PARAMS" =>  array(
             "nPageSize" =>  $arParams["RECORDS_ON_PAGE"],
             "iNumPage"  =>  $arParams["PAGE_NUM"]
-        )
+        ),
+        "GROUP" =>"ID"
     )
 );
 $arResult["resUser"] = $resUser;
@@ -144,7 +157,7 @@ while($arUser = $resUser->GetNext()){
         "PARTNER"   =>  in_array($arUser["ID"], $arGroupPartners),
         "OPERATOR"  =>  in_array($arUser["ID"], $arGroupOperators)
     );
-    $arResult["USERS"][] = $arUser;
+    $arResult["USERS"][$arUser["ID"]] = $arUser;
 }
 
 

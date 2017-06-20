@@ -1,6 +1,11 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 <h1>Партнёры и операторы МФЦ</h1>
+<? if($_REQUEST["SUCCESS"]):?>
+<div class="alert alert-success">
+<?= htmlspecialchars($_REQUEST["SUCCESS"])?>
+</div>
+<? endif?>
 <table class="table table-bordered">
     <tr>
         <th style="width: 100px">
@@ -18,7 +23,7 @@
         <th>
             Склады
         </th>
-        <th style="width:50px;">
+        <th style="width:150px;">
             Действие
         </th>
     </tr>
@@ -103,7 +108,6 @@
                 <? foreach($arUser["UF_USER_MAN_ID"] as $nManId):?>
                 <div class="manufacturer">
                     <?= $arResult["MANS"][$nManId]["NAME"]?>
-                    (ID=<?= $arResult["MANS"][$nManId]["ID"]?>)
                 </div>
                 <? endforeach ?>
             <? endif ?>
@@ -120,9 +124,10 @@
             <? endif ?>
         </td>
         <td class="td-action">
-            [<a href="<? $arParams["BASE_URL"]?>edit/?ID=<?= $arUser["ID"]?>">
-                Править
-            </a>]
+            [<a href="/partners/users/edit/?ID=<?=
+            $arUser["ID"]?>&backurl=<?= $_SERVER["REQUEST_URI"]?>">Править</a>]
+            [<a href="/partners/users/delete/?ID=<?=
+            $arUser["ID"]?>&backurl=<?= $_SERVER["REQUEST_URI"]?>">Удалить</a>]
         </td>
     </tr>
     <? endforeach ?>

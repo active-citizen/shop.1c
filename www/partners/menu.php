@@ -21,5 +21,8 @@
             <a href="/partners/users/">Пользователи</a>
         </li>
         <? endif ?>
+        <li style="float:right;">
+            <a href="?logout=yes">Выход</a>
+        </li>
     </ul>
 

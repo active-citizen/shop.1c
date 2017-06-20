@@ -8,5 +8,9 @@ $PERM["/"]["*"]="R";
 $PERM["partners"]["*"] = "D";
 $PERM["partners"]["9"] = "W";
 $PERM["partners"]["10"] = "W";
+$PERM["partners/users"]["*"] = "D";
+$PERM["partners/users"]["1"] = "X";
+
+
 
 
