@@ -101,7 +101,8 @@ while($arBasket = $resBasket->Fetch()){
         array("nTopCount"=>1),
         array(
             "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE",
-            "PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
+            "PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT",
+            "PROPERTY_BUH_NAME"
         )
     //  array()
     )->Fetch();
@@ -145,7 +146,7 @@ if($_REQUEST["print"]=='act'){
     );
     $oExcel->getActiveSheet()->setCellValue('B14', 
 //        $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["NAME"]
-        $arProduct["NAME"]
+        $arProduct["PROPERTY_BUH_NAME_VALUE"]
     );
     $oExcel->getActiveSheet()->setCellValue('D14', 
         intval($arResult["ORDER"]["ADDITIONAL_INFO"])
