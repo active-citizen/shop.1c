@@ -30,6 +30,62 @@ while($arStore = $resStores->GetNext()){
     $arResult["STORES"][$arStore["ID"]] = $arStore;
 }
 
+
+if(!isset($_REQUEST["EDIT"]) && intval($_REQUEST["ID"])){
+    $arUser = CUser::GetList(
+        ($by="ID"), ($order="desc"),
+        array(
+            "ID"=>intval($_REQUEST["ID"])
+        ),
+        array(
+            "SELECT"    => array(
+                "UF_USER_STORAGE_ALL",
+                "UF_USER_STORAGE_ID",
+                "UF_USER_MAN_ALL",
+                "UF_USER_MAN_ID"
+            ),
+            "NAV_PARAMS"=>array("nTopCount"=>1)
+        )
+    )->GetNext();
+    $_REQUEST["LOGIN"]      =   $arUser["LOGIN"];
+    $_REQUEST["NAME"]       =   $arUser["NAME"];
+    $_REQUEST["LAST_NAME"]  =   $arUser["LAST_NAME"];
+    $_REQUEST["EMAIL"]      =   $arUser["EMAIL"];
+    $_REQUEST["STORES"]     =   $arUser["UF_USER_STORAGE_ID"];
+    $_REQUEST["MANS"]       =   $arUser["UF_USER_MAN_ID"];
+
+
+    $_REQUEST["GROUPS_ID"]  = array();
+
+    // Списки пользователей в группах
+    $arGroupPartners = CGroup::GetGroupUser(PARTNERS_GROUP_ID);
+    $arGroupOperators = CGroup::GetGroupUser(OPERATORS_GROUP_ID);
+
+    if(in_array($_REQUEST["ID"], $arGroupPartners))
+        $_REQUEST["GROUPS_ID"][PARTNERS_GROUP_ID] = 'on';
+    elseif(isset($_REQUEST["GROUPS_ID"][PARTNERS_GROUP_ID]))
+        unset($_REQUEST["GROUPS_ID"][PARTNERS_GROUP_ID]);
+
+    if(in_array($_REQUEST["ID"], $arGroupOperators))
+        $_REQUEST["GROUPS_ID"][OPERATORS_GROUP_ID] = 'on';
+    elseif(isset($_REQUEST["GROUPS_ID"][OPERATORS_GROUP_ID]))
+        unset($_REQUEST["GROUPS_ID"][OPERATORS_GROUP_ID]);
+
+
+
+    if($arUser["UF_USER_STORAGE_ALL"])
+        $_REQUEST["ALL_STORES"] = 'on';
+    elseif(isset($_REQUEST["ALL_STORES"]))
+        unset($_REQUEST["ALL_STORES"]);
+
+    if($arUser["UF_USER_MAN_ALL"])
+        $_REQUEST["ALL_MANS"] = 'on';
+    elseif(isset($_REQUEST["ALL_MANS"]))
+        unset($_REQUEST["ALL_MANS"]);
+
+
+}
+
 $arResult["ERRORS"] = array();
 if(
     !$_REQUEST["LOGIN"]
@@ -37,16 +93,6 @@ if(
     !preg_match("#^[\d\w\.\-\_]+$#",$_REQUEST["LOGIN"])
 ){
     $arResult["ERRORS"][] = 'Некорректный формат поля Логин';
-}
-elseif(
-    !$_REQUEST["PASSWORD"]
-){
-    $arResult["ERRORS"][] = 'Не указан пароль';
-}
-elseif(
-    !$_REQUEST["REPASSWORD"]
-){
-    $arResult["ERRORS"][] = 'Не указан повтор пароля';
 }
 elseif(
     $_REQUEST["REPASSWORD"]!=$_REQUEST["PASSWORD"]
@@ -100,17 +146,21 @@ elseif(
     производителям  необходимо снять пометку доступа к конкретным
     производителям(пункт "-нет-")';
 }
-else{
+elseif($_REQUEST["EDIT"]){
     $arFields = array(
         "LOGIN"         =>  $_REQUEST["LOGIN"],
-        "PASSWORD"      =>  $_REQUEST["PASSWORD"],
-        "REPASSWORD"    =>  $_REQUEST["REPASSWORD"],
         "EMAIL"         =>  $_REQUEST["EMAIL"],
         "NAME"          =>  $_REQUEST["NAME"],
         "LAST_NAME"     =>  $_REQUEST["LAST_NAME"],
         "UF_USER_ORDER_CANCEL"  =>  true,
         "UF_USER_ORDER_DONE"    =>  true
     );
+
+    if($_REQUEST["PASSWORD"])
+        $arFields["PASSWORD"] = $_REQUEST["PASSWORD"];
+    if($_REQUEST["REPASSWORD"])
+        $arFields["REPASSWORD"] = $_REQUEST["REPASSWORD"];
+
     $arFields["GROUP_ID"] = array(6);
     if(isset($_REQUEST["GROUPS_ID"][PARTNERS_GROUP_ID]))
         $arFields["GROUP_ID"][] = PARTNERS_GROUP_ID;
@@ -142,13 +192,13 @@ else{
     else
         $arFields["UF_USER_STORAGE_ID"] = array();
 
-    if($USER->Add($arFields)){
+    if($USER->Update($_REQUEST["ID"], $arFields)){
         $url = explode("?",$arParams["BACK_URL"]);
-        LocalRedirect($url[0]."?SUCCESS=Пользователь добавлен");
+        LocalRedirect($url[0]."?SUCCESS=Пользователь отредактирован");
         die;
     }
     else{
-        $arResult["ERRORS"][] = 'Ошибка добавления пользователя: '
+        $arResult["ERRORS"][] = 'Ошибка редактирования пользователя: '
         .$USER->LAST_ERROR
         ;
         
