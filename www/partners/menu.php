@@ -22,7 +22,7 @@
         </li>
         <? endif ?>
         <li style="float:right;">
-            <a href="?logout=yes">Выход</a>
+            <a href="/partners/orders/?logout=yes">Выход</a>
         </li>
     </ul>
 
