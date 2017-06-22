@@ -32,6 +32,7 @@
             "auth"=> array(
                 "name"      =>  "Авторизация и получение сессии",
                 "inputs"    =>  array(
+                    /*
                     "login" =>  array(
                         "name"      =>  "Логин(номер телефона)",
                         "require"   =>  true,
@@ -41,6 +42,12 @@
                         "name"      =>  "Пароль",
                         "require"   =>  true,
                         "regexp"    =>  "#^.{1,32}$#"
+                    ),
+                    */
+                    "session_id" =>  array(
+                        "name"      =>  "ID сессии",
+                        "require"   =>  true,
+                        "regexp"    =>  "#^.{1,128}$#"
                     ),
                     "token" =>  array(
                         "name"      =>  "Токен",

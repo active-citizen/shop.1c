@@ -27,19 +27,24 @@
     class authBridgeMethod{
         function exec($args,$contour='uat'){
             
-            require_once(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
+            require(realpath(dirname(__FILE__)."/../../../secret.inc.php"));
             
             $data = array(
                 "token"=>$EMP_TOKENS[CONTOUR],
                 "auth"=>array(
-                    "login"     =>  $args["login"],
-                    "password"  => $args["password"]
+                    "session_id"     =>  $args["session_id"],
                 )
             );
-            
+           
             $data = json_encode($data);
             $curl = new curlTool;
-            $data = $curl->post("https://emp.mos.ru/v2.0.0/agprofile/getProfile", $data, array("Content-Type: application/json"));
+            $data = $curl->post(
+                "https://emp.mos.ru/v2.0.0/agprofile/getProfile",
+                $data, 
+                array(
+                    "Content-Type: application/json"
+                )
+            );
             return $data;
         }
     }
