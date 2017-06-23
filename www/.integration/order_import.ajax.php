@@ -1,5 +1,4 @@
 <?php
-    
     // Output debug messages to 1C exchange
     define("IMPORT_DEBUG",false);
 
@@ -126,9 +125,9 @@
             $arOrders["Документ"] = array($arOrders["Документ"]);
 
         foreach($arOrders->Документ as $ccc=>$arDocument){
-            $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
+           $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if($ccc>100){break;}else{
+            if($ccc>100){/*break;*/}else{
                 //if(IMPORT_DEBUG)
                 //    echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
@@ -252,7 +251,7 @@
                     // Создаём товар на складе
                     CCatalogProduct::Add(array(
                         "ID"=>$offerId,
-                        "QUANTITY"=>0,
+                        "QUANTITY"=>1000,
                         "QUANTITY_TRACE"=>"Y",
                         "CAN_BUY_ZERO"=>"N",
                     ));
@@ -437,13 +436,16 @@
             }
             
             // Определяем ID склада
+            /*
             $resStorage = CCatalogStore::GetList(array(),array("XML_ID"=>$arDocument["Склад"]),
                 false,array("nTopCount"=>1),array("ID"));
             $arStorage = $resStorage->GetNext();
             $storeId = 0;
             if(!isset($arStorage["ID"]))$storeId = $arStorage["ID"];
             if($storeId)$arOrder["STORE_ID"] = $storeId;
-           
+            */
+
+
             // Если заказа нет - создаём, есть - обновляем
             if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
                 if(!$orderId = $objOrder->Add($arOrder)){
@@ -463,7 +465,8 @@
                 $userBasketId = $objBasket->GetBasketUserID();
                 // Добавляем в корзину продукты
                 foreach($basketProducts as $productId=>$item){
-            	    $strSql = "INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
+            	    $strSql = "
+                        INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
             	    VALUES(
                     '".$userId."', 
                 	'".$orderId."', 
@@ -482,6 +485,47 @@
                 }
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
                 orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+
+                // Уменьшаем запасы на складе 
+                $objCCatalogStoreProduct = new CCatalogStoreProduct;
+                $objCCatalogProduct = new CCatalogProduct;
+                foreach($basketProducts as $productId=>$item){
+                    /// Получаем текущее значение этого товара сейчас на складе
+                    $nQuantity = 0;
+                    // Если записей с остатком нет - пропустить его уменьшение
+                    if($arStoreProduct = $objCCatalogStoreProduct->GetList(
+                        array(),
+                        $arStoreProductFilter = array(
+                            "PRODUCT_ID"=>  $productId,
+                            "STORE_ID"  =>  $arStore["ID"]
+                        ),
+                        false,
+                        array("nTopCount"=>1),
+                        array("AMOUNT","ID","PRODUCT_ID","STORE_ID")
+                    )->GetNext()){
+                        $nQuantity = $arStoreProduct["AMOUNT"];
+                    }
+                    else{
+                        continue;
+                    }
+                    // Высисляем новый остаток, при отреицательном - нуль
+                    $nDQuantity = 0;
+                    if($nQuantity-$item["count"]>=0)
+                        $nDQuantity = $nQuantity - $item["count"];
+
+                    // Устанавливаем новое значение остатка
+                    if(!$objCCatalogStoreProduct->Update(
+                        $arStoreProduct["ID"],
+                        $arF = array(
+                            "AMOUNT"              =>  $nDQuantity
+                    ))){
+                        print_r($objCCatalogStoreProduct);
+                        die;
+                    }
+
+                }
+
+
                 //CSaleOrder::PayOrder($orderId,"Y",false,false); //?????
                 // Удаляем транзакцию, вызвагую этим заказом (ибо через импорт баллов она придёт)
                 /*
@@ -528,7 +572,44 @@
                         $answer["error"] .= "Заказ не был отменён.";
                     }
 
+                    // Увеличикаем запасы на складе 
+                    $objCCatalogStoreProduct = new CCatalogStoreProduct;
+                    $objCCatalogProduct = new CCatalogProduct;
+                    foreach($basketProducts as $productId=>$item){
+                        /// Получаем текущее значение этого товара сейчас на складе
+                        $nQuantity = 0;
+                        // Если записей с остатком нет - пропустить его уменьшение
+                        if($arStoreProduct = $objCCatalogStoreProduct->GetList(
+                            array(),
+                            $arStoreProductFilter = array(
+                                "PRODUCT_ID"=>  $productId,
+                                "STORE_ID"  =>  $arStore["ID"]
+                            ),
+                            false,
+                            array("nTopCount"=>1),
+                            array("AMOUNT","ID","PRODUCT_ID","STORE_ID")
+                        )->GetNext()){
+                            $nQuantity = $arStoreProduct["AMOUNT"];
+                        }
+                        else{
+                            continue;
+                        }
+                        // Высисляем новый остаток, при отреицательном - нуль
+                        $nDQuantity = $nQuantity + $item["count"];
+
+                        // Устанавливаем новое значение остатка
+                        if(!$objCCatalogStoreProduct->Update(
+                            $arStoreProduct["ID"],
+                            $arF = array(
+                                "AMOUNT"              =>  $nDQuantity
+                        ))){
+                            print_r($objCCatalogStoreProduct);
+                            die;
+                        }
+
+                    }
                 }
+                // Конец обработки отмены
 
                 
                 // Ищем корзину для этого заказа

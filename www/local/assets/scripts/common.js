@@ -249,7 +249,6 @@ function selectStorage(storageId){
             }
         }
     });
-    
     loadComments();
 }
 
@@ -319,6 +318,7 @@ function loadComments(){
 }
 
 function productConfirm(){
+    totalStoreId = $("input[name='place']:checked").val();
     $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
