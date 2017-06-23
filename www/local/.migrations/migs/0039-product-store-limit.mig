@@ -1,0 +1,54 @@
+<?php
+    
+    /**
+     * Добавление доаолнительного свойства инфоблоку товаров - лимита баллов на
+     заказ
+     */
+    class ag_store_limit_property extends Migration{
+        function Run(){
+            
+            // Подключаем модуль инфоблоков
+            CModule::IncludeModule("iblock");
+
+            // Проверяем наличие свойства у инфоблока clothes
+            $res = CIBlockProperty::GetByID("STORE_LIMIT",false,"clothes");
+            // Выходим, если свойство есть
+            if($res->GetNext())return true;
+            
+            // Собираем массив для добавления свойства
+            $arFields = Array(
+                // Название свойства
+                "NAME" => "Невыбираемый остаток",
+                // Активность
+                "ACTIVE" => "Y",
+                // Порядок сортировки
+                "SORT" => "1600",
+                // Кодовое обозначение
+                "CODE" => "STORE_LIMIT",
+                // Тип свойства (L-список)
+                "PROPERTY_TYPE" => "N",
+                // Значение по умолцанию
+                "DEFAULT_VALUE"=>DEFAULT_STORE_LIMIT,
+                // ID инфоблока для которого свойство
+                "IBLOCK_ID" => CATALOG_IB_ID
+            );
+            
+            // Создаём объект инфоблока
+            $ibp = new CIBlockProperty;
+            // Добавляем свойство к инфоблоку
+            if(!$PropID = $ibp->Add($arFields)){
+                // Выводим текст ошибки, если добавление не удалось
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$ag_store_limit_property = new ag_store_limit_property();
+// Откатываем, если неудачно
+if(!$ag_store_limit_property->Run())$ag_store_limit_property->RollBack();

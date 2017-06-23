@@ -357,7 +357,7 @@ function productConfirmNext(){
                         document.location.href=answer.redirect_url;
                     }
                     else{
-                        // Чистим корзину, если заказ неудачен
+                       // Чистим корзину, если заказ неудачен
                         $.get(
                             "/profile/order/order.ajax.php?clear_basket",
                             function(){
@@ -367,7 +367,8 @@ function productConfirmNext(){
                                 for(i in answer.order.ERROR){
                                     error_text += i+": "+answer.order.ERROR[i];
                                 }
-                                $('.ag-shop-modal-wrap').fadeOut('fast');
+                                $('.ag-shop-modal__container').append('<div class="error">'+error_text+'</div>')
+//                              $('.ag-shop-modal-wrap').fadeOut('fast');
                             }
                         );
                     }

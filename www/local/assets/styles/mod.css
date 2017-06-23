@@ -398,3 +398,13 @@ input:checked + .ag-shop-filter__variants-item {
 .ag-shop-profile-tabs__link{
     display: inline;
 }
+
+
+.ag-shop-modal__container .error{
+    margin: 10px;
+    text-align: center;
+    border: 1px red solid;
+    padding: 10px;
+    background-color: #FDD;
+    border-radius: 8px;
+}

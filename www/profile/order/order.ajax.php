@@ -186,7 +186,36 @@ elseif(isset($_GET["add_order"])){
     $basketId = $basket["ID"];
     
     $arrBasket = CSaleBasket::GetByID($basketId);
-    
+
+    // Получаем ID элемента каталога для данного предложения
+    $arProduct = CIBlockElement::GetList(
+        array(),
+        array(
+            "IBLOCK_ID" =>  OFFER_IB_ID,
+            "ID"        =>  $arrBasket["PRODUCT_ID"]
+        ),
+        false,
+        array("nTopCount"=>1),
+        array(
+            "PROPERTY_CML2_LINK"
+        )
+    )->GetNext();
+    // Получаем свойство элемента каталога "НЕВЫБИРВЕМЫЙ ОСТАТОК"
+    $arStoreLimit = CIBlockElement::GetProperty(
+        CATALOG_IB_ID,
+        $arProduct["PROPERTY_CML2_LINK_VALUE"],
+        array(),
+        array("CODE"=>"STORE_LIMIT")
+    )->GetNExt();
+   
+    $nStoreLimit = DEFAULT_STORE_LIMIT;
+    if(
+        isset($arStoreLimit["VALUE"])
+        && 
+        $arStoreLimit["VALUE"]
+    )
+    $nStoreLimit = $arStoreLimit["VALUE"];
+
     $res = CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
     if(!$paySystem = $res->GetNext()){
         $answer = array("error"=>"Нет активных платёжных систем");
@@ -231,11 +260,41 @@ elseif(isset($_GET["add_order"])){
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
     $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
     if($account["CURRENT_BUDGET"]<$totalSum){
-        $answer = array("error"=>"Недостаточно баллов на счёте");
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Недостаточно баллов на счёте"
+                )
+            )
+        );
         echo json_encode($answer);
         die;
     }
-    
+    // Проверяем количество на складе
+    $arProductStore = CCatalogStoreProduct::GetList(
+        array(),
+        array(
+            "STORE_ID"  =>  intval($_GET["store_id"]),
+            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
+        )
+    )->GetNext();
+
+    if(
+        !isset($arProductStore["AMOUNT"])
+        ||
+        $arProductStore["AMOUNT"]-$nStoreLimit<=0
+    ){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Количество товаров на складе меньше невыбираемого остатка"
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+
     $arFields = array();
     $arFields["LID"] = SITE_ID;
     $arFields["PERSON_TYPE_ID"] = 1;
