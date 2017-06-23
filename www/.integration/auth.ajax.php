@@ -107,6 +107,7 @@
         && $sCurrentSessionId!=$profile["session_id"]
     ){
         $args["login"] = $profile["result"]["personal"]["phone"];
+
         if(!$bxUser->login(
             $args["login"],
             $profile["session_id"], 

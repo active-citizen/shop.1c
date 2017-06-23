@@ -414,6 +414,8 @@
         $arProperties["MON_LIMIT"] = $arProduct["МесячныйЛимит"];
         // Месячный лимит
         $arProperties["RATING_LIMIT"] = $arProduct["РейтингДляПокупки"];
+        // Невыбираемый остаток
+        $arProperties["STORE_LIMIT"] = $arProduct["НевыбираемыйОстаток"];
          
         // Дата мероприятия
         if(trim($arProduct["ДатаМероприятия"])){

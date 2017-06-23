@@ -336,6 +336,54 @@ elseif(isset($_GET["add_order"])){
 
         orderSetZNI($orderId,'N','AA');
         orderPropertiesUpdate($orderId);
+        // Снимаем остатки
+
+        // Получаем список товаров к заказу
+        $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
+        `ORDER_ID`=".intval($orderId);
+        $res = $DB->Query($sql);
+        while($arProduct = $res->Fetch()){
+            $nQuantity = $arProduct["QUANTITY"];
+            $nProductId = $arProduct["PRODUCT_ID"];
+            $nStoreId = intval($_GET["store_id"]);
+            // Смотрим сколько этого товара на складе
+            $nCQuantity = 0;
+            // Если записей с остатком нет - пропустить его
+            if($arStoreProduct = CCatalogStoreProduct::GetList(
+                array(),
+                $arStoreProductFilter = array(
+                    "PRODUCT_ID"=>  $nProductId,
+                    "STORE_ID"  =>  $nStoreId
+                ),
+                false,
+                array("nTopCount"=>1),
+                array("ID","PRODUCT_ID","AMOUNT")
+            )->GetNext()){
+                $nCQuantity = $arStoreProduct["AMOUNT"];
+            }
+            else{
+                continue;
+            }
+       
+            // Устанавливаем новое значение остатка
+            if(!CCatalogStoreProduct::Update(
+                $arStoreProduct["ID"],
+                $arF = array(
+                    "AMOUNT"              =>  
+                        $nCQuantity-$nQuantity>=0
+                        ?
+                        $nCQuantity-$nQuantity
+                        :
+                        0
+            ))){
+                print_r($objCCatalogStoreProduct);
+                die;
+            }
+            
+        }
+
+
+
         // Снова заливаем историю баллов
         // пока не надо. слишком тормозит процесс заказа
         /**
@@ -512,7 +560,7 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     ){
         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
         OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
-       
+
         /*
         if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
             //$answer["error"] .= "Заказ не был отменён.";
