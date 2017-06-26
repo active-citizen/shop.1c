@@ -90,8 +90,8 @@
             CCatalogProduct::Add(array(
                 "ID"=>$offerId,
                 "QUANTITY"=>$arOffer["Количество"],
-                "QUANTITY_TRACE"=>"Y",
-                "CAN_BUY_ZERO"=>"N"
+                "QUANTITY_TRACE"=>"N",
+                "CAN_BUY_ZERO"=>"Y"
             ));
             
             // Добавляем цену
@@ -133,8 +133,8 @@
                 $offerId, 
                 array(
                     "QUANTITY"=>$arOffer["Количество"],
-                    "QUANTITY_TRACE"=>"Y",
-                    "CAN_BUY_ZERO"=>"N"
+                    "QUANTITY_TRACE"=>"N",
+                    "CAN_BUY_ZERO"=>"Y"
                 )
             );
             

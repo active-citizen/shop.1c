@@ -28,9 +28,12 @@
         </span>
         <?else:?>
         <span class="ag-shop-filter__login ag-shop-filter__trigger--active" 
-            onclick="document.location.href='<?= CONTOUR_URL ?>'">
+            onclick="document.location.href='<?= 
+            preg_replace("#(https?://.*?/).*#","$1",CONTOUR_URL)
+            ?>'">
           <a style="text-decoration: none;" class="ag-shop-filter__trigger--active" href="<?= 
-          CONTOUR_URL?>">
+          preg_replace("#(https?://.*?/).*#","$1",CONTOUR_URL)
+          ?>">
             Войти
           </a>
         </span>

@@ -76,6 +76,9 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
 	$APPLICATION->ShowPanel();
     ?>
     <div class="ag-shop">
+    <? if(
+        !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+    ):?>
       <div class="ag-shop__sidebar">
         <!-- Sidebar {{{-->
         <div class="ag-shop-sidebar">
@@ -90,20 +93,29 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
         </div>
         <!-- }}} Sidebar-->
       </div>
+    <? endif ?>
 
 
       <div class="ag-shop__main">
-
+    <? if(
+        !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+    ):?>
     <?$APPLICATION->IncludeComponent("ag:menu.top", "", array(
             "CACHE_TIME"      =>  COMMON_CACHE_TIME
         ),
         false
     );?>
+    <? endif ?>
 
+    <? if(
+        preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
+    ):?>
     <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
             "CACHE_TIME"      =>  COMMON_CACHE_TIME
         ),
         false
     );?>
+    <? endif ?>
+
 
 

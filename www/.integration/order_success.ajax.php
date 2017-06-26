@@ -37,6 +37,7 @@
     }
     
     CModule::IncludeModule('sale');
+    CModule::IncludeModule('catalog');
   
     // Получаем заказы отданный е рамках этой сессии
     $res = CSaleOrder::GetList(
@@ -71,8 +72,17 @@
                 require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
                 require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
                 require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
+
+                // Высчисляем по картине суммарную стоимость заказа
+                $sql = "select SUM(`PRICE`*`QUANTITY`) as `TOTAL_SUM` from b_sale_basket WHERE
+                ORDER_ID='".$arrOrder["ID"]."' GROUP BY ORDER_ID";
+                $arSum = $DB->Query($sql)->Fetch();
+                $arrOrder["SUM_PAID"] =
+                    isset($arSum["TOTAL_SUM"])?floatval($arSum["TOTAL_SUM"]):0;
                 
+
                 $obOrder = new bxOrder();
+                print_r($arrOrder);
                 $resOrder = $obOrder->addEMPPoints(
                     $arrOrder["SUM_PAID"],
                     "Отмена заказа ".$arrOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",
@@ -81,6 +91,112 @@
                 $moneyBack = true;
                 CSaleOrder::PayOrder($arrOrder["ID"],"N",true,false);
             }
+
+
+            // Если отменяем заказ - возвращаем товар на склад
+            // НО ТОЛЬКО ДЛЯ ЗАКАЗОВ БИТРИКСА
+            if(
+                $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'
+                && 
+                preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"])
+            ){
+                // Получаем список товаров к заказу
+                $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
+                `ORDER_ID`=".intval($arrOrder["ID"]);
+                $res = $DB->Query($sql);
+                while($arProduct = $res->Fetch()){
+                    $nQuantity = $arProduct["QUANTITY"];
+                    $nProductId = $arProduct["PRODUCT_ID"];
+                    $nStoreId = $arrOrder["STORE_ID"];
+                    // Смотрим сколько этого товара на складе
+                    $nCQuantity = 0;
+                    // Если записей с остатком нет - пропустить его уменьшение
+                    if($arStoreProduct = CCatalogStoreProduct::GetList(
+                        array(),
+                        $arStoreProductFilter = array(
+                            "PRODUCT_ID"=>  $nProductId,
+                            "STORE_ID"  =>  $nStoreId
+                        ),
+                        false,
+                        array("nTopCount"=>1),
+                        array("ID","PRODUCT_ID","AMOUNT")
+                    )->GetNext()){
+                        $nCQuantity = $arStoreProduct["AMOUNT"];
+                    }
+                    else{
+                        continue;
+                    }
+                
+                    // Устанавливаем новое значение остатка
+                    if(!CCatalogStoreProduct::Update(
+                        $arStoreProduct["ID"],
+                        $arF = array(
+                            "AMOUNT"              =>  $nCQuantity+$nQuantity
+                    ))){
+                        print_r($objCCatalogStoreProduct);
+                        die;
+                    }
+                    
+                }
+            }
+
+            // Если подтверждаем принятие заказа в работу - сниманием единицу со
+            //склада
+            /*
+            if(
+                $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='N'
+                && 
+                preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"])
+            ){
+                // Получаем список товаров к заказу
+                $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
+                `ORDER_ID`=".intval($arrOrder["ID"]);
+                $res = $DB->Query($sql);
+                while($arProduct = $res->Fetch()){
+                    $nQuantity = $arProduct["QUANTITY"];
+                    $nProductId = $arProduct["PRODUCT_ID"];
+                    $nStoreId = $arrOrder["STORE_ID"];
+                    // Смотрим сколько этого товара на складе
+                    $nCQuantity = 0;
+                    // Если записей с остатком нет - пропустить его
+                    if($arStoreProduct = CCatalogStoreProduct::GetList(
+                        array(),
+                        $arStoreProductFilter = array(
+                            "PRODUCT_ID"=>  $nProductId,
+                            "STORE_ID"  =>  $nStoreId
+                        ),
+                        false,
+                        array("nTopCount"=>1),
+                        array("ID","PRODUCT_ID","AMOUNT")
+                    )->GetNext()){
+                        $nCQuantity = $arStoreProduct["AMOUNT"];
+                    }
+                    else{
+                        continue;
+                    }
+               
+                    // Устанавливаем новое значение остатка
+                    if(!CCatalogStoreProduct::Update(
+                        $arStoreProduct["ID"],
+                        $arF = array(
+                            "AMOUNT"              =>  
+                                $nCQuantity-$nQuantity>=0
+                                ?
+                                $nCQuantity-$nQuantity
+                                :
+                                0
+                    ))){
+                        print_r($objCCatalogStoreProduct);
+                        die;
+                    }
+                    
+                }
+
+            }
+            */
+
+
+
             CSaleOrder::StatusOrder(
                 $arrOrder["ID"],
                 $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]

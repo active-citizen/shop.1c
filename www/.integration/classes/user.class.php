@@ -58,7 +58,6 @@
                 //$this->error = 'Профиль пользователя не содержит корректный email';
                 //return false;
             }
-            
             // ДЕлаем для битрикса случайный пароль
             $password = substr(md5(time()),0,16);
             $email = $profile["personal"]["email"];
@@ -187,8 +186,18 @@
         
         function getUpdateRecord($login, $email){
             global $DB;
-            $query = "SELECT * FROM int_profile_import WHERE login='$login' AND
-            email='$email' ORDER BY `last_update` DESC LIMIT 1";
+            $query = "
+                SELECT 
+                    * 
+                FROM 
+                    int_profile_import 
+                WHERE 
+                    login='$login' 
+                    -- AND email='$email' 
+                ORDER BY 
+                    `last_update` DESC 
+                LIMIT 1
+            ";
             $res = $DB->Query($query);
             return $res->GetNext();
         }

@@ -1,4 +1,10 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+
+    <? if(
+        !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+    ):?>
+    <!-- Не выводим футер для ЛК -->
+
         <!-- Footer {{{-->
         <footer class="ag-shop-footer">
           <div class="ag-shop-footer__links">
@@ -58,17 +64,55 @@
         </div>
       </div>
     </div>
-
+    <!-- Конец: не выводим футер для ЛК -->
+    <? endif ?>
 
         <? if(1 || !CUser::IsAuthorized()):?>
-        <? if(
-            !preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])
-            && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
-            && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
+            <? if(
+                !preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])
+                && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
+                && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
+                && (
+                    !isset($_COOKIE["EMPSESSION"])
+                    ||
+                    !$_COOKIE["EMPSESSION"]
+                )
 
-        ):?>
-        <script src="<?php echo CONTOUR_URL; ?>"></script>
-        <? endif ?>
+            ):?>
+                <!-- Забираем сессию из ag.mos.ru -->
+                <script src="<?php echo CONTOUR_URL; ?>"></script>
+            <? elseif(
+                !preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])
+                && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
+                && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
+                && (
+                    isset($_COOKIE["EMPSESSION"])
+                    &&
+                    $_COOKIE["EMPSESSION"]
+                )
+            ):?>
+               <!-- Забираем сессию из мобильного приложения --> 
+                <script>
+                $.post(
+                '/.integration/auth.ajax.php?backurl='+document.location.href,
+                {"session_id":'<?= $_COOKIE["EMPSESSION"];?>'},
+                function(data){
+                    var answer = {};
+                    try{
+                        answer = JSON.parse(data);
+                    }
+                    catch(e){
+                        answer.errors = new Array(e.message);
+                    }
+                    
+                    // Формируем блок ошибок
+                    for(i in answer.errors){
+                        //alert(answer.errors[i]);
+                    }
+                }
+                );
+                </script>
+            <? endif ?>
         <? endif?>
 
 

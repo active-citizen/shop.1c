@@ -399,9 +399,14 @@
                 <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]):?>
                 <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
                 <? endif ?>
+
                 <? if(
                     // Если дата мероприятия не вышла
-                    $ts1+24*60*60>time()
+                    (
+                        !$ts1    // НЕ определена дата мероприятия
+                        ||
+                        $ts1+24*60*60>time()    // Дата мероприятия не вышла
+                    )
                     &&
                     // Если есть на складе
                     count($arResult["OFFERS"][0]["STORAGES"]) 

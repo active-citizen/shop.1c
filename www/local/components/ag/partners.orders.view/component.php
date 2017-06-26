@@ -1,5 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+CModule::IncludeModule('catalog');
 require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
 $arParams["ORDER_ID"] = 
     isset($arParams["ORDER_ID"]) && intval($arParams["ORDER_ID"])
     ?

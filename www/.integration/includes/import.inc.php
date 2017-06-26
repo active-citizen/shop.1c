@@ -227,6 +227,17 @@
     
     // Проходим по каждому товару в XML
     foreach($arProducts as $arProduct){
+        $arProduct["Реквизиты"] = array();
+        if(!isset($arProduct["ЗначенияРеквизитов"]["ЗначениеРеквизита"][0]))
+            $arProduct["ЗначенияРеквизитов"]["ЗначениеРеквизита"] = array(
+                $arProduct["ЗначенияРеквизитов"]["ЗначениеРеквизита"]
+            );
+
+        foreach($arProduct["ЗначенияРеквизитов"]["ЗначениеРеквизита"] as $arReq){
+            $arProduct["Реквизиты"][$arReq["Наименование"]] = $arReq["Значение"];
+        }
+        
+
         ////////////////////////////////////////////////////////////////////////
         // Основные поля инфоблока
         ////////////////////////////////////////////////////////////////////////
@@ -403,6 +414,8 @@
         $arProperties["MON_LIMIT"] = $arProduct["МесячныйЛимит"];
         // Месячный лимит
         $arProperties["RATING_LIMIT"] = $arProduct["РейтингДляПокупки"];
+        // Невыбираемый остаток
+        $arProperties["STORE_LIMIT"] = $arProduct["НевыбираемыйОстаток"];
          
         // Дата мероприятия
         if(trim($arProduct["ДатаМероприятия"])){
@@ -425,10 +438,17 @@
         }
         
 
-
-            
-            
-            
+        // Ещё одно название нужное только для того, чтобы иметь возможность в
+        //них запутаться
+        $arProperties["BUH_NAME"] = 
+            isset($arProduct["Реквизиты"]["Полное наименование"])
+            &&
+            trim($arProduct["Реквизиты"]["Полное наименование"])
+            ?
+            $arProduct["Реквизиты"]["Полное наименование"]
+            :
+            $arProduct["Наименование"]
+            ;
 
         foreach($arProperties as $propertyCode=>$propertyValue)
             CIBlockElement::SetPropertyValueCode($elementId,$propertyCode,$propertyValue);

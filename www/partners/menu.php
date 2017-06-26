@@ -14,12 +14,20 @@
         "active";?>">
             <a href="/partners/help/">Помощь</a>
         </li>
-        <!--
+        <? if($USER->IsAdmin()):?>
         <li class="<?
         if(preg_match("#^/partners/users/#",$_SERVER["REQUEST_URI"]))echo
         "active";?>">
             <a href="/partners/users/">Пользователи</a>
         </li>
-        -->
+        <li class="<?
+        if(preg_match("#^/partners/reports/#",$_SERVER["REQUEST_URI"]))echo
+        "active";?>">
+            <a href="/partners/reports/">Отчеты</a>
+        </li>
+        <? endif ?>
+        <li style="float:right;">
+            <a href="/partners/orders/?logout=yes">Выход</a>
+        </li>
     </ul>
 

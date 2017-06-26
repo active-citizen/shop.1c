@@ -18,8 +18,10 @@
  */
 
 
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
+    require($_SERVER["DOCUMENT_ROOT"].
+        "/bitrix/modules/main/include/prolog_before.php");
+    require_once($_SERVER["DOCUMENT_ROOT"].
+        "/.integration/classes/active-citizen-bridge.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
     
@@ -27,20 +29,19 @@
     $bxUser = new bxUser;
     
     $answer = array("errors"=>"");
-
-     
+    
     $args = array(
         "login"     =>  isset($_REQUEST["login"])?$_REQUEST["login"]:'',
         "password"  =>  isset($_REQUEST["password"])?$_REQUEST["password"]:'',
         "token"     =>  $EMP_TOKENS[CONTOUR],
         "session_id"=>  
-            isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:'',
+            isset($_REQUEST["enc_session_id"])?$_REQUEST["enc_session_id"]:$_REQUEST["session_id"],
     );
     $login = $args["login"];
      
     // Получаем от EMP сессию и профиль текущего залогиненного на АГ
     // пользователя
-    if($args["session_id"])
+    if($args["session_id"] && $_REQUEST["enc_session_id"])
         $agBrige->setMethod('enc_auth');
     else
         $agBrige->setMethod('auth');
@@ -106,6 +107,7 @@
         && $sCurrentSessionId!=$profile["session_id"]
     ){
         $args["login"] = $profile["result"]["personal"]["phone"];
+
         if(!$bxUser->login(
             $args["login"],
             $profile["session_id"], 

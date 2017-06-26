@@ -115,9 +115,9 @@
 <div class="print-buttons">
 <span class="glyphicon glyphicon-print"><a href="/partners/orders/print.php?print=act&order=<?= 
     $arResult["ORDER"]["ID"]?>" target="print">Акт</a></span>
-<span class="glyphicon glyphicon-print"><a
+<!-- <span class="glyphicon glyphicon-print"><a
 href="/partners/orders/print.php?print=cancel&order=<?= 
-    $arResult["ORDER"]["ID"]?>" target="print">Отказ</a></span>
+    $arResult["ORDER"]["ID"]?>" target="print">Отказ</a></span> -->
 <iframe src="" name="print" style="display:none;"></iframe>
 </div>
 <?foreach($arResult["ORDER"]["BASKET"] as $arBasket):?>

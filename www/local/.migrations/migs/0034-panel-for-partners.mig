@@ -79,14 +79,14 @@ $objMigration->setUserUF(
 
 $arGroups = array(
     array(
-        "STRIND_ID" =>  "PARTNER",
+        "STRING_ID" =>  "PARTNER",
         "NAME"      =>  "Партнёры",
         "ACTIVE"    =>  "Y",
         "C_SORT"    =>  "500",
         "DESCRIPTION"=> "Партнёры"
     ),
     array(
-        "STRIND_ID" =>  "OPERATOR",
+        "STRING_ID" =>  "OPERATOR",
         "NAME"      =>  "Операторы МФЦ",
         "ACTIVE"    =>  "Y",
         "C_SORT"    =>  "600",
@@ -97,16 +97,14 @@ $arGroups = array(
 $objGroup = new CGroup;
 foreach($arGroups as $arGroup){
     $arFilter = array( "NAME"=>$arGroup["NAME"]);
-    $resGroup = $objGroup->GetList(
+    if($arExistsGroup = $objGroup->GetList(
         ($by="c_sort"), ($order="desc"),
         $arFilter        
-    );
-    if($resGroup->Fetch()){
+    )->GetNext()){
+        $objGroup->Update($arExistsGroup["ID"],$arGroup); 
     }
     else{
-        $objGroup = $objGroup->Add($arGroup); 
+        $objGroup->Add($arGroup); 
     }
 }
-
-
 

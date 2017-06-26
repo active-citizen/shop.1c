@@ -291,6 +291,10 @@ a.ag-shop-item-card > h3.ag-shop-item-card__name{
     display:none;
 }
 
+
+
+
+
 .ag-shop-catalog__item{
     position: relative;
     z-index: 100;
@@ -334,6 +338,11 @@ a.ag-shop-item-card:hover h3.ag-shop-item-card__name{
     display: block;
 }
 
+a.ag-shop-item-card:hover > h3.ag-shop-item-card__name{
+    display:none;
+}
+
+
 .ag-shop-item-card__badges{
     //z-index: 120 !important;
 }
@@ -345,4 +354,57 @@ a.ag-shop-item-card:hover h3.ag-shop-item-card__name{
 input:checked + .ag-shop-filter__variants-item {
     background: #ffc20e !important;
     border: 1px solid #ffc20e !important;
+}
+
+.ag-shop-slider-card__points-count{
+    margin-top: -15px;
+}
+
+.ag-shop-slider-card__points-text{
+    display: block;
+}
+
+.ag-shop-slider-card__points::before{
+}
+
+.ag-shop-slider-card__points-count{
+//    font-size: 38px;
+}
+
+.ag-shop-slider-card__points-text{
+//    font-size: 18px;
+}
+
+.ag-shop-slider-card, .ag-shop-slider-card-dark{
+    background-repeat: no-repeat;
+    background-position: 100%  100%;
+    background-size: contain;
+}
+
+.ag-shop-card__image-info div.ag-shop-card__image-points{
+    content: '';
+    position: absolute;
+    top: -102px;
+    left: -92px;
+    display: block;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: rgba(255,194,14,1);
+    padding-top: 90px;
+    padding-left: 60px;
+}
+
+.ag-shop-profile-tabs__link{
+    display: inline;
+}
+
+
+.ag-shop-modal__container .error{
+    margin: 10px;
+    text-align: center;
+    border: 1px red solid;
+    padding: 10px;
+    background-color: #FDD;
+    border-radius: 8px;
 }

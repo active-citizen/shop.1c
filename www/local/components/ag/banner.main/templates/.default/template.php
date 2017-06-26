@@ -18,8 +18,13 @@
                         $BANER["CATALOG_LINK_DATA"]["WISHES"]
                       ?></div>
                     </button>
-                  <a class="ag-shop-slider-card" href="<?= $BANER["CATALOG_LINK_DATA"]["URL"]?>">
-                        <img class="ag-shop-slider-card__image" src="<?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>">
+                  <a class="ag-shop-slider-card" href="<?=
+                  $BANER["CATALOG_LINK_DATA"]["URL"]?>"
+                  style="background-image:url(<?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>)">
+                        <!-- 
+                            <img class="ag-shop-slider-card__image" src="<?=
+                             $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>">
+                         -->
                   <div class="ag-shop-slider-card__badges">
                       <? if($BANER["CATALOG_LINK_DATA"]["NEWPRODUCT"]):?>
                       <img class="ag-shop-slider-card__badge" src="/local/assets/images/badge__new.png">
@@ -64,8 +69,9 @@
                   
                 <?if(!$BANER["CATALOG_LINK_DATA"]):?>
                 <div class="ag-shop-slider__item">
-                  <a class="ag-shop-slider-card-dark" href="<?= $BANER["PROPERTIES"]["BANER_URL"]["VALUE"]?>">
-                    <img class="ag-shop-slider-card-dark__image" src="" style="display:none;">
+                  <a class="ag-shop-slider-card-dark" href="<?= $BANER["PROPERTIES"]["BANER_URL"]["VALUE"]?>" style="background-image:url(<?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>)">
+                    <!-- <img class="ag-shop-slider-card-dark__image" src=""
+                         style="display:none;"> -->
                   <div class="ag-shop-slider-card-dark__info-layer" style="background-image: url('<?= $BANER["PROPERTIES"]["BANER_PICTURE"]["URL"] ?>');">
                     <div class="ag-shop-slider-card-dark__info">
                       <h3 class="ag-shop-slider-card-dark__name"><?= $BANER["NAME"]?></h3>

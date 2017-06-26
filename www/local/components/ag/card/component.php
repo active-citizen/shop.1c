@@ -113,9 +113,22 @@
         while($arStorage = $resStorage->GetNext()){
             
             if(!$arStorage["AMOUNT"])continue;
-            $arOffer["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"];
-            $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"];
-            
+            $arOffer["STORAGES"][$arStorage["STORE_ID"]] =
+                $arStorage["AMOUNT"]-(
+                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"])
+                    ?
+                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"]
+                    :
+                    DEFAULT_STORE_LIMIT
+                );
+            $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"]-(
+                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"])
+                    ?
+                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"]
+                    :
+                    DEFAULT_STORE_LIMIT
+                );
+
             // Пополняем справочник складов
             if(!isset($arResult["STORAGES"][$arStorage["STORE_ID"]])){
                 $arResult["STORAGES"][$arStorage["STORE_ID"]] = 
@@ -123,6 +136,13 @@
             }
             foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)$arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
             
+        }
+        // Обнуляем отрицательные остатки
+        foreach($arOfferJson["STORAGES"] as $key=>$value){
+            if($value<=0){
+                unset($arOfferJson["STORAGES"][$key]);
+                unset($arOffer["STORAGES"][$key]);
+            }
         }
         
         
@@ -161,6 +181,7 @@
             "NAV_PARAMS"=>array("nTopCount"=>1)
         )
     )->GetNext();
+
 
     $this->IncludeComponentTemplate();
 //}

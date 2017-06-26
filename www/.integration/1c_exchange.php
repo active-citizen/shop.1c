@@ -91,14 +91,13 @@ if(
     && $_GET["mode"]=="file" 
     && $_GET["filename"]
 ){
-    if(!file_exists($filename = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/".$_GET["filename"])){
+   if(!file_exists($filename = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/".$_GET["filename"])){
         $fd = fopen("php://input", "r");
         $fd2= fopen($filename,"w");
         while(!feof($fd))fwrite($fd2, fread($fd,1000));
         fclose($fd2);
         fclose($fd);
     }
-
 
     include("order_import.ajax.php");
     die;

@@ -1,6 +1,6 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-
+CModule::IncludeModule('catalog');
 $arUser = CUser::GetList(
     ($by="personal_country"), ($order="desc"),
     array("ID"=>CUser::GetId()),

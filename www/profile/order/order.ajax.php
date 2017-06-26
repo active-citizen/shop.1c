@@ -186,7 +186,36 @@ elseif(isset($_GET["add_order"])){
     $basketId = $basket["ID"];
     
     $arrBasket = CSaleBasket::GetByID($basketId);
-    
+
+    // Получаем ID элемента каталога для данного предложения
+    $arProduct = CIBlockElement::GetList(
+        array(),
+        array(
+            "IBLOCK_ID" =>  OFFER_IB_ID,
+            "ID"        =>  $arrBasket["PRODUCT_ID"]
+        ),
+        false,
+        array("nTopCount"=>1),
+        array(
+            "PROPERTY_CML2_LINK"
+        )
+    )->GetNext();
+    // Получаем свойство элемента каталога "НЕВЫБИРВЕМЫЙ ОСТАТОК"
+    $arStoreLimit = CIBlockElement::GetProperty(
+        CATALOG_IB_ID,
+        $arProduct["PROPERTY_CML2_LINK_VALUE"],
+        array(),
+        array("CODE"=>"STORE_LIMIT")
+    )->GetNExt();
+   
+    $nStoreLimit = DEFAULT_STORE_LIMIT;
+    if(
+        isset($arStoreLimit["VALUE"])
+        && 
+        $arStoreLimit["VALUE"]
+    )
+    $nStoreLimit = $arStoreLimit["VALUE"];
+
     $res = CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
     if(!$paySystem = $res->GetNext()){
         $answer = array("error"=>"Нет активных платёжных систем");
@@ -231,11 +260,41 @@ elseif(isset($_GET["add_order"])){
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
     $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
     if($account["CURRENT_BUDGET"]<$totalSum){
-        $answer = array("error"=>"Недостаточно баллов на счёте");
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Недостаточно баллов на счёте"
+                )
+            )
+        );
         echo json_encode($answer);
         die;
     }
-    
+    // Проверяем количество на складе
+    $arProductStore = CCatalogStoreProduct::GetList(
+        array(),
+        array(
+            "STORE_ID"  =>  intval($_GET["store_id"]),
+            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
+        )
+    )->GetNext();
+
+    if(
+        !isset($arProductStore["AMOUNT"])
+        ||
+        $arProductStore["AMOUNT"]-$nStoreLimit<=0
+    ){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Количество товаров на складе меньше невыбираемого остатка"
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+
     $arFields = array();
     $arFields["LID"] = SITE_ID;
     $arFields["PERSON_TYPE_ID"] = 1;
@@ -277,6 +336,54 @@ elseif(isset($_GET["add_order"])){
 
         orderSetZNI($orderId,'N','AA');
         orderPropertiesUpdate($orderId);
+        // Снимаем остатки
+
+        // Получаем список товаров к заказу
+        $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
+        `ORDER_ID`=".intval($orderId);
+        $res = $DB->Query($sql);
+        while($arProduct = $res->Fetch()){
+            $nQuantity = $arProduct["QUANTITY"];
+            $nProductId = $arProduct["PRODUCT_ID"];
+            $nStoreId = intval($_GET["store_id"]);
+            // Смотрим сколько этого товара на складе
+            $nCQuantity = 0;
+            // Если записей с остатком нет - пропустить его
+            if($arStoreProduct = CCatalogStoreProduct::GetList(
+                array(),
+                $arStoreProductFilter = array(
+                    "PRODUCT_ID"=>  $nProductId,
+                    "STORE_ID"  =>  $nStoreId
+                ),
+                false,
+                array("nTopCount"=>1),
+                array("ID","PRODUCT_ID","AMOUNT")
+            )->GetNext()){
+                $nCQuantity = $arStoreProduct["AMOUNT"];
+            }
+            else{
+                continue;
+            }
+       
+            // Устанавливаем новое значение остатка
+            if(!CCatalogStoreProduct::Update(
+                $arStoreProduct["ID"],
+                $arF = array(
+                    "AMOUNT"              =>  
+                        $nCQuantity-$nQuantity>=0
+                        ?
+                        $nCQuantity-$nQuantity
+                        :
+                        0
+            ))){
+                print_r($objCCatalogStoreProduct);
+                die;
+            }
+            
+        }
+
+
+
         // Снова заливаем историю баллов
         // пока не надо. слишком тормозит процесс заказа
         /**
@@ -453,7 +560,7 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     ){
         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
         OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
-       
+
         /*
         if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
             //$answer["error"] .= "Заказ не был отменён.";

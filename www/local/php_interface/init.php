@@ -16,6 +16,8 @@
 
     //
     define("COMMON_CACHE_TIME",3600);
+    // Значение невыбираемого остатка по умолчанию
+    define("DEFAULT_STORE_LIMIT",5);
 
     // Определяем ID инфоблока каталога
     $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
@@ -44,9 +46,14 @@
         )
     )->GetNext();
     define("INTEREST_PROPERTY_ID",$arr["ID"]);
+    // Определяем ID групп Операторы МФЦ и Партнёры
+    define("PARTNERS_GROUP_ID",9);
+    define("OPERATORS_GROUP_ID",10);
+
+
       
      
-     // Если режим обмена заказами - глушим отправку письма при создании заказа
+    // Если режим обмена заказами - глушим отправку письма при создании заказа
     if(ORDERS_EXCHANGE_ADMIN_MODE){
         AddEventHandler(
             "sale", "OnOrderNewSendEmail", "eventOrderNewSendEmail_dummy"

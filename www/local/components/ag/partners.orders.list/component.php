@@ -1,5 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+CModule::IncludeModule('catalog');
+
 $arParams["PAGE"] = 
     isset($_REQUEST["PAGEN_1"])
     &&
