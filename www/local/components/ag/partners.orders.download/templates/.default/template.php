@@ -64,6 +64,26 @@
         </tr>
         <tr>
             <td>
+                Склад
+            </td>
+            <td>
+                <select name="filter_store" class="form-control"
+                id="filter-store"
+                onchange="document.getElementById('form_filter').submit();"
+                >
+                    <option value="all">-все доступные мне склады-</option>
+                    <? foreach($arResult["STORES"] as $arMan):?>
+                        <option value="<?= $arMan["ID"]?>"
+                            <? if($arResult["FILTER"]["MAN"]==$arMan["ID"]):?>
+                            selected
+                            <? endif?>
+                        ><?= $arMan["TITLE"]?></option>
+                    <? endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Дата добавления, c
             </td>
             <td>

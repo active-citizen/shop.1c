@@ -178,6 +178,10 @@ while($arHistoryItem = $resHistory->Fetch()){
     ] = $arHistoryItem;
 }
 
+//echo "<!-- ";
+//print_r($arResult);
+//echo " -->";
+
 $this->IncludeComponentTemplate();
 
 
