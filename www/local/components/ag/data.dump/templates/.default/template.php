@@ -53,7 +53,7 @@
                 <?= $arIBlock["NAME"]?>
             </td>
             <td>
-                <div class="progress">
+                <div class="progress" num="<?= $count?>">
                   <div class="progress-bar" role="progressbar"
                   aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
                   style="width: 0%;">
@@ -132,7 +132,8 @@ function iblock_step(){
         +"&offset="+runned_iblock.offset
         ,
         function(){
-//            setTimeout(function(){iblock_step();},100);
+            
+//          setTimeout(function(){iblock_step();},100);
         }
             
     );

@@ -4,30 +4,49 @@
     $REQUEST_FOLDER = "upload/logger";
     $REQUEST_KEY = date("Y-m-d-H-i-s-").microtime(true);
 
-    $filename =
-    $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".output.data";
+    $REQUEST_FOLDER = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER;
+    if(!is_dir($REQUEST_FOLDER))@mkdir($REQUEST_FOLDER);
+    $REQUEST_FOLDER .= "/".date("Y-m");
+    if(!is_dir($REQUEST_FOLDER))@mkdir($REQUEST_FOLDER);
+    $REQUEST_FOLDER .= "/".date("Y-m-d");
+    if(!is_dir($REQUEST_FOLDER))@mkdir($REQUEST_FOLDER);
+    $REQUEST_FOLDER .= "/".date("Y-m-d_H")."h";
+    if(!is_dir($REQUEST_FOLDER))@mkdir($REQUEST_FOLDER);
+
+
+    $filename = $REQUEST_FOLDER."/".$REQUEST_KEY.".output.data";
     define("LOGGER_OUTPUT_FILENAME", $filename);
 
-    mkdirs($REQUEST_FOLDER);
+    //mkdirs($REQUEST_FOLDER);
 
-    $filename =
-    $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".input.headers";
+    $filename = $REQUEST_FOLDER."/".$REQUEST_KEY.".input.headers";
     $fd = fopen($filename, "w");
     $headers = request_headers();
     fwrite($fd, ($_POST?"POST ":"GET ")." ".$_SERVER["REQUEST_URI"]."\n");
     foreach($headers as $hname=>$hvalue)fwrite($fd, trim($hname).":".trim($hvalue)."\n");
     fclose($fd);
     
-    $filename =
-    $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".input.data";
+    $filename = $REQUEST_FOLDER."/".$REQUEST_KEY.".input.data";
     $fd = fopen("php://input", "r");
     $fd2= fopen($filename,"w");
     while(!feof($fd))fwrite($fd2, fread($fd,1000));
     fclose($fd2);
     fclose($fd);
 
-    $filename =
-    $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER."/".$REQUEST_KEY.".output.headers";
+    $zip = new ZipArchive();
+    if($zip->open($filename)){
+        $arZipStat = $zip->statIndex (0);
+        if($fd = $zip->getStream($arZipStat["name"])){
+            $wd = fopen($filename.".xml","w");
+            while(!feof($fd)) fwrite($wd,fread($fd,1000));
+            fclose($wd);
+        }
+    }
+
+    
+
+
+    $filename = $REQUEST_FOLDER."/".$REQUEST_KEY.".output.headers";
     $fd = fopen($filename, "w");
     $headers = headers_list();
     fwrite($fd, implode("\n", $headers));
