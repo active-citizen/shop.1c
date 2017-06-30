@@ -27,19 +27,30 @@
     fclose($fd);
     
     $filename = $REQUEST_FOLDER."/".$REQUEST_KEY.".input.data";
+    define("LOGGER_INPUT_FILENAME", $filename);
     $fd = fopen("php://input", "r");
     $fd2= fopen($filename,"w");
     while(!feof($fd))fwrite($fd2, fread($fd,1000));
     fclose($fd2);
     fclose($fd);
 
+
+
     $zip = new ZipArchive();
     if($zip->open($filename)){
-        $arZipStat = $zip->statIndex (0);
-        if($fd = $zip->getStream($arZipStat["name"])){
-            $wd = fopen($filename.".xml","w");
-            while(!feof($fd)) fwrite($wd,fread($fd,1000));
-            fclose($wd);
+        if($zip->numFiles){
+            for($i=0,$c=$zip->numFiles;$i<$c;$i++){
+                $arZipStat = $zip->statIndex($i);
+                if(!preg_match("#^.*\.xml$#", $arZipStat["name"]))continue;
+                if(preg_match("#\/#", $arZipStat["name"]))continue;
+
+                if($fd = $zip->getStream($arZipStat["name"])){
+                    $wd = fopen($filename.".".$arZipStat["name"],"w");
+                    while(!feof($fd)) fwrite($wd,fread($fd,1000));
+                    fclose($wd);
+                }
+                if($fd)fclose($fd);
+            }
         }
     }
 

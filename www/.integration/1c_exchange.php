@@ -50,6 +50,12 @@ if(
     && $_GET["mode"]=="import"
     && file_exists($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$_GET["filename"])
 ){
+    $filename = LOGGER_INPUT_FILENAME;
+    $sFolder = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/";
+    $oldFilename = $sFolder.$_GET["filename"];
+    $newFilename = $filename.".".$_GET["filename"];
+    copy($oldFilename,$newFilename);
+
     include($_SERVER["DOCUMENT_ROOT"]."/.integration/1c_catalog.ajax.php");
     die;
 }
@@ -104,5 +110,5 @@ if(
 }
 
 // Default exchange script
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/sale/admin/1c_exchange.php"); 
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/sale/admin/1c_exchange.php");
 ?>

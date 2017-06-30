@@ -41,12 +41,14 @@
     }
 
 
-    $sInputDataFilename = $sBasePath.".input.data.xml";
-    $arInputData = "";
-    if(file_exists($sInputDataFilename)){
-        $arInputData = file_get_contents($sInputDataFilename);    
+    $arFiles = array();
+    $dd = opendir($sRootFolder.$sFolderPath);
+    while($filename = readdir($dd)){
+        if(strpos($filename,$sRequest)===false)continue;
+        if(!preg_match("#.*\.([\w\d\-\_]+\.xml)$#",$filename,$m))continue;
+        $arFiles[$m[1]] = $sRootFolder.$sFolderPath."/".$filename;
     }
-
+    closedir($dd);
 
 
 ?>
@@ -55,9 +57,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jQuery UI Accordion - Default functionality</title>
+  <title><?= $sRequest?>::дамп обмена</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+  <link rel="stylesheet" href="/local/assets/bootstrap/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
@@ -70,7 +72,11 @@
   </script>
 </head>
 <body>
-
+<a href="/partners/logs/request.frame.php?folder=<?= $sFolderPath?>&request=<?=
+$sRequest    
+?>" targer="_blank">
+    Прямая ссылка на дамп этого запроса
+</a>
 <div id="accordion">
 
 
@@ -89,7 +95,7 @@
     <h3>Тело запроса</h3>
         <div>
             <pre>
-<?= htmlspecialchars($arInputData)?>
+<?= $arInputData?>
             </pre>
         </div>
 <? endif ?>
@@ -118,6 +124,16 @@
         </div>
 <? endif ?>
 
+<? if($arFiles):?>
+    <? foreach($arFiles as $sName=>$sPath):?>
+    <h3><?= $sName?></h3>
+        <div>
+            <pre>
+<?= htmlspecialchars(file_get_contents($sPath))?>
+            </pre>
+        </div>
+    <? endforeach ?>
+<? endif ?>
 
 </div>
 </body>
