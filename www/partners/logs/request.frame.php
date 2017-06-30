@@ -77,6 +77,8 @@ $sRequest
 ?>" targer="_blank">
     Прямая ссылка на дамп этого запроса
 </a>
+<h3><?= $sRequest ?></h3>
+
 <div id="accordion">
 
 
@@ -99,7 +101,6 @@ $sRequest
             </pre>
         </div>
 <? endif ?>
-
 
 
 

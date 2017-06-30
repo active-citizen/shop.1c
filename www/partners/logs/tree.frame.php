@@ -64,6 +64,40 @@
             $arPath[$item] = $sPath;
         }
     }
+
+    if(isset($_REQUEST["query"]) && preg_match("#^[\d\w\-\_\ ]+$#",$_REQUEST["query"])){
+        ob_start();
+        passthru (
+            $command = "grep -C 100 -l -i -r  \"".$_REQUEST["query"]."\" \"$sRootFolder\"", 
+            $output
+        );
+        $sOutput = ob_get_contents();
+        ob_end_clean();
+        $arSearchRows = explode("\n",$sOutput);
+        foreach($arSearchRows as $key=>$value)
+            if(!trim($arSearchRows[$key]))unset($arSearchRows[$key]);
+        
+        $arSearchResult = array();
+        foreach($arSearchRows as $key=>$value)
+            $arSearchRows[$key] = str_replace($sRootFolder,"",$value);
+
+        foreach($arSearchRows as $sFilename){
+            $tmp = explode("/",$sFilename);
+            $sRequest = array_pop($tmp);
+            $tmp1 = explode("-",$sRequest);
+            if(preg_match("#^(.*)\.[\w]+\.data.*$#",$sRequest,$m)){
+                $sRequest = $m[1];
+            }
+
+            $arSearchResult[$sRequest] = array(
+                "folder"=>implode("/",$tmp),
+                "title"=> $tmp1[2].".".$tmp1[1].".".$tmp1[0]
+                    ." ".$tmp1[3].".".$tmp1[4].".".$tmp1[5]
+
+            );
+        }
+    }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -83,6 +117,11 @@
 </head>
 <body>
 
+    <form>
+        <input type="text" name="query" class="form-control" placeholder="Поиск"
+        value="<?= htmlspecialchars($_REQUEST["query"])?>">
+    </form>
+
     <? if(0 && $arPath):?>
     <ul class="tree-path">
         <? foreach($arPath as $name=>$value):?>
@@ -93,12 +132,14 @@
         <? endforeach ?>
     </ul>
     <? endif ?>
+    <? if(!$arSearchResult):?>
     <div class="refresh">
         <a href="?folder=<?= $sFolderPath?>&mode=<?= $sMode?>">
             <span class="glyphicon glyphicon-repeat"></span>
             Обновить
         </a>
     </div>
+    <? endif ?>
 
     <? if($arRequests):?>
     <ul class="requests-filter">
@@ -127,6 +168,21 @@
 
     <h4><?= array_pop(explode("/",$sFolderPath))?></h4>
 
+    <? if($arSearchResult):?>
+    <h4>Результаты поиска</h4>
+    <? foreach($arSearchResult as $sRequest=>$arRequestInfo):?>
+        <div class="tree-item request">
+            <a href="request.frame.php?folder=<?= 
+                $arRequestInfo["folder"]?>&request=<?= 
+                $sRequest?>"
+            target="request_win">
+                <span class="glyphicon glyphicon-globe"></span> 
+                <?= $arRequestInfo["title"] ?>
+            </a>
+        </div>
+    <? endforeach ?>
+    <? endif ?>
+
     <? if($sFolderPath):?>
         <? 
             $tmp = explode("/",$sFolderPath);  
@@ -141,8 +197,9 @@
         </div>
     <? endif ?>
 
-    <? foreach($arFolders as $sFolder=>$arFolderInfo):?>
-        <div class="tree-item folder">
+
+    <? if(!$arSearchResult)foreach($arFolders as $sFolder=>$arFolderInfo):?>
+        <div clams="tree-item folder">
             <a href="?folder=<?= $sFolderPath?>/<?= $sFolder?>">
                 <span class="glyphicon glyphicon-folder-open"></span>
                 <?= $sFolder ?>
