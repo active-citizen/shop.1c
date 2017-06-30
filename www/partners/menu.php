@@ -2,38 +2,59 @@
         <li class="<?
         if(preg_match('#^/partners/orders/#',$_SERVER["REQUEST_URI"]))echo
         "active";?>">
-            <a href="/partners/orders/">Список заказов</a>
+            <a href="/partners/orders/">
+                <span class="glyphicon glyphicon-gift"></span>
+                Список заказов
+            </a>
         </li>
         <li class="<?
         if(preg_match("#^/partners/download/#",$_SERVER["REQUEST_URI"]))echo
         "active";?>">
-            <a href="/partners/download/">Выгрузка заказов</a>
+            <a href="/partners/download/">
+                <span class="glyphicon glyphicon-download-alt"></span>
+                Выгрузка заказов
+            </a>
         </li>
         <li class="<?
         if(preg_match("#^/partners/help/#",$_SERVER["REQUEST_URI"]))echo
         "active";?>">
-            <a href="/partners/help/">Помощь</a>
+            <a href="/partners/help/">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                Помощь
+            </a>
         </li>
         <? if($USER->IsAdmin()):?>
             <li class="<?
             if(preg_match("#^/partners/users/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
-                <a href="/partners/users/">Пользователи</a>
+                <a href="/partners/users/">
+                <span class="glyphicon glyphicon-user"></span>
+                    Пользователи
+                </a>
             </li>
             <li class="<?
             if(preg_match("#^/partners/reports/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
-                <a href="/partners/reports/">Отчеты</a>
+                <a href="/partners/reports/">
+                <span class="glyphicon glyphicon-list-alt"></span>
+                    Отчеты
+                </a>
             </li>
             <li class="<?
             if(preg_match("#^/partners/dump/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
-                <a href="/partners/dump/">Перенос данных</a>
+                <a href="/partners/dump/">
+                <span class="glyphicon glyphicon-hdd"></span>
+                     Перенос данных
+                </a>
             </li>
             <li class="<?
             if(preg_match("#^/partners/logs/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
-                <a href="/partners/logs/">Логи обмена</a>
+                <a href="/partners/logs/">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                    Логи обмена
+                </a>
             </li>
         <? endif ?>
         <li style="float:right;">

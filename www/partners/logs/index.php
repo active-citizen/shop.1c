@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы::Логи обмена");
 ?>
 <div class="partners-main">
-    <h1>Кабинет партнёра</h1>
+    <h1>Просмотр логов обмена</h1>
     <? include("../menu.php"); ?>
     <div class="log-palette">
         <div class="left-menu">

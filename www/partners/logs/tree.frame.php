@@ -93,38 +93,34 @@
         <? endforeach ?>
     </ul>
     <? endif ?>
+    <div class="refresh">
+        <a href="?folder=<?= $sFolderPath?>&mode=<?= $sMode?>">
+            <span class="glyphicon glyphicon-repeat"></span>
+            Обновить
+        </a>
+    </div>
 
     <? if($arRequests):?>
     <ul class="requests-filter">
         <li>
             <a href="?folder=<?= $sFolderPath?>">
-                all
+                Все
             </a>
         </li>
         <li>
-            <a href="?folder=<?= $sFolderPath?>&mode=query">
-                <span class="glyphicon glyphicon-question-sign"></span>
-            </a>
+            <a href="?folder=<?= $sFolderPath?>&mode=query"><span class="glyphicon glyphicon-question-sign"></span></a>
         </li>
         <li>
-            <a href="?folder=<?= $sFolderPath?>&mode=init">
-                <span class="glyphicon glyphicon-info-sign"></span>
-            </a>
+            <a href="?folder=<?= $sFolderPath?>&mode=init"><span class="glyphicon glyphicon-info-sign"></span></a>
         </li>
         <li>
-            <a href="?folder=<?= $sFolderPath?>&mode=checkauth">
-                <span class="glyphicon glyphicon-check"></span>
-            </a>
+            <a href="?folder=<?= $sFolderPath?>&mode=checkauth"><span class="glyphicon glyphicon-check"></span></a>
         </li>
         <li>
-            <a href="?folder=<?= $sFolderPath?>&mode=success">
-                <span class="glyphicon glyphicon-thumbs-up"></span>
-            </a>
+            <a href="?folder=<?= $sFolderPath?>&mode=success"><span class="glyphicon glyphicon-thumbs-up"></span></a>
         </li>
         <li>
-            <a href="?folder=<?= $sFolderPath?>&mode=file">
-                <span class="glyphicon glyphicon-file"></span>
-            </a>
+            <a href="?folder=<?= $sFolderPath?>&mode=file"><span class="glyphicon glyphicon-file"></span></a>
         </li>
     </ul>
     <? endif ?>
@@ -140,7 +136,7 @@
         <div class="tree-item folder">
             <a href="?folder=<?= $sParentFolder?>">
                 <span class="glyphicon glyphicon-folder-open"></span>
-                [..]
+                [...]
             </a>
         </div>
     <? endif ?>
@@ -221,9 +217,10 @@ h4{
     text-align:center;
 }
 
-div.tree-item-file{padding-left: 16px;}
+div.tree-item-file{padding-left: 32px;}
 div.folder span{padding-left: 16px;}
 a.selected{background-color:#CCF;}
+div.refresh{float: right;margin-right:10px;}
 </style>
 
 <script>
