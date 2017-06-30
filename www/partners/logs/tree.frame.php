@@ -65,12 +65,12 @@
         }
     }
 
-    if(isset($_REQUEST["query"]) && preg_match("#^[\d\w\-\_\ ]+$#",$_REQUEST["query"])){
+    if(isset($_REQUEST["query"]) && $_REQUEST["query"]){
         ob_start();
         passthru (
             $command = 
                 'grep -C 100 -l -i -r --include="*.xml" --include="*.output.data" "'.
-                $_REQUEST["query"]."\" \"$sRootFolder\"", 
+                escapeshellcmd ($_REQUEST["query"])."\" \"$sRootFolder\"", 
             $output
         );
         $sOutput = ob_get_contents();

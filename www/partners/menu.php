@@ -56,6 +56,14 @@
                     Логи обмена
                 </a>
             </li>
+            <li class="<?
+            if(preg_match("#^/partners/actions/#",$_SERVER["REQUEST_URI"]))echo
+            "active";?>">
+                <a href="/partners/actions/">
+                <span class="glyphicon glyphicon-export"></span>
+                    ЗНИ
+                </a>
+            </li>
         <? endif ?>
         <li style="float:right;">
             <a href="/partners/orders/?logout=yes">Выход</a>
