@@ -68,7 +68,9 @@
     if(isset($_REQUEST["query"]) && preg_match("#^[\d\w\-\_\ ]+$#",$_REQUEST["query"])){
         ob_start();
         passthru (
-            $command = "grep -C 100 -l -i -r  \"".$_REQUEST["query"]."\" \"$sRootFolder\"", 
+            $command = 
+                'grep -C 100 -l -i -r --include="*.xml" --include="*.output.data" "'.
+                $_REQUEST["query"]."\" \"$sRootFolder\"", 
             $output
         );
         $sOutput = ob_get_contents();
@@ -85,14 +87,16 @@
             $tmp = explode("/",$sFilename);
             $sRequest = array_pop($tmp);
             $tmp1 = explode("-",$sRequest);
-            if(preg_match("#^(.*)\.[\w]+\.data.*$#",$sRequest,$m)){
+            if(preg_match("#^(.*)\.([\w]+)\.data.*$#",$sRequest,$m)){
                 $sRequest = $m[1];
+                $sDirection = $m[2];
             }
 
             $arSearchResult[$sRequest] = array(
                 "folder"=>implode("/",$tmp),
                 "title"=> $tmp1[2].".".$tmp1[1].".".$tmp1[0]
-                    ." ".$tmp1[3].".".$tmp1[4].".".$tmp1[5]
+                    ." ".$tmp1[3].".".$tmp1[4].".".$tmp1[5],
+                "direction" =>$sDirection
 
             );
         }
@@ -169,14 +173,19 @@
     <h4><?= array_pop(explode("/",$sFolderPath))?></h4>
 
     <? if($arSearchResult):?>
-    <h4>Результаты поиска</h4>
+    <h4>Результаты поиска по XML</h4>
     <? foreach($arSearchResult as $sRequest=>$arRequestInfo):?>
         <div class="tree-item request">
             <a href="request.frame.php?folder=<?= 
                 $arRequestInfo["folder"]?>&request=<?= 
                 $sRequest?>"
             target="request_win">
-                <span class="glyphicon glyphicon-globe"></span> 
+                <span class="glyphicon glyphicon-<?
+                    if($arRequestInfo["direction"]=='input')
+                        echo "file";
+                    else
+                        echo "question-sign"
+                ?>"></span> 
                 <?= $arRequestInfo["title"] ?>
             </a>
         </div>
