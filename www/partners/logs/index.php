@@ -7,7 +7,10 @@ $APPLICATION->SetTitle("Заказы::Логи обмена");
     <? include("../menu.php"); ?>
     <div class="log-palette">
         <div class="left-menu">
-           <iframe src="/partners/logs/tree.frame.php"> 
+           <iframe src="/partners/logs/tree.frame.php<? 
+            if(isset($_REQUEST["query"]) && $_REQUEST["query"])
+                echo "?query=".$_REQUEST["query"];
+           ?>"> 
            </iframe>
         </div>
         <div class="request-win">

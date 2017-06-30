@@ -39,6 +39,16 @@
                 № заказа:   
             </td><td>
                 <?= $arResult["ORDER"]["ADDITIONAL_INFO"]?>
+                <? if($USER->isAdmin()):?>
+                (
+                    <a href="/partners/logs/?query=<?=
+                    $arResult["ORDER"]["ADDITIONAL_INFO"]?>"
+                    target="_blank"
+                    >
+                    Посмотреть в логах
+                    </a>
+                )
+                <? endif?>
             </td>
         </tr>
         <tr>
