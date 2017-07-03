@@ -83,7 +83,6 @@
         foreach($arSearchRows as $key=>$value)
             $arSearchRows[$key] = str_replace($sRootFolder,"",$value);
 
-        krsort($arSearchRows);
 
         foreach($arSearchRows as $sFilename){
             $tmp = explode("/",$sFilename);
@@ -102,6 +101,7 @@
 
             );
         }
+        krsort($arSearchResult);
     }
 
 ?>

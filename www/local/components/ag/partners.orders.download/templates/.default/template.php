@@ -180,6 +180,38 @@
         </tr>
         <tr>
             <td>
+                Дата выполнения, c
+            </td>
+            <td>
+                <div class="partners-date">
+                <input type="text" name="filter_done_from"
+                id="filter-done-from" 
+                class="form-control" 
+                value="<?= $arResult["FILTER"]["DONE_FROM"]?>"
+                >
+                <?
+                echo Calendar( 'filter_done_from', '','form_filter');
+                ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Дата выполнения, до
+            </td>
+            <td>
+                <div class="partners-date">
+                <input type="text" name="filter_done_to"
+                id="filter-done-to" 
+                class="form-control" 
+                value="<?= $arResult["FILTER"]["DONE_TO"]?>"
+                >
+                <?
+                echo Calendar( 'filter_done_to', '','form_filter');
+                ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Сортировка
             </td>
             <td>

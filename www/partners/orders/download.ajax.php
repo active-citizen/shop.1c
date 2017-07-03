@@ -234,6 +234,37 @@ if(isset($_REQUEST["download"])){
             $_REQUEST["filter_lockdate_to"]." 23:59:59";
 
 
+    if(
+        isset($_REQUEST["filter_done_from"]) 
+        && $_REQUEST["filter_done_from"]
+        && isset($_REQUEST["filter_done_to"]) 
+        && $_REQUEST["filter_done_to"]
+    ){
+        $arFilter[">=DATE_UPDATE"] = $_REQUEST["filter_done_from"]
+            ." 00:00:00";
+        $arFilter["<=DATE_UPDATE"] = $_REQUEST["filter_done_to"]
+            ." 23:59:59";
+        $arFilter["STATUS_ID"] = 'F';
+    }
+    elseif(
+        isset($_REQUEST["filter_done_from"]) 
+        && $_REQUEST["filter_done_from"]
+    ){
+        $arFilter["DATE_MODIFY_FROM"] = $_REQUEST["filter_done_from"]
+            ." 00:00:00";
+        $arFilter["STATUS_ID"] = 'F';
+    }
+    elseif(
+        isset($_REQUEST["filter_done_to"]) 
+        && $_REQUEST["filter_done_to"]
+    ){
+        $arFilter["DATE_MODIFY_TO"] = $_REQUEST["filter_done_to"]
+            ." 23:59:59";
+        $arFilter["STATUS_ID"] = 'F';
+    }
+
+
+
     if($_REQUEST["filter_sort"]=='order_id')
         $arOrder["ADDITIONAL_INFO"] = $_REQUEST["filter_order"];
     if($_REQUEST["filter_sort"]=='customer')
@@ -259,6 +290,10 @@ if(isset($_REQUEST["download"])){
     if($_request["filter_sort"]=='price')
         $arorder["PRICE"] = $_request["filter_order"];
 
+
+    //echo "<pre>";
+    //print_r($arFilter);
+    //die;
 
     // Запрашиваем
     $resOrders = CSaleOrder::GetList(
@@ -346,6 +381,7 @@ if(isset($_REQUEST["continue"])){
         "USER_LAST_NAME",
         "USER_NAME",
         "DATE_INSERT",
+        "DATE_UPDATE",
         "USER_EMAIL",
         "USER_LOGIN",
         "STORE_ID",
@@ -476,11 +512,11 @@ if(isset($_REQUEST["continue"])){
             .";".'"'.$arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"].'"'  
             .";".''/*.'"История статусов"'*/
             .";".$arOrder["DATE_INSERT"]
-            .";".$arOrder["DATE_INSERT"]
+            .";".$arOrder["DATE_UPDATE"]
             .";".''.(
-                $arOrder["STATUS_ID"]=='F' && isset($arHistory[0]["DATE_CREATE"])
+                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_UPDATE"])
                 ?
-                $arHistory[0]["DATE_CREATE"]
+                $arOrder["DATE_UPDATE"]
                 :
                 ""
             ).''
