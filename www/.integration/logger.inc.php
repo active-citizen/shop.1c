@@ -1,7 +1,9 @@
 <?php
 
     ob_start("logger_save_buffer");
-    $REQUEST_FOLDER = "upload/logger";
+
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/settings.inc.php");
+    $REQUEST_FOLDER = "upload/logger".(CONTOUR!='prod'?"_".CONTOUR:"");
     $REQUEST_KEY = date("Y-m-d-H-i-s-").microtime(true);
 
     $REQUEST_FOLDER = $_SERVER["DOCUMENT_ROOT"]."/".$REQUEST_FOLDER;
