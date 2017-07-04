@@ -116,6 +116,7 @@
 //    echo file_get_contents($uploadDir.$ordersFilename);
 //    die;
 
+    $nOrderCounter = 0;
     if(file_exists($uploadDir.$ordersFilename)){
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
@@ -614,6 +615,7 @@
 
                     }
                 }
+                $nOrderCounter++;
                 // Конец обработки отмены
 
                 
@@ -649,7 +651,7 @@
         
     }
     
-    echo "success";
+    if($nOrderCounter)echo "success";
 
 
 ?>

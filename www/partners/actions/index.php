@@ -61,7 +61,7 @@ while($arHistoryItem = $resHistory->Fetch()){
         array("ID"=>$arHistoryItem["ORDER_ID"]),
         false,
         array("nTopCount"=>1),
-        array("ADDITIONAL_INFO","USER_ID")
+        array("ADDITIONAL_INFO","USER_ID","STATUS_ID")
     )->Fetch();
 
     $arUser = CUser::GetByID($arOrder["USER_ID"])->Fetch();
@@ -71,6 +71,7 @@ while($arHistoryItem = $resHistory->Fetch()){
     $arInfo = unserialize($arHistoryItem["DATA"]);
     $arHistoryItem["OLD_STATUS"] = $arInfo["OLD_STATUS_ID"];
     $arHistoryItem["NEW_STATUS"] = $arInfo["STATUS_ID"];
+    $arHistoryItem["STATUS_ID"] = $arOrder["STATUS_ID"];
     $arHistoryItem["ORDER_NUM"] = $arOrder['ADDITIONAL_INFO'];
     $arHistory[] = $arHistoryItem;
 }
@@ -118,12 +119,18 @@ while($arHistoryItem = $resHistory->Fetch()){
             <th style="width: 100px">
                 Старый статус
             </th>
+            <th style="width: 100px">
+                Текущий статус
+            </th>
             <th style="width: 150px">
                 Действия
             </th>
         </tr>
         <? foreach($arHistory as $arHistoryItem):?>
-        <tr>
+        <tr 
+        <? if($arHistoryItem["NEW_STATUS"]!=$arHistoryItem["STATUS_ID"]):?>
+            style="background-color: red;"
+        <? endif ?>>
             <td class="date">
                 <?= $arHistoryItem["DATE_CREATE"]?>
             </td>
@@ -152,6 +159,10 @@ while($arHistoryItem = $resHistory->Fetch()){
             <td class="status" style="color:<?= 
                 $arStatuses[$arHistoryItem["OLD_STATUS"]]["COLOR"]?>">
                 <?= $arStatuses[$arHistoryItem["OLD_STATUS"]]["NAME"]?> 
+            </td>
+            <td style="color:<?= 
+                $arStatuses[$arHistoryItem["STATUS_ID"]]["COLOR"]?>">
+                <?= $arStatuses[$arHistoryItem["STATUS_ID"]]["NAME"]?> 
             </td>
             <td class="actions">
                 <a href="/partners/logs/?query=<?= $arHistoryItem["ORDER_NUM"]?>"

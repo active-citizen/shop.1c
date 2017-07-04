@@ -186,8 +186,8 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         ){
             $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
             if($bDebug){
-                echo "Edit\n";
-                print_r($arFilter);
+//              echo "Edit\n";
+//              print_r($arFilter);
             }
             if(!CSaleOrderPropsValue::Update(
                 $arExistPropValue["ID"],
@@ -203,8 +203,8 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         elseif($arPropValue["PROPERTY_VALUE"]){
             $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
             if($bDebug){
-                echo "Add\n";
-                print_r($arFilter);
+//            echo "Add\n";
+//            print_r($arFilter);
             }
             if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
                 echo "Addik error\n";
