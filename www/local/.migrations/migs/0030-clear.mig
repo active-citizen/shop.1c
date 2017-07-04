@@ -1,5 +1,9 @@
 <?php
 
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
 $ROOT_DIR = $_SERVER["DOCUMENT_ROOT"]; 
 
 $arFiles = array(

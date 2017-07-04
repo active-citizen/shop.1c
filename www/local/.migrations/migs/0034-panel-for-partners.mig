@@ -1,5 +1,9 @@
 <?php
 
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
 $objMigration = new MigrationToolkit;
 
 $objMigration->setUserUF(

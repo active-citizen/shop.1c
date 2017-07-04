@@ -1,5 +1,8 @@
 <?php
-    
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
     /**
      * Добавление таблицы с логом обновления продуктов
      */

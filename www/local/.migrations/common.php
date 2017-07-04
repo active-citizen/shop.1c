@@ -1,5 +1,15 @@
 <?php
 
+if(!isset($_SERVER["DOCUMENT_ROOT"]) || !$_SERVER["DOCUMENT_ROOT"])
+    $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/../../");
+
+require_once(
+    $_SERVER["DOCUMENT_ROOT"]
+        ."/bitrix/modules/main/include/prolog_before.php"
+        );
+
+require_once(realpath(dirname(__FILE__))."/migration.class.php");
+
 
 class Migration{
     
