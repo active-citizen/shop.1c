@@ -89,7 +89,6 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         array("nTopCount"=>1),            
         array("ID","PROPERTY_CML2_LINK")
     )->GetNext();
-   
 
     $arCatalog = CIBlockElement::GetList(
         array(),
@@ -123,7 +122,6 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         $arManufacturer["ID"];
     $arOrder["PROPERTIES"]["MANUFACTURER_NAME"]["PROPERTY_VALUE"] = 
         $arManufacturer["NAME"];
-
 
     $arCategory = CIBlockSection::GetList(
         array(),
@@ -173,6 +171,7 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         date("Y-m-d",intval($arOrder["PROPERTIES"]["CLOSE_DATE"]["PROPERTY_VALUE"]));
 
     $objCSaleOrderPropsValue = new CSaleOrderPropsValue;
+//    $bDebug = true;
     foreach($arOrder["PROPERTIES"] as $sPropName=>$arPropValue){
         $arFilter = array(
             "ORDER_ID"      =>  $arOrder["ID"],
@@ -185,10 +184,10 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
             $arExistPropValue = 
             CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
         ){
-            if($bDebug){
             $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
-                echo "Edit\n";
-                print_r($arFilter);
+            if($bDebug){
+//              echo "Edit\n";
+//              print_r($arFilter);
             }
             if(!CSaleOrderPropsValue::Update(
                 $arExistPropValue["ID"],
@@ -204,8 +203,8 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         elseif($arPropValue["PROPERTY_VALUE"]){
             $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
             if($bDebug){
-                echo "Add\n";
-                print_r($arFilter);
+//            echo "Add\n";
+//            print_r($arFilter);
             }
             if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
                 echo "Addik error\n";

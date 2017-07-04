@@ -128,7 +128,7 @@ while($arBasket = $resBasket->Fetch()){
 
 // Заполняем данные для печатной формы act
 if($_REQUEST["print"]=='act'){
-    $oExcel->getActiveSheet()->setCellValue('H3', get_date(date("d.m.Y")));
+    $oExcel->getActiveSheet()->setCellValue('G3', get_date(date("d.m.Y")));
     $oExcel->getActiveSheet()->setCellValue('A20', get_date(date("d.m.Y")));
     $oExcel->getActiveSheet()->setCellValue('C5',
         $arResult["ORDER"]["STORE_INFO"]["TITLE"]." ".

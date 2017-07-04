@@ -64,6 +64,26 @@
         </tr>
         <tr>
             <td>
+                Склад
+            </td>
+            <td>
+                <select name="filter_store" class="form-control"
+                id="filter-store"
+                onchange="document.getElementById('form_filter').submit();"
+                >
+                    <option value="all">-все доступные мне склады-</option>
+                    <? foreach($arResult["STORES"] as $arMan):?>
+                        <option value="<?= $arMan["ID"]?>"
+                            <? if($arResult["FILTER"]["MAN"]==$arMan["ID"]):?>
+                            selected
+                            <? endif?>
+                        ><?= $arMan["TITLE"]?></option>
+                    <? endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Дата добавления, c
             </td>
             <td>
@@ -155,6 +175,38 @@
                 >
                 <?
                 echo Calendar( 'filter_update_to', '','form_filter');
+                ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Дата выполнения, c
+            </td>
+            <td>
+                <div class="partners-date">
+                <input type="text" name="filter_done_from"
+                id="filter-done-from" 
+                class="form-control" 
+                value="<?= $arResult["FILTER"]["DONE_FROM"]?>"
+                >
+                <?
+                echo Calendar( 'filter_done_from', '','form_filter');
+                ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Дата выполнения, до
+            </td>
+            <td>
+                <div class="partners-date">
+                <input type="text" name="filter_done_to"
+                id="filter-done-to" 
+                class="form-control" 
+                value="<?= $arResult["FILTER"]["DONE_TO"]?>"
+                >
+                <?
+                echo Calendar( 'filter_done_to', '','form_filter');
                 ?></div>
             </td>
         </tr>

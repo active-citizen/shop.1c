@@ -82,7 +82,6 @@
                 
 
                 $obOrder = new bxOrder();
-                print_r($arrOrder);
                 $resOrder = $obOrder->addEMPPoints(
                     $arrOrder["SUM_PAID"],
                     "Отмена заказа ".$arrOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",
@@ -195,12 +194,21 @@
             }
             */
 
-
-
+            
+            $DB->Query("
+                UPDATE 
+                    `b_sale_order` 
+                SET 
+                    `STATUS_ID`='".$arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]."'
+                WHERE
+                    `ID`='".$arrOrder["ID"]."'
+            ");
+            /* 
             CSaleOrder::StatusOrder(
                 $arrOrder["ID"],
                 $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
             );
+            */
             /*
             eventOrderStatusSendEmail(
                 $arrOrder["ID"], 

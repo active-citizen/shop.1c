@@ -115,6 +115,8 @@
     header("Content-type: text/plain; charset=UTF-8");
 //    echo file_get_contents($uploadDir.$ordersFilename);
 //    die;
+
+    $nOrderCounter = 0;
     if(file_exists($uploadDir.$ordersFilename)){
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
@@ -123,9 +125,11 @@
         // Нормализуем массив заказов
         if(!isset($arOrders["Документ"][0]))
             $arOrders["Документ"] = array($arOrders["Документ"]);
+        if(!isset($arOrders->Документ[0]))
+            $arOrders->Документ = array($arOrders->Документ);
 
         foreach($arOrders->Документ as $ccc=>$arDocument){
-           $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
+            $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
             if($ccc>100){/*break;*/}else{
                 //if(IMPORT_DEBUG)
@@ -148,7 +152,7 @@
                 );
                 $existsOrder = $res->GetNext();
             }
-           
+    
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{5,11}$#",$arDocument["Телефон"])){
                 if(IMPORT_DEBUG)
@@ -535,7 +539,9 @@
                 */
             }
             elseif($existsOrder){
+                // Заполняем свойсва заказа из свойст товара на случай
                 $orderId = $existsOrder["ID"];
+                orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                 //echo "Update order_id = $orderId ";
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
@@ -609,6 +615,7 @@
 
                     }
                 }
+                $nOrderCounter++;
                 // Конец обработки отмены
 
                 
@@ -644,7 +651,7 @@
         
     }
     
-    echo "success";
+    if($nOrderCounter)echo "success";
 
 
 ?>

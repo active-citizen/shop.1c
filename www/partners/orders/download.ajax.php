@@ -33,6 +33,64 @@ if(isset($_REQUEST["download"])){
     $arFilter   = array();
 
 
+
+    $arUser = CUser::GetList(
+        ($by="personal_country"), ($order="desc"),
+        array("ID"=>CUser::GetId()),
+        array(
+            "SELECT"=>array(
+                "UF_USER_ALL_POINTS",
+                "UF_USER_STORAGE_ALL",
+                "UF_USER_STORAGE_ID",
+                "UF_USER_MAN_ALL",
+                "UF_USER_MAN_ID"
+            ),
+            "NAV_PARAMS"=>array("nTopCount"=>1)
+        )
+        
+    )->getNext();
+
+    // Список доступных пользователю произвдителей
+    $arManFilter = array();
+    if(!$arUser["UF_USER_MAN_ALL"] && count($arUser["UF_USER_MAN_ID"]))
+        $arManFilter["ID"] = $arUser["UF_USER_MAN_ID"];
+    elseif(!$arUser["UF_USER_MAN_ALL"] && !count($arUser["UF_USER_MAN_ID"]))
+        $arManFilter["ID"] = 0;
+
+    $arManFilter["IBLOCK_ID"] = MANUFACTURER_IB_ID;
+
+    $resMans = CIBlockElement::GetList(
+        array("ID"=>"ASC"),
+        $arManFilter,
+        false,
+        false,
+        array("ID")
+    );
+    $arParams["MY_MANS_IDS"] = array();
+    while($arMan = $resMans->GetNext()){
+        $arParams["MY_MANS_IDS"][] = $arMan["ID"];
+    }
+
+    $arStoreFilter = array();
+    if(!$arUser["UF_USER_STORAGE_ALL"] && count($arUser["UF_USER_STORAGE_ID"]))
+        $arStoreFilter["ID"] = $arUser["UF_USER_STORAGE_ID"];
+    elseif(!$arUser["UF_USER_STORAGE_ALL"] && !count($arUser["UF_USER_STORAGE_ID"]))
+        $arStoreFilter["ID"] = 0;
+        
+
+    $resStores = CCatalogStore::GetList(
+        array("ID"=>"ASC"),
+        $arStoreFilter,
+        false,
+        false,
+        array("ID")
+    );
+        
+    $arParams["MY_STORES_IDS"] = array();
+    while($arStore = $resStores->GetNext()){
+        $arParams["MY_STORES_IDS"][] = $arStore["ID"];
+    }
+
     if(isset($_REQUEST["filter_phone"]) && $_REQUEST["filter_phone"])
         $arFilter["%USER_LOGIN"] = $_REQUEST["filter_phone"];
     if(isset($_REQUEST["filter_fio"]) && $_REQUEST["filter_fio"])
@@ -41,6 +99,8 @@ if(isset($_REQUEST["download"])){
     if(isset($_REQUEST["filter_status"]) && $_REQUEST["filter_status"])
         $arFilter["STATUS_ID"] =
         $_REQUEST["filter_status"];
+
+
     if(
         isset($_REQUEST["filter_man"])
         && 
@@ -50,6 +110,36 @@ if(isset($_REQUEST["download"])){
     )
         $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] =
         $_REQUEST["filter_man"];
+    elseif(
+        isset($_REQUEST["filter_man"])
+        && 
+        $_REQUEST["filter_man"]
+        && 
+        $_REQUEST["filter_man"]=='all'
+    )
+        $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] =
+        $arParams["MY_MANS_IDS"];
+
+    if(
+        isset($_REQUEST["filter_store"])
+        && 
+        $_REQUEST["filter_store"]
+        && 
+        $_REQUEST["filter_store"]!='all'
+    )
+        $arFilter["STORE_ID"] =
+        $_REQUEST["filter_store"];
+    elseif(
+        isset($_REQUEST["filter_store"])
+        && 
+        $_REQUEST["filter_store"]
+        && 
+        $_REQUEST["filter_store"]=='all'
+    )
+        $arFilter["STORE_ID"] = $arParams["MY_STORES_IDS"];
+
+
+
 
     if(
         isset($_REQUEST["filter_adddate_from"]) 
@@ -144,6 +234,37 @@ if(isset($_REQUEST["download"])){
             $_REQUEST["filter_lockdate_to"]." 23:59:59";
 
 
+    if(
+        isset($_REQUEST["filter_done_from"]) 
+        && $_REQUEST["filter_done_from"]
+        && isset($_REQUEST["filter_done_to"]) 
+        && $_REQUEST["filter_done_to"]
+    ){
+        $arFilter[">=DATE_UPDATE"] = $_REQUEST["filter_done_from"]
+            ." 00:00:00";
+        $arFilter["<=DATE_UPDATE"] = $_REQUEST["filter_done_to"]
+            ." 23:59:59";
+        $arFilter["STATUS_ID"] = 'F';
+    }
+    elseif(
+        isset($_REQUEST["filter_done_from"]) 
+        && $_REQUEST["filter_done_from"]
+    ){
+        $arFilter["DATE_MODIFY_FROM"] = $_REQUEST["filter_done_from"]
+            ." 00:00:00";
+        $arFilter["STATUS_ID"] = 'F';
+    }
+    elseif(
+        isset($_REQUEST["filter_done_to"]) 
+        && $_REQUEST["filter_done_to"]
+    ){
+        $arFilter["DATE_MODIFY_TO"] = $_REQUEST["filter_done_to"]
+            ." 23:59:59";
+        $arFilter["STATUS_ID"] = 'F';
+    }
+
+
+
     if($_REQUEST["filter_sort"]=='order_id')
         $arOrder["ADDITIONAL_INFO"] = $_REQUEST["filter_order"];
     if($_REQUEST["filter_sort"]=='customer')
@@ -169,6 +290,10 @@ if(isset($_REQUEST["download"])){
     if($_request["filter_sort"]=='price')
         $arorder["PRICE"] = $_request["filter_order"];
 
+
+    //echo "<pre>";
+    //print_r($arFilter);
+    //die;
 
     // Запрашиваем
     $resOrders = CSaleOrder::GetList(
@@ -256,6 +381,7 @@ if(isset($_REQUEST["continue"])){
         "USER_LAST_NAME",
         "USER_NAME",
         "DATE_INSERT",
+        "DATE_UPDATE",
         "USER_EMAIL",
         "USER_LOGIN",
         "STORE_ID",
@@ -386,11 +512,11 @@ if(isset($_REQUEST["continue"])){
             .";".'"'.$arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"].'"'  
             .";".''/*.'"История статусов"'*/
             .";".$arOrder["DATE_INSERT"]
-            .";".$arOrder["DATE_INSERT"]
+            .";".$arOrder["DATE_UPDATE"]
             .";".''.(
-                $arOrder["STATUS_ID"]=='F' && isset($arHistory[0]["DATE_CREATE"])
+                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_UPDATE"])
                 ?
-                $arHistory[0]["DATE_CREATE"]
+                $arOrder["DATE_UPDATE"]
                 :
                 ""
             ).''

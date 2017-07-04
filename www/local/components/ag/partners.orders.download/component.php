@@ -57,6 +57,30 @@ while($arMan = $resMans->GetNext()){
     $arResult["MANS"][$arMan["ID"]] = $arMan;
 }
 
+$arStoreFilter = array();
+if(!$arUser["UF_USER_STORAGE_ALL"] && count($arUser["UF_USER_STORAGE_ID"]))
+    $arStoreFilter["ID"] = $arUser["UF_USER_STORAGE_ID"];
+elseif(!$arUser["UF_USER_STORAGE_ALL"] && !count($arUser["UF_USER_STORAGE_ID"]))
+    $arStoreFilter["ID"] = 0;
+    
+
+$resStores = CCatalogStore::GetList(
+    array("ID"=>"ASC"),
+    $arStoreFilter,
+    false,
+    false,
+    array("TITLE","ID")
+);
+    
+$arResult["STORES"] = array();
+$arParams["MY_STORES_IDS"] = array();
+while($arStore = $resStores->GetNext()){
+    $arParams["MY_STORES_IDS"][] = $arStore["ID"];
+    $arResult["STORES"][$arStore["ID"]] = $arStore;
+}
+
+
+
 $this->IncludeComponentTemplate();
 
 
