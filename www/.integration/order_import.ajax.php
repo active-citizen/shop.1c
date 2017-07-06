@@ -541,7 +541,6 @@
             elseif($existsOrder){
                 // Заполняем свойсва заказа из свойст товара на случай
                 $orderId = $existsOrder["ID"];
-                orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                 //echo "Update order_id = $orderId ";
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
@@ -550,11 +549,13 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     CSaleOrder::PayOrder($orderId,"N",true,false);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
+            	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
+            	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
    
                     $login = "u".$arDocument["Телефон"];
                     // Считаем сумму заказа
