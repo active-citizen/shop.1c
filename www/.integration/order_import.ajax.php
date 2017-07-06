@@ -125,15 +125,17 @@
         // Нормализуем массив заказов
         if(!isset($arOrders["Документ"][0]))
             $arOrders["Документ"] = array($arOrders["Документ"]);
-        if(!isset($arOrders->Документ[0]))
+        elseif(!isset($arOrders->Документ[0]))
             $arOrders->Документ = array($arOrders->Документ);
 
-        foreach($arOrders->Документ as $ccc=>$arDocument){
+        $ccc = 0;
+        foreach($arOrders->Документ as $arDocument){
+            $ccc++;
             $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
-            if($ccc>100){/*break;*/}else{
-                //if(IMPORT_DEBUG)
-                //    echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
+            if($ccc>3500){/*break;*/}else{
+//                if(IMPORT_DEBUG)
+//                    echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
@@ -155,9 +157,10 @@
     
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{5,11}$#",$arDocument["Телефон"])){
-                if(IMPORT_DEBUG)
+                if(IMPORT_DEBUG){
                     echo "Order_num=".$arDocument["Номер"].
                         ": Incorrect phone ".print_r($arDocument["Телефон"],1)."\n";
+                }
                 $t1 = microtime(true);
                 continue;
             }
@@ -275,7 +278,7 @@
                 );
             }
            
-            
+           
             // Считаем сумму заказа
             $sum = 0;
             foreach($basketProducts as $product)$sum+=$product["count"]*$product["price"];
@@ -371,9 +374,11 @@
                 array("nTopCount"=>1),
                 array("ID")
             )->GetNext()){
-                if(IMPORT_DEBUG)
-                    echo "Store ID not found ".
+                if(IMPORT_DEBUG){
+                    echo "Order_num=".$arDocument["Номер"]." Store ID not found ".
                         $arDocument["История"]["Состояние"][0]["Склад"]."\n";
+//                    print_r($arDocument);
+                }
                 $t1 = microtime(true);
                 continue;
             }
@@ -616,6 +621,7 @@
 
                     }
                 }
+
                 $nOrderCounter++;
                 // Конец обработки отмены
 
