@@ -173,7 +173,10 @@
             $arrOrder["ADDITIONAL_INFO"],"cp1251","UTF-8"
         );
         
-        $order["Дата"] = date_parse($arrOrder["DATE_INSERT"]);
+        $order["Дата"] = date_parse(
+        //$arrOrder["DATE_INSERT"]
+        date("d.m.Y H:i:s")
+        );
         $order["Дата"] = date("Y-m-d",mktime(
             $order["Дата"]["hour"],$order["Дата"]["minute"],
             $order["Дата"]["second"],
@@ -204,7 +207,10 @@
             $order["ДатаИзменения"]["year"]
         ));
         
-        $order["Время"] = date_parse($arrOrder["DATE_INSERT"]);
+        $order["Время"] = date_parse(
+    	//$arrOrder["DATE_INSERT"]
+    	date("d.m.Y H:i:s")
+    	);
         $order["Время"] = date("H:i:s",mktime(
             $order["Время"]["hour"],$order["Время"]["minute"],
             $order["Время"]["second"],
