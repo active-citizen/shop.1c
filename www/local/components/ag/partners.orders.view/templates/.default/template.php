@@ -110,7 +110,7 @@
         <? if($arResult["ORDER"]["STATUS_ID"]=='F'):?>
         <tr>
             <td class="field-name">
-                 Дата отгрузки:
+                 Дата выполнения:
             </td><td>
                 <?= $arResult["ORDER"]["DATE_STATUS"]?>
             </td>
