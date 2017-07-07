@@ -669,15 +669,15 @@
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
          	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                if($statusId=='F')$DB->Query("
-                    UPDATE 
-                        `b_sale_order` 
-                    SET 
-                        `DATE_STATUS`='".
-                            $sDateStatus."'
-                    WHERE
-                        `ID`='".$orderId."'");
             }
+            if($statusId=='F')$DB->Query("
+                UPDATE 
+                    `b_sale_order` 
+                SET 
+                    `DATE_STATUS`='".
+                        $sDateStatus."'
+                WHERE
+                    `ID`='".$orderId."'");
             $nOrderCounter++;
             $t1 = microtime(true);
         }
