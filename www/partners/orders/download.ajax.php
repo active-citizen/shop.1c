@@ -433,9 +433,6 @@ if(isset($_REQUEST["continue"])){
 
 
     while($arOrder = $resOrders->GetNext()){
-        print_r($arOrder);
-        die;
-
         // Получаем историю заказа
         
         $arHistory = array();
