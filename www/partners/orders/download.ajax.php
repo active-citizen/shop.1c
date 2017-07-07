@@ -382,7 +382,7 @@ if(isset($_REQUEST["continue"])){
         "USER_NAME",
         "DATE_INSERT",
         "DATE_UPDATE",
-        "DATE_ORDER",
+        "DATE_STATUS",
         "USER_EMAIL",
         "USER_LOGIN",
         "STORE_ID",
@@ -398,7 +398,7 @@ if(isset($_REQUEST["continue"])){
            "nPageSize"  => ORDERS_QUANT,
            "iNumPage"   => intval($_REQUEST["page"]) 
         ),
-        $arSelect
+        array()//$arSelect
     );
 
     $fd = fopen($_SESSION["ORDER_DOWNLOAD"]["FILENAME"],"a");
@@ -432,7 +432,9 @@ if(isset($_REQUEST["continue"])){
     $nPropGroup = $arPropGroup["ID"];
 
 
-    while($arOrder = $resOrders->Fetch()){
+    while($arOrder = $resOrders->GetNext()){
+        print_r($arOrder);
+        die;
 
         // Получаем историю заказа
         
@@ -515,9 +517,9 @@ if(isset($_REQUEST["continue"])){
             .";".$arOrder["DATE_INSERT"]
             .";".$arOrder["DATE_UPDATE"]
             .";".''.(
-                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_ORDER"])
+                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_STATUS"])
                 ?
-                $arOrder["DATE_ORDER"]
+                $arOrder["DATE_STATUS"]
                 :
                 ""
             ).''
