@@ -389,7 +389,26 @@
             // Состояние заказа по умолчанию
             if(!isset($arDocument["История"]["Состояние"][0]["СостояниеЗаказа"]))
                 $arDocument["История"]["Состояние"][0]["СостояниеЗаказа"] = 'В работе';
-            
+            // Определяем дату смены статуса
+            if(!isset($arDocument["История"]["Состояние"][0]["ДатаИзменения"]))
+                $arDocument["История"]["Состояние"][0]["СостояниеЗаказа"] =
+                    date("Y-m-d H:i:s");
+
+            $arDate = date_parse(
+                $arDocument["История"]["Состояние"][0]["ДатаИзменения"]
+            );
+            if(!$arDate["error_count"]){
+                $sDateStatus = sprintf("%04d",$arDate["year"])
+                    ."-".sprintf("%02d",$arDate["month"])
+                    ."-".sprintf("%02d",$arDate["day"])
+                    ." ".sprintf("%02d",$arDate["hour"])
+                    .":".sprintf("%02d",$arDate["minute"])
+                    .":".sprintf("%02d",$arDate["second"]);
+            }
+            else{
+                $sDateStatus = date("Y-m-d H:i:s");
+            }
+
             // Статус и опрлата по умолчанию    
             $statusId = "N";$canceled = "N";
             switch($arDocument["История"]["Состояние"][0]["СостояниеЗаказа"]){
@@ -544,7 +563,6 @@
                 */
             }
             elseif($existsOrder){
-                // Заполняем свойсва заказа из свойст товара на случай
                 $orderId = $existsOrder["ID"];
                 //echo "Update order_id = $orderId ";
                 // Обрабатываем все статусы кроме отмены
@@ -554,13 +572,11 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     CSaleOrder::PayOrder($orderId,"N",true,false);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
-            	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
-            	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
    
                     $login = "u".$arDocument["Телефон"];
                     // Считаем сумму заказа
@@ -651,6 +667,16 @@
             	    $DB->Query($strSql);
                 }
                 */
+                // Заполняем свойсва заказа из свойст товара на случай
+         	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+                $DB->Query("
+                    UPDATE 
+                        `b_sale_order` 
+                    SET 
+                        `DATE_STATUS`='".
+                            $sDateStatus."'
+                    WHERE
+                        `ID`='".$orderId."'");
             }
             $nOrderCounter++;
             $t1 = microtime(true);

@@ -109,6 +109,13 @@
         </tr>
         <tr>
             <td class="field-name">
+                 Дата отгрузки:     
+            </td><td>
+                <?= $arResult["ORDER"]["DATE_STATUS"]?>
+            </td>
+        </tr>
+        <tr>
+            <td class="field-name">
                 Cертификат во вложении к уведомлениям   
             </td><td>
                 <? if($arResult["ORDER"]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']):?> 
