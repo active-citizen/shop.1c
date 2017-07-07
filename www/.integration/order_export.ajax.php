@@ -197,7 +197,10 @@
         ));
 
         
-        $order["ДатаИзменения"] = date_parse($arrOrder["DATE_UPDATE"]);
+        $order["ДатаИзменения"] = date_parse(
+        //$arrOrder["DATE_UPDATE"]
+        date("d.m.Y H:i:s")
+        );
         $order["ДатаИзменения"] = date("Y-m-d H:i:s",mktime(
             $order["ДатаИзменения"]["hour"],
             $order["ДатаИзменения"]["minute"],
