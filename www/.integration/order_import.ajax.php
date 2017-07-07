@@ -622,7 +622,6 @@
                     }
                 }
 
-                $nOrderCounter++;
                 // Конец обработки отмены
 
                 
@@ -653,6 +652,7 @@
                 }
                 */
             }
+            $nOrderCounter++;
             $t1 = microtime(true);
         }
         
