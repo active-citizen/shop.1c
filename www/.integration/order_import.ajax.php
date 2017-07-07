@@ -669,7 +669,7 @@
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
          	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                $DB->Query("
+                if($statusId=='F')$DB->Query("
                     UPDATE 
                         `b_sale_order` 
                     SET 

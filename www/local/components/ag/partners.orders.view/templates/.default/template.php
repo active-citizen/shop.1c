@@ -107,13 +107,15 @@
                 <?= $arResult["ORDER"]["DATE_UPDATE"]?>
             </td>
         </tr>
+        <? if($arResult["ORDER"]["STATUS_ID"]=='F'):?>
         <tr>
             <td class="field-name">
-                 Дата отгрузки:     
+                 Дата отгрузки:
             </td><td>
                 <?= $arResult["ORDER"]["DATE_STATUS"]?>
             </td>
         </tr>
+        <? endif ?>
         <tr>
             <td class="field-name">
                 Cертификат во вложении к уведомлениям   
