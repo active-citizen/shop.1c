@@ -240,9 +240,9 @@ if(isset($_REQUEST["download"])){
         && isset($_REQUEST["filter_done_to"]) 
         && $_REQUEST["filter_done_to"]
     ){
-        $arFilter[">=DATE_UPDATE"] = $_REQUEST["filter_done_from"]
+        $arFilter[">=DATE_STATUS"] = $_REQUEST["filter_done_from"]
             ." 00:00:00";
-        $arFilter["<=DATE_UPDATE"] = $_REQUEST["filter_done_to"]
+        $arFilter["<=DATE_STATUS"] = $_REQUEST["filter_done_to"]
             ." 23:59:59";
         $arFilter["STATUS_ID"] = 'F';
     }
@@ -250,7 +250,7 @@ if(isset($_REQUEST["download"])){
         isset($_REQUEST["filter_done_from"]) 
         && $_REQUEST["filter_done_from"]
     ){
-        $arFilter["DATE_MODIFY_FROM"] = $_REQUEST["filter_done_from"]
+        $arFilter[">=DATE_STATUS"] = $_REQUEST["filter_done_from"]
             ." 00:00:00";
         $arFilter["STATUS_ID"] = 'F';
     }
@@ -258,7 +258,7 @@ if(isset($_REQUEST["download"])){
         isset($_REQUEST["filter_done_to"]) 
         && $_REQUEST["filter_done_to"]
     ){
-        $arFilter["DATE_MODIFY_TO"] = $_REQUEST["filter_done_to"]
+        $arFilter["<=DATE_STATUS"] = $_REQUEST["filter_done_to"]
             ." 23:59:59";
         $arFilter["STATUS_ID"] = 'F';
     }
@@ -382,6 +382,7 @@ if(isset($_REQUEST["continue"])){
         "USER_NAME",
         "DATE_INSERT",
         "DATE_UPDATE",
+        "DATE_ORDER",
         "USER_EMAIL",
         "USER_LOGIN",
         "STORE_ID",
@@ -514,9 +515,9 @@ if(isset($_REQUEST["continue"])){
             .";".$arOrder["DATE_INSERT"]
             .";".$arOrder["DATE_UPDATE"]
             .";".''.(
-                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_UPDATE"])
+                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_ORDER"])
                 ?
-                $arOrder["DATE_UPDATE"]
+                $arOrder["DATE_ORDER"]
                 :
                 ""
             ).''
