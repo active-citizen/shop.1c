@@ -99,7 +99,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         
         if(!isset($arCatalogSection["ID"])){
         }else{
-            $arrFilter["IBLOCK_SECTION_ID"] = $arCatalogSection["ID"];
             $arrFilter["SECTION_ID"] = $arCatalogSection["ID"];
         }
     }
@@ -138,8 +137,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     
     // Узнаём ID инфоблока
     $arrFilter["IBLOCK_ID"] = CATALOG_IB_ID;
-    $arrFilter["SECTION_ID"] = $arSectionsIds;
-    
+    if(!$arrFilter["SECTION_ID"]) $arrFilter["SECTION_ID"] = $arSectionsIds;
+
     $res = CIBlockElement::GetList(
         $arrSorting,
         $arrFilter,

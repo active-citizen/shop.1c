@@ -46,14 +46,10 @@
             CModule::IncludeModule("iblock");
             CModule::IncludeModule("price");
             // Узнаём ID инфоблока товарных предложений
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
-            $iblock = $res->GetNext();
-            $OfferIblockId = $iblock["ID"];
+            $OfferIblockId = OFFER_IB_ID;
 
             // Узнаём ID инфоблока каталога
-            $res = CIBlock::GetList(array(),array("CODE"=>"clothes"));
-            $iblock = $res->GetNext();
-            $CatalogIblockId = $iblock["ID"];
+            $CatalogIblockId = CATALOG_IB_ID;
 
             $objOrder = new CSaleOrder;
             $objBasket = new CSaleBasket;

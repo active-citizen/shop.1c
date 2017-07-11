@@ -25,7 +25,7 @@
             ob_start("customCacheStore");
         }
         else{
-            header("Content-Encoding:gzip");
+            //header("Content-Encoding:gzip");
             echo file_get_contents($sHashFilename);
             die;
         }
