@@ -408,3 +408,12 @@ input:checked + .ag-shop-filter__variants-item {
     background-color: #FDD;
     border-radius: 8px;
 }
+
+#troyka-card-number{
+    width: 180px;
+    margin-bottom: 5px;
+}
+    
+.ag-shop-card__card-number-tooltip-content img{
+    width: 120px;
+}
