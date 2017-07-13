@@ -398,34 +398,9 @@ $(document).ready(function(){
     $('#ag-basket-amount').spinner("enable");
     $('#ag-basket-amount').spinner("value",1);
 
-    $('#troyka-card-number').each(function(){
-        
-        check_filling_troika(); 
-    });
-
-    $('#troyka-card-number').change(function(){check_filling_troika();});
-    $('.ag-shop-card__card-number-input').keyup(function(){check_filling_troika();});
 
 });
 
-
-function check_filling_troika(){
-    var re = /^\d{10}$/;
-    if(
-        $('#troyka-card-number').val()==''
-        &&
-        !re.test($('.ag-shop-card__card-number-input').val())
-    ){
-        $('.ag-shop-card__submit-button').prop('disabled',true);
-        $('.ag-shop-card__submit-button').addClass('submit-disabled');
-
-    }
-    else{
-        alert(111);
-        $('.ag-shop-card__submit-button').prop('disabled',false);
-        $('.ag-shop-card__submit-button').removeClass('submit-disabled');
-    }
-}
 
 function next_page(){
     // Берём информацию о следующей странице для подгрузки из input

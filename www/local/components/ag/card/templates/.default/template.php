@@ -242,7 +242,10 @@
                           <select class="ag-shop-modal__select" id="troyka-card-number">
                             <option value="">Добавить карту</option>
                           </select>
-                          <input class="ag-shop-card__card-number-input" type="tel" placeholder="0000000000">
+                          <input class="ag-shop-card__card-number-input"
+                          type="tel" placeholder="0000000000" value="3951086363"
+                          id="newcardnum"
+                          >
                           <div class="ag-shop-card__card-number-tooltip">
                             <div
                             class="ag-shop-card__card-number-tooltip-content"><img
@@ -528,6 +531,53 @@
         </div>
       </div>
     </div>
+
+
+    <div class="ag-shop-modal-wrap" style="display:none"
+    id="card-order-confirm-troika">
+      <div class="ag-shop-modal">
+        <div class="ag-shop-modal__container">
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Подтверждение заказа</div>
+          </div>
+          <div class="ag-shop-modal__row" style="display:none;">
+            <div class="ag-shop-modal__label">Код подтверждения, высланный вам
+            SMS-сообщением:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" >
+            <input class="ag-shop-card__card-number-input" id="confirm-code" type="tel"
+            placeholder="00000" value="" id="confirm-code">
+            </div>
+          </div>
+           <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Заказ:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-name">Сумка городская</div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Цена:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-price"><span>415</span> баллов</div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <?
+            if(
+                $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_ABILITY"][0]["VALUE_ENUM"]
+                !=
+                'да'
+            ):?>
+            <div class="ag-shop-modal__alert"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>При нажатии кнопки «Оформить заказ» баллы, потраченные на данное поощрение, не возвращаются.</span></div>
+          </div>
+          <? endif?>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__buttons-wrap">
+              <button class="ag-shop-modal__button"
+              id="card-order-confirm-button-troyka" type="button" onclick="return productConfirmNext();">Оформить заказ</button>
+              <button class="ag-shop-modal__button ag-shop-modal__button--cancel" type="button" onclick="$('.ag-shop-modal-wrap').fadeOut();">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
         <? else: ?>
         Нет доступных предложений
         <? endif ?>

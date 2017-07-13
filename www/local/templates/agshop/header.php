@@ -16,6 +16,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/styles/card.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/libs/jquery-ui.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/libs/slick.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
 
 
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");
@@ -24,6 +25,7 @@ $APPLICATION->AddHeadScript("/local/assets/libs/slick.min.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/index.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/scripts.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
+$APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
 
 ?>
 <!DOCTYPE html>

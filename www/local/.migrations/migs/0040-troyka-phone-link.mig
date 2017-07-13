@@ -1,0 +1,79 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с логом профилия
+     */
+    class troyka extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_troika_link`
+            ");
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_troika_link`(
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `login` CHAR(10),
+                    `cardnum` CHAR (12),
+                    `sms_date` BIGINT(20),
+                    `sms_code` CHAR(5),
+                    `confirmed` tinyint(1),
+                    PRIMARY KEY `id`(`id`),
+                    UNIQUE KEY `cardnum`(`cardnum`),
+                    UNIQUE KEY `cardnum_login`(`cardnum`,`login`),
+                    KEY `sms_date`(`sms_date`),
+                    KEY `login`(`login`),
+                    KEY `confirmed`(`confirmed`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ");
+
+            $fd = fopen(realpath(dirname(__FILE__))."/data/troika.csv","r");
+            $nCounter = 0;
+            while(!feof($fd)){
+                $nCounter++;
+                $sLine = fgets($fd);
+                list($ssoid,$sPhone,$sCard) = explode(";",$sLine);
+                if(!intval($sPhone))continue;
+                if(!intval($sCard))continue;
+                if(!$DB->Query(
+                    "
+                        SELECT 
+                            id 
+                        FROM 
+                            `int_troika_link`
+                        WHERE
+                            `cardnum` = '".trim($sCard)."'
+                        LIMIT 1
+                    "
+                )->Fetch())
+                    $DB->Query("
+                        INSERT INTO `int_troika_link`(
+                            `login`,
+                            `cardnum`,
+                            `confirmed`,
+                            `sms_date`
+                        )
+                        VALUES(
+                            '".trim($sPhone)."',
+                            '".trim($sCard)."',
+                            '1',
+                            '".time()."'
+                        )
+                    ");
+            }
+            fclose($fd);
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$troyka = new troyka();
+// Откатываем, если неудачно
+if(!$troyka->Run())$troyka->RollBack();
