@@ -152,12 +152,12 @@ href="/partners/orders/print.php?print=cancel&order=<?=
                 Товар
             </td>
             <td>
-                <a href="/catalog/<?= 
+                <!-- <a href="/catalog/<?= 
                     $arBasket["SECTION"]["CODE"]?>/<?= 
                     $arBasket["PRODUCT"]["CODE"]?>/<? 
-                ?>" target="_blank">
+                ?>" target="_blank"> -->
                 <?= $arBasket["PRODUCT"]["NAME"]?>
-                </a>
+                <!-- </a> -->
             </td>
         </tr>
         <tr>
@@ -165,11 +165,11 @@ href="/partners/orders/print.php?print=cancel&order=<?=
                 Категория
             </td>
             <td>
-                <a href="/catalog/<?= 
+                <!-- <a href="/catalog/<?= 
                     $arBasket["SECTION"]["CODE"]?>/<? 
-                ?>" target="_blank">
+                ?>" target="_blank"> -->
                 <?= $arBasket["SECTION"]["NAME"]?>
-                </a>
+                <!-- </a> -->
             </td>
         </tr>
         <tr>
@@ -177,10 +177,10 @@ href="/partners/orders/print.php?print=cancel&order=<?=
                 Получение
             </td>
             <td>
-                <a href="/rules/stores/#<?= $arResult["ORDER"]["STORE_INFO"]["ID"]
-                ?>" target="_blank">
+                <!-- <a href="/rules/stores/#<?= $arResult["ORDER"]["STORE_INFO"]["ID"]
+                ?>" target="_blank"> -->
                 <?= $arResult["ORDER"]["STORE_INFO"]["TITLE"]?>
-                </a>
+                <!-- </a> -->
             </td>
         </tr>
         <tr>
