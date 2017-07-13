@@ -13,21 +13,9 @@
     if($objSMS->error)
         $answer['error'] = $objSMS->error;
 
-    // Генерируем код подтверждения
+    // Проверяем код
     if(!$answer['error'])
-        $objSMS->codeGenerate(); 
-    if($objSMS->error)
-        $answer['error'] = $objSMS->error;
-
-    // Сохраняем код подтверждения
-    if(!$answer['error'])
-        $objSMS->codeSave($_REQUEST["cardnumber"]); 
-    if($objSMS->error)
-        $answer['error'] = $objSMS->error;
-
-    // Отсылаем SMS
-    if(!$answer['error'])
-        $objSMS->codeSend($_REQUEST["cardnumber"]); 
+        $objSMS->codeCheck($_REQUEST["cardnumber"],$_REQUEST["code"]); 
     if($objSMS->error)
         $answer['error'] = $objSMS->error;
         

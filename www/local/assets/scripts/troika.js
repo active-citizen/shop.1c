@@ -1,3 +1,5 @@
+var totalStoreId = 0;
+
 $(document).ready(function(){
     // Первоначальная проверка номера
     $('#troyka-card-number').each(function(){
@@ -13,10 +15,12 @@ $(document).ready(function(){
 });
 
 function check_filling_code(){
-    var re = 
-    /^\d{5}$/;
+    var re = /^\d{5}$/;
+    var re2 = /^\d{10}$/;
     $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
     if(
+        !re2.test($('#troyka-card-number').val())
+        &&
         !re.test($('#confirm-code').val())
     ){
         // Снимаем с кнопки отправки заказа события
@@ -46,7 +50,7 @@ function check_filling_troika(){
     if(
         $('#troyka-card-number').val()==''
         &&
-        !re.test($('.ag-shop-card__card-number-input').val())
+        !re.test($('#newcardnum').val())
     ){
         // Снимаем с кнопки отправки заказа события
         $('.ag-shop-card__submit-button').attr('onclick','return false;');
@@ -68,7 +72,20 @@ function check_filling_troika(){
 function confirmTroika(){
 
     var re = /^\d{10}$/
+    totalStoreId = $("input[name='place']:checked").val();
+    $('#troyka-confirm-store').html($('.ag-shop-card__selected-place-station').html());
+    $('#troyka-confirm-store-id').html(totalStoreId);
+    $('#confirm-card').html(
+        $('#troyka-card-number').val()
+        ?
+        $('#troyka-card-number').val()
+        :
+        $('#newcardnum').val()
+    );
 
+
+    $('#troyka-error').hide();
+    $('#confirm-code').parent().parent().hide();
     $('#card-order-confirm-troika').show('fast');
 
     // Название товара
@@ -96,16 +113,11 @@ function confirmTroika(){
                     var answer = JSON.parse(data);
                 }
                 catch(e){
-                    $('#confirm-code').parent().parent().hide();
-                    $('#card-order-confirm-button-troyka').html(
-                        'Ошибка парсинга ответа сервера:'+data
-                    );
+                    troykaRiseError(data);
+                    return false;
                 }
                 if(answer.error){
-                    $('#confirm-code').parent().parent().hide();
-                    $('#card-order-confirm-button-troyka').html(
-                        'Ошибка отправки SMS'+':'+answer.error
-                    );
+                    troykaRiseError(answer.error);
                     return false;
                 }else{
                     $('#confirm-code').parent().parent().show();
@@ -117,13 +129,11 @@ function confirmTroika(){
                     var answer = JSON.parse(data);
                 }
                 catch(e){
-                    $('#card-order-confirm-button-troyka').html(
-                        "Ошибка парсинга ответа сервера:"+data
-                    );
+                    troykaRiseError(data);
                 }
 
                 if(answer.error){
-                    alert(answer.error);
+                    troykaRiseError(answer.error);
                     return false;
                 }
 
@@ -133,7 +143,6 @@ function confirmTroika(){
 
     }
     else if(re.test($('#troyka-card-number').val())){
-        alert(111);
     }
 
 
@@ -164,10 +173,62 @@ function buyTroika(){
 
     var newcardnum = $('#newcardnum').val();
     var cardnum = $('#troyka-card-number').val();
-    /*
-    $.post(
-        
-    );
-    */
+
+    var troyka_num = cardnum?cardnum:newcardnum;
+    var code = $('#confirm-code').val();
+
+    $.ajax({
+        "url"   :   "/.integration/troyka.checkcard.ajax.php",
+        "type"  :   "POST",
+        "data"  :   {
+            "cardnumber":   troyka_num,
+            "code":         code
+        },
+        "success":  function(data){
+            try{
+                var answer = JSON.parse(data);
+            }
+            catch(e){
+                troykaRiseError(data,false)
+                $('#card-order-confirm-button-troyka').prop('disabled', false);
+                $('#card-order-confirm-button-troyka').removeClass('troyka-submit-disabled');
+                $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
+                return false;
+            }
+            if(answer.error){
+                troykaRiseError(answer.error,false);
+                $('#card-order-confirm-button-troyka').prop('disabled', false);
+                $('#card-order-confirm-button-troyka').removeClass('troyka-submit-disabled');
+                $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
+            return false;
+            }else{
+                $('#card-order-confirm-troika').hide('fast');
+            }
+        },
+        "error" :   function(data){
+            try{
+                var answer = JSON.parse(data);
+            }
+            catch(e){
+                troykaRiseError(data,false);
+            }
+
+            if(answer.error){
+                troykaRiseError(answer.error,false);
+            }
+
+            $('#card-order-confirm-button-troyka').prop('disabled', false);
+            $('#card-order-confirm-button-troyka').removeClass('troyka-submit-disabled');
+            $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
+            return false;
+        }
+    });
+
+}
+
+function troykaRiseError(errorText,hideCode = true){
+    $('#troyka-error').show();
+    $('#troyka-error').html( errorText );
+    if(hideCode)$('#confirm-code').parent().parent().hide();
 }
 

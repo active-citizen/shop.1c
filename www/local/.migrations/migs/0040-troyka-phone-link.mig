@@ -16,11 +16,13 @@
             $DB->Query("
                 CREATE TABLE IF NOT EXISTS `int_troika_link`(
                     `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `login` CHAR(10),
-                    `cardnum` CHAR (12),
-                    `sms_date` BIGINT(20),
-                    `sms_code` CHAR(5),
-                    `confirmed` tinyint(1),
+                    `login` CHAR(11) COMMENT 'Логин, он же номер телефона',
+                    `cardnum` CHAR (12) COMMENT 'Номер карты тройка',
+                    `sms_date` BIGINT(20) COMMENT 'Дата высылки кода в SMS',
+                    `sms_code` CHAR(5) COMMENT 'Высланный код',
+                    `confirmed` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Привязка карты к аккаунту подтверждена',
+                    `send_tries` INT(11) NOT NULL DEFAULT '0' COMMENT 'Число отправленных SMS с попыткой  привязать эту карту к этому аккаунту',
+                    `code_tries` INT(11) NOT NULL DEFAULT '0' COMMENT 'Число попыток ввести код подтверждения',
                     PRIMARY KEY `id`(`id`),
                     UNIQUE KEY `cardnum`(`cardnum`),
                     UNIQUE KEY `cardnum_login`(`cardnum`,`login`),
@@ -30,41 +32,42 @@
                 )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
             ");
 
-            $fd = fopen(realpath(dirname(__FILE__))."/data/troika.csv","r");
-            $nCounter = 0;
-            while(!feof($fd)){
-                $nCounter++;
-                $sLine = fgets($fd);
-                list($ssoid,$sPhone,$sCard) = explode(";",$sLine);
-                if(!intval($sPhone))continue;
-                if(!intval($sCard))continue;
-                if(!$DB->Query(
-                    "
-                        SELECT 
-                            id 
-                        FROM 
-                            `int_troika_link`
-                        WHERE
-                            `cardnum` = '".trim($sCard)."'
-                        LIMIT 1
-                    "
-                )->Fetch())
-                    $DB->Query("
-                        INSERT INTO `int_troika_link`(
-                            `login`,
-                            `cardnum`,
-                            `confirmed`,
-                            `sms_date`
-                        )
-                        VALUES(
-                            '".trim($sPhone)."',
-                            '".trim($sCard)."',
-                            '1',
-                            '".time()."'
-                        )
-                    ");
+            if($fd = fopen(realpath(dirname(__FILE__))."/data/troika.csv","r")){
+                $nCounter = 0;
+                while(!feof($fd)){
+                    $nCounter++;
+                    $sLine = fgets($fd);
+                    list($ssoid,$sPhone,$sCard) = explode(";",$sLine);
+                    if(!intval($sPhone))continue;
+                    if(!intval($sCard))continue;
+                    if(!$DB->Query(
+                        "
+                            SELECT 
+                                id 
+                            FROM 
+                                `int_troika_link`
+                            WHERE
+                                `cardnum` = '".trim($sCard)."'
+                            LIMIT 1
+                        "
+                    )->Fetch())
+                        $DB->Query("
+                            INSERT INTO `int_troika_link`(
+                                `login`,
+                                `cardnum`,
+                                `confirmed`,
+                                `sms_date`
+                            )
+                            VALUES(
+                                '".trim($sPhone)."',
+                                '".trim($sCard)."',
+                                '1',
+                                '".time()."'
+                            )
+                        ");
+                }
+                fclose($fd);
             }
-            fclose($fd);
 
             return true;
         }

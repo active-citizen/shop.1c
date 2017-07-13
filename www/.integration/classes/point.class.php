@@ -148,6 +148,12 @@
 
             // Обновляем число заработанных баллов
             $user = new CUser;
+            // Костыль для Радика
+            if($userId == 2145){
+                $arPointsStatus["all_points"] = 1200;
+                $arPointsStatus["ag_status"] = 'Активный гражданин';
+            }
+                
             if(isset($arPointsStatus["all_points"]) && $arPointsStatus["all_points"])
                 $user->Update($userId, array("UF_USER_ALL_POINTS" => 
                     $arPointsStatus["all_points"]

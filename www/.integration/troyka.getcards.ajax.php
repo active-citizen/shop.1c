@@ -13,21 +13,9 @@
     if($objSMS->error)
         $answer['error'] = $objSMS->error;
 
-    // Генерируем код подтверждения
+    // Получаем список кард пользователя
     if(!$answer['error'])
-        $objSMS->codeGenerate(); 
-    if($objSMS->error)
-        $answer['error'] = $objSMS->error;
-
-    // Сохраняем код подтверждения
-    if(!$answer['error'])
-        $objSMS->codeSave($_REQUEST["cardnumber"]); 
-    if($objSMS->error)
-        $answer['error'] = $objSMS->error;
-
-    // Отсылаем SMS
-    if(!$answer['error'])
-        $objSMS->codeSend($_REQUEST["cardnumber"]); 
+        $answer['cards'] = $objSMS->getCards(); 
     if($objSMS->error)
         $answer['error'] = $objSMS->error;
         
