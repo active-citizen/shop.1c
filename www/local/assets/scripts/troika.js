@@ -177,13 +177,19 @@ function buyTroika(){
     var troyka_num = cardnum?cardnum:newcardnum;
     var code = $('#confirm-code').val();
 
+    var postRequest ={
+        "cardnumber":   troyka_num,
+    };
+    if($('#troyka-card-number').val()=='')
+        postRequest["code"] = code;
+
+    
+
+
     $.ajax({
         "url"   :   "/.integration/troyka.checkcard.ajax.php",
         "type"  :   "POST",
-        "data"  :   {
-            "cardnumber":   troyka_num,
-            "code":         code
-        },
+        "data"  :   postRequest,
         "success":  function(data){
             try{
                 var answer = JSON.parse(data);
@@ -191,17 +197,77 @@ function buyTroika(){
             catch(e){
                 troykaRiseError(data,false)
                 $('#card-order-confirm-button-troyka').prop('disabled', false);
-                $('#card-order-confirm-button-troyka').removeClass('troyka-submit-disabled');
+                $('#card-order-confirm-button-troyka').removeClass(
+                    'troyka-submit-disabled'
+                );
                 $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
                 return false;
             }
             if(answer.error){
                 troykaRiseError(answer.error,false);
                 $('#card-order-confirm-button-troyka').prop('disabled', false);
-                $('#card-order-confirm-button-troyka').removeClass('troyka-submit-disabled');
+                $('#card-order-confirm-button-troyka').removeClass(
+                    'troyka-submit-disabled'
+                );
                 $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
             return false;
             }else{
+
+
+                var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="
+                +totalOfferId
+                +"&quantity="+$('#confirm-amount').html()
+                +"&store_id="+$('#confirm-store-id').html();
+                
+                // добавляем в корзину
+                $('#card-order-confirm-button-troyka').html('Обработка заказа...');
+                $('#card-order-confirm-button-troyka').prop('disabled', true);
+                $('#card-order-confirm-button-troyka').addClass(
+                    'troyka-submit-disabled'
+                );
+
+                $('#card-order-confirm-button-troyka').attr( "onclick" ,"return false;");
+                
+                $.get(
+                    add_basket_url,
+                    function(data){
+                        data = data.replace(/'/gi,'"');
+                        var answer = JSON.parse(data);
+                        if(answer.STATUS!='OK'){
+                            ag_ci_rise_error(answer.MESSAGE);
+                            return false;
+                        }
+                        
+                        $.get(
+                            "/profile/order/order.ajax.php?add_order=Y&store_id="+answer.store_id+"&troyka="+troyka_num,
+                            function(data){
+                                var answer = JSON.parse(data);
+                                if(answer.redirect_url){
+                                    document.location.href=answer.redirect_url;
+                                }
+                                else{
+                                   // Чистим корзину, если заказ неудачен
+                                    $.get(
+                                        "/profile/order/order.ajax.php?clear_basket",
+                                        function(){
+                                            $('#order-process-done').css('display','none');
+                                            $('.ok-button').css('display','block');
+                                            var error_text = '';
+                                            for(i in answer.order.ERROR){
+                                                error_text += i+": "+answer.order.ERROR[i];
+                                            }
+                                            $('.ag-shop-modal__container').append('<div class="error">'+error_text+'</div>')
+            //                              $('.ag-shop-modal-wrap').fadeOut('fast');
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+                
+
+
                 $('#card-order-confirm-troika').hide('fast');
             }
         },
@@ -218,7 +284,9 @@ function buyTroika(){
             }
 
             $('#card-order-confirm-button-troyka').prop('disabled', false);
-            $('#card-order-confirm-button-troyka').removeClass('troyka-submit-disabled');
+            $('#card-order-confirm-button-troyka').removeClass(
+                'troyka-submit-disabled'
+            );
             $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
             return false;
         }

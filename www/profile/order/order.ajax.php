@@ -313,8 +313,15 @@ elseif(isset($_GET["add_order"])){
     $arFields["USER_DESCRIPTION"] = "";
 
     $resCSaleOrder = new CSaleOrder;
+    /////////////////////
+    // Успешное добавление заказа
+    ///////////////////
     if($orderId = $resCSaleOrder->Add($arFields)){
-        
+       
+
+        // Запоминаем для заказа номер тройки
+
+        //////////// Снимает баллы
         require_once(
             $_SERVER["DOCUMENT_ROOT"]
                 ."/.integration/classes/order.class.php"
@@ -324,20 +331,24 @@ elseif(isset($_GET["add_order"])){
             -$totalSum,
             "Заказ Б-$orderId в магазине поощрений АГ"
         );
+        ///////////
+
+        //// Запоминаем номер заказа
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"Б-$orderId"));
-        
+
+        //
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
-//        CSaleUserTransact::Add(array("USER_ID"=>CUSer::GetID(),"AMOUNT"=>$totalSum,"CURRENCY"=>"BAL","DEBIT"=>"N","ORDER_ID"=>$orderId))
-//        CSaleOrder::PayOrder($orderId,"Y",true,false);
 
         CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
         $answer["redirect_url"] = "/profile/order/detail/$orderId/";
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
+        ///// Ставим в очередь на ЗНИ
         orderSetZNI($orderId,'N','AA');
+        //// Обновляем свойства заказа из значений товарного каталога
         orderPropertiesUpdate($orderId);
-        // Снимаем остатки
 
+        //////////////////////// Снимаем остатки ////////////////////////
         // Получаем список товаров к заказу
         $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
         `ORDER_ID`=".intval($orderId);

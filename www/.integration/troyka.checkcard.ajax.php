@@ -14,8 +14,12 @@
         $answer['error'] = $objSMS->error;
 
     // Проверяем код
-    if(!$answer['error'])
-        $objSMS->codeCheck($_REQUEST["cardnumber"],$_REQUEST["code"]); 
+    if(
+        !$answer['error'] 
+        && isset($_REQUEST["code"]) 
+        && isset($_REQUEST["cardnumber"])
+    ) $objSMS->codeCheck($_REQUEST["cardnumber"],$_REQUEST["code"]); 
+
     if($objSMS->error)
         $answer['error'] = $objSMS->error;
         

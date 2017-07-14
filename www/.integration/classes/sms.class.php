@@ -269,7 +269,8 @@
             }
 
             if(!preg_match("#^\d{5}$#",$sCode)){
-                $this->error = __CLASS__.':'.__LINE__
+                $this->error = ''
+//                    .__CLASS__.':'.__LINE__
                     .'Некорректный формат кода подтверждения'
                     ;
                 return false;
