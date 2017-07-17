@@ -1,5 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+CUtil::InitJSCore(['ajax']);
+
 if(preg_match("#^/partners#",$_SERVER["REQUEST_URI"])){
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/partners.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap.min.css");
@@ -27,6 +29,7 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/scripts.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
 
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -41,16 +44,15 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
 
-    <?
-        $APPLICATION->ShowHead();
-    ?>                                                                                                                                                           
     <?  
     //$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/colors.css");                                                                                                                       
     //$APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
     ?>
 
     <?
-    /*
+
+/*    
+
     <link rel="stylesheet" href="/local/assets/styles/fonts.css">
     <link rel="stylesheet" href="/local/assets/styles/components.css">
     <link rel="stylesheet" href="/local/assets/styles/profile.css">
@@ -60,6 +62,7 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
     <link rel="stylesheet" href="/local/assets/libs/jquery-ui.css">
     <link rel="stylesheet" href="/local/assets/libs/slick.css">
     <link rel="stylesheet" href="/local/assets/styles/mod.css">
+    <link rel="stylesheet" href="/local/assets/styles/troika.css">
     
     <script src="/local/assets/libs/jquery.min.js"></script>
     <script src="/local/assets/libs/jquery-ui.js"></script>
@@ -67,8 +70,15 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
     <script src="/local/assets/scripts/index.js"></script>
     <script src="/local/assets/scripts/scripts.js"></script>
     <script src="/local/assets/scripts/common.js"></script>
-    */
+    <script src="/local/assets/scripts/troika.js"></script>
+*/
+  
     ?>
+
+    <?
+      $APPLICATION->ShowHead();
+    ?>                                                                                                                                                           
+
     
     <title><?$APPLICATION->ShowTitle()?></title>
 

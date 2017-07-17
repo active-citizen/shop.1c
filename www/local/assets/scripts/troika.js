@@ -14,6 +14,7 @@ $(document).ready(function(){
 
 });
 
+
 function check_filling_code(){
     var re = /^\d{5}$/;
     var re2 = /^\d{10}$/;
@@ -44,6 +45,7 @@ function check_filling_code(){
 
 
 
+
 function check_filling_troika(){
     var re = /^\d{10}$/;
 
@@ -68,6 +70,8 @@ function check_filling_troika(){
         $('.ag-shop-card__card-number-input').removeClass('troyka-number-wrong');
     }
 }
+
+
 
 function confirmTroika(){
 
@@ -164,6 +168,8 @@ function confirmTroika(){
 
 }
 
+
+
 function buyTroika(){
 
     $('#card-order-confirm-button-troyka').prop('disabled', true);
@@ -185,7 +191,7 @@ function buyTroika(){
 
     
 
-
+    
     $.ajax({
         "url"   :   "/.integration/troyka.checkcard.ajax.php",
         "type"  :   "POST",
@@ -294,7 +300,10 @@ function buyTroika(){
 
 }
 
-function troykaRiseError(errorText,hideCode = true){
+
+
+function troykaRiseError(errorText,hideCode){
+    hideCode  = hideCode || true;
     $('#troyka-error').show();
     $('#troyka-error').html( errorText );
     if(hideCode)$('#confirm-code').parent().parent().hide();
