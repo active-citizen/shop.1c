@@ -1,3 +1,4 @@
 ./phpunit-5.7.phar \
     --bootstrap common.php \
-    001\-common\-tests
+    --colors=always \
+    002\-curl\-logger

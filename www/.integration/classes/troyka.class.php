@@ -1,10 +1,6 @@
 <?
     require_once($_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php");
-    require_once( 
-        $_SERVER["DOCUMENT_ROOT"]
-        ."/.integration/classes/troyka.class.php"
-    );
 
     class CTroyka{
         var $number = false;
@@ -17,9 +13,11 @@
                 $this->error = ''
                     .__CLASS__.":"
                     .__LINE__.":"
-                    ."Некорректный номер тройки"
+                    ."Некорректный номер тройки";
                 return false;
             }
+
+            return true;
         }
 
         function linkOrder(
@@ -30,7 +28,7 @@
                 $this->error = ''
                     .__CLASS__.":"
                     .__LINE__.":"
-                    ."Некорректный номер заказа"
+                    ."Некорректный номер заказа";
                 return false;
             }
 
