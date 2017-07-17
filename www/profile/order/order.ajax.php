@@ -319,7 +319,6 @@ elseif(isset($_GET["add_order"])){
     if($orderId = $resCSaleOrder->Add($arFields)){
        
 
-        // Запоминаем для заказа номер тройки
 
         //////////// Снимает баллы
         require_once(
@@ -336,7 +335,9 @@ elseif(isset($_GET["add_order"])){
         //// Запоминаем номер заказа
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"Б-$orderId"));
 
-        //
+       
+
+
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 
         CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
@@ -394,7 +395,21 @@ elseif(isset($_GET["add_order"])){
         }
 
 
+        if(isset($_REQUEST["troyka"]) && $nTroykaNum = trim($_REQUEST["troyka"])){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]
+                    ."/.integration/classes/troyka.class.php"
+            );
 
+            $objTroyka = new CTroyka($nTroykaNum);            
+
+            // Запоминаем для заказа номер тройки
+            $objTroyka->linkOrder($orderId);
+
+            // Производим транзакцию в тройку
+            // Запоминаем номер транзакции тройки
+        }
+ 
         // Снова заливаем историю баллов
         // пока не надо. слишком тормозит процесс заказа
         /**
