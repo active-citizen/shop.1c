@@ -7,9 +7,9 @@
         var $error = '';
         
         function __construct(){
-            global $DB;
-            if(!$DB->db_Conn->stat)
-            $DB->Connect($DB->DBHost,$DB->DBName,$DB->DBLogin,$DB->DBPassword);
+//            global $DB;
+//            if(!$DB->db_Conn->stat)
+//            $DB->Connect($DB->DBHost,$DB->DBName,$DB->DBLogin,$DB->DBPassword);
 
         }
 
@@ -44,7 +44,7 @@
             }
 
             $sQuery = "INSERT INTO `int_curl_logger`(
-                `id`,`ctime`,`url`,`order_num`,`data`
+                `id`,`ctime`,`url`,`order_num`,`data`,`post_data`
             )";
 
             $sQuery .= "VALUES(";
@@ -53,6 +53,7 @@
             $sQuery .= ",'".$DB->ForSql($arParams["URL"])."'";
             $sQuery .= ",'".$DB->ForSql($arParams["ORDER_NUM"])."'";
             $sQuery .= ",'".$DB->ForSql($arParams["DATA"])."'";
+            $sQuery .= ",'".$DB->ForSql($arParams["POST_DATA"])."'";
             $sQuery .= ");";
 
 
@@ -94,8 +95,41 @@
             return true;
         }
 
+        function removeByOrderNum($nOrderNum){
+            global $DB;
+            $this->error = '';
+
+            if(!preg_match("#^(Б\-\d+|\d+)$#", $nOrderNum)){
+                $this->error = ''
+                    ."Некорректный номер заказа";
+                return false;
+            }
+
+            $sQuery = "DELETE FROM `int_curl_logger`";
+            $sQuery .="WHERE `order_num`='".$nOrderNum."' ";
+            $DB->Query($sQuery);
+            return true;
+        }
+
+
         function getByOrderNum($nOrderNum){
-            return false;
+            global $DB;
+            $this->error = '';
+
+            if(!preg_match("#^(Б\-\d+|\d+)$#", $nOrderNum)){
+                $this->error = ''
+                    ."Некорректный номер заказа";
+                return false;
+            }
+
+            $sQuery = "SELECT * FROM `int_curl_logger` WHERE";
+            $sQuery .="`order_num`='".$nOrderNum."' ORDER BY `ctime` DESC";
+
+            $arResult = array();
+            $res = $DB->Query($sQuery);
+            while($arr = $res->Fetch())$arResult[$arr["id"]] = $arr;
+
+            return $arResult;
         }
 
     }

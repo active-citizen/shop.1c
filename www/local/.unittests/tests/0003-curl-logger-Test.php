@@ -97,7 +97,7 @@
             );
 
             $arLogParam = array("ORDER_NUM"=>"123123123","URL"=>"https://ya.ru/",
-                "DATA"=>"Content data"
+                "DATA"=>"Content data","POST_DATA"=>"Post data"
             );
             $nLogID = $objLogger->addLog( $arLogParam);
             $this->assertTrue(
@@ -131,6 +131,11 @@
                 $arLog["DATA"],
                 $arParams["DATA"],
                 "Проверка эквивалентности DATA"
+            );
+            $this->assertEquals(
+                $arLog["POST_DATA"],
+                $arParams["POST_DATA"],
+                "Проверка эквивалентности POST_DATA"
             );
             $this->assertEquals(
                 $arLog["URL"],
@@ -169,6 +174,63 @@
         }
 
         function testAddLogs(){
+            $objLogger = new CCurlLogger();
+
+            $arLogs = array(
+                array(
+                    "ORDER_NUM" =>  'Б-999999991',
+                    "URL"       =>  'https://ya.ru/1?get=sql',
+                    "POST_DATA" =>  '',
+                    "DATA"      =>  ''
+                ),
+                array(
+                    "ORDER_NUM" =>  '999999991',
+                    "URL"       =>  'https://yandex.ru/maps',
+                    "POST_DATA" =>  'Post data 01',
+                    "DATA"      =>  'Data 01'
+                ),
+                array(
+                    "ORDER_NUM" =>  '999999991',
+                    "URL"       =>
+                'https://yandex.ru/maps/51/samara/?ll=50.125165%2C53.197532&z=14',
+                    "POST_DATA" =>  'Post data 01',
+                    "DATA"      =>  'Data 02'
+                ),
+                array(
+                    "ORDER_NUM" =>  '999999991',
+                    "URL"       => 'http://perpetum-mobile.ru/',
+                    "POST_DATA" =>  'Post data 03',
+                    "DATA"      =>  'Data 03'
+                ),
+            );
+
+            foreach($arLogs as $arLog){
+                $nLogID = $objLogger->addLog( $arLog);
+                $this->assertTrue(
+                    boolval(intval($nLogID)),
+                    'Добавление лога и получение его ID'
+                );
+            }
+
+            $arAnswer = $objLogger->getByOrderNum('999999991');
+            $this->assertEquals(3,count($arAnswer),
+                "Проверка количества ответов"
+            );
+
+            $arAnswer = $objLogger->getByOrderNum('Б-999999991');
+            $this->assertEquals(1,count($arAnswer),
+                "Проверка количества ответов"
+            );
+
+            // Удаление логов по их номеру заказа
+            foreach($arLogs as $arLog){
+                $objLogger->removeByOrderNum($arLog["ORDER_NUM"]);
+                $this->assertFalse(
+                    boolval($objLogger->error),
+                    'Проверка отсутствия ошибок добавления'
+                );
+            }
+
         }
        
         

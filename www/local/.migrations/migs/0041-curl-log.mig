@@ -19,6 +19,7 @@
                     `ctime` BIGINT(20) COMMENT 'Timestamp добавления',
                     `order_num` CHAR(24) COMMENT 'номер заказа',
                     `url` CHAR (255) COMMENT 'url',
+                    `post_data` LONGTEXT COMMENT 'POST-запрос',
                     `data` LONGTEXT COMMENT 'Содержимое ответа',
                     PRIMARY KEY `id`(`id`),
                     KEY `order_num`(`order_num`)

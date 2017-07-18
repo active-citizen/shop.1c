@@ -11,6 +11,8 @@ $GLOBALS["DBType"] = 'mysql';
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 
+$DB->Connect($DB->DBHost,$DB->DBName,$DB->DBLogin,$DB->DBPassword); 
+
 /*
     $app = \Bitrix\Main\Application::getInstance();
     $con = $app->getConnection();
