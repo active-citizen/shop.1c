@@ -197,4 +197,35 @@
                 "Проверка назначенного заказу пустого номера карты тройка"
             );
         }
+
+        function testErrorMapping(){
+            $objTroyka = new CTroyka();
+            $objTroyka->errorNo = 24;
+            $objTroyka->errorDesc = 6;
+            $objTroyka->errorMessage = 'E004';
+
+            $arError = $objTroyka->errorMapping();
+
+            $this->assertArrayHasKey("id",$arError);
+            $this->assertArrayHasKey("errorCode",$arError);
+            $this->assertArrayHasKey("errorDesc",$arError);
+            $this->assertArrayHasKey("ErrorMessage",$arError);
+            $this->assertArrayHasKey("errorValue",$arError);
+            $this->assertArrayHasKey("messageType",$arError);
+            $this->assertArrayHasKey("messageText",$arError);
+            $this->assertArrayHasKey("errorCodeCOTT",$arError);
+            $this->assertArrayHasKey("errorTextCOTT",$arError);
+            $this->assertArrayHasKey("recomendCOTT",$arError);
+            $this->assertArrayHasKey("userMessegeCOTT",$arError);
+
+            $this->assertEquals("24",$arError["errorCode"]);
+            $this->assertEquals("6",$arError["errorDesc"]);
+            $this->assertEquals("E004",$arError["ErrorMessage"]);
+            $this->assertEquals("Невозможно приобрести данный вид билета.",
+                trim($arError["errorValue"]));
+            $this->assertEquals('"Приносим свои извинения. Удаленное пополнение карты «Тройка» отклонено. Попробуйте повторить Ваш запрос позднее. " (код для обращения в техподдержку С,6,E004)', $arError["messageText"]);
+
+         
+        }
+
     }

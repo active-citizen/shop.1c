@@ -429,9 +429,14 @@ elseif(isset($_GET["add_order"])){
             // Производим транзакцию в тройку
             $objTroyka->payment("Б-".$orderId);
             if($objTroyka->error){
+                $arErrors = $objTroyka->errorMapping();
                 $answer = array(
                     "order"=>array(
                         "ERROR"=>array(
+                            isset($arErrors["messageText"])
+                            ?
+                            $arErrors["messageText"]
+                            :
                             $objTroyka->error
                         )
                     )

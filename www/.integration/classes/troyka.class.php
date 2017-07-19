@@ -12,6 +12,7 @@
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
         var $errorDesc=0;       //!< Из протокола тройки
+        var $errorMessage=0;    //!< Из протокола тройки
         var $url    = '';       //!< Ссылка на wsdl-шлюз
         var $pemPath = '';      //!< Полный путь до сертификата
         var $currentVersion     //!< Номер версии базы поставщиков
@@ -682,6 +683,7 @@
             $sErrorText = '';
             $sErrorCode = 0;
             $sErrorDesc  = 0;
+            $sErrorMessage = '';
             if(
                 isset($arSoapResult["errorCode"]) 
                 &&
@@ -695,14 +697,18 @@
             ){
                 $sErrorText = 'Код ошибки транзации Тройки '.
                     $arSoapResult["errorCode"];
-                if(isset($arSoapResult["errorDesc"]))
-                    $sErrorDesc = $arSoapResult["errorDesc"];
             }
             elseif(
                 !isset($arSoapResult["errorCode"]) 
             ){
                 $sErrorText = 'Транзакция тройки не вернула кода ошибки';
             }
+
+            if(isset($arSoapResult["errorDesc"]))
+                $sErrorDesc = $arSoapResult["errorDesc"];
+            if(isset($arSoapResult["errorMessage"]))
+                $sErrorMessage = $arSoapResult["errorMessage"];
+
             $arLines = file(realpath(dirname(__FILE__))."/troyka_error_codes.txt");
             foreach($arLines as $sLine){
                 $tmp = explode("{tab}",$sLine);
@@ -717,6 +723,7 @@
             $this->error = $sErrorText;
             $this->errorNo = $sErrorCode;
             $this->errorDesc = $sErrorDesc;
+            $this->errorMessage = $sErrorMessage;
 
             return array(
                 "errorCode" => $sErrorCode,
@@ -724,6 +731,57 @@
                 "errorDesc" =>  $sErrorDesc
             );
 
+        }
+
+        /**
+            Маппинг ошибок по errorCode и errorDesc из  протокола тройки
+            @return array(
+                `errorCode`,
+                `errorDesc`,
+                `ErrorMessage`,
+                `errorValue`,
+                `messageType`,
+                `messageText`,
+                `errorCodeCOTT`,
+                `errorTextCOTT`,
+                `recomendCOTT`,
+                `userMessegeCOTT`
+                 
+            )
+        */
+        function errorMapping(
+            $sErrorCode = '',   
+            $sErrorDesc = '',
+            $sErrorMessage = ''
+        ){
+            global $DB;
+            if(!$sErrorCode)         
+                $sErrorCode = $this->errorNo;
+            if(!$sErrorDesc)         
+                $sErrorDesc = $this->errorDesc;
+            if(!$sErrorMessage)         
+                $sErrorMessage = $this->errorMessage;
+
+            $sQuery = "SELECT * FROM `int_troika_error_mapping` WHERE 1";
+            $sQuery.= " AND `errorCode`='".$DB->ForSql($sErrorCode)."' ";
+            if($sErrorDesc)
+                $sQuery.= " AND `errorDesc`='".$DB->ForSql($sErrorDesc)."' ";
+            if($sErrorMessage)
+                $sQuery.= " AND `errorMessage`='".$DB->ForSql($sErrorMessage)."' ";
+            $sQuery .= " LIMIT 1";
+            
+            $arAnswer = $DB->Query($sQuery)->Fetch();
+            $arAnswer["messageText"] = str_replace(
+                "C",$arAnswer["errorCode"],$arAnswer["messageText"]
+            );
+            $arAnswer["messageText"] = str_replace(
+                "D",$arAnswer["errorDesc"],$arAnswer["messageText"]
+            );
+            $arAnswer["messageText"] = str_replace(
+                "M",$arAnswer["ErrorMessage"],$arAnswer["messageText"]
+            );
+
+            return $arAnswer;
         }
     }
 
