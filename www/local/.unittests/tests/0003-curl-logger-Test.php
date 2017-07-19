@@ -20,7 +20,7 @@
         }
 
         function testClassInclude(){
-            $this->assertTrue(boolval(include($this->classFilename)));
+            $this->assertTrue(boolval(include_once($this->classFilename)));
         }
 
         function testCreateLoggerObject(){

@@ -13,7 +13,20 @@
 
         }
 
-        function addLog($arParams=array()){
+        /**
+            Добавление лога
+        */
+        function addLog(
+            $arParams=array() //!< Массив параметров лога
+            /**
+                $arParams = array(
+                    "ORDER_NUM" =>  "Номер заказа в виде Б-NNNNNNNN или NNNNNNN",
+                    "URL"       =>  "url на который отправлялся запрос",
+                    "DATA"      =>  "Полученные в результате запроса данные",
+                    "POST_DATA" =>  "Отправленные запросом данные"
+                )
+            */
+        ){
             global $DB;
             $this->error = '';
 
@@ -81,6 +94,9 @@
             return $DB->Query($sQuery)->Fetch();
         }
 
+        /**
+            Удаление лога по его ID
+        */
         function remove($nLogId){
             global $DB;
             $this->error = '';
@@ -95,6 +111,9 @@
             return true;
         }
 
+        /**
+            Удаление логов указанного заказа
+        */
         function removeByOrderNum($nOrderNum){
             global $DB;
             $this->error = '';
@@ -111,8 +130,13 @@
             return true;
         }
 
-
-        function getByOrderNum($nOrderNum){
+        /**
+            Получение массива логов по указанному номеру заказа
+        */
+        function getByOrderNum(
+            $nOrderNum, 
+            $sSort = 'DESC'
+        ){
             global $DB;
             $this->error = '';
 
@@ -123,7 +147,7 @@
             }
 
             $sQuery = "SELECT * FROM `int_curl_logger` WHERE";
-            $sQuery .="`order_num`='".$nOrderNum."' ORDER BY `ctime` DESC";
+            $sQuery .="`order_num`='".$nOrderNum."' ORDER BY `id` $sSort";
 
             $arResult = array();
             $res = $DB->Query($sQuery);

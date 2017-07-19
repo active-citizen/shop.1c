@@ -280,9 +280,13 @@ elseif(isset($_GET["add_order"])){
     )->GetNext();
 
     if(
+        0
+        &&
+        (
         !isset($arProductStore["AMOUNT"])
         ||
         $arProductStore["AMOUNT"]-$nStoreLimit<=0
+        )
     ){
         $answer = array(
             "order"=>array(
@@ -334,9 +338,6 @@ elseif(isset($_GET["add_order"])){
 
         //// Запоминаем номер заказа
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"Б-$orderId"));
-
-       
-
 
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 
@@ -394,20 +395,50 @@ elseif(isset($_GET["add_order"])){
             
         }
 
-
+        /////// Действия над картой-тройкой
         if(isset($_REQUEST["troyka"]) && $nTroykaNum = trim($_REQUEST["troyka"])){
+            orderSetZNI($orderId,'F','AA');
             require_once(
                 $_SERVER["DOCUMENT_ROOT"]
                     ."/.integration/classes/troyka.class.php"
             );
 
             $objTroyka = new CTroyka($nTroykaNum);            
+            if($objTroyka->error){
+                $answer = array(
+                    "order"=>array(
+                        "ERROR"=>array(
+                            $objTroyka->error
+                        )
+                    )
+                );
+            }
 
             // Запоминаем для заказа номер тройки
-            $objTroyka->linkOrder($orderId);
+            $objTroyka->linkOrder("Б-".$orderId);
+            if($objTroyka->error){
+                $answer = array(
+                    "order"=>array(
+                        "ERROR"=>array(
+                            $objTroyka->error
+                        )
+                    )
+                );
+            }
 
             // Производим транзакцию в тройку
+            $objTroyka->payment("Б-".$orderId);
+            if($objTroyka->error){
+                $answer = array(
+                    "order"=>array(
+                        "ERROR"=>array(
+                            $objTroyka->error
+                        )
+                    )
+                );
+            }
             // Запоминаем номер транзакции тройки
+            $objTroyka->linkOrderTransact("Б-".$orderId);
         }
  
         // Снова заливаем историю баллов

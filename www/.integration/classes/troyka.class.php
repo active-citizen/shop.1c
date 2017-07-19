@@ -6,10 +6,12 @@
 
     class CTroyka{
         var $number = false;    //!< Номер карты тройка
+        var $transact = '';     //!< ID транзакции
         var $phone = '';        //!< Номер телефона владельца банк.карты
         var $cvc = '';          //!< CVC банковской карты
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
+        var $errorDesc=0;       //!< Из протокола тройки
         var $url    = '';       //!< Ссылка на wsdl-шлюз
         var $pemPath = '';      //!< Полный путь до сертификата
         var $currentVersion     //!< Номер версии базы поставщиков
@@ -74,11 +76,8 @@
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
-            if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult)){
-                $this->error = $arErrorInfo['errorText'];
-                $this->errorNo = $arErrorInfo["ErrorCode"];
+            if($this->getWsdlErrorInfo($arSoapResult))
                 return false;
-            }
 
             // Ищем свежую активную карту и прописываем её вместо карты по
             // умолчанию
@@ -129,11 +128,9 @@
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
-            if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult)){
-                $this->error = $arErrorInfo['errorText'];
-                $this->errorNo = $arErrorInfo["ErrorCode"];
+            if($this->getWsdlErrorInfo($arSoapResult))
                 return false;
-            }
+            
             
             return $arSoapResult;
         }
@@ -168,11 +165,9 @@
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
-            if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult)){
-                $this->error = $arErrorInfo['errorText'];
-                $this->errorNo = $arErrorInfo["ErrorCode"];
+            if($this->getWsdlErrorInfo($arSoapResult))
                 return false;
-            }
+            
             return $arSoapResult;
         }
 
@@ -191,11 +186,19 @@
                     'local_cert'=>$this->pemPath
                 )
             );
+
+            include_once(
+                _SERVER["DOCUMENT_ROOT"]."/local/php_interface/settings.inc.php"
+            );
+            $sMdOrder =
+                CONTOUR."-".
+                str_replace("Б","b",$sOrderNum)
+                ."-".date("Y")."-".date("m")."-".date("d")."-".date("H")."-".date("i");
             $arSoapRequest =  array(
                 "getPaymentCapabilities"=>array(
                     "phone"         =>  $this->phone,
                     "bindingId"     =>  $this->bindingId, 
-                    "partnerMdOrder"=>  $this->partnerMdOrder,
+                    "partnerMdOrder"=>  $sMdOrder,
                     "amount"        =>  $this->amount,
                     "currency"      =>  $this->currency,
                     "serviceId"     =>  $this->serviceId,
@@ -216,11 +219,9 @@
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
-            if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult)){
-                $this->error = $arErrorInfo['errorText'];
-                $this->errorNo = $arErrorInfo["ErrorCode"];
+            if($this->getWsdlErrorInfo($arSoapResult))
                 return false;
-            }
+            
 
             if(isset($arSoapResult["bindings"]["mdOrder"]))
                 $this->partnerMdOrder = $arSoapResult["bindings"]["mdOrder"];
@@ -234,8 +235,17 @@
          function payment($sOrderNum){
 
             $this->getBindings($sOrderNum);
+            $this->checkProviders($sOrderNum);
+            $this->getProviders($sOrderNum);
             $this->getPaymentCapabilities($sOrderNum);
 
+            $objSoap = new SoapClient(
+                $this->url,
+                array(
+                    'trace'=>1,
+                    'local_cert'=>$this->pemPath
+                )
+            );
 
             $arSoapRequest =  array(
                 "payment"=>array(
@@ -245,30 +255,24 @@
                 )
             ); 
 
-            print_r($arSoapRequest);
-            die;
-
-            $arSoapResult = array();
-            /*
-            $arSoapResult = $objSoap->__soapCall(
-                "payment",             
-            );
-            */
-
+            $arSoapResult = $objSoap->__soapCall( "payment",$arSoapRequest);
+            
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
-            if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult)){
-                $this->error = $arErrorInfo['errorText'];
-                $this->errorNo = $arErrorInfo["ErrorCode"];
+            // Сохраняем номер транзакции
+            if(isset($arSoapResult["completedPayment"]["refnum"]))
+                $this->transact = $arSoapResult["completedPayment"]["refnum"];
+
+            if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult))
                 return false;
-            }
+            
             
             return true;
         }
 
-       /**
+        /**
             привязки номера тройки к заказу
         */
         function linkOrder(
@@ -352,6 +356,88 @@
         }
 
         /**
+            привязки номера транзакции к заказу
+        */
+        function linkOrderTransact(
+            $nOrderNum,      // Номер заказа
+            $sTransactNum = '-'// ПУстой номер транзакции (только для автотеста)
+        ){
+            if($sTransactNum!='-')
+                $this->transact = $sTransactNum;
+            $this->error = ''; 
+            if(!$this->checkOrderNum($nOrderNum))return false;
+
+            $arOrder = CSaleOrder::GetList(
+                array(),
+                array("ADDITIONAL_INFO"=>$nOrderNum),
+                false,
+                array("nTopCount"=>1),
+                array("ID")
+            )->Fetch();
+            if(!isset($arOrder["ID"])){
+                $this->error = ''
+                    .__CLASS__.":"
+                    .__LINE__.":"
+                    ."Заказ с номером '$nOrderNum' не существует";
+                return false;
+            }
+
+            $arPropGroup = CSaleOrderPropsGroup::GetList(
+                array(),
+                $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+                false,
+                array("nTopCount"=>1)
+            )->GetNext();
+            $nPropGroup = $arPropGroup["ID"];
+
+
+            $arPropValue = CSaleOrderProps::GetList(
+                array("SORT" => "ASC"),
+                array(
+                        "ORDER_ID"       => $arOrder["ID"],
+                        "PERSON_TYPE_ID" => 1,
+                        "PROPS_GROUP_ID" => $nPropGroup,
+                        "CODE"           => "TROIKA_TRANSACT_ID" 
+                    ),
+                false,
+                false,
+                array("ID","CODE","NAME")
+            )->Fetch();
+
+            $arFilter = array(
+                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_PROPS_ID"=>  $arPropValue["ID"],
+                "CODE"          =>  $arPropValue["CODE"],
+                "NAME"          =>  $arPropValue["NAME"]
+            );
+            if(
+                $arExistPropValue = 
+                CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
+            ){
+                $arFilter["VALUE"] = $this->transact;
+                if(!CSaleOrderPropsValue::Update(
+                    $arExistPropValue["ID"],
+                    $arFilter 
+                )){
+                    $this->error = ''
+                        .__CLASS__.":"
+                        .__LINE__.":"
+                        ."Ошибка обновления свойства заказа";
+                    return false;
+                }
+            }
+            elseif($this->number){
+                $arFilter["VALUE"] = $this->transact;
+                if(!CSaleOrderPropsValue::Add($arFilter)){
+                    $this->error = ''
+                        .__CLASS__.":"
+                        .__LINE__.":"
+                        ."Ошибка добавления свойства заказа";
+                    return false;
+                }
+            }
+        }
+        /**
             Получение номера тройки по номеру заказа
         */
         function getTroykaNum($sOrderNum){
@@ -420,6 +506,75 @@
             return $arExistPropValue["VALUE"];
         }
 
+        /**
+            Получение номера транзакции по номеру заказа
+        */
+        function getTroykaTransactNum($sOrderNum){
+            $this->error = ''; 
+            if(!$this->checkOrderNum($sOrderNum))return false;
+            
+            $arOrder = CSaleOrder::GetList(
+                array(),
+                array("ADDITIONAL_INFO"=>$sOrderNum),
+                false,
+                array("nTopCount"=>1),
+                array("ID","ADDITIONAL_INFO")
+            )->Fetch();
+
+            if(!isset($arOrder["ID"])){
+                $this->error = ''
+                    .__CLASS__.":"
+                    .__LINE__.":"
+                    ."Заказ с номером '$sOrderNum' не существует";
+                return false;
+            }
+
+            $arPropGroup = CSaleOrderPropsGroup::GetList(
+                array(),
+                $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+                false,
+                array("nTopCount"=>1)
+            )->GetNext();
+            $nPropGroup = $arPropGroup["ID"];
+
+
+            $arPropValue = CSaleOrderProps::GetList(
+                array("SORT" => "ASC"),
+                array(
+                        "ORDER_ID"       => $arOrder["ID"],
+                        "PERSON_TYPE_ID" => 1,
+                        "PROPS_GROUP_ID" => $nPropGroup,
+                        "CODE"           => "TROIKA_TRANSACT_ID" 
+                    ),
+                false,
+                false,
+                array("ID","CODE","NAME")
+            )->Fetch();
+
+            $arFilter = array(
+                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_PROPS_ID"=>  $arPropValue["ID"],
+                "CODE"          =>  $arPropValue["CODE"],
+                "NAME"          =>  $arPropValue["NAME"]
+            );
+            $arExistPropValue = 
+            CSaleOrderPropsValue::GetList(Array(), $arFilter)->Fetch();
+
+            if(
+                !isset($arExistPropValue["VALUE"])
+                ||
+                !$arExistPropValue["VALUE"]
+            ){
+                $this->error = ''
+                    .__CLASS__.":"
+                    .__LINE__.":"
+                    ."Номер транзакции тройки для заказа '".
+                        $arOrder["ID"]."' не указан";
+                return false;
+            }
+
+            return $arExistPropValue["VALUE"];
+        }
         /**
             Запись запросов в лог
 
@@ -526,6 +681,7 @@
         ){
             $sErrorText = '';
             $sErrorCode = 0;
+            $sErrorDesc  = 0;
             if(
                 isset($arSoapResult["errorCode"]) 
                 &&
@@ -539,6 +695,8 @@
             ){
                 $sErrorText = 'Код ошибки транзации Тройки '.
                     $arSoapResult["errorCode"];
+                if(isset($arSoapResult["errorDesc"]))
+                    $sErrorDesc = $arSoapResult["errorDesc"];
             }
             elseif(
                 !isset($arSoapResult["errorCode"]) 
@@ -556,9 +714,14 @@
 
             }
 
+            $this->error = $sErrorText;
+            $this->errorNo = $sErrorCode;
+            $this->errorDesc = $sErrorDesc;
+
             return array(
                 "errorCode" => $sErrorCode,
-                "errorText" =>  $sErrorText
+                "errorText" =>  $sErrorText,
+                "errorDesc" =>  $sErrorDesc
             );
 
         }

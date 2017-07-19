@@ -127,7 +127,71 @@
                 <? endif ?>
             </td>
         </tr>
+        <? if(
+            isset($arResult["ORDER"]["PROPERTIES"]["TROIKA"]["VALUE"])
+            &&
+            $arResult["ORDER"]["PROPERTIES"]["TROIKA"]["VALUE"]
+        ):?>
+        <tr>
+            <td class="field-name">
+                Номер карты Тройки
+            </td><td>
+                <?= $arResult["ORDER"]["PROPERTIES"]["TROIKA"]["VALUE"] ?>
+            </td>
+        </tr>
+        <? endif ?>
+        <? if(
+            isset($arResult["ORDER"]["PROPERTIES"]["TROIKA_TRANSACT_ID"]["VALUE"])
+            &&
+            $arResult["ORDER"]["PROPERTIES"]["TROIKA_TRANSACT_ID"]["VALUE"]
+        ):?>
+        <tr>
+            <td class="field-name">
+                ID транзакции в БМ
+            </td><td>
+                <?= $arResult["ORDER"]["PROPERTIES"]["TROIKA_TRANSACT_ID"]["VALUE"] ?>
+            </td>
+        </tr>
+        <? endif ?>
     </table>
+        <? if(isset($arResult["ORDER"]["CURL_LOG"])):?>
+            <div id="accordion">
+                <h3>
+                    Журнал обмена (доступен администраторам)
+                </h3>
+                <div>
+                    <? foreach($arResult["ORDER"]["CURL_LOG"] as $arLog):?>
+                    <table class="table">
+                        <tr>
+                            <td>Время</td>
+                            <td><?= date("d.m.Y H:i:s",$arLog['ctime'])?></td>
+                        </tr>
+                        <tr>
+                            <td>URL</td>
+                            <td><?= $arLog['url']?></td>
+                        </tr>
+                        <tr>
+                            <td>Запрос</td>
+                            <td><pre><?= print_r(json_decode($arLog['post_data']),1)?></pre></td>
+                        </tr>
+                        <tr>
+                            <td>Ответ</td>
+                            <td><pre><?= print_r(json_decode($arLog['data']),1)?></pre></td>
+                        </tr>
+                    </table>
+                    <? endforeach ?>
+                </div>
+            </div>
+            <script>
+              $( function() {
+                $( "#accordion" ).accordion({
+                    active: false,
+                    heightStyle: "content",
+                    collapsible: true
+                });
+              } );
+            </script>
+        <? endif ?>
 </div>
 <div class="partners-order-main" id="order-products">
 <? $nTotal = 0;?>
@@ -274,6 +338,19 @@ href="/partners/orders/print.php?print=cancel&order=<?=
 <input type="submit" name="chansge_status" value="Запросить смену статуса"
 class="btn btn-primary">
 <? endif ?>
+
+<? if(
+    $arResult["ORDER"]["STATUS_ID"]=='F' 
+    &&
+    isset($arResult["ORDER"]["CURL_LOG"])
+):?>
+<select name="status_id" class="form-control" id="status_id">
+    <option value="AG">Отменён</option>
+</select>
+<input type="submit" name="chansge_status" value="Запросить смену статуса"
+class="btn btn-primary">
+<? endif ?>
+
 </form>
 </div>
 

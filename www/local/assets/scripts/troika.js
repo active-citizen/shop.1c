@@ -223,7 +223,7 @@ function buyTroika(){
                 var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="
                 +totalOfferId
                 +"&quantity="+$('#confirm-amount').html()
-                +"&store_id="+$('#confirm-store-id').html();
+                +"&store_id="+$('#troyka-confirm-store-id').html();
                 
                 // добавляем в корзину
                 $('#card-order-confirm-button-troyka').html('Обработка заказа...');
@@ -250,9 +250,11 @@ function buyTroika(){
                                 var answer = JSON.parse(data);
                                 if(answer.redirect_url){
                                     document.location.href=answer.redirect_url;
+                                    $('#card-order-confirm-troika').hide('fast');
                                 }
                                 else{
-                                   // Чистим корзину, если заказ неудачен
+                                    troykaRiseError(answer.error);
+                                    // Чистим корзину, если заказ неудачен
                                     $.get(
                                         "/profile/order/order.ajax.php?clear_basket",
                                         function(){
@@ -274,7 +276,6 @@ function buyTroika(){
                 
 
 
-                $('#card-order-confirm-troika').hide('fast');
             }
         },
         "error" :   function(data){

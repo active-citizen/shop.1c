@@ -95,28 +95,6 @@
             $this->assertArrayHasKey("transactionAmount",$arProviders);
         }
 
-        function testPayment(){
-            $objTroyka = new CTroyka();
-            $this->assertTrue(
-                boolval(
-                    $arCards =
-                    $objTroyka->payment('0000000000')
-                ),
-                "Получение прикреплунных карт"
-            );
-            /*
-            $this->assertArrayHasKey("mdOrder",$arProviders);
-            $this->assertArrayHasKey("bindingId",$arProviders);
-            $this->assertArrayHasKey("mnemonic",$arProviders);
-            $this->assertArrayHasKey("maskedPan",$arProviders);
-            $this->assertArrayHasKey("cardType",$arProviders);
-            $this->assertArrayHasKey("userSelected",$arProviders);
-            $this->assertArrayHasKey("cvcRequired",$arProviders);
-            $this->assertArrayHasKey("transactionAmount",$arProviders);
-            */
-        }
-
-
         function testLinkOrder(){
             $nTroykaNum = sprintf("%010d",rand(0,1000000000));
             $objTroyka = new CTroyka();
@@ -169,4 +147,54 @@
             );
         }
         
+        function testLinkOrderTransact(){
+            $nTransactNum = sprintf("%010d",rand(0,1000000000));
+            $objTroyka = new CTroyka();
+            $this->assertFalse(boolval($objTroyka->error),
+                "Проверка создания объекта тройки"
+            );
+
+            // Выбираем любой заказ с номером
+            CModule::IncludeModule('sale');
+            $arOrder = CSaleOrder::GetList(
+                array(),
+                array(
+                    "!ADDITIONAL_INFO"=>false
+                ),false,
+                array("nTopCount"=>1),
+                array("ADDITIONAL_INFO","ID")
+            )->Fetch();
+            $this->assertArrayHasKey("ADDITIONAL_INFO",$arOrder,
+                "Проверяем наличие номера заказа"
+            );
+            $this->assertTrue(
+                boolval(trim($arOrder["ADDITIONAL_INFO"])),
+                "Проверяем непустоту номера заказа"
+            );
+            $objTroyka->linkOrderTransact("asd");
+            $this->assertTrue(boolval($objTroyka->error),
+               "Контроль некорректного номера заказа" 
+            );
+            $objTroyka->linkOrderTransact($arOrder["ADDITIONAL_INFO"],$nTransactNum);
+            $this->assertFalse(boolval(trim($objTroyka->error)),
+               "Контроль корректного номера заказа" 
+            );
+
+            $this->assertEquals(
+                $objTroyka->getTroykaTransactNum($arOrder["ADDITIONAL_INFO"]),
+                $objTroyka->transact,
+                "Проверка назначенного заказу номера карты тройка"
+            );
+
+            $objTroyka->linkOrderTransact($arOrder["ADDITIONAL_INFO"],'');
+            $this->assertFalse(boolval(trim($objTroyka->error)),
+               $objTroyka->error
+            );
+
+            $this->assertEquals(
+                $objTroyka->getTroykaTransactNum($arOrder["ADDITIONAL_INFO"]),
+                '',
+                "Проверка назначенного заказу пустого номера карты тройка"
+            );
+        }
     }
