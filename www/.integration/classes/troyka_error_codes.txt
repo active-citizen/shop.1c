@@ -1,0 +1,113 @@
+NTERNAL_ERROR{tab}Внутренняя ошибка Платформы
+2{tab}NO_SESSION{tab}Некорректный идентификатор пользователя / сессии или сессия истекла
+4{tab}EMPTY_SESSION_ID{tab}Идентификатор сессии не содержит данных
+5{tab}INVALID_LOGIN_PWD{tab}Некорректный логин или пароль
+6{tab}EMPTY_USERNAME{tab}Логин не содержит данных
+7{tab}INVALID_USERNAME{tab}Неверный формат логина
+8{tab}NOT_UNIQUE_USERNAME{tab}Логин не уникален
+9{tab}EMPTY_PASSWORD{tab}Пароль не содержит данных
+10{tab}INVALID_PASSWORD{tab}Неверный формат пароля
+11{tab}INVALID_FIRST_NAME{tab}Неверный формат имени
+12{tab}EMPTY_FIRST_NAME{tab}Имя не содержит данных
+13{tab}INVALID_SURNAME{tab}Неверный формат фамилии
+14{tab}EMPTY_SURNAME{tab}Фамилия не содержит данных
+15{tab}INVALID_EMAIL{tab}Неверный формат адреса электронной почты 
+16{tab}EMPTY_EMAIL{tab}Адрес электронной почты не содержит данных
+18{tab}INVALID_PHONE{tab}Неверный формат номера телефона
+20{tab}LOGIN_FROM_WRONG_EID{tab}Логин не соответствует номеру клиента (ЕИ)
+21{tab}INVALID_NEW_PASSWORD{tab}Неверный формат нового пароля
+23{tab}INVALID_LOGIN_OR_EMAIL{tab}Некорректный логин или адрес электронной почты
+24{tab}PAYMENT_DECLINED{tab}Отказ в проведении операции
+27{tab}EMPTY_BINDING_ID{tab}Идентификатор биндинга не содержит данных
+29{tab}EMPTY_PAN{tab}Номер карты не содержит данных
+30{tab}INVALID_PAN{tab}Неверный формат номера карты
+31{tab}EMPTY_EXPIRY{tab}Месяц и год действия карты не содержит данных
+32{tab}INVALID_EXPIRY{tab}Неверный формат месяца и года действия карты
+33{tab}EMPTY_CVC{tab}CVC-код не содержит данных
+34{tab}INVALID_CVC{tab}Неверный формат CVC-кода 
+35{tab}EMPTY_CARDHOLDER{tab}Имя держателя не содержит данных
+36{tab}INVALID_CARDHOLDER{tab}Неверный формат имени держателя
+38{tab}EMPTY_ORDER_ID{tab}Номер заказа не содержит данных
+39{tab}INVALID_ORDER_ID{tab}Некорректный номер заказа
+40{tab}EMPTY_AMOUNT{tab}Сумма платежа не содержит данных
+41{tab}INVALID_AMOUNT{tab}Неверный формат суммы платежа
+42{tab}EMPTY_VERIFICATION_MERCHANT{tab}Наименование торговой точки не содержит данных
+43{tab}FAILED_VERIFICATION_CONFIRMATION{tab}Некорректное значение суммы платежа или наименования торговой точки
+46{tab}EMPTY_PROVIDER_PARAMETERS{tab}Параметры поставщика не содержат данных
+47**{tab}INVALID_PROVIDER_PARAMETERS{tab}Некорректный формат параметров поставщика
+48{tab}EMPTY_ANONYMOUS_EMAIL{tab}Адрес электронной почты не содержит данных (для неавторизованного платежа)
+49{tab}INVALID_ANONYMOUS_EMAIL{tab}Неверный формат адреса электронной почты (для неавторизованного платежа)
+51{tab}BINDING_STATUS_CANT_BE_SET{tab}Невозможно задать указанный статус для выбранного биндинга
+52{tab}EMPTY_OR_INVALID_TEMPLATE_NAME{tab}Имя шаблона не содержит данных
+53{tab}INVALID_SECOND_NAME{tab}Неверный формат параметра «Отчество»
+54{tab}FRAUD{tab}Нарушена политика лимитов для Портала
+73{tab}EMPTY_EPD_CLIENT{tab}Параметр «Код плательщика» не содержит данных
+74{tab}INVALID_EPD_CLIENT{tab}Неверный формат параметра «Код плательщика»
+78{tab}INVALID_CCY{tab}Неверный формат параметра «Валюта»
+79{tab}EMPTY_CURRENT_VERSION{tab}Параметр «Текущая версия» не содержит данных
+80{tab}AVATAR_IS_TOO_LARGE{tab}Значение параметра «Аватар» превышает максимально допустимую длину
+81{tab}EMPTY_CONFIRMATION_CODE{tab}Верификационный код не содержит данных
+82{tab}INVALID_BINDING_ISSUER_GROUP{tab}Некорректное значение параметра issuerGroup
+83{tab}WRONG_PASSWORD{tab}Некорректный пароль
+84{tab}EMPTY_MNEMONIC{tab}Мнемоническое имя биндинга не содержит данных
+85{tab}BINDING_ALREADY_EXISTS{tab}Попытка создания биндинга, уже найденной в базе
+86{tab}ACCOUNT_NOT_FOUND{tab}Счет не найден
+87{tab}CONFIRMATION_PAYMENT_EXPIRED{tab}Истек период для подтверждения карты
+88{tab}PAYMENT_ON_CONFIRMATION{tab}Платёж ещё выполняется, запросите статус позднее.
+92{tab}PAYMENT_NOT_SUPPORTED_BY_PROVIDER{tab}Платеж по поставщику не поддерживается
+93{tab}ALL_LIMITS_EXHAUSTED{tab}Невозможно провести платеж – исчерпаны транзакционные лимиты по всем платёжным инструментам
+94****{tab}SINGLE_OPERATION_AMOUNT_EXHAUSTED{tab}Невозможно провести платеж по карте – превышен лимит по сумме разовой операции
+95****{tab}OPERATION_DAY_COUNT_EXHAUSTED{tab}Невозможно провести платеж по карте – превышен лимит по количеству операций в день
+96****{tab}OPERATION_MONTH_AMOUNT_EXHAUSTED{tab}Невозможно провести платеж по карте – превышен лимит по сумме операций в месяц
+97****{tab}OPERATION_MONTH_COUNT_EXHAUSTED{tab}Невозможно провести платеж по карте – превышен лимит по количеству операций в месяц
+99{tab}INVALID_VERIFICATION_CONFIRMATION{tab}Некорректное значение суммы платежа или наименования торговой точки, допускается еще одна попытка подтверждения карты
+101{tab}NOT_ACTIVE_BINDING{tab}Невозможно задать указанный признак для выбранного биндинга. Статус биндинга не равен статусу «Используется»
+102{tab}INVALID_DEFAULT_BINDING{tab}Проведение операции невозможно/У получателя перевода отсутствуют привязанные карты
+103{tab}EMPTY_IMEI{tab}IMEI не содержит данных
+106{tab}CONFIRMATION_ATTEMPT_FAILED{tab}Допускается повторный ввод верификационного кода
+107{tab}ALL_CONFIRMATION_ATTEMPTS_FAILED{tab}Исчерпаны попытки ввода верификационного кода
+112{tab}INVALID_LICENSE_NUMBER{tab}Некорректный формат licenseNumber
+113{tab}EMPTY_UNIQUE_DEVICE_ID{tab}uniqueDeviceId не содержит данных
+114{tab}SOCIAL_AUTH_REQUIRED{tab}Требуется аутентификация в соц. сети (токен социальной сети отсутствует или просрочен)
+115{tab}EMPTY_SOCIAL_NETWORK{tab}socialNetwork не содержит данных
+119{tab}USER_ALREADY_REGISTERED{tab}Попытка привязки аккаунта соцсети, уже использующегося в профиле БМ mobile
+121{tab}EMPTY_JUDGMENT_NUMBER{tab}judgmentNumber не содержит данных
+124{tab}INVALID_FRIEND_ID{tab}friendId отсутствует в БД
+125{tab}EMPTY_FRIEND_ID{tab}friendId не содержит данных
+126{tab}NO_RECIPIENT_FOUND{tab}Невозможно выполнить обратный перевод (не найден получатель перевода)
+127{tab}TEMPLATE_NOT_AVAILABLE_FOR_TRANSACTION{tab}Невозможно создать шаблон по запрошенным параметрам сервиса
+129{tab}UNABLE_ATTACH_TRANSACTION{tab}Невозможно привязать транзакцию к профилю
+135{tab}NO_IMPORT{tab}Отсутствует активный импорт для запрошенной sessionId
+138{tab}FINE_ALREADY_PAYED{tab}Платеж по данному штрафу уже находится в обработке
+143{tab}INVALID_BANK_ID_FORMAT{tab}Значение параметра «Первичный идентификатор» имеет некорректный формат
+144{tab}MNEMONIC_ALREADY_EXISTS{tab}Мнемоническое имя связки не уникально для пользователя
+145{tab}BANK_CLIENT_NOT_FOUND{tab}Клиент по запрошенному первичному идентификатору не найден
+146{tab}NO_BANK_AUTH{tab}Регистрация профиля не завершена
+147{tab}NO_INSTALLATION{tab}Запрошенный installationId не найден или заблокирован
+149{tab}INVALID_PROFILE{tab}Для клиента не найден доверенный номер телефона
+150{tab}INVALID_BANK_ACCOUNT{tab}Ошибка валидации номера счёта
+151{tab}CANT_DELETE_LOGIN_INSTALLATION{tab}Попытка удаления связки, из-под которой делается запрос
+152{tab}CONTRACT_NOT_FOUND{tab}Номер договора не найден – отказ в регистрации в МБанке.
+153{tab}INVALID_SOURCE_BINDING{tab}Указанный биндинг-отправитель не может быть использован для данного типа операции
+154{tab}INVALID_TARGET_BINDING{tab}Указанный биндинг-получатель не может быть использован для данного типа операции
+157{tab}CONFIRMATION_CODE_EXPIRED{tab}Истекло время действия верификационного кода
+158{tab}REGISTRATION_TEMP_BLOCK{tab}Возможность регистрации временно заблокирована
+159{tab}PAN_EQUALS_TARGET_PAN{tab}Карта отправителя совпадает с картой получателя
+160{tab}REGISTRATION_DISABLED{tab}Регистрация невозможна – отключена услуга «Мобильный банк»
+167{tab}PAN_NOT_FOUND{tab}Пан не найден
+180{tab}OFFER_NOT_ACCEPTED{tab}Оферта не подключена
+188{tab}INCORRECT_STATE_FOR_RPC_OPERATION{tab}Нарушена последовательность вызовов по операциям с БСК
+191{tab}DUPLICATE_PARTNER_MDORDER{tab}PARTNER_MDORDER задублирован
+192{tab}INCORRECT_STATE_FOR_NICEROUTE_PAYMENT{tab}Нарушен алгоритм покупки билета
+196{tab} {tab}Клиент уже перешёл на новую СА
+214{tab}BLOCK_RESET_PASSWORD{tab}Функция resetPassword заблокирована
+215{tab}EMPTY_REVIEW_TYPE{tab}Пустой тип ревью
+222{tab}PASSWORD_BLOCKED{tab}Пароль заблокирован
+224{tab}PASSWORD_NOT_EXISTS{tab}Заданный пароль не существует
+225{tab}EMAIL_NOT_FOUND{tab}Электронная почта не найдена
+226{tab}EMPTY_PUSH_TOKEN{tab}Поле PUSH_TOKEN не содержит данных
+911{tab}SIGNAL_TO_DESTROY_APPLICATION{tab}Принудительная разавторизация клиента и деперсонализация приложения
+912{tab}USER_WAS_BLOCKED{tab}Приложение должно принудительно закрыться. Клиент временно заблокирован
+913{tab}INVALID_API_VERSION{tab}Работа с данной версией API невозможна. Требуется обновление приложения
+914{tab}PARTNER_AUTHENTICATION_FAILED{tab}Ошибка аутентификации партнерского сертификата.
+
