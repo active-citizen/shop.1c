@@ -234,14 +234,20 @@
 
                         
                       </div>
-                      <? if(0 && $arResult["CATALOG_ITEM"]["SECTION_INFO"]["CODE"]=='transport'):?>
+                      <?
+                      if($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]=='troyka'):?>
                       <div class="ag-shop-card__field">
                         <div class="ag-shop-card__fieldname">Введите номер карты Тройка:</div>
                         <div class="ag-shop-card__card-number">
-                          <input class="ag-shop-card__card-number-input" type="tel" placeholder="0000 000 000">
+                          <select class="ag-shop-modal__select" id="troyka-card-number">
+                            <option value="">Добавить карту</option>
+                          </select>
+                          <input class="ag-shop-card__card-number-input" type="tel" placeholder="0000000000">
                           <div class="ag-shop-card__card-number-tooltip">
-                            <div class="ag-shop-card__card-number-tooltip-content"><img src="http://placehold.it/124x94">
-                              <p>Пример: <br>0004 456 789 (10цифр)</p>
+                            <div
+                            class="ag-shop-card__card-number-tooltip-content"><img
+                            src="/local/assets/images/troyka.png">
+                              <p>Пример: <br>0004456789 (10цифр)</p>
                             </div>
                           </div>
                         </div>
