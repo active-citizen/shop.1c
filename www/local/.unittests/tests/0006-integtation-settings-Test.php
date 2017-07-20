@@ -1,5 +1,5 @@
 <?php
-    class troykaPaymentTest extends PHPUnit_Framework_TestCase{
+    class integrationSettingsTest extends PHPUnit_Framework_TestCase{
 
         function __construct($sTroykaNum){
             require_once(
