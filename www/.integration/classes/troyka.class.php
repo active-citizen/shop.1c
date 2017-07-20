@@ -8,6 +8,7 @@
         var $number = false;    //!< Номер карты тройка
         var $transact = '';     //!< ID транзакции
         var $phone = '';        //!< Номер телефона владельца банк.карты
+        var $emulation = false; //!< Режим эмуляции ('success','failed', false)
         var $cvc = '';          //!< CVC банковской карты
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
@@ -46,6 +47,7 @@
             $this->serviceId        = $TROYKA_SERVICE_ID;
             $this->ip               = $TROYKA_IP;
             $this->bindingId        = $TROYKA_BINDING_ID;
+            $this->emulation        = $TROYKA_EMULATION;
 
             return true;
         }
@@ -65,14 +67,24 @@
                     'local_cert'=>$this->pemPath
                 )
             );
+
             $arSoapRequest =  array(
                 "getBindings"=>array(
                     "phone"=>$this->phone
                 )
             ); 
-            
-            $arSoapResult = $objSoap->__soapCall("getBindings",$arSoapRequest);
 
+            if($this->emulation=='success'){
+                $arSoapResult =
+                json_decode('{"simulation":1,"errorCode":0,"bindings":[{"bindingId":"ED33F6ED3B6744428031F8E43A642592","mnemonic":"ACTIVE CITIZEN 4","maskedPan":"439146******4621","cardType":1,"issuerGroup":"OWN","bindingStatus":0,"createdDate":"2016-03-24T18:26:31.791+03:00","updatedDate":"2017-07-19T18:44:34.082+03:00","is3DSecureBinding":false,"isDefaultBinding":true},{"bindingId":"1E372B5E37984980B64408517192236D","mnemonic":"ACTIVE CITIZEN 2","maskedPan":"124732******2834","cardType":1,"issuerGroup":"OWN","bindingStatus":3,"createdDate":"2016-03-24T17:32:37.634+03:00","updatedDate":"2016-03-30T13:27:30.039+03:00","is3DSecureBinding":false,"isDefaultBinding":false},{"bindingId":"91E334875218649A3758CC3DA8A0942B","mnemonic":"ACTIVE CITIZEN","maskedPan":"223522******4136","cardType":1,"issuerGroup":"OWN","bindingStatus":3,"createdDate":"2015-12-01T20:32:25.334+03:00","updatedDate":"2016-03-24T18:30:33.727+03:00","is3DSecureBinding":false,"isDefaultBinding":false}]}'); 
+            }
+            elseif($this->emulation=='failed'){
+                $arSoapResult = json_decode('');
+            }
+            else{
+                $arSoapResult = $objSoap->__soapCall("getBindings",$arSoapRequest);
+            }
+            
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
@@ -115,6 +127,7 @@
                     'local_cert'=>$this->pemPath
                 )
             );
+
             $arSoapRequest =  array(
                 "checkProviders"=>array(
                     "phone"         =>$this->phone,
@@ -122,8 +135,18 @@
 
                 )
             ); 
+
+            if($this->emulation=='success'){
+                $arSoapResult =
+                json_decode('{"simulation":1,"errorCode":0,"updateRequired":true,"actual":false}');
+            }
+            elseif($this->emulation=='failed'){
+            }
+            else{
+                $arSoapResult = 
+                    $objSoap->__soapCall("checkProviders",$arSoapRequest);
+            }
             
-            $arSoapResult = $objSoap->__soapCall("checkProviders",$arSoapRequest);
 
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
 
@@ -160,7 +183,16 @@
                 )
             ); 
             
-            $arSoapResult = $objSoap->__soapCall("getProviders",$arSoapRequest);
+            if($this->emulation=='success'){
+                $arSoapResult =
+                json_decode('{"simulation":1,"errorCode":0,"iconsURL":"https:\/\/bmmobile.bm.ru\/bm\/icons\/","version":"2286","categories":{"categoryName":"transport","categoryTitle":"\u0422\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442 \u0438 \u043f\u0430\u0440\u043a\u043e\u0432\u043a\u0438","icon":"transport.png","number":999,"categoryHidden":true,"payees":{"id":"322","payeeTitle":"\u0422\u0440\u043e\u0439\u043a\u0430 (BGW)","subline":"\u0414\u0435\u043f\u0430\u0440\u0442\u0430\u043c\u0435\u043d\u0442 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442\u0430 \u0438 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f \u0434\u043e\u0440\u043e\u0436\u043d\u043e-\u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442\u043d\u043e\u0439 \u0438\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u044b \u0433.\u041c\u043e\u0441\u043a\u0432\u0430","icon":"transport.png","minAmount":"100.00","maxAmount":"30100.00","payeeHidden":true,"params":{"paramTitle":"\u041d\u043e\u043c\u0435\u0440 \u0431\u0438\u043b\u0435\u0442\u0430","paramName":"Ticket","paramType":"StringField","paramDescription":"\u041d\u043e\u043c\u0435\u0440 \u0431\u0438\u043b\u0435\u0442\u0430","paramHidden":false,"paramMask":"XXXXXXXXXX","regExp":"","maxLength":10,"serverValidation":false,"order":0}}}}');
+            }
+            elseif($this->emulation=='failed'){
+            }
+            else{
+               $arSoapResult = $objSoap->__soapCall("getProviders",$arSoapRequest);
+            }
+
 
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
 
@@ -212,10 +244,19 @@
                 )
             ); 
           
-            $arSoapResult = $objSoap->__soapCall(
-                "getPaymentCapabilities",
-                $arSoapRequest
-            );
+            if($this->emulation=='success'){
+                $arSoapResult =
+                json_decode('{"simulation":1,"errorCode":0,"bindings":{"mdOrder":"18264726402847","bindingId":"1D53F5ED2B67444289C148E73A342690","mnemonic":"ACTIVE CITIZEN 3","maskedPan":"326722******2492","cardType":1,"userSelected":true,"cvcRequired":true,"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}'); 
+            }
+            elseif($this->emulation=='failed'){
+            }
+            else{
+                $arSoapResult = $objSoap->__soapCall(
+                    "getPaymentCapabilities",
+                    $arSoapRequest
+                );
+            }
+
   
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
@@ -256,7 +297,18 @@
                 )
             ); 
 
-            $arSoapResult = $objSoap->__soapCall( "payment",$arSoapRequest);
+            if($this->emulation=='success'){
+                $arSoapResult =
+                json_decode('{"simulation":1,"errorCode":0,"mdOrder":"16025406783408","completedPayment":{"date":"2017-07-20T11:00:59.028+03:00","refnum":"523156836772","approvalCode":"422344","currency":643,"bindingId":"2D134F1D6B9C3447803178095A842091","maskedPan":"124732******5322","cardType":1,"serviceId":"322","serviceParams":{"name":"Ticket","value":"0000123712"},"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
+            }
+            elseif($this->emulation=='failed'){
+                $arSoapResult = 
+                json_decode('{"simulation":1,"errorCode":24,"errorDesc":"5","mdOrder":"25313421236581","completedPayment":{"date":"2017-07-20T10:49:47.065+03:00","refnum":"236161345345","approvalCode":"000000","currency":643,"bindingId":"ED53FFED3B6C444280C1F8E93A642599","maskedPan":"252319******253569"cardType":1,"serviceId":"322","serviceParams":{"name":"Ticket","value":"3996128752"},"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
+            }
+            else{
+                $arSoapResult = $objSoap->__soapCall( "payment",$arSoapRequest);
+            }
+
             
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
 

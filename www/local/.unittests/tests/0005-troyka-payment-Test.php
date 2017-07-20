@@ -1,5 +1,5 @@
 <?php
-    class troykaTest extends PHPUnit_Framework_TestCase{
+    class troykaPaymentTest extends PHPUnit_Framework_TestCase{
 
         function __construct($sTroykaNum){
             require_once(
@@ -22,7 +22,7 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('Б-2816')
+                    $objTroyka->getBindings('0000000000')
                 ),
                 "Получение прикреплунных карт"
             );
@@ -41,7 +41,7 @@
             $objTroyka = new CTroyka('3951086363');
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->checkProviders('Б-2816')
+                    $arProviders = $objTroyka->checkProviders('0000000000')
                 ),
                 "Проверка необходимости обновления перечня поставщиков "
             );
@@ -54,7 +54,7 @@
             $objTroyka = new CTroyka('3951086363');
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->getProviders('Б-2816')
+                    $arProviders = $objTroyka->getProviders('0000000000')
                 ),
                 "Проверка Получение перечня поставщиков "
             );
@@ -81,7 +81,8 @@
             );
              $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->getPaymentCapabilities('Б-2816')
+                    $arProviders =
+                    $objTroyka->getPaymentCapabilities('0000000000')
                 ),
                 "Проверка Запрос  расчета комиссии и лимитов на платеж"
             );
@@ -100,20 +101,10 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->payment('Б-2816')
+                    $objTroyka->payment('0000000000')
                 ),
                 "Получение прикреплунных карт"
             );
-            /*
-            $this->assertArrayHasKey("mdOrder",$arProviders);
-            $this->assertArrayHasKey("bindingId",$arProviders);
-            $this->assertArrayHasKey("mnemonic",$arProviders);
-            $this->assertArrayHasKey("maskedPan",$arProviders);
-            $this->assertArrayHasKey("cardType",$arProviders);
-            $this->assertArrayHasKey("userSelected",$arProviders);
-            $this->assertArrayHasKey("cvcRequired",$arProviders);
-            $this->assertArrayHasKey("transactionAmount",$arProviders);
-            */
         }
   
     }
