@@ -13,6 +13,12 @@ $arUrlRewrite = array(
 		"PATH" => "/partners/orders/order.php",
 	),
 	array(
+		"CONDITION" => "#^/rules/faq/(\\d+)/.*#",
+		"RULE" => "SECTION_ID=\$1",
+		"ID" => "ag:faq_sectioned",
+		"PATH" => "/rules/faq/index.php",
+	),
+	array(
 		"CONDITION" => "#^/partners/download/#",
 		"RULE" => "",
 		"ID" => "ag:partners.orders.download",
