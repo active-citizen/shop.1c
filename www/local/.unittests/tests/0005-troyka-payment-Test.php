@@ -75,7 +75,7 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('Б-2816')
+                    $objTroyka->getBindings('0000000000')
                 ),
                 "Получение прикреплунных карт"
             );
