@@ -15,8 +15,15 @@
             $sTable = "int_settings";
             $arSettings = array(
                 "TROYKA_EMULATION" => array(
-                    "TITLE"=>"Режим эмуляции",
+                    "TITLE"=>"Режим эмуляции: false - боевой режим, success -
+                    эмуляция успешных запросов(для тестирования), failed - эмуляция ошибочных
+                    запросов(отключение шлюза)",
                     "VALUE"=>"failed"
+                ),
+                "TROYKA_SIMPLE_MODE" => array(
+                    "TITLE"=>"Упрощенный режим запросов: 0 - полный режим, 1 -
+                    укороченный режим",
+                    "VALUE"=>"1"
                 ),
                 "TROYKA_PHONE" => array(
                     "TITLE"=>"Номер телефона для обращения к шлюзу",

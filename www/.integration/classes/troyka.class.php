@@ -10,6 +10,7 @@
     class CTroyka{
         var $number = false;    //!< Номер карты тройка
         var $transact = '';     //!< ID транзакции
+        var $simpeMode= false;  //!< Упрощенный режим запросов (2 из 5)
         var $phone = '';        //!< Номер телефона владельца банк.карты
         var $emulation = false; //!< Режим эмуляции ('success','failed', false)
         var $cvc = '';          //!< CVC банковской карты
@@ -57,6 +58,9 @@
             $this->ip               = $arSettings["TROYKA_IP"]["VALUE"];
             $this->bindingId        = $arSettings["TROYKA_BINDING_ID"]["VALUE"];
             $this->emulation        = $arSettings["TROYKA_EMULATION"]["VALUE"];
+            $this->simleMode        =
+               boolval(intval($arSettings["TROYKA_SIMPLE_MODE"]["VALUE"]));
+
 
             return true;
         }
@@ -285,9 +289,11 @@
          */
          function payment($sOrderNum){
 
-            $this->getBindings($sOrderNum);
-            $this->checkProviders($sOrderNum);
-            $this->getProviders($sOrderNum);
+            if(!$this->simleMode){
+                $this->getBindings($sOrderNum);
+                $this->checkProviders($sOrderNum);
+                $this->getProviders($sOrderNum);
+            }
             $this->getPaymentCapabilities($sOrderNum);
 
             $objSoap = new SoapClient(
