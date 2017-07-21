@@ -321,32 +321,18 @@ elseif(isset($_GET["add_order"])){
     // Успешное добавление заказа
     ///////////////////
     if($orderId = $resCSaleOrder->Add($arFields)){
-       
-
-
-        //////////// Снимает баллы
-        require_once(
-            $_SERVER["DOCUMENT_ROOT"]
-                ."/.integration/classes/order.class.php"
-        );
-        $obOrder = new bxOrder();
-        $resOrder = $obOrder->addEMPPoints(
-            -$totalSum,
-            "Заказ Б-$orderId в магазине поощрений АГ"
-        );
-        ///////////
-
+        $sOrderNum = 'Б-'.$orderId;
         //// Запоминаем номер заказа
-        $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>"Б-$orderId"));
+        $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>$sOrderNum));
 
+        // Назначаем заказу корзину
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
 
-        CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
+        // Утратила актуальность в связи с добавление свойства заказа ЗНИ
+        // 21.07.2017
+        // CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
         $answer["redirect_url"] = "/profile/order/detail/$orderId/";
-        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
-        ///// Ставим в очередь на ЗНИ
-        orderSetZNI($orderId,'N','AA');
         //// Обновляем свойства заказа из значений товарного каталога
         orderPropertiesUpdate($orderId);
 
@@ -395,14 +381,19 @@ elseif(isset($_GET["add_order"])){
             
         }
 
+        // Статус тройки
+        // 0 - не заказывалась
+        // 1 - успешный заказ
+        // 2 - ошибочный заказ
+        $stoykaStatus = 0;
         /////// Действия над картой-тройкой
         if(isset($_REQUEST["troyka"]) && $nTroykaNum = trim($_REQUEST["troyka"])){
-            orderSetZNI($orderId,'F','AA');
             require_once(
                 $_SERVER["DOCUMENT_ROOT"]
                     ."/.integration/classes/troyka.class.php"
             );
 
+            // Подключаемся и получаем настройки шлюза
             $objTroyka = new CTroyka($nTroykaNum);            
             if($objTroyka->error){
                 $answer = array(
@@ -415,7 +406,7 @@ elseif(isset($_GET["add_order"])){
             }
 
             // Запоминаем для заказа номер тройки
-            $objTroyka->linkOrder("Б-".$orderId);
+            $objTroyka->linkOrder($sOrderNum);
             if($objTroyka->error){
                 $answer = array(
                     "order"=>array(
@@ -427,8 +418,9 @@ elseif(isset($_GET["add_order"])){
             }
 
             // Производим транзакцию в тройку
-            $objTroyka->payment("Б-".$orderId);
+            $objTroyka->payment($sOrderNum);
             if($objTroyka->error){
+                // Мапинг кодов ошибок шлюза в сообщения для посетителя
                 $arErrors = $objTroyka->errorMapping();
                 $answer = array(
                     "order"=>array(
@@ -441,10 +433,49 @@ elseif(isset($_GET["add_order"])){
                         )
                     )
                 );
+                // Сохраняем неуспешный статус
+                $stoykaStatus = 2;
             }
-            // Запоминаем номер транзакции тройки
-            $objTroyka->linkOrderTransact("Б-".$orderId);
+            else{
+                // Сохраняем успешный статус
+                $stoykaStatus = 1;
+            }
+
+            // Запоминаем номер транзакции тройки при любом статусе
+            $objTroyka->linkOrderTransact($sOrderNum);
         }
+
+        
+        // Если тойка провалилась - баллы не снимаем
+        if($stoykaStatus == 2){
+        }
+        else{
+            //////////// Снимает баллы
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]
+                    ."/.integration/classes/order.class.php"
+            );
+            $obOrder = new bxOrder();
+            $resOrder = $obOrder->addEMPPoints(
+                -$totalSum,
+                "Заказ Б-$orderId в магазине поощрений АГ"
+            );
+            ///////////
+        }
+
+
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
+        ///// Ставим в очередь на ЗНИ
+        // Если тойка успешно заказалась - Выполнен
+        if($stoykaStatus == 1)
+            orderSetZNI($orderId,'F','AA');
+        // Если тойка провалилась - Аннулирован
+        elseif($stoykaStatus == 2)
+            orderSetZNI($orderId,'AI','AA');
+        // Во всех остальных случаях - В работее
+        else
+            orderSetZNI($orderId,'N','AA');
  
         // Снова заливаем историю баллов
         // пока не надо. слишком тормозит процесс заказа

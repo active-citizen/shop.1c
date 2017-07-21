@@ -262,6 +262,8 @@
                 json_decode('{"simulation":1,"errorCode":0,"bindings":{"mdOrder":"18264726402847","bindingId":"1D53F5ED2B67444289C148E73A342690","mnemonic":"ACTIVE CITIZEN 3","maskedPan":"326722******2492","cardType":1,"userSelected":true,"cvcRequired":true,"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}'); 
             }
             elseif($this->emulation=='failed'){
+                $arSoapResult = 
+                json_decode('{"simulation":1,"errorCode":0,"bindings":{"mdOrder":"32584575278936","bindingId":"2D638F3D30644943846128793A942291","mnemonic":"ACTIVE CITIZEN 3","maskedPan":"251944******2462","cardType":1,"userSelected":true,"cvcRequired":true,"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
             }
             else{
                 $arSoapResult = $objSoap->__soapCall(
@@ -318,7 +320,7 @@
             }
             elseif($this->emulation=='failed'){
                 $arSoapResult = 
-                json_decode('{"simulation":1,"errorCode":24,"errorDesc":"5","mdOrder":"25313421236581","completedPayment":{"date":"2017-07-20T10:49:47.065+03:00","refnum":"236161345345","approvalCode":"000000","currency":643,"bindingId":"ED53FFED3B6C444280C1F8E93A642599","maskedPan":"252319******253569"cardType":1,"serviceId":"322","serviceParams":{"name":"Ticket","value":"3996128752"},"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
+                json_decode('{"simulation":1,"errorCode":24,"errorDesc":"5","mdOrder":"21234535734580","completedPayment":{"date":"2017-07-20T10:49:47.065+03:00","refnum":"456366724866","approvalCode":"000000","currency":643,"bindingId":"1D337F3D3267424782C1881937646598","maskedPan":"121532******1312","cardType":1,"serviceId":"322","serviceParams":{"name":"Ticket","value":"7363455345"},"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
             }
             else{
                 $arSoapResult = $objSoap->__soapCall( "payment",$arSoapRequest);
