@@ -81,5 +81,7 @@ tests/stress/libs/conf.pm
 *.tbz
 *.bz2
 *.backup
+*.pem
+
 
 11.php

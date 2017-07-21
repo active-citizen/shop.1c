@@ -1,0 +1,92 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с маппингом ошибок
+     */
+    class troyka extends Migration{
+        function Run(){
+	        global $DB;
+
+            $sCode = "TROYKA";
+            $sTable = "int_settings";
+            $arSettings = array(
+                "TROYKA_EMULATION" => array(
+                    "TITLE"=>"Режим эмуляции: false - боевой режим, success -
+                    эмуляция успешных запросов(для тестирования), failed - эмуляция ошибочных
+                    запросов(отключение шлюза)",
+                    "VALUE"=>"failed"
+                ),
+                "TROYKA_SIMPLE_MODE" => array(
+                    "TITLE"=>"Упрощенный режим запросов: 0 - полный режим, 1 -
+                    укороченный режим",
+                    "VALUE"=>"1"
+                ),
+                "TROYKA_PHONE" => array(
+                    "TITLE"=>"Номер телефона для обращения к шлюзу",
+                    "VALUE"=>"1110000000"
+                ),
+                "TROYKA_CARD" => array(
+                    "TITLE"=>"Номер карты тройки по умолчанию(для автотестов)",
+                    "VALUE"=>"0000000000"
+                ),
+                "TROYKA_BINDING_ID" => array(
+                    "TITLE"=>"Номер банковской карты",
+                    "VALUE"=>"00000000000000000000000000000000"
+                ),
+                "TROYKA_CVC" => array(
+                    "TITLE"=>"CVC банковской карты",
+                    "VALUE"=>"000"
+                ),
+                "TROYKA_URL" => array(
+                    "TITLE"=>"URL шлюза тройки",
+                    "VALUE"=>"https://bmmobile.bm.ru/bm/api/ws/3.2/actions?wsdl"
+                ),
+                "TROYKA_CURRENT_VERSION" => array(
+                    "TITLE"=>"Номер версии протокола",
+                    "VALUE"=>"2275"
+                ),
+                "TROYKA_IP" => array(
+                    "TITLE"=>"Внешний IP адрес сайта",
+                    "VALUE"=>"213.79.88.37"
+                ),
+                "TROYKA_SERVICE_ID" => array(
+                    "TITLE"=>"ID сервиса",
+                    "VALUE"=>"322"
+                ),
+                "TROYKA_CURRENCY" => array(
+                    "TITLE"=>"Код валюты(рубля)",
+                    "VALUE"=>"643"
+                ),
+                "TROYKA_AMOUNT" => array(
+                    "TITLE"=>"Квант пополнения (руб)",
+                    "VALUE"=>"175.00"
+                ),
+            );
+            $sQuery = "SELECT * FROM `$sTable` WHERE `code`='$sCode' LIMIT 1";
+            if($DB->Query($sQuery)->Fetch()){
+                $sQuery = "UPDATE `$sTable` SET `data`='"
+                .$DB->ForSql(json_encode($arSettings))
+                ."' WHERE `code`='$sCode'";
+            }
+            else{
+                $sQuery = "INSERT INTO `$sTable`(`code`,`data`)"
+                ." VALUES('$sCode','".$DB->ForSql(json_encode($arSettings))."');"
+                ;
+            }
+            $DB->Query($sQuery);
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$troyka = new troyka();
+// Откатываем, если неудачно
+if(!$troyka->Run())$troyka->RollBack();

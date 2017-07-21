@@ -19,7 +19,7 @@
         *   Проверка pcre.recursion_limit
         */
         function testPcreRecursionLimit(){
-            $this->assertEquals('10000',ini_get("pcre.recursion_limit"), "Проверка pcre.recursion_limit");
+            $this->assertEquals('100000',ini_get("pcre.recursion_limit"), "Проверка pcre.recursion_limit");
         }
         
         

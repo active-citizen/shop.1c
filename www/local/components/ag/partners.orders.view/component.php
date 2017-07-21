@@ -182,6 +182,15 @@ while($arHistoryItem = $resHistory->Fetch()){
 //print_r($arResult);
 //echo " -->";
 
+// Админам доступны логи обмена
+if($USER->isAdmin()){
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curllogger.class.php");
+    $objCurlLogger = new CCurlLogger();
+    $arResult["ORDER"]["CURL_LOG"] = $objCurlLogger->getByOrderNum(
+        $arResult["ORDER"]["ADDITIONAL_INFO"]
+    );
+}
+
 $this->IncludeComponentTemplate();
 
 
