@@ -110,6 +110,13 @@
         // Склады предложения
         $arOffer["STORAGES"] = array();
         $resStorage = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]));
+
+
+        // !!!Отменяем невыбираемый остаток!!!
+        // Будет независимо от того, что пришло из 1С браться умолчальный
+        // А умолчальный сделаем нулём
+        $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"] = 0;
+
         while($arStorage = $resStorage->GetNext()){
             
             if(!$arStorage["AMOUNT"])continue;

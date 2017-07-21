@@ -1,7 +1,4 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
-<?
-    $this->createFrame()->begin("Загрузка");
-?>
 <div class="partnet-settings">
     <form method="POST" class="form-horizontal" role="form">
         <? foreach($arResult["SETTINGS"] as $sCode=>$arSetting):?>

@@ -1,9 +1,11 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-if ($this->StartResultCache(false)) {
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
     $objSettings = new CIntegrationSettings($arParams["CODE"]);
     if($objSettings->error){
+        echo "<pre>";
+        print_r($_REQUEST);
+        die;
         ShowMessage(array(
             "TYPE"=>"ERROR",
             "MESSAGE"=>$objSettings->error
@@ -26,4 +28,3 @@ if ($this->StartResultCache(false)) {
 
 
     $this->IncludeComponentTemplate();
-}

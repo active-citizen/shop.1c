@@ -570,7 +570,7 @@
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
-                    CSaleOrder::PayOrder($orderId,"N",true,false);
+                    //CSaleOrder::PayOrder($orderId,"N",true,false);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }

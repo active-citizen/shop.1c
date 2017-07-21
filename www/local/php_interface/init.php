@@ -17,7 +17,7 @@
     //
     define("COMMON_CACHE_TIME",3600);
     // Значение невыбираемого остатка по умолчанию
-    define("DEFAULT_STORE_LIMIT",5);
+    define("DEFAULT_STORE_LIMIT",0);
 
     // Определяем ID инфоблока каталога
     $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
