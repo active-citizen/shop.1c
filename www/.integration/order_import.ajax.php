@@ -517,6 +517,8 @@
                 // Уменьшаем запасы на складе 
                 $objCCatalogStoreProduct = new CCatalogStoreProduct;
                 $objCCatalogProduct = new CCatalogProduct;
+                /**
+                С отключением опенкарта это будет ненужно
                 foreach($basketProducts as $productId=>$item){
                     /// Получаем текущее значение этого товара сейчас на складе
                     $nQuantity = 0;
@@ -552,6 +554,7 @@
                     }
 
                 }
+                */
 
 
                 //CSaleOrder::PayOrder($orderId,"Y",false,false); //?????
@@ -570,7 +573,6 @@
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
-                    //CSaleOrder::PayOrder($orderId,"N",true,false);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }

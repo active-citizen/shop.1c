@@ -336,50 +336,6 @@ elseif(isset($_GET["add_order"])){
         //// Обновляем свойства заказа из значений товарного каталога
         orderPropertiesUpdate($orderId);
 
-        //////////////////////// Снимаем остатки ////////////////////////
-        // Получаем список товаров к заказу
-        $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
-        `ORDER_ID`=".intval($orderId);
-        $res = $DB->Query($sql);
-        while($arProduct = $res->Fetch()){
-            $nQuantity = $arProduct["QUANTITY"];
-            $nProductId = $arProduct["PRODUCT_ID"];
-            $nStoreId = intval($_GET["store_id"]);
-            // Смотрим сколько этого товара на складе
-            $nCQuantity = 0;
-            // Если записей с остатком нет - пропустить его
-            if($arStoreProduct = CCatalogStoreProduct::GetList(
-                array(),
-                $arStoreProductFilter = array(
-                    "PRODUCT_ID"=>  $nProductId,
-                    "STORE_ID"  =>  $nStoreId
-                ),
-                false,
-                array("nTopCount"=>1),
-                array("ID","PRODUCT_ID","AMOUNT")
-            )->GetNext()){
-                $nCQuantity = $arStoreProduct["AMOUNT"];
-            }
-            else{
-                continue;
-            }
-       
-            // Устанавливаем новое значение остатка
-            if(!CCatalogStoreProduct::Update(
-                $arStoreProduct["ID"],
-                $arF = array(
-                    "AMOUNT"              =>  
-                        $nCQuantity-$nQuantity>=0
-                        ?
-                        $nCQuantity-$nQuantity
-                        :
-                        0
-            ))){
-                print_r($objCCatalogStoreProduct);
-                die;
-            }
-            
-        }
 
         // Статус тройки
         // 0 - не заказывалась
@@ -463,6 +419,55 @@ elseif(isset($_GET["add_order"])){
             ///////////
         }
 
+        // Если тойка провалилась - остатки не снимаем
+        if($stoykaStatus == 2){
+        }
+        else{
+            //////////////////////// Снимаем остатки ////////////////////////
+            // Получаем список товаров к заказу
+            $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
+            `ORDER_ID`=".intval($orderId);
+            $res = $DB->Query($sql);
+            while($arProduct = $res->Fetch()){
+                $nQuantity = $arProduct["QUANTITY"];
+                $nProductId = $arProduct["PRODUCT_ID"];
+                $nStoreId = intval($_GET["store_id"]);
+                // Смотрим сколько этого товара на складе
+                $nCQuantity = 0;
+                // Если записей с остатком нет - пропустить его
+                if($arStoreProduct = CCatalogStoreProduct::GetList(
+                    array(),
+                    $arStoreProductFilter = array(
+                        "PRODUCT_ID"=>  $nProductId,
+                        "STORE_ID"  =>  $nStoreId
+                    ),
+                    false,
+                    array("nTopCount"=>1),
+                    array("ID","PRODUCT_ID","AMOUNT")
+                )->GetNext()){
+                    $nCQuantity = $arStoreProduct["AMOUNT"];
+                }
+                else{
+                    continue;
+                }
+           
+                // Устанавливаем новое значение остатка
+                if(!CCatalogStoreProduct::Update(
+                    $arStoreProduct["ID"],
+                    $arF = array(
+                        "AMOUNT"              =>  
+                            $nCQuantity-$nQuantity>=0
+                            ?
+                            $nCQuantity-$nQuantity
+                            :
+                            0
+                ))){
+                    print_r($objCCatalogStoreProduct);
+                    die;
+                }
+                
+            }
+        }
 
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
