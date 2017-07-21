@@ -94,7 +94,7 @@
                 value="<?= $arResult["FILTER"]["ADDDATE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_adddate_from', '','form_filter');
+                echo Calendar( 'filter_adddate_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -110,7 +110,7 @@
                 value="<?= $arResult["FILTER"]["ADDDATE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_adddate_to', '','form_filter');
+                echo Calendar( 'filter_adddate_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -126,7 +126,7 @@
                 value="<?= $arResult["FILTER"]["LOCKDATE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_lockdate_from', '','form_filter');
+                echo Calendar( 'filter_lockdate_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -142,7 +142,7 @@
                 value="<?= $arResult["FILTER"]["LOCKDATE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_lockdate_to', '','form_filter');
+                echo Calendar( 'filter_lockdate_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -158,7 +158,7 @@
                 value="<?= $arResult["FILTER"]["UPDATE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_update_from', '','form_filter');
+                echo Calendar( 'filter_update_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -174,7 +174,7 @@
                 value="<?= $arResult["FILTER"]["UPDATE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_update_to', '','form_filter');
+                echo Calendar( 'filter_update_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -190,7 +190,7 @@
                 value="<?= $arResult["FILTER"]["DONE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_done_from', '','form_filter');
+                echo Calendar( 'filter_done_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -206,7 +206,7 @@
                 value="<?= $arResult["FILTER"]["DONE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_done_to', '','form_filter');
+                echo Calendar( 'filter_done_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
