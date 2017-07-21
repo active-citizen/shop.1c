@@ -847,7 +847,9 @@
                 "D",$arAnswer["errorDesc"],$arAnswer["messageText"]
             );
             $arAnswer["messageText"] = str_replace(
-                "M",$arAnswer["ErrorMessage"],$arAnswer["messageText"]
+                ",M",
+                "",
+                $arAnswer["messageText"]
             );
 
             return $arAnswer;
