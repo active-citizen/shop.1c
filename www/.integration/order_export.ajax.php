@@ -117,43 +117,56 @@
     )$arOrderses[] = $arOrder;
      
   
-
-    /*
+    // Определяем ID группы свойств
     $arPropGroup = CSaleOrderPropsGroup::GetList(
         array(),
-        $arPropGroupFilter = array(),
+        $arPropGroupFilter = array(
+           "NAME"=> mb_convert_encoding("Индексы для фильтров","UTF-8","cp1251")
+        ),
         false,
         array("nTopCount"=>1)
     )->GetNext();
-    */
-    $nPropGroup = 5;//$arPropGroup["ID"];
+    $nPropGroup = $arPropGroup["ID"];
 
     $objOrder = new CSaleOrder;
     $arOrders = array();
     foreach($arOrderses as $arrOrder){
-        $resPropValues = CSaleOrderProps::GetList(
-            array("SORT" => "ASC"),
-            $arF = array(
-                    "ORDER_ID"       => $arrOrder["ID"],
-                    "PERSON_TYPE_ID" => 1,
-                    "PROPS_GROUP_ID" => $nPropGroup,
-                    "CODE"=>"CHANGE_REQUEST"
-                ),
-            false,
-            false,
-            array("ID","CODE","NAME")
-        );
+
+        ////////////////////////
+        ///   Получение необходимых свойств заказа
+        ///////////////////////
         $arrOrder["PROPERTIES"] = array();
-        while($arProp = $resPropValues->GetNext()){
+
+        $arPropsList = array("TROIKA_TRANSACT_ID","TROIKA","CHANGE_REQUEST");
+
+        foreach($arPropsList as $sPropCode){
+            $arProp = CSaleOrderProps::GetList(
+                array("SORT" => "ASC"),
+                $arF = array(
+                        "ORDER_ID"       => $arrOrder["ID"],
+                        "PERSON_TYPE_ID" => 1,
+                        "PROPS_GROUP_ID" => $nPropGroup,
+                        "CODE"=>$sPropCode
+                    ),
+                false,
+                array("nTopCount"=>1),
+                array("ID","CODE")
+            )->Fetch();
+
             $arrOrder["PROPERTIES"][$arProp["CODE"]] = 
                 CSaleOrderPropsValue::GetList(
                     array(),
                     $arFilterProp = array(
                         "ORDER_ID"=>$arrOrder["ID"],
                         "ORDER_PROPS_ID"=>$arProp["ID"]
-                    )
-                )->GetNext();
+                    ),
+                    false,
+                    array("nTopCount"=>1),
+                    array("VALUE")
+                )->Fetch();
         }
+        //////////////////////
+
 
         // Не выводим заказы импортированные из других систем
         // if(!preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"]))continue;
@@ -335,9 +348,26 @@
 
         $order["СостояниеЗаказа"] = $order["ЗНИ"];
 
+        $order["НомерТройки"] =
+            isset($arrOrder["PROPERTIES"]["TROIKA"]["VALUE"])
+            ?
+            $arrOrder["PROPERTIES"]["TROIKA"]["VALUE"]
+            :
+            ''
+            ;
+
+        $order["НомерОперации"] =
+            isset($arrOrder["PROPERTIES"]["TROIKA_TRANSACT_ID"]["VALUE"])
+            ?
+            $arrOrder["PROPERTIES"]["TROIKA_TRANSACT_ID"]["VALUE"]
+            :
+            ''
+            ;
+
         $order["Товары"] = $products;
         $arOrders[] = $order;
     }
+
 ?><КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_205" <? 
 ?>xmlns:xs="http://www.w3.org/2001/XMLSchema" <?
 ?>xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <?
@@ -371,7 +401,22 @@
                 echo $arOrder["Клиент"];
             ?></ПолноеНаименование>
             <Фамилия><? echo $arOrder["Фамилия"];?></Фамилия>
-            <Имя><? echo $arOrder["Имя"];?></Имя>
+            <Имя><? echo $arOrder["Имя"];?></Имя><? 
+                if($arOrder["НомерТройки"]):
+            ?>
+
+            <НомерТройки><? echo $arOrder["НомерТройки"];?></НомерТройки><?
+                endif
+            ?>
+            <? 
+                if($arOrder["НомерОперации"]):
+            ?>
+
+            <НомерОперации><? echo $arOrder["НомерОперации"];
+            ?></НомерОперации><?
+                endif
+            ?>
+
             <Адрес>
                 <Представление><? echo $arOrder["Город"];?></Представление>
             </Адрес>
