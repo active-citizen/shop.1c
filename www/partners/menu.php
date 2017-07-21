@@ -64,6 +64,14 @@
                     ЗНИ
                 </a>
             </li>
+            <li class="<?
+            if(preg_match("#^/partners/settings/#",$_SERVER["REQUEST_URI"]))echo
+            "active";?>">
+                <a href="/partners/settings/">
+                <span class="glyphicon glyphicon-wrench"></span>
+                    Настройки
+                </a>
+            </li>
         <? endif ?>
         <li style="float:right;">
             <a href="/partners/orders/?logout=yes">Выход</a>

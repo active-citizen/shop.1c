@@ -1,0 +1,40 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с маппингом ошибок
+     */
+    class troyka extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_settings`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_settings`(
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `code` CHAR(16) NOT NULL DEFAULT '-' COMMENT
+                        'Код настройки',
+                    `data` LONGTEXT COMMENT 'JSON настройки',
+                    PRIMARY KEY `id`(`id`),
+                    KEY `code`(`code`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$troyka = new troyka();
+// Откатываем, если неудачно
+if(!$troyka->Run())$troyka->RollBack();

@@ -1,0 +1,39 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с логом curl 
+     */
+    class curl_logger extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_curl_logger`
+            ");
+            $DB->Query("
+                CREATE TABLE IF NOT EXISTS `int_curl_logger`(
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `ctime` BIGINT(20) COMMENT 'Timestamp добавления',
+                    `order_num` CHAR(24) COMMENT 'номер заказа',
+                    `url` CHAR (255) COMMENT 'url',
+                    `post_data` LONGTEXT COMMENT 'POST-запрос',
+                    `data` LONGTEXT COMMENT 'Содержимое ответа',
+                    PRIMARY KEY `id`(`id`),
+                    KEY `order_num`(`order_num`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ");
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$curl_logger = new curl_logger();
+// Откатываем, если неудачно
+if(!$curl_logger->Run())$curl_logger->RollBack();

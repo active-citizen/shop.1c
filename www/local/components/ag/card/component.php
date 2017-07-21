@@ -182,7 +182,6 @@
         )
     )->GetNext();
 
-
     $this->IncludeComponentTemplate();
 //}
 

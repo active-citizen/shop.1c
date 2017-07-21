@@ -1,0 +1,23 @@
+#troyka-card-number{
+    width: 180px;
+    margin-bottom: 5px;
+}
+    
+.ag-shop-card__card-number-tooltip-content img{
+    width: 120px;
+}
+
+.troyka-submit-disabled{
+    background-color: #CCC !important;
+    color: #EEE;
+    border: 1px #CCC solid !important;
+}
+
+.troyka-number-wrong{
+    border: 1px red solid !important;
+    background-color: #FEE;
+}
+
+#troyka-error{
+    color: red;
+}

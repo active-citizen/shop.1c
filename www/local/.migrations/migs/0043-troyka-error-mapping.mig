@@ -1,0 +1,104 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с маппингом ошибок
+     */
+    class troyka extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_troika_error_mapping`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_troika_error_mapping`(
+                    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `errorCode` CHAR(5) NOT NULL DEFAULT '-' COMMENT
+                        'Код ошибки',
+                    `errorDesc` CHAR(5) NOT NULL DEFAULT '-' COMMENT
+                        'Код описания ошибки',
+                    `ErrorMessage` CHAR(4) NOT NULL DEFAULT '-' 
+                        COMMENT 'Код сообщения об ошибке',
+                    `errorValue` TEXT COMMENT 'Значение',
+                    `messageType` CHAR(64) NOT NULL DEFAULT '-' 
+                        COMMENT 'Тип сообщения в АГ',
+                    `messageText` TEXT COMMENT 'Текст сообщения об ошибке',
+                    `errorCodeCOTT` CHAR(32) NOT NULL DEFAULT '' COMMENT
+                        'Код ошибки ЦОТТ',
+                    `errorTextCOTT` TEXT COMMENT 'Краткое описание ошибки ЦОТТ',
+                    `recomendCOTT` TEXT COMMENT 'Рекомендация ЦОТТ',
+                    `userMessegeCOTT` TEXT COMMENT 'Пользовательское сообщение ЦОТТ',
+                    PRIMARY KEY `id`(`id`),
+                    KEY `errorCode`(`errorCode`),
+                    KEY `errorDesc`(`errorDesc`),
+                    KEY `ErrorMessage`(`ErrorMessage`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+            if($fd =
+            fopen(realpath(dirname(__FILE__))."/data/troyka_errors_mapping.csv","r")){
+                $nCounter = 0;
+                while(!feof($fd)){
+                    $nCounter++;
+                    $sLine = fgets($fd);
+                    if(!trim($sLine))continue;
+                    list(
+                        $errorCode,
+                        $errorDesc,
+                        $ErrorMessage,
+                        $errorValue,
+                        $messageType,
+                        $sEmpty,    // Ненужный столбец
+                        $messageText,
+                        $errorCodeCOTT,
+                        $errorTextCOTT,
+                        $recomendCOTT,
+                        $userMessegeCOTT
+                    ) = explode("\t",$sLine);
+                    $sQuery =  "INSERT INTO `int_troika_error_mapping`
+                    (
+                        `errorCode`,
+                        `errorDesc`,
+                        `ErrorMessage`,
+                        `errorValue`,
+                        `messageType`,
+                        `messageText`,
+                        `errorCodeCOTT`,
+                        `errorTextCOTT`,
+                        `recomendCOTT`,
+                        `userMessegeCOTT`
+                    )
+                    VALUES
+                    (
+                        '$errorCode',
+                        '$errorDesc',
+                        '$ErrorMessage',
+                        '$errorValue',
+                        '$messageType',
+                        '$messageText',
+                        '$errorCodeCOTT',
+                        '$errorTextCOTT',
+                        '$recomendCOTT',
+                        '$userMessegeCOTT'
+                    );";
+                    $DB->Query($sQuery);
+                }
+                fclose($fd);
+            }
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$troyka = new troyka();
+// Откатываем, если неудачно
+if(!$troyka->Run())$troyka->RollBack();
