@@ -7,16 +7,7 @@ if ($this->StartResultCache(false)) {
     $res = CIBlockElement::GetList(array("SORT"=>"ASC"),array(
         "ACTIVE"        =>  "Y",
         "IBLOCK_CODE"   =>  "baners_on_main",
-        array(
-            "LOGIC"=>"OR",
-            "ACTIVE_FROM"   =>  "",
-            "<ACTIVE_FROM"  =>  date("d.m.Y H:i:s")
-        ),
-        array(
-            "LOGIC"=>"OR",
-            "ACTIVE_TO"   =>  "",
-            ">ACTIVE_TO"  =>  date("d.m.Y H:i:s")
-        )
+        "ACTIVE_DATE"   =>  "Y"
     ),false,false);
     
     
@@ -123,6 +114,7 @@ if ($this->StartResultCache(false)) {
             }
         }
     }
+
  
     $this->IncludeComponentTemplate();
 }

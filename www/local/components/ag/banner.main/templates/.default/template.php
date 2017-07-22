@@ -2,7 +2,7 @@
 <?
     $this->createFrame()->begin("Загрузка");
 ?>  
-        <?if(!$arRsult["BANNERS"]):?>
+        <?if(count($arResult["BANNERS"])):?>
           <!-- Slider {{{-->
           <div class="ag-shop-slider" style="height:500px;margin-bottom: 5px;">
             <div class="js-content-slider">
