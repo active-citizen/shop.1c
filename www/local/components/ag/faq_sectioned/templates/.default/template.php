@@ -35,7 +35,7 @@
                               <a 
                                 class="ag-shop-rules__spoiler-link js-spoiler__link hash-navigation" 
                                 name="<?= $faq["CODE"]?>" 
-                                href="#<?= $arSection["ID"]?>.<?= $faq["CODE"]?>"
+                                href="#<?= $arSection["ID"]?>.<?= $faq["ID"]?>"
                                 id="faq-click-<?= $faq["CODE"]?>"
                               >- <?= $faq["NAME"] ?></a>
                               <div class="ag-shop-rules__content ag-shop-rules__content--gaps js-spoiler__content">

@@ -16,24 +16,27 @@
       <? if($USER->isAuthorized()):?>
       <div class="grid__col-auto grid__col-md-shrink">
           <a class="ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
-          <div class="ag-shop-nav__profile-container">
-              <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
-            <div class="ag-shop-nav__link-caption">
-              <span class="hide-on-desktop">Профиль</span>
-              <span class="show-on-desktop"><?= $arResult['FIO'];?></span>
-            </div>
-            <div class="ag-shop-nav__profile-points"><?= $arResult['myBalls'];?></div>
-          </div></a></div>
+              <div class="ag-shop-nav__profile-container">
+                <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>
+                <div class="ag-shop-nav__link-caption">
+                  <span class="hide-on-desktop">Профиль</span>
+                  <span class="show-on-desktop"><?= $arResult['FIO'];?></span>
+                </div>
+                <div class="ag-shop-nav__profile-points"><?= $arResult['myBalls'];?></div>
+              </div>
+          </a>
+      </div>
       <? endif;?>
       <div class="grid__col-auto grid__col-md-shrink">
-          <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/">
-          <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
-          <div class="ag-shop-nav__link-caption">
-             Правила
-          </div>
+        <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/">
+            <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
+            <div class="ag-shop-nav__link-caption">
+                Правила
+            </div>
           </a>
-        </div>
+      </div>
       <!-- Можно выпилить целиком, если не нужно-->
+      <!--
       <div class="grid__col-auto grid__col-md-shrink ag-shop-nav__last-item">
         <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
           <div class="ag-shop-nav__link">
@@ -44,6 +47,7 @@
         </button>
       </div>
     </div>
+    -->
   </div>
 </nav>
 <!-- }}} Top Nav-->
