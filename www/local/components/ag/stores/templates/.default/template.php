@@ -23,7 +23,8 @@
                 <div class="ag-shop-content__limited-container">
                   <div class="grid grid--bleed">
                     <div class="grid__col-shrink">
-                      <div class="ag-shop-rules__address-container" id="YMapsID<?= $arStore["ID"] ?>" style="width:420px;height:150px"></div>
+                      <div class="ag-shop-rules__address-container"
+                      id="YMapsID<?= $arStore["ID"] ?>" style="width:300px;height:150px"></div>
                       <script>
                       <?
                         foreach($arStore as $k=>$v)
