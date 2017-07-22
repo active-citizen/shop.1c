@@ -8,39 +8,50 @@
     <div class="ag-shop-rules__content">
         <mark><strong>Ответы на часто задаваемые вопросы</strong></mark>
           <div class="ag-shop-rules__container ag-shop-rules__content--gaps">
-            <? if($arResult["section"]["NAME"]):?>
-                <mark><strong><?= $arResult["section"]["NAME"]?></strong></mark>
-            <? endif?>
+
             <? if($arResult["section"]["DESCRIPTION"]):?>
                 <div class="ag-shop-rules__content ag-shop-rules__content--gaps">
-                    <p>
-                    <?= $arResult["section"]["DESCRIPTION"]?>
-                    </p>
-                </div>
+               </div>
             <? endif?>
+
             <? foreach($arResult["sections"] as $arSection):?>
-              <div>
-              <a 
-                class="ag-shop-rules__spoiler-link
-                hash-navigation" 
-                href="<?= $arParams["DASE_PATH"]?><?= $arSection["ID"]?>/"
-              ><?= $arSection["NAME"] ?></a>
-              </div>
+                <div class="faq-section">
+                    <a 
+                        class="ag-shop-rules__spoiler-link
+                        hash-navigation faq-section" 
+                        href="#<?= $arSection["ID"] ?>"
+                    ><?= 
+                        $arSection["NAME"] 
+                    ?></a>
+                    <div class="faq-section-spoiler" style="display:none;"
+                        id="faq-section-id-<?= $arSection["ID"]?>"
+                    >
+                        <p>
+                        <?= $arSection["DESCRIPTION"]?>
+                        </p>
+
+                        <div class="ag-shop-rules__container">
+                            <? foreach($arSection["childs"] as $faq):?>
+                              <a 
+                                class="ag-shop-rules__spoiler-link js-spoiler__link hash-navigation" 
+                                name="<?= $faq["CODE"]?>" 
+                                href="#<?= $arSection["ID"]?>.<?= $faq["CODE"]?>"
+                                id="faq-click-<?= $faq["CODE"]?>"
+                              >- <?= $faq["NAME"] ?></a>
+                              <div class="ag-shop-rules__content ag-shop-rules__content--gaps js-spoiler__content">
+                                <p><?= $faq["~DETAIL_TEXT"];?></p>
+                              </div>                
+                            <? endforeach?>
+                        </div>
+                        
+                    </div>
+                </div>
             <? endforeach?>
-          </div>
-          <div class="ag-shop-rules__container">
-            <? foreach($arResult["faq"] as $faq):?>
-              <a 
-                class="ag-shop-rules__spoiler-link js-spoiler__link hash-navigation" 
-                name="<?= $faq["CODE"]?>" 
-                href="#<?= $faq["CODE"]?>"
-                id="faq-click-<?= $faq["CODE"]?>"
-              >- <?= $faq["NAME"] ?></a>
-              <div class="ag-shop-rules__content ag-shop-rules__content--gaps js-spoiler__content">
-                <p><?= $faq["~DETAIL_TEXT"];?></p>
-              </div>                
-            <? endforeach?>
-          </div>
+
+        </div>
+
     </div>
 </div>
+
+
             

@@ -19,6 +19,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/libs/jquery-ui.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/libs/slick.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/faq.css");
 
 
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");
@@ -28,6 +29,7 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/index.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/scripts.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
+$APPLICATION->AddHeadScript("/local/assets/scripts/faq.js");
 
 
 ?>
