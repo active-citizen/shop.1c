@@ -1,7 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?
     $this->createFrame()->begin("Загрузка");
-?>
+?>  
+        <?if(!$arRsult["BANNERS"]):?>
           <!-- Slider {{{-->
           <div class="ag-shop-slider" style="height:500px;margin-bottom: 5px;">
             <div class="js-content-slider">
@@ -87,4 +88,5 @@
             <div class="ag-shop-slider__dots"></div>
           </div>
           <!-- }}} Slider-->
+        <? endif ?>
 
