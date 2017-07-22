@@ -75,9 +75,21 @@
                          style="display:none;"> -->
                   <div class="ag-shop-slider-card-dark__info-layer" style="background-image: url('<?= $BANER["PROPERTIES"]["BANER_PICTURE"]["URL"] ?>');">
                     <div class="ag-shop-slider-card-dark__info">
-                      <h3 class="ag-shop-slider-card-dark__name"><?= $BANER["NAME"]?></h3>
+
+                    <h3 class="ag-shop-slider-card-dark__name"
+                    style="text-shadow: 0 0 5px rgba(0,0,0,1);"><?= $BANER["NAME"]?></h3>
                     </div>
-                  </div></a></div>
+                  </div></a>
+
+                    <div style="position: absolute; bottom: 10px; color:  white;
+                    z-index: 3; left: 20px; right: 20px; text-shadow: 0 0 3px
+                    rgba(0,0,0,1); color: white !important;">
+                      <?= 
+                        $BANER["PROPERTIES"]["BANER_DESC"]["VALUE"]
+                      ?>
+                    </div>
+
+                </div>
                 <? endif ?>  
             <? endforeach?>
             </div>
