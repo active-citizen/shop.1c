@@ -1,15 +1,15 @@
 <?
     define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
-    require(
+    require_once(
         $_SERVER["DOCUMENT_ROOT"]
         ."/bitrix/modules/main/include/prolog_before.php"
     );
-    require('common.php');
+    require_once('common.php');
     if(!$USER->isAdmin()){
         echo "Access denied";
         exit();
     }
-    require('migration.class.php');
+    require_once('migration.class.php');
 
     $filename = isset($_POST["filename"]) ?  $_POST["filename"] : "" ;
     if(
