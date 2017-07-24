@@ -162,7 +162,8 @@
                 $this->error = ''
                     .__CLASS__.":"
                     .__LINE__.":"
-                    ."Номер тройки для заказа '".$arOrder["ID"]."' не указан";
+                    ."$sPropertyCode для заказа '".$arOrder["ID"].
+                    "' не существует";
                 return false;
             }
 

@@ -361,7 +361,7 @@
             Получение номера транзакции по номеру заказа
         */
         function getTroykaTransactNum($sOrderNum){
-            return $this->getPropertyByOrderNum($sOrderNum, "TROIKA_TRANSACT_NUM");
+            return $this->getPropertyByOrderNum($sOrderNum, "TROIKA_TRANSACT_ID");
         }
 
         /**

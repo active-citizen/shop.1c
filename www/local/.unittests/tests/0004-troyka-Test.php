@@ -180,10 +180,13 @@
                "Контроль корректного номера заказа" 
             );
 
+            $sOrderNum =
+               $objTroyka->getTroykaTransactNum($arOrder["ADDITIONAL_INFO"]);
             $this->assertEquals(
-                $objTroyka->getTroykaTransactNum($arOrder["ADDITIONAL_INFO"]),
+                $sOrderNum,
                 $objTroyka->transact,
-                "Проверка назначенного заказу номера карты тройка"
+                "Проверка назначенного заказу номера карты тройка".
+                    print_r($objTroyka->error,1)
             );
 
             $objTroyka->linkOrderTransact($arOrder["ADDITIONAL_INFO"],'');
