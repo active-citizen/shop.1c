@@ -128,10 +128,12 @@
                "Контроль корректного номера заказа" 
             );
 
+            $sOrderNum = $objTroyka->getTroykaNum($arOrder["ADDITIONAL_INFO"]);
             $this->assertEquals(
-                $objTroyka->getTroykaNum($arOrder["ADDITIONAL_INFO"]),
+                $sOrderNum,
                 $objTroyka->number,
                 "Проверка назначенного заказу номера карты тройка"
+                    .print_r($objTroyka->error,1)
             );
 
             
