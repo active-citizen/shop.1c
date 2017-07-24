@@ -82,7 +82,7 @@
                     return false;
                 }
             }
-            elseif($this->number){
+            elseif($sPropertyValue){
                 $arFilter["VALUE"] = $aPropertyValue;
                 if(!CSaleOrderPropsValue::Add($arFilter)){
                     $this->error = ''
