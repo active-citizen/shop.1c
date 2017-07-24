@@ -1,19 +1,16 @@
 <?php
-    // Либа ручного кэша
-    require(
-        $_SERVER["DOCUMENT_ROOT"].
-        "/local/libs/customcache.lib.php"
-    );
-
     ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем торговые предложения
     ///////////////////////////////////////////////////////////////////////
+    // Либа ручного кэша
+    require( $_SERVER["DOCUMENT_ROOT"].  "/local/libs/customcache.lib.php");
+
     $objPrice = new CPrice;
     $objOffer = new CIBlockElement;
     $ibp = new CIBlockProperty;
     $ibpenum = new CIBlockPropertyEnum;
     $resCatalogStoreProduct = new CCatalogStoreProduct;
-    $OFFERS_IBLOCK_ID = 3;
+    $OFFERS_IBLOCK_ID = OFFER_IB_ID;
     // Перебираем товарные предложения
 
     // Составляем справочник флагов 
@@ -46,7 +43,6 @@
        
         $XML_ID = explode("#", $arOffer["Ид"]);
         $XML_ID = $XML_ID[0];
-
         
         // Если склад еданственный
         if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))
@@ -66,12 +62,6 @@
             "PRICE"             =>  
                 $productsIndexDetail[$XML_ID]["Баллы"],
             "XML_ID"            =>  $arOffer["Ид"],
-            
-//                "DETAIL_TEXT"       =>  $product["DETAIL_TEXT"],
-//                "PREVIEW_TEXT"      =>  $product["PREVIEW_TEXT"],
-//                "PREVIEW_TEXT_TYPE" =>  $product["PREVIEW_TEXT_TYPE"],
-//                "PREVIEW_PICTURE"   =>  (
-//                "DETAIL_PICTURE"    =>  (
         );
 
         // Ищем в товарных предложениях с указанным XML_ID
@@ -165,14 +155,6 @@
                 );
             }
             
-            // Обнуляем остатки на складах
-            //$res = CCatalogStoreProduct::GetList(array(),
-            //array("PRODUCT_ID"=>$offerId));
-            //while($store = $res->GetNext())
-            //    $resCatalogStoreProduct->Update(
-            //$store["ID"],array("AMOUNT"=>0)
-            //);
-                
             // Прописываем новые остатки
             if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))
                 foreach($arOffer["Склад"] as $storage){
@@ -212,13 +194,6 @@
             
         }
         
-//        if($XML_ID=='882625c5-024e-11e7-ad0b-0050568051b4'){
-//            echo "<pre>";
-//          print_r($productsIndexDetail[$XML_ID]["Картинка"]);
-//          die;
-//      }
-
-
         ///////////////////////  Дополнительные изображения
         if(count($productsIndexDetail[$XML_ID]["Картинка"])){
 
@@ -227,7 +202,7 @@
             // Составляем индекс размеров файлов
             $check_prop_value = array();
             foreach($productsIndexDetail[$XML_ID]["Картинка"] as $value){
-                $picturePath = $value;//mb_convert_encoding($value, "utf-8", "cp866");
+                $picturePath = $value;
                 $picturePath = 
                     $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/"
                         .$picturePath;
@@ -262,7 +237,7 @@
                     CFile::Delete($photoItem["VALUE"]);
                 // Делаем массив для добавления
                 foreach($productsIndexDetail[$XML_ID]["Картинка"] as $img){
-                    $picturePath = $img;//mb_convert_encoding($img, "utf-8", "cp866");
+                    $picturePath = $img;
                     $picturePath = 
                         $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/"
                             .$picturePath;
