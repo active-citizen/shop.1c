@@ -62,6 +62,8 @@
             $sOrderNum  //!< Номер заказа в рамках которого идет запрос
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
+
+            if($this->emulation!='success' && $this->emulation!='failed')
             $objSoap = new SoapClient(
                 $this->url,
                 array(
@@ -122,6 +124,7 @@
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
 
+            if($this->emulation!='success' && $this->emulation!='failed')
             $objSoap = new SoapClient(
                 $this->url,
                 array(
@@ -170,6 +173,7 @@
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
 
+            if($this->emulation!='success' && $this->emulation!='failed')
             $objSoap = new SoapClient(
                 $this->url,
                 array(
@@ -214,6 +218,7 @@
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
 
+            if($this->emulation!='success' && $this->emulation!='failed')
             $objSoap = new SoapClient(
                 $this->url,
                 array(
@@ -287,6 +292,7 @@
             }
             $this->getPaymentCapabilities($sOrderNum);
 
+            if($this->emulation!='success' && $this->emulation!='failed')
             $objSoap = new SoapClient(
                 $this->url,
                 array(
