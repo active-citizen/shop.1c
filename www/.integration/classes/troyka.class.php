@@ -347,7 +347,7 @@
             if($sTroykaNum!='-')
                 $this->number = $sTroykaNum;
             $this->error = ''; 
-            $this-setPropertyByOrderNum($nOrderNum,"TROIKA",$this->number);
+            $this->setPropertyByOrderNum($nOrderNum,"TROIKA",$this->number);
         }
 
         /**
