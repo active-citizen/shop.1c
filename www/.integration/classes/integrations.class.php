@@ -18,7 +18,7 @@
             Добавление свойства заказу по его номеру и коду свойства
         */
         function setPropertyByOrderNum(
-            $sOrderNum,
+            $nOrderNum,
             $sPropertyCode,
             $sPropertyValue
         ){
