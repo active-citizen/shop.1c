@@ -409,4 +409,7 @@ input:checked + .ag-shop-filter__variants-item {
     border-radius: 8px;
 }
 
-
+.ag-shop-menu{
+    position:relative;
+    z-index: 9999;
+}
