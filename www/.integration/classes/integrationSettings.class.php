@@ -20,7 +20,8 @@
                     `code`='".$DB->ForSql($this->code)."'
                  LIMIT 1"
             )->Fetch()){
-                $this->error = 'Неизвестный код настройки';
+                $this->error = __CLASS__.":".__LINE__
+                    .':Неизвестный код настройки "'.$sCode.'"';
                 return false;
             }
             return true;

@@ -2,6 +2,7 @@
     class integrationSettingsTest extends PHPUnit_Framework_TestCase{
 
         function __construct($sTroykaNum){
+
             require_once(
                 $_SERVER["DOCUMENT_ROOT"].
                 "/.integration/classes/integrationSettings.class.php"

@@ -19,34 +19,32 @@
         var $ip = '';           //!< IP-адрес инициатора запроса 
 
         function __construct($sNum='',$sPhone=''){
-            require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+            parent::__construct();
 
-            $objSettings = new CIntegrationSettings('TROYKA');
-            $arSettings = $objSettings->get(); 
-
-            if(!$sNum)$sNum = $arSettings["TROYKA_CARD"]["VALUE"];
-            if(!$sPhone)$sPhone = $arSettings["TROYKA_PHONE"]["VALUE"];
+            if(!$sNum)$sNum = $this->settings["TROYKA_CARD"]["VALUE"];
+            if(!$sPhone)$sPhone = $this->settings["TROYKA_PHONE"]["VALUE"];
 
             CModule::IncludeModule("sale");
             if(!$this->checkTroyka($sNum))return false;
             if(!$this->checkPhone($sPhone))return false;
 
             // Предустановленные значения
-            $this->cvc      = $arSettings["TROYKA_CVC"]["VALUE"];
+            $this->cvc      = $this->settings["TROYKA_CVC"]["VALUE"];
             $this->number   = $sNum;
             $this->phone    = $sPhone;
+            require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
             $this->pemPath  = $TROYKA_PEM_PATH;
-            $this->url      = $arSettings["TROYKA_URL"]["VALUE"];
+            $this->url      = $this->settings["TROYKA_URL"]["VALUE"];
             $this->currentVersion   =
-            $arSettings["TROYKA_CURRENT_VERSION"]["VALUE"];
+                $this->settings["TROYKA_CURRENT_VERSION"]["VALUE"];
             $this->partnerMdOrder   =
-            $arSettings["TROYKA_PARTNER_MD_ORDER"]["VALUE"];
-            $this->amount           = $arSettings["TROYKA_AMOUNT"]["VALUE"];
-            $this->currency         = $arSettings["TROYKA_CURRENCY"]["VALUE"];
-            $this->serviceId        = $arSettings["TROYKA_SERVICE_ID"]["VALUE"];
-            $this->ip               = $arSettings["TROYKA_IP"]["VALUE"];
-            $this->bindingId        = $arSettings["TROYKA_BINDING_ID"]["VALUE"];
-            $this->emulation        = $arSettings["TROYKA_EMULATION"]["VALUE"];
+                $this->settings["TROYKA_PARTNER_MD_ORDER"]["VALUE"];
+            $this->amount           = $this->settings["TROYKA_AMOUNT"]["VALUE"];
+            $this->currency         = $this->settings["TROYKA_CURRENCY"]["VALUE"];
+            $this->serviceId        = $this->settings["TROYKA_SERVICE_ID"]["VALUE"];
+            $this->ip               = $this->settings["TROYKA_IP"]["VALUE"];
+            $this->bindingId        = $this->settings["TROYKA_BINDING_ID"]["VALUE"];
+            $this->emulation        = $this->settings["TROYKA_EMULATION"]["VALUE"];
             $this->simleMode        =
                boolval(intval($arSettings["TROYKA_SIMPLE_MODE"]["VALUE"]));
 

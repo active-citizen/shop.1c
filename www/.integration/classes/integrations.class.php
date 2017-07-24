@@ -12,7 +12,20 @@
         var $emulation = false; //!< Режим эмуляции ('success','failed', false)
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
+        var $settings = array();//!< Настройки, полученные из БД
 
+
+        function __construct(){
+            // Получаем настройки из БД
+            require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+
+            $sCalledClass = mb_strtoupper(mb_substr(get_called_class(),1));
+
+            $objSettings = new CIntegrationSettings($sCalledClass);
+            if($objSettings->error)$this->error = $objSettings->error;
+            $this->settings = $objSettings->get(); 
+            unset($objSettings);
+        }
 
         /**
             Добавление свойства заказу по его номеру и коду свойства
