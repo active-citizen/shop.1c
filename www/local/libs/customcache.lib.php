@@ -56,11 +56,12 @@
     */
     function customCacheClear($sDir = ''){
         if(!$sDir)$sDir = CUSTOM_CACHE_DIR;
-        $dd = opendir($sDir);
-        while($filename = readdir($dd)){
+        $arFiles = scandir($sDir);
+        foreach($arFiles as $filename){
             if($filename=='.' || $filename=='..' || $filename=='.htaccess')
                 continue;
             $sCurrentFilename = $sDir."/".$filename;
+
             if(is_dir($sCurrentFilename)){
                 customCacheClear($sCurrentFilename);
                 rmdir($sCurrentFilename);
@@ -68,5 +69,6 @@
             else{
                 unlink($sCurrentFilename);
             }
+            
         }
     }
