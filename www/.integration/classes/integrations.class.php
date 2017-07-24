@@ -326,7 +326,7 @@
         ){
             $this->error = '';
             $this->errorNo = 0;
-            if(!preg_match("#^\d{10}$#",$sPhone)){
+            if(!preg_match("#^\d{10,11}$#",$sPhone)){
                 $arBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,1);
                 $this->error = ''
                     .$arBacktrace[0]['class'].":"

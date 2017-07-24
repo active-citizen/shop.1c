@@ -22,13 +22,15 @@
             );
             unset($objParking);
         
-            $sPhone = '0000000000';
+            $sPhone = '00000000000';
             $objParking = new CParking($sPhone);
             $this->assertFalse(
                 boolval($objParking->error),
                 "Контроль ввода неверного номера телефона "
                     .$objParking->error
             );
+
+            $objParking->payment();
         }
 
   
