@@ -347,21 +347,21 @@
             if($sTroykaNum!='-')
                 $this->number = $sTroykaNum;
             $this->error = ''; 
-            $this-setPropertyByOrderNum($nOrderNum,"TROYKA",$this->number);
+            $this-setPropertyByOrderNum($nOrderNum,"TROIKA",$this->number);
         }
 
         /**
             Получение номера тройки по номеру заказа
         */
         function getTroykaNum($sOrderNum){
-            return $this->getPropertyByOrderNum($sOrderNum, "TROYKA");
+            return $this->getPropertyByOrderNum($sOrderNum, "TROIKA");
         }
 
         /**
             Получение номера транзакции по номеру заказа
         */
         function getTroykaTransactNum($sOrderNum){
-            return $this->getPropertyByOrderNum($sOrderNum, "TROYKA_TRANSACT_NUM");
+            return $this->getPropertyByOrderNum($sOrderNum, "TROIKA_TRANSACT_NUM");
         }
 
         /**
