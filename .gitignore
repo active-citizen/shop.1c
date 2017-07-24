@@ -13,6 +13,8 @@ www/upload/*
 www/upload/stores/*.png
 www/upload/manufacturers/*.png
 
+# Игнорировать мобильное приложение
+www/desktop_app/*
 
 # Игнорировать файл с паролями и ключами
 www/.integration/secret.inc.php
