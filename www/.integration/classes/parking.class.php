@@ -162,7 +162,66 @@
         /**
             Завершился ли дневной лимит по транзакциям
         */
-        function isLimited(){
+        function isLimited(
+            $nPeriod = 86400 //!< Перид, за который считаем лимит
+        ){
+            global $DB;
+
+
+            $arPropGroup = CSaleOrderPropsGroup::GetList(
+                array(),
+                $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+                false,
+                array("nTopCount"=>1)
+            )->GetNext();
+            $nPropGroup = $arPropGroup["ID"];
+
+
+            $arPropValue = CSaleOrderProps::GetList(
+                array("SORT" => "ASC"),
+                array(
+                        "ORDER_ID"       => $nOrderId,
+                        "PERSON_TYPE_ID" => 1,
+                        "PROPS_GROUP_ID" => $nPropGroup,
+                        "CODE"           => $this->mnemonic."_TRANSACT_ID"
+                    ),
+                false,
+                false,
+                array("ID","CODE","NAME")
+            )->Fetch();
+            $nOrderPropsId = $arPropValue["ID"];
+
+            $sDate = date("Y-m-d H:i:s",time()-$nPeriod);
+            // Через битриксовый API слишком жирно. Делаем прямой запрос к БД
+            $sQuery = "
+                SELECT 
+                    COUNT(`a`.`ID`) as `count`
+                FROM 
+                    `b_sale_order_props_value` as `a`
+                        LEFT JOIN
+                    `b_sale_order` as `b`
+                        ON 
+                            `a`.`ORDER_PROPS_ID`=$nOrderPropsId
+                            AND `a`.`VALUE`!=''
+                            AND `a`.`ORDER_ID`=`b`.`ID`
+                            AND `b`.`DATE_INSERT`>='$sDate'
+--                            AND `b`.`STATUS_ID`='F'
+                WHERE
+                    `b`.`ID` IS NOT NULL
+                LIMIT
+                    1
+                        
+            ";
+            $arResult = $DB->Query($sQuery)->Fetch();
+            // Если ошибка запроса - объявляем, что всё, баста
+            if(!isset($arResult["count"]))return true;
+            // Баста
+            if(
+                $arResult["count"]
+                >=
+                $this->settings[$this->mnemonic."_LIMIT"]["VALUE"]
+            ) return true;
+            // Лимит не выбран
             return false;
         }
 

@@ -117,7 +117,27 @@
         // А умолчальный сделаем нулём
         $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"] = 0;
 
-        while($arStorage = $resStorage->GetNext()){
+        // Если это парковка и дневной лимит вышел - показываем фигу
+        if(
+            isset($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"])
+            &&
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
+                ='parking'
+        ){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"].
+                "/.integration/classes/parking.class.php"
+            );
+            echo "<pre>";
+            $arUser = $USER->GetById($USER->GetId())->Fetch();
+            
+            $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+            $objParking->settings["PARKING_LIMIT"]["VALUE"] = 0;
+            $bIsLimited = $objParking->isLimited();
+            
+        }
+
+        if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
             
             if(!$arStorage["AMOUNT"])continue;
             $arOffer["STORAGES"][$arStorage["STORE_ID"]] =
