@@ -128,10 +128,9 @@
                 $_SERVER["DOCUMENT_ROOT"].
                 "/.integration/classes/parking.class.php"
             );
-            echo "<pre>";
             $arUser = $USER->GetById($USER->GetId())->Fetch();
-            
             $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+
             $bIsLimited = $objParking->isLimited();
             $arReqult["PARKING_TODAY"] = $objParking->transactsToday;
         }

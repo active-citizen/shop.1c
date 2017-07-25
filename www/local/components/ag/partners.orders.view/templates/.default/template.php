@@ -153,6 +153,17 @@
             </td>
         </tr>
         <? endif ?>
+        <? if(
+            isset($arResult["ORDER"]["PROPERTIES"]["PARKING_TRANSACT_ID"]["VALUE"])
+        ):?>
+        <tr>
+            <td class="field-name">
+                ID транзакции в парковках
+            </td><td>
+                <?= $arResult["ORDER"]["PROPERTIES"]["PARKING_TRANSACT_ID"]["VALUE"] ?>
+            </td>
+        </tr>
+        <? endif ?>
     </table>
         <? if(isset($arResult["ORDER"]["CURL_LOG"])):?>
             <div id="accordion">

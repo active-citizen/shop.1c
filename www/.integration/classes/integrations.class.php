@@ -13,7 +13,7 @@
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
         var $settings = array();//!< Настройки, полученные из БД
-        var $debug = true;      //!< Режим отладки
+        var $debug = false;      //!< Режим отладки
         var $mnemonic = '';     //!< Мнемоника класса для всяких префиксов     
 
 
@@ -86,7 +86,7 @@
                 }
             }
             elseif($sPropertyValue){
-                $arFilter["VALUE"] = $aPropertyValue;
+                $arFilter["VALUE"] = $sPropertyValue;
                 if(!CSaleOrderPropsValue::Add($arFilter)){
                     $this->riseError("Ошибка добавления свойства заказа
                     ".print_r($arFilter,1));
@@ -176,7 +176,7 @@
             $nOrderNum,      // Номер заказа
             $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
         ){
-            if($sTroykaNum!='-')
+           if($sTroykaNum!='-')
                 $this->number = $sTroykaNum;
             $this->error = ''; 
             $this->setPropertyByOrderNum(

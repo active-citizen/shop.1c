@@ -34,9 +34,9 @@
 
             // Режим эмуляции платежа
             if( $this->emulation == 'success' || $this->emulation == 'failed')
-                $arAnswer = $this->paymentRequestEmulate($sOrderNum);
+                $arAnswer = $this->paymentRequestEmulate();
             else
-                $arAnswer = $this->paymentRequest($sOrderNum,$sPostData);
+                $arAnswer = $this->paymentRequest($sPostData);
 
             // Пишем результат транзакции в лог
             $this->curlLog(
@@ -45,6 +45,7 @@
                $sPostData,
                $arAnswer
             );
+            $arAnswer = json_decode(json_encode((array)$arAnswer), TRUE);
 
             // Сохраняем номер транзакции, если указан
             if(isset($arAnswer["payment"]["paymentId"]))
@@ -55,16 +56,7 @@
                 isset($arAnswer["@attributes"]["errors"])
                 && intval($arAnswer["@attributes"]["errors"])
             ){
-                if(
-                    !isset($arAnswer["error"][0])
-                    &&
-                    $arAnswer["error"]
-                )
-                    $this->riseError($arAnswer["error"]); 
-                elseif(
-                    isset($arAnswer["error"][0])
-                )
-                    $this->riseError(implode(",",$arAnswer["error"]));
+                $this->riseError(print_r($arAnswer["error"],1));
                 
                 return false;
             }
@@ -207,7 +199,7 @@
                             AND `a`.`VALUE`!=''
                             AND `a`.`ORDER_ID`=`b`.`ID`
                             AND `b`.`DATE_INSERT`>='$sDate'
---                            AND `b`.`STATUS_ID`='F'
+                            AND `b`.`STATUS_ID`='F'
                 WHERE
                     `b`.`ID` IS NOT NULL
                 LIMIT
