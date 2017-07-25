@@ -132,9 +132,8 @@
             $arUser = $USER->GetById($USER->GetId())->Fetch();
             
             $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
-            $objParking->settings["PARKING_LIMIT"]["VALUE"] = 0;
             $bIsLimited = $objParking->isLimited();
-            
+            $arReqult["PARKING_TODAY"] = $objParking->transactsToday;
         }
 
         if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
@@ -142,9 +141,11 @@
             if(!$arStorage["AMOUNT"])continue;
             $arOffer["STORAGES"][$arStorage["STORE_ID"]] =
                 $arStorage["AMOUNT"]-(
-                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"])
+                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]
+                        ["STORE_LIMIT"][0]["VALUE"])
                     ?
-                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"]
+                    $arResult["CATALOG_ITEM"]["PROPERTIES"]
+                        ["STORE_LIMIT"][0]["VALUE"]
                     :
                     DEFAULT_STORE_LIMIT
                 );

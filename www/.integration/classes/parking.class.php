@@ -2,7 +2,9 @@
     require_once(realpath(dirname(__FILE__))."/integrations.class.php");
 
     class CParking extends CIntegration{
-  
+
+        var $transactsToday = 0;//!<Сделано транзакций сегодня. 
+        // Доступно только после вызова isLimited 
         function __construct($sPhone){
             parent::__construct();
             if($this->error)return false;
@@ -215,6 +217,7 @@
             $arResult = $DB->Query($sQuery)->Fetch();
             // Если ошибка запроса - объявляем, что всё, баста
             if(!isset($arResult["count"]))return true;
+            $this->transactsToday = $arResult["count"];
             // Баста
             if(
                 $arResult["count"]
