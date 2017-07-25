@@ -13,16 +13,17 @@
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
         var $settings = array();//!< Настройки, полученные из БД
-        var $debug = false;     //!< Режим отладки
+        var $debug = true;      //!< Режим отладки
+        var $mnemonic = '';     //!< Мнемоника класса для всяких префиксов     
 
 
         function __construct(){
             // Получаем настройки из БД
             require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
 
-            $sCalledClass = mb_strtoupper(mb_substr(get_called_class(),1));
+            $this->mnemonic = mb_strtoupper(mb_substr(get_called_class(),1));
 
-            $objSettings = new CIntegrationSettings($sCalledClass);
+            $objSettings = new CIntegrationSettings($this->mnemonic);
             if($objSettings->error)$this->error = $objSettings->error;
             $this->settings = $objSettings->get(); 
             unset($objSettings);
@@ -36,6 +37,10 @@
             $sPropertyCode,
             $sPropertyValue
         ){
+            // Костыль из за того, что свойство в своё время было названо
+            // по-другому. И с ним теперь жить
+            $sPropertyCode = str_replace("TROYKA", "TROIKA",$sPropertyCode);
+
             if(!$nOrderId = $this->checkOrderNum($nOrderNum))return false;
 
             $arPropGroup = CSaleOrderPropsGroup::GetList(
@@ -147,67 +152,36 @@
             return $arExistPropValue["VALUE"];
         }
 
+        /**
+            привязки номера карты к заказу
+        */
+        function linkOrder(
+            $nOrderNum,      // Номер заказа
+            $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
+        ){
+            if($sTroykaNum!='-')
+                $this->number = $sTroykaNum;
+            $this->error = ''; 
+            $this->setPropertyByOrderNum(
+                $nOrderNum,$this->mnemonic,$this->number
+            );
+        }
+
+
 
         /**
             привязки номера транзакции к заказу
         */
         function linkOrderTransact(
             $nOrderNum,      // Номер заказа
-            $sTransactNum = '-'// ПУстой номер транзакции (только для автотеста)
+            $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
         ){
-            if($sTransactNum!='-')
-                $this->transact = $sTransactNum;
+            if($sTroykaNum!='-')
+                $this->number = $sTroykaNum;
             $this->error = ''; 
-            if(!$nOrderId = $this->checkOrderNum($nOrderNum))return false;
-
-            $arPropGroup = CSaleOrderPropsGroup::GetList(
-                array(),
-                $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
-                false,
-                array("nTopCount"=>1)
-            )->GetNext();
-            $nPropGroup = $arPropGroup["ID"];
-
-
-            $arPropValue = CSaleOrderProps::GetList(
-                array("SORT" => "ASC"),
-                array(
-                        "ORDER_ID"       => $nOrderId,
-                        "PERSON_TYPE_ID" => 1,
-                        "PROPS_GROUP_ID" => $nPropGroup,
-                        "CODE"           => "TROIKA_TRANSACT_ID" 
-                    ),
-                false,
-                false,
-                array("ID","CODE","NAME")
-            )->Fetch();
-
-            $arFilter = array(
-                "ORDER_ID"      =>  $nOrderId,
-                "ORDER_PROPS_ID"=>  $arPropValue["ID"],
-                "CODE"          =>  $arPropValue["CODE"],
-                "NAME"          =>  $arPropValue["NAME"]
+            $this->setPropertyByOrderNum(
+                $nOrderNum,$this->mnemonic."_TRANSACT_ID",$this->transact
             );
-            if(
-                $arExistPropValue = 
-                CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
-            ){
-                $arFilter["VALUE"] = $this->transact;
-                if(!CSaleOrderPropsValue::Update(
-                    $arExistPropValue["ID"],
-                    $arFilter 
-                )){
-                    $this->riseError("Ошибка обновления свойства заказа");
-                    return false;
-                }
-            }
-            elseif($this->number){
-                $arFilter["VALUE"] = $this->transact;
-                if(!CSaleOrderPropsValue::Add($arFilter)){
-                    $this->riseError("Ошибка добавления свойства заказа");
-                    return false;
-                }
-            }
         }
 
         /**
@@ -287,12 +261,20 @@
 
         function riseError($sError){
             $this->error = $sError;
+            
             if($this->debug){
-                echo "\n===========================\n";
-                echo $this->error;
-                echo "\n===========================\n";
-                print_r(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,2));
+                $this->error .="\nBacktrace:\n";
+                $arBacktrace = debug_backtrace(
+                    DEBUG_BACKTRACE_PROVIDE_OBJECT,5
+                );
+                foreach($arBacktrace as $arBackItem) 
+                    $this->error .= ""
+                        .$arBackItem["file"]
+                        ." : "
+                        .$arBackItem["line"]
+                        .";\n"; 
             }
+
         }
           
     }

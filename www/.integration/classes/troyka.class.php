@@ -335,18 +335,6 @@
             return true;
         }
 
-        /**
-            привязки номера тройки к заказу
-        */
-        function linkOrder(
-            $nOrderNum,      // Номер заказа
-            $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
-        ){
-            if($sTroykaNum!='-')
-                $this->number = $sTroykaNum;
-            $this->error = ''; 
-            $this->setPropertyByOrderNum($nOrderNum,"TROIKA",$this->number);
-        }
 
         /**
             Получение номера тройки по номеру заказа
