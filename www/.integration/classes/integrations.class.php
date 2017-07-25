@@ -13,6 +13,7 @@
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
         var $settings = array();//!< Настройки, полученные из БД
+        var $debug = false;     //!< Режим отладки
 
 
         function __construct(){
@@ -35,21 +36,7 @@
             $sPropertyCode,
             $sPropertyValue
         ){
-            if(!$this->checkOrderNum($nOrderNum))return false;
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$nOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID")
-            )->Fetch();
-            if(!isset($arOrder["ID"])){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."Заказ с номером '$nOrderNum' не существует";
-                return false;
-            }
+            if(!$nOrderId = $this->checkOrderNum($nOrderNum))return false;
 
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
@@ -63,7 +50,7 @@
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 array(
-                        "ORDER_ID"       => $arOrder["ID"],
+                        "ORDER_ID"       => $nOrderId,
                         "PERSON_TYPE_ID" => 1,
                         "PROPS_GROUP_ID" => $nPropGroup,
                         "CODE"           => $sPropertyCode 
@@ -74,7 +61,7 @@
             )->Fetch();
 
             $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_ID"      =>  $nOrderId,
                 "ORDER_PROPS_ID"=>  $arPropValue["ID"],
                 "CODE"          =>  $arPropValue["CODE"],
                 "NAME"          =>  $arPropValue["NAME"]
@@ -88,20 +75,16 @@
                     $arExistPropValue["ID"],
                     $arFilter 
                 )){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка обновления свойства заказа";
+                    $this->riseError("Ошибка обновления свойства заказа
+                    ".print_r($arFilter1));
                     return false;
                 }
             }
             elseif($sPropertyValue){
                 $arFilter["VALUE"] = $aPropertyValue;
                 if(!CSaleOrderPropsValue::Add($arFilter)){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка добавления свойства заказа";
+                    $this->riseError("Ошибка добавления свойства заказа
+                    ".print_r($arFilter,1));
                     return false;
                 }
             }
@@ -118,23 +101,7 @@
             $sPropertyCode
         ){
             $this->error = ''; 
-            if(!$this->checkOrderNum($sOrderNum))return false;
-            
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$sOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID","ADDITIONAL_INFO")
-            )->Fetch();
-
-            if(!isset($arOrder["ID"])){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."Заказ с номером '$sOrderNum' не существует";
-                return false;
-            }
+            if(!$nOrderId = $this->checkOrderNum($sOrderNum))return false;
 
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
@@ -148,7 +115,7 @@
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 array(
-                        "ORDER_ID"       => $arOrder["ID"],
+                        "ORDER_ID"       => $nOrderId,
                         "PERSON_TYPE_ID" => 1,
                         "PROPS_GROUP_ID" => $nPropGroup,
                         "CODE"           => $sPropertyCode 
@@ -159,7 +126,7 @@
             )->Fetch();
 
             $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_ID"      =>  $nOrderId,
                 "ORDER_PROPS_ID"=>  $arPropValue["ID"],
                 "CODE"          =>  $arPropValue["CODE"],
                 "NAME"          =>  $arPropValue["NAME"]
@@ -172,11 +139,8 @@
                 ||
                 !$arExistPropValue["VALUE"]
             ){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."$sPropertyCode для заказа '".$arOrder["ID"].
-                    "' не существует";
+                $this->riseError("$sPropertyCode для заказа '".$arOrder["ID"].
+                    "' не существует");
                 return false;
             }
 
@@ -194,22 +158,7 @@
             if($sTransactNum!='-')
                 $this->transact = $sTransactNum;
             $this->error = ''; 
-            if(!$this->checkOrderNum($nOrderNum))return false;
-
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$nOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID")
-            )->Fetch();
-            if(!isset($arOrder["ID"])){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."Заказ с номером '$nOrderNum' не существует";
-                return false;
-            }
+            if(!$nOrderId = $this->checkOrderNum($nOrderNum))return false;
 
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
@@ -223,7 +172,7 @@
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 array(
-                        "ORDER_ID"       => $arOrder["ID"],
+                        "ORDER_ID"       => $nOrderId,
                         "PERSON_TYPE_ID" => 1,
                         "PROPS_GROUP_ID" => $nPropGroup,
                         "CODE"           => "TROIKA_TRANSACT_ID" 
@@ -234,7 +183,7 @@
             )->Fetch();
 
             $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_ID"      =>  $nOrderId,
                 "ORDER_PROPS_ID"=>  $arPropValue["ID"],
                 "CODE"          =>  $arPropValue["CODE"],
                 "NAME"          =>  $arPropValue["NAME"]
@@ -248,20 +197,14 @@
                     $arExistPropValue["ID"],
                     $arFilter 
                 )){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка обновления свойства заказа";
+                    $this->riseError("Ошибка обновления свойства заказа");
                     return false;
                 }
             }
             elseif($this->number){
                 $arFilter["VALUE"] = $this->transact;
                 if(!CSaleOrderPropsValue::Add($arFilter)){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка добавления свойства заказа";
+                    $this->riseError("Ошибка добавления свойства заказа");
                     return false;
                 }
             }
@@ -286,7 +229,7 @@
                 "DATA"      =>  json_encode($sOutput),
                 "POST_DATA" =>  json_encode($sInput)
             ))){
-                $this->error = $objCurlLogger->error;
+                $this->riseError($objCurlLogger->error);
                 return false;
             }
 
@@ -305,14 +248,23 @@
             $this->error = '';
             $this->errorNo = 0;
             if(!preg_match("#^(Б\-\d+|\d+)$#",$sOrderNum)){
-                $arBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,1);
-                $this->error = ''
-                    .$arBacktrace[0]['class'].":"
-                    .$arBacktrace[0]['line'].":"
-                    ."Некорректный номер заказа";
+                $this->riseError("Некорректный номер заказа:".$sOrderNum);
                 return false;
             }
-            return true;
+
+            $arOrder = CSaleOrder::GetList(
+                array(),
+                array("ADDITIONAL_INFO"=>$sOrderNum),
+                false,
+                array("nTopCount"=>1),
+                array("ID")
+            )->Fetch();
+            if(!isset($arOrder["ID"])){
+                $this->riseError("Заказ с номером '$sOrderNum' не существует");
+                return false;
+            }
+
+            return $arOrder["ID"];
         }
 
         /**
@@ -327,14 +279,20 @@
             $this->error = '';
             $this->errorNo = 0;
             if(!preg_match("#^\d{10,11}$#",$sPhone)){
-                $arBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,1);
-                $this->error = ''
-                    .$arBacktrace[0]['class'].":"
-                    .$arBacktrace[0]['line'].":"
-                    ."Некорректный номер телефона";
+                $this->riseError("Некорректный номер телефона");
                 return false;
             }
             return true;
+        }
+
+        function riseError($sError){
+            $this->error = $sError;
+            if($this->debug){
+                echo "\n===========================\n";
+                echo $this->error;
+                echo "\n===========================\n";
+                print_r(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,2));
+            }
         }
           
     }

@@ -23,6 +23,7 @@
             unset($objParking);
         
             $sPhone = '00000000000';
+            $sOrderNum = '00000000';
             $objParking = new CParking($sPhone);
             $this->assertFalse(
                 boolval($objParking->error),
@@ -30,7 +31,11 @@
                     .$objParking->error
             );
 
-            $objParking->payment();
+            $objParking->payment($sOrderNum);
+            $this->assertFalse(
+                boolval($objParking->error),
+                "Контроль добавления платежа :".$objParking->error
+            );
         }
 
   

@@ -22,7 +22,7 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('0000000000')
+                    $objTroyka->getBindings('123123')
                 ),
                 "Получение прикреплунных карт"
             );
@@ -41,7 +41,7 @@
             $objTroyka = new CTroyka('3951086363');
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->checkProviders('0000000000')
+                    $arProviders = $objTroyka->checkProviders('123123')
                 ),
                 "Проверка необходимости обновления перечня поставщиков "
             );
@@ -54,7 +54,7 @@
             $objTroyka = new CTroyka('3951086363');
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->getProviders('0000000000')
+                    $arProviders = $objTroyka->getProviders('123123')
                 ),
                 "Проверка Получение перечня поставщиков "
             );
@@ -75,14 +75,14 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('0000000000')
+                    $objTroyka->getBindings('123123')
                 ),
                 "Получение прикреплунных карт"
             );
              $this->assertTrue(
                 boolval(
                     $arProviders =
-                    $objTroyka->getPaymentCapabilities('0000000000')
+                    $objTroyka->getPaymentCapabilities('123123')
                 ),
                 "Проверка Запрос  расчета комиссии и лимитов на платеж"
             );
@@ -101,7 +101,7 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->payment('0000000000')
+                    $objTroyka->payment('123123')
                 ),
                 "Получение прикреплунных карт"
             );

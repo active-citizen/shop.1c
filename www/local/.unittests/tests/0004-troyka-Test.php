@@ -22,7 +22,7 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('0000000000')
+                    $objTroyka->getBindings('123123')
                 ),
                 "Получение прикреплунных карт"
             );
@@ -41,7 +41,7 @@
             $objTroyka = new CTroyka();
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->checkProviders('0000000000')
+                    $arProviders = $objTroyka->checkProviders('123123')
                 ),
                 "Проверка необходимости обновления перечня поставщиков "
             );
@@ -54,7 +54,7 @@
             $objTroyka = new CTroyka();
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->getProviders('0000000000')
+                    $arProviders = $objTroyka->getProviders('123123')
                 ),
                 "Проверка Получение перечня поставщиков "
             );
@@ -75,13 +75,13 @@
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('0000000000')
+                    $objTroyka->getBindings('123123')
                 ),
                 "Получение прикреплунных карт"
             );
              $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->getPaymentCapabilities('0000000000')
+                    $arProviders = $objTroyka->getPaymentCapabilities('123123')
                 ),
                 "Проверка Запрос  расчета комиссии и лимитов на платеж"
             );
@@ -123,9 +123,10 @@
             $this->assertTrue(boolval($objTroyka->error),
                "Контроль некорректного номера заказа" 
             );
+            $objTroyka->error = '';
             $objTroyka->linkOrder($arOrder["ADDITIONAL_INFO"]);
             $this->assertFalse(boolval(trim($objTroyka->error)),
-               "Контроль корректного номера заказа" 
+               "Контроль привязки к номеру заказа: ".$objTroyka->error
             );
 
             $sOrderNum = $objTroyka->getTroykaNum($arOrder["ADDITIONAL_INFO"]);
@@ -177,9 +178,10 @@
             $this->assertTrue(boolval($objTroyka->error),
                "Контроль некорректного номера заказа" 
             );
+            $objTroyka->error = '';
             $objTroyka->linkOrderTransact($arOrder["ADDITIONAL_INFO"],$nTransactNum);
             $this->assertFalse(boolval(trim($objTroyka->error)),
-               "Контроль корректного номера заказа" 
+               "Контроль корректного номера заказа ".$objTroyka->error
             );
 
             $sOrderNum =
