@@ -15,6 +15,7 @@
         function testTroykaSettings(){
             $sPhone = '000sd00000';
             $objParking = new CParking($sPhone);
+            $sOrderNum = $this->getValidOrderNum();
             $this->assertTrue(
                 boolval($objParking->error),
                 "Контроль ввода неверного номера телефона "
@@ -22,17 +23,7 @@
             );
             unset($objParking);
         
-            $sPhone = '000000000';
-            $sOrderNum = '123123';
-            $objParking = new CParking($sPhone);
-            $this->assertTrue(
-                boolval($objParking->error),
-                "Контроль ввода неверного номера телефона "
-                    .$objParking->error
-            );
-
             $sPhone = '0000000000';
-            $sOrderNum = '123123';
             $sCodeProperty = "PARKING_TRANSACT_ID";
             $objParking = new CParking($sPhone);
             $this->assertFalse(
@@ -112,6 +103,17 @@
 
             
 
+        }
+
+        function getValidOrderNum(){
+            $arOrder = CSaleOrder::GetList(
+                array("ID"=>"ASC"),
+                array("!ADDITIONAL_INFO"=>false),
+                false,
+                array("nTopCount"=>1),
+                array("ADDITIONAL_INFO")
+            )->Fetch();
+            return $arOrder["ADDITIONAL_INFO"];
         }
 
   

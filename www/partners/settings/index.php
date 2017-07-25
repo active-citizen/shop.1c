@@ -26,7 +26,16 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
         $objTroyka = new CTroyka();            
         $objTroyka->emulation = false;
 
-        if(!$arBindings = $objTroyka->getBindings('0000000000')){
+        $arOrder = CSaleOrder::GetList(
+            array("ID"=>"ASC"),
+            array("!ADDITIONAL_INFO"=>false),
+            false,
+            array("nTopCount"=>1),
+            array("ADDITIONAL_INFO")
+        )->Fetch();
+
+
+        if(!$arBindings = $objTroyka->getBindings($arOrder["ADDITIONAL_INFO"])){
             print_r($objTroyka);
         }
         else{
