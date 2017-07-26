@@ -6,7 +6,8 @@
 <?
 //$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 ?>
-        <? if(isset($arResult["OFFERS"][0])):?>
+        <? if(isset($arResult["OFFERS"][0]) &&
+        $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
                 var totalStoreId = <? foreach($arResult["OFFERS_JSON"] as $offer){foreach($offer["STORAGES"] as $storeId=>$store){echo $storeId;break;};break;}?>;
@@ -647,7 +648,8 @@
       </div>
     </div>
 
-
+        <? elseif($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
+            Поощрение недоступно
         <? else: ?>
-        Нет доступных предложений
+            Нет доступных предложений
         <? endif ?>

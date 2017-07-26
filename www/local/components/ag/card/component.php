@@ -29,7 +29,6 @@
     );
     $arResult["CATALOG_ITEM"] = $resCatalog->GetNext();
 
-
     // Информацация о разделе
     $arResult["CATALOG_ITEM"]["SECTION_INFO"] = CIBlockSection::GetList(
         array(),array(
