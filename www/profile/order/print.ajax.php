@@ -339,7 +339,7 @@ body {
         </div>
       </div>
       <div class="ag-shop-certificate__footer">
-        <div class="ag-shop-certificate__footer-text">Служба технической поддержки: <a href="mailto:support_ag@mos.ru" target="_blank">support_ag@mos.ru</a>.</div>
+        <div class="ag-shop-certificate__footer-text">Служба технической поддержки: <a href="mailto:support_ag@mos.ru" target="_blank">support_ag@mos.ru</a></div>
       </div>
     </div>
   </body>
