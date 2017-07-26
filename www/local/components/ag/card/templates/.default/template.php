@@ -401,7 +401,7 @@
                                     array(0,0,"отсутствует"),
                                     array(1,10,"мало"),
                                     array(11,100,"достаточно"),
-                                    array(100,1000000000,"много")
+                                    array(101,1000000000,"много")
                                   ) as $arAmmount):?>
                                     <span class="ag-shop-card__remaining-count-text" 
                                     fromAmmount="<?= $arAmmount[0]?>"
