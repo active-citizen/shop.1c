@@ -413,3 +413,8 @@ input:checked + .ag-shop-filter__variants-item {
     position:relative;
     z-index: 9999;
 }
+
+
+.ag-shop-card__image-badges{
+    margin-top: 64px !important;
+}
