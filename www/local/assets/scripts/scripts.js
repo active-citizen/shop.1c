@@ -415,9 +415,12 @@ function next_page(){
         function(data){
             $('.catalog-ajax-block').append(data);
             scrollProcess = 0;
+            /*
+            Прокрутка
             $('body,html').animate({
                 scrollTop: $('body').height()
             }, 1600);
+            */
             //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
             if(!$('.catalog-page-input').last().val())$('.next-page').remove();
         }
