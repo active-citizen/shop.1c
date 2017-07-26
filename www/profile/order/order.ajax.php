@@ -563,6 +563,17 @@ elseif(isset($_GET["clear_basket"])){
     CSaleBasket::DeleteAll(CUser::GetID());    
 }
 elseif(isset($_GET["wish"])){
+
+    if(
+        isset($_COOKIE["LOGIN"])
+        &&
+        $_COOKIE["LOGIN"]
+    ) $sUserLogin = $_COOKIE["LOGIN"];
+
+    // Чистим кэш плиток
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
+    customCacheClear($sDir = '',$sUserLogin);
+
     $act =  $_GET["wish"]=='on'?'on':'off';
     
     CModule::IncludeModule('iblock');

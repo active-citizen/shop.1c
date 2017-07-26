@@ -24,6 +24,7 @@
         "/.integration/classes/active-citizen-bridge.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
+
     
     $agBrige = new ActiveCitizenBridge;
     $bxUser = new bxUser;
