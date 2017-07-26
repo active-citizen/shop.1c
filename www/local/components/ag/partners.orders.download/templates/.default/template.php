@@ -90,11 +90,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_adddate_from"
                 id="filter-adddate-from" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["ADDDATE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_adddate_from', 'form_filter');
+                //echo Calendar( 'filter_adddate_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -106,11 +106,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_adddate_to"
                 id="filter-adddate-to" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["ADDDATE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_adddate_to', 'form_filter');
+                //echo Calendar( 'filter_adddate_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -122,11 +122,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_lockdate_from"
                 id="filter-lockdate-from" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["LOCKDATE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_lockdate_from', 'form_filter');
+                //echo Calendar( 'filter_lockdate_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -138,11 +138,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_lockdate_to"
                 id="filter-lockdate-to" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["LOCKDATE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_lockdate_to', 'form_filter');
+                //echo Calendar( 'filter_lockdate_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -154,11 +154,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_update_from"
                 id="filter-update-from" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["UPDATE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_update_from', 'form_filter');
+                //echo Calendar( 'filter_update_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -170,11 +170,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_update_to"
                 id="filter-update-to" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["UPDATE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_update_to', 'form_filter');
+                //echo Calendar( 'filter_update_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -186,11 +186,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_done_from"
                 id="filter-done-from" 
-                class="form-control" 
+                class="form-control form-date" 
                 value="<?= $arResult["FILTER"]["DONE_FROM"]?>"
                 >
                 <?
-                echo Calendar( 'filter_done_from', 'form_filter');
+                //echo Calendar( 'filter_done_from', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -202,11 +202,11 @@
                 <div class="partners-date">
                 <input type="text" name="filter_done_to"
                 id="filter-done-to" 
-                class="form-control" 
+                class="form-control form-date"  
                 value="<?= $arResult["FILTER"]["DONE_TO"]?>"
                 >
                 <?
-                echo Calendar( 'filter_done_to', 'form_filter');
+                //echo Calendar( 'filter_done_to', 'form_filter');
                 ?></div>
             </td>
         </tr>
@@ -252,3 +252,6 @@
     </form>
     <iframe name="download_iframe" id="download-iframe"></iframe>
 </div>
+<script>
+$( ".form-date" ).datepicker({dateFormat:"dd.mm.yy"});
+</script>
