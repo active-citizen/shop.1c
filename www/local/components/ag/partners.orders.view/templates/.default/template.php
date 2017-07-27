@@ -120,11 +120,37 @@
             <td class="field-name">
                 Cертификат во вложении к уведомлениям   
             </td><td>
-                <? if($arResult["ORDER"]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']):?> 
+                <?
+                if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']=='да'):?> 
                 Да
                 <? else: ?>
                 Нет
                 <? endif ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="field-name">
+                Сертификат
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-eye-open">
+                <a href="/profile/order/print.png.ajax.php?generate=1&act=get&id=<?=
+                $arResult["ORDER"]["ID"]?>"
+                target="_blank">Посмотреть</a> 
+                </span>
+                &#160;&#160;&#160;&#160;
+                <span class="glyphicon glyphicon-download-alt">
+                <a href="/profile/order/print.png.ajax.php?act=download&id=<?=
+                $arResult["ORDER"]["ID"]?>"
+                target="cert">Скачать</a> 
+                </span>
+                &#160;&#160;&#160;&#160;
+                <span class="glyphicon glyphicon-print">
+                <a href="/profile/order/print.png.ajax.php?act=print&id=<?=
+                $arResult["ORDER"]["ID"]?>"
+                target="cert">Печатать</a> &#160;
+                </span>
+                <iframe src="" name="cert" style="display:none;"></iframe>
             </td>
         </tr>
         <? if(
