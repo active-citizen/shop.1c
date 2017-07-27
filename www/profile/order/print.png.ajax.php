@@ -51,6 +51,9 @@
         $sJs = str_replace("{ORDER_ID}",$nOrderId,$sJs);
         $sJs = str_replace("{CERT_PATH}",$sPngFile,$sJs);
         $sJs = str_replace("{PHPSESSID}",$_COOKIE["PHPSESSID"],$sJs);
+//        echo "<pre>";
+//        echo $sJs;
+//        die;
         file_put_contents($sJSFile,$sJs);
         $sJSFile = realpath($sJSFile);
         $output=array();

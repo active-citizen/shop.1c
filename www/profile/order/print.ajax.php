@@ -1,5 +1,7 @@
 <?php
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
+define('BX_SECURITY_SESSION_READONLY', true);
+
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 global $USER;
 
@@ -20,7 +22,13 @@ $arOrder = CSaleOrder::GetByID($orderId);
 
 
 // Проверяем чтобы заказ принадлежал пользователю
-if(!$USER->isAdmin() && $arOrder["USER_ID"]!=$USER->GetId()){
+if(
+    $_SERVER["REMOTE_ADDR"]!='127.0.0.1'
+//  !$USER->isAdmin() 
+//  && $arOrder["USER_ID"]!=$USER->GetId()
+//  && !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+//  && !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+){
     echo "Access denied";
     die;
 }
