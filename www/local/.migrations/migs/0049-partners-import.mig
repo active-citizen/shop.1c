@@ -1,0 +1,85 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+    $sFilename = realpath(dirname(__FILE__))."/data/partners.csv";
+
+    $arPartners = array(
+        array(
+            "FIO"           =>  "Пупкин Василий Иванович",
+            "EMAIL"         =>  "v.pipkin@gmail.com",
+            "PARTNER_ID"    =>  344
+        )
+    );
+    if(file_exists($sFilename)){
+        // Загрузка фала с партнёрами
+    }
+
+    echo "<pre>";
+    foreach($arPartners as $sParnter){
+        $sFio = $sParnter["FIO"];
+        $tmp = explode(" ", $sFio);
+        $sLastName = '';
+        foreach($tmp as $k=>$sWord){
+            unset($tmp[$k]);
+            if(!trim($sWord))continue;
+            $sLastName = trim($sWord);
+            break;
+        }
+        $sName = trim(implode(" ",$tmp));
+
+        $sEmail = $sParnter["EMAIL"];
+        $sLogin = $sEmail;
+        $nStorageId = 35;
+        $nPartnerId = $sParnter["PARTNER_ID"];
+        $sPassword = randString(10);
+        $arGroups = array(
+            2,3, PARTNERS_GROUP_ID,
+        );
+        
+        // Если пользователь не добавлен - добавляем
+        if(!$arUser = CUser::GetList(
+            ($by="personal_country"), ($order="desc"),
+            array("EMAIL"=>$sEmail)
+        )->Fetch()){
+            if(!$nUserId = $USER->Add(array(
+                "NAME"              => $sName,
+                "LAST_NAME"         => $sLastName,
+                "EMAIL"             => $sEmail,
+                "LOGIN"             => $sLogin,
+                "LID"               => "ru",
+                "ACTIVE"            => "Y",
+                "GROUP_ID"          => $arGroups,
+                "PASSWORD"          => $sPassword,
+                "CONFIRM_PASSWORD"  => $sPassword,
+            ))){
+                echo "Ошибка добавления пользователя";
+                echo $USER->LAST_ERROR;
+                die;
+            }
+        }
+        else{
+        }
+        $nUserId = $arUser["ID"];
+        $USER->Update($nUserId, $arFields = array(
+            "NAME"              =>  $sName,
+            "LAST_NAME"         =>  $sLastName,
+            "EMAIL"             =>  $sEmail,
+            "LOGIN"             =>  $sLogin,
+            "LID"               =>  "ru",
+            "ACTIVE"            =>  "Y",
+            "GROUP_ID"          =>  $arGroups,
+            "PASSWORD"          =>  $sPassword,
+            "CONFIRM_PASSWORD"  =>  $sPassword,
+            "UF_USER_MAN_ID"    =>  array($nPartnerId),
+            "UF_USER_STORAGE_ID"=>  array($nStorageId)
+        ));
+        
+        echo "$sLastName $sName;$sLogin;$sPassword\n";
+    }
+    echo "</pre>";
+
+
+
+
