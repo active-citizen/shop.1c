@@ -14,11 +14,22 @@
     );
     if(file_exists($sFilename)){
         // Загрузка фала с партнёрами
+        $arPartners = array();
+        $arLines = file($sFilename);
+        foreach($arLines as $sLine){
+            $arColumns = explode(";",$sLine);
+            $arPartners[] = array(
+               "FIO"    =>  $arColumns[1],
+               "EMAIL"  =>  $arColumns[2],
+               "PARTNER_ID"=>$arColumns[3],
+               "PARTNER_NAME"=>$arColumns[0],
+            );
+        }
     }
 
     echo "<pre>";
     foreach($arPartners as $sParnter){
-        $sFio = $sParnter["FIO"];
+        $sFio = trim($sParnter["FIO"]);
         $tmp = explode(" ", $sFio);
         $sLastName = '';
         foreach($tmp as $k=>$sWord){
@@ -29,10 +40,10 @@
         }
         $sName = trim(implode(" ",$tmp));
 
-        $sEmail = $sParnter["EMAIL"];
-        $sLogin = $sEmail;
+        $sEmail = trim($sParnter["EMAIL"]);
+        $sLogin = trim($sEmail);
         $nStorageId = 35;
-        $nPartnerId = $sParnter["PARTNER_ID"];
+        $nPartnerId = intval(trim($sParnter["PARTNER_ID"]));
         $sPassword = randString(10);
         $arGroups = array(
             2,3, PARTNERS_GROUP_ID,
@@ -47,6 +58,12 @@
             false,array("nTopCount"=>1),
             array("NAME")
         )->Fetch();
+        if(!$arPartnerInfo){
+            echo "Партнёр с неизвестным ID=".$nPartnerId;
+            print_r($arPartner);
+            die;
+        }
+
         
         // Если пользователь не добавлен - добавляем
         if(!$arUser = CUser::GetList(
