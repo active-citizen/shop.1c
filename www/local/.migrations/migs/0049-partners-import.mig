@@ -37,6 +37,16 @@
         $arGroups = array(
             2,3, PARTNERS_GROUP_ID,
         );
+
+        $arPartnerInfo = CIBlockElement::GetList(
+            array(),
+            array(
+                "IBLOCK_ID"=>MANUFACTURER_IB_ID,
+                "ID"    =>$nPartnerId
+            ),
+            false,array("nTopCount"=>1),
+            array("NAME")
+        )->Fetch();
         
         // Если пользователь не добавлен - добавляем
         if(!$arUser = CUser::GetList(
@@ -76,7 +86,7 @@
             "UF_USER_STORAGE_ID"=>  array($nStorageId)
         ));
         
-        echo "$sLastName $sName;$sLogin;$sPassword\n";
+        echo $arPartnerInfo["NAME"].";$sLastName $sName;$sLogin;$sPassword\n";
     }
     echo "</pre>";
 
