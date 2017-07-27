@@ -115,7 +115,21 @@ if ($this->StartResultCache(false)) {
         }
     }
 
- 
+    // Троеточим описания
+    $nMaxTextLength = 350;
+    foreach($arResult["BANNERS"] as $nBannerId => $arBanner){
+        $sText = $arBanner["PROPERTIES"]["BANER_DESC"]["VALUE"];
+        $sNewText = '';
+        $arWords = explode(" ",$sText);
+        foreach($arWords as $sWord){
+            if(mb_strlen($sNewText)+mb_strlen($sWord)>$nMaxTextLength)break;
+            $sNewText .=" ".$sWord;
+        }
+        $arResult["BANNERS"][$nBannerId]["PROPERTIES"]["BANER_DESC"]["VALUE"] =
+            $sNewText."...";
+       
+    }
+
     $this->IncludeComponentTemplate();
 }
 
