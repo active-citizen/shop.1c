@@ -485,8 +485,8 @@
                         number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")
                     ?></strong> <?= get_points($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"])?></button>
                 <? endif ?>
-                <? /*
                 <div class="ag-shop-card__additional-info">
+                <? /*
                   <div class="ag-shop-card__tabs">
                     <!-- 
                     <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link" href="#">Полное описание</a></div>
@@ -529,9 +529,9 @@
                     </form>
                     <div class="ag-shop-card__reviews">
                     </div>
+                    */?>
                   </div>
                 </div>
-                */?>
               </div>
             </div>
     <div class="ag-shop-modal-wrap" style="display:none" id="card-order-confirm">

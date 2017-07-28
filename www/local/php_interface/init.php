@@ -97,31 +97,39 @@
     //    "sale", "OnSaleStatusOrder", "eventOrderStatusSendEmail"
     //);
     
-    
+   
+    /**
+        Функция, вызываемая при сохранении статуса заказа
+    */
     function eventOrderStatusSendEmail(
         $orderId, &$eventName, &$arFields, $orderStatus
     ){
         
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderId);
-        
+
         // Зунуляем письма о заказах с опенкарта
         if(preg_match("#^\d+$#", $orderInfo["ORDER"]["ADDITIONAL_INFO"]))
             return true;
-        
+
+        // Текст письма
         $sMailText      =   '';
+        // Текст вложения
         $sMailAttach    =   '';
         $sTo            =   $orderInfo["USER"]["EMAIL"];
         $sBC            =   SHOP_EMAIL;
         $sFrom          =   SHOP_EMAIL;
+        // Название файла-вложения
         $sFilename      =   $orderInfo["ORDER"]["ADDITIONAL_INFO"].
-            "-сертификат-АГ.html";
+            "-сертификат-АГ.png";
 
         $sSubject       =   "Магазин поощрений «Активный гражданин» заказ ".
             $orderInfo["ORDER"]["ADDITIONAL_INFO"];
         $sSubject       =   "=?UTF-8?B?".base64_encode($sSubject)."?=";
-        
+
+        // Метка для разделения частей письма
         $boundary = "--".md5(uniqid(rand().time()));
+        // Общие заголовки письма
         $sHeaders = ""
             ."FROM: "."=?UTF-8?B?"
             .base64_encode(
@@ -136,13 +144,16 @@
             ."Content-Transfer-Encoding: base64\r\n";
         ;
 
+        // Заголовки вложения письма
         $sMailAttachHeaders = "\r\n--$boundary\r\n"
-            ."Content-Type: application/octet-stream; name=\"$sFilename\"\r\n"
+//            ."Content-Type: application/octet-stream; name=\"$sFilename\"\r\n"
+            ."Content-Type: image/png; name=\"$sFilename\"\r\n"
             ."Content-Transfer-Encoding: base64\r\n"
             ."Content-Disposition: attachment; filename=\"$sFilename\"\r\n"
             ."\r\n"
         ;
 
+        // Заголовки основного текста письма 
         $sMailTextHeaders = "--$boundary\r\n"
             ."Content-Type: text/html; UTF-8\r\n"
             //."Content-Transfer-Encoding: base64\r\n"
@@ -156,7 +167,9 @@
         'F'        // Выполнен
         'N'        // В работе
         */
+        // Получаем в переменной $html шапку основного текта письма
         require(MAIL_TMPL_PATH."/_header.php");
+        // Получаем в переменной $html шаблон письма, согласно коду статуса
         if(
             preg_match("#^\w+$#",$orderStatus)
             &&
@@ -166,14 +179,20 @@
         )require(
             MAIL_TMPL_PATH."/".$orderStatus."-".$orderInfo["TYPE"].".php"
         );
-        
+        // Получаем в переменной $html подвал основного текста письма 
         require(MAIL_TMPL_PATH."/_footer.php");
 
+        // Запоминаем текст основного письма
         $sMailText = $html;
-       
+
+        header("Content-type: text/plain; charset=utf-8;");
+      
+        // Определяем какую функцию для отправки почты использовать
         $sMailFunction = "mail";
         if(function_exists("custom_mail"))$sMailFunction = "custom_mail";
-
+        
+        // Отправляем письмо
+        /*
         $sMailFunction(
             $sTo, 
             $sSubject, 
@@ -185,6 +204,45 @@
             , 
             $sHeaders
         );
+        */
+        /**
+            Если для заказа надо отправить сертификат
+            И статус "в работе"
+        */
+        if(
+            $orderInfo["SEND_CERT"]
+            &&
+            $orderStatus=='N'
+        ){
+            $_REQUEST["generate"] = 1;
+            $_REQUEST["id"] = $orderId;
+            require($_SERVER["DOCUMENT_ROOT"]."/profile/order/print.png.ajax.php");
+            $sMailAttach = file_get_contents($sPngFile);
+        }
+//        echo chunk_split(base64_encode($sMailAttach));
+//        die;
+
+        $sMailFunction(
+            $sTo, 
+            $sSubject, 
+            $sMailTextHeaders
+                //.chunk_split(base64_encode($sMailText))
+                .$sMailText
+                .(
+                    $orderInfo["SEND_CERT"]
+                    &&
+                    $orderStatus=='N'
+                    ?
+                    $sMailAttachHeaders.chunk_split(
+                        base64_encode($sMailAttach)
+                    )
+                    :
+                    ""
+                )
+            , 
+            $sHeaders
+        );
+
     }
     
 
@@ -193,8 +251,10 @@
 
     /**
         Функция вызывается при создании заказа
+        раньше высылал сертификат, теперь просто для красоты
     */
     function eventOrderNewSendEmail_normal($orderID, &$eventName, &$arFields){
+        return false;
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderID);
 

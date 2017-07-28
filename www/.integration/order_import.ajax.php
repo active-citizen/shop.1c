@@ -569,12 +569,12 @@
                 $orderId = $existsOrder["ID"];
                 //echo "Update order_id = $orderId ";
                 // Обрабатываем все статусы кроме отмены
-                if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
+                if(/*$existsOrder["STATUS_ID"]!=$statusId &&*/ $statusId!='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
-                    //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
