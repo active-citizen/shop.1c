@@ -335,6 +335,10 @@ elseif(isset($_GET["add_order"])){
         $sOrderNum = 'Б-'.$orderId;
         //// Запоминаем номер заказа
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>$sOrderNum));
+        // Делаем заказ оплаченным
+        CSaleOrder::PayOrder(
+            $orderId, "Y", false
+        );
 
         // Назначаем заказу корзину
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
