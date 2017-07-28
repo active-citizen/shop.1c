@@ -670,7 +670,7 @@
                 }
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
-         	    //orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+         	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
             }
             if($statusId=='F')$DB->Query("
                 UPDATE 
