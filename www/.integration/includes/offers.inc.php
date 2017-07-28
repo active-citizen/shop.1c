@@ -33,10 +33,14 @@
     }
 
     // Обнуляем остатки на складах
+    /*
+    Не обнуляем, ибо огульное обнуление приводит к ... надо обновлять остатки
+    идивидуально
     $res = CCatalogStoreProduct::GetList(array(),array());
     while($store = $res->GetNext()){
         $resCatalogStoreProduct->Update($store["ID"],array("AMOUNT"=>0));
     }
+    */
     if(!isset($arOffers[0]))$arOffers = array($arOffers);
 
     foreach($arOffers as $arOffer){
@@ -94,7 +98,7 @@
                 ),
                 true
             );
-            
+          
             // Добавляем наличие на складах
             if(isset($arOffer["Склад"]) && is_array($arOffer["Склад"]))
                 foreach($arOffer["Склад"] as $storage){
@@ -153,6 +157,16 @@
                     ),
                     true
                 );
+            }
+            
+            // Обнуляем остатки только для этого товара 
+            $res = CCatalogStoreProduct::GetList(array(),array(
+                "PRODUCT_ID"=>$offerId
+            ));
+            while($store = $res->GetNext()){
+                $resCatalogStoreProduct->Update($store["ID"],array(
+                    "AMOUNT"=>0
+                ));
             }
             
             // Прописываем новые остатки

@@ -121,7 +121,7 @@
             isset($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"])
             &&
             $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
-                ='parking'
+                =='parking'
         ){
             require_once(
                 $_SERVER["DOCUMENT_ROOT"].
