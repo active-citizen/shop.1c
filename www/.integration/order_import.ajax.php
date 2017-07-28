@@ -576,6 +576,11 @@
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
+                // При пришедшем статусе "В работе" и "Выполнен" письма
+                // отправляем в любом случае
+                elseif($statusId=='N' || $statusId=='F'){
+                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
