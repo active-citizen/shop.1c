@@ -410,6 +410,8 @@ function next_page(){
     $('.catalog-page-input').remove();
     // Конец промотки
     if(!query_string)return false;
+    var button_text = $('.next-page').html();
+    $('.next-page').html('<img src="/local/assets/images/loading.gif">');
     $.get(
         "/catalog/index.ajax.php?"+query_string,
         function(data){
@@ -421,6 +423,8 @@ function next_page(){
                 scrollTop: $('body').height()
             }, 1600);
             */
+            // Возвращаем надпись на кнопку
+            $('.next-page').html(button_text);
             //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
             if(!$('.catalog-page-input').last().val())$('.next-page').remove();
         }
