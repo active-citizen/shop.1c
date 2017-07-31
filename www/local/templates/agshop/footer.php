@@ -1,5 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
+<? if(!$USER->IsAuthorized()):?>
+<? else: ?>
+
     <? if(
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
     ):?>
@@ -66,6 +69,9 @@
     </div>
     <!-- Конец: не выводим футер для ЛК -->
     <? endif ?>
+
+<? /* Заглушка */ ?>
+<? endif ?>
 
         <? if(1 || !CUser::IsAuthorized()):?>
             <? if(

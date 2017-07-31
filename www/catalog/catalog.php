@@ -53,6 +53,11 @@ if(
 
 
 ?>
+
+<? if(!$USER->IsAuthorized()):?>
+<? else: ?>
+
+
     <? if(!$product_code && $catalog_code){?>
         <div class="ag-shop-content">
             <? include("filter.inc.php")?>
@@ -78,5 +83,5 @@ if(
         </div>
     <? } ?>
 
-
+<? endif ?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
