@@ -90,7 +90,11 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <?
 	$APPLICATION->ShowPanel();
     ?>
-<? if(!$USER->IsAuthorized()):?>
+<? if(
+    !$USER->IsAuthorized()
+    &&
+    !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+):?>
 <h2 style="width: 80%;margin: 100px auto; text-align: center;">Раздел<br/> "Магазина<br/> поощрений"<br/> временно<br/> недоступен<br/>
 в связи<br/> с обновлениями.
 <br/>Приносим свои<br/> извинения.</h2>
