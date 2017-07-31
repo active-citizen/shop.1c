@@ -6,7 +6,8 @@
 <?
 //$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 ?>
-        <? if(isset($arResult["OFFERS"][0])):?>
+        <? if(isset($arResult["OFFERS"][0]) &&
+        $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
                 var totalStoreId = <? foreach($arResult["OFFERS_JSON"] as $offer){foreach($offer["STORAGES"] as $storeId=>$store){echo $storeId;break;};break;}?>;
@@ -401,7 +402,7 @@
                                     array(0,0,"отсутствует"),
                                     array(1,10,"мало"),
                                     array(11,100,"достаточно"),
-                                    array(100,1000000000,"много")
+                                    array(101,1000000000,"много")
                                   ) as $arAmmount):?>
                                     <span class="ag-shop-card__remaining-count-text" 
                                     fromAmmount="<?= $arAmmount[0]?>"
@@ -485,6 +486,7 @@
                     ?></strong> <?= get_points($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"])?></button>
                 <? endif ?>
                 <div class="ag-shop-card__additional-info">
+                <? /*
                   <div class="ag-shop-card__tabs">
                     <!-- 
                     <div class="ag-shop-card__tabs-item"><a class="ag-shop-menu__link" href="#">Полное описание</a></div>
@@ -527,6 +529,7 @@
                     </form>
                     <div class="ag-shop-card__reviews">
                     </div>
+                    */?>
                   </div>
                 </div>
               </div>
@@ -647,7 +650,8 @@
       </div>
     </div>
 
-
+        <? elseif($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
+            Поощрение недоступно
         <? else: ?>
-        Нет доступных предложений
+            Нет доступных предложений
         <? endif ?>

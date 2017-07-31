@@ -1,0 +1,67 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * добавление записи в таблицу настроек интеграций для парковок
+     */
+    class parking extends Migration{
+        function Run(){
+	        global $DB;
+
+            $sCode = "PARKING";
+            $sTable = "int_settings";
+            $arSettings = array(
+                "PARKING_EMULATION" => array(
+                    "TITLE"=>"Режим эмуляции: false - боевой режим, success -
+                    эмуляция успешных запросов(для тестирования), failed - эмуляция ошибочных
+                    запросов(отключение шлюза)",
+                    "VALUE"=>"failed"
+                ),
+                "PARKING_URL" => array(
+                    "TITLE"=>"Адрес сервиса",
+                    "VALUE"=>"http://api.inform-tb.ru/api2/payment"
+                ),
+                "PARKING_PARTNER" => array(
+                    "TITLE"=>"partner",
+                    "VALUE"=>"ag"
+                ),
+                "PARKING_SECRET" => array(
+                    "TITLE"=>"secret",
+                    "VALUE"=>""
+                ),
+                "PARKING_SUM" => array(
+                    "TITLE"=>"Сумма переводимая за один квант поощрения",
+                    "VALUE"=>"100"
+                ),
+                "PARKING_LIMIT" => array(
+                    "TITLE"=>"Дневной лимит транзакций",
+                    "VALUE"=>"100"
+                ),
+            );
+            $sQuery = "SELECT * FROM `$sTable` WHERE `code`='$sCode' LIMIT 1";
+            if($DB->Query($sQuery)->Fetch()){
+                $sQuery = "UPDATE `$sTable` SET `data`='"
+                .$DB->ForSql(json_encode($arSettings))
+                ."' WHERE `code`='$sCode'";
+            }
+            else{
+                $sQuery = "INSERT INTO `$sTable`(`code`,`data`)"
+                ." VALUES('$sCode','".$DB->ForSql(json_encode($arSettings))."');"
+                ;
+            }
+            $DB->Query($sQuery);
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$parking = new parking();
+// Откатываем, если неудачно
+if(!$parking->Run())$parking->RollBack();

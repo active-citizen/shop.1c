@@ -18,11 +18,12 @@
         }
 
         function testGetBindings(){
+            $sOrderNum = $this->getValidOrderNum();        
             $objTroyka = new CTroyka('3951086363');
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('0000000000')
+                    $objTroyka->getBindings($sOrderNum)
                 ),
                 "Получение прикреплунных карт"
             );
@@ -39,9 +40,10 @@
 
         function testCheckProviders(){
             $objTroyka = new CTroyka('3951086363');
+            $sOrderNum = $this->getValidOrderNum();
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->checkProviders('0000000000')
+                    $arProviders = $objTroyka->checkProviders($sOrderNum)
                 ),
                 "Проверка необходимости обновления перечня поставщиков "
             );
@@ -52,9 +54,10 @@
 
         function testGetProviders(){
             $objTroyka = new CTroyka('3951086363');
+            $sOrderNum = $this->getValidOrderNum();
             $this->assertTrue(
                 boolval(
-                    $arProviders = $objTroyka->getProviders('0000000000')
+                    $arProviders = $objTroyka->getProviders($sOrderNum)
                 ),
                 "Проверка Получение перечня поставщиков "
             );
@@ -72,17 +75,19 @@
 
         function testGetPaymentCapabilities(){
             $objTroyka = new CTroyka('3951086363');
+            $sOrderNum = $this->getValidOrderNum();
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->getBindings('0000000000')
+                    $objTroyka->getBindings($sOrderNum)
                 ),
                 "Получение прикреплунных карт"
             );
-             $this->assertTrue(
+            $sOrderNum = $this->getValidOrderNum();
+            $this->assertTrue(
                 boolval(
                     $arProviders =
-                    $objTroyka->getPaymentCapabilities('0000000000')
+                    $objTroyka->getPaymentCapabilities($sOrderNum)
                 ),
                 "Проверка Запрос  расчета комиссии и лимитов на платеж"
             );
@@ -98,13 +103,24 @@
 
         function testPayment(){
             $objTroyka = new CTroyka('3951086363');
+            $sOrderNum = $this->getValidOrderNum();
             $this->assertTrue(
                 boolval(
                     $arCards =
-                    $objTroyka->payment('0000000000')
+                    $objTroyka->payment($sOrderNum)
                 ),
                 "Получение прикреплунных карт"
             );
         }
-  
+         function getValidOrderNum(){
+            $arOrder = CSaleOrder::GetList(
+                array("ID"=>"ASC"),
+                array("!ADDITIONAL_INFO"=>false),
+                false,
+                array("nTopCount"=>1),
+                array("ADDITIONAL_INFO")
+            )->Fetch();
+            return $arOrder["ADDITIONAL_INFO"];
+        }
+ 
     }

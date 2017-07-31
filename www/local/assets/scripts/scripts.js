@@ -347,10 +347,11 @@ $(document).ready(function(){
                                 function(){
                                     $('#order-process-done').css('display','none');
                                     $('.ok-button').css('display','block');
-                                    var error_text = '';
-                                    for(i in answer.order.ERROR){
-                                        error_text += i+": "+answer.order.ERROR[i];
+                                    var error_text = '<ul>';
+                                    for(i in answer.order.error){
+                                        error_text += '<li>'+answer.order.error[i]+'</li>';
                                     }
+                                    error_text +='</ul>';
                                     $('.catalog_item_confirm_message').fadeOut('fast');
                                     ag_ci_rise_error(error_text);
                                 }
@@ -414,9 +415,12 @@ function next_page(){
         function(data){
             $('.catalog-ajax-block').append(data);
             scrollProcess = 0;
+            /*
+            Прокрутка
             $('body,html').animate({
                 scrollTop: $('body').height()
             }, 1600);
+            */
             //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
             if(!$('.catalog-page-input').last().val())$('.next-page').remove();
         }

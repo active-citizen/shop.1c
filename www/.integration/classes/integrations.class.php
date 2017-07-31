@@ -12,7 +12,22 @@
         var $emulation = false; //!< Режим эмуляции ('success','failed', false)
         var $error  = '';       //!< Текст последней ошибки
         var $errorNo= 0;        //!< Номер ошибки (может отсутствовать
+        var $settings = array();//!< Настройки, полученные из БД
+        var $debug = false;      //!< Режим отладки
+        var $mnemonic = '';     //!< Мнемоника класса для всяких префиксов     
 
+
+        function __construct(){
+            // Получаем настройки из БД
+            require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
+
+            $this->mnemonic = mb_strtoupper(mb_substr(get_called_class(),1));
+
+            $objSettings = new CIntegrationSettings($this->mnemonic);
+            if($objSettings->error)$this->error = $objSettings->error;
+            $this->settings = $objSettings->get(); 
+            unset($objSettings);
+        }
 
         /**
             Добавление свойства заказу по его номеру и коду свойства
@@ -22,21 +37,11 @@
             $sPropertyCode,
             $sPropertyValue
         ){
-            if(!$this->checkOrderNum($nOrderNum))return false;
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$nOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID")
-            )->Fetch();
-            if(!isset($arOrder["ID"])){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."Заказ с номером '$nOrderNum' не существует";
-                return false;
-            }
+            // Костыль из за того, что свойство в своё время было названо
+            // по-другому. И с ним теперь жить
+            $sPropertyCode = str_replace("TROYKA", "TROIKA",$sPropertyCode);
+
+            if(!$nOrderId = $this->checkOrderNum($nOrderNum))return false;
 
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
@@ -50,7 +55,7 @@
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 array(
-                        "ORDER_ID"       => $arOrder["ID"],
+                        "ORDER_ID"       => $nOrderId,
                         "PERSON_TYPE_ID" => 1,
                         "PROPS_GROUP_ID" => $nPropGroup,
                         "CODE"           => $sPropertyCode 
@@ -61,7 +66,7 @@
             )->Fetch();
 
             $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_ID"      =>  $nOrderId,
                 "ORDER_PROPS_ID"=>  $arPropValue["ID"],
                 "CODE"          =>  $arPropValue["CODE"],
                 "NAME"          =>  $arPropValue["NAME"]
@@ -75,20 +80,16 @@
                     $arExistPropValue["ID"],
                     $arFilter 
                 )){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка обновления свойства заказа";
+                    $this->riseError("Ошибка обновления свойства заказа
+                    ".print_r($arFilter1));
                     return false;
                 }
             }
             elseif($sPropertyValue){
-                $arFilter["VALUE"] = $aPropertyValue;
+                $arFilter["VALUE"] = $sPropertyValue;
                 if(!CSaleOrderPropsValue::Add($arFilter)){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка добавления свойства заказа";
+                    $this->riseError("Ошибка добавления свойства заказа
+                    ".print_r($arFilter,1));
                     return false;
                 }
             }
@@ -105,23 +106,7 @@
             $sPropertyCode
         ){
             $this->error = ''; 
-            if(!$this->checkOrderNum($sOrderNum))return false;
-            
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$sOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID","ADDITIONAL_INFO")
-            )->Fetch();
-
-            if(!isset($arOrder["ID"])){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."Заказ с номером '$sOrderNum' не существует";
-                return false;
-            }
+            if(!$nOrderId = $this->checkOrderNum($sOrderNum))return false;
 
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
@@ -135,7 +120,7 @@
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 array(
-                        "ORDER_ID"       => $arOrder["ID"],
+                        "ORDER_ID"       => $nOrderId,
                         "PERSON_TYPE_ID" => 1,
                         "PROPS_GROUP_ID" => $nPropGroup,
                         "CODE"           => $sPropertyCode 
@@ -146,7 +131,7 @@
             )->Fetch();
 
             $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_ID"      =>  $nOrderId,
                 "ORDER_PROPS_ID"=>  $arPropValue["ID"],
                 "CODE"          =>  $arPropValue["CODE"],
                 "NAME"          =>  $arPropValue["NAME"]
@@ -159,16 +144,29 @@
                 ||
                 !$arExistPropValue["VALUE"]
             ){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."$sPropertyCode для заказа '".$arOrder["ID"].
-                    "' не существует";
+                $this->riseError("$sPropertyCode для заказа '".$arOrder["ID"].
+                    "' не существует");
                 return false;
             }
 
             return $arExistPropValue["VALUE"];
         }
+
+        /**
+            привязки номера карты к заказу
+        */
+        function linkOrder(
+            $nOrderNum,      // Номер заказа
+            $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
+        ){
+            if($sTroykaNum!='-')
+                $this->number = $sTroykaNum;
+            $this->error = ''; 
+            $this->setPropertyByOrderNum(
+                $nOrderNum,$this->mnemonic,$this->number
+            );
+        }
+
 
 
         /**
@@ -176,82 +174,14 @@
         */
         function linkOrderTransact(
             $nOrderNum,      // Номер заказа
-            $sTransactNum = '-'// ПУстой номер транзакции (только для автотеста)
+            $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
         ){
-            if($sTransactNum!='-')
-                $this->transact = $sTransactNum;
+           if($sTroykaNum!='-')
+                $this->number = $sTroykaNum;
             $this->error = ''; 
-            if(!$this->checkOrderNum($nOrderNum))return false;
-
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$nOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID")
-            )->Fetch();
-            if(!isset($arOrder["ID"])){
-                $this->error = ''
-                    .__CLASS__.":"
-                    .__LINE__.":"
-                    ."Заказ с номером '$nOrderNum' не существует";
-                return false;
-            }
-
-            $arPropGroup = CSaleOrderPropsGroup::GetList(
-                array(),
-                $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
-                false,
-                array("nTopCount"=>1)
-            )->GetNext();
-            $nPropGroup = $arPropGroup["ID"];
-
-
-            $arPropValue = CSaleOrderProps::GetList(
-                array("SORT" => "ASC"),
-                array(
-                        "ORDER_ID"       => $arOrder["ID"],
-                        "PERSON_TYPE_ID" => 1,
-                        "PROPS_GROUP_ID" => $nPropGroup,
-                        "CODE"           => "TROIKA_TRANSACT_ID" 
-                    ),
-                false,
-                false,
-                array("ID","CODE","NAME")
-            )->Fetch();
-
-            $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
-                "ORDER_PROPS_ID"=>  $arPropValue["ID"],
-                "CODE"          =>  $arPropValue["CODE"],
-                "NAME"          =>  $arPropValue["NAME"]
+            $this->setPropertyByOrderNum(
+                $nOrderNum,$this->mnemonic."_TRANSACT_ID",$this->transact
             );
-            if(
-                $arExistPropValue = 
-                CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
-            ){
-                $arFilter["VALUE"] = $this->transact;
-                if(!CSaleOrderPropsValue::Update(
-                    $arExistPropValue["ID"],
-                    $arFilter 
-                )){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка обновления свойства заказа";
-                    return false;
-                }
-            }
-            elseif($this->number){
-                $arFilter["VALUE"] = $this->transact;
-                if(!CSaleOrderPropsValue::Add($arFilter)){
-                    $this->error = ''
-                        .__CLASS__.":"
-                        .__LINE__.":"
-                        ."Ошибка добавления свойства заказа";
-                    return false;
-                }
-            }
         }
 
         /**
@@ -273,7 +203,7 @@
                 "DATA"      =>  json_encode($sOutput),
                 "POST_DATA" =>  json_encode($sInput)
             ))){
-                $this->error = $objCurlLogger->error;
+                $this->riseError($objCurlLogger->error);
                 return false;
             }
 
@@ -292,14 +222,23 @@
             $this->error = '';
             $this->errorNo = 0;
             if(!preg_match("#^(Б\-\d+|\d+)$#",$sOrderNum)){
-                $arBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,1);
-                $this->error = ''
-                    .$arBacktrace[0]['class'].":"
-                    .$arBacktrace[0]['line'].":"
-                    ."Некорректный номер заказа";
+                $this->riseError("Некорректный номер заказа:".$sOrderNum);
                 return false;
             }
-            return true;
+
+            $arOrder = CSaleOrder::GetList(
+                array(),
+                array("ADDITIONAL_INFO"=>$sOrderNum),
+                false,
+                array("nTopCount"=>1),
+                array("ID")
+            )->Fetch();
+            if(!isset($arOrder["ID"])){
+                $this->riseError("Заказ с номером '$sOrderNum' не существует");
+                return false;
+            }
+
+            return $arOrder["ID"];
         }
 
         /**
@@ -313,15 +252,29 @@
         ){
             $this->error = '';
             $this->errorNo = 0;
-            if(!preg_match("#^\d{10}$#",$sPhone)){
-                $arBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,1);
-                $this->error = ''
-                    .$arBacktrace[0]['class'].":"
-                    .$arBacktrace[0]['line'].":"
-                    ."Некорректный номер телефона";
+            if(!preg_match("#^\d{10,11}$#",$sPhone)){
+                $this->riseError("Некорректный номер телефона");
                 return false;
             }
             return true;
+        }
+
+        function riseError($sError){
+            $this->error = $sError;
+            
+            if($this->debug){
+                $this->error .="\nBacktrace:\n";
+                $arBacktrace = debug_backtrace(
+                    DEBUG_BACKTRACE_PROVIDE_OBJECT,5
+                );
+                foreach($arBacktrace as $arBackItem) 
+                    $this->error .= ""
+                        .$arBackItem["file"]
+                        ." : "
+                        .$arBackItem["line"]
+                        .";\n"; 
+            }
+
         }
           
     }

@@ -29,7 +29,6 @@
     );
     $arResult["CATALOG_ITEM"] = $resCatalog->GetNext();
 
-
     // Информацация о разделе
     $arResult["CATALOG_ITEM"]["SECTION_INFO"] = CIBlockSection::GetList(
         array(),array(
@@ -117,14 +116,34 @@
         // А умолчальный сделаем нулём
         $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"] = 0;
 
-        while($arStorage = $resStorage->GetNext()){
+        // Если это парковка и дневной лимит вышел - показываем фигу
+        if(
+            isset($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"])
+            &&
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
+                =='parking'
+        ){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"].
+                "/.integration/classes/parking.class.php"
+            );
+            $arUser = $USER->GetById($USER->GetId())->Fetch();
+            $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+
+            $bIsLimited = $objParking->isLimited();
+            $arReqult["PARKING_TODAY"] = $objParking->transactsToday;
+        }
+
+        if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
             
             if(!$arStorage["AMOUNT"])continue;
             $arOffer["STORAGES"][$arStorage["STORE_ID"]] =
                 $arStorage["AMOUNT"]-(
-                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"])
+                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]
+                        ["STORE_LIMIT"][0]["VALUE"])
                     ?
-                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"]
+                    $arResult["CATALOG_ITEM"]["PROPERTIES"]
+                        ["STORE_LIMIT"][0]["VALUE"]
                     :
                     DEFAULT_STORE_LIMIT
                 );

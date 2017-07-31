@@ -216,6 +216,17 @@ elseif(isset($_GET["add_order"])){
     )
     $nStoreLimit = $arStoreLimit["VALUE"];
 
+    // Получаем свойство элемента каталога "АРТИКУЛ"
+    $arArtNumber = CIBlockElement::GetProperty(
+        CATALOG_IB_ID,
+        $arProduct["PROPERTY_CML2_LINK_VALUE"],
+        array(),
+        array("CODE"=>"ARTNUMBER")
+    )->GetNExt();
+    
+    $sArtNumber = $arArtNumber["VALUE"];
+
+
     $res = CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
     if(!$paySystem = $res->GetNext()){
         $answer = array("error"=>"Нет активных платёжных систем");
@@ -324,6 +335,10 @@ elseif(isset($_GET["add_order"])){
         $sOrderNum = 'Б-'.$orderId;
         //// Запоминаем номер заказа
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>$sOrderNum));
+        // Делаем заказ оплаченным
+        CSaleOrder::PayOrder(
+            $orderId, "Y", false
+        );
 
         // Назначаем заказу корзину
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
@@ -401,9 +416,49 @@ elseif(isset($_GET["add_order"])){
             $objTroyka->linkOrderTransact($sOrderNum);
         }
 
+        // Статус парковки
+        // 0 - не заказывалась
+        // 1 - Успешно
+        // 2 - неудачно
+        $sParkingStatus = 0;
+        if($sArtNumber=='parking'){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]
+                    ."/.integration/classes/parking.class.php"
+            );
+            $arUser = $USER->GetById($USER->GetId())->Fetch();
+            $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+
+
+            // Производим транзакцию в парковку
+            $objParking->payment($sOrderNum);
+            if($objParking->error){
+                // Мапинг кодов ошибок шлюза в сообщения для посетителя
+                $answer = array(
+                    "order"=>array(
+                        "ERROR"=>array(
+                            $objParking->error
+                        )
+                    )
+                );
+                // Сохраняем неуспешный статус
+                $sParkingStatus = 2;
+            }
+            else{
+                // Сохраняем успешный статус
+                $sParkingStatus = 1;
+            }
+            // Запоминаем номер транзакции 
+            $objParking->linkOrderTransact($sOrderNum);
+        }
+
+
         
         // Если тойка провалилась - баллы не снимаем
         if($stoykaStatus == 2){
+        }
+        // Если парковка провалилась - баллы не снимаем
+        elseif($sParkingStatus == 2){
         }
         else{
             //////////// Снимает баллы
@@ -421,6 +476,9 @@ elseif(isset($_GET["add_order"])){
 
         // Если тойка провалилась - остатки не снимаем
         if($stoykaStatus == 2){
+        }
+        // Если парковка провалилась - остатки не снимаем
+        elseif($sParkingStatus == 2){
         }
         else{
             //////////////////////// Снимаем остатки ////////////////////////
@@ -478,6 +536,12 @@ elseif(isset($_GET["add_order"])){
         // Если тойка провалилась - Аннулирован
         elseif($stoykaStatus == 2)
             orderSetZNI($orderId,'AI','AA');
+        // Если парковка успешно заказалась - Выполнен
+        elseif($sParkingStatus == 1)
+            orderSetZNI($orderId,'F','AA');
+        // Если парковка провалилась - Аннулирован
+        elseif($sParkingStatus == 2)
+            orderSetZNI($orderId,'AI','AA');
         // Во всех остальных случаях - В работее
         else
             orderSetZNI($orderId,'N','AA');
@@ -503,6 +567,17 @@ elseif(isset($_GET["clear_basket"])){
     CSaleBasket::DeleteAll(CUser::GetID());    
 }
 elseif(isset($_GET["wish"])){
+
+    if(
+        isset($_COOKIE["LOGIN"])
+        &&
+        $_COOKIE["LOGIN"]
+    ) $sUserLogin = $_COOKIE["LOGIN"];
+
+    // Чистим кэш плиток
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
+    customCacheClear($sDir = '',$sUserLogin);
+
     $act =  $_GET["wish"]=='on'?'on':'off';
     
     CModule::IncludeModule('iblock');

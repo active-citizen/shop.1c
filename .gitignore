@@ -13,6 +13,8 @@ www/upload/*
 www/upload/stores/*.png
 www/upload/manufacturers/*.png
 
+# Игнорировать мобильное приложение
+www/desktop_app/*
 
 # Игнорировать файл с паролями и ключами
 www/.integration/secret.inc.php
@@ -44,6 +46,8 @@ docs/*.png
 docs/*.jpg
 docs/manual/source/02_noauth_funcs/figures/*.pdf
 docs/manual/source/04_auth_funcs/figures/*.pdf
+renders/png/*.png
+renders/js/*.js
 
 # Игнорируем служебные пользовательские папки и файлы
 .bash_history

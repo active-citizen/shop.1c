@@ -26,7 +26,16 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
         $objTroyka = new CTroyka();            
         $objTroyka->emulation = false;
 
-        if(!$arBindings = $objTroyka->getBindings('0000000000')){
+        $arOrder = CSaleOrder::GetList(
+            array("ID"=>"ASC"),
+            array("!ADDITIONAL_INFO"=>false),
+            false,
+            array("nTopCount"=>1),
+            array("ADDITIONAL_INFO")
+        )->Fetch();
+
+
+        if(!$arBindings = $objTroyka->getBindings($arOrder["ADDITIONAL_INFO"])){
             print_r($objTroyka);
         }
         else{
@@ -37,6 +46,11 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
     ?>
     </pre>
     <? endif ?>
+    <h2>Парковки</h2>
+    <?$APPLICATION->IncludeComponent("ag:settings","",array(
+        "CODE"  =>  "PARKING",
+        "CACHE_TIME"=>COMMON_CACHE_TIME
+    ),false);?> 
 </div>
 
 

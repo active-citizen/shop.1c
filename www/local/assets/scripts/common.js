@@ -363,10 +363,11 @@ function productConfirmNext(){
                             function(){
                                 $('#order-process-done').css('display','none');
                                 $('.ok-button').css('display','block');
-                                var error_text = '';
+                                var error_text = '<ul>';
                                 for(i in answer.order.ERROR){
-                                    error_text += i+": "+answer.order.ERROR[i];
+                                    error_text += "<li>"+answer.order.ERROR[i]+'</li>';
                                 }
+                                error_text += '</ul>';
                                 $('.ag-shop-modal__container').append('<div class="error">'+error_text+'</div>')
 //                              $('.ag-shop-modal-wrap').fadeOut('fast');
                             }
@@ -510,7 +511,7 @@ function sendOrdersFeedbackForm(){
 }
 
 function printOrder(orderId){
-    $('body').append('<iframe style="display:none;" src="/profile/order/print.ajax.php?id='+orderId+'"></iframe>');
+    $('body').append('<iframe style="display:none;" src="/profile/order/print.png.ajax.php?id='+orderId+'&act=print"></iframe>');
     return false;
 }
 

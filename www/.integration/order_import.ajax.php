@@ -574,7 +574,12 @@
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
-                    //eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                }
+                // При пришедшем статусе "В работе" и "Выполнен" письма
+                // отправляем в любом случае
+                elseif($statusId=='N' || $statusId=='F'){
+                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
@@ -670,7 +675,7 @@
                 }
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
-         	    //orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+         	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
             }
             if($statusId=='F')$DB->Query("
                 UPDATE 
