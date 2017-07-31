@@ -167,7 +167,8 @@
  
             // Нормализация товаров
             if(!isset($arDocument["Товары"]["Товар"][0]))
-                $arDocument["Товары"]["Товар"] = array($arDocument["Товары"]["Товар"]);
+                $arDocument["Товары"]["Товар"] = 
+                    array($arDocument["Товары"]["Товар"]);
             // пОЛУЧЕНИЕ МАССИВА ТОВАРОВ КОРЗИНЫ
             $basketProducts = array();
             foreach($arDocument["Товары"]["Товар"] as $product){
@@ -178,10 +179,23 @@
                         ".print_r($product["Ид"],1)."\n";
                     continue;
                 }
-                
+               
+                $product["Промокоды"] = array(
+                    "ИмяПараметра1"=>"Параметр1",
+                    "ЗначениеПараметра1"=>"Значение1",
+                    "ИмяПараметра2"=>"Параметр2",
+                    "ЗначениеПараметра2"=>"Значение2",
+                );
+                // Запоминаем промокоды для письма
+                if(isset($product["Промокоды"])){
+                    $GLOBALS["promocodes"] = $product["Промокоды"];
+                }
+
                 $XML_ID = $product["Ид"];
                 $resOffer = CIblockElement::GetList(
-                    array(),array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),false,
+                    array(),
+                    array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),
+                    false,
                     array("nTopCount"=>1),array("ID")
                 );
                 $existsOffer = $resOffer->GetNext();
@@ -196,9 +210,11 @@
                         "SITE_ID"       =>  "s1",
                         "XML_ID"        =>  $product["product_xml_id"],
                         "NAME"          =>  $product["Наименование"],
-                        "CODE"          =>  Cutil::translit($product["Наименование"],"ru",
-                            array("replace_space"=>"-","replace_other"=>"-")
-                        )."-".$product["product_id"],
+                        "CODE"          =>  Cutil::translit(
+                                $product["Наименование"],
+                                "ru",
+                                array("replace_space"=>"-","replace_other"=>"-")
+                            )."-".$product["product_id"],
                         "IBLOCK_ID"     =>  $CatalogIblockId,
                         "DETAIL_TEXT"   =>  '',
                         "PREVIEW_TEXT"  =>  '',
@@ -574,12 +590,16 @@
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
-                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
                 // отправляем в любом случае
                 elseif($statusId=='N' || $statusId=='F'){
-                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){

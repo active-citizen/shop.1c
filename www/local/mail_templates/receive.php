@@ -1,5 +1,7 @@
 <?
 
+include("promocodes.php");
+
 if(trim($orderInfo["PROPERTIES"]["RECEIVE_RULES"]["VALUE"]["TEXT"]))
 $html .='
         <p>
