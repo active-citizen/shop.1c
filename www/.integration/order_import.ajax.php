@@ -634,6 +634,7 @@
                     }
 
                     // Увеличикаем запасы на складе 
+                    /*
                     $objCCatalogStoreProduct = new CCatalogStoreProduct;
                     $objCCatalogProduct = new CCatalogProduct;
                     foreach($basketProducts as $productId=>$item){
@@ -669,6 +670,7 @@
                         }
 
                     }
+                    */
                 }
 
                 // Конец обработки отмены

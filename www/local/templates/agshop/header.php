@@ -164,11 +164,15 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
           </div>
         </div>
 
-        <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
+        <?
+        /*
+            $APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
                 "CACHE_TIME"      =>  COMMON_CACHE_TIME
             ),
             false
-        );?>
+        );
+        */
+        ?>
 
     <? endif ?>
 

@@ -15,7 +15,7 @@
     CModule::IncludeModule("iblock");
     
     define("IS_MOBILE",
-        1//isset($_COOKIE["EMPSESSION"])
+        isset($_COOKIE["EMPSESSION"])
     );
 
     //
