@@ -92,3 +92,13 @@
 
     }
 
+    function linkTruncate($text){
+        if(preg_match(
+            "#^(https?://)?(.*?)(/.*)?$#i",
+            $text, $m
+        )) 
+            return $m[2].($m[3] && $m[3]!='/'?'/...':'');
+        else
+            return $text;
+    }
+

@@ -13,6 +13,10 @@
         
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
+    
+    define("IS_MOBILE",
+        isset($_COOKIE["EMPSESSION"])
+    );
 
     //
     define("COMMON_CACHE_TIME",3600);

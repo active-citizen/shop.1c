@@ -83,7 +83,9 @@
         
         // Свойства предложения
         $arOffer["PROPERTIES"] = array();
-        $resProps = CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arOffer["ID"]);
+        $resProps = CIBlockElement::GetProperty(
+            $arParams["OFFER_IBLOCK_ID"],$arOffer["ID"]
+        );
         while($arProp = $resProps->GetNext()){
             if(!isset($arOffer["PROPERTIES"][$arProp["CODE"]]))
                 $arOffer["PROPERTIES"][$arProp["CODE"]] = array();
@@ -92,23 +94,31 @@
             }
             if($arProp["PROPERTY_TYPE"]=='F' && !$arProp["FILE_PATH"])
                 continue;
-            elseif($arProp["PROPERTY_TYPE"]=='F' && $arProp["FILE_PATH"] && $arProp["CODE"]=='MORE_PHOTO')
-                $arOfferJson["PICS"][] = $arProp["FILE_PATH"];
+            elseif(
+                $arProp["PROPERTY_TYPE"]=='F' 
+                && $arProp["FILE_PATH"] && $arProp["CODE"]=='MORE_PHOTO'
+            ) $arOfferJson["PICS"][] = $arProp["FILE_PATH"];
             
             if(preg_match("#PROP1C_(.*?)#",$arProp["CODE"])){
-                $arOfferJson["1C_PROPS"][$arProp["CODE"]] = array("ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"]);
+                $arOfferJson["1C_PROPS"][$arProp["CODE"]] = array(
+                    "ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"]
+                );
                 if(!isset($arResult["PROP1C"][$arProp["CODE"]]))
-                    $arResult["PROP1C"][$arProp["CODE"]] = array("NAME"=>$arProp["NAME"],"VALUES"=>array());
+                    $arResult["PROP1C"][$arProp["CODE"]] = array(
+                        "NAME"=>$arProp["NAME"],"VALUES"=>array()
+                    );
                 if($arProp["VALUE"])
-                    $arResult["PROP1C"][$arProp["CODE"]]["VALUES"][$arProp["VALUE"]] = $arProp["VALUE_ENUM"];
-                
+                    $arResult["PROP1C"][$arProp["CODE"]]["VALUES"][$arProp["VALUE"]] 
+                        = $arProp["VALUE_ENUM"];
             }
             
             $arOffer["PROPERTIES"][$arProp["CODE"]][] = $arProp;
         }
         // Склады предложения
         $arOffer["STORAGES"] = array();
-        $resStorage = CCatalogStoreProduct::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]));
+        $resStorage = CCatalogStoreProduct::GetList(
+            array(),array("PRODUCT_ID"=>$arOffer["ID"])
+        );
 
 
         // !!!Отменяем невыбираемый остаток!!!
@@ -147,20 +157,29 @@
                     :
                     DEFAULT_STORE_LIMIT
                 );
-            $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = $arStorage["AMOUNT"]-(
-                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"])
+            $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = 
+                $arStorage["AMOUNT"]-(
+                    intval(
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]
+                            ["VALUE"]
+                    )
                     ?
-                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]["VALUE"]
+                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["STORE_LIMIT"][0]
+                        ["VALUE"]
                     :
                     DEFAULT_STORE_LIMIT
                 );
 
             // Пополняем справочник складов
             if(!isset($arResult["STORAGES"][$arStorage["STORE_ID"]])){
-                $arResult["STORAGES"][$arStorage["STORE_ID"]] = 
-                    CCatalogStore::GetList(array(),array("ID"=>$arStorage["STORE_ID"]))->GetNext();
+                $arStoreItem = CCatalogStore::GetList(
+                    array(),array("ID"=>$arStorage["STORE_ID"])
+                )->GetNext();
+                
+                $arResult["STORAGES"][$arStorage["STORE_ID"]] = $arStoreItem;
             }
-            foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)$arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
+            foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)
+                $arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
             
         }
         // Обнуляем отрицательные остатки

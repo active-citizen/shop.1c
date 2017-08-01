@@ -6,7 +6,10 @@
 <? else: ?>
 
     <? if(
+        !IS_MOBILE
+        &&
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+        //isset($_COOKIE["EMPSESSION"])
     ):?>
     <!-- Не выводим футер для ЛК -->
 
@@ -81,9 +84,10 @@
                 && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
                 && (
-                    !isset($_COOKIE["EMPSESSION"])
-                    ||
-                    !$_COOKIE["EMPSESSION"]
+                    !IS_MOBILE
+                    //!isset($_COOKIE["EMPSESSION"])
+                    //||
+                    //!$_COOKIE["EMPSESSION"]
                 )
 
             ):?>
@@ -94,9 +98,10 @@
                 && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
                 && (
-                    isset($_COOKIE["EMPSESSION"])
-                    &&
-                    $_COOKIE["EMPSESSION"]
+                    IS_MOBILE
+                    //isset($_COOKIE["EMPSESSION"])
+                    //&&
+                    //$_COOKIE["EMPSESSION"]
                 )
             ):?>
                <!-- Забираем сессию из мобильного приложения --> 

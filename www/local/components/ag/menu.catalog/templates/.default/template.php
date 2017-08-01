@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <? if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):?>
+    <? /*if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):*/?>
     <div class="ag-shop-menu__items js-menu__list">
         <?php foreach($arResult["SECTIONS"] as $section):?>
         <? if(!$section["products"])continue;?>
@@ -31,7 +31,7 @@
         </div>
         <?endforeach?>
     </div>
-    <? endif?>
+    <?/* endif */?>
   </div>
 </div>
 <!-- }}} Menu-->

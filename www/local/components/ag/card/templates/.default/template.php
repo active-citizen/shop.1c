@@ -433,10 +433,14 @@
                               <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
                             </tr>
                             <? endif ?>
-                            <? if(trim($arResult["STORAGES"][$id]["EMAIL"])):?>
+                            <? if(1 || count($arResult["STORAGES"][$id]["EMAIL"])):?>
                             <tr>
                               <td>Сайт:</td>
-                              <td><a href="<?= $arResult["STORAGES"][$id]["EMAIL"] ?>" target="_blank"><?= $arResult["STORAGES"][$id]["EMAIL"] ?></a></td>
+                              <td><a href="<?=
+                              $arResult["STORAGES"][$id]["EMAIL"]
+                              ?>" target="_blank"><?=
+                              linkTruncate($arResult["STORAGES"][$id]["EMAIL"]) 
+                              ?></a></td>
                             </tr>
                             <? endif ?>
                           </table>

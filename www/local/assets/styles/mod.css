@@ -409,12 +409,16 @@ input:checked + .ag-shop-filter__variants-item {
     border-radius: 8px;
 }
 
-.ag-shop-menu{
+div.ag-shop-menu{
     position:relative;
-    z-index: 9999;
+/*    z-index: 9999; */
 }
 
 
 .ag-shop-card__image-badges{
     margin-top: 64px !important;
+}
+
+.ag-shop-menu__items{
+    z-index: 9999 !important;
 }

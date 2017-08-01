@@ -9,12 +9,21 @@ $(document).ready(function() {
 
     menuButton.on('click', function(e) {
         e.preventDefault();
-        if ( menuList.is(':visible') ) {
-            menuList.slideUp(animationDelay);
-            menuButton.removeClass('ag-shop-menu__button--close');
+        if ( $(this).parent().parent().parent().parent().parent()
+                .find('.js-menu__list').first().is(':visible') ) {
+            $(this).parent().parent().parent().parent().parent()
+                .find('.js-menu__list').first().slideUp(animationDelay);
+            $(this).removeClass('ag-shop-menu__button--close');
+
+            //menuList.slideUp(animationDelay);
+            //menuButton.removeClass('ag-shop-menu__button--close');
         } else {
-            menuList.slideDown(animationDelay);
-            menuButton.addClass('ag-shop-menu__button--close');
+            $(this).parent().parent().parent().parent().parent()
+                .find('.js-menu__list').first().slideDown(animationDelay);
+            $(this).addClass('ag-shop-menu__button--close');
+
+//            menuList.slideDown(animationDelay);
+//            menuButton.addClass('ag-shop-menu__button--close');
         }
     });
   })();
