@@ -154,7 +154,7 @@
 
         // Заголовки основного текста письма 
         $sMailTextHeaders = "--$boundary\r\n"
-            ."Content-Type: text/html; UTF-8\r\n"
+            ."Content-Type: text/html; charset=UTF-8\r\n"
             //."Content-Transfer-Encoding: base64\r\n"
             ."\r\n"
         ;
