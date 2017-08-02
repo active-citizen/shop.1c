@@ -37,14 +37,28 @@
         echo "Failed\nPHPSESSID incorrect";
         die;
     }
-   
-
+  
+    
     echo '<?xml version="1.0" encoding="windows-1251"?>';
     
     CModule::IncludeModule('sale');
     CModule::IncludeModule('iblock');
    
     $arOrderses = array();
+    $res = CSaleOrder::GetList(
+        array("ID"=>"ASC"),
+        array(
+            //">ID"=>783
+            //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AF" 
+        ), // Выводить только не отданные заказы
+        false
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+    );
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
     $res = CSaleOrder::GetList(
         array("ID"=>"ASC"),
         array(
