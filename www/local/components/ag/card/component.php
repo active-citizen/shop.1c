@@ -139,11 +139,13 @@
             );
             $arUser = $USER->GetById($USER->GetId())->Fetch();
             $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
-
+            
+            // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objParking->isLimited();
             $arReqult["PARKING_TODAY"] = $objParking->transactsToday;
         }
 
+        // Если дневной лимит не вышел - получаем остатки по складам
         if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
             
             if(!$arStorage["AMOUNT"])continue;
@@ -182,14 +184,17 @@
                 $arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
             
         }
-        // Обнуляем отрицательные остатки
+
+        // Обнуляем отрицательные остатки и считаем общие
+        $arResult["TotalAmount"] = 0;
         foreach($arOfferJson["STORAGES"] as $key=>$value){
             if($value<=0){
                 unset($arOfferJson["STORAGES"][$key]);
                 unset($arOffer["STORAGES"][$key]);
             }
+            $arResult["TotalAmount"] += $arOffer["STORAGES"][$key];
         }
-        
+        echo $arResult["TotalAmount"] ;
         
         $arOffer["RRICE_INFO"] = CPrice::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]))->GetNext();
         $arOfferJson["PRICE"] = str_replace(",","",$arOffer["RRICE_INFO"]["PRICE"]);

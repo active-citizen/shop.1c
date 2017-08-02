@@ -656,6 +656,10 @@
 
         <? elseif($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
             Поощрение недоступно
+        <? elseif(!$arResult["TotalAmount"] && 
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_IF_ABSENT"][0]["VALUE"]=='да'
+        ):?>
+            Поощрение недоступно
         <? else: ?>
             Нет доступных предложений
         <? endif ?>

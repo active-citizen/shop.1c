@@ -1,0 +1,65 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление доаолнительного свойства инфоблоку товаров - отключение при
+     * нулевом остатке
+     */
+    class cancel_property extends Migration{
+        function Run(){
+            
+            //Код валюты балл
+            $currency_code = "BAL";
+            
+            $sPropCode = "HIDE_IF_ABSENT";
+
+            // Подключаем модуль инфоблоков
+            CModule::IncludeModule("iblock");
+
+            // Проверяем наличие свойства у инфоблока clothes
+            $res = CIBlockProperty::GetByID($sPropCode,false,"clothes");
+            // Выходим, если свойство есть
+            if($res->GetNext())return true;
+            
+            // Собираем массив для добавления свойства
+            $arFields = Array(
+                // Название свойства
+                "NAME" => "Отключать при нулевом остатке",
+                // Активность
+                "ACTIVE" => "Y",
+                // Порядок сортировки
+                "SORT" => "2500",
+                // Кодовое обозначение
+                "CODE" => $sPropCode,
+                // Тип свойства (L-список)
+                "PROPERTY_TYPE" => "L",
+                // ID инфоблока для которого свойство
+                "IBLOCK_ID" => CATALOG_IB_ID
+            );
+            // Список значений свойства
+            $arFields["VALUES"][] = array(
+                "VALUE" => "да","DEF" => "Y","SORT" => "100"
+            );
+            
+            // Создаём объект инфоблока
+            $ibp = new CIBlockProperty;
+            // Добавляем свойство к инфоблоку
+            if(!$PropID = $ibp->Add($arFields)){
+                // Выводим текст ошибки, если добавление не удалось
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$cancel_property = new cancel_property();
+// Откатываем, если неудачно
+if(!$cancel_property->Run())$cancel_property->RollBack();

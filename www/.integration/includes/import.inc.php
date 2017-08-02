@@ -358,6 +358,9 @@
         // Возможность отмены
         $arProperties["CANCEL_ABILITY"]     = 
             $arProduct["ВозможностьОтмены"]=='Да'?$ENUM["CANCEL_ABILITY"]["да"]:0;
+        // Отключатьб при нулевом остатке
+        $arProperties["HIDE_IF_ABSENT"]     = 
+            $arProduct["ОтключатьБезОстатка"]=='Да'?$ENUM["HIDE_IF_ABSENT"]["да"]:0;
         // Новинка
         $arProperties["NEWPRODUCT"] = 
             $arProduct["Новинка"]=='Да'?$ENUM["NEWPRODUCT"]["да"]:0;
