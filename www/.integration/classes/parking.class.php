@@ -157,11 +157,15 @@
             Завершился ли дневной лимит по транзакциям
         */
         function isLimited(
-            $nPeriod = 86400 //!< Перид, за который считаем лимит
+            $nTimestamp = 0 //!< Дата, за которую надо посмотреть лимит
         ){
             global $DB;
 
+            if($nTimestamp)
+                $nTimestamp = time();
 
+
+            // Получение ID группы свойств заказа
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
                 $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
@@ -170,7 +174,7 @@
             )->GetNext();
             $nPropGroup = $arPropGroup["ID"];
 
-
+            // Получаем ID свойства закака "транзакция
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 array(
@@ -185,7 +189,9 @@
             )->Fetch();
             $nOrderPropsId = $arPropValue["ID"];
 
-            $sDate = date("Y-m-d H:i:s",time()-$nPeriod);
+            $sStartDate = date("Y-m-d",$nTimestamp)." 00:00:00";
+            $sEndDate =  date("Y-m-d",$nTimestamp)." 23:59:59";
+
             // Через битриксовый API слишком жирно. Делаем прямой запрос к БД
             $sQuery = "
                 SELECT 
@@ -196,16 +202,18 @@
                     `b_sale_order` as `b`
                         ON 
                             `a`.`ORDER_PROPS_ID`=$nOrderPropsId
+                            AND `b`.`STATUS_ID`='F'
+                            AND `b`.`DATE_INSERT`>='$sStartDate'
+                            AND `b`.`DATE_INSERT`<='$sEndDate'
                             AND `a`.`VALUE`!=''
                             AND `a`.`ORDER_ID`=`b`.`ID`
-                            AND `b`.`DATE_INSERT`>='$sDate'
-                            AND `b`.`STATUS_ID`='F'
                 WHERE
                     `b`.`ID` IS NOT NULL
                 LIMIT
                     1
                         
             ";
+
             $arResult = $DB->Query($sQuery)->Fetch();
             // Если ошибка запроса - объявляем, что всё, баста
             if(!isset($arResult["count"]))return true;
