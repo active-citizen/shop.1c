@@ -97,8 +97,8 @@
             "LID"               =>  "ru",
             "ACTIVE"            =>  "Y",
             "GROUP_ID"          =>  $arGroups,
-            "PASSWORD"          =>  $sPassword,
-            "CONFIRM_PASSWORD"  =>  $sPassword,
+//            "PASSWORD"          =>  $sPassword,
+//            "CONFIRM_PASSWORD"  =>  $sPassword,
             "UF_USER_MAN_ID"    =>  array($nPartnerId),
             "UF_USER_STORAGE_ID"=>  array($nStorageId)
         ));
