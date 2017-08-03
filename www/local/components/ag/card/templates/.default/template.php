@@ -6,8 +6,19 @@
 <?
 //$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 ?>
-        <? if(isset($arResult["OFFERS"][0]) &&
-        $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'):?>
+        <? if($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
+            <h3>Поощрение недоступно</h3>
+            (снято с реализации)
+        <? elseif(
+            !$arResult["TotalAmount"] && 
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_IF_ABSENT"][0]["VALUE_ENUM"]=='да'
+        ):?>
+            <h3>Поощрение недоступно</h3>
+            (исчерпание остатков)
+        <? elseif(
+            isset($arResult["OFFERS"][0]) 
+            && $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'
+        ):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
                 var totalStoreId = <? foreach($arResult["OFFERS_JSON"] as $offer){foreach($offer["STORAGES"] as $storeId=>$store){echo $storeId;break;};break;}?>;
@@ -680,12 +691,6 @@
       </div>
     </div>
 
-        <? elseif($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
-            Поощрение недоступно
-        <? elseif(!$arResult["TotalAmount"] && 
-            $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_IF_ABSENT"][0]["VALUE"]=='да'
-        ):?>
-            Поощрение недоступно
         <? else: ?>
-            Нет доступных предложений
+            <h3>Нет доступных предложений</h3>
         <? endif ?>
