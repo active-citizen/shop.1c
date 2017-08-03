@@ -47,7 +47,7 @@ switch($arParams["TAB"]){
         //$arFilter["STATUS_ID"] = array();
     break;
     case 'use':
-        $arFilter["STATUS_ID"] = array('N','AA','AB');
+        $arFilter["STATUS_ID"] = array('N','AA','AB','AF');
     break;
     case 'unuse':
         $arFilter["STATUS_ID"] = array('F','AI','AG','AC');
@@ -61,6 +61,8 @@ $arNavStartParams = array(
 
 $resOrders = CSaleOrder::GetList($arOrder, $arFilter, false, $arNavStartParams);
 
+// Не выводить предустановленные заказы админа. Он пугается
+if($arFilter["USER_ID"]!=1)
 while($arOrder = $resOrders->GetNext()){
     // Склад
     $arOrder["STORE_INFO"] = CCatalogStore::GetList(
