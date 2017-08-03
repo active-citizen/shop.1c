@@ -214,15 +214,6 @@
         $order["ƒата»стечени€Ѕронировани€"] = date_parse(
             $arrOrder["DATE_INSERT"]
         );
-        $order["ƒата»стечени€Ѕронировани€"] = date("Y-m-d",24*60*60+mktime(
-            $order["ƒата»стечени€Ѕронировани€"]["hour"],
-            $order["ƒата»стечени€Ѕронировани€"]["minute"],
-            $order["ƒата»стечени€Ѕронировани€"]["second"],
-            $order["ƒата»стечени€Ѕронировани€"]["month"],
-            $order["ƒата»стечени€Ѕронировани€"]["day"],
-            $order["ƒата»стечени€Ѕронировани€"]["year"]
-        ));
-
         
         $order["ƒата»зменени€"] = date_parse(
         //$arrOrder["DATE_UPDATE"]
@@ -258,7 +249,7 @@
             
             $resOffer = CIBlockElement::GetList(array(), 
                 array(
-                    "IBLOCK_ID"=>3,
+                    "IBLOCK_ID"=>OFFER_IB_ID,
                     "ID"=>$arProduct["PRODUCT_ID"]
                 ),false,array("nTopCount"=>1),
                 array("PROPERTY_CML2_LINK","XML_ID","NAME","ID")
@@ -294,12 +285,29 @@
             $resCatalog = CIBlockElement::GetList(array(), 
                 array(
                     "IBLOCK_ID"=>CATALOG_IB_ID,
-                    "ID"=>$arrOffer["PROPERTY_CML2_LINK_VALUE"]),
+                    "ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]),
                     false,
                     array("nTopCount"=>1),
-                    array("PROPERTY_QUANT","PROPERTY_ARTNUMBER")
+                    array(
+                        "ID",
+                        "NAME",
+                        "PROPERTY_QUANT",
+                        "PROPERTY_ARTNUMBER",
+                        "PROPERTY_DAYS_TO_EXPIRE"
+                    )
             );
             $arrCatalog = $resCatalog->GetNext();
+            $order["ƒата»стечени€Ѕронировани€"] = date("Y-m-d H:i:s",
+                $arrCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"]*24*60*60
+                +mktime(
+                    $order["ƒата»стечени€Ѕронировани€"]["hour"],
+                    $order["ƒата»стечени€Ѕронировани€"]["minute"],
+                    $order["ƒата»стечени€Ѕронировани€"]["second"],
+                    $order["ƒата»стечени€Ѕронировани€"]["month"],
+                    $order["ƒата»стечени€Ѕронировани€"]["day"],
+                    $order["ƒата»стечени€Ѕронировани€"]["year"]
+                )
+            );
             
             $product["»д"] = $arOffer["XML_ID"];
             $product["Ќаименование"] = 
@@ -311,6 +319,7 @@
             $product["јртикул"] = $arrCatalog["PROPERTY_ARTNUMBER_VALUE"];
             $product["÷ена«а≈диницу"] = $arPrice["PRICE"];
             $product["ѕродукт"] = $arOffer;
+            $product["Ёлемент аталога"] = $arrCatalog;
             $products[] = $product;
         }
 
