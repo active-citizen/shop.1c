@@ -1,3 +1,26 @@
 h3{
     color: rgba(0,122,108,1);
 }
+
+h4{
+    color: rgba(0,122,108,1);
+}
+
+.ag-shop-card__container a{
+    color: rgba(0,122,108,1);
+}
+
+.ag-shop-card__container a:hover{
+    color: rgba(0,152,138,1);
+    cursor: pointer;
+}
+
+
+.ag-shop-card__container {
+    font-family: 'SF UI Text', Arial, sans-serif !important;
+    font-size: 1rem !important;
+    color: #626e7d !important;
+    line-height: 27px !important;
+}
+
+

@@ -232,6 +232,38 @@
     )->GetNext();
 
 
+    // Очистка описания товара от говна
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
+        "\n","",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+    
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "#\s+#"," ",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+  
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "#>\s+<#","><",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+     
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/style=\".*?\"/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+    
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/<div>\s+&nbsp;<\/div>/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+   
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/<p>\s+&nbsp;<\/p>/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+//    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
+//        "{break}","\n",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+//    );
+
+
     $this->IncludeComponentTemplate();
 //}
 

@@ -466,7 +466,7 @@
               </div>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__field ag-shop-card__field--no-gaps">
-                  <div class="ag-shop-card__fieldname">Описание:</div>
+                  <h4>Описание:</h4>
                   <p class="ag-shop-card__description"><?= 
                     $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
                   ?></p>
@@ -474,7 +474,7 @@
                       $arResult["CATALOG_ITEM"]["PROPERTIES"]
                         ["RECEIVE_RULES"][0]["~VALUE"]["TEXT"]
                   ):?>
-                  <h3>Правила получения</h3>
+                  <h4>Правила получения:</h4>
                   <p>
                   <?=
                   $arResult["CATALOG_ITEM"]["PROPERTIES"]
@@ -487,7 +487,7 @@
                       $arResult["CATALOG_ITEM"]["PROPERTIES"]
                         ["CANCEL_RULES"][0]["~VALUE"]["TEXT"]
                   ):?>
-                  <h3>Правила отмены</h3>
+                  <h4>Правила отмены:</h4>
                   <p>
                   <?=
                   $arResult["CATALOG_ITEM"]["PROPERTIES"]
