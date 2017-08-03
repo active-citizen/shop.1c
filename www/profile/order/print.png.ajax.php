@@ -51,7 +51,9 @@
 //        $sBoldFont = "ALS_Direct_Bold.ttf";
         $sRegularFont = 'Regular.ttf';
         $sBoldFont = 'Bold.ttf';
-        $sMonoFont = 'Mono.ttf';
+        $sMonoRegularFont = 'Mono.ttf';
+        $sMonoRegularFont = 'MonoRegular.ttf';
+        $sMonoBoldFont = 'MonoBold.ttf';
 
         // ПОдключаем библиотеку QR-кодов
         require_once(
@@ -82,7 +84,7 @@
             $nFontSize, 0 , 
             355 , 170, 
             $objGreenColor, 
-            $sMonoFont,
+            $sMonoBoldFont,
             $arOrder["ORDER"]["ADDITIONAL_INFO"]
         );
 
@@ -93,7 +95,7 @@
             $nFontSize, 0 , 
             360 , 245, 
             $objColor, 
-            $sMonoFont,
+            $sMonoBoldFont,
             "до ". $DB->FormatDate(
                 $arOrder["ORDER_PROPERTIES"]["CLOSE_DATE"]["VALUE"],
                 "YYYY-MM-DD","DD.MM.YYYY"
