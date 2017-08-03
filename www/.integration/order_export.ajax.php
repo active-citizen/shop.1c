@@ -211,10 +211,6 @@
             $order["Дата"]["year"]
         ));
 
-        $order["ДатаИстеченияБронирования"] = date_parse(
-            $arrOrder["DATE_INSERT"]
-        );
-        
         $order["ДатаИзменения"] = date_parse(
         //$arrOrder["DATE_UPDATE"]
         date("d.m.Y H:i:s")
@@ -297,17 +293,20 @@
                     )
             );
             $arrCatalog = $resCatalog->GetNext();
-            $order["ДатаИстеченияБронирования"] = date("Y-m-d H:i:s",
-                $arrCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"]*24*60*60
-                +mktime(
-                    $order["ДатаИстеченияБронирования"]["hour"],
-                    $order["ДатаИстеченияБронирования"]["minute"],
-                    $order["ДатаИстеченияБронирования"]["second"],
-                    $order["ДатаИстеченияБронирования"]["month"],
-                    $order["ДатаИстеченияБронирования"]["day"],
-                    $order["ДатаИстеченияБронирования"]["year"]
-                )
-            );
+            if(intval($arrCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"])){
+                $tmp = date_parse($arrOrder["DATE_INSERT"]);
+                $order["ДатаИстеченияБронирования"] = date("Y-m-d H:i:s",
+                    $arrCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"]*24*60*60
+                    +mktime(
+                        $tmp["hour"],
+                        $tmp["minute"],
+                        $tmp["second"],
+                        $tmp["month"],
+                        $tmp["day"],
+                        $tmp["year"]
+                    )
+                );
+            }
             
             $product["Ид"] = $arOffer["XML_ID"];
             $product["Наименование"] = 
@@ -422,9 +421,11 @@
     <Роль>Продавец</Роль>
     <Сумма><? echo $arOrder["Сумма"];?></Сумма>
     <Комментарий/>
+    <? if($order["ДатаИстеченияБронирования"]):?>
     <ДатаИстеченияБронирования><? 
         echo $arOrder["ДатаИстеченияБронирования"];
     ?></ДатаИстеченияБронирования>
+    <? endif ?>
     <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
     <СтатусЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СтатусЗаказа>
     <ЗапросНаИзменение><? 
