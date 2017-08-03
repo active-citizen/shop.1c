@@ -98,7 +98,12 @@ while($arOrder = $resOrders->GetNext()){
 
         $arCatalog = CIblockElement::GetList(array(),array(
             "IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
-        ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE","PROPERTY_USE_BEFORE_DATE"))->GetNext();
+        ),false,array("nTopCount"=>1),array(
+            "PROPERTY_DAYS_TO_EXPIRE",
+            "PROPERTY_USE_BEFORE_DATE",
+            "PROPERTY_SEND_CERT"
+        ))->GetNext();
+        
 
         // Картинка продукта
         /////////////////
@@ -122,6 +127,7 @@ while($arOrder = $resOrders->GetNext()){
         
         $order["PRODUCTS"][] = $arProduct;
     }
+    $order["SEND_CERT"] = $arCatalog["PROPERTY_SEND_CERT_VALUE"];
     $order["EXPIRES"] = $arCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"];
     $order["USE_BEFORE"] = $arCatalog["PROPERTY_USE_BEFORE_DATE"];
     
