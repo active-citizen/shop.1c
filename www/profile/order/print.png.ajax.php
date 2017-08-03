@@ -68,6 +68,12 @@
         $sBoldFont = "ALS_Direct_Bold.ttf";
 
 
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/phpqrcode/qrlib.php");
+
+//        QRcode::png("My First QR Code");
+        
+//        die;
+
         $im = imagecreatefrompng($sCertFilename);
 
         /*

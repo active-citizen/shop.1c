@@ -449,6 +449,9 @@
                 case 'Отменен':
                     $statusId = "AG";$canceled = "Y";
                 break;
+                case 'Отклонен':
+                    $statusId = "AF";$canceled = "Y";
+                break;
             }
            
             $arOrder = array(
