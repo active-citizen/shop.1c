@@ -35,65 +35,45 @@
 
     $nOrderId = intval($_REQUEST["id"]);
 
-    $sPanthomJsPath = dirname(__FILE__)."/phantomjs";
-    $sTemplateJSFile = realpath(dirname(__FILE__))."/print.js";
-    $sJSFile = $_SERVER["DOCUMENT_ROOT"]."/../"
-        ."renders/js/"
-        .$_COOKIE["PHPSESSID"]
-        ."_".$nOrderId.".js"; 
     $sPngFile = $_SERVER["DOCUMENT_ROOT"]."/../"
         ."renders/png/"
         .$nOrderId.".png"; 
 
-    if(isset($_REQUEST["generate"])){
-        $sJs = file_get_contents($sTemplateJSFile);
-        $sJs = str_replace("{PHPSESSID}",$_COOKIE["PHPSESSID"],$sJs);
-        $sJs = str_replace("{ORDER_ID}",$nOrderId,$sJs);
-        $sJs = str_replace("{CERT_PATH}",$sPngFile,$sJs);
-        $sJs = str_replace("{PHPSESSID}",$_COOKIE["PHPSESSID"],$sJs);
-//        echo "<pre>";
-//        echo $sJs;
-//        die;
-        /*
-        file_put_contents($sJSFile,$sJs);
-        $sJSFile = realpath($sJSFile);
-        $output=array();
-        $sys = exec("$sPanthomJsPath '$sJSFile'", $output);
-        unlink($sJSFile);
-        */
 
+    if(isset($_REQUEST["generate"])){
+        $sQRCodeFilename = $_SERVER["DOCUMENT_ROOT"]."/../"
+            ."renders/png/qr_"
+            .$nOrderId.".png"; 
+ 
         $sCertFilename =
             $_SERVER["DOCUMENT_ROOT"]."/profile/order/cert_template.png";
         $sRegularFont = "ALS_Direct_Regular.ttf";
         $sBoldFont = "ALS_Direct_Bold.ttf";
 
-
-        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/phpqrcode/qrlib.php");
-
-//        QRcode::png("My First QR Code");
-        
-//        die;
+        // ПОдключаем библиотеку QR-кодов
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"]."/local/libs/phpqrcode/qrlib.php"
+        );
+        // Определяем содержимое RQ-кода
+        $sQRText = "http://".$_SERVER["HTTP_HOST"]
+            ."/partners/orders/".$nOrderId."/";
+        // Формируем QR-код
+        QRcode::png($sQRText,$sQRCodeFilename,QR_ECLEVEL_L
+            ,6 // Размер одного пикселя QR в пискелях картинки
+            ,0  // ПоляQR-кода в QR-пикселяях
+        );
 
         $im = imagecreatefrompng($sCertFilename);
 
-        /*
-        $background = imagecolorallocate($im, 255, 255, 255);
-        imagecolortransparent($im, $background);
-        imagealphablending($im, false);
-        imagesavealpha($im, true);            
-        */
-
+        // Получаем всю информацию о заказе
         $arOrder = initOrderGetInfo($nOrderId);
+        // Определяем цвет основного текста
         $objColor = imagecolorallocate ( $im , 0, 0, 0);
+        // Задаём цвет брендбуковского зелёного
         $objGreenColor = imagecolorallocate ( $im , 0, 122, 108);
 
         // Номер заказа
         $nFontSize = 40;
-        /*
-        $arBox = imagettfbbox($nFontSize, 0, $sRegularFont,
-            $arOrder["ORDER"]["ADDITIONAL_INFO"]
-        );
-        */
         $arText = imagettftext (
             $im, 
             $nFontSize, 0 , 
@@ -111,7 +91,7 @@
             360 , 245, 
             $objColor, 
             $sRegularFont,
-            $DB->FormatDate(
+            "до ". $DB->FormatDate(
                 $arOrder["ORDER_PROPERTIES"]["CLOSE_DATE"]["VALUE"],
                 "YYYY-MM-DD","DD.MM.YYYY"
             )
@@ -238,6 +218,20 @@
             
         }
 
+        // QRCode
+        if(file_exists($sQRCodeFilename)){
+            $imQr = imagecreatefrompng($sQRCodeFilename);
+            
+            imagecopy(
+                $im, $imQr,
+                120,
+                100, 
+                0, 0, 
+                imagesx($imQr),
+                imagesy($imQr)
+            );
+            
+        }
 
         // Служба поддержки
         $nFontSize = 16;

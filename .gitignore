@@ -75,7 +75,9 @@ tests/stress/results/*.log.html
 tests/stress/libs/conf.pm
 
 # Игнорировать кэш QR-кодов
-www/local/libs/phpqrcode/cache
+www/local/libs/phpqrcode/cache/*
+!www/local/libs/phpqrcode/cache/README.md
+
 
 # Игнорировать прочее
 *.swp
