@@ -47,8 +47,11 @@
  
         $sCertFilename =
             $_SERVER["DOCUMENT_ROOT"]."/profile/order/cert_template.png";
-        $sRegularFont = "ALS_Direct_Regular.ttf";
-        $sBoldFont = "ALS_Direct_Bold.ttf";
+//        $sRegularFont = "ALS_Direct_Regular.ttf";
+//        $sBoldFont = "ALS_Direct_Bold.ttf";
+        $sRegularFont = 'Regular.ttf';
+        $sBoldFont = 'Bold.ttf';
+        $sMonoFont = 'Mono.ttf';
 
         // ПОдключаем библиотеку QR-кодов
         require_once(
@@ -79,18 +82,18 @@
             $nFontSize, 0 , 
             355 , 170, 
             $objGreenColor, 
-            $sRegularFont,
+            $sMonoFont,
             $arOrder["ORDER"]["ADDITIONAL_INFO"]
         );
 
         // Дата закрытия заказа        
-        $nFontSize = 32;
+        $nFontSize = 28;
         $arText = imagettftext (
             $im, 
             $nFontSize, 0 , 
             360 , 245, 
             $objColor, 
-            $sRegularFont,
+            $sMonoFont,
             "до ". $DB->FormatDate(
                 $arOrder["ORDER_PROPERTIES"]["CLOSE_DATE"]["VALUE"],
                 "YYYY-MM-DD","DD.MM.YYYY"
@@ -102,7 +105,7 @@
         $arText = imagettftext (
             $im, 
             $nFontSize, 0 , 
-            122, 420, 
+            120, 420, 
             $objColor, 
             $sBoldFont,
             mb_wordwrap(strip_tags(
@@ -120,7 +123,7 @@
         $arText = drawWrappedText (
             $im, 
             $nFontSize, 0 , 
-            122, 500, 
+            120, 500, 
             $objColor, 
             $sBoldFont,
             $arOrder["ORDER_PROPERTIES"]["PRODUCT_NAME"]["VALUE"]
@@ -132,7 +135,7 @@
         $arText = drawWrappedText (
             $im, 
             $nFontSize, 0 , 
-            122, 602, 
+            120, 602, 
             $objColor, 
             $sBoldFont,
             $arOrder["PROPERTIES"]["QUANT"]["VALUE"]
@@ -159,27 +162,27 @@
         );
 
         // Правила получения
-        $nFontSize = 16;
+        $nFontSize = 14;
         $nHeight = drawWrappedText (
             $im, 
             $nFontSize, 0 , 
             122, 960, 
             $objColor, 
             $sRegularFont,
-                $arOrder["PROPERTIES"]["RECEIVE_RULES"]["VALUE"]["TEXT"]
-                ,80
+            html2text($arOrder["PROPERTIES"]["RECEIVE_RULES"]["~VALUE"]["TEXT"])
+            ,90
         );
 
         // Правила отмены
-        $nFontSize = 16;
+        $nFontSize = 14;
         $arText = drawWrappedText (
             $im, 
             $nFontSize, 0 , 
             122, 960+$nHeight+35, 
             $objColor, 
             $sRegularFont,
-            $arOrder["PROPERTIES"]["CANCEL_RULES"]["VALUE"]["TEXT"]
-            ,80
+            html2text($arOrder["PROPERTIES"]["CANCEL_RULES"]["~VALUE"]["TEXT"])
+            ,90
         );
         $sMapFilename = $_SERVER["DOCUMENT_ROOT"]."/upload/manufacturers/"
             .$arOrder["PROPERTIES"]["MANUFACTURER_LINK"]["VALUE"]
@@ -191,7 +194,7 @@
         $arText = drawWrappedText (
             $im, 
             $nFontSize, 0 , 
-            680, 810, 
+            730, 810, 
             $objColor, 
             $sRegularFont,
             $arOrder["MANUFACT_PROPS"]["HOW_FIND"]["VALUE"],
@@ -209,7 +212,7 @@
             
             imagecopy(
                 $im, $imMap,
-                680,
+                730,
                 370, 
                 0, 0, 
                 imagesx($imMap),
@@ -239,7 +242,7 @@
             $im, 
             $nFontSize, 0 , 
             442, 1638, 
-            $objColor, 
+            $objGreenColor, 
             $sRegularFont,
             mb_wordwrap(strip_tags(
                 "support@ag.mos.ru"
@@ -353,4 +356,14 @@ function drawWrappedText (
     }
 
     return $nMax;
+}
+
+function html2text($html){
+    $html = str_replace("\n","",$html);
+    $html = preg_replace("#<p.*?>#i","\n",$html);
+    $html = preg_replace("#<br.*?>#i","\n",$html);
+    $html = preg_replace("#<li.*?>#i","\n - ",$html);
+    $html = preg_replace("#<ul.*?>#i","\n",$html);
+    $html = preg_replace("#<ol.*?>#i","\n",$html);
+    return $html;
 }
