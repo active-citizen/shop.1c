@@ -75,13 +75,16 @@ while($arOrder = $resOrders->GetNext()){
     $order = array();
     $order = $arOrder;
     $order["DATE_SHORT"] = date_parse($arOrder["DATE_INSERT"]);
-    $order["DATE_SHORT"] = mktime(
-        0,0,0,
+    $nDateTimestamp = mktime(
+        $order["DATE_SHORT"]["hour"],
+        $order["DATE_SHORT"]["minute"],
+        $order["DATE_SHORT"]["second"],
         $order["DATE_SHORT"]["month"],
         $order["DATE_SHORT"]["day"],
         $order["DATE_SHORT"]["year"]
     );
-    $order["DATE_SHORT"] = date("d.m.y",$order["DATE_SHORT"]);
+    $order["DATE_SHORT"] = date("d.m.y",$nDateTimestamp);
+    $order["DATE_MIDDLE"] = date("d.m.y H:i",$nDateTimestamp);
     
     $order["PRODUCTS"] = array();
     $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
@@ -154,7 +157,7 @@ $arResult["PAGES"] = get_pages_list(
     $arParams["RECORDS_ON_PAGE"],
     $arParams["PAGE_BLOCK_SIZE"]
 );
-    
+   
 $this->IncludeComponentTemplate();
 
 

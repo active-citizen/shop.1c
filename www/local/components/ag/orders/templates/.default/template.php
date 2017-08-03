@@ -79,7 +79,8 @@
                         $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
                         ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= ceil($arOrder["IN_WORK"]) ?> <?= get_days(ceil($arOrder["IN_WORK"]))?>)<? endif ?></div>
                         <div class="ag-shop-profile-order__number">Заказ <?= $arOrder["ADDITIONAL_INFO"]?></div>
-                        <div class="ag-shop-profile-order__date">от <?= $arOrder["DATE_SHORT"]?></div>
+                        <div class="ag-shop-profile-order__date">от <?=
+                        $arOrder["DATE_MIDDLE"]?></div>
                       </div>
                     </div>
                     <div class="grid__col-shrink">

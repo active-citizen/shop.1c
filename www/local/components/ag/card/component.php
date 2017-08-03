@@ -194,7 +194,6 @@
             }
             $arResult["TotalAmount"] += $arOffer["STORAGES"][$key];
         }
-        echo $arResult["TotalAmount"] ;
         
         $arOffer["RRICE_INFO"] = CPrice::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]))->GetNext();
         $arOfferJson["PRICE"] = str_replace(",","",$arOffer["RRICE_INFO"]["PRICE"]);
