@@ -606,7 +606,10 @@
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
                 // отправляем в любом случае
-                elseif($statusId=='N' || $statusId=='F'){
+                elseif(
+                    $statusId=='N' || $statusId=='F' 
+                    || $statusId=='AG' || $statusId=='AI'
+                ){
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array()), $statusId
                     );
@@ -636,6 +639,9 @@
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
 
                     // Увеличикаем запасы на складе 
                     /*

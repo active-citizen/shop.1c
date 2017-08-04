@@ -53,11 +53,10 @@
             $_SERVER["DOCUMENT_ROOT"]."/profile/order/cert_template.png";
 //        $sRegularFont = "ALS_Direct_Regular.ttf";
 //        $sBoldFont = "ALS_Direct_Bold.ttf";
-        $sRegularFont = 'Regular.ttf';
-        $sBoldFont = 'Bold.ttf';
-        $sMonoRegularFont = 'Mono.ttf';
-        $sMonoRegularFont = 'MonoRegular.ttf';
-        $sMonoBoldFont = 'MonoBold.ttf';
+        $sRegularFont = dirname(__FILE__).'/Regular.ttf';
+        $sBoldFont = dirname(__FILE__).'/Bold.ttf';
+        $sMonoRegularFont = dirname(__FILE__).'/MonoRegular.ttf';
+        $sMonoBoldFont = dirname(__FILE__).'/MonoBold.ttf';
 
         // ПОдключаем библиотеку QR-кодов
         require_once(
@@ -72,7 +71,7 @@
             ,0  // ПоляQR-кода в QR-пикселяях
         );
 
-        $im = imagecreatefrompng($sCertFilename);
+         $im = imagecreatefrompng($sCertFilename);
 
         // Получаем всю информацию о заказе
         $arOrder = initOrderGetInfo($nOrderId);
@@ -92,6 +91,7 @@
             $arOrder["ORDER"]["ADDITIONAL_INFO"]
         );
 
+        global $DB;
         // Дата закрытия заказа        
         $nFontSize = 28;
         $arText = imagettftext (
@@ -100,7 +100,7 @@
             360 , 245, 
             $objColor, 
             $sMonoBoldFont,
-            "до ". FormatDate(
+            "до ". $DB->FormatDate(
                 $arOrder["ORDER_PROPERTIES"]["CLOSE_DATE"]["VALUE"],
                 "YYYY-MM-DD","DD.MM.YYYY"
             )

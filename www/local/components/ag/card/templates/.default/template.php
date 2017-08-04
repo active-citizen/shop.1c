@@ -466,10 +466,12 @@
               </div>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__field ag-shop-card__field--no-gaps">
+                <? if(trim($arResult["CATALOG_ITEM"]["DETAIL_TEXT"])):?>
                   <h4>Описание:</h4>
                   <p class="ag-shop-card__description"><?= 
                     $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
                   ?></p>
+                <? endif ?>
                   <? if(
                       $arResult["CATALOG_ITEM"]["PROPERTIES"]
                         ["RECEIVE_RULES"][0]["~VALUE"]["TEXT"]

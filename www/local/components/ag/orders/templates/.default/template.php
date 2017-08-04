@@ -85,7 +85,8 @@
                     </div>
                     <div class="grid__col-shrink">
                       <div class="ag-shop-profile-order__desktop-controls">
-                        <? if($arOrder["SEND_CERT"]):?>
+                        <? if($arOrder["SEND_CERT"] &&
+                        file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
                           <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
@@ -169,7 +170,8 @@
                 </div>
                 <div class="ag-shop-profile-order__mobile-controls">
                   <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <? if($arOrder["SEND_CERT"]):?>
+                    <? if($arOrder["SEND_CERT"]  && 
+                     file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
                     <div class="grid__col-shrink">
                         <a class="ag-shop-profile-order__control" href="#" 
                         onclick="return printOrder(<?= 

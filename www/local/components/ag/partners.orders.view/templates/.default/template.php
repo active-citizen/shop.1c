@@ -128,6 +128,7 @@
                 <? endif ?>
             </td>
         </tr>
+        <? if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']=='да'):?> 
         <tr>
             <td class="field-name">
                 Сертификат
@@ -153,6 +154,7 @@
                 <iframe src="" name="cert" style="display:none;"></iframe>
             </td>
         </tr>
+        <? endif ?>
         <? if(
             isset($arResult["ORDER"]["PROPERTIES"]["TROIKA"]["VALUE"])
             &&
