@@ -132,7 +132,9 @@
             120, 500, 
             $objColor, 
             $sBoldFont,
-            $arOrder["ORDER_PROPERTIES"]["PRODUCT_NAME"]["VALUE"]
+            html_entity_decode(
+                $arOrder["ORDER_PROPERTIES"]["PRODUCT_NAME"]["VALUE"]
+            )
             ,45
         );
 

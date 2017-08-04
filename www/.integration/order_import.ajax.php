@@ -195,8 +195,7 @@
                 // Запоминаем промокоды для письма
                 if(isset($product["Промокоды"]))
                     $GLOBALS["promocodes"] = $product["Промокоды"];
-                
-
+               
                 $XML_ID = $product["Ид"];
                 $resOffer = CIblockElement::GetList(
                     array(),
@@ -605,10 +604,15 @@
                     );
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
-                // отправляем в любом случае
+                // отправляем в любом случае при обратном толчке
+                // Когла статус не меняется
                 elseif(
-                    $statusId=='N' || $statusId=='F' 
-                    || $statusId=='AG' || $statusId=='AI'
+                    $existsOrder["STATUS_ID"]==$statusId && (
+                        $statusId=='N' 
+                        || $statusId=='F' 
+                        || $statusId=='AI'
+                        || $statusId=='AG'
+                    )
                 ){
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array()), $statusId

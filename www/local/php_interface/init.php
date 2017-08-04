@@ -94,7 +94,7 @@
     AddEventHandler("sale", "OnSaleStatusEMail", "eventSaleStatusEMail");
     // Назначаем обработчик отправки письма о смене статуса заказа
     AddEventHandler(
-        "sale", "OnOrderStatusSendEmail", "eventOrderStatusSendEmail"
+        "sale", "OnOrderStatusSendEmail", "eventOrderStatusSendEmailNull"
     );
     //AddEventHandler(
     //    "sale", "OnSaleStatusOrder", "eventOrderStatusSendEmail"
@@ -362,6 +362,9 @@
     ){return false;}
     function eventOrderRecurringSendEmail($orderID, &$eventName, &$arFields)
         {return false;}
+    function eventOrderStatusSendEmailNull( $orderId, &$eventName, &$arFields, $orderStatus
+    ){return false;}
+
  
     
     /**

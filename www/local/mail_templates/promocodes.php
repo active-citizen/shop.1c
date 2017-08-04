@@ -1,4 +1,5 @@
 <?
+
     if($GLOBALS["promocodes"]){
         if(
             isset($GLOBALS["promocodes"]["ИмяПараметра1"])

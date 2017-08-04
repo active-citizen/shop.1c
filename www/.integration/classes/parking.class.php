@@ -60,6 +60,14 @@
                 
                 return false;
             }
+            elseif(!$arAnswer){
+                $this->riseError("Пустой ответ шлюза парковок");
+                return false;
+            }
+            elseif(isset($arAnswer[0]) && !trim($arAnswer[0])){
+                $this->riseError("Пустой ответ шлюза парковок");
+                return false;
+            }
         }
 
 
@@ -161,7 +169,7 @@
         ){
             global $DB;
 
-            if($nTimestamp)
+            if(!$nTimestamp)
                 $nTimestamp = time();
 
 
@@ -202,7 +210,7 @@
                     `b_sale_order` as `b`
                         ON 
                             `a`.`ORDER_PROPS_ID`=$nOrderPropsId
-                            AND `b`.`STATUS_ID`='F'
+--                            AND `b`.`STATUS_ID`='F'
                             AND `b`.`DATE_INSERT`>='$sStartDate'
                             AND `b`.`DATE_INSERT`<='$sEndDate'
                             AND `a`.`VALUE`!=''
