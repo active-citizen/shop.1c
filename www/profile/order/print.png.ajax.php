@@ -2,7 +2,11 @@
     define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
     define('BX_SECURITY_SESSION_READONLY', true);
     require_once($_SERVER["DOCUMENT_ROOT"]
-        ."/bitrix/modules/main/include/prolog_before.php");
+        ."/bitrix/modules/main/include/prolog_before.php"
+    );
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/rus.lib.php"
+    );
     global $USER;
 
 
@@ -35,30 +39,234 @@
 
     $nOrderId = intval($_REQUEST["id"]);
 
-    $sPanthomJsPath = dirname(__FILE__)."/phantomjs";
-    $sTemplateJSFile = realpath(dirname(__FILE__))."/print.js";
-    $sJSFile = $_SERVER["DOCUMENT_ROOT"]."/../"
-        ."renders/js/"
-        .$_COOKIE["PHPSESSID"]
-        ."_".$nOrderId.".js"; 
     $sPngFile = $_SERVER["DOCUMENT_ROOT"]."/../"
         ."renders/png/"
         .$nOrderId.".png"; 
 
+
     if(isset($_REQUEST["generate"])){
-        $sJs = file_get_contents($sTemplateJSFile);
-        $sJs = str_replace("{PHPSESSID}",$_COOKIE["PHPSESSID"],$sJs);
-        $sJs = str_replace("{ORDER_ID}",$nOrderId,$sJs);
-        $sJs = str_replace("{CERT_PATH}",$sPngFile,$sJs);
-        $sJs = str_replace("{PHPSESSID}",$_COOKIE["PHPSESSID"],$sJs);
+        $sQRCodeFilename = $_SERVER["DOCUMENT_ROOT"]."/../"
+            ."renders/png/qr_"
+            .$nOrderId.".png"; 
+ 
+        $sCertFilename =
+            $_SERVER["DOCUMENT_ROOT"]."/profile/order/cert_template.png";
+//        $sRegularFont = "ALS_Direct_Regular.ttf";
+//        $sBoldFont = "ALS_Direct_Bold.ttf";
+        $sRegularFont = dirname(__FILE__).'/Regular.ttf';
+        $sBoldFont = dirname(__FILE__).'/Bold.ttf';
+        $sMonoRegularFont = dirname(__FILE__).'/MonoRegular.ttf';
+        $sMonoBoldFont = dirname(__FILE__).'/MonoBold.ttf';
+
+        // ПОдключаем библиотеку QR-кодов
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"]."/local/libs/phpqrcode/qrlib.php"
+        );
+        // Определяем содержимое RQ-кода
+        $sQRText = "http://".$_SERVER["HTTP_HOST"]
+            ."/partners/orders/".$nOrderId."/";
+        // Формируем QR-код
+        QRcode::png($sQRText,$sQRCodeFilename,QR_ECLEVEL_L
+            ,6 // Размер одного пикселя QR в пискелях картинки
+            ,0  // ПоляQR-кода в QR-пикселяях
+        );
+
+         $im = imagecreatefrompng($sCertFilename);
+
+        // Получаем всю информацию о заказе
+        $arOrder = initOrderGetInfo($nOrderId);
+        // Определяем цвет основного текста
+        $objColor = imagecolorallocate ( $im , 0, 0, 0);
+        // Задаём цвет брендбуковского зелёного
+        $objGreenColor = imagecolorallocate ( $im , 0, 122, 108);
+
+        // Номер заказа
+        $nFontSize = 40;
+        $arText = imagettftext (
+            $im, 
+            $nFontSize, 0 , 
+            355 , 170, 
+            $objGreenColor, 
+            $sMonoBoldFont,
+            $arOrder["ORDER"]["ADDITIONAL_INFO"]
+        );
+
+        global $DB;
+        // Дата закрытия заказа        
+        $nFontSize = 28;
+        $arText = imagettftext (
+            $im, 
+            $nFontSize, 0 , 
+            360 , 245, 
+            $objColor, 
+            $sMonoBoldFont,
+            "до ". $DB->FormatDate(
+                $arOrder["ORDER_PROPERTIES"]["CLOSE_DATE"]["VALUE"],
+                "YYYY-MM-DD","DD.MM.YYYY"
+            )
+        );
+
+        // ФИО заказчика
+        $nFontSize = 16;
+        $arText = imagettftext (
+            $im, 
+            $nFontSize, 0 , 
+            120, 420, 
+            $objColor, 
+            $sBoldFont,
+            mb_wordwrap(strip_tags(
+            $arOrder["USER"]["LAST_NAME"]
+                ." "
+                .$arOrder["USER"]["NAME"]
+                )
+                ,45
+                ,"\n"
+            )
+        );
+        
+        // Название поощрения
+        $nFontSize = 16;
+        $arText = drawWrappedText (
+            $im, 
+            $nFontSize, 0 , 
+            120, 500, 
+            $objColor, 
+            $sBoldFont,
+            $arOrder["ORDER_PROPERTIES"]["PRODUCT_NAME"]["VALUE"]
+            ,45
+        );
+
+        // Количество
+        $nFontSize = 16;
+        $arText = drawWrappedText (
+            $im, 
+            $nFontSize, 0 , 
+            120, 602, 
+            $objColor, 
+            $sBoldFont,
+            $arOrder["PROPERTIES"]["QUANT"]["VALUE"]
+                .(
+                    $arOrder["BASKET"]["QUANTITY"]>1
+                    ?
+                    " X ".$arOrder["BASKET"]["QUANTITY"]
+                    :
+                    ""
+                )
+           ,45
+        );
+        
+        // Адрес
+        $nFontSize = 16;
+        $arText = drawWrappedText (
+            $im, 
+            $nFontSize, 0 , 
+            122, 680, 
+            $objColor, 
+            $sBoldFont,
+            $arOrder["MANUFACT_PROPS"]["ADDRESS"]["VALUE"]
+            ,45
+        );
+
+        // Правила получения
+        $nFontSize = 14;
+        $nHeight = drawWrappedText (
+            $im, 
+            $nFontSize, 0 , 
+            122, 960, 
+            $objColor, 
+            $sRegularFont,
+            html2text($arOrder["PROPERTIES"]["RECEIVE_RULES"]["~VALUE"]["TEXT"])
+            ,90
+        );
+
+        // Правила отмены
+        $nFontSize = 14;
+        $arText = drawWrappedText (
+            $im, 
+            $nFontSize, 0 , 
+            122, 960+$nHeight+35, 
+            $objColor, 
+            $sRegularFont,
+            html2text($arOrder["PROPERTIES"]["CANCEL_RULES"]["~VALUE"]["TEXT"])
+            ,90
+        );
+        $sMapFilename = $_SERVER["DOCUMENT_ROOT"]."/upload/manufacturers/"
+            .$arOrder["PROPERTIES"]["MANUFACTURER_LINK"]["VALUE"]
+            .".png"
+        ;
+
+        // Как проехать
+        $nFontSize = 16;
+        $arText = drawWrappedText (
+            $im, 
+            $nFontSize, 0 , 
+            730, 810, 
+            $objColor, 
+            $sRegularFont,
+            $arOrder["MANUFACT_PROPS"]["HOW_FIND"]["VALUE"],
+            32
+        );
+
+        $sMapFilename = $_SERVER["DOCUMENT_ROOT"]."/upload/manufacturers/"
+            .$arOrder["PROPERTIES"]["MANUFACTURER_LINK"]["VALUE"]
+            .".png"
+        ;
+
+        // Карта
+        if(file_exists($sMapFilename)){
+            $imMap = imagecreatefrompng($sMapFilename);
+            
+            imagecopy(
+                $im, $imMap,
+                730,
+                370, 
+                0, 0, 
+                imagesx($imMap),
+                imagesy($imMap)
+            );
+            
+        }
+
+        // QRCode
+        if(file_exists($sQRCodeFilename)){
+            $imQr = imagecreatefrompng($sQRCodeFilename);
+            
+            imagecopy(
+                $im, $imQr,
+                120,
+                100, 
+                0, 0, 
+                imagesx($imQr),
+                imagesy($imQr)
+            );
+            
+        }
+
+        // Служба поддержки
+        $nFontSize = 16;
+        $arText = imagettftext (
+            $im, 
+            $nFontSize, 0 , 
+            442, 1638, 
+            $objGreenColor, 
+            $sRegularFont,
+            mb_wordwrap(strip_tags(
+                "support@ag.mos.ru"
+                )
+                ,80
+                ,"\n"
+            )
+        );
+
+
+
 //        echo "<pre>";
-//        echo $sJs;
+//        print_r($arOrder["MANUFACT_PROPS"]["HOW_FIND"]["VALUE"]);
 //        die;
-        file_put_contents($sJSFile,$sJs);
-        $sJSFile = realpath($sJSFile);
-        $output=array();
-        $sys = exec("$sPanthomJsPath '$sJSFile'", $output);
-        unlink($sJSFile);
+
+
+        imagepng($im, $sPngFile);
+        imagedestroy($im);
     }
 
     $stat = stat($sPngFile);
@@ -93,7 +301,5 @@
         </html>
         <?
     }
-
-
 
 

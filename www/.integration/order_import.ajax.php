@@ -416,6 +416,7 @@
                 $arDocument["История"]["Состояние"][0]["СостояниеЗаказа"] =
                     date("Y-m-d H:i:s");
 
+
             $arDate = date_parse(
                 $arDocument["История"]["Состояние"][0]["ДатаИзменения"]
             );
@@ -448,6 +449,9 @@
                 break;
                 case 'Отменен':
                     $statusId = "AG";$canceled = "Y";
+                break;
+                case 'Отклонен':
+                    $statusId = "AF";$canceled = "Y";
                 break;
             }
            
@@ -602,7 +606,10 @@
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
                 // отправляем в любом случае
-                elseif($statusId=='N' || $statusId=='F'){
+                elseif(
+                    $statusId=='N' || $statusId=='F' 
+                    || $statusId=='AG' || $statusId=='AI'
+                ){
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array()), $statusId
                     );
@@ -632,6 +639,9 @@
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
 
                     // Увеличикаем запасы на складе 
                     /*

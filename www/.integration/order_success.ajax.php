@@ -127,6 +127,7 @@
                     }
                 
                     // Устанавливаем новое значение остатка
+                    /*
                     if(!CCatalogStoreProduct::Update(
                         $arStoreProduct["ID"],
                         $arF = array(
@@ -135,6 +136,7 @@
                         print_r($objCCatalogStoreProduct);
                         die;
                     }
+                    */
                     
                 }
             }

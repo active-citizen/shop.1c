@@ -102,3 +102,73 @@
             return $text;
     }
 
+
+function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
+    $lines = explode($break, $str);
+    foreach ($lines as &$line) {
+        $line = rtrim($line);
+        if (mb_strlen($line) <= $width)
+            continue;
+        $words = explode(' ', $line);
+        $line = '';
+        $actual = '';
+        foreach ($words as $word) {
+            if (mb_strlen($actual.$word) <= $width)
+                $actual .= $word.' ';
+            else {
+                if ($actual != '')
+                    $line .= rtrim($actual).$break;
+                $actual = $word;
+                if ($cut) {
+                    while (mb_strlen($actual) > $width) {
+                        $line .= mb_substr($actual, 0, $width).$break;
+                        $actual = mb_substr($actual, $width);
+                    }
+                }
+                $actual .= ' ';
+            }
+        }
+        $line .= trim($actual);
+    }
+    return implode($break, $lines);
+}
+
+function drawWrappedText (
+    &$im, 
+    $nFontSize, 
+    $nAngle,
+    $nX, $nY,
+    $objColor, 
+    $sFont,
+    $sText,
+    $nWidth,
+    $nLineHeight = 0.5
+){
+    $nMaxX = 0;
+    $nMaxY = 0;
+    
+    $arText = explode("\n",mb_wordwrap($sText,$nWidth,"\n"));
+    foreach($arText as $sLine){
+        $arCoords = imagettftext (
+            $im, 
+            $nFontSize, $nAngle, 
+            $nX, $nY+$nMax, 
+            $objColor, 
+            $sFont,
+            html_entity_decode($sLine)
+        );
+        $nMax += ($arCoords[1]-$arCoords[5]+$nLineHeight*$nFontSize);
+    }
+
+    return $nMax;
+}
+
+function html2text($html){
+    $html = str_replace("\n","",$html);
+    $html = preg_replace("#<p.*?>#i","\n",$html);
+    $html = preg_replace("#<br.*?>#i","\n",$html);
+    $html = preg_replace("#<li.*?>#i","\n - ",$html);
+    $html = preg_replace("#<ul.*?>#i","\n",$html);
+    $html = preg_replace("#<ol.*?>#i","\n",$html);
+    return $html;
+}

@@ -194,7 +194,6 @@
             }
             $arResult["TotalAmount"] += $arOffer["STORAGES"][$key];
         }
-        echo $arResult["TotalAmount"] ;
         
         $arOffer["RRICE_INFO"] = CPrice::GetList(array(),array("PRODUCT_ID"=>$arOffer["ID"]))->GetNext();
         $arOfferJson["PRICE"] = str_replace(",","",$arOffer["RRICE_INFO"]["PRICE"]);
@@ -231,6 +230,43 @@
             "NAV_PARAMS"=>array("nTopCount"=>1)
         )
     )->GetNext();
+
+
+    // Очистка описания товара от говна
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
+        "\n","",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+    
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "#\s+#"," ",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+  
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "#>\s+<#","><",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+     
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/style=\".*?\"/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+    
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/<div>\s+&nbsp;<\/div>/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+   
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/<p>\s+&nbsp;<\/p>/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/<br.*?>/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
+//    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
+//        "{break}","\n",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+//    );
+
 
     $this->IncludeComponentTemplate();
 //}

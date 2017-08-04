@@ -143,14 +143,53 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $arrSorting,
         $arrFilter,
         false,
-        array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
+//        array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
+        false,
         array(
             "PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE",
-            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME","WANTS"
+            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME","WANTS",
+            "PROPERTY_HIDE_IF_ABSENT"
             )
     );
-    
+
+    $counter = 0;
+    $nOunputted = 0;
     while($product = $res->GetNext()){
+        // Вычисляем остатки товара
+        $resOffers = CIBlockElement::GetList(array(),array(
+            "IBLOCK_ID"=> OFFER_IB_ID,
+            "PROPERTY_CML2_LINK"=>$product["ID"],
+            ),
+            false,false,array("ID","NAME")
+        );
+        $nTotalAmount = 0;
+        $nTotalOffers = 0;
+        while($arOffer = $resOffers->Fetch()){
+            $nTotalOffers += 1;
+            $resStoreProduct = CCatalogStoreProduct::GetList(
+                array(),
+                array(
+                    "PRODUCT_ID" => $arOffer["ID"],
+                    ">AMOUNT"=>0
+                )
+            ); 
+            while($arProductStore = $resStoreProduct->Fetch())
+                $nTotalAmount += $arProductStore["AMOUNT"];
+        }
+
+        // Если остатков нет и есть флаг "Прятать при отсутствии - пропускаем"
+        if(
+            $product["PROPERTY_HIDE_IF_ABSENT_VALUE"]=='да'
+            &&
+            !$nTotalAmount
+        )continue;
+        if(!$nTotalOffers)continue;
+        // Пришибленный механизм пагинации из за флага HIDE_IF_ABSENT
+        $counter++;
+        if($counter<=(($PAGE-1)*$ON_PAGE))continue;
+        if($counter>($PAGE*$ON_PAGE))break;
+        $nOunputted ++;
+
         // Получение всех свойств товара
         $res2 = CIBlockElement::GetProperty($arrFilter["IBLOCK_ID"],$product["ID"]);
         $product["ALL_PROPERTIES"] = array();
@@ -300,7 +339,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     
     ?>
     
-    <?if($res->SelectedRowsCount()>($PAGE*$ON_PAGE)):?>
+    <?if(
+    //    $res->SelectedRowsCount()>($PAGE*$ON_PAGE)
+    $nOunputted
+    ):?>
         <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
     <?else:?>
     <?endif?>

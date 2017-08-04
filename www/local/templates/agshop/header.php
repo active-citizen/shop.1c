@@ -20,6 +20,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/libs/slick.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/faq.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/semantic.css");
 
 
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");

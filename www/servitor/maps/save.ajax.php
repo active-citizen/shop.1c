@@ -26,7 +26,7 @@ define("ROOTDIR",$_SERVER["DOCUMENT_ROOT"]."/upload/manufacturers/");
 
 
 $url = 'https://static-maps.yandex.ru/1.x/?lang=ru-RU&ll='.$Coords
-    .'&z='.$zoom.'&l=map,skl&size=300,300&pt='.$Coords.',flag';
+    .'&z='.$zoom.'&l=map,skl&size=400,400&pt='.$Coords.',flag';
 
 require_once(realpath(dirname(__FILE__)."/../../.integration/classes/curl.class.php"));
 $curl = new curlTool;

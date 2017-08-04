@@ -37,14 +37,28 @@
         echo "Failed\nPHPSESSID incorrect";
         die;
     }
-   
-
+  
+    
     echo '<?xml version="1.0" encoding="windows-1251"?>';
     
     CModule::IncludeModule('sale');
     CModule::IncludeModule('iblock');
    
     $arOrderses = array();
+    $res = CSaleOrder::GetList(
+        array("ID"=>"ASC"),
+        array(
+            //">ID"=>783
+            //"DATE_UPDATE"=>""
+            "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AF" 
+        ), // Выводить только не отданные заказы
+        false
+//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+    );
+    while(
+        count($arOrderses)<ORDER_EXPORT_QUANT 
+        && $arOrder = $res->GetNext()
+    )$arOrderses[] = $arOrder;
     $res = CSaleOrder::GetList(
         array("ID"=>"ASC"),
         array(
@@ -197,19 +211,6 @@
             $order["Дата"]["year"]
         ));
 
-        $order["ДатаИстеченияБронирования"] = date_parse(
-            $arrOrder["DATE_INSERT"]
-        );
-        $order["ДатаИстеченияБронирования"] = date("Y-m-d",24*60*60+mktime(
-            $order["ДатаИстеченияБронирования"]["hour"],
-            $order["ДатаИстеченияБронирования"]["minute"],
-            $order["ДатаИстеченияБронирования"]["second"],
-            $order["ДатаИстеченияБронирования"]["month"],
-            $order["ДатаИстеченияБронирования"]["day"],
-            $order["ДатаИстеченияБронирования"]["year"]
-        ));
-
-        
         $order["ДатаИзменения"] = date_parse(
         //$arrOrder["DATE_UPDATE"]
         date("d.m.Y H:i:s")
@@ -244,7 +245,7 @@
             
             $resOffer = CIBlockElement::GetList(array(), 
                 array(
-                    "IBLOCK_ID"=>3,
+                    "IBLOCK_ID"=>OFFER_IB_ID,
                     "ID"=>$arProduct["PRODUCT_ID"]
                 ),false,array("nTopCount"=>1),
                 array("PROPERTY_CML2_LINK","XML_ID","NAME","ID")
@@ -280,12 +281,32 @@
             $resCatalog = CIBlockElement::GetList(array(), 
                 array(
                     "IBLOCK_ID"=>CATALOG_IB_ID,
-                    "ID"=>$arrOffer["PROPERTY_CML2_LINK_VALUE"]),
+                    "ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]),
                     false,
                     array("nTopCount"=>1),
-                    array("PROPERTY_QUANT","PROPERTY_ARTNUMBER")
+                    array(
+                        "ID",
+                        "NAME",
+                        "PROPERTY_QUANT",
+                        "PROPERTY_ARTNUMBER",
+                        "PROPERTY_DAYS_TO_EXPIRE"
+                    )
             );
             $arrCatalog = $resCatalog->GetNext();
+            if(intval($arrCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"])){
+                $tmp = date_parse($arrOrder["DATE_INSERT"]);
+                $order["ДатаИстеченияБронирования"] = date("Y-m-d H:i:s",
+                    $arrCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"]*24*60*60
+                    +mktime(
+                        $tmp["hour"],
+                        $tmp["minute"],
+                        $tmp["second"],
+                        $tmp["month"],
+                        $tmp["day"],
+                        $tmp["year"]
+                    )
+                );
+            }
             
             $product["Ид"] = $arOffer["XML_ID"];
             $product["Наименование"] = 
@@ -297,6 +318,7 @@
             $product["Артикул"] = $arrCatalog["PROPERTY_ARTNUMBER_VALUE"];
             $product["ЦенаЗаЕдиницу"] = $arPrice["PRICE"];
             $product["Продукт"] = $arOffer;
+            $product["ЭлементКаталога"] = $arrCatalog;
             $products[] = $product;
         }
 
@@ -399,9 +421,11 @@
     <Роль>Продавец</Роль>
     <Сумма><? echo $arOrder["Сумма"];?></Сумма>
     <Комментарий/>
+    <? if($order["ДатаИстеченияБронирования"]):?>
     <ДатаИстеченияБронирования><? 
         echo $arOrder["ДатаИстеченияБронирования"];
     ?></ДатаИстеченияБронирования>
+    <? endif ?>
     <ДатаИзменения><? echo $arOrder["ДатаИзменения"];?></ДатаИзменения>
     <СтатусЗаказа><? echo $arOrder["СостояниеЗаказа"];?></СтатусЗаказа>
     <ЗапросНаИзменение><? 

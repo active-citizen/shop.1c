@@ -47,7 +47,7 @@ switch($arParams["TAB"]){
         //$arFilter["STATUS_ID"] = array();
     break;
     case 'use':
-        $arFilter["STATUS_ID"] = array('N','AA','AB');
+        $arFilter["STATUS_ID"] = array('N','AA','AB','AF');
     break;
     case 'unuse':
         $arFilter["STATUS_ID"] = array('F','AI','AG','AC');
@@ -61,6 +61,8 @@ $arNavStartParams = array(
 
 $resOrders = CSaleOrder::GetList($arOrder, $arFilter, false, $arNavStartParams);
 
+// Не выводить предустановленные заказы админа. Он пугается
+if($arFilter["USER_ID"]!=1)
 while($arOrder = $resOrders->GetNext()){
     // Склад
     $arOrder["STORE_INFO"] = CCatalogStore::GetList(
@@ -75,13 +77,16 @@ while($arOrder = $resOrders->GetNext()){
     $order = array();
     $order = $arOrder;
     $order["DATE_SHORT"] = date_parse($arOrder["DATE_INSERT"]);
-    $order["DATE_SHORT"] = mktime(
-        0,0,0,
+    $nDateTimestamp = mktime(
+        $order["DATE_SHORT"]["hour"],
+        $order["DATE_SHORT"]["minute"],
+        $order["DATE_SHORT"]["second"],
         $order["DATE_SHORT"]["month"],
         $order["DATE_SHORT"]["day"],
         $order["DATE_SHORT"]["year"]
     );
-    $order["DATE_SHORT"] = date("d.m.y",$order["DATE_SHORT"]);
+    $order["DATE_SHORT"] = date("d.m.y",$nDateTimestamp);
+    $order["DATE_MIDDLE"] = date("d.m.y H:i",$nDateTimestamp);
     
     $order["PRODUCTS"] = array();
     $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
@@ -93,7 +98,12 @@ while($arOrder = $resOrders->GetNext()){
 
         $arCatalog = CIblockElement::GetList(array(),array(
             "IBLOCK_ID"=>$arParams["CATALOG_IBLOCK_ID"],"ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
-        ),false,array("nTopCount"=>1),array("PROPERTY_DAYS_TO_EXPIRE","PROPERTY_USE_BEFORE_DATE"))->GetNext();
+        ),false,array("nTopCount"=>1),array(
+            "PROPERTY_DAYS_TO_EXPIRE",
+            "PROPERTY_USE_BEFORE_DATE",
+            "PROPERTY_SEND_CERT"
+        ))->GetNext();
+        
 
         // Картинка продукта
         /////////////////
@@ -117,6 +127,7 @@ while($arOrder = $resOrders->GetNext()){
         
         $order["PRODUCTS"][] = $arProduct;
     }
+    $order["SEND_CERT"] = $arCatalog["PROPERTY_SEND_CERT_VALUE"];
     $order["EXPIRES"] = $arCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"];
     $order["USE_BEFORE"] = $arCatalog["PROPERTY_USE_BEFORE_DATE"];
     
@@ -154,7 +165,7 @@ $arResult["PAGES"] = get_pages_list(
     $arParams["RECORDS_ON_PAGE"],
     $arParams["PAGE_BLOCK_SIZE"]
 );
-    
+   
 $this->IncludeComponentTemplate();
 
 
