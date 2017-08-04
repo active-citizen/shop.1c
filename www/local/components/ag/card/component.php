@@ -259,6 +259,10 @@
         "/<p>\s+&nbsp;<\/p>/i", "",
         $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
     );
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
+        "/<br.*?>/i", "",
+        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
+    );
 //    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
 //        "{break}","\n",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
 //    );
