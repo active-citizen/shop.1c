@@ -76,6 +76,13 @@ tests/stress/results/*.log.html
 tests/stress/libs/conf.pm
 
 # Игнорировать прочее
+#
+
+www/local/.migrations/migs/data/partners.csv
+www/local/assets/libs/images/
+
+
+
 *.swp
 *.swo
 *.zip
