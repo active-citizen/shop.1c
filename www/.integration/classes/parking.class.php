@@ -210,7 +210,7 @@
                     `b_sale_order` as `b`
                         ON 
                             `a`.`ORDER_PROPS_ID`=$nOrderPropsId
---                            AND `b`.`STATUS_ID`='F'
+                            AND `b`.`STATUS_ID`='F'
                             AND `b`.`DATE_INSERT`>='$sStartDate'
                             AND `b`.`DATE_INSERT`<='$sEndDate'
                             AND `a`.`VALUE`!=''
