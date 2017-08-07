@@ -5,6 +5,10 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
 <div class="partners-main">
     <h1>Настройки</h1>
     <? include("../menu.php"); ?>
+    <form method="post" style="text-align: center;" action="#bindings">
+        <input type="submit" class="btn btn-primary" value="Очистить кэш плиток"
+        name="CLEAR_CUSTOM_CACHE">
+    </form>
     <h2>Тройка</h2>
     <?$APPLICATION->IncludeComponent("ag:settings","",array(
         "CODE"  =>  "TROYKA",
@@ -45,7 +49,14 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
         
     ?>
     </pre>
+    <? elseif($_REQUEST["CLEAR_CUSTOM_CACHE"]):?>
+    <? 
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php"); 
+        customCacheClear();
+    ?>
+    <pre>Кэш плитки очищен</pre>
     <? endif ?>
+
     <h2>Парковки</h2>
     <?$APPLICATION->IncludeComponent("ag:settings","",array(
         "CODE"  =>  "PARKING",
