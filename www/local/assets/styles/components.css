@@ -55,13 +55,13 @@
   min-height: 28px;
 }
 .ag-shop-nav__link-icon--basket {
-  background-position: 0 -376px;
+  background-position: 0 -320px;
 }
 .ag-shop-nav__link:hover .ag-shop-nav__link-icon--basket {
   background-position: 0 -348px;
 }
 .ag-shop-nav__link--active .ag-shop-nav__link-icon--basket {
-  background-position: 0 -320px !important;
+/*ckground-position: 0 -320px !important;*/
 }
 .ag-shop-nav__link-icon--profile {
   background-position: 0 -636px;
