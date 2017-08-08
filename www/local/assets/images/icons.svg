@@ -4,55 +4,54 @@
     <title>icons_new_superhero</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <path d="M1.0809,1.916 C0.7573,0.858 1.3807,0 2.4869,0 L18.5139,0 C19.6139,0 20.2419,0.863 19.9199,1.916 L17.7279,9.084 C17.4049,10.142 16.2499,11 15.1389,11 L5.8614,11 C4.7551,11 3.5943,10.137 3.2724,9.084 L1.0808,1.916 L1.0809,1.916 Z" id="path-1"></path>
+        <rect id="path-1" x="0" y="0" width="16" height="12" rx="2"></rect>
         <rect id="path-3" x="0" y="0" width="16" height="12" rx="2"></rect>
-        <rect id="path-5" x="0" y="0" width="16" height="12" rx="2"></rect>
-        <rect id="path-7" x="0" y="0" width="10" height="7"></rect>
-        <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="path-9"></path>
-        <rect id="path-11" x="0" y="0" width="10" height="7"></rect>
-        <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="path-13"></path>
+        <rect id="path-5" x="0" y="0" width="10" height="7"></rect>
+        <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="path-7"></path>
+        <rect id="path-9" x="0" y="0" width="10" height="7"></rect>
+        <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="path-11"></path>
+        <rect id="path-13" x="0" y="0" width="10" height="7"></rect>
         <rect id="path-15" x="0" y="0" width="10" height="7"></rect>
-        <rect id="path-17" x="0" y="0" width="10" height="7"></rect>
+        <rect id="path-17" x="0" y="0" width="20" height="20"></rect>
         <rect id="path-19" x="0" y="0" width="20" height="20"></rect>
-        <rect id="path-21" x="0" y="0" width="20" height="20"></rect>
-        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-23"></path>
-        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-25"></path>
-        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-27"></path>
-        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-29"></path>
-        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-31"></path>
-        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-33"></path>
+        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-21"></path>
+        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-23"></path>
+        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-25"></path>
+        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-27"></path>
+        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-29"></path>
+        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-31"></path>
+        <rect id="path-33" x="0" y="0" width="22" height="20"></rect>
         <rect id="path-35" x="0" y="0" width="22" height="20"></rect>
-        <rect id="path-37" x="0" y="0" width="22" height="20"></rect>
-        <rect id="path-39" x="0.2857" y="0.1405" width="4.5714" height="16.612"></rect>
-        <linearGradient x1="-67.2676613%" y1="-6.00725092%" x2="146.794666%" y2="74.8716057%" id="linearGradient-41">
+        <rect id="path-37" x="0.2857" y="0.1405" width="4.5714" height="16.612"></rect>
+        <linearGradient x1="-67.2676613%" y1="-6.00725092%" x2="146.794666%" y2="74.8716057%" id="linearGradient-39">
             <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
             <stop stop-color="#126B62" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-40">
+            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="-53.3157872%" y1="7.70445757%" x2="123.502755%" y2="92.0917175%" id="linearGradient-41">
+            <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#074B44" offset="100%"></stop>
         </linearGradient>
         <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-42">
             <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <linearGradient x1="-53.3157872%" y1="7.70445757%" x2="123.502755%" y2="92.0917175%" id="linearGradient-43">
+        <rect id="path-43" x="0" y="0" width="28" height="40"></rect>
+        <linearGradient x1="20.9896462%" y1="-6.39583198%" x2="119.272646%" y2="91.5816872%" id="linearGradient-45">
             <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
             <stop stop-color="#074B44" offset="100%"></stop>
         </linearGradient>
-        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-44">
+        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-46">
             <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <rect id="path-45" x="0" y="0" width="28" height="40"></rect>
-        <linearGradient x1="20.9896462%" y1="-6.39583198%" x2="119.272646%" y2="91.5816872%" id="linearGradient-47">
-            <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
-            <stop stop-color="#074B44" offset="100%"></stop>
-        </linearGradient>
-        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-48">
-            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
-        </filter>
-        <rect id="path-49" x="0" y="0" width="28" height="40"></rect>
+        <rect id="path-47" x="0" y="0" width="28" height="40"></rect>
+        <rect id="path-49" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
         <rect id="path-51" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
         <rect id="path-53" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
         <rect id="path-55" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
-        <rect id="path-57" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
-        <rect id="path-59" x="0" y="0" width="45" height="45" rx="22.5"></rect>
-        <rect id="path-61" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-57" x="0" y="0" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-59" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="icons_new_superhero">
@@ -140,29 +139,8 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__basket--active" transform="translate(3.000000, 326.000000)">
-                <g id="icon__basket--active-Symbols">
-                    <g id="icon__basket--active-ic_basket_pressed">
-                        <g id="icon__basket--active-Rectangle-2" transform="translate(0.000000, 5.000000)">
-                            <g id="icon__basket--active-path-1-Clipped">
-                                <g>
-                                    <mask id="mask-2" fill="white">
-                                        <use xlink:href="#path-1"></use>
-                                    </mask>
-                                    <g id="path-1"></g>
-                                    <path d="M1.0809,1.916 C0.7573,0.858 1.3807,0 2.4869,0 L18.5139,0 C19.6139,0 20.2419,0.863 19.9199,1.916 L17.7279,9.084 C17.4049,10.142 16.2499,11 15.1389,11 L5.8614,11 C4.7551,11 3.5943,10.137 3.2724,9.084 L1.0808,1.916 L1.0809,1.916 Z" id="icon__basket--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-2)"></path>
-                                </g>
-                            </g>
-                        </g>
-                        <g id="Group" transform="translate(5.000000, 0.000000)" fill-rule="nonzero" fill="#FFFFFF">
-                            <rect id="icon__basket--active-Rectangle-3" x="1" y="8" width="1" height="5" rx="0.5"></rect>
-                            <rect id="icon__basket--active-Rectangle-3-Copy" x="5" y="8" width="1" height="5" rx="0.5"></rect>
-                            <rect id="icon__basket--active-Rectangle-3-Copy-3" transform="translate(1.933000, 2.848100) rotate(30.000000) translate(-1.933000, -2.848100) " x="1.433" y="-0.1519" width="1" height="6" rx="0.5"></rect>
-                            <rect id="icon__basket--active-Rectangle-3-Copy-4" transform="translate(8.933000, 2.848100) scale(-1, 1) rotate(30.000000) translate(-8.933000, -2.848100) " x="8.433" y="-0.1519" width="1" height="6" rx="0.5"></rect>
-                            <rect id="icon__basket--active-Rectangle-3-Copy-2" x="9" y="8" width="1" height="5" rx="0.5"></rect>
-                        </g>
-                    </g>
-                </g>
+            <g id="icon__superhero--active" transform="translate(3.000000, 329.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3"></path>
             </g>
             <g id="icon__superhero--hover" transform="translate(3.000000, 357.000000)" fill-rule="nonzero" fill="#007A6B">
                 <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3"></path>
@@ -221,11 +199,11 @@
                             <g id="icon__mail--active-Rectangle-19">
                                 <g id="icon__mail--active-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-4" fill="white">
-                                            <use xlink:href="#path-3"></use>
+                                        <mask id="mask-2" fill="white">
+                                            <use xlink:href="#path-1"></use>
                                         </mask>
                                         <g id="path-3"></g>
-                                        <rect id="icon__mail--active-path-1" stroke="#007A6C" stroke-width="2" fill="#007A6C" fill-rule="nonzero" mask="url(#mask-4)" x="0" y="0" width="16" height="12" rx="2"></rect>
+                                        <rect id="icon__mail--active-path-1" stroke="#007A6C" stroke-width="2" fill="#007A6C" fill-rule="nonzero" mask="url(#mask-2)" x="0" y="0" width="16" height="12" rx="2"></rect>
                                     </g>
                                 </g>
                             </g>
@@ -241,11 +219,11 @@
                             <g id="icon__mail-Rectangle-19">
                                 <g id="icon__mail-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-6" fill="white">
-                                            <use xlink:href="#path-5"></use>
+                                        <mask id="mask-4" fill="white">
+                                            <use xlink:href="#path-3"></use>
                                         </mask>
                                         <g id="path-5"></g>
-                                        <rect id="icon__mail-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-6)" x="0" y="0" width="16" height="12" rx="2"></rect>
+                                        <rect id="icon__mail-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-4)" x="0" y="0" width="16" height="12" rx="2"></rect>
                                     </g>
                                 </g>
                             </g>
@@ -262,33 +240,33 @@
                                 <g id="icon__print--active-Rectangle-8" transform="translate(3.000000, 0.000000)">
                                     <g id="icon__print--active-path-1-Clipped">
                                         <g>
-                                            <mask id="mask-8" fill="white">
-                                                <use xlink:href="#path-7"></use>
+                                            <mask id="mask-6" fill="white">
+                                                <use xlink:href="#path-5"></use>
                                             </mask>
                                             <g id="path-7"></g>
-                                            <rect id="icon__print--active-path-1" stroke="#263146" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-8)" x="0" y="0" width="10" height="7"></rect>
+                                            <rect id="icon__print--active-path-1" stroke="#263146" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-6)" x="0" y="0" width="10" height="7"></rect>
                                         </g>
                                     </g>
                                 </g>
                                 <g id="icon__print--active-Rectangle-7" transform="translate(0.000000, 6.000000)">
                                     <g id="icon__print--active-path-3-Clipped">
                                         <g>
-                                            <mask id="mask-10" fill="white">
-                                                <use xlink:href="#path-9"></use>
+                                            <mask id="mask-8" fill="white">
+                                                <use xlink:href="#path-7"></use>
                                             </mask>
                                             <g id="path-9"></g>
-                                            <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="icon__print--active-path-3" stroke="#007A6C" fill="#007A6C" fill-rule="nonzero" mask="url(#mask-10)"></path>
+                                            <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="icon__print--active-path-3" stroke="#007A6C" fill="#007A6C" fill-rule="nonzero" mask="url(#mask-8)"></path>
                                         </g>
                                     </g>
                                 </g>
                                 <g id="icon__print--active-Rectangle-8-Copy" transform="translate(3.000000, 10.000000)">
                                     <g id="icon__print--active-path-5-Clipped">
                                         <g>
-                                            <mask id="mask-12" fill="white">
-                                                <use xlink:href="#path-11"></use>
+                                            <mask id="mask-10" fill="white">
+                                                <use xlink:href="#path-9"></use>
                                             </mask>
                                             <g id="path-11"></g>
-                                            <rect id="icon__print--active-path-5" stroke="#007A6C" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-12)" x="0" y="0" width="10" height="7"></rect>
+                                            <rect id="icon__print--active-path-5" stroke="#007A6C" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-10)" x="0" y="0" width="10" height="7"></rect>
                                         </g>
                                     </g>
                                 </g>
@@ -307,33 +285,33 @@
                                 <g id="icon__print-Rectangle-7" transform="translate(0.000000, 6.000000)">
                                     <g id="icon__print-path-1-Clipped">
                                         <g>
-                                            <mask id="mask-14" fill="white">
-                                                <use xlink:href="#path-13"></use>
+                                            <mask id="mask-12" fill="white">
+                                                <use xlink:href="#path-11"></use>
                                             </mask>
                                             <g id="path-13"></g>
-                                            <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="icon__print-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-14)"></path>
+                                            <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="icon__print-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-12)"></path>
                                         </g>
                                     </g>
                                 </g>
                                 <g id="icon__print-Rectangle-8" transform="translate(3.000000, 0.000000)">
                                     <g id="icon__print-path-3-Clipped">
                                         <g>
-                                            <mask id="mask-16" fill="white">
-                                                <use xlink:href="#path-15"></use>
+                                            <mask id="mask-14" fill="white">
+                                                <use xlink:href="#path-13"></use>
                                             </mask>
                                             <g id="path-15"></g>
-                                            <rect id="icon__print-path-3" stroke="#263146" stroke-width="2" mask="url(#mask-16)" x="0" y="0" width="10" height="7"></rect>
+                                            <rect id="icon__print-path-3" stroke="#263146" stroke-width="2" mask="url(#mask-14)" x="0" y="0" width="10" height="7"></rect>
                                         </g>
                                     </g>
                                 </g>
                                 <g id="icon__print-Rectangle-8-Copy" transform="translate(3.000000, 10.000000)">
                                     <g id="icon__print-path-5-Clipped">
                                         <g>
-                                            <mask id="mask-18" fill="white">
-                                                <use xlink:href="#path-17"></use>
+                                            <mask id="mask-16" fill="white">
+                                                <use xlink:href="#path-15"></use>
                                             </mask>
                                             <g id="path-17"></g>
-                                            <rect id="icon__print-path-5" stroke="#263146" stroke-width="2" mask="url(#mask-18)" x="0" y="0" width="10" height="7"></rect>
+                                            <rect id="icon__print-path-5" stroke="#263146" stroke-width="2" mask="url(#mask-16)" x="0" y="0" width="10" height="7"></rect>
                                         </g>
                                     </g>
                                 </g>
@@ -387,11 +365,11 @@
                             <g id="icon__radiobtn--active-path-1-link">
                                 <g id="icon__radiobtn--active-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-20" fill="white">
-                                            <use xlink:href="#path-19"></use>
+                                        <mask id="mask-18" fill="white">
+                                            <use xlink:href="#path-17"></use>
                                         </mask>
                                         <g id="path-19"></g>
-                                        <circle id="icon__radiobtn--active-path-1" stroke="#263146" stroke-width="4" mask="url(#mask-20)" cx="10" cy="10" r="8"></circle>
+                                        <circle id="icon__radiobtn--active-path-1" stroke="#263146" stroke-width="4" mask="url(#mask-18)" cx="10" cy="10" r="8"></circle>
                                     </g>
                                 </g>
                             </g>
@@ -409,11 +387,11 @@
                             <g id="icon__radiobtn-path-1-link">
                                 <g id="icon__radiobtn-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-22" fill="white">
-                                            <use xlink:href="#path-21"></use>
+                                        <mask id="mask-20" fill="white">
+                                            <use xlink:href="#path-19"></use>
                                         </mask>
                                         <g id="path-23"></g>
-                                        <circle id="icon__radiobtn-path-1" stroke="#ECECEC" stroke-width="4" mask="url(#mask-22)" cx="10" cy="10" r="8"></circle>
+                                        <circle id="icon__radiobtn-path-1" stroke="#ECECEC" stroke-width="4" mask="url(#mask-20)" cx="10" cy="10" r="8"></circle>
                                     </g>
                                 </g>
                             </g>
@@ -428,11 +406,11 @@
                             <g id="icon__rules--active-Rectangle" transform="translate(0.000000, 2.000000)">
                                 <g id="icon__rules--active-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-24" fill="white">
-                                            <use xlink:href="#path-23"></use>
+                                        <mask id="mask-22" fill="white">
+                                            <use xlink:href="#path-21"></use>
                                         </mask>
                                         <g id="path-27"></g>
-                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-24)"></path>
+                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-22)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -441,11 +419,11 @@
                             <g id="icon__rules--active-Combined-Shape" transform="translate(3.000000, 0.000000)">
                                 <g id="icon__rules--active-path-3-Clipped">
                                     <g>
-                                        <mask id="mask-26" fill="white">
-                                            <use xlink:href="#path-25"></use>
+                                        <mask id="mask-24" fill="white">
+                                            <use xlink:href="#path-23"></use>
                                         </mask>
                                         <g id="path-29"></g>
-                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules--active-path-3" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-26)"></path>
+                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules--active-path-3" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-24)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -460,11 +438,11 @@
                             <g id="icon__rules--hover-Rectangle" transform="translate(0.000000, 2.000000)">
                                 <g id="icon__rules--hover-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-28" fill="white">
-                                            <use xlink:href="#path-27"></use>
+                                        <mask id="mask-26" fill="white">
+                                            <use xlink:href="#path-25"></use>
                                         </mask>
                                         <g id="path-31"></g>
-                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules--hover-path-1" stroke="#007A6C" stroke-width="2" mask="url(#mask-28)"></path>
+                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules--hover-path-1" stroke="#007A6C" stroke-width="2" mask="url(#mask-26)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -473,11 +451,11 @@
                             <g id="icon__rules--hover-Combined-Shape" transform="translate(3.000000, 0.000000)">
                                 <g id="icon__rules--hover-path-3-Clipped">
                                     <g>
-                                        <mask id="mask-30" fill="white">
-                                            <use xlink:href="#path-29"></use>
+                                        <mask id="mask-28" fill="white">
+                                            <use xlink:href="#path-27"></use>
                                         </mask>
                                         <g id="path-33"></g>
-                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules--hover-path-3" stroke="#007A6C" stroke-width="2" mask="url(#mask-30)"></path>
+                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules--hover-path-3" stroke="#007A6C" stroke-width="2" mask="url(#mask-28)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -492,11 +470,11 @@
                             <g id="icon__rules-Rectangle" transform="translate(0.000000, 2.000000)">
                                 <g id="icon__rules-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-32" fill="white">
-                                            <use xlink:href="#path-31"></use>
+                                        <mask id="mask-30" fill="white">
+                                            <use xlink:href="#path-29"></use>
                                         </mask>
                                         <g id="path-35"></g>
-                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-32)"></path>
+                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-30)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -505,11 +483,11 @@
                             <g id="icon__rules-Combined-Shape" transform="translate(3.000000, 0.000000)">
                                 <g id="icon__rules-path-3-Clipped">
                                     <g>
-                                        <mask id="mask-34" fill="white">
-                                            <use xlink:href="#path-33"></use>
+                                        <mask id="mask-32" fill="white">
+                                            <use xlink:href="#path-31"></use>
                                         </mask>
                                         <g id="path-37"></g>
-                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules-path-3" stroke="#263146" stroke-width="2" mask="url(#mask-34)"></path>
+                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules-path-3" stroke="#263146" stroke-width="2" mask="url(#mask-32)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -527,11 +505,11 @@
                             <g id="icon__star--active-path-1-link">
                                 <g id="icon__star--active-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-36" fill="white">
-                                            <use xlink:href="#path-35"></use>
+                                        <mask id="mask-34" fill="white">
+                                            <use xlink:href="#path-33"></use>
                                         </mask>
                                         <g id="path-39"></g>
-                                        <path d="M12.791,17.188 C11.802,16.698 10.199,16.697 9.2091,17.188 L6.042,18.759 C5.053,19.249 4.4118,18.763 4.6102,17.672 L5.181,14.534 C5.3793,13.443 4.8815,11.954 4.0626,11.201 L1.5578,8.8989 C0.74176,8.1488 0.97543,7.4181 2.0627,7.2691 L5.6431,6.7785 C6.738,6.6284 8.0393,5.7162 8.5565,4.7278 L10.069,1.838 C10.583,0.85549 11.414,0.84965 11.931,1.838 L13.443,4.7278 C13.957,5.7103 15.269,6.6295 16.357,6.7785 L19.937,7.2691 C21.032,7.4191 21.261,8.1461 20.442,8.8989 L17.937,11.201 C17.121,11.952 16.62,13.443 16.819,14.534 L17.39,17.672 C17.588,18.763 16.948,19.249 15.958,18.759 L12.791,17.188 Z" id="icon__star--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-36)"></path>
+                                        <path d="M12.791,17.188 C11.802,16.698 10.199,16.697 9.2091,17.188 L6.042,18.759 C5.053,19.249 4.4118,18.763 4.6102,17.672 L5.181,14.534 C5.3793,13.443 4.8815,11.954 4.0626,11.201 L1.5578,8.8989 C0.74176,8.1488 0.97543,7.4181 2.0627,7.2691 L5.6431,6.7785 C6.738,6.6284 8.0393,5.7162 8.5565,4.7278 L10.069,1.838 C10.583,0.85549 11.414,0.84965 11.931,1.838 L13.443,4.7278 C13.957,5.7103 15.269,6.6295 16.357,6.7785 L19.937,7.2691 C21.032,7.4191 21.261,8.1461 20.442,8.8989 L17.937,11.201 C17.121,11.952 16.62,13.443 16.819,14.534 L17.39,17.672 C17.588,18.763 16.948,19.249 15.958,18.759 L12.791,17.188 Z" id="icon__star--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-34)"></path>
                                     </g>
                                 </g>
                             </g>
@@ -548,11 +526,11 @@
                         <g id="icon__star-path-1-link">
                             <g id="icon__star-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-38" fill="white">
-                                        <use xlink:href="#path-37"></use>
+                                    <mask id="mask-36" fill="white">
+                                        <use xlink:href="#path-35"></use>
                                     </mask>
                                     <g id="path-43"></g>
-                                    <path d="M12.791,17.188 C11.802,16.698 10.199,16.697 9.2091,17.188 L6.042,18.759 C5.053,19.249 4.4118,18.763 4.6102,17.672 L5.181,14.534 C5.3793,13.443 4.8815,11.954 4.0626,11.201 L1.5578,8.8989 C0.74176,8.1488 0.97543,7.4181 2.0627,7.2691 L5.6431,6.7785 C6.738,6.6284 8.0393,5.7162 8.5565,4.7278 L10.069,1.838 C10.583,0.85549 11.414,0.84965 11.931,1.838 L13.443,4.7278 C13.957,5.7103 15.269,6.6295 16.357,6.7785 L19.937,7.2691 C21.032,7.4191 21.261,8.1461 20.442,8.8989 L17.937,11.201 C17.121,11.952 16.62,13.443 16.819,14.534 L17.39,17.672 C17.588,18.763 16.948,19.249 15.958,18.759 L12.791,17.188 Z" id="icon__star-path-1" stroke="#007A6C" stroke-width="2" mask="url(#mask-38)"></path>
+                                    <path d="M12.791,17.188 C11.802,16.698 10.199,16.697 9.2091,17.188 L6.042,18.759 C5.053,19.249 4.4118,18.763 4.6102,17.672 L5.181,14.534 C5.3793,13.443 4.8815,11.954 4.0626,11.201 L1.5578,8.8989 C0.74176,8.1488 0.97543,7.4181 2.0627,7.2691 L5.6431,6.7785 C6.738,6.6284 8.0393,5.7162 8.5565,4.7278 L10.069,1.838 C10.583,0.85549 11.414,0.84965 11.931,1.838 L13.443,4.7278 C13.957,5.7103 15.269,6.6295 16.357,6.7785 L19.937,7.2691 C21.032,7.4191 21.261,8.1461 20.442,8.8989 L17.937,11.201 C17.121,11.952 16.62,13.443 16.819,14.534 L17.39,17.672 C17.588,18.763 16.948,19.249 15.958,18.759 L12.791,17.188 Z" id="icon__star-path-1" stroke="#007A6C" stroke-width="2" mask="url(#mask-36)"></path>
                                 </g>
                             </g>
                         </g>
@@ -583,11 +561,11 @@
                             <g id="icon__write-Rectangle-2220" transform="translate(11.482894, 8.434096) rotate(45.000000) translate(-11.482894, -8.434096) translate(8.982894, -0.065904)">
                                 <g id="icon__write-path-1-Clipped">
                                     <g>
-                                        <mask id="mask-40" fill="white">
-                                            <use xlink:href="#path-39"></use>
+                                        <mask id="mask-38" fill="white">
+                                            <use xlink:href="#path-37"></use>
                                         </mask>
                                         <g id="path-47"></g>
-                                        <polygon id="icon__write-path-1" stroke="#297EEB" stroke-width="2" mask="url(#mask-40)" points="1.286 1.14048 3.857 1.14048 3.857 13.832 2.571 15.752 1.286 13.832"></polygon>
+                                        <polygon id="icon__write-path-1" stroke="#297EEB" stroke-width="2" mask="url(#mask-38)" points="1.286 1.14048 3.857 1.14048 3.857 13.832 2.571 15.752 1.286 13.832"></polygon>
                                     </g>
                                 </g>
                             </g>
@@ -599,8 +577,8 @@
                 <g id="map__point--active-Symbols">
                     <g id="map__point--active-poi_1">
                         <g id="Group">
-                            <path d="M26.236,47.148 C25.745,47.148 23.736,34.821 23.736,29.955 C23.736,25.091 24.855,21.148 26.236,21.148 C27.616,21.148 28.736,25.091 28.736,29.955 C28.736,34.821 26.726,47.148 26.236,47.148 L26.236,47.148 Z" id="map__point--active-Combined-Shape" fill="url(#linearGradient-41)" fill-rule="nonzero" filter="url(#filter-42)" transform="translate(26.236000, 34.148000) rotate(78.000000) translate(-26.236000, -34.148000) "></path>
-                            <path d="M25.236,47.148 C24.745,47.148 22.736,34.821 22.736,29.955 C22.736,25.091 23.855,21.148 25.236,21.148 C26.616,21.148 27.736,25.091 27.736,29.955 C27.736,34.821 25.726,47.148 25.236,47.148 L25.236,47.148 Z" id="map__point--active-Combined-Shape" fill="url(#linearGradient-43)" fill-rule="nonzero" filter="url(#filter-44)" transform="translate(25.236000, 34.148000) rotate(78.000000) translate(-25.236000, -34.148000) "></path>
+                            <path d="M26.236,47.148 C25.745,47.148 23.736,34.821 23.736,29.955 C23.736,25.091 24.855,21.148 26.236,21.148 C27.616,21.148 28.736,25.091 28.736,29.955 C28.736,34.821 26.726,47.148 26.236,47.148 L26.236,47.148 Z" id="map__point--active-Combined-Shape" fill="url(#linearGradient-39)" fill-rule="nonzero" filter="url(#filter-40)" transform="translate(26.236000, 34.148000) rotate(78.000000) translate(-26.236000, -34.148000) "></path>
+                            <path d="M25.236,47.148 C24.745,47.148 22.736,34.821 22.736,29.955 C22.736,25.091 23.855,21.148 25.236,21.148 C26.616,21.148 27.736,25.091 27.736,29.955 C27.736,34.821 25.726,47.148 25.236,47.148 L25.236,47.148 Z" id="map__point--active-Combined-Shape" fill="url(#linearGradient-41)" fill-rule="nonzero" filter="url(#filter-42)" transform="translate(25.236000, 34.148000) rotate(78.000000) translate(-25.236000, -34.148000) "></path>
                             <g id="map__point--active-Combined-Shape">
                                 <g id="map__point--active-path-5-link" transform="translate(3.000000, 3.000000)" fill-rule="nonzero" fill="#007A6C">
                                     <path d="M11,34 C8.8428,34 0,17.879 0,11.516 C0,5.1562 4.9236,-1.77635684e-15 11,-1.77635684e-15 C17.075,-1.77635684e-15 22,5.1562 22,11.516 C22,17.879 13.157,34 11,34 Z" id="map__point--active-path-5"></path>
@@ -608,11 +586,11 @@
                                 <g id="map__point--active-path-5-link">
                                     <g id="map__point--active-path-5-Clipped">
                                         <g>
-                                            <mask id="mask-46" fill="white">
-                                                <use xlink:href="#path-45"></use>
+                                            <mask id="mask-44" fill="white">
+                                                <use xlink:href="#path-43"></use>
                                             </mask>
                                             <g id="path-53"></g>
-                                            <path d="M14,37 C11.8428,37 3,20.879 3,14.516 C3,8.1562 7.9236,3 14,3 C20.075,3 25,8.1562 25,14.516 C25,20.879 16.157,37 14,37 Z" id="map__point--active-path-5" stroke="#007A6C" stroke-width="6" mask="url(#mask-46)"></path>
+                                            <path d="M14,37 C11.8428,37 3,20.879 3,14.516 C3,8.1562 7.9236,3 14,3 C20.075,3 25,8.1562 25,14.516 C25,20.879 16.157,37 14,37 Z" id="map__point--active-path-5" stroke="#007A6C" stroke-width="6" mask="url(#mask-44)"></path>
                                         </g>
                                     </g>
                                 </g>
@@ -626,7 +604,7 @@
                 <g id="map__point-Symbols">
                     <g id="map__point-poi_0">
                         <g id="Group">
-                            <path d="M25.236,47.148 C24.745,47.148 22.736,34.821 22.736,29.955 C22.736,25.091 23.855,21.148 25.236,21.148 C26.616,21.148 27.736,25.091 27.736,29.955 C27.736,34.821 25.726,47.148 25.236,47.148 L25.236,47.148 Z" id="map__point-Combined-Shape" fill="url(#linearGradient-47)" fill-rule="nonzero" filter="url(#filter-48)" transform="translate(25.236000, 34.148000) rotate(78.000000) translate(-25.236000, -34.148000) "></path>
+                            <path d="M25.236,47.148 C24.745,47.148 22.736,34.821 22.736,29.955 C22.736,25.091 23.855,21.148 25.236,21.148 C26.616,21.148 27.736,25.091 27.736,29.955 C27.736,34.821 25.726,47.148 25.236,47.148 L25.236,47.148 Z" id="map__point-Combined-Shape" fill="url(#linearGradient-45)" fill-rule="nonzero" filter="url(#filter-46)" transform="translate(25.236000, 34.148000) rotate(78.000000) translate(-25.236000, -34.148000) "></path>
                             <g id="map__point-Combined-Shape">
                                 <g id="map__point-path-3-link" transform="translate(3.000000, 3.000000)" fill-rule="nonzero" fill="#FFFFFF">
                                     <path d="M11,34 C8.8428,34 0,17.879 0,11.516 C0,5.1562 4.9236,-1.77635684e-15 11,-1.77635684e-15 C17.075,-1.77635684e-15 22,5.1562 22,11.516 C22,17.879 13.157,34 11,34 Z" id="map__point-path-3"></path>
@@ -634,11 +612,11 @@
                                 <g id="map__point-path-3-link">
                                     <g id="map__point-path-3-Clipped">
                                         <g>
-                                            <mask id="mask-50" fill="white">
-                                                <use xlink:href="#path-49"></use>
+                                            <mask id="mask-48" fill="white">
+                                                <use xlink:href="#path-47"></use>
                                             </mask>
                                             <g id="path-57"></g>
-                                            <path d="M14,37 C11.8428,37 3,20.879 3,14.516 C3,8.1562 7.9236,3 14,3 C20.075,3 25,8.1562 25,14.516 C25,20.879 16.157,37 14,37 Z" id="map__point-path-3" stroke="#007A6C" stroke-width="6" mask="url(#mask-50)"></path>
+                                            <path d="M14,37 C11.8428,37 3,20.879 3,14.516 C3,8.1562 7.9236,3 14,3 C20.075,3 25,8.1562 25,14.516 C25,20.879 16.157,37 14,37 Z" id="map__point-path-3" stroke="#007A6C" stroke-width="6" mask="url(#mask-48)"></path>
                                         </g>
                                     </g>
                                 </g>
@@ -698,11 +676,11 @@
                         <g id="social__fb-Rectangle-7-Copy">
                             <g id="social__fb-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-52" fill="white">
-                                        <use xlink:href="#path-51"></use>
+                                    <mask id="mask-50" fill="white">
+                                        <use xlink:href="#path-49"></use>
                                     </mask>
                                     <g id="path-61"></g>
-                                    <rect id="social__fb-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-52)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                    <rect id="social__fb-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-50)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
                                 </g>
                             </g>
                         </g>
@@ -724,11 +702,11 @@
                         <g id="social__inst-Rectangle-7-Copy">
                             <g id="social__inst-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-54" fill="white">
-                                        <use xlink:href="#path-53"></use>
+                                    <mask id="mask-52" fill="white">
+                                        <use xlink:href="#path-51"></use>
                                     </mask>
                                     <g id="path-63"></g>
-                                    <rect id="social__inst-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-54)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                    <rect id="social__inst-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-52)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
                                 </g>
                             </g>
                         </g>
@@ -753,11 +731,11 @@
                         <g id="social__ok-Rectangle-7-Copy">
                             <g id="social__ok-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-56" fill="white">
-                                        <use xlink:href="#path-55"></use>
+                                    <mask id="mask-54" fill="white">
+                                        <use xlink:href="#path-53"></use>
                                     </mask>
                                     <g id="path-65"></g>
-                                    <rect id="social__ok-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-56)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                    <rect id="social__ok-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-54)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
                                 </g>
                             </g>
                         </g>
@@ -782,11 +760,11 @@
                         <g id="social__tw-Rectangle-7-Copy">
                             <g id="social__tw-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-58" fill="white">
-                                        <use xlink:href="#path-57"></use>
+                                    <mask id="mask-56" fill="white">
+                                        <use xlink:href="#path-55"></use>
                                     </mask>
                                     <g id="path-67"></g>
-                                    <rect id="social__tw-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-58)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                    <rect id="social__tw-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-56)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
                                 </g>
                             </g>
                         </g>
@@ -808,11 +786,11 @@
                         <g id="social__vk-Rectangle-7">
                             <g id="social__vk-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-60" fill="white">
-                                        <use xlink:href="#path-59"></use>
+                                    <mask id="mask-58" fill="white">
+                                        <use xlink:href="#path-57"></use>
                                     </mask>
                                     <g id="path-69"></g>
-                                    <rect id="social__vk-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-60)" x="0" y="0" width="45" height="45" rx="22.5"></rect>
+                                    <rect id="social__vk-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-58)" x="0" y="0" width="45" height="45" rx="22.5"></rect>
                                 </g>
                             </g>
                         </g>
@@ -837,11 +815,11 @@
                         <g id="social__yout-Rectangle-7-Copy">
                             <g id="social__yout-path-1-Clipped">
                                 <g>
-                                    <mask id="mask-62" fill="white">
-                                        <use xlink:href="#path-61"></use>
+                                    <mask id="mask-60" fill="white">
+                                        <use xlink:href="#path-59"></use>
                                     </mask>
                                     <g id="path-71"></g>
-                                    <rect id="social__yout-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-62)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                    <rect id="social__yout-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-60)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
                                 </g>
                             </g>
                         </g>
