@@ -179,7 +179,8 @@
     foreach($arGroups as $arGroup){
         $arFields = array(
             "NAME"      => $arGroup["Наименование"],
-            "ACTIVE"    => "Y",
+
+//            "ACTIVE"    => $arGroup["Включен"]=='Да'?"Y":"N",
             //"ACTIVE"    => preg_match("#Транспорт#",$arGroup["Наименование"])?"N":"Y",
             "SORT"      => $arGroup["Сортировка"],
             "IBLOCK_ID" => $CATALOG_IBLOCK_ID,
