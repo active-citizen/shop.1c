@@ -4,18 +4,20 @@
 //if ($this->StartResultCache(false)) {
     // Получаем корневых разделов
 
+    // Вычисляем ID свойства "привязка элемента каталога к товарному предложению"
     $sQuery = "SELECT `ID` FROM `b_iblock_property` WHERE "
         ." IBLOCK_ID=".OFFER_IB_ID." AND `CODE`='CML2_LINK' LIMIT 1";
     $arr = $DB->Query($sQuery)->Fetch();
 
+    // Вычисляем ID свойства "скрывать при нулевом остатке
     $sQuery = "SELECT `ID` FROM `b_iblock_property` WHERE "
         ." IBLOCK_ID=".CATALOG_IB_ID." AND `CODE`='HIDE_IF_ABSENT' LIMIT 1";
     $arrHide = $DB->Query($sQuery)->Fetch();
 
 
-
     $sQuery = "
         SELECT
+            -- Нам нужна только ID разделов
             `c`.`IBLOCK_SECTION_ID` as `SECTION_ID`
         FROM
             `b_iblock_element_property` as `a`
@@ -38,8 +40,13 @@
                 `d`.`VALUE_ENUM`=`e`.`ID` 
 
         WHERE
+            -- Выбираем только из имеющих свойство /привязка к элементам
+            -- каталога
             `a`.`IBLOCK_PROPERTY_ID`=".$arr["ID"]."
+            -- элементы каталога должны бать активными
             AND `c`.`ACTIVE`='Y'
+            -- Свойство СкрыватьПриНулевом остатке должно либо отсутствовать
+            -- либо должны быть остатки на складах
             AND 
             (
                 (
