@@ -55,6 +55,9 @@
         elseif($points%10==4){
             return 'дня';
         }
+        elseif($points%10==2){
+            return 'дня';
+        }
         else{
             return 'дней';
         }
