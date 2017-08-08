@@ -18,6 +18,7 @@
     background-color: #FEE;
 }
 
-#troyka-error{
-    color: #b80606;
+.ag-shop-card__warning{
+    margin: 20px;
 }
+

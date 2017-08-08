@@ -347,11 +347,11 @@ $(document).ready(function(){
                                 function(){
                                     $('#order-process-done').css('display','none');
                                     $('.ok-button').css('display','block');
-                                    var error_text = '<ul>';
+                                    var error_text = '';
                                     for(i in answer.order.error){
-                                        error_text += '<li>'+answer.order.error[i]+'</li>';
+                                        error_text += ''+answer.order.error[i]+'<br/>';
                                     }
-                                    error_text +='</ul>';
+                                    error_text +='';
                                     $('.catalog_item_confirm_message').fadeOut('fast');
                                     ag_ci_rise_error(error_text);
                                 }
