@@ -1,3 +1,857 @@
-<?xml version="1.0"?>
-<!--Icons from directory ""-->
-<svg xmlns="http://www.w3.org/2000/svg" width="90" height="1954" viewBox="0 0 90 1954"><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="60" width="60" version="1.1" viewBox="0 0 60 60" id="badge__hit" y="0"><title>ic_hit</title><desc>Created with Sketch.</desc><g id="badge__hit-Symbols" fill-rule="evenodd" fill="none"><g id="badge__hit-ic_hit"><ellipse id="badge__hit-Oval-5-Copy" rx="30" transform="translate(30 30) rotate(-90) translate(-30 -30)" ry="30" cy="30" cx="30" fill="#F49541"/><ellipse id="badge__hit-Oval-5-Copy" cy="30" rx="28" transform="translate(30 30) rotate(-90) translate(-30 -30)" ry="28" stroke="#fff" cx="30" fill="#F49541"/><text id="badge__hit-&#x425;&#x418;&#x422;-Copy-2" font-size="12" font-family="RobotoMono-Bold, Roboto Mono" letter-spacing="1" font-weight="bold" fill="#FFFFFF"><tspan y="35" x="17.1982422">&#x425;&#x418;</tspan><tspan y="35" x="33.6005859">&#x422;</tspan></text></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="60" width="60" version="1.1" viewBox="0 0 60 60" id="badge__new" y="60"><title>ic_new</title><desc>Created with Sketch.</desc><g id="badge__new-Symbols" fill-rule="evenodd" fill="none"><g id="badge__new-ic_new"><ellipse id="badge__new-Oval-5" rx="30" transform="translate(30 30) rotate(-90) translate(-30 -30)" ry="30" cy="30" cx="30" fill="#52CA89"/><ellipse id="badge__new-Oval-5" cy="30" rx="28" transform="translate(30 30) rotate(-90) translate(-30 -30)" ry="28" stroke="#fff" cx="30" fill="#52CA89"/><text id="badge__new-&#x41D;&#x41E;&#x412;&#x41E;&#x415;-Copy-2" font-size="12" font-family="RobotoMono-Bold, Roboto Mono" letter-spacing="1" font-weight="bold" fill="#FFFFFF"><tspan y="35" x="10.4970703">&#x41D;&#x41E;&#x412;&#x41E;</tspan><tspan y="35" x="43.3017578">&#x415;</tspan></text></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="60" width="60" version="1.1" viewBox="0 0 60 60" id="badge__sale" y="120"><title>ic_sale</title><desc>Created with Sketch.</desc><g id="badge__sale-Symbols" fill-rule="evenodd" fill="none"><g id="badge__sale-ic_sale"><ellipse id="badge__sale-Oval-5-Copy-2" rx="30" transform="translate(30 30) rotate(-90) translate(-30 -30)" ry="30" cy="30" cx="30" fill="#EE5757"/><ellipse id="badge__sale-Oval-5-Copy-2" cy="30" rx="28" transform="translate(30 30) rotate(-90) translate(-30 -30)" ry="28" stroke="#fff" cx="30" fill="#EE5757"/><text id="badge__sale-&#x410;&#x41A;&#x426;&#x418;&#x42F;-Copy-2" font-size="12" font-family="RobotoMono-Bold, Roboto Mono" letter-spacing="1" font-weight="bold" fill="#FFFFFF"><tspan y="35" x="10.4970703">&#x410;&#x41A;&#x426;&#x418;</tspan><tspan y="35" x="43.3017578">&#x42F;</tspan></text></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="30" width="30" version="1.1" viewBox="0 0 30 30" id="count__arrow--left-active" y="180"><title>ic_arr2_-_activ</title><desc>Created with Sketch.</desc><g id="count__arrow--left-active-Symbols" fill-rule="evenodd" fill="none"><g id="count__arrow--left-active-ic_arr2_-_activ"><g transform="translate(15 15) rotate(-90) translate(-15 -15)"><rect id="count__arrow--left-active-Rectangle-7-Copy" rx="2" height="30" width="30" y="5.3291e-15" x="0" fill="#0EB0A0"/><path id="count__arrow--left-active-Rectangle-5" stroke-linejoin="round" d="m7 19l7.641-7.847c0.198-0.203 0.519-0.205 0.718 0l7.641 7.847" stroke="#fff" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="30" width="30" version="1.1" viewBox="0 0 30 30" id="count__arrow--left" y="210"><title>ic_arr2_-_nrm</title><desc>Created with Sketch.</desc><g id="count__arrow--left-Symbols" fill-rule="evenodd" fill="none"><g id="count__arrow--left-ic_arr2_-_nrm"><g transform="translate(15 15) rotate(-90) translate(-15 -15)"><rect id="count__arrow--left-Rectangle-7-Copy" rx="2" height="30" width="30" y="5.3291e-15" x="0" fill="#F8F8F8"/><path id="count__arrow--left-Rectangle-5" stroke-linejoin="round" d="m7 19l7.641-7.847c0.198-0.203 0.519-0.205 0.718 0l7.641 7.847" stroke="#A1A4A9" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="30" width="30" version="1.1" viewBox="0 0 30 30" id="count__arrow--right-active" y="240"><title>ic_arr2_+_activ</title><desc>Created with Sketch.</desc><g id="count__arrow--right-active-Symbols" fill-rule="evenodd" fill="none"><g id="count__arrow--right-active-ic_arr2_+_activ"><g transform="translate(15 15) scale(-1 1) rotate(-90) translate(-15 -15)"><rect id="count__arrow--right-active-Rectangle-7-Copy" rx="2" height="30" width="30" y="5.3291e-15" x="0" fill="#0EB0A0"/><path id="count__arrow--right-active-Rectangle-5" stroke-linejoin="round" d="m7 19l7.641-7.847c0.198-0.203 0.519-0.205 0.718 0l7.641 7.847" stroke="#fff" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="30" width="30" version="1.1" viewBox="0 0 30 30" id="count__arrow--right" y="270"><title>ic_arr2_+_nrm</title><desc>Created with Sketch.</desc><g id="count__arrow--right-Symbols" fill-rule="evenodd" fill="none"><g id="count__arrow--right-ic_arr2_+_nrm"><g transform="translate(15 15) scale(-1 1) rotate(-90) translate(-15 -15)"><rect id="count__arrow--right-Rectangle-7-Copy" rx="2" height="30" width="30" y="5.3291e-15" x="0" fill="#F8F8F8"/><path id="count__arrow--right-Rectangle-5" stroke-linejoin="round" d="m7 19l7.641-7.847c0.198-0.203 0.519-0.205 0.718 0l7.641 7.847" stroke="#A1A4A9" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__attention" y="300"><title>ic_attention</title><desc>Created with Sketch.</desc><g id="icon__attention-Symbols" fill-rule="evenodd" fill="none"><g id="icon__attention-ic_attention"><g transform="translate(1 1)"><path id="icon__attention-Triangle" fill="#EBB4BF" d="m10.276 2.0228l6.361 12.72c0.743 1.486-0.001 2.691-1.665 2.691h-12.082c-1.6623 0-2.4088-1.202-1.6645-2.691l6.3603-12.72c0.743-1.486 1.9461-1.4889 2.6902-0.0002z"/><path id="icon__attention-Path" fill="#EBB4BF" d="m2.1199 15.191c-0.4111 0.822-0.1505 1.243 0.7698 1.243h12.082c0.92 0 1.181-0.422 0.77-1.243l-6.3602-12.721c-0.3751-0.7503-0.5264-0.7502-0.9015 0l-6.3604 12.721z"/><path id="icon__attention-!" fill="#fff" d="m8.2412 6l0.1079 6.119h1.0537l0.1079-6.119h-1.2695zm-0.2412 8.398c0 0.514 0.3682 0.882 0.8823 0.882 0.5142 0 0.876-0.368 0.876-0.882 0-0.521-0.3618-0.889-0.876-0.889-0.5141 0-0.8823 0.368-0.8823 0.889z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__basket--active" y="320"><title>ic_basket_pressed</title><desc>Created with Sketch.</desc><defs><path id="icon__basket--active-path-1" d="m4.0809 12.916c-0.3236-1.058 0.2998-1.916 1.406-1.916h16.027c1.1 0 1.728 0.863 1.406 1.916l-2.192 7.168c-0.323 1.058-1.478 1.916-2.589 1.916h-9.2775c-1.1063 0-2.2671-0.863-2.589-1.916l-2.1916-7.168z"/><mask id="icon__basket--active-mask-2" maskContentUnits="userSpaceOnUse" height="11" width="19" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__basket--active-path-1"/></mask></defs><g id="icon__basket--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__basket--active-ic_basket_pressed"><use id="icon__basket--active-Rectangle-2" xlink:href="#icon__basket--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#icon__basket--active-mask-2)"/><g fill="#fff"><rect id="icon__basket--active-Rectangle-3" rx=".5" height="5" width="1" y="14" x="9"/><rect id="icon__basket--active-Rectangle-3-Copy" rx=".5" height="5" width="1" y="14" x="13"/><rect id="icon__basket--active-Rectangle-3-Copy-3" rx=".5" transform="translate(9.933 8.8481) rotate(30) translate(-9.933 -8.8481)" height="6" width="1" y="5.8481" x="9.433"/><rect id="icon__basket--active-Rectangle-3-Copy-4" rx=".5" transform="translate(16.933 8.8481) scale(-1 1) rotate(30) translate(-16.933 -8.8481)" height="6" width="1" y="5.8481" x="16.433"/><rect id="icon__basket--active-Rectangle-3-Copy-2" rx=".5" height="5" width="1" y="14" x="17"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__basket--hover" y="348"><title>ic_basket_hvr</title><desc>Created with Sketch.</desc><defs><path id="icon__basket--hover-path-1" d="m4.0809 12.916c-0.3236-1.058 0.2998-1.916 1.406-1.916h16.027c1.1 0 1.728 0.863 1.406 1.916l-2.192 7.168c-0.323 1.058-1.478 1.916-2.589 1.916h-9.2775c-1.1063 0-2.2671-0.863-2.589-1.916l-2.1916-7.168z"/><mask id="icon__basket--hover-mask-2" maskContentUnits="userSpaceOnUse" height="11" width="19" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__basket--hover-path-1"/></mask></defs><g id="icon__basket--hover-Symbols" fill-rule="evenodd" fill="none"><g id="icon__basket--hover-ic_basket_hvr"><use id="icon__basket--hover-Rectangle-2" xlink:href="#icon__basket--hover-path-1" stroke="#0EB0A0" stroke-width="2" mask="url(#icon__basket--hover-mask-2)"/><g fill="#0EB0A0"><rect id="icon__basket--hover-Rectangle-3" rx=".5" height="5" width="1" y="14" x="9"/><rect id="icon__basket--hover-Rectangle-3-Copy" rx=".5" height="5" width="1" y="14" x="13"/><rect id="icon__basket--hover-Rectangle-3-Copy-3" rx=".5" transform="translate(9.933 8.8481) rotate(30) translate(-9.933 -8.8481)" height="6" width="1" y="5.8481" x="9.433"/><rect id="icon__basket--hover-Rectangle-3-Copy-4" rx=".5" transform="translate(16.933 8.8481) scale(-1 1) rotate(30) translate(-16.933 -8.8481)" height="6" width="1" y="5.8481" x="16.433"/><rect id="icon__basket--hover-Rectangle-3-Copy-2" rx=".5" height="5" width="1" y="14" x="17"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__basket" y="376"><title>ic_basket_nrm</title><desc>Created with Sketch.</desc><defs><path id="icon__basket-path-1" d="m4.0809 12.916c-0.3236-1.058 0.2998-1.916 1.406-1.916h16.027c1.1 0 1.728 0.863 1.406 1.916l-2.192 7.168c-0.323 1.058-1.478 1.916-2.589 1.916h-9.2775c-1.1063 0-2.2671-0.863-2.589-1.916l-2.1916-7.168z"/><mask id="icon__basket-mask-2" maskContentUnits="userSpaceOnUse" height="11" width="19" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__basket-path-1"/></mask></defs><g id="icon__basket-Symbols" fill-rule="evenodd" fill="none"><g id="icon__basket-ic_basket_nrm"><use id="icon__basket-Rectangle-2" xlink:href="#icon__basket-path-1" stroke="#263146" stroke-width="2" mask="url(#icon__basket-mask-2)"/><g fill="#263146"><rect id="icon__basket-Rectangle-3" rx=".5" height="5" width="1" y="14" x="9"/><rect id="icon__basket-Rectangle-3-Copy" rx=".5" height="5" width="1" y="14" x="13"/><rect id="icon__basket-Rectangle-3-Copy-3" rx=".5" transform="translate(9.933 8.8481) rotate(30) translate(-9.933 -8.8481)" height="6" width="1" y="5.8481" x="9.433"/><rect id="icon__basket-Rectangle-3-Copy-4" rx=".5" transform="translate(16.933 8.8481) scale(-1 1) rotate(30) translate(-16.933 -8.8481)" height="6" width="1" y="5.8481" x="16.433"/><rect id="icon__basket-Rectangle-3-Copy-2" rx=".5" height="5" width="1" y="14" x="17"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="14" width="14" version="1.1" viewBox="0 0 14 14" id="icon__close--active" y="404"><title>ic_close_activ</title><desc>Created with Sketch.</desc><g id="icon__close--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__close--active-ic_close_activ" fill="#081733"><g id="icon__close--active-ic_close_nrm"><rect id="icon__close--active-Rectangle-28" rx=".5" transform="translate(7.0882 7) rotate(45) translate(-7.0882 -7)" height="17.294" width="1" y="-1.6471" x="6.5882"/><rect id="icon__close--active-Rectangle-28" rx=".5" transform="translate(7.0882 7) scale(-1 1) rotate(45) translate(-7.0882 -7)" height="17.294" width="1" y="-1.6471" x="6.5882"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="14" width="14" version="1.1" viewBox="0 0 14 14" id="icon__close" y="418"><title>ic_close_nrm</title><desc>Created with Sketch.</desc><g id="icon__close-Symbols" fill-rule="evenodd" fill="none"><g id="icon__close-ic_close_nrm" fill="#7B8693"><g id="icon__close-Rectangle-28"><rect rx=".5" transform="translate(7.0882 7) rotate(45) translate(-7.0882 -7)" height="17.294" width="1" y="-1.6471" x="6.5882"/><rect rx=".5" transform="translate(7.0882 7) scale(-1 1) rotate(45) translate(-7.0882 -7)" height="17.294" width="1" y="-1.6471" x="6.5882"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="24" width="26" version="1.1" viewBox="0 0 26 24" id="icon__heart--active" y="432"><title>ic_heart_full</title><desc>Created with Sketch.</desc><g id="icon__heart--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__heart--active-ic_heart_full" fill="#EF1564"><path d="m7.3864-2.2737e-13c-4.4278 0-7.3864 3.7877-7.3864 8.0034 0 3.9556 2.1559 7.3736 4.7919 10.072 2.636 2.698 5.7821 4.698 7.9401 5.858 0.169 0.089 0.367 0.089 0.536 0 2.158-1.16 5.304-3.16 7.94-5.858s4.792-6.116 4.792-10.072c0-4.2153-2.959-8.003-7.386-8.003-2.61-2.2737e-13 -4.344 1.3866-5.614 3.261-1.27-1.8744-3.0035-3.261-5.6136-3.261v-2.2737e-13z"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="24" width="26" version="1.1" viewBox="0 0 26 24" id="icon__heart" y="456"><title>ic_heart_empty</title><desc>Created with Sketch.</desc><g id="icon__heart-Symbols" fill-rule="evenodd" fill="none"><g id="icon__heart-ic_heart_empty" fill="#E5E5E5"><path d="m0 8.0034c0 3.9556 2.1559 7.3736 4.7919 10.072 2.636 2.698 5.7821 4.698 7.9401 5.858 0.169 0.089 0.367 0.089 0.536 0 2.158-1.16 5.304-3.16 7.94-5.858s4.792-6.116 4.792-10.072c0-4.2153-2.959-8.003-7.386-8.003-2.61-2.2737e-13 -4.344 1.3866-5.614 3.261-1.27-1.8744-3.0035-3.261-5.6136-3.261-4.4278-2.2737e-13 -7.3864 3.7877-7.3864 8.0034z"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__info" y="480"><title>ic_info_nrm</title><desc>Created with Sketch.</desc><g id="icon__info-Symbols" fill-rule="evenodd" fill="none"><g id="icon__info-ic_info_nrm"><g id="icon__info-Imported-Layers-Copy-3"><path id="icon__info-Stroke-1" fill="#0EB0A0" d="m20 10c0 5.523-4.477 10-10 10-5.5229 0-10-4.477-10-10 0-5.5228 4.4771-10 10-10 5.523 0 10 4.4772 10 10z"/><path id="icon__info-Fill-2" fill="#fff" d="m7.9266 5.0469c0.618-0.6979 1.4664-1.0469 2.5454-1.0469 0.998 0 1.797 0.2985 2.397 0.8955 0.6 0.5972 0.9 1.3601 0.9 2.2889 0 0.5626-0.109 1.0189-0.326 1.3693-0.218 0.3503-0.664 0.8652-1.338 1.5443-0.491 0.494-0.81 0.912-0.958 1.254s-0.222 0.848-0.222 1.517h-1.3361c0-0.76 0.085-1.371 0.2554-1.835 0.1697-0.465 0.5487-0.997 1.1357-1.5966l0.612-0.6291c0.184-0.1803 0.333-0.3687 0.447-0.5654 0.208-0.3448 0.312-0.7031 0.312-1.0746 0-0.5202-0.15-0.9713-0.448-1.3535-0.299-0.382-0.793-0.5733-1.483-0.5733-0.8531 0-1.4429 0.3291-1.7701 0.9872-0.1838 0.3661-0.2886 0.8943-0.314 1.5843h-1.3359c-0.0004-1.1459 0.3085-2.0682 0.9266-2.7661zm1.6323 9.1431h1.4931v1.656h-1.4931v-1.656z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__mail--active" y="500"><title>ic_mail_activ</title><desc>Created with Sketch.</desc><defs><rect id="icon__mail--active-path-1" rx="2" height="12" width="16" y="0" x="0"/><mask id="icon__mail--active-mask-2" maskContentUnits="userSpaceOnUse" height="12" width="16" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__mail--active-path-1"/></mask></defs><g id="icon__mail--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__mail--active-ic_mail_activ"><g id="icon__mail--active-ic_mail_nrm" transform="translate(2 4)"><use id="icon__mail--active-Rectangle-19" xlink:href="#icon__mail--active-path-1" mask="url(#icon__mail--active-mask-2)" stroke="#0EB0A0" stroke-width="2" fill="#0EB0A0"/><polyline id="icon__mail--active-Rectangle-11" stroke-linejoin="round" stroke="#fff" stroke-linecap="round" points="12.243 3.2072 8 7.4504 3.7568 3.2072 3.7568 3.2072"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__mail" y="520"><title>ic_mail_nrm</title><desc>Created with Sketch.</desc><defs><rect id="icon__mail-path-1" rx="2" height="12" width="16" y="0" x="0"/><mask id="icon__mail-mask-2" maskContentUnits="userSpaceOnUse" height="12" width="16" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__mail-path-1"/></mask></defs><g id="icon__mail-Symbols" fill-rule="evenodd" fill="none"><g id="icon__mail-ic_mail_nrm" stroke="#263146"><g transform="translate(2 4)"><use id="icon__mail-Rectangle-19" xlink:href="#icon__mail-path-1" stroke-width="2" mask="url(#icon__mail-mask-2)"/><polyline id="icon__mail-Rectangle-11" stroke-linejoin="round" stroke-linecap="round" points="12.243 3.2072 8 7.4504 3.7568 3.2072 3.7568 3.2072"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__print--active" y="540"><title>ic_print_activ</title><desc>Created with Sketch.</desc><defs><rect id="icon__print--active-path-1" y="0" x="3" height="7" width="10"/><mask id="icon__print--active-mask-2" maskContentUnits="userSpaceOnUse" height="7" width="10" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__print--active-path-1"/></mask><path id="icon__print--active-path-3" d="m3.8884 15h-2.1043c-0.98531 0-1.7841-0.799-1.7841-1.8v-5.4003c0-0.994 0.79344-1.7997 1.7734-1.7997h12.454c0.979 0 1.773 0.7987 1.773 1.7997v5.4003c0 0.994-0.794 1.8-1.783 1.8h-1.959"/><mask id="icon__print--active-mask-4" maskContentUnits="userSpaceOnUse" height="9" width="16" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__print--active-path-3"/></mask><rect id="icon__print--active-path-5" y="10" x="3" height="7" width="10"/><mask id="icon__print--active-mask-6" maskContentUnits="userSpaceOnUse" height="7" width="10" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__print--active-path-5"/></mask></defs><g id="icon__print--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__print--active-ic_print_activ"><g id="icon__print--active-ic_print_nrm" transform="translate(2 2)"><g stroke-width="2"><use id="icon__print--active-Rectangle-8" xlink:href="#icon__print--active-path-1" mask="url(#icon__print--active-mask-2)" stroke="#263146" fill="#FFFFFF"/><use id="icon__print--active-Rectangle-7" xlink:href="#icon__print--active-path-3" mask="url(#icon__print--active-mask-4)" stroke="#0EB0A0" fill="#0EB0A0"/><use id="icon__print--active-Rectangle-8-Copy" xlink:href="#icon__print--active-path-5" mask="url(#icon__print--active-mask-6)" stroke="#0EB0A0" fill="#FFFFFF"/></g><rect id="icon__print--active-Rectangle-10" height="1" width="6" y="12" x="5" fill="#263146"/><rect id="icon__print--active-Rectangle-10-Copy" height="1" width="6" y="14" x="5" fill="#263146"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__print" y="560"><title>ic_print_nrm</title><desc>Created with Sketch.</desc><defs><path id="icon__print-path-1" d="m3.8884 15h-2.1043c-0.98531 0-1.7841-0.799-1.7841-1.8v-5.4003c0-0.994 0.79344-1.7997 1.7734-1.7997h12.454c0.979 0 1.773 0.7987 1.773 1.7997v5.4003c0 0.994-0.794 1.8-1.783 1.8h-1.959"/><mask id="icon__print-mask-2" maskContentUnits="userSpaceOnUse" height="9" width="16" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__print-path-1"/></mask><rect id="icon__print-path-3" y="0" x="3" height="7" width="10"/><mask id="icon__print-mask-4" maskContentUnits="userSpaceOnUse" height="7" width="10" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__print-path-3"/></mask><rect id="icon__print-path-5" y="10" x="3" height="7" width="10"/><mask id="icon__print-mask-6" maskContentUnits="userSpaceOnUse" height="7" width="10" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__print-path-5"/></mask></defs><g id="icon__print-Symbols" fill-rule="evenodd" fill="none"><g id="icon__print-ic_print_nrm"><g transform="translate(2 2)"><g stroke="#263146" stroke-width="2"><use id="icon__print-Rectangle-7" xlink:href="#icon__print-path-1" mask="url(#icon__print-mask-2)"/><use id="icon__print-Rectangle-8" xlink:href="#icon__print-path-3" mask="url(#icon__print-mask-4)"/><use id="icon__print-Rectangle-8-Copy" xlink:href="#icon__print-path-5" mask="url(#icon__print-mask-6)"/></g><rect id="icon__print-Rectangle-10" height="1" width="6" y="12" x="5" fill="#263146"/><rect id="icon__print-Rectangle-10-Copy" height="1" width="6" y="14" x="5" fill="#263146"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__profile--active" y="580"><title>ic_profile_pressed</title><desc>Created with Sketch.</desc><g id="icon__profile--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__profile--active-ic_profile_pressed" stroke="#fff"><g transform="translate(1 1)"><path id="icon__profile--active-Oval" stroke-linecap="round" d="m24.938 18.154c0.683-1.58 1.062-3.323 1.062-5.154 0-7.1797-5.82-13-13-13-7.1797 0-13 5.8203-13 13 0 1.816 0.37226 3.545 1.0446 5.114"/><path id="icon__profile--active-Combined-Shape" d="m10.097 18.22c-2.7771 0.436-5.2161 1.514-7.0008 3.201 2.3845 2.802 5.9366 4.579 9.9038 4.579 3.967 0 7.519-1.777 9.904-4.579-1.737-1.642-4.094-2.707-6.78-3.165"/><path id="icon__profile--active-Oval" d="m13 20c3.156 0 5-4.85 5-8.105 0-3.2558-1.844-5.895-5-5.895-3.1559 0-5 2.6392-5 5.895 0 3.255 1.8441 8.105 5 8.105z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__profile--hover" y="608"><title>ic_profile_hvr</title><desc>Created with Sketch.</desc><g id="icon__profile--hover-Symbols" fill-rule="evenodd" fill="none"><g id="icon__profile--hover-ic_profile_hvr" stroke="#0EB0A0"><g transform="translate(1 1)"><path id="icon__profile--hover-Oval" stroke-linecap="round" d="m24.938 18.154c0.683-1.58 1.062-3.323 1.062-5.154 0-7.1797-5.82-13-13-13-7.1797 0-13 5.8203-13 13 0 1.816 0.37226 3.545 1.0446 5.114"/><path id="icon__profile--hover-Combined-Shape" d="m10.097 18.22c-2.7771 0.436-5.2161 1.514-7.0008 3.201 2.3845 2.802 5.9366 4.579 9.9038 4.579 3.967 0 7.519-1.777 9.904-4.579-1.737-1.642-4.094-2.707-6.78-3.165"/><path id="icon__profile--hover-Oval" d="m13 20c3.156 0 5-4.85 5-8.105 0-3.2558-1.844-5.895-5-5.895-3.1559 0-5 2.6392-5 5.895 0 3.255 1.8441 8.105 5 8.105z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__profile" y="636"><title>ic_profile_nrm</title><desc>Created with Sketch.</desc><g id="icon__profile-Symbols" fill-rule="evenodd" fill="none"><g id="icon__profile-ic_profile_nrm" stroke="#263146"><g transform="translate(1 1)"><path id="icon__profile-Oval" stroke-linecap="round" d="m24.938 18.154c0.683-1.58 1.062-3.323 1.062-5.154 0-7.1797-5.82-13-13-13-7.1797 0-13 5.8203-13 13 0 1.816 0.37226 3.545 1.0446 5.114"/><path id="icon__profile-Combined-Shape" d="m10.097 18.22c-2.7771 0.436-5.2161 1.514-7.0008 3.201 2.3845 2.802 5.9366 4.579 9.9038 4.579 3.967 0 7.519-1.777 9.904-4.579-1.737-1.642-4.094-2.707-6.78-3.165"/><path id="icon__profile-Oval" d="m13 20c3.156 0 5-4.85 5-8.105 0-3.2558-1.844-5.895-5-5.895-3.1559 0-5 2.6392-5 5.895 0 3.255 1.8441 8.105 5 8.105z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__radiobtn--active" y="664"><title>ic_rd_btn_activ</title><desc>Created with Sketch.</desc><defs><ellipse id="icon__radiobtn--active-path-1" cy="10" cx="10" rx="8" ry="8"/><mask id="icon__radiobtn--active-mask-2" maskContentUnits="userSpaceOnUse" height="20" width="20" y="-2" x="-2" maskUnits="objectBoundingBox"><rect y="0" x="0" height="20" fill="#fff" width="20"/><use xlink:href="#icon__radiobtn--active-path-1" fill="black"/></mask></defs><g id="icon__radiobtn--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__radiobtn--active-ic_rd_btn_activ"><g id="icon__radiobtn--active-ic_rdbtn_activ"><use xlink:href="#icon__radiobtn--active-path-1" fill-rule="evenodd" fill="#0EB0A0"/><use xlink:href="#icon__radiobtn--active-path-1" stroke="#263146" stroke-width="4" mask="url(#icon__radiobtn--active-mask-2)"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__radiobtn" y="684"><title>ic_rd_btn_norm</title><desc>Created with Sketch.</desc><defs><ellipse id="icon__radiobtn-path-1" cy="10" cx="10" rx="8" ry="8"/><mask id="icon__radiobtn-mask-2" maskContentUnits="userSpaceOnUse" height="20" width="20" y="-2" x="-2" maskUnits="objectBoundingBox"><rect y="0" x="0" height="20" fill="#fff" width="20"/><use xlink:href="#icon__radiobtn-path-1" fill="black"/></mask></defs><g id="icon__radiobtn-Symbols" fill-rule="evenodd" fill="none"><g id="icon__radiobtn-ic_rd_btn_norm"><g id="icon__radiobtn-ic_rdbtn_norm"><use xlink:href="#icon__radiobtn-path-1" fill-rule="evenodd" fill="#FFFFFF"/><use xlink:href="#icon__radiobtn-path-1" stroke="#ECECEC" stroke-width="4" mask="url(#icon__radiobtn-mask-2)"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__rules--active" y="704"><title>ic_rules_pressed</title><desc>Created with Sketch.</desc><defs><path id="icon__rules--active-path-1" d="m13.199 2h1.794c1.108 0 2.007 0.8897 2.007 1.9912v18.018c0 1.1-0.89 1.991-2 1.991h-13c-1.1045 0-2-0.89-2-1.991v-18.018c0-1.0995 0.89959-1.991 2.0001-1.991h1.6608"/><mask id="icon__rules--active-mask-2" maskContentUnits="userSpaceOnUse" height="22" width="17" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__rules--active-path-1"/></mask><path id="icon__rules--active-path-3" d="m6.2674 1h-1.2754c-1.0918 0-1.992 0.8954-1.992 2 0 1.1123 0.8919 2 1.992 2h7.016c1.092 0 1.992-0.8954 1.992-2 0-1.1123-0.892-2-1.992-2h-1.274c-0.346-0.59974-0.9954-1-1.7389-1h-0.9902c-0.7446 0-1.3917 0.4022-1.7375 1z"/><mask id="icon__rules--active-mask-4" maskContentUnits="userSpaceOnUse" height="5" width="11" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__rules--active-path-3"/></mask></defs><g id="icon__rules--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__rules--active-ic_rules_pressed"><g transform="translate(6 2)"><use id="icon__rules--active-Rectangle" xlink:href="#icon__rules--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#icon__rules--active-mask-2)"/><circle id="icon__rules--active-Oval-6" cy="20.5" cx="8.5" r="1.5" fill="#fff"/><path id="icon__rules--active-Oval-2" stroke="#fff" d="m8.5 17c0.8284 0 1.5-5.787 1.5-7.6022 0-1.815-0.6716-2.3978-1.5-2.3978s-1.5 0.5523-1.5 2.3978c0 1.8452 0.6716 7.6022 1.5 7.6022z"/><use id="icon__rules--active-Combined-Shape" stroke-linejoin="round" xlink:href="#icon__rules--active-path-3" mask="url(#icon__rules--active-mask-4)" stroke="#FFFFFF" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__rules--hover" y="732"><title>ic_rules_hvr</title><desc>Created with Sketch.</desc><defs><path id="icon__rules--hover-path-1" d="m13.199 2h1.794c1.108 0 2.007 0.8897 2.007 1.9912v18.018c0 1.1-0.89 1.991-2 1.991h-13c-1.1045 0-2-0.89-2-1.991v-18.018c0-1.0995 0.89959-1.991 2.0001-1.991h1.6608"/><mask id="icon__rules--hover-mask-2" maskContentUnits="userSpaceOnUse" height="22" width="17" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__rules--hover-path-1"/></mask><path id="icon__rules--hover-path-3" d="m6.2674 1h-1.2754c-1.0918 0-1.992 0.8954-1.992 2 0 1.1123 0.8919 2 1.992 2h7.016c1.092 0 1.992-0.8954 1.992-2 0-1.1123-0.892-2-1.992-2h-1.274c-0.346-0.59974-0.9954-1-1.7389-1h-0.9902c-0.7446 0-1.3917 0.4022-1.7375 1z"/><mask id="icon__rules--hover-mask-4" maskContentUnits="userSpaceOnUse" height="5" width="11" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__rules--hover-path-3"/></mask></defs><g id="icon__rules--hover-Symbols" fill-rule="evenodd" fill="none"><g id="icon__rules--hover-ic_rules_hvr"><g transform="translate(6 2)"><use id="icon__rules--hover-Rectangle" xlink:href="#icon__rules--hover-path-1" stroke="#0EB0A0" stroke-width="2" mask="url(#icon__rules--hover-mask-2)"/><circle id="icon__rules--hover-Oval-6" cy="20.5" cx="8.5" r="1.5" fill="#0EB0A0"/><path id="icon__rules--hover-Oval-2" stroke="#0EB0A0" d="m8.5 17c0.8284 0 1.5-5.787 1.5-7.6022 0-1.815-0.6716-2.3978-1.5-2.3978s-1.5 0.5523-1.5 2.3978c0 1.8452 0.6716 7.6022 1.5 7.6022z"/><use id="icon__rules--hover-Combined-Shape" stroke-linejoin="round" xlink:href="#icon__rules--hover-path-3" mask="url(#icon__rules--hover-mask-4)" stroke="#0EB0A0" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="28" width="28" version="1.1" viewBox="0 0 28 28" id="icon__rules" y="760"><title>ic_rules_nrm</title><desc>Created with Sketch.</desc><defs><path id="icon__rules-path-1" d="m13.199 2h1.794c1.108 0 2.007 0.8897 2.007 1.9912v18.018c0 1.1-0.89 1.991-2 1.991h-13c-1.1045 0-2-0.89-2-1.991v-18.018c0-1.0995 0.89959-1.991 2.0001-1.991h1.6608"/><mask id="icon__rules-mask-2" maskContentUnits="userSpaceOnUse" height="22" width="17" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__rules-path-1"/></mask><path id="icon__rules-path-3" d="m6.2674 1h-1.2754c-1.0918 0-1.992 0.8954-1.992 2 0 1.1123 0.8919 2 1.992 2h7.016c1.092 0 1.992-0.8954 1.992-2 0-1.1123-0.892-2-1.992-2h-1.274c-0.346-0.59974-0.9954-1-1.7389-1h-0.9902c-0.7446 0-1.3917 0.4022-1.7375 1z"/><mask id="icon__rules-mask-4" maskContentUnits="userSpaceOnUse" height="5" width="11" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#icon__rules-path-3"/></mask></defs><g id="icon__rules-Symbols" fill-rule="evenodd" fill="none"><g id="icon__rules-ic_rules_nrm"><g transform="translate(6 2)"><use id="icon__rules-Rectangle" xlink:href="#icon__rules-path-1" stroke="#263146" stroke-width="2" mask="url(#icon__rules-mask-2)"/><circle id="icon__rules-Oval-6" cy="20.5" cx="8.5" r="1.5" fill="#263146"/><path id="icon__rules-Oval-2" stroke="#263146" d="m8.5 17c0.8284 0 1.5-5.787 1.5-7.6022 0-1.815-0.6716-2.3978-1.5-2.3978s-1.5 0.5523-1.5 2.3978c0 1.8452 0.6716 7.6022 1.5 7.6022z"/><use id="icon__rules-Combined-Shape" stroke-linejoin="round" xlink:href="#icon__rules-path-3" mask="url(#icon__rules-mask-4)" stroke="#263146" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="22" version="1.1" viewBox="0 0 22 20" id="icon__star--active" y="788"><title>ic_Star_full</title><desc>Created with Sketch.</desc><defs><path id="icon__star--active-path-1" d="m12.791 17.188c-0.989-0.49-2.592-0.491-3.5819 0l-3.1671 1.571c-0.989 0.49-1.6302 0.004-1.4318-1.087l0.5708-3.138c0.1983-1.091-0.2995-2.58-1.1184-3.333l-2.5048-2.3021c-0.81604-0.7501-0.58237-1.4808 0.5049-1.6298l3.5804-0.4906c1.0949-0.1501 2.3962-1.0623 2.9134-2.0507l1.5125-2.8898c0.514-0.98251 1.345-0.98835 1.862 0l1.512 2.8898c0.514 0.9825 1.826 1.9017 2.914 2.0507l3.58 0.4906c1.095 0.15 1.324 0.877 0.505 1.6298l-2.505 2.3021c-0.816 0.751-1.317 2.242-1.118 3.333l0.571 3.138c0.198 1.091-0.442 1.577-1.432 1.087l-3.167-1.571z"/><mask id="icon__star--active-mask-2" maskContentUnits="userSpaceOnUse" height="20" width="22" y="-1" x="-1" maskUnits="objectBoundingBox"><rect y="0" x="0" height="20" fill="#fff" width="22"/><use xlink:href="#icon__star--active-path-1" fill="black"/></mask></defs><g id="icon__star--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__star--active-ic_Star_full"><g id="icon__star--active-Star_full"><use xlink:href="#icon__star--active-path-1" fill-rule="evenodd" fill="#0EB0A0"/><use xlink:href="#icon__star--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#icon__star--active-mask-2)"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="22" version="1.1" viewBox="0 0 22 20" id="icon__star" y="808"><title>ic_Star_empty</title><desc>Created with Sketch.</desc><defs><path id="icon__star-path-1" d="m12.791 17.188c-0.989-0.49-2.592-0.491-3.5819 0l-3.1671 1.571c-0.989 0.49-1.6302 0.004-1.4318-1.087l0.5708-3.138c0.1983-1.091-0.2995-2.58-1.1184-3.333l-2.5048-2.3021c-0.81604-0.7501-0.58237-1.4808 0.5049-1.6298l3.5804-0.4906c1.0949-0.1501 2.3962-1.0623 2.9134-2.0507l1.5125-2.8898c0.514-0.98251 1.345-0.98835 1.862 0l1.512 2.8898c0.514 0.9825 1.826 1.9017 2.914 2.0507l3.58 0.4906c1.095 0.15 1.324 0.877 0.505 1.6298l-2.505 2.3021c-0.816 0.751-1.317 2.242-1.118 3.333l0.571 3.138c0.198 1.091-0.442 1.577-1.432 1.087l-3.167-1.571z"/><mask id="icon__star-mask-2" maskContentUnits="userSpaceOnUse" height="20" width="22" y="-1" x="-1" maskUnits="objectBoundingBox"><rect y="0" x="0" height="20" fill="#fff" width="22"/><use xlink:href="#icon__star-path-1" fill="black"/></mask></defs><g id="icon__star-Symbols" fill-rule="evenodd" fill="none"><g id="icon__star-ic_Star_empty"><use xlink:href="#icon__star-path-1" fill-rule="evenodd" fill="#FFFFFF"/><use xlink:href="#icon__star-path-1" stroke="#0EB0A0" stroke-width="2" mask="url(#icon__star-mask-2)"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="60" width="60" version="1.1" viewBox="0 0 60 60" id="icon__up--active" y="828"><title>ic_up_activ</title><desc>Created with Sketch.</desc><g id="icon__up--active-Symbols" fill-rule="evenodd" fill="none"><g id="icon__up--active-ic_up_activ"><rect id="icon__up--active-Rectangle-7-Copy" height="60" width="60" y="-1.0658e-14" x="0" fill="#fff"/><path id="icon__up--active-Rectangle-5" stroke-linejoin="round" d="m25 20l9.808 9.551c0.255 0.248 0.257 0.648 0 0.898l-9.808 9.551" transform="translate(30 30) rotate(-90) translate(-30 -30)" stroke="#0EB0A0" stroke-linecap="round" stroke-width="2"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="60" width="60" version="1.1" viewBox="0 0 60 60" id="icon__up" y="888"><title>ic_up_nrm</title><desc>Created with Sketch.</desc><g id="icon__up-Symbols" fill-rule="evenodd" fill="none"><g id="icon__up-ic_up_nrm"><rect id="icon__up-Rectangle-7-Copy" height="60" width="60" y="-1.0658e-14" x="0" fill="#F6F6F6"/><path id="icon__up-Rectangle-5" stroke-linejoin="round" d="m25 20l9.808 9.551c0.255 0.248 0.257 0.648 0 0.898l-9.808 9.551" transform="translate(30 30) rotate(-90) translate(-30 -30)" stroke="#A1A4A9" stroke-linecap="round" stroke-width="2"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" viewBox="0 0 20 20" id="icon__write" y="948"><title>ic_write</title><desc>Created with Sketch.</desc><defs><polygon id="icon__write-path-1" points="10.286 -0.85952 12.857 -0.85952 12.857 11.832 11.571 13.752 10.286 11.832"/><mask id="icon__write-mask-2" maskContentUnits="userSpaceOnUse" height="16.6119048" width="4.57142857" y="-1" x="-1" maskUnits="objectBoundingBox"><rect y="-1.8595" x="9.2857" height="16.612" fill="#fff" width="4.5714"/><use xlink:href="#icon__write-path-1" fill="black"/></mask></defs><g id="icon__write-Symbols" stroke-linejoin="round" fill-rule="evenodd" stroke-linecap="round" fill="none"><g id="icon__write-ic_write" stroke="#297EEB"><g id="icon__write-Group" transform="translate(1 1)"><path id="icon__write-Rectangle-2222" d="m14.571 10.504v5.83c0 0.948-0.768 1.716-1.714 1.716h-11.143c-0.94645 0-1.714-0.77-1.714-1.719v-11.174 0.0002c0-0.9494 0.76728-1.7191 1.7135-1.7191h5.9004"/><use id="icon__write-Rectangle-2220" xlink:href="#icon__write-path-1" stroke-width="2" mask="url(#icon__write-mask-2)" transform="translate(11.571 6.4464) rotate(45) translate(-11.571 -6.4464)"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="43" width="43" version="1.1" viewBox="0 0 43 43" id="map__point--active" y="968"><title>poi_1</title><desc>Created with Sketch.</desc><defs><linearGradient id="map__point--active-linearGradient-1" y1="-9.2257%" x1="50%" y2="76.211%"><stop stop-color="#28A59C" stop-opacity="0" offset="0"/><stop stop-color="#126B62" offset="1"/></linearGradient><filter id="map__point--active-filter-2" height="200%" width="200%" y="-50%" x="-50%" filterUnits="objectBoundingBox"><feGaussianBlur stdDeviation="2" in="SourceGraphic"/></filter><linearGradient id="map__point--active-linearGradient-3" y1="-9.2257%" x1="50%" y2="76.211%"><stop stop-color="#28A59C" stop-opacity="0" offset="0"/><stop stop-color="#074B44" offset="1"/></linearGradient><filter id="map__point--active-filter-4" height="200%" width="200%" y="-50%" x="-50%" filterUnits="objectBoundingBox"><feGaussianBlur stdDeviation="2" in="SourceGraphic"/></filter><path id="map__point--active-path-5" d="m11 34c-2.1572 0-11-16.121-11-22.484 0-6.3598 4.9236-11.516 11-11.516 6.075 0 11 5.1562 11 11.516 0 6.363-8.843 22.484-11 22.484z"/><mask id="map__point--active-mask-6" maskContentUnits="userSpaceOnUse" height="40" width="28" y="-3" x="-3" maskUnits="objectBoundingBox"><rect y="-3" x="-3" height="40" fill="#fff" width="28"/><use xlink:href="#map__point--active-path-5" fill="black"/></mask></defs><g id="map__point--active-Symbols" fill-rule="evenodd" fill="none"><g id="map__point--active-poi_1"><g transform="translate(3 3)"><path id="map__point--active-Combined-Shape" filter="url(#map__point--active-filter-2)" fill="url(#map__point--active-linearGradient-1)" d="m23.236 44.148c-0.491 0-2.5-12.327-2.5-17.193 0-4.864 1.119-8.807 2.5-8.807 1.38 0 2.5 3.943 2.5 8.807 0 4.866-2.01 17.193-2.5 17.193z" transform="translate(23.236 31.148) rotate(78) translate(-23.236 -31.148)"/><path id="map__point--active-Combined-Shape" filter="url(#map__point--active-filter-4)" fill="url(#map__point--active-linearGradient-3)" d="m22.236 44.148c-0.491 0-2.5-12.327-2.5-17.193 0-4.864 1.119-8.807 2.5-8.807 1.38 0 2.5 3.943 2.5 8.807 0 4.866-2.01 17.193-2.5 17.193z" transform="translate(22.236 31.148) rotate(78) translate(-22.236 -31.148)"/><g id="map__point--active-Combined-Shape"><use xlink:href="#map__point--active-path-5" fill-rule="evenodd" fill="#0EB0A0"/><use stroke-linejoin="round" xlink:href="#map__point--active-path-5" mask="url(#map__point--active-mask-6)" stroke="#0EB0A0" stroke-linecap="round" stroke-width="6"/></g><path id="map__point--active-Stroke-6" fill="#fff" d="m16.529 10.115c0 2.528-2.029 4.577-4.529 4.577-2.5017 0-4.5294-2.049-4.5294-4.577 0-2.5261 2.0277-4.5765 4.5294-4.5765 2.5 0 4.529 2.0504 4.529 4.5765z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="43" width="42" version="1.1" viewBox="0 0 42 43" id="map__point" y="1011"><title>poi_0</title><desc>Created with Sketch.</desc><defs><linearGradient id="map__point-linearGradient-1" y1="-9.2257%" x1="50%" y2="76.211%"><stop stop-color="#28A59C" stop-opacity="0" offset="0"/><stop stop-color="#074B44" offset="1"/></linearGradient><filter id="map__point-filter-2" height="200%" width="200%" y="-50%" x="-50%" filterUnits="objectBoundingBox"><feGaussianBlur stdDeviation="2" in="SourceGraphic"/></filter><path id="map__point-path-3" d="m11 34c-2.1572 0-11-16.121-11-22.484 0-6.3598 4.9236-11.516 11-11.516 6.075 0 11 5.1562 11 11.516 0 6.363-8.843 22.484-11 22.484z"/><mask id="map__point-mask-4" maskContentUnits="userSpaceOnUse" height="40" width="28" y="-3" x="-3" maskUnits="objectBoundingBox"><rect y="-3" x="-3" height="40" fill="#fff" width="28"/><use xlink:href="#map__point-path-3" fill="black"/></mask></defs><g id="map__point-Symbols" fill-rule="evenodd" fill="none"><g id="map__point-poi_0"><g transform="translate(3 3)"><path id="map__point-Combined-Shape" filter="url(#map__point-filter-2)" fill="url(#map__point-linearGradient-1)" d="m22.236 44.148c-0.491 0-2.5-12.327-2.5-17.193 0-4.864 1.119-8.807 2.5-8.807 1.38 0 2.5 3.943 2.5 8.807 0 4.866-2.01 17.193-2.5 17.193z" transform="translate(22.236 31.148) rotate(78) translate(-22.236 -31.148)"/><g id="map__point-Combined-Shape"><use xlink:href="#map__point-path-3" fill-rule="evenodd" fill="#FFFFFF"/><use stroke-linejoin="round" xlink:href="#map__point-path-3" mask="url(#map__point-mask-4)" stroke="#0EB0A0" stroke-linecap="round" stroke-width="6"/></g><path id="map__point-Stroke-6" fill="#0EB0A0" d="m15.529 11.115c0 2.528-2.029 4.577-4.529 4.577-2.5017 0-4.5294-2.049-4.5294-4.577 0-2.5261 2.0277-4.5765 4.5294-4.5765 2.5 0 4.529 2.0504 4.529 4.5765z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="90" width="90" version="1.1" viewBox="0 0 90 90" id="slider__arrow--left-active" y="1054"><title>arrow_l_activ</title><desc>Created with Sketch.</desc><g id="slider__arrow--left-active-Symbols" fill-rule="evenodd" fill="none"><g id="slider__arrow--left-active-arrow_l_activ"><g transform="translate(45 45) scale(-1 1) translate(-45 -45)"><rect id="slider__arrow--left-active-Rectangle-4" rx="45" height="90" width="90" y="0" x="0" fill="#0EB0A0"/><path id="slider__arrow--left-active-Rectangle-5" stroke-linejoin="round" d="m38 30l13.732 14.327c0.356 0.371 0.359 0.972 0 1.346l-13.732 14.327" stroke="#fff" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="90" width="90" version="1.1" viewBox="0 0 90 90" id="slider__arrow--left" y="1144"><title>arrow_l</title><desc>Created with Sketch.</desc><g id="slider__arrow--left-Symbols" fill-rule="evenodd" fill="none"><g id="slider__arrow--left-arrow_l"><g transform="translate(45 45) scale(-1 1) translate(-45 -45)"><rect id="slider__arrow--left-Rectangle-4" rx="45" height="90" width="90" y="0" x="0" fill="#fff"/><path id="slider__arrow--left-Rectangle-5" stroke-linejoin="round" d="m38 30l13.732 14.327c0.356 0.371 0.359 0.972 0 1.346l-13.732 14.327" stroke="#0EB0A0" stroke-linecap="round" stroke-width="2"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="90" width="90" version="1.1" viewBox="0 0 90 90" id="slider__arrow--right-active" y="1234"><title>arrow_r_activ</title><desc>Created with Sketch.</desc><g id="slider__arrow--right-active-Symbols" fill-rule="evenodd" fill="none"><g id="slider__arrow--right-active-arrow_r_activ"><rect id="slider__arrow--right-active-Rectangle-4" rx="45" height="90" width="90" y="0" x="0" fill="#0EB0A0"/><path id="slider__arrow--right-active-Rectangle-5" stroke-linejoin="round" d="m38 30l13.732 14.327c0.356 0.371 0.359 0.972 0 1.346l-13.732 14.327" stroke="#fff" stroke-linecap="round" stroke-width="2"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="90" width="90" version="1.1" viewBox="0 0 90 90" id="slider__arrow--right" y="1324"><title>arrow_r</title><desc>Created with Sketch.</desc><g id="slider__arrow--right-Symbols" fill-rule="evenodd" fill="none"><g id="slider__arrow--right-arrow_r"><rect id="slider__arrow--right-Rectangle-4" rx="45" height="90" width="90" y="0" x="0" fill="#fff"/><path id="slider__arrow--right-Rectangle-5" stroke-linejoin="round" d="m38 30l13.732 14.327c0.356 0.371 0.359 0.972 0 1.346l-13.732 14.327" stroke="#0EB0A0" stroke-linecap="round" stroke-width="2"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__fb--active" y="1414"><title>ic_fb_activ</title><desc>Created with Sketch.</desc><g id="social__fb--active-Symbols" fill-rule="evenodd" fill="none"><g id="social__fb--active-ic_fb_activ"><rect id="social__fb--active-Rectangle-7-Copy" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0" fill="#fff"/><path id="social__fb--active-Imported-Layers" fill="#0EB0A0" d="m26.802 17.657l-1.414 0.001c-1.109 0-1.324 0.561-1.324 1.385v1.816h2.645l-0.344 2.845h-2.301v7.034h-2.758v-7.034h-2.306v-2.845h2.306v-2.098c0-2.435 1.396-3.761 3.436-3.761 0.976 0 1.816 0.077 2.06 0.112v2.545"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__fb" y="1459"><title>ic_fb_nrm</title><desc>Created with Sketch.</desc><defs><rect id="social__fb-path-1" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0"/><mask id="social__fb-mask-2" maskContentUnits="userSpaceOnUse" height="45" width="45" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#social__fb-path-1"/></mask></defs><g id="social__fb-Symbols" fill-rule="evenodd" fill="none"><g id="social__fb-ic_fb_nrm"><use id="social__fb-Rectangle-7-Copy" xlink:href="#social__fb-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#social__fb-mask-2)"/><path id="social__fb-Imported-Layers" fill="#A1A4A9" d="m26.802 17.657l-1.414 0.001c-1.109 0-1.324 0.561-1.324 1.385v1.816h2.645l-0.344 2.845h-2.301v7.034h-2.758v-7.034h-2.306v-2.845h2.306v-2.098c0-2.435 1.396-3.761 3.436-3.761 0.976 0 1.816 0.077 2.06 0.112v2.545"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__inst--active" y="1504"><title>ic_inst_activ</title><desc>Created with Sketch.</desc><g id="social__inst--active-Symbols" fill-rule="evenodd" fill="none"><g id="social__inst--active-ic_inst_activ"><rect id="social__inst--active-Rectangle-7-Copy" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0" fill="#fff"/><path id="social__inst--active-Shape" fill="#0EB0A0" d="m20.035 22.551c0-1.39 1.126-2.517 2.517-2.517 1.39 0 2.517 1.127 2.517 2.517s-1.127 2.518-2.517 2.518c-1.391 0-2.517-1.128-2.517-2.518m-1.361 0c0 2.142 1.736 3.878 3.878 3.878 2.141 0 3.877-1.736 3.877-3.878 0-2.141-1.736-3.877-3.877-3.877-2.142 0-3.878 1.736-3.878 3.877m7.003-4.031c0 0.5 0.405 0.906 0.906 0.906 0.5 0 0.906-0.406 0.906-0.906s-0.405-0.906-0.906-0.906-0.906 0.406-0.906 0.906m-6.177 10.178c-0.736-0.034-1.136-0.156-1.402-0.26-0.352-0.137-0.604-0.301-0.869-0.565-0.264-0.264-0.428-0.515-0.564-0.868-0.104-0.266-0.227-0.666-0.26-1.402-0.037-0.796-0.044-1.035-0.044-3.052 0-2.016 0.008-2.255 0.044-3.051 0.033-0.737 0.157-1.136 0.26-1.403 0.137-0.352 0.3-0.603 0.564-0.868 0.265-0.264 0.516-0.428 0.869-0.565 0.266-0.104 0.666-0.226 1.402-0.26 0.796-0.036 1.036-0.044 3.052-0.044s2.255 0.008 3.051 0.044c0.737 0.034 1.136 0.157 1.403 0.26 0.352 0.137 0.604 0.301 0.868 0.565s0.428 0.516 0.565 0.868c0.104 0.266 0.226 0.666 0.26 1.403 0.037 0.796 0.044 1.035 0.044 3.051s-0.007 2.255-0.044 3.052c-0.034 0.736-0.157 1.136-0.26 1.402-0.137 0.353-0.301 0.604-0.565 0.868s-0.516 0.428-0.868 0.565c-0.266 0.104-0.666 0.226-1.403 0.26-0.796 0.036-1.035 0.044-3.051 0.044s-2.256-0.008-3.052-0.044m-0.062-13.652c-0.804 0.036-1.353 0.164-1.833 0.35-0.496 0.193-0.917 0.452-1.337 0.871-0.42 0.42-0.679 0.841-0.872 1.338-0.186 0.48-0.314 1.029-0.35 1.833-0.037 0.805-0.046 1.063-0.046 3.113 0 2.051 0.009 2.308 0.046 3.114 0.036 0.803 0.164 1.352 0.35 1.832 0.193 0.497 0.451 0.918 0.872 1.338 0.419 0.42 0.84 0.678 1.337 0.871 0.481 0.187 1.029 0.314 1.833 0.351 0.806 0.036 1.063 0.046 3.114 0.046s2.308-0.009 3.113-0.046c0.804-0.037 1.353-0.164 1.833-0.351 0.496-0.193 0.917-0.451 1.338-0.871 0.419-0.42 0.677-0.841 0.871-1.338 0.186-0.48 0.314-1.029 0.35-1.832 0.037-0.806 0.046-1.063 0.046-3.114 0-2.05-0.009-2.308-0.046-3.113-0.036-0.804-0.164-1.353-0.35-1.833-0.194-0.496-0.452-0.917-0.871-1.338-0.42-0.419-0.842-0.678-1.337-0.871-0.481-0.186-1.03-0.314-1.833-0.35-0.806-0.037-1.063-0.046-3.114-0.046s-2.308 0.009-3.114 0.046"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__inst" y="1549"><title>ic_inst_nrm</title><desc>Created with Sketch.</desc><defs><rect id="social__inst-path-1" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0"/><mask id="social__inst-mask-2" maskContentUnits="userSpaceOnUse" height="45" width="45" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#social__inst-path-1"/></mask></defs><g id="social__inst-Symbols" fill-rule="evenodd" fill="none"><g id="social__inst-ic_inst_nrm"><use id="social__inst-Rectangle-7-Copy" xlink:href="#social__inst-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#social__inst-mask-2)"/><path id="social__inst-Shape" fill="#A1A4A9" d="m20.035 22.551c0-1.39 1.126-2.517 2.517-2.517 1.39 0 2.517 1.127 2.517 2.517s-1.127 2.518-2.517 2.518c-1.391 0-2.517-1.128-2.517-2.518m-1.361 0c0 2.142 1.736 3.878 3.878 3.878 2.141 0 3.877-1.736 3.877-3.878 0-2.141-1.736-3.877-3.877-3.877-2.142 0-3.878 1.736-3.878 3.877m7.003-4.031c0 0.5 0.405 0.906 0.906 0.906 0.5 0 0.906-0.406 0.906-0.906s-0.405-0.906-0.906-0.906-0.906 0.406-0.906 0.906m-6.177 10.178c-0.736-0.034-1.136-0.156-1.402-0.26-0.352-0.137-0.604-0.301-0.869-0.565-0.264-0.264-0.428-0.515-0.564-0.868-0.104-0.266-0.227-0.666-0.26-1.402-0.037-0.796-0.044-1.035-0.044-3.052 0-2.016 0.008-2.255 0.044-3.051 0.033-0.737 0.157-1.136 0.26-1.403 0.137-0.352 0.3-0.603 0.564-0.868 0.265-0.264 0.516-0.428 0.869-0.565 0.266-0.104 0.666-0.226 1.402-0.26 0.796-0.036 1.036-0.044 3.052-0.044s2.255 0.008 3.051 0.044c0.737 0.034 1.136 0.157 1.403 0.26 0.352 0.137 0.604 0.301 0.868 0.565s0.428 0.516 0.565 0.868c0.104 0.266 0.226 0.666 0.26 1.403 0.037 0.796 0.044 1.035 0.044 3.051s-0.007 2.255-0.044 3.052c-0.034 0.736-0.157 1.136-0.26 1.402-0.137 0.353-0.301 0.604-0.565 0.868s-0.516 0.428-0.868 0.565c-0.266 0.104-0.666 0.226-1.403 0.26-0.796 0.036-1.035 0.044-3.051 0.044s-2.256-0.008-3.052-0.044m-0.062-13.652c-0.804 0.036-1.353 0.164-1.833 0.35-0.496 0.193-0.917 0.452-1.337 0.871-0.42 0.42-0.679 0.841-0.872 1.338-0.186 0.48-0.314 1.029-0.35 1.833-0.037 0.805-0.046 1.063-0.046 3.113 0 2.051 0.009 2.308 0.046 3.114 0.036 0.803 0.164 1.352 0.35 1.832 0.193 0.497 0.451 0.918 0.872 1.338 0.419 0.42 0.84 0.678 1.337 0.871 0.481 0.187 1.029 0.314 1.833 0.351 0.806 0.036 1.063 0.046 3.114 0.046s2.308-0.009 3.113-0.046c0.804-0.037 1.353-0.164 1.833-0.351 0.496-0.193 0.917-0.451 1.338-0.871 0.419-0.42 0.677-0.841 0.871-1.338 0.186-0.48 0.314-1.029 0.35-1.832 0.037-0.806 0.046-1.063 0.046-3.114 0-2.05-0.009-2.308-0.046-3.113-0.036-0.804-0.164-1.353-0.35-1.833-0.194-0.496-0.452-0.917-0.871-1.338-0.42-0.419-0.842-0.678-1.337-0.871-0.481-0.186-1.03-0.314-1.833-0.35-0.806-0.037-1.063-0.046-3.114-0.046s-2.308 0.009-3.114 0.046"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__ok--active" y="1594"><title>ic_OK_activ</title><desc>Created with Sketch.</desc><g id="social__ok--active-Symbols" fill-rule="evenodd" fill="none"><g id="social__ok--active-ic_OK_activ"><rect id="social__ok--active-Rectangle-7-Copy" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0" fill="#fff"/><g id="social__ok--active-Group" fill="#0EB0A0" transform="translate(17 13)"><path id="social__ok--active-Fill-1" d="m4.9999 10c2.7581 0 5.0001-2.2422 5.0001-4.9989 0-2.7579-2.242-5.0011-5.0001-5.0011-2.7574 0-4.9999 2.2432-4.9999 5.0011 0 2.7567 2.2425 4.9989 4.9999 4.9989zm0-7.0693c1.1419 0 2.0704 0.9285 2.0704 2.0704 0 1.1406-0.9285 2.0696-2.0704 2.0696-1.1406 0-2.0702-0.929-2.0702-2.0696 0-1.1419 0.9296-2.0704 2.0702-2.0704z"/><path id="social__ok--active-Fill-2" d="m7.4829 14.246c0.9978-0.252 1.9598-0.689 2.8461-1.306 0.671-0.469 0.873-1.452 0.45-2.195-0.422-0.745-1.3082-0.9686-1.9799-0.5-2.0074 1.399-4.5923 1.398-6.5985 0-0.672-0.4686-1.558-0.245-1.9796 0.5-0.42252 0.744-0.22111 1.726 0.44972 2.195 0.88588 0.616 1.8482 1.054 2.846 1.306l-2.7399 3.037c-0.56042 0.622-0.56042 1.629 0.00042 2.251 0.28058 0.31 0.64758 0.466 1.015 0.466 0.3675 0 0.7353-0.156 1.0158-0.466l2.6915-2.984 2.6935 2.984c0.5604 0.621 1.4693 0.621 2.03 0 0.561-0.622 0.561-1.63 0-2.251l-2.7401-3.037"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__ok" y="1639"><title>ic_OK_nrm</title><desc>Created with Sketch.</desc><defs><rect id="social__ok-path-1" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0"/><mask id="social__ok-mask-2" maskContentUnits="userSpaceOnUse" height="45" width="45" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#social__ok-path-1"/></mask></defs><g id="social__ok-Symbols" fill-rule="evenodd" fill="none"><g id="social__ok-ic_OK_nrm"><use id="social__ok-Rectangle-7-Copy" xlink:href="#social__ok-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#social__ok-mask-2)"/><g id="social__ok-Group" fill="#A1A4A9" transform="translate(17 13)"><path id="social__ok-Fill-1" d="m4.9999 10c2.7581 0 5.0001-2.2422 5.0001-4.9989 0-2.7579-2.242-5.0011-5.0001-5.0011-2.7574 0-4.9999 2.2432-4.9999 5.0011 0 2.7567 2.2425 4.9989 4.9999 4.9989zm0-7.0693c1.1419 0 2.0704 0.9285 2.0704 2.0704 0 1.1406-0.9285 2.0696-2.0704 2.0696-1.1406 0-2.0702-0.929-2.0702-2.0696 0-1.1419 0.9296-2.0704 2.0702-2.0704z"/><path id="social__ok-Fill-2" d="m7.4829 14.246c0.9978-0.252 1.9598-0.689 2.8461-1.306 0.671-0.469 0.873-1.452 0.45-2.195-0.422-0.745-1.3082-0.9686-1.9799-0.5-2.0074 1.399-4.5923 1.398-6.5985 0-0.672-0.4686-1.558-0.245-1.9796 0.5-0.42252 0.744-0.22111 1.726 0.44972 2.195 0.88588 0.616 1.8482 1.054 2.846 1.306l-2.7399 3.037c-0.56042 0.622-0.56042 1.629 0.00042 2.251 0.28058 0.31 0.64758 0.466 1.015 0.466 0.3675 0 0.7353-0.156 1.0158-0.466l2.6915-2.984 2.6935 2.984c0.5604 0.621 1.4693 0.621 2.03 0 0.561-0.622 0.561-1.63 0-2.251l-2.7401-3.037"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__tw--active" y="1684"><title>ic_tw_activ</title><desc>Created with Sketch.</desc><g id="social__tw--active-Symbols" fill-rule="evenodd" fill="none"><g id="social__tw--active-ic_tw_activ"><rect id="social__tw--active-Rectangle-7-Copy" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0" fill="#fff"/><path id="social__tw--active-Twitter_bird_logo" fill="#0EB0A0" d="m27.623 27.038c0.605 0.372 1.071 0.962 1.29 1.665-0.567-0.345-1.195-0.595-1.864-0.73-0.535 0.585-1.298 0.95-2.143 0.95-1.621 0-2.935-1.347-2.935-3.01 0-0.236 0.026-0.466 0.076-0.686-2.439 0.126-4.602 1.324-6.05 3.145-0.253-0.444-0.398-0.961-0.398-1.513 0-1.044 0.518-1.965 1.306-2.505-0.481 0.015-0.934 0.15-1.329 0.376-0.001-0.013-0.001-0.025-0.001-0.038 0-1.458 1.012-2.675 2.355-2.951-0.246-0.069-0.505-0.106-0.773-0.106-0.19 0-0.373 0.019-0.553 0.054 0.374-1.196 1.458-2.066 2.743-2.09-1.006-0.808-2.271-1.289-3.647-1.289-0.236 0-0.47 0.014-0.7 0.042 1.3-0.854 2.842-1.352 4.5-1.352 5.399 0 8.351 4.586 8.351 8.564 0 0.131-0.003 0.26-0.008 0.389 0.573 0.425 1.071 0.955 1.465 1.559-0.526-0.24-1.092-0.401-1.685-0.474z" transform="translate(22.154 22.962) scale(1 -1) translate(-22.154 -22.962)"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__tw" y="1729"><title>ic_tw_nrm</title><desc>Created with Sketch.</desc><defs><rect id="social__tw-path-1" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0"/><mask id="social__tw-mask-2" maskContentUnits="userSpaceOnUse" height="45" width="45" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#social__tw-path-1"/></mask></defs><g id="social__tw-Symbols" fill-rule="evenodd" fill="none"><g id="social__tw-ic_tw_nrm"><use id="social__tw-Rectangle-7-Copy" xlink:href="#social__tw-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#social__tw-mask-2)"/><path id="social__tw-Twitter_bird_logo" fill="#A1A4A9" d="m27.623 27.038c0.605 0.372 1.071 0.962 1.29 1.665-0.567-0.345-1.195-0.595-1.864-0.73-0.535 0.585-1.298 0.95-2.143 0.95-1.621 0-2.935-1.347-2.935-3.01 0-0.236 0.026-0.466 0.076-0.686-2.439 0.126-4.602 1.324-6.05 3.145-0.253-0.444-0.398-0.961-0.398-1.513 0-1.044 0.518-1.965 1.306-2.505-0.481 0.015-0.934 0.15-1.329 0.376-0.001-0.013-0.001-0.025-0.001-0.038 0-1.458 1.012-2.675 2.355-2.951-0.246-0.069-0.505-0.106-0.773-0.106-0.19 0-0.373 0.019-0.553 0.054 0.374-1.196 1.458-2.066 2.743-2.09-1.006-0.808-2.271-1.289-3.647-1.289-0.236 0-0.47 0.014-0.7 0.042 1.3-0.854 2.842-1.352 4.5-1.352 5.399 0 8.351 4.586 8.351 8.564 0 0.131-0.003 0.26-0.008 0.389 0.573 0.425 1.071 0.955 1.465 1.559-0.526-0.24-1.092-0.401-1.685-0.474z" transform="translate(22.154 22.962) scale(1 -1) translate(-22.154 -22.962)"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__vk--active" y="1774"><title>ic_vk_activ</title><desc>Created with Sketch.</desc><g id="social__vk--active-Symbols" fill-rule="evenodd" fill="none"><g id="social__vk--active-ic_vk_activ"><rect id="social__vk--active-Rectangle-7" rx="22.5" height="45" width="45" y="0" x="0" fill="#fff"/><path id="social__vk--active-Imported-Layers" fill="#0EB0A0" d="m22.645 27.744h1.056s0.319-0.031 0.482-0.184c0.15-0.14 0.145-0.404 0.145-0.404s-0.02-1.235 0.637-1.416c0.649-0.18 1.481 1.193 2.364 1.72 0.667 0.399 1.174 0.312 1.174 0.312l2.36-0.028s1.234-0.067 0.649-0.912c-0.048-0.069-0.341-0.625-1.755-1.768-1.479-1.197-1.281-1.003 0.501-3.072 1.085-1.26 1.519-2.03 1.384-2.359-0.129-0.314-0.928-0.231-0.928-0.231l-2.656 0.014s-0.198-0.023-0.344 0.053c-0.142 0.075-0.234 0.248-0.234 0.248s-0.421 0.975-0.982 1.805c-1.182 1.749-1.656 1.842-1.849 1.733-0.45-0.253-0.337-1.017-0.337-1.56 0-1.696 0.295-2.403-0.575-2.586-0.289-0.06-0.502-0.101-1.24-0.107-0.949-0.009-1.751 0.002-2.205 0.196-0.302 0.13-0.535 0.416-0.393 0.433 0.175 0.02 0.573 0.093 0.784 0.343 0.272 0.323 0.263 1.047 0.263 1.047-0.001 0 0.156 1.997-0.366 2.245-0.358 0.17-0.849-0.178-1.904-1.765-0.54-0.813-0.948-1.712-0.948-1.712s-0.079-0.168-0.219-0.258c-0.171-0.109-0.408-0.144-0.408-0.144l-2.525 0.015s-0.379 0.009-0.518 0.153c-0.124 0.127-0.01 0.391-0.01 0.391s1.976 4.028 4.214 6.058c2.053 1.862 4.383 1.74 4.383 1.74"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__vk" y="1819"><title>ic_vk_nrm</title><desc>Created with Sketch.</desc><defs><rect id="social__vk-path-1" rx="22.5" height="45" width="45" y="0" x="0"/><mask id="social__vk-mask-2" maskContentUnits="userSpaceOnUse" height="45" width="45" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#social__vk-path-1"/></mask></defs><g id="social__vk-Symbols" fill-rule="evenodd" fill="none"><g id="social__vk-ic_vk_nrm"><use id="social__vk-Rectangle-7" xlink:href="#social__vk-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#social__vk-mask-2)"/><path id="social__vk-Imported-Layers" fill="#A1A4A9" d="m22.645 27.744h1.056s0.319-0.031 0.482-0.184c0.15-0.14 0.145-0.404 0.145-0.404s-0.02-1.235 0.637-1.416c0.649-0.18 1.481 1.193 2.364 1.72 0.667 0.399 1.174 0.312 1.174 0.312l2.36-0.028s1.234-0.067 0.649-0.912c-0.048-0.069-0.341-0.625-1.755-1.768-1.479-1.197-1.281-1.003 0.501-3.072 1.085-1.26 1.519-2.03 1.384-2.359-0.129-0.314-0.928-0.231-0.928-0.231l-2.656 0.014s-0.198-0.023-0.344 0.053c-0.142 0.075-0.234 0.248-0.234 0.248s-0.421 0.975-0.982 1.805c-1.182 1.749-1.656 1.842-1.849 1.733-0.45-0.253-0.337-1.017-0.337-1.56 0-1.696 0.295-2.403-0.575-2.586-0.289-0.06-0.502-0.101-1.24-0.107-0.949-0.009-1.751 0.002-2.205 0.196-0.302 0.13-0.535 0.416-0.393 0.433 0.175 0.02 0.573 0.093 0.784 0.343 0.272 0.323 0.263 1.047 0.263 1.047-0.001 0 0.156 1.997-0.366 2.245-0.358 0.17-0.849-0.178-1.904-1.765-0.54-0.813-0.948-1.712-0.948-1.712s-0.079-0.168-0.219-0.258c-0.171-0.109-0.408-0.144-0.408-0.144l-2.525 0.015s-0.379 0.009-0.518 0.153c-0.124 0.127-0.01 0.391-0.01 0.391s1.976 4.028 4.214 6.058c2.053 1.862 4.383 1.74 4.383 1.74"/></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__yout--active" y="1864"><title>ic_yout_activ</title><desc>Created with Sketch.</desc><g id="social__yout--active-Symbols" fill-rule="evenodd" fill="none"><g id="social__yout--active-ic_yout_activ"><rect id="social__yout--active-Rectangle-7-Copy" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0" fill="#fff"/><g id="social__yout--active-Group-3" transform="translate(14 16)"><rect id="social__yout--active-Rectangle-2" rx="2" height="13" width="17" y="0" x="0" fill="#0EB0A0"/><path id="social__yout--active-Triangle-4" fill="#fff" d="m7.7746 9.748c-0.9801 0.512-1.7746 0.033-1.7746-1.0738v-4.3514c0-1.105 0.7959-1.585 1.7746-1.0738l4.4474 2.3226c0.98 0.5119 0.978 1.3426 0 1.8538l-4.4474 2.3226z"/></g></g></g></svg><svg xmlns:xlink="http://www.w3.org/1999/xlink" height="45" width="45" version="1.1" viewBox="0 0 45 45" id="social__yout" y="1909"><title>ic_yout_nrm</title><desc>Created with Sketch.</desc><defs><rect id="social__yout-path-1" rx="22.5" height="45" width="45" y="-7.1054e-15" x="0"/><mask id="social__yout-mask-2" maskContentUnits="userSpaceOnUse" height="45" width="45" y="0" x="0" maskUnits="objectBoundingBox" fill="white"><use xlink:href="#social__yout-path-1"/></mask></defs><g id="social__yout-Symbols" fill-rule="evenodd" fill="none"><g id="social__yout-ic_yout_nrm"><use id="social__yout-Rectangle-7-Copy" xlink:href="#social__yout-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#social__yout-mask-2)"/><g id="social__yout-Group-3" transform="translate(14 16)"><rect id="social__yout-Rectangle-2" rx="2" height="13" width="17" y="0" x="0" fill="#A1A4A9"/><path id="social__yout-Triangle-4" fill="#fff" d="m7.7746 9.748c-0.9801 0.512-1.7746 0.033-1.7746-1.0738v-4.3514c0-1.105 0.7959-1.585 1.7746-1.0738l4.4474 2.3226c0.98 0.5119 0.978 1.3426 0 1.8538l-4.4474 2.3226z"/></g></g></g></svg></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="1954px" viewBox="0 0 90 1954" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
+    <title>icons_new_superhero</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M1.0809,1.916 C0.7573,0.858 1.3807,0 2.4869,0 L18.5139,0 C19.6139,0 20.2419,0.863 19.9199,1.916 L17.7279,9.084 C17.4049,10.142 16.2499,11 15.1389,11 L5.8614,11 C4.7551,11 3.5943,10.137 3.2724,9.084 L1.0808,1.916 L1.0809,1.916 Z" id="path-1"></path>
+        <rect id="path-3" x="0" y="0" width="16" height="12" rx="2"></rect>
+        <rect id="path-5" x="0" y="0" width="16" height="12" rx="2"></rect>
+        <rect id="path-7" x="0" y="0" width="10" height="7"></rect>
+        <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="path-9"></path>
+        <rect id="path-11" x="0" y="0" width="10" height="7"></rect>
+        <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="path-13"></path>
+        <rect id="path-15" x="0" y="0" width="10" height="7"></rect>
+        <rect id="path-17" x="0" y="0" width="10" height="7"></rect>
+        <rect id="path-19" x="0" y="0" width="20" height="20"></rect>
+        <rect id="path-21" x="0" y="0" width="20" height="20"></rect>
+        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-23"></path>
+        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-25"></path>
+        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-27"></path>
+        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-29"></path>
+        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="path-31"></path>
+        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="path-33"></path>
+        <rect id="path-35" x="0" y="0" width="22" height="20"></rect>
+        <rect id="path-37" x="0" y="0" width="22" height="20"></rect>
+        <rect id="path-39" x="0.2857" y="0.1405" width="4.5714" height="16.612"></rect>
+        <linearGradient x1="-67.2676613%" y1="-6.00725092%" x2="146.794666%" y2="74.8716057%" id="linearGradient-41">
+            <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#126B62" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-42">
+            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="-53.3157872%" y1="7.70445757%" x2="123.502755%" y2="92.0917175%" id="linearGradient-43">
+            <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#074B44" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-44">
+            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <rect id="path-45" x="0" y="0" width="28" height="40"></rect>
+        <linearGradient x1="20.9896462%" y1="-6.39583198%" x2="119.272646%" y2="91.5816872%" id="linearGradient-47">
+            <stop stop-color="#28A59C" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#074B44" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-120.0%" y="-23.1%" width="340.0%" height="146.2%" filterUnits="objectBoundingBox" id="filter-48">
+            <feGaussianBlur stdDeviation="2" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <rect id="path-49" x="0" y="0" width="28" height="40"></rect>
+        <rect id="path-51" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-53" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-55" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-57" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-59" x="0" y="0" width="45" height="45" rx="22.5"></rect>
+        <rect id="path-61" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons_new_superhero">
+            <g id="badge__hit">
+                <g id="badge__hit-Symbols">
+                    <g id="badge__hit-ic_hit">
+                        <circle id="badge__hit-Oval-5-Copy" fill="#FFC20E" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="30"></circle>
+                        <circle id="badge__hit-Oval-5-Copy" stroke="#FFFFFF" fill="#FFC20E" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="28"></circle>
+                        <text id="ХИТ" fill="#FFFFFF" font-family="Helvetica" font-size="12" font-weight="normal">
+                            <tspan x="18" y="35">ХИТ</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+            <g id="badge__new" transform="translate(0.000000, 60.000000)">
+                <g id="badge__new-Symbols">
+                    <g id="badge__new-ic_new">
+                        <circle id="badge__new-Oval-5" fill="#00C0F3" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="30"></circle>
+                        <circle id="badge__new-Oval-5" stroke="#FFFFFF" fill="#00C0F3" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="28"></circle>
+                        <text id="НОВОЕ" fill="#FFFFFF" font-family="Helvetica" font-size="12" font-weight="normal">
+                            <tspan x="8" y="35">НОВОЕ</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+            <g id="badge__sale" transform="translate(0.000000, 120.000000)">
+                <g id="badge__sale-Symbols">
+                    <g id="badge__sale-ic_sale">
+                        <circle id="badge__sale-Oval-5-Copy-2" fill="#EF4D94" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="30"></circle>
+                        <circle id="badge__sale-Oval-5-Copy-2" stroke="#FFFFFF" fill="#EF4D94" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="28"></circle>
+                        <text id="АКЦИЯ" fill="#FFFFFF" font-family="Helvetica" font-size="12" font-weight="normal">
+                            <tspan x="9" y="35">АКЦИЯ</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+            <g id="count__arrow--left-active" transform="translate(0.000000, 180.000000)">
+                <g id="count__arrow--left-active-Symbols">
+                    <g id="count__arrow--left-active-ic_arr2_-_activ">
+                        <g id="Group" transform="translate(15.000000, 15.000000) rotate(-90.000000) translate(-15.000000, -15.000000) translate(0.000000, 0.000000)">
+                            <rect id="count__arrow--left-active-Rectangle-7-Copy" fill="#007A6C" fill-rule="nonzero" x="0" y="2.13164e-14" width="30" height="30" rx="2"></rect>
+                            <path d="M7,19 L14.641,11.153 C14.839,10.95 15.16,10.948 15.359,11.153 L23,19" id="count__arrow--left-active-Rectangle-5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="count__arrow--left" transform="translate(0.000000, 210.000000)">
+                <g id="count__arrow--left-Symbols">
+                    <g id="count__arrow--left-ic_arr2_-_nrm">
+                        <g id="Group" transform="translate(15.000000, 15.000000) rotate(-90.000000) translate(-15.000000, -15.000000) translate(0.000000, 0.000000)">
+                            <rect id="count__arrow--left-Rectangle-7-Copy" fill="#F8F8F8" fill-rule="nonzero" x="0" y="2.13164e-14" width="30" height="30" rx="2"></rect>
+                            <path d="M7,19 L14.641,11.153 C14.839,10.95 15.16,10.948 15.359,11.153 L23,19" id="count__arrow--left-Rectangle-5" stroke="#A1A4A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="count__arrow--right-active" transform="translate(0.000000, 240.000000)">
+                <g id="count__arrow--right-active-Symbols">
+                    <g id="count__arrow--right-active-ic_arr2_+_activ">
+                        <g id="Group" transform="translate(15.000000, 15.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -15.000000) translate(-0.000000, 0.000000)">
+                            <rect id="count__arrow--right-active-Rectangle-7-Copy" fill="#007A6C" fill-rule="nonzero" x="0" y="2.13164e-14" width="30" height="30" rx="2"></rect>
+                            <path d="M7,19 L14.641,11.153 C14.839,10.95 15.16,10.948 15.359,11.153 L23,19" id="count__arrow--right-active-Rectangle-5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="count__arrow--right" transform="translate(0.000000, 270.000000)">
+                <g id="count__arrow--right-Symbols">
+                    <g id="count__arrow--right-ic_arr2_+_nrm">
+                        <g id="Group" transform="translate(15.000000, 15.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -15.000000) translate(-0.000000, 0.000000)">
+                            <rect id="count__arrow--right-Rectangle-7-Copy" fill="#F8F8F8" fill-rule="nonzero" x="0" y="2.13164e-14" width="30" height="30" rx="2"></rect>
+                            <path d="M7,19 L14.641,11.153 C14.839,10.95 15.16,10.948 15.359,11.153 L23,19" id="count__arrow--right-Rectangle-5" stroke="#A1A4A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__attention" transform="translate(1.000000, 301.000000)" fill-rule="nonzero">
+                <g id="icon__attention-Symbols">
+                    <g id="icon__attention-ic_attention">
+                        <g id="Group">
+                            <path d="M10.276,2.0228 L16.637,14.7428 C17.38,16.2288 16.636,17.4338 14.972,17.4338 L2.89,17.4338 C1.2277,17.4338 0.4812,16.2318 1.2255,14.7428 L7.5858,2.0228 C8.3288,0.5368 9.5319,0.5339 10.276,2.0226 L10.276,2.0228 Z" id="icon__attention-Triangle" fill="#EBB4BF"></path>
+                            <path d="M2.1199,15.191 C1.7088,16.013 1.9694,16.434 2.8897,16.434 L14.9717,16.434 C15.8917,16.434 16.1527,16.012 15.7417,15.191 L9.3815,2.47 C9.0064,1.7197 8.8551,1.7198 8.48,2.47 L2.1196,15.191 L2.1199,15.191 Z" id="icon__attention-Path" fill="#EBB4BF"></path>
+                            <path d="M8.2412,6 L8.3491,12.119 L9.4028,12.119 L9.5107,6 L8.2412,6 Z M8,14.398 C8,14.912 8.3682,15.28 8.8823,15.28 C9.3965,15.28 9.7583,14.912 9.7583,14.398 C9.7583,13.877 9.3965,13.509 8.8823,13.509 C8.3682,13.509 8,13.877 8,14.398 Z" id="icon__attention-!" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__basket--active" transform="translate(3.000000, 326.000000)">
+                <g id="icon__basket--active-Symbols">
+                    <g id="icon__basket--active-ic_basket_pressed">
+                        <g id="icon__basket--active-Rectangle-2" transform="translate(0.000000, 5.000000)">
+                            <g id="icon__basket--active-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-2" fill="white">
+                                        <use xlink:href="#path-1"></use>
+                                    </mask>
+                                    <g id="path-1"></g>
+                                    <path d="M1.0809,1.916 C0.7573,0.858 1.3807,0 2.4869,0 L18.5139,0 C19.6139,0 20.2419,0.863 19.9199,1.916 L17.7279,9.084 C17.4049,10.142 16.2499,11 15.1389,11 L5.8614,11 C4.7551,11 3.5943,10.137 3.2724,9.084 L1.0808,1.916 L1.0809,1.916 Z" id="icon__basket--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-2)"></path>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="Group" transform="translate(5.000000, 0.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                            <rect id="icon__basket--active-Rectangle-3" x="1" y="8" width="1" height="5" rx="0.5"></rect>
+                            <rect id="icon__basket--active-Rectangle-3-Copy" x="5" y="8" width="1" height="5" rx="0.5"></rect>
+                            <rect id="icon__basket--active-Rectangle-3-Copy-3" transform="translate(1.933000, 2.848100) rotate(30.000000) translate(-1.933000, -2.848100) " x="1.433" y="-0.1519" width="1" height="6" rx="0.5"></rect>
+                            <rect id="icon__basket--active-Rectangle-3-Copy-4" transform="translate(8.933000, 2.848100) scale(-1, 1) rotate(30.000000) translate(-8.933000, -2.848100) " x="8.433" y="-0.1519" width="1" height="6" rx="0.5"></rect>
+                            <rect id="icon__basket--active-Rectangle-3-Copy-2" x="9" y="8" width="1" height="5" rx="0.5"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__superhero--hover" transform="translate(3.000000, 357.000000)" fill-rule="nonzero" fill="#007A6B">
+                <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3"></path>
+            </g>
+            <g id="icon__basket" transform="translate(3.000000, 385.000000)" fill-rule="nonzero" fill="#263146">
+                <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3-Copy"></path>
+            </g>
+            <g id="icon__close--active" transform="translate(0.000000, 404.000000)" fill-rule="nonzero" fill="#081733">
+                <g id="icon__close--active-Symbols">
+                    <g id="icon__close--active-ic_close_activ">
+                        <g id="icon__close--active-ic_close_nrm">
+                            <rect id="icon__close--active-Rectangle-28" transform="translate(7.088271, 6.999929) rotate(45.000000) translate(-7.088271, -6.999929) " x="6.58827059" y="-1.647071" width="1" height="17.294" rx="0.5"></rect>
+                            <rect id="icon__close--active-Rectangle-28" transform="translate(7.088129, 6.999929) scale(-1, 1) rotate(45.000000) translate(-7.088129, -6.999929) " x="6.588129" y="-1.64707059" width="1" height="17.294" rx="0.5"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__close" transform="translate(0.000000, 418.000000)" fill-rule="nonzero" fill="#7B8693">
+                <g id="icon__close-Symbols">
+                    <g id="icon__close-ic_close_nrm">
+                        <g id="icon__close-Rectangle-28">
+                            <rect id="Rectangle-path" transform="translate(7.088271, 6.999929) rotate(45.000000) translate(-7.088271, -6.999929) " x="6.58827059" y="-1.647071" width="1" height="17.294" rx="0.5"></rect>
+                            <rect id="Rectangle-path" transform="translate(7.088129, 6.999929) scale(-1, 1) rotate(45.000000) translate(-7.088129, -6.999929) " x="6.588129" y="-1.64707059" width="1" height="17.294" rx="0.5"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__heart--active" transform="translate(0.000000, 432.000000)" fill-rule="nonzero" fill="#EF4D94">
+                <g id="icon__heart--active-Symbols">
+                    <g id="icon__heart--active-ic_heart_full">
+                        <path d="M7.3864,-2.2737e-13 C2.9586,-2.2737e-13 0,3.7877 0,8.0034 C0,11.959 2.1559,15.377 4.7919,18.0754 C7.4279,20.7734 10.574,22.7734 12.732,23.9334 C12.901,24.0224 13.099,24.0224 13.268,23.9334 C15.426,22.7734 18.572,20.7734 21.208,18.0754 C23.844,15.3774 26,11.9594 26,8.0034 C26,3.7881 23.041,0.0004 18.614,0.0004 C16.004,0.0004 14.27,1.387 13,3.2614 C11.73,1.387 9.9965,0.0004 7.3864,0.0004 L7.3864,0.0004 L7.3864,-2.2737e-13 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__heart" transform="translate(0.000000, 456.000000)" fill-rule="nonzero" fill="#E5E5E5">
+                <g id="icon__heart-Symbols">
+                    <g id="icon__heart-ic_heart_empty">
+                        <path d="M0,8.0034 C0,11.959 2.1559,15.377 4.7919,18.0754 C7.4279,20.7734 10.574,22.7734 12.732,23.9334 C12.901,24.0224 13.099,24.0224 13.268,23.9334 C15.426,22.7734 18.572,20.7734 21.208,18.0754 C23.844,15.3774 26,11.9594 26,8.0034 C26,3.7881 23.041,0.0004 18.614,0.0004 C16.004,0.0004 14.27,1.387 13,3.2614 C11.73,1.387 9.9965,0.0004 7.3864,0.0004 C2.9586,0.0004 0,3.7881 0,8.0038 L0,8.0034 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__info" transform="translate(0.000000, 480.000000)" fill-rule="nonzero">
+                <g id="icon__info-Symbols">
+                    <g id="icon__info-ic_info_nrm">
+                        <g id="icon__info-Imported-Layers-Copy-3">
+                            <path d="M20,10 C20,15.523 15.523,20 10,20 C4.4771,20 0,15.523 0,10 C0,4.4772 4.4771,0 10,0 C15.523,0 20,4.4772 20,10 Z" id="icon__info-Stroke-1" fill="#007A6C"></path>
+                            <path d="M7.9266,5.0469 C8.5446,4.349 9.393,4 10.472,4 C11.47,4 12.269,4.2985 12.869,4.8955 C13.469,5.4927 13.769,6.2556 13.769,7.1844 C13.769,7.747 13.66,8.2033 13.443,8.5537 C13.225,8.904 12.779,9.4189 12.105,10.098 C11.614,10.592 11.295,11.01 11.147,11.352 C10.999,11.694 10.925,12.2 10.925,12.869 L9.5889,12.869 C9.5889,12.109 9.6739,11.498 9.8443,11.034 C10.014,10.569 10.393,10.037 10.98,9.4374 L11.592,8.8083 C11.776,8.628 11.925,8.4396 12.039,8.2429 C12.247,7.8981 12.351,7.5398 12.351,7.1683 C12.351,6.6481 12.201,6.197 11.903,5.8148 C11.604,5.4328 11.11,5.2415 10.42,5.2415 C9.5669,5.2415 8.9771,5.5706 8.6499,6.2287 C8.4661,6.5948 8.3613,7.123 8.3359,7.813 L7,7.813 C6.9996,6.6671 7.3085,5.7448 7.9266,5.0469 L7.9266,5.0469 Z M9.5589,14.19 L11.052,14.19 L11.052,15.846 L9.5589,15.846 L9.5589,14.19 Z" id="icon__info-Fill-2" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__mail--active" transform="translate(2.000000, 504.000000)">
+                <g id="icon__mail--active-Symbols">
+                    <g id="icon__mail--active-ic_mail_activ">
+                        <g id="icon__mail--active-ic_mail_nrm">
+                            <g id="icon__mail--active-Rectangle-19">
+                                <g id="icon__mail--active-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-4" fill="white">
+                                            <use xlink:href="#path-3"></use>
+                                        </mask>
+                                        <g id="path-3"></g>
+                                        <rect id="icon__mail--active-path-1" stroke="#007A6C" stroke-width="2" fill="#007A6C" fill-rule="nonzero" mask="url(#mask-4)" x="0" y="0" width="16" height="12" rx="2"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                            <polyline id="icon__mail--active-Rectangle-11" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" points="12.243 3.2072 8 7.4504 3.7568 3.2072 3.7568 3.2072"></polyline>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__mail" transform="translate(2.000000, 524.000000)">
+                <g id="icon__mail-Symbols">
+                    <g id="icon__mail-ic_mail_nrm">
+                        <g id="Group">
+                            <g id="icon__mail-Rectangle-19">
+                                <g id="icon__mail-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-6" fill="white">
+                                            <use xlink:href="#path-5"></use>
+                                        </mask>
+                                        <g id="path-5"></g>
+                                        <rect id="icon__mail-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-6)" x="0" y="0" width="16" height="12" rx="2"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                            <polyline id="icon__mail-Rectangle-11" stroke="#263146" stroke-linecap="round" stroke-linejoin="round" points="12.243 3.2072 8 7.4504 3.7568 3.2072 3.7568 3.2072"></polyline>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__print--active" transform="translate(2.000000, 542.000000)">
+                <g id="icon__print--active-Symbols">
+                    <g id="icon__print--active-ic_print_activ">
+                        <g id="icon__print--active-ic_print_nrm">
+                            <g id="Group">
+                                <g id="icon__print--active-Rectangle-8" transform="translate(3.000000, 0.000000)">
+                                    <g id="icon__print--active-path-1-Clipped">
+                                        <g>
+                                            <mask id="mask-8" fill="white">
+                                                <use xlink:href="#path-7"></use>
+                                            </mask>
+                                            <g id="path-7"></g>
+                                            <rect id="icon__print--active-path-1" stroke="#263146" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-8)" x="0" y="0" width="10" height="7"></rect>
+                                        </g>
+                                    </g>
+                                </g>
+                                <g id="icon__print--active-Rectangle-7" transform="translate(0.000000, 6.000000)">
+                                    <g id="icon__print--active-path-3-Clipped">
+                                        <g>
+                                            <mask id="mask-10" fill="white">
+                                                <use xlink:href="#path-9"></use>
+                                            </mask>
+                                            <g id="path-9"></g>
+                                            <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="icon__print--active-path-3" stroke="#007A6C" fill="#007A6C" fill-rule="nonzero" mask="url(#mask-10)"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                                <g id="icon__print--active-Rectangle-8-Copy" transform="translate(3.000000, 10.000000)">
+                                    <g id="icon__print--active-path-5-Clipped">
+                                        <g>
+                                            <mask id="mask-12" fill="white">
+                                                <use xlink:href="#path-11"></use>
+                                            </mask>
+                                            <g id="path-11"></g>
+                                            <rect id="icon__print--active-path-5" stroke="#007A6C" fill="#FFFFFF" fill-rule="nonzero" mask="url(#mask-12)" x="0" y="0" width="10" height="7"></rect>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                            <rect id="icon__print--active-Rectangle-10" fill="#263146" fill-rule="nonzero" x="5" y="12" width="6" height="1"></rect>
+                            <rect id="icon__print--active-Rectangle-10-Copy" fill="#263146" fill-rule="nonzero" x="5" y="14" width="6" height="1"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__print" transform="translate(2.000000, 562.000000)">
+                <g id="icon__print-Symbols">
+                    <g id="icon__print-ic_print_nrm">
+                        <g id="Group">
+                            <g>
+                                <g id="icon__print-Rectangle-7" transform="translate(0.000000, 6.000000)">
+                                    <g id="icon__print-path-1-Clipped">
+                                        <g>
+                                            <mask id="mask-14" fill="white">
+                                                <use xlink:href="#path-13"></use>
+                                            </mask>
+                                            <g id="path-13"></g>
+                                            <path d="M3.8884,9 L1.7841,9 C0.79879,9 0,8.201 0,7.2 L0,1.7997 C0,0.8057 0.79344,0 1.7734,0 L14.2274,0 C15.2064,0 16.0004,0.7987 16.0004,1.7997 L16.0004,7.2 C16.0004,8.194 15.2064,9 14.2174,9 L12.2584,9" id="icon__print-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-14)"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                                <g id="icon__print-Rectangle-8" transform="translate(3.000000, 0.000000)">
+                                    <g id="icon__print-path-3-Clipped">
+                                        <g>
+                                            <mask id="mask-16" fill="white">
+                                                <use xlink:href="#path-15"></use>
+                                            </mask>
+                                            <g id="path-15"></g>
+                                            <rect id="icon__print-path-3" stroke="#263146" stroke-width="2" mask="url(#mask-16)" x="0" y="0" width="10" height="7"></rect>
+                                        </g>
+                                    </g>
+                                </g>
+                                <g id="icon__print-Rectangle-8-Copy" transform="translate(3.000000, 10.000000)">
+                                    <g id="icon__print-path-5-Clipped">
+                                        <g>
+                                            <mask id="mask-18" fill="white">
+                                                <use xlink:href="#path-17"></use>
+                                            </mask>
+                                            <g id="path-17"></g>
+                                            <rect id="icon__print-path-5" stroke="#263146" stroke-width="2" mask="url(#mask-18)" x="0" y="0" width="10" height="7"></rect>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                            <rect id="icon__print-Rectangle-10" fill="#263146" fill-rule="nonzero" x="5" y="12" width="6" height="1"></rect>
+                            <rect id="icon__print-Rectangle-10-Copy" fill="#263146" fill-rule="nonzero" x="5" y="14" width="6" height="1"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__profile--active" transform="translate(1.000000, 581.000000)" stroke="#FFFFFF">
+                <g id="icon__profile--active-Symbols">
+                    <g id="icon__profile--active-ic_profile_pressed">
+                        <g id="Group">
+                            <path d="M24.938,18.154 C25.621,16.574 26,14.831 26,13 C26,5.8203 20.18,0 13,0 C5.8203,0 0,5.8203 0,13 C0,14.816 0.37226,16.545 1.0446,18.114" id="icon__profile--active-Oval" stroke-linecap="round"></path>
+                            <path d="M10.097,18.22 C7.3199,18.656 4.8809,19.734 3.0962,21.421 C5.4807,24.223 9.0328,26 13,26 C16.967,26 20.519,24.223 22.904,21.421 C21.167,19.779 18.81,18.714 16.124,18.256" id="icon__profile--active-Combined-Shape"></path>
+                            <path d="M13,20 C16.156,20 18,15.15 18,11.895 C18,8.6392 16.156,6 13,6 C9.8441,6 8,8.6392 8,11.895 C8,15.15 9.8441,20 13,20 Z" id="icon__profile--active-Oval"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__profile--hover" transform="translate(1.000000, 609.000000)" stroke="#007A6C">
+                <g id="icon__profile--hover-Symbols">
+                    <g id="icon__profile--hover-ic_profile_hvr">
+                        <g id="Group">
+                            <path d="M24.938,18.154 C25.621,16.574 26,14.831 26,13 C26,5.8203 20.18,0 13,0 C5.8203,0 0,5.8203 0,13 C0,14.816 0.37226,16.545 1.0446,18.114" id="icon__profile--hover-Oval" stroke-linecap="round"></path>
+                            <path d="M10.097,18.22 C7.3199,18.656 4.8809,19.734 3.0962,21.421 C5.4807,24.223 9.0328,26 13,26 C16.967,26 20.519,24.223 22.904,21.421 C21.167,19.779 18.81,18.714 16.124,18.256" id="icon__profile--hover-Combined-Shape"></path>
+                            <path d="M13,20 C16.156,20 18,15.15 18,11.895 C18,8.6392 16.156,6 13,6 C9.8441,6 8,8.6392 8,11.895 C8,15.15 9.8441,20 13,20 Z" id="icon__profile--hover-Oval"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__profile" transform="translate(1.000000, 637.000000)" stroke="#263146">
+                <g id="icon__profile-Symbols">
+                    <g id="icon__profile-ic_profile_nrm">
+                        <g id="Group">
+                            <path d="M24.938,18.154 C25.621,16.574 26,14.831 26,13 C26,5.8203 20.18,0 13,0 C5.8203,0 0,5.8203 0,13 C0,14.816 0.37226,16.545 1.0446,18.114" id="icon__profile-Oval" stroke-linecap="round"></path>
+                            <path d="M10.097,18.22 C7.3199,18.656 4.8809,19.734 3.0962,21.421 C5.4807,24.223 9.0328,26 13,26 C16.967,26 20.519,24.223 22.904,21.421 C21.167,19.779 18.81,18.714 16.124,18.256" id="icon__profile-Combined-Shape"></path>
+                            <path d="M13,20 C16.156,20 18,15.15 18,11.895 C18,8.6392 16.156,6 13,6 C9.8441,6 8,8.6392 8,11.895 C8,15.15 9.8441,20 13,20 Z" id="icon__profile-Oval"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__radiobtn--active" transform="translate(0.000000, 664.000000)">
+                <g id="icon__radiobtn--active-Symbols">
+                    <g id="icon__radiobtn--active-ic_rd_btn_activ">
+                        <g id="icon__radiobtn--active-ic_rdbtn_activ">
+                            <g id="icon__radiobtn--active-path-1-link" transform="translate(2.000000, 2.000000)" fill-rule="nonzero" fill="#007A6C">
+                                <circle id="icon__radiobtn--active-path-1" cx="8" cy="8" r="8"></circle>
+                            </g>
+                            <g id="icon__radiobtn--active-path-1-link">
+                                <g id="icon__radiobtn--active-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-20" fill="white">
+                                            <use xlink:href="#path-19"></use>
+                                        </mask>
+                                        <g id="path-19"></g>
+                                        <circle id="icon__radiobtn--active-path-1" stroke="#263146" stroke-width="4" mask="url(#mask-20)" cx="10" cy="10" r="8"></circle>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__radiobtn" transform="translate(0.000000, 684.000000)">
+                <g id="icon__radiobtn-Symbols">
+                    <g id="icon__radiobtn-ic_rd_btn_norm">
+                        <g id="icon__radiobtn-ic_rdbtn_norm">
+                            <g id="icon__radiobtn-path-1-link" transform="translate(2.000000, 2.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                                <circle id="icon__radiobtn-path-1" cx="8" cy="8" r="8"></circle>
+                            </g>
+                            <g id="icon__radiobtn-path-1-link">
+                                <g id="icon__radiobtn-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-22" fill="white">
+                                            <use xlink:href="#path-21"></use>
+                                        </mask>
+                                        <g id="path-23"></g>
+                                        <circle id="icon__radiobtn-path-1" stroke="#ECECEC" stroke-width="4" mask="url(#mask-22)" cx="10" cy="10" r="8"></circle>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__rules--active" transform="translate(6.000000, 706.000000)">
+                <g id="icon__rules--active-Symbols">
+                    <g id="icon__rules--active-ic_rules_pressed">
+                        <g id="Group">
+                            <g id="icon__rules--active-Rectangle" transform="translate(0.000000, 2.000000)">
+                                <g id="icon__rules--active-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-24" fill="white">
+                                            <use xlink:href="#path-23"></use>
+                                        </mask>
+                                        <g id="path-27"></g>
+                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-24)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                            <circle id="icon__rules--active-Oval-6" fill="#FFFFFF" fill-rule="nonzero" cx="8.5" cy="20.5" r="1.5"></circle>
+                            <path d="M8.5,17 C9.3284,17 10,11.213 10,9.3978 C10,7.5828 9.3284,7 8.5,7 C7.6716,7 7,7.5523 7,9.3978 C7,11.243 7.6716,17 8.5,17 Z" id="icon__rules--active-Oval-2" stroke="#FFFFFF"></path>
+                            <g id="icon__rules--active-Combined-Shape" transform="translate(3.000000, 0.000000)">
+                                <g id="icon__rules--active-path-3-Clipped">
+                                    <g>
+                                        <mask id="mask-26" fill="white">
+                                            <use xlink:href="#path-25"></use>
+                                        </mask>
+                                        <g id="path-29"></g>
+                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules--active-path-3" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-26)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__rules--hover" transform="translate(6.000000, 734.000000)">
+                <g id="icon__rules--hover-Symbols">
+                    <g id="icon__rules--hover-ic_rules_hvr">
+                        <g id="Group">
+                            <g id="icon__rules--hover-Rectangle" transform="translate(0.000000, 2.000000)">
+                                <g id="icon__rules--hover-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-28" fill="white">
+                                            <use xlink:href="#path-27"></use>
+                                        </mask>
+                                        <g id="path-31"></g>
+                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules--hover-path-1" stroke="#007A6C" stroke-width="2" mask="url(#mask-28)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                            <circle id="icon__rules--hover-Oval-6" fill="#007A6C" fill-rule="nonzero" cx="8.5" cy="20.5" r="1.5"></circle>
+                            <path d="M8.5,17 C9.3284,17 10,11.213 10,9.3978 C10,7.5828 9.3284,7 8.5,7 C7.6716,7 7,7.5523 7,9.3978 C7,11.243 7.6716,17 8.5,17 Z" id="icon__rules--hover-Oval-2" stroke="#007A6C"></path>
+                            <g id="icon__rules--hover-Combined-Shape" transform="translate(3.000000, 0.000000)">
+                                <g id="icon__rules--hover-path-3-Clipped">
+                                    <g>
+                                        <mask id="mask-30" fill="white">
+                                            <use xlink:href="#path-29"></use>
+                                        </mask>
+                                        <g id="path-33"></g>
+                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules--hover-path-3" stroke="#007A6C" stroke-width="2" mask="url(#mask-30)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__rules" transform="translate(6.000000, 762.000000)">
+                <g id="icon__rules-Symbols">
+                    <g id="icon__rules-ic_rules_nrm">
+                        <g id="Group">
+                            <g id="icon__rules-Rectangle" transform="translate(0.000000, 2.000000)">
+                                <g id="icon__rules-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-32" fill="white">
+                                            <use xlink:href="#path-31"></use>
+                                        </mask>
+                                        <g id="path-35"></g>
+                                        <path d="M13.199,0 L14.993,0 C16.101,0 17,0.8897 17,1.9912 L17,20.0092 C17,21.1092 16.11,22.0002 15,22.0002 L2,22.0002 C0.8955,22.0002 0,21.1102 0,20.0092 L0,1.9912 C0,0.8917 0.89959,0.0002 2.0001,0.0002 L3.6609,0.0002" id="icon__rules-path-1" stroke="#263146" stroke-width="2" mask="url(#mask-32)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                            <circle id="icon__rules-Oval-6" fill="#263146" fill-rule="nonzero" cx="8.5" cy="20.5" r="1.5"></circle>
+                            <path d="M8.5,17 C9.3284,17 10,11.213 10,9.3978 C10,7.5828 9.3284,7 8.5,7 C7.6716,7 7,7.5523 7,9.3978 C7,11.243 7.6716,17 8.5,17 Z" id="icon__rules-Oval-2" stroke="#263146"></path>
+                            <g id="icon__rules-Combined-Shape" transform="translate(3.000000, 0.000000)">
+                                <g id="icon__rules-path-3-Clipped">
+                                    <g>
+                                        <mask id="mask-34" fill="white">
+                                            <use xlink:href="#path-33"></use>
+                                        </mask>
+                                        <g id="path-37"></g>
+                                        <path d="M3.2674,1 L1.992,1 C0.9002,1 0,1.8954 0,3 C0,4.1123 0.8919,5 1.992,5 L9.008,5 C10.1,5 11,4.1046 11,3 C11,1.8877 10.108,1 9.008,1 L7.734,1 C7.388,0.40026 6.7386,0 5.9951,0 L5.0049,0 C4.2603,0 3.6132,0.4022 3.2674,1 Z" id="icon__rules-path-3" stroke="#263146" stroke-width="2" mask="url(#mask-34)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__star--active" transform="translate(0.000000, 788.000000)">
+                <g id="icon__star--active-Symbols">
+                    <g id="icon__star--active-ic_Star_full">
+                        <g id="icon__star--active-Star_full">
+                            <g id="icon__star--active-path-1-link" transform="translate(1.000000, 1.000000)" fill-rule="nonzero" fill="#007A6C">
+                                <path d="M11.791,16.188 C10.802,15.698 9.199,15.697 8.2091,16.188 L5.042,17.759 C4.053,18.249 3.4118,17.763 3.6102,16.672 L4.181,13.534 C4.3793,12.443 3.8815,10.954 3.0626,10.201 L0.5578,7.8989 C-0.25824,7.1488 -0.02457,6.4181 1.0627,6.2691 L4.6431,5.7785 C5.738,5.6284 7.0393,4.7162 7.5565,3.7278 L9.069,0.838 C9.583,-0.14451 10.414,-0.15035 10.931,0.838 L12.443,3.7278 C12.957,4.7103 14.269,5.6295 15.357,5.7785 L18.937,6.2691 C20.032,6.4191 20.261,7.1461 19.442,7.8989 L16.937,10.201 C16.121,10.952 15.62,12.443 15.819,13.534 L16.39,16.672 C16.588,17.763 15.948,18.249 14.958,17.759 L11.791,16.188 Z" id="icon__star--active-path-1"></path>
+                            </g>
+                            <g id="icon__star--active-path-1-link">
+                                <g id="icon__star--active-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-36" fill="white">
+                                            <use xlink:href="#path-35"></use>
+                                        </mask>
+                                        <g id="path-39"></g>
+                                        <path d="M12.791,17.188 C11.802,16.698 10.199,16.697 9.2091,17.188 L6.042,18.759 C5.053,19.249 4.4118,18.763 4.6102,17.672 L5.181,14.534 C5.3793,13.443 4.8815,11.954 4.0626,11.201 L1.5578,8.8989 C0.74176,8.1488 0.97543,7.4181 2.0627,7.2691 L5.6431,6.7785 C6.738,6.6284 8.0393,5.7162 8.5565,4.7278 L10.069,1.838 C10.583,0.85549 11.414,0.84965 11.931,1.838 L13.443,4.7278 C13.957,5.7103 15.269,6.6295 16.357,6.7785 L19.937,7.2691 C21.032,7.4191 21.261,8.1461 20.442,8.8989 L17.937,11.201 C17.121,11.952 16.62,13.443 16.819,14.534 L17.39,17.672 C17.588,18.763 16.948,19.249 15.958,18.759 L12.791,17.188 Z" id="icon__star--active-path-1" stroke="#FFFFFF" stroke-width="2" mask="url(#mask-36)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__star" transform="translate(0.000000, 808.000000)">
+                <g id="icon__star-Symbols">
+                    <g id="icon__star-ic_Star_empty">
+                        <g id="icon__star-path-1-link" transform="translate(1.000000, 1.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                            <path d="M11.791,16.188 C10.802,15.698 9.199,15.697 8.2091,16.188 L5.042,17.759 C4.053,18.249 3.4118,17.763 3.6102,16.672 L4.181,13.534 C4.3793,12.443 3.8815,10.954 3.0626,10.201 L0.5578,7.8989 C-0.25824,7.1488 -0.02457,6.4181 1.0627,6.2691 L4.6431,5.7785 C5.738,5.6284 7.0393,4.7162 7.5565,3.7278 L9.069,0.838 C9.583,-0.14451 10.414,-0.15035 10.931,0.838 L12.443,3.7278 C12.957,4.7103 14.269,5.6295 15.357,5.7785 L18.937,6.2691 C20.032,6.4191 20.261,7.1461 19.442,7.8989 L16.937,10.201 C16.121,10.952 15.62,12.443 15.819,13.534 L16.39,16.672 C16.588,17.763 15.948,18.249 14.958,17.759 L11.791,16.188 Z" id="icon__star-path-1"></path>
+                        </g>
+                        <g id="icon__star-path-1-link">
+                            <g id="icon__star-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-38" fill="white">
+                                        <use xlink:href="#path-37"></use>
+                                    </mask>
+                                    <g id="path-43"></g>
+                                    <path d="M12.791,17.188 C11.802,16.698 10.199,16.697 9.2091,17.188 L6.042,18.759 C5.053,19.249 4.4118,18.763 4.6102,17.672 L5.181,14.534 C5.3793,13.443 4.8815,11.954 4.0626,11.201 L1.5578,8.8989 C0.74176,8.1488 0.97543,7.4181 2.0627,7.2691 L5.6431,6.7785 C6.738,6.6284 8.0393,5.7162 8.5565,4.7278 L10.069,1.838 C10.583,0.85549 11.414,0.84965 11.931,1.838 L13.443,4.7278 C13.957,5.7103 15.269,6.6295 16.357,6.7785 L19.937,7.2691 C21.032,7.4191 21.261,8.1461 20.442,8.8989 L17.937,11.201 C17.121,11.952 16.62,13.443 16.819,14.534 L17.39,17.672 C17.588,18.763 16.948,19.249 15.958,18.759 L12.791,17.188 Z" id="icon__star-path-1" stroke="#007A6C" stroke-width="2" mask="url(#mask-38)"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__up--active" transform="translate(0.000000, 828.000000)">
+                <g id="icon__up--active-Symbols">
+                    <g id="icon__up--active-ic_up_activ">
+                        <rect id="icon__up--active-Rectangle-7-Copy" fill="#FFFFFF" fill-rule="nonzero" x="0" y="-4.2632e-14" width="60" height="60"></rect>
+                        <path d="M24.9999992,20 L34.8079992,29.551 C35.0629992,29.799 35.0649992,30.199 34.8079992,30.449 L24.9999992,40" id="icon__up--active-Rectangle-5" stroke="#007A6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) "></path>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__up" transform="translate(0.000000, 888.000000)">
+                <g id="icon__up-Symbols">
+                    <g id="icon__up-ic_up_nrm">
+                        <rect id="icon__up-Rectangle-7-Copy" fill="#F6F6F6" fill-rule="nonzero" x="0" y="-4.2632e-14" width="60" height="60"></rect>
+                        <path d="M24.9999992,20 L34.8079992,29.551 C35.0629992,29.799 35.0649992,30.199 34.8079992,30.449 L24.9999992,40" id="icon__up-Rectangle-5" stroke="#A1A4A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) "></path>
+                    </g>
+                </g>
+            </g>
+            <g id="icon__write" transform="translate(1.000000, 947.000000)">
+                <g id="icon__write-Symbols">
+                    <g id="icon__write-ic_write">
+                        <g id="icon__write-Group">
+                            <path d="M14.571,12.504 L14.571,18.334 C14.571,19.282 13.803,20.05 12.857,20.05 L1.714,20.05 C0.76755,20.05 -1.33226763e-15,19.28 -1.33226763e-15,18.331 L-1.33226763e-15,7.157 L-1.33226763e-15,7.1572 C-1.33226763e-15,6.2078 0.76728,5.4381 1.7135,5.4381 L7.6139,5.4381" id="icon__write-Rectangle-2222" stroke="#297EEB"></path>
+                            <g id="icon__write-Rectangle-2220" transform="translate(11.482894, 8.434096) rotate(45.000000) translate(-11.482894, -8.434096) translate(8.982894, -0.065904)">
+                                <g id="icon__write-path-1-Clipped">
+                                    <g>
+                                        <mask id="mask-40" fill="white">
+                                            <use xlink:href="#path-39"></use>
+                                        </mask>
+                                        <g id="path-47"></g>
+                                        <polygon id="icon__write-path-1" stroke="#297EEB" stroke-width="2" mask="url(#mask-40)" points="1.286 1.14048 3.857 1.14048 3.857 13.832 2.571 15.752 1.286 13.832"></polygon>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="map__point--active" transform="translate(0.000000, 968.000000)">
+                <g id="map__point--active-Symbols">
+                    <g id="map__point--active-poi_1">
+                        <g id="Group">
+                            <path d="M26.236,47.148 C25.745,47.148 23.736,34.821 23.736,29.955 C23.736,25.091 24.855,21.148 26.236,21.148 C27.616,21.148 28.736,25.091 28.736,29.955 C28.736,34.821 26.726,47.148 26.236,47.148 L26.236,47.148 Z" id="map__point--active-Combined-Shape" fill="url(#linearGradient-41)" fill-rule="nonzero" filter="url(#filter-42)" transform="translate(26.236000, 34.148000) rotate(78.000000) translate(-26.236000, -34.148000) "></path>
+                            <path d="M25.236,47.148 C24.745,47.148 22.736,34.821 22.736,29.955 C22.736,25.091 23.855,21.148 25.236,21.148 C26.616,21.148 27.736,25.091 27.736,29.955 C27.736,34.821 25.726,47.148 25.236,47.148 L25.236,47.148 Z" id="map__point--active-Combined-Shape" fill="url(#linearGradient-43)" fill-rule="nonzero" filter="url(#filter-44)" transform="translate(25.236000, 34.148000) rotate(78.000000) translate(-25.236000, -34.148000) "></path>
+                            <g id="map__point--active-Combined-Shape">
+                                <g id="map__point--active-path-5-link" transform="translate(3.000000, 3.000000)" fill-rule="nonzero" fill="#007A6C">
+                                    <path d="M11,34 C8.8428,34 0,17.879 0,11.516 C0,5.1562 4.9236,-1.77635684e-15 11,-1.77635684e-15 C17.075,-1.77635684e-15 22,5.1562 22,11.516 C22,17.879 13.157,34 11,34 Z" id="map__point--active-path-5"></path>
+                                </g>
+                                <g id="map__point--active-path-5-link">
+                                    <g id="map__point--active-path-5-Clipped">
+                                        <g>
+                                            <mask id="mask-46" fill="white">
+                                                <use xlink:href="#path-45"></use>
+                                            </mask>
+                                            <g id="path-53"></g>
+                                            <path d="M14,37 C11.8428,37 3,20.879 3,14.516 C3,8.1562 7.9236,3 14,3 C20.075,3 25,8.1562 25,14.516 C25,20.879 16.157,37 14,37 Z" id="map__point--active-path-5" stroke="#007A6C" stroke-width="6" mask="url(#mask-46)"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                            <path d="M18.529,13.115 C18.529,15.643 16.5,17.692 14,17.692 C11.4983,17.692 9.4706,15.643 9.4706,13.115 C9.4706,10.5889 11.4983,8.5385 14,8.5385 C16.5,8.5385 18.529,10.5889 18.529,13.115 Z" id="map__point--active-Stroke-6" fill="#FFFFFF" fill-rule="nonzero"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="map__point" transform="translate(0.000000, 1011.000000)">
+                <g id="map__point-Symbols">
+                    <g id="map__point-poi_0">
+                        <g id="Group">
+                            <path d="M25.236,47.148 C24.745,47.148 22.736,34.821 22.736,29.955 C22.736,25.091 23.855,21.148 25.236,21.148 C26.616,21.148 27.736,25.091 27.736,29.955 C27.736,34.821 25.726,47.148 25.236,47.148 L25.236,47.148 Z" id="map__point-Combined-Shape" fill="url(#linearGradient-47)" fill-rule="nonzero" filter="url(#filter-48)" transform="translate(25.236000, 34.148000) rotate(78.000000) translate(-25.236000, -34.148000) "></path>
+                            <g id="map__point-Combined-Shape">
+                                <g id="map__point-path-3-link" transform="translate(3.000000, 3.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                                    <path d="M11,34 C8.8428,34 0,17.879 0,11.516 C0,5.1562 4.9236,-1.77635684e-15 11,-1.77635684e-15 C17.075,-1.77635684e-15 22,5.1562 22,11.516 C22,17.879 13.157,34 11,34 Z" id="map__point-path-3"></path>
+                                </g>
+                                <g id="map__point-path-3-link">
+                                    <g id="map__point-path-3-Clipped">
+                                        <g>
+                                            <mask id="mask-50" fill="white">
+                                                <use xlink:href="#path-49"></use>
+                                            </mask>
+                                            <g id="path-57"></g>
+                                            <path d="M14,37 C11.8428,37 3,20.879 3,14.516 C3,8.1562 7.9236,3 14,3 C20.075,3 25,8.1562 25,14.516 C25,20.879 16.157,37 14,37 Z" id="map__point-path-3" stroke="#007A6C" stroke-width="6" mask="url(#mask-50)"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                            <path d="M18.529,14.115 C18.529,16.643 16.5,18.692 14,18.692 C11.4983,18.692 9.4706,16.643 9.4706,14.115 C9.4706,11.5889 11.4983,9.5385 14,9.5385 C16.5,9.5385 18.529,11.5889 18.529,14.115 Z" id="map__point-Stroke-6" fill="#007A6C" fill-rule="nonzero"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="slider__arrow--left-active" transform="translate(0.000000, 1054.000000)">
+                <g id="slider__arrow--left-active-Symbols">
+                    <g id="slider__arrow--left-active-arrow_l_activ">
+                        <g id="Group" transform="translate(45.000000, 45.000000) scale(-1, 1) translate(-45.000000, -45.000000) ">
+                            <rect id="slider__arrow--left-active-Rectangle-4" fill="#007A6C" fill-rule="nonzero" x="0" y="0" width="90" height="90" rx="45"></rect>
+                            <path d="M38,30 L51.732,44.327 C52.088,44.698 52.091,45.299 51.732,45.673 L38,60" id="slider__arrow--left-active-Rectangle-5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="slider__arrow--left" transform="translate(0.000000, 1144.000000)">
+                <g id="slider__arrow--left-Symbols">
+                    <g id="slider__arrow--left-arrow_l">
+                        <g id="Group" transform="translate(45.000000, 45.000000) scale(-1, 1) translate(-45.000000, -45.000000) ">
+                            <rect id="slider__arrow--left-Rectangle-4" fill="#FFFFFF" fill-rule="nonzero" x="0" y="0" width="90" height="90" rx="45"></rect>
+                            <path d="M38,30 L51.732,44.327 C52.088,44.698 52.091,45.299 51.732,45.673 L38,60" id="slider__arrow--left-Rectangle-5" stroke="#007A6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="slider__arrow--right-active" transform="translate(0.000000, 1234.000000)">
+                <g id="slider__arrow--right-active-Symbols">
+                    <g id="slider__arrow--right-active-arrow_r_activ">
+                        <rect id="slider__arrow--right-active-Rectangle-4" fill="#007A6C" fill-rule="nonzero" x="0" y="0" width="90" height="90" rx="45"></rect>
+                        <path d="M38,30 L51.732,44.327 C52.088,44.698 52.091,45.299 51.732,45.673 L38,60" id="slider__arrow--right-active-Rectangle-5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="slider__arrow--right" transform="translate(0.000000, 1324.000000)">
+                <g id="slider__arrow--right-Symbols">
+                    <g id="slider__arrow--right-arrow_r">
+                        <rect id="slider__arrow--right-Rectangle-4" fill="#FFFFFF" fill-rule="nonzero" x="0" y="0" width="90" height="90" rx="45"></rect>
+                        <path d="M38,30 L51.732,44.327 C52.088,44.698 52.091,45.299 51.732,45.673 L38,60" id="slider__arrow--right-Rectangle-5" stroke="#007A6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__fb--active" transform="translate(0.000000, 1414.000000)" fill-rule="nonzero">
+                <g id="social__fb--active-Symbols">
+                    <g id="social__fb--active-ic_fb_activ">
+                        <rect id="social__fb--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                        <path d="M26.802,17.657 L25.388,17.658 C24.279,17.658 24.064,18.219 24.064,19.043 L24.064,20.859 L26.709,20.859 L26.365,23.704 L24.064,23.704 L24.064,30.738 L21.306,30.738 L21.306,23.704 L19,23.704 L19,20.859 L21.306,20.859 L21.306,18.761 C21.306,16.326 22.702,15 24.742,15 C25.718,15 26.558,15.077 26.802,15.112 L26.802,17.657" id="social__fb--active-Imported-Layers" fill="#007A6C"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__fb" transform="translate(0.000000, 1459.000000)">
+                <g id="social__fb-Symbols">
+                    <g id="social__fb-ic_fb_nrm">
+                        <g id="social__fb-Rectangle-7-Copy">
+                            <g id="social__fb-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-52" fill="white">
+                                        <use xlink:href="#path-51"></use>
+                                    </mask>
+                                    <g id="path-61"></g>
+                                    <rect id="social__fb-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-52)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <path d="M26.802,17.657 L25.388,17.658 C24.279,17.658 24.064,18.219 24.064,19.043 L24.064,20.859 L26.709,20.859 L26.365,23.704 L24.064,23.704 L24.064,30.738 L21.306,30.738 L21.306,23.704 L19,23.704 L19,20.859 L21.306,20.859 L21.306,18.761 C21.306,16.326 22.702,15 24.742,15 C25.718,15 26.558,15.077 26.802,15.112 L26.802,17.657" id="social__fb-Imported-Layers" fill="#A1A4A9" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__inst--active" transform="translate(0.000000, 1504.000000)" fill-rule="nonzero">
+                <g id="social__inst--active-Symbols">
+                    <g id="social__inst--active-ic_inst_activ">
+                        <rect id="social__inst--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                        <path d="M20.035,22.551 C20.035,21.161 21.161,20.034 22.552,20.034 C23.942,20.034 25.069,21.161 25.069,22.551 C25.069,23.941 23.942,25.069 22.552,25.069 C21.161,25.069 20.035,23.941 20.035,22.551 M18.674,22.551 C18.674,24.693 20.41,26.429 22.552,26.429 C24.693,26.429 26.429,24.693 26.429,22.551 C26.429,20.41 24.693,18.674 22.552,18.674 C20.41,18.674 18.674,20.41 18.674,22.551 M25.677,18.52 C25.677,19.02 26.082,19.426 26.583,19.426 C27.083,19.426 27.489,19.02 27.489,18.52 C27.489,18.02 27.084,17.614 26.583,17.614 C26.082,17.614 25.677,18.02 25.677,18.52 M19.5,28.698 C18.764,28.664 18.364,28.542 18.098,28.438 C17.746,28.301 17.494,28.137 17.229,27.873 C16.965,27.609 16.801,27.358 16.665,27.005 C16.561,26.739 16.438,26.339 16.405,25.603 C16.368,24.807 16.361,24.568 16.361,22.551 C16.361,20.535 16.369,20.296 16.405,19.5 C16.438,18.763 16.562,18.364 16.665,18.097 C16.802,17.745 16.965,17.494 17.229,17.229 C17.494,16.965 17.745,16.801 18.098,16.664 C18.364,16.56 18.764,16.438 19.5,16.404 C20.296,16.368 20.536,16.36 22.552,16.36 C24.568,16.36 24.807,16.368 25.603,16.404 C26.34,16.438 26.739,16.561 27.006,16.664 C27.358,16.801 27.61,16.965 27.874,17.229 C28.138,17.493 28.302,17.745 28.439,18.097 C28.543,18.363 28.665,18.763 28.699,19.5 C28.736,20.296 28.743,20.535 28.743,22.551 C28.743,24.567 28.736,24.806 28.699,25.603 C28.665,26.339 28.542,26.739 28.439,27.005 C28.302,27.358 28.138,27.609 27.874,27.873 C27.61,28.137 27.358,28.301 27.006,28.438 C26.74,28.542 26.34,28.664 25.603,28.698 C24.807,28.734 24.568,28.742 22.552,28.742 C20.536,28.742 20.296,28.734 19.5,28.698 M19.438,15.046 C18.634,15.082 18.085,15.21 17.605,15.396 C17.109,15.589 16.688,15.848 16.268,16.267 C15.848,16.687 15.589,17.108 15.396,17.605 C15.21,18.085 15.082,18.634 15.046,19.438 C15.009,20.243 15,20.501 15,22.551 C15,24.602 15.009,24.859 15.046,25.665 C15.082,26.468 15.21,27.017 15.396,27.497 C15.589,27.994 15.847,28.415 16.268,28.835 C16.687,29.255 17.108,29.513 17.605,29.706 C18.086,29.893 18.634,30.02 19.438,30.057 C20.244,30.093 20.501,30.103 22.552,30.103 C24.603,30.103 24.86,30.094 25.665,30.057 C26.469,30.02 27.018,29.893 27.498,29.706 C27.994,29.513 28.415,29.255 28.836,28.835 C29.255,28.415 29.513,27.994 29.707,27.497 C29.893,27.017 30.021,26.468 30.057,25.665 C30.094,24.859 30.103,24.602 30.103,22.551 C30.103,20.501 30.094,20.243 30.057,19.438 C30.021,18.634 29.893,18.085 29.707,17.605 C29.513,17.109 29.255,16.688 28.836,16.267 C28.416,15.848 27.994,15.589 27.499,15.396 C27.018,15.21 26.469,15.082 25.666,15.046 C24.86,15.009 24.603,15 22.552,15 C20.501,15 20.244,15.009 19.438,15.046" id="social__inst--active-Shape" fill="#007A6C"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__inst" transform="translate(0.000000, 1549.000000)">
+                <g id="social__inst-Symbols">
+                    <g id="social__inst-ic_inst_nrm">
+                        <g id="social__inst-Rectangle-7-Copy">
+                            <g id="social__inst-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-54" fill="white">
+                                        <use xlink:href="#path-53"></use>
+                                    </mask>
+                                    <g id="path-63"></g>
+                                    <rect id="social__inst-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-54)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <path d="M20.035,22.551 C20.035,21.161 21.161,20.034 22.552,20.034 C23.942,20.034 25.069,21.161 25.069,22.551 C25.069,23.941 23.942,25.069 22.552,25.069 C21.161,25.069 20.035,23.941 20.035,22.551 M18.674,22.551 C18.674,24.693 20.41,26.429 22.552,26.429 C24.693,26.429 26.429,24.693 26.429,22.551 C26.429,20.41 24.693,18.674 22.552,18.674 C20.41,18.674 18.674,20.41 18.674,22.551 M25.677,18.52 C25.677,19.02 26.082,19.426 26.583,19.426 C27.083,19.426 27.489,19.02 27.489,18.52 C27.489,18.02 27.084,17.614 26.583,17.614 C26.082,17.614 25.677,18.02 25.677,18.52 M19.5,28.698 C18.764,28.664 18.364,28.542 18.098,28.438 C17.746,28.301 17.494,28.137 17.229,27.873 C16.965,27.609 16.801,27.358 16.665,27.005 C16.561,26.739 16.438,26.339 16.405,25.603 C16.368,24.807 16.361,24.568 16.361,22.551 C16.361,20.535 16.369,20.296 16.405,19.5 C16.438,18.763 16.562,18.364 16.665,18.097 C16.802,17.745 16.965,17.494 17.229,17.229 C17.494,16.965 17.745,16.801 18.098,16.664 C18.364,16.56 18.764,16.438 19.5,16.404 C20.296,16.368 20.536,16.36 22.552,16.36 C24.568,16.36 24.807,16.368 25.603,16.404 C26.34,16.438 26.739,16.561 27.006,16.664 C27.358,16.801 27.61,16.965 27.874,17.229 C28.138,17.493 28.302,17.745 28.439,18.097 C28.543,18.363 28.665,18.763 28.699,19.5 C28.736,20.296 28.743,20.535 28.743,22.551 C28.743,24.567 28.736,24.806 28.699,25.603 C28.665,26.339 28.542,26.739 28.439,27.005 C28.302,27.358 28.138,27.609 27.874,27.873 C27.61,28.137 27.358,28.301 27.006,28.438 C26.74,28.542 26.34,28.664 25.603,28.698 C24.807,28.734 24.568,28.742 22.552,28.742 C20.536,28.742 20.296,28.734 19.5,28.698 M19.438,15.046 C18.634,15.082 18.085,15.21 17.605,15.396 C17.109,15.589 16.688,15.848 16.268,16.267 C15.848,16.687 15.589,17.108 15.396,17.605 C15.21,18.085 15.082,18.634 15.046,19.438 C15.009,20.243 15,20.501 15,22.551 C15,24.602 15.009,24.859 15.046,25.665 C15.082,26.468 15.21,27.017 15.396,27.497 C15.589,27.994 15.847,28.415 16.268,28.835 C16.687,29.255 17.108,29.513 17.605,29.706 C18.086,29.893 18.634,30.02 19.438,30.057 C20.244,30.093 20.501,30.103 22.552,30.103 C24.603,30.103 24.86,30.094 25.665,30.057 C26.469,30.02 27.018,29.893 27.498,29.706 C27.994,29.513 28.415,29.255 28.836,28.835 C29.255,28.415 29.513,27.994 29.707,27.497 C29.893,27.017 30.021,26.468 30.057,25.665 C30.094,24.859 30.103,24.602 30.103,22.551 C30.103,20.501 30.094,20.243 30.057,19.438 C30.021,18.634 29.893,18.085 29.707,17.605 C29.513,17.109 29.255,16.688 28.836,16.267 C28.416,15.848 27.994,15.589 27.499,15.396 C27.018,15.21 26.469,15.082 25.666,15.046 C24.86,15.009 24.603,15 22.552,15 C20.501,15 20.244,15.009 19.438,15.046" id="social__inst-Shape" fill="#A1A4A9" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__ok--active" transform="translate(0.000000, 1594.000000)" fill-rule="nonzero">
+                <g id="social__ok--active-Symbols">
+                    <g id="social__ok--active-ic_OK_activ">
+                        <rect id="social__ok--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                        <g id="social__ok--active-Group" transform="translate(17.000000, 13.000000)" fill="#007A6C">
+                            <path d="M4.9999,10 C7.758,10 10,7.7578 10,5.0011 C10,2.2432 7.758,0 4.9999,0 C2.2425,0 0,2.2432 0,5.0011 C0,7.7578 2.2425,10 4.9999,10 Z M4.9999,2.9307 C6.1418,2.9307 7.0703,3.8592 7.0703,5.0011 C7.0703,6.1417 6.1418,7.0707 4.9999,7.0707 C3.8593,7.0707 2.9297,6.1417 2.9297,5.0011 C2.9297,3.8592 3.8593,2.9307 4.9999,2.9307 Z" id="social__ok--active-Fill-1"></path>
+                            <path d="M7.4829,14.246 C8.4807,13.994 9.4427,13.557 10.329,12.94 C11,12.471 11.202,11.488 10.779,10.745 C10.357,10 9.4708,9.7764 8.7991,10.245 C6.7917,11.644 4.2068,11.643 2.2006,10.245 C1.5286,9.7764 0.6426,10 0.221,10.745 C-0.20152,11.489 -0.00011,12.471 0.67072,12.94 C1.5566,13.556 2.51892,13.994 3.51672,14.246 L0.77682,17.283 C0.2164,17.905 0.2164,18.912 0.77724,19.534 C1.05782,19.844 1.42482,20 1.79224,20 C2.15974,20 2.52754,19.844 2.80804,19.534 L5.49954,16.55 L8.19304,19.534 C8.75344,20.155 9.66234,20.155 10.22304,19.534 C10.78404,18.912 10.78404,17.904 10.22304,17.283 L7.48294,14.246" id="social__ok--active-Fill-2"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="social__ok" transform="translate(0.000000, 1639.000000)">
+                <g id="social__ok-Symbols">
+                    <g id="social__ok-ic_OK_nrm">
+                        <g id="social__ok-Rectangle-7-Copy">
+                            <g id="social__ok-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-56" fill="white">
+                                        <use xlink:href="#path-55"></use>
+                                    </mask>
+                                    <g id="path-65"></g>
+                                    <rect id="social__ok-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-56)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="social__ok-Group" transform="translate(17.000000, 13.000000)" fill-rule="nonzero" fill="#A1A4A9">
+                            <path d="M4.9999,10 C7.758,10 10,7.7578 10,5.0011 C10,2.2432 7.758,0 4.9999,0 C2.2425,0 0,2.2432 0,5.0011 C0,7.7578 2.2425,10 4.9999,10 Z M4.9999,2.9307 C6.1418,2.9307 7.0703,3.8592 7.0703,5.0011 C7.0703,6.1417 6.1418,7.0707 4.9999,7.0707 C3.8593,7.0707 2.9297,6.1417 2.9297,5.0011 C2.9297,3.8592 3.8593,2.9307 4.9999,2.9307 Z" id="social__ok-Fill-1"></path>
+                            <path d="M7.4829,14.246 C8.4807,13.994 9.4427,13.557 10.329,12.94 C11,12.471 11.202,11.488 10.779,10.745 C10.357,10 9.4708,9.7764 8.7991,10.245 C6.7917,11.644 4.2068,11.643 2.2006,10.245 C1.5286,9.7764 0.6426,10 0.221,10.745 C-0.20152,11.489 -0.00011,12.471 0.67072,12.94 C1.5566,13.556 2.51892,13.994 3.51672,14.246 L0.77682,17.283 C0.2164,17.905 0.2164,18.912 0.77724,19.534 C1.05782,19.844 1.42482,20 1.79224,20 C2.15974,20 2.52754,19.844 2.80804,19.534 L5.49954,16.55 L8.19304,19.534 C8.75344,20.155 9.66234,20.155 10.22304,19.534 C10.78404,18.912 10.78404,17.904 10.22304,17.283 L7.48294,14.246" id="social__ok-Fill-2"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="social__tw--active" transform="translate(0.000000, 1684.000000)" fill-rule="nonzero">
+                <g id="social__tw--active-Symbols">
+                    <g id="social__tw--active-ic_tw_activ">
+                        <rect id="social__tw--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                        <path d="M27.623,27.039 C28.228,27.411 28.694,28.001 28.913,28.704 C28.346,28.359 27.718,28.109 27.049,27.974 C26.514,28.559 25.751,28.924 24.906,28.924 C23.285,28.924 21.971,27.577 21.971,25.914 C21.971,25.678 21.997,25.448 22.047,25.228 C19.608,25.354 17.445,26.552 15.997,28.373 C15.744,27.929 15.599,27.412 15.599,26.86 C15.599,25.816 16.117,24.895 16.905,24.355 C16.424,24.37 15.971,24.505 15.576,24.731 C15.575,24.718 15.575,24.706 15.575,24.693 C15.575,23.235 16.587,22.018 17.93,21.742 C17.684,21.673 17.425,21.636 17.157,21.636 C16.967,21.636 16.784,21.655 16.604,21.69 C16.978,20.494 18.062,19.624 19.347,19.6 C18.341,18.792 17.076,18.311 15.7,18.311 C15.464,18.311 15.23,18.325 15,18.353 C16.3,17.499 17.842,17.001 19.5,17.001 C24.899,17.001 27.851,21.587 27.851,25.565 C27.851,25.696 27.848,25.825 27.843,25.954 C28.416,26.379 28.914,26.909 29.308,27.513 C28.782,27.273 28.216,27.112 27.623,27.039 L27.623,27.039 Z" id="social__tw--active-Twitter_bird_logo" fill="#007A6C" transform="translate(22.154000, 22.962500) scale(-1, 1) rotate(-180.000000) translate(-22.154000, -22.962500) "></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__tw" transform="translate(0.000000, 1729.000000)">
+                <g id="social__tw-Symbols">
+                    <g id="social__tw-ic_tw_nrm">
+                        <g id="social__tw-Rectangle-7-Copy">
+                            <g id="social__tw-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-58" fill="white">
+                                        <use xlink:href="#path-57"></use>
+                                    </mask>
+                                    <g id="path-67"></g>
+                                    <rect id="social__tw-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-58)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <path d="M27.623,27.039 C28.228,27.411 28.694,28.001 28.913,28.704 C28.346,28.359 27.718,28.109 27.049,27.974 C26.514,28.559 25.751,28.924 24.906,28.924 C23.285,28.924 21.971,27.577 21.971,25.914 C21.971,25.678 21.997,25.448 22.047,25.228 C19.608,25.354 17.445,26.552 15.997,28.373 C15.744,27.929 15.599,27.412 15.599,26.86 C15.599,25.816 16.117,24.895 16.905,24.355 C16.424,24.37 15.971,24.505 15.576,24.731 C15.575,24.718 15.575,24.706 15.575,24.693 C15.575,23.235 16.587,22.018 17.93,21.742 C17.684,21.673 17.425,21.636 17.157,21.636 C16.967,21.636 16.784,21.655 16.604,21.69 C16.978,20.494 18.062,19.624 19.347,19.6 C18.341,18.792 17.076,18.311 15.7,18.311 C15.464,18.311 15.23,18.325 15,18.353 C16.3,17.499 17.842,17.001 19.5,17.001 C24.899,17.001 27.851,21.587 27.851,25.565 C27.851,25.696 27.848,25.825 27.843,25.954 C28.416,26.379 28.914,26.909 29.308,27.513 C28.782,27.273 28.216,27.112 27.623,27.039 L27.623,27.039 Z" id="social__tw-Twitter_bird_logo" fill="#A1A4A9" fill-rule="nonzero" transform="translate(22.154000, 22.962500) scale(-1, 1) rotate(-180.000000) translate(-22.154000, -22.962500) "></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__vk--active" transform="translate(0.000000, 1774.000000)" fill-rule="nonzero">
+                <g id="social__vk--active-Symbols">
+                    <g id="social__vk--active-ic_vk_activ">
+                        <rect id="social__vk--active-Rectangle-7" fill="#FFFFFF" x="0" y="0" width="45" height="45" rx="22.5"></rect>
+                        <path d="M22.645,27.744 L23.701,27.744 C23.701,27.744 24.02,27.713 24.183,27.56 C24.333,27.42 24.328,27.156 24.328,27.156 C24.328,27.156 24.308,25.921 24.965,25.74 C25.614,25.56 26.446,26.933 27.329,27.46 C27.996,27.859 28.503,27.772 28.503,27.772 L30.863,27.744 C30.863,27.744 32.097,27.677 31.512,26.832 C31.464,26.763 31.171,26.207 29.757,25.064 C28.278,23.867 28.476,24.061 30.258,21.992 C31.343,20.732 31.777,19.962 31.642,19.633 C31.513,19.319 30.714,19.402 30.714,19.402 L28.058,19.416 C28.058,19.416 27.86,19.393 27.714,19.469 C27.572,19.544 27.48,19.717 27.48,19.717 C27.48,19.717 27.059,20.692 26.498,21.522 C25.316,23.271 24.842,23.364 24.649,23.255 C24.199,23.002 24.312,22.238 24.312,21.695 C24.312,19.999 24.607,19.292 23.737,19.109 C23.448,19.049 23.235,19.008 22.497,19.002 C21.548,18.993 20.746,19.004 20.292,19.198 C19.99,19.328 19.757,19.614 19.899,19.631 C20.074,19.651 20.472,19.724 20.683,19.974 C20.955,20.297 20.946,21.021 20.946,21.021 C20.945,21.021 21.102,23.018 20.58,23.266 C20.222,23.436 19.731,23.088 18.676,21.501 C18.136,20.688 17.728,19.789 17.728,19.789 C17.728,19.789 17.649,19.621 17.509,19.531 C17.338,19.422 17.101,19.387 17.101,19.387 L14.576,19.402 C14.576,19.402 14.197,19.411 14.058,19.555 C13.934,19.682 14.048,19.946 14.048,19.946 C14.048,19.946 16.024,23.974 18.262,26.004 C20.315,27.866 22.645,27.744 22.645,27.744" id="social__vk--active-Imported-Layers" fill="#007A6C"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__vk" transform="translate(0.000000, 1819.000000)">
+                <g id="social__vk-Symbols">
+                    <g id="social__vk-ic_vk_nrm">
+                        <g id="social__vk-Rectangle-7">
+                            <g id="social__vk-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-60" fill="white">
+                                        <use xlink:href="#path-59"></use>
+                                    </mask>
+                                    <g id="path-69"></g>
+                                    <rect id="social__vk-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-60)" x="0" y="0" width="45" height="45" rx="22.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <path d="M22.645,27.744 L23.701,27.744 C23.701,27.744 24.02,27.713 24.183,27.56 C24.333,27.42 24.328,27.156 24.328,27.156 C24.328,27.156 24.308,25.921 24.965,25.74 C25.614,25.56 26.446,26.933 27.329,27.46 C27.996,27.859 28.503,27.772 28.503,27.772 L30.863,27.744 C30.863,27.744 32.097,27.677 31.512,26.832 C31.464,26.763 31.171,26.207 29.757,25.064 C28.278,23.867 28.476,24.061 30.258,21.992 C31.343,20.732 31.777,19.962 31.642,19.633 C31.513,19.319 30.714,19.402 30.714,19.402 L28.058,19.416 C28.058,19.416 27.86,19.393 27.714,19.469 C27.572,19.544 27.48,19.717 27.48,19.717 C27.48,19.717 27.059,20.692 26.498,21.522 C25.316,23.271 24.842,23.364 24.649,23.255 C24.199,23.002 24.312,22.238 24.312,21.695 C24.312,19.999 24.607,19.292 23.737,19.109 C23.448,19.049 23.235,19.008 22.497,19.002 C21.548,18.993 20.746,19.004 20.292,19.198 C19.99,19.328 19.757,19.614 19.899,19.631 C20.074,19.651 20.472,19.724 20.683,19.974 C20.955,20.297 20.946,21.021 20.946,21.021 C20.945,21.021 21.102,23.018 20.58,23.266 C20.222,23.436 19.731,23.088 18.676,21.501 C18.136,20.688 17.728,19.789 17.728,19.789 C17.728,19.789 17.649,19.621 17.509,19.531 C17.338,19.422 17.101,19.387 17.101,19.387 L14.576,19.402 C14.576,19.402 14.197,19.411 14.058,19.555 C13.934,19.682 14.048,19.946 14.048,19.946 C14.048,19.946 16.024,23.974 18.262,26.004 C20.315,27.866 22.645,27.744 22.645,27.744" id="social__vk-Imported-Layers" fill="#A1A4A9" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+            <g id="social__yout--active" transform="translate(0.000000, 1864.000000)" fill-rule="nonzero">
+                <g id="social__yout--active-Symbols">
+                    <g id="social__yout--active-ic_yout_activ">
+                        <rect id="social__yout--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                        <g id="social__yout--active-Group-3" transform="translate(14.000000, 16.000000)">
+                            <rect id="social__yout--active-Rectangle-2" fill="#007A6C" x="0" y="0" width="17" height="13" rx="2"></rect>
+                            <path d="M7.7746,9.748 C6.7945,10.26 6,9.781 6,8.6742 L6,4.3228 C6,3.2178 6.7959,2.7378 7.7746,3.249 L12.222,5.5716 C13.202,6.0835 13.2,6.9142 12.222,7.4254 L7.7746,9.748 L7.7746,9.748 Z" id="social__yout--active-Triangle-4" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="social__yout" transform="translate(0.000000, 1909.000000)">
+                <g id="social__yout-Symbols">
+                    <g id="social__yout-ic_yout_nrm">
+                        <g id="social__yout-Rectangle-7-Copy">
+                            <g id="social__yout-path-1-Clipped">
+                                <g>
+                                    <mask id="mask-62" fill="white">
+                                        <use xlink:href="#path-61"></use>
+                                    </mask>
+                                    <g id="path-71"></g>
+                                    <rect id="social__yout-path-1" stroke="#E1E1E1" stroke-width="2" mask="url(#mask-62)" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="social__yout-Group-3" transform="translate(14.000000, 16.000000)" fill-rule="nonzero">
+                            <rect id="social__yout-Rectangle-2" fill="#A1A4A9" x="0" y="0" width="17" height="13" rx="2"></rect>
+                            <path d="M7.7746,9.748 C6.7945,10.26 6,9.781 6,8.6742 L6,4.3228 C6,3.2178 6.7959,2.7378 7.7746,3.249 L12.222,5.5716 C13.202,6.0835 13.2,6.9142 12.222,7.4254 L7.7746,9.748 L7.7746,9.748 Z" id="social__yout-Triangle-4" fill="#FFFFFF"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
