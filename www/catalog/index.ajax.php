@@ -131,7 +131,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1000000000;
     }
     // Не выводить неактивные
-    $arrFilter["ACTIVE"] = 'Y';
+    if(!preg_match("#/profile/wishes/#",$_SERVER["HTTP_REFERER"]))
+        $arrFilter["ACTIVE"] = 'Y';
     // Не выводить с нулевой и отрицательной ценой
     $arrFilter[">PROPERTY_MINIMUM_PRICE"] = 0;
     
@@ -179,6 +180,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
         // Если остатков нет и есть флаг "Прятать при отсутствии - пропускаем"
         if(
+            !preg_match("#/profile/wishes/#",$_SERVER["HTTP_REFERER"])
+            &&
             $product["PROPERTY_HIDE_IF_ABSENT_VALUE"]=='да'
             &&
             !$nTotalAmount
