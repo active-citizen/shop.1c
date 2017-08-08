@@ -8,6 +8,10 @@ $(document).ready(function(){
 
     // Проверяем номер каждое изменение поля выбора прикреплённых   
     $('#troyka-card-number').change(function(){check_filling_troika();});
+
+    $('.ag-shop-card__card-number-input').keydown(function(event){
+    });
+
     // Проверяем номер каждый введённый символ в поле номера
     $('.ag-shop-card__card-number-input').keyup(function(){check_filling_troika();});
    
