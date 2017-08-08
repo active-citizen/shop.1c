@@ -10,6 +10,24 @@ $(document).ready(function(){
     $('#troyka-card-number').change(function(){check_filling_troika();});
 
     $('.ag-shop-card__card-number-input').keydown(function(event){
+        var moved = 
+            parseInt(event.which)==8 
+            || parseInt(event.which)==46
+            || parseInt(event.which)==35
+            || parseInt(event.which)==36
+            || parseInt(event.which)==37
+            || parseInt(event.which)==38
+            || parseInt(event.which)==39
+            || parseInt(event.which)==40
+            ?
+            true
+            :
+            false;
+        var re = /[0-9]+/;
+
+        if(parseInt($(this).val().length)>=10 && !moved)return false;
+        if(!moved && !re.test(event.key))return false;
+        return true;
     });
 
     // Проверяем номер каждый введённый символ в поле номера
@@ -164,6 +182,27 @@ function confirmTroika(){
     // Первоначальная проверка кода подтведжения
     $('#confirm-code').each(function(){
         check_filling_code(); 
+    });
+
+    $('#confirm-code').keydown(function(event){
+        var moved = 
+            parseInt(event.which)==8 
+            || parseInt(event.which)==46
+            || parseInt(event.which)==35
+            || parseInt(event.which)==36
+            || parseInt(event.which)==37
+            || parseInt(event.which)==38
+            || parseInt(event.which)==39
+            || parseInt(event.which)==40
+            ?
+            true
+            :
+            false;
+        var re = /[0-9]+/;
+
+        if(parseInt($(this).val().length)>=5 && !moved)return false;
+        if(!moved && !re.test(event.key))return false;
+        return true;
     });
 
     // Проверяем номер каждый введённый символ в поле номера
