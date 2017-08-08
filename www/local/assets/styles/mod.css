@@ -422,3 +422,15 @@ div.ag-shop-menu{
 .ag-shop-menu__items{
     z-index: 9999 !important;
 }
+
+
+.ag-shop-menu__button{
+    background-image: url(/local/assets/images/menu-open-but.png);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 16px;
+}
+
+.ag-shop-menu__button--close{
+    background-image: url(/local/assets/images/menu-close-but.png);
+}
