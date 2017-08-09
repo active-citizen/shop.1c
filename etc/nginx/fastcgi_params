@@ -36,5 +36,5 @@ fastcgi_index index.php;
 
 #fastcgi_param  SERVER_NAME        $server_name;
 fastcgi_param  SERVER_NAME        $host;
-fastcgi_read_timeout 300;
+fastcgi_read_timeout 30;
 
