@@ -20,7 +20,8 @@
             <a class="ag-shop-footer__link" href="/rules/faq/">Часто задаваемые вопросы</a>
             <a class="ag-shop-footer__link" href="#" onclick="return showCommonFeedbackForm();">Обратная связь</a>
           </div>
-          <div class="ag-shop-footer__copy"><small class="ag-shop-footer__copy-text">&copy; 2016, Активный Гражданин. <br class="hide-on-desktop">Все права защищены. <a href="#">Публичная оферта</a></small></div>
+          <div class="ag-shop-footer__copy"><small
+          class="ag-shop-footer__copy-text">&copy; <?= date("Y")?>, Активный Гражданин. <br class="hide-on-desktop">Все права защищены. <a href="#">Публичная оферта</a></small></div>
         </footer>
         <!-- }}} Footer-->
     </div>
