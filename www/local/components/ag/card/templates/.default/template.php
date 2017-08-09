@@ -444,7 +444,7 @@
                               <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
                             </tr>
                             <? endif ?>
-                            <? if(1 || count($arResult["STORAGES"][$id]["EMAIL"])):?>
+                            <? if($arResult["STORAGES"][$id]["EMAIL"]):?>
                             <tr>
                               <td>Сайт:</td>
                               <td><a href="<?=

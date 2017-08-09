@@ -233,36 +233,22 @@
 
 
     // Очистка описания товара от говна
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
-        "\n","",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
-    
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
-        "#\s+#"," ",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
-  
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
-        "#>\s+<#","><",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
-     
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
-        "/style=\".*?\"/i", "",
-        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
-    
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
-        "/<div>\s+&nbsp;<\/div>/i", "",
-        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
-   
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
-        "/<p>\s+&nbsp;<\/p>/i", "",
-        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
-    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = preg_replace(
-        "/<br.*?>/i", "",
-        $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
-    );
+
+    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = 
+        cardTextClear($arResult["CATALOG_ITEM"]["DETAIL_TEXT"]);
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["RECEIVE_RULES"][0]
+        ["~VALUE"]["TEXT"]
+        = cardTextClear(
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["RECEIVE_RULES"][0]
+                ["~VALUE"]["TEXT"]
+        );
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_RULES"][0]
+        ["~VALUE"]["TEXT"]
+        = cardTextClear(
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_RULES"][0]
+                ["~VALUE"]["TEXT"]
+        );
+
 //    $arResult["CATALOG_ITEM"]["DETAIL_TEXT"] = str_replace(
 //        "{break}","\n",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
 //    );
@@ -271,4 +257,53 @@
     $this->IncludeComponentTemplate();
 //}
 
+    function cardTextClear($text){
 
+        $text =  str_replace(
+            "\n","",
+            $text 
+        );
+       
+        $text =   preg_replace(
+            "#\s+#"," ",
+            $text
+        );
+
+        $text =   preg_replace(
+            "#>\s+<#","><",
+            $text 
+        );
+          
+        $text =   preg_replace(
+            "/style=\".*?\"/i", "",
+            $text 
+        );
+        
+       
+        $text =   preg_replace(
+            "/<br.*?>/i", "",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#<p>\s+&nbsp;</p>#", "",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#>\s+#", ">",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#>\(#", "> (",
+            $text 
+        );
+
+         $text =   preg_replace(
+            "#<div> &nbsp;</div>#", "",
+            $text 
+        );
+ 
+        return $text;
+    }
