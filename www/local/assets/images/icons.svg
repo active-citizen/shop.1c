@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="90px" height="1954px" viewBox="0 0 90 1954" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="98px" height="1954px" viewBox="0 0 98 1954" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
-    <title>icons_new_superhero</title>
+    <title>icons_new_superhero copy</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <rect id="path-1" x="0" y="0" width="16" height="12" rx="2"></rect>
@@ -54,8 +54,8 @@
         <rect id="path-59" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons_new_superhero">
-            <g id="badge__hit">
+        <g id="icons_new_superhero-copy">
+            <g id="badge__hit" transform="translate(8.000000, 0.000000)">
                 <g id="badge__hit-Symbols">
                     <g id="badge__hit-ic_hit">
                         <circle id="badge__hit-Oval-5-Copy" fill="#FFC20E" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="30"></circle>
@@ -66,7 +66,7 @@
                     </g>
                 </g>
             </g>
-            <g id="badge__new" transform="translate(0.000000, 60.000000)">
+            <g id="badge__new" transform="translate(8.000000, 60.000000)">
                 <g id="badge__new-Symbols">
                     <g id="badge__new-ic_new">
                         <circle id="badge__new-Oval-5" fill="#00C0F3" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="30"></circle>
@@ -77,7 +77,7 @@
                     </g>
                 </g>
             </g>
-            <g id="badge__sale" transform="translate(0.000000, 120.000000)">
+            <g id="badge__sale" transform="translate(8.000000, 120.000000)">
                 <g id="badge__sale-Symbols">
                     <g id="badge__sale-ic_sale">
                         <circle id="badge__sale-Oval-5-Copy-2" fill="#EF4D94" fill-rule="nonzero" transform="translate(30.000000, 30.000000) rotate(-90.000000) translate(-30.000000, -30.000000) " cx="30" cy="30" r="30"></circle>
@@ -88,7 +88,7 @@
                     </g>
                 </g>
             </g>
-            <g id="count__arrow--left-active" transform="translate(0.000000, 180.000000)">
+            <g id="count__arrow--left-active" transform="translate(8.000000, 180.000000)">
                 <g id="count__arrow--left-active-Symbols">
                     <g id="count__arrow--left-active-ic_arr2_-_activ">
                         <g id="Group" transform="translate(15.000000, 15.000000) rotate(-90.000000) translate(-15.000000, -15.000000) translate(0.000000, 0.000000)">
@@ -98,7 +98,7 @@
                     </g>
                 </g>
             </g>
-            <g id="count__arrow--left" transform="translate(0.000000, 210.000000)">
+            <g id="count__arrow--left" transform="translate(8.000000, 210.000000)">
                 <g id="count__arrow--left-Symbols">
                     <g id="count__arrow--left-ic_arr2_-_nrm">
                         <g id="Group" transform="translate(15.000000, 15.000000) rotate(-90.000000) translate(-15.000000, -15.000000) translate(0.000000, 0.000000)">
@@ -108,7 +108,7 @@
                     </g>
                 </g>
             </g>
-            <g id="count__arrow--right-active" transform="translate(0.000000, 240.000000)">
+            <g id="count__arrow--right-active" transform="translate(8.000000, 240.000000)">
                 <g id="count__arrow--right-active-Symbols">
                     <g id="count__arrow--right-active-ic_arr2_+_activ">
                         <g id="Group" transform="translate(15.000000, 15.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -15.000000) translate(-0.000000, 0.000000)">
@@ -118,7 +118,7 @@
                     </g>
                 </g>
             </g>
-            <g id="count__arrow--right" transform="translate(0.000000, 270.000000)">
+            <g id="count__arrow--right" transform="translate(8.000000, 270.000000)">
                 <g id="count__arrow--right-Symbols">
                     <g id="count__arrow--right-ic_arr2_+_nrm">
                         <g id="Group" transform="translate(15.000000, 15.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -15.000000) translate(-0.000000, 0.000000)">
@@ -128,7 +128,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__attention" transform="translate(1.000000, 301.000000)" fill-rule="nonzero">
+            <g id="icon__attention" transform="translate(9.000000, 301.000000)" fill-rule="nonzero">
                 <g id="icon__attention-Symbols">
                     <g id="icon__attention-ic_attention">
                         <g id="Group">
@@ -139,16 +139,16 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__superhero--active" transform="translate(3.000000, 329.000000)" fill-rule="nonzero" fill="#FFFFFF">
-                <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3"></path>
+            <g id="icon__superhero--active" transform="translate(0.000000, 323.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                <path d="M33.574727,9.74154006 C33.6709248,9.43313556 33.7229726,9.1050401 33.7229726,8.7648171 C33.7229726,6.96694268 32.276121,5.50955206 30.4909586,5.50955206 C29.4630788,5.50955206 28.5482284,5.99334942 27.9562816,6.7462998 L2.9687972,0 L4.41072892,5.420356 L11.0723318,7.21823042 L10.0438048,11.08561 L2.35134436,13.1616353 L1.43494023,16.6065071 L9.12714168,14.5306122 L8.60860558,16.4792332 L0.916404126,18.5552585 L0,22 L41.1177766,10.9034361 L42,7.4676925 L33.574727,9.74154006 Z" id="Fill-3"></path>
             </g>
-            <g id="icon__superhero--hover" transform="translate(3.000000, 357.000000)" fill-rule="nonzero" fill="#007A6B">
-                <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3"></path>
+            <g id="icon__superhero--hover" transform="translate(0.000000, 351.000000)" fill-rule="nonzero" fill="#007A6B">
+                <path d="M33.574727,9.74154006 C33.6709248,9.43313556 33.7229726,9.1050401 33.7229726,8.7648171 C33.7229726,6.96694268 32.276121,5.50955206 30.4909586,5.50955206 C29.4630788,5.50955206 28.5482284,5.99334942 27.9562816,6.7462998 L2.9687972,0 L4.41072892,5.420356 L11.0723318,7.21823042 L10.0438048,11.08561 L2.35134436,13.1616353 L1.43494023,16.6065071 L9.12714168,14.5306122 L8.60860558,16.4792332 L0.916404126,18.5552585 L0,22 L41.1177766,10.9034361 L42,7.4676925 L33.574727,9.74154006 Z" id="Fill-3"></path>
             </g>
-            <g id="icon__basket" transform="translate(3.000000, 385.000000)" fill-rule="nonzero" fill="#263146">
-                <path d="M16.7873635,4.87077003 C16.8354624,4.71656778 16.8614863,4.55252005 16.8614863,4.38240855 C16.8614863,3.48347134 16.1380605,2.75477603 15.2454793,2.75477603 C14.7315394,2.75477603 14.2741142,2.99667471 13.9781408,3.3731499 L1.4843986,0 L2.20536446,2.710178 L5.5361659,3.60911521 L5.02190238,5.54280498 L1.17567218,6.58081763 L0.717470114,8.30325357 L4.56357084,7.26530612 L4.30430279,8.23961661 L0.458202063,9.27762926 L0,11 L20.5588883,5.45171807 L21,3.73384625 L16.7873635,4.87077003 Z" id="Fill-3-Copy"></path>
+            <g id="icon__basket" transform="translate(0.000000, 379.000000)" fill-rule="nonzero" fill="#263146">
+                <path d="M33.574727,9.74154006 C33.6709248,9.43313556 33.7229726,9.1050401 33.7229726,8.7648171 C33.7229726,6.96694268 32.276121,5.50955206 30.4909586,5.50955206 C29.4630788,5.50955206 28.5482284,5.99334942 27.9562816,6.7462998 L2.9687972,0 L4.41072892,5.420356 L11.0723318,7.21823042 L10.0438048,11.08561 L2.35134436,13.1616353 L1.43494023,16.6065071 L9.12714168,14.5306122 L8.60860558,16.4792332 L0.916404126,18.5552585 L0,22 L41.1177766,10.9034361 L42,7.4676925 L33.574727,9.74154006 Z" id="Fill-3-Copy"></path>
             </g>
-            <g id="icon__close--active" transform="translate(0.000000, 404.000000)" fill-rule="nonzero" fill="#081733">
+            <g id="icon__close--active" transform="translate(8.000000, 404.000000)" fill-rule="nonzero" fill="#081733">
                 <g id="icon__close--active-Symbols">
                     <g id="icon__close--active-ic_close_activ">
                         <g id="icon__close--active-ic_close_nrm">
@@ -158,7 +158,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__close" transform="translate(0.000000, 418.000000)" fill-rule="nonzero" fill="#7B8693">
+            <g id="icon__close" transform="translate(8.000000, 418.000000)" fill-rule="nonzero" fill="#7B8693">
                 <g id="icon__close-Symbols">
                     <g id="icon__close-ic_close_nrm">
                         <g id="icon__close-Rectangle-28">
@@ -168,21 +168,21 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__heart--active" transform="translate(0.000000, 432.000000)" fill-rule="nonzero" fill="#EF4D94">
+            <g id="icon__heart--active" transform="translate(8.000000, 432.000000)" fill-rule="nonzero" fill="#EF4D94">
                 <g id="icon__heart--active-Symbols">
                     <g id="icon__heart--active-ic_heart_full">
                         <path d="M7.3864,-2.2737e-13 C2.9586,-2.2737e-13 0,3.7877 0,8.0034 C0,11.959 2.1559,15.377 4.7919,18.0754 C7.4279,20.7734 10.574,22.7734 12.732,23.9334 C12.901,24.0224 13.099,24.0224 13.268,23.9334 C15.426,22.7734 18.572,20.7734 21.208,18.0754 C23.844,15.3774 26,11.9594 26,8.0034 C26,3.7881 23.041,0.0004 18.614,0.0004 C16.004,0.0004 14.27,1.387 13,3.2614 C11.73,1.387 9.9965,0.0004 7.3864,0.0004 L7.3864,0.0004 L7.3864,-2.2737e-13 Z" id="Shape"></path>
                     </g>
                 </g>
             </g>
-            <g id="icon__heart" transform="translate(0.000000, 456.000000)" fill-rule="nonzero" fill="#E5E5E5">
+            <g id="icon__heart" transform="translate(8.000000, 456.000000)" fill-rule="nonzero" fill="#E5E5E5">
                 <g id="icon__heart-Symbols">
                     <g id="icon__heart-ic_heart_empty">
                         <path d="M0,8.0034 C0,11.959 2.1559,15.377 4.7919,18.0754 C7.4279,20.7734 10.574,22.7734 12.732,23.9334 C12.901,24.0224 13.099,24.0224 13.268,23.9334 C15.426,22.7734 18.572,20.7734 21.208,18.0754 C23.844,15.3774 26,11.9594 26,8.0034 C26,3.7881 23.041,0.0004 18.614,0.0004 C16.004,0.0004 14.27,1.387 13,3.2614 C11.73,1.387 9.9965,0.0004 7.3864,0.0004 C2.9586,0.0004 0,3.7881 0,8.0038 L0,8.0034 Z" id="Shape"></path>
                     </g>
                 </g>
             </g>
-            <g id="icon__info" transform="translate(0.000000, 480.000000)" fill-rule="nonzero">
+            <g id="icon__info" transform="translate(8.000000, 480.000000)" fill-rule="nonzero">
                 <g id="icon__info-Symbols">
                     <g id="icon__info-ic_info_nrm">
                         <g id="icon__info-Imported-Layers-Copy-3">
@@ -192,7 +192,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__mail--active" transform="translate(2.000000, 504.000000)">
+            <g id="icon__mail--active" transform="translate(10.000000, 504.000000)">
                 <g id="icon__mail--active-Symbols">
                     <g id="icon__mail--active-ic_mail_activ">
                         <g id="icon__mail--active-ic_mail_nrm">
@@ -212,7 +212,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__mail" transform="translate(2.000000, 524.000000)">
+            <g id="icon__mail" transform="translate(10.000000, 524.000000)">
                 <g id="icon__mail-Symbols">
                     <g id="icon__mail-ic_mail_nrm">
                         <g id="Group">
@@ -232,7 +232,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__print--active" transform="translate(2.000000, 542.000000)">
+            <g id="icon__print--active" transform="translate(10.000000, 542.000000)">
                 <g id="icon__print--active-Symbols">
                     <g id="icon__print--active-ic_print_activ">
                         <g id="icon__print--active-ic_print_nrm">
@@ -277,7 +277,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__print" transform="translate(2.000000, 562.000000)">
+            <g id="icon__print" transform="translate(10.000000, 562.000000)">
                 <g id="icon__print-Symbols">
                     <g id="icon__print-ic_print_nrm">
                         <g id="Group">
@@ -322,7 +322,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__profile--active" transform="translate(1.000000, 581.000000)" stroke="#FFFFFF">
+            <g id="icon__profile--active" transform="translate(9.000000, 581.000000)" stroke="#FFFFFF">
                 <g id="icon__profile--active-Symbols">
                     <g id="icon__profile--active-ic_profile_pressed">
                         <g id="Group">
@@ -333,7 +333,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__profile--hover" transform="translate(1.000000, 609.000000)" stroke="#007A6C">
+            <g id="icon__profile--hover" transform="translate(9.000000, 609.000000)" stroke="#007A6C">
                 <g id="icon__profile--hover-Symbols">
                     <g id="icon__profile--hover-ic_profile_hvr">
                         <g id="Group">
@@ -344,7 +344,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__profile" transform="translate(1.000000, 637.000000)" stroke="#263146">
+            <g id="icon__profile" transform="translate(9.000000, 637.000000)" stroke="#263146">
                 <g id="icon__profile-Symbols">
                     <g id="icon__profile-ic_profile_nrm">
                         <g id="Group">
@@ -355,7 +355,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__radiobtn--active" transform="translate(0.000000, 664.000000)">
+            <g id="icon__radiobtn--active" transform="translate(8.000000, 664.000000)">
                 <g id="icon__radiobtn--active-Symbols">
                     <g id="icon__radiobtn--active-ic_rd_btn_activ">
                         <g id="icon__radiobtn--active-ic_rdbtn_activ">
@@ -377,7 +377,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__radiobtn" transform="translate(0.000000, 684.000000)">
+            <g id="icon__radiobtn" transform="translate(8.000000, 684.000000)">
                 <g id="icon__radiobtn-Symbols">
                     <g id="icon__radiobtn-ic_rd_btn_norm">
                         <g id="icon__radiobtn-ic_rdbtn_norm">
@@ -399,7 +399,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__rules--active" transform="translate(6.000000, 706.000000)">
+            <g id="icon__rules--active" transform="translate(14.000000, 706.000000)">
                 <g id="icon__rules--active-Symbols">
                     <g id="icon__rules--active-ic_rules_pressed">
                         <g id="Group">
@@ -431,7 +431,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__rules--hover" transform="translate(6.000000, 734.000000)">
+            <g id="icon__rules--hover" transform="translate(14.000000, 734.000000)">
                 <g id="icon__rules--hover-Symbols">
                     <g id="icon__rules--hover-ic_rules_hvr">
                         <g id="Group">
@@ -463,7 +463,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__rules" transform="translate(6.000000, 762.000000)">
+            <g id="icon__rules" transform="translate(14.000000, 762.000000)">
                 <g id="icon__rules-Symbols">
                     <g id="icon__rules-ic_rules_nrm">
                         <g id="Group">
@@ -495,7 +495,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__star--active" transform="translate(0.000000, 788.000000)">
+            <g id="icon__star--active" transform="translate(8.000000, 788.000000)">
                 <g id="icon__star--active-Symbols">
                     <g id="icon__star--active-ic_Star_full">
                         <g id="icon__star--active-Star_full">
@@ -517,7 +517,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__star" transform="translate(0.000000, 808.000000)">
+            <g id="icon__star" transform="translate(8.000000, 808.000000)">
                 <g id="icon__star-Symbols">
                     <g id="icon__star-ic_Star_empty">
                         <g id="icon__star-path-1-link" transform="translate(1.000000, 1.000000)" fill-rule="nonzero" fill="#FFFFFF">
@@ -537,7 +537,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__up--active" transform="translate(0.000000, 828.000000)">
+            <g id="icon__up--active" transform="translate(8.000000, 828.000000)">
                 <g id="icon__up--active-Symbols">
                     <g id="icon__up--active-ic_up_activ">
                         <rect id="icon__up--active-Rectangle-7-Copy" fill="#FFFFFF" fill-rule="nonzero" x="0" y="-4.2632e-14" width="60" height="60"></rect>
@@ -545,7 +545,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__up" transform="translate(0.000000, 888.000000)">
+            <g id="icon__up" transform="translate(8.000000, 888.000000)">
                 <g id="icon__up-Symbols">
                     <g id="icon__up-ic_up_nrm">
                         <rect id="icon__up-Rectangle-7-Copy" fill="#F6F6F6" fill-rule="nonzero" x="0" y="-4.2632e-14" width="60" height="60"></rect>
@@ -553,7 +553,7 @@
                     </g>
                 </g>
             </g>
-            <g id="icon__write" transform="translate(1.000000, 947.000000)">
+            <g id="icon__write" transform="translate(9.000000, 947.000000)">
                 <g id="icon__write-Symbols">
                     <g id="icon__write-ic_write">
                         <g id="icon__write-Group">
@@ -573,7 +573,7 @@
                     </g>
                 </g>
             </g>
-            <g id="map__point--active" transform="translate(0.000000, 968.000000)">
+            <g id="map__point--active" transform="translate(8.000000, 968.000000)">
                 <g id="map__point--active-Symbols">
                     <g id="map__point--active-poi_1">
                         <g id="Group">
@@ -600,7 +600,7 @@
                     </g>
                 </g>
             </g>
-            <g id="map__point" transform="translate(0.000000, 1011.000000)">
+            <g id="map__point" transform="translate(8.000000, 1011.000000)">
                 <g id="map__point-Symbols">
                     <g id="map__point-poi_0">
                         <g id="Group">
@@ -626,7 +626,7 @@
                     </g>
                 </g>
             </g>
-            <g id="slider__arrow--left-active" transform="translate(0.000000, 1054.000000)">
+            <g id="slider__arrow--left-active" transform="translate(8.000000, 1054.000000)">
                 <g id="slider__arrow--left-active-Symbols">
                     <g id="slider__arrow--left-active-arrow_l_activ">
                         <g id="Group" transform="translate(45.000000, 45.000000) scale(-1, 1) translate(-45.000000, -45.000000) ">
@@ -636,7 +636,7 @@
                     </g>
                 </g>
             </g>
-            <g id="slider__arrow--left" transform="translate(0.000000, 1144.000000)">
+            <g id="slider__arrow--left" transform="translate(8.000000, 1144.000000)">
                 <g id="slider__arrow--left-Symbols">
                     <g id="slider__arrow--left-arrow_l">
                         <g id="Group" transform="translate(45.000000, 45.000000) scale(-1, 1) translate(-45.000000, -45.000000) ">
@@ -646,7 +646,7 @@
                     </g>
                 </g>
             </g>
-            <g id="slider__arrow--right-active" transform="translate(0.000000, 1234.000000)">
+            <g id="slider__arrow--right-active" transform="translate(8.000000, 1234.000000)">
                 <g id="slider__arrow--right-active-Symbols">
                     <g id="slider__arrow--right-active-arrow_r_activ">
                         <rect id="slider__arrow--right-active-Rectangle-4" fill="#007A6C" fill-rule="nonzero" x="0" y="0" width="90" height="90" rx="45"></rect>
@@ -654,7 +654,7 @@
                     </g>
                 </g>
             </g>
-            <g id="slider__arrow--right" transform="translate(0.000000, 1324.000000)">
+            <g id="slider__arrow--right" transform="translate(8.000000, 1324.000000)">
                 <g id="slider__arrow--right-Symbols">
                     <g id="slider__arrow--right-arrow_r">
                         <rect id="slider__arrow--right-Rectangle-4" fill="#FFFFFF" fill-rule="nonzero" x="0" y="0" width="90" height="90" rx="45"></rect>
@@ -662,7 +662,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__fb--active" transform="translate(0.000000, 1414.000000)" fill-rule="nonzero">
+            <g id="social__fb--active" transform="translate(8.000000, 1414.000000)" fill-rule="nonzero">
                 <g id="social__fb--active-Symbols">
                     <g id="social__fb--active-ic_fb_activ">
                         <rect id="social__fb--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
@@ -670,7 +670,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__fb" transform="translate(0.000000, 1459.000000)">
+            <g id="social__fb" transform="translate(8.000000, 1459.000000)">
                 <g id="social__fb-Symbols">
                     <g id="social__fb-ic_fb_nrm">
                         <g id="social__fb-Rectangle-7-Copy">
@@ -688,7 +688,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__inst--active" transform="translate(0.000000, 1504.000000)" fill-rule="nonzero">
+            <g id="social__inst--active" transform="translate(8.000000, 1504.000000)" fill-rule="nonzero">
                 <g id="social__inst--active-Symbols">
                     <g id="social__inst--active-ic_inst_activ">
                         <rect id="social__inst--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
@@ -696,7 +696,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__inst" transform="translate(0.000000, 1549.000000)">
+            <g id="social__inst" transform="translate(8.000000, 1549.000000)">
                 <g id="social__inst-Symbols">
                     <g id="social__inst-ic_inst_nrm">
                         <g id="social__inst-Rectangle-7-Copy">
@@ -714,7 +714,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__ok--active" transform="translate(0.000000, 1594.000000)" fill-rule="nonzero">
+            <g id="social__ok--active" transform="translate(8.000000, 1594.000000)" fill-rule="nonzero">
                 <g id="social__ok--active-Symbols">
                     <g id="social__ok--active-ic_OK_activ">
                         <rect id="social__ok--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
@@ -725,7 +725,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__ok" transform="translate(0.000000, 1639.000000)">
+            <g id="social__ok" transform="translate(8.000000, 1639.000000)">
                 <g id="social__ok-Symbols">
                     <g id="social__ok-ic_OK_nrm">
                         <g id="social__ok-Rectangle-7-Copy">
@@ -746,7 +746,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__tw--active" transform="translate(0.000000, 1684.000000)" fill-rule="nonzero">
+            <g id="social__tw--active" transform="translate(8.000000, 1684.000000)" fill-rule="nonzero">
                 <g id="social__tw--active-Symbols">
                     <g id="social__tw--active-ic_tw_activ">
                         <rect id="social__tw--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
@@ -754,7 +754,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__tw" transform="translate(0.000000, 1729.000000)">
+            <g id="social__tw" transform="translate(8.000000, 1729.000000)">
                 <g id="social__tw-Symbols">
                     <g id="social__tw-ic_tw_nrm">
                         <g id="social__tw-Rectangle-7-Copy">
@@ -772,7 +772,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__vk--active" transform="translate(0.000000, 1774.000000)" fill-rule="nonzero">
+            <g id="social__vk--active" transform="translate(8.000000, 1774.000000)" fill-rule="nonzero">
                 <g id="social__vk--active-Symbols">
                     <g id="social__vk--active-ic_vk_activ">
                         <rect id="social__vk--active-Rectangle-7" fill="#FFFFFF" x="0" y="0" width="45" height="45" rx="22.5"></rect>
@@ -780,7 +780,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__vk" transform="translate(0.000000, 1819.000000)">
+            <g id="social__vk" transform="translate(8.000000, 1819.000000)">
                 <g id="social__vk-Symbols">
                     <g id="social__vk-ic_vk_nrm">
                         <g id="social__vk-Rectangle-7">
@@ -798,7 +798,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__yout--active" transform="translate(0.000000, 1864.000000)" fill-rule="nonzero">
+            <g id="social__yout--active" transform="translate(8.000000, 1864.000000)" fill-rule="nonzero">
                 <g id="social__yout--active-Symbols">
                     <g id="social__yout--active-ic_yout_activ">
                         <rect id="social__yout--active-Rectangle-7-Copy" fill="#FFFFFF" x="0" y="-2.84216e-14" width="45" height="45" rx="22.5"></rect>
@@ -809,7 +809,7 @@
                     </g>
                 </g>
             </g>
-            <g id="social__yout" transform="translate(0.000000, 1909.000000)">
+            <g id="social__yout" transform="translate(8.000000, 1909.000000)">
                 <g id="social__yout-Symbols">
                     <g id="social__yout-ic_yout_nrm">
                         <g id="social__yout-Rectangle-7-Copy">
