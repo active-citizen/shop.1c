@@ -1,6 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 <? if(
+    1
+    &&
     !$USER->IsAuthorized()
 ):?>
 <? else: ?>
@@ -85,6 +87,8 @@
                 && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
                 && (
+                    1
+                    &&
                     !IS_MOBILE
                     //!isset($_COOKIE["EMPSESSION"])
                     //||

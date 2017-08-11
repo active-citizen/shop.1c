@@ -92,6 +92,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
 	$APPLICATION->ShowPanel();
     ?>
 <? if(
+    1 
+    &&
     !$USER->IsAuthorized()
     &&
     !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
@@ -140,7 +142,23 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
             <div class="ag-shop-menu__header">
               <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
                 <div class="grid__col grid__col-shrink">
-                  <h2 class="ag-shop-menu__current">Навигация</h2>
+                  <h2 class="ag-shop-menu__current">
+                    <? if(preg_match("#^/catalog/$#",$_SERVER["REQUEST_URI"])):?>
+                        Главная
+                    <? elseif(preg_match("#^/profile/order/#",$_SERVER["REQUEST_URI"])):?>
+                        Мои заказы
+                    <? elseif(preg_match("#^/profile/wishes/#",$_SERVER["REQUEST_URI"])):?>
+                        Мои желания
+                    <? elseif(preg_match("#^/rules/hiw/#",$_SERVER["REQUEST_URI"])):?>
+                        Как это работает
+                    <? elseif(preg_match("#^/rules/stores/#",$_SERVER["REQUEST_URI"])):?>
+                        Адреса
+                    <? elseif(preg_match("#^/rules/faq/#",$_SERVER["REQUEST_URI"])):?>
+                        FAQ
+                    <? else:?>
+                        Навигация
+                    <? endif ?>
+                  </h2>
                 </div>
                 <div class="grid__col grid__col-shrink">
                   <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" type="button"><span></span></button>
@@ -166,13 +184,13 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
         </div>
 
         <?
-        /*
+        
             $APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
                 "CACHE_TIME"      =>  COMMON_CACHE_TIME
             ),
             false
         );
-        */
+        
         ?>
 
     <? endif ?>

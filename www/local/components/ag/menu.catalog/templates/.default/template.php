@@ -9,7 +9,16 @@
     <div class="ag-shop-menu__header">
       <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
         <div class="grid__col grid__col-shrink">
-          <h2 class="ag-shop-menu__current">Каталог</h2>
+          <h2 class="ag-shop-menu__current"><? 
+
+            $sCAtalogName = 'Каталог';
+
+            foreach($arResult["SECTIONS"] as $arSection){
+                if($arSection["SECTION_PAGE_URL"]==$_SERVER["REQUEST_URI"])
+                    $sCAtalogName = $arSection["NAME"];
+            }
+            echo $sCAtalogName;
+          ?></h2>
         </div>
         <div class="grid__col grid__col-shrink">
           <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" 

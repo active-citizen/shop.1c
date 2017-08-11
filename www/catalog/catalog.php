@@ -54,7 +54,7 @@ if(
 
 ?>
 
-<? if(!$USER->IsAuthorized()):?>
+<? if(0 && !$USER->IsAuthorized()):?>
 <? else: ?>
 
 

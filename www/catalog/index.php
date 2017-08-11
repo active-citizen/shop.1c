@@ -2,7 +2,7 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     CModule::IncludeModule("iblock");
 ?>
-<? if(!$USER->IsAuthorized()):?>
+<? if(0 && !$USER->IsAuthorized()):?>
 <? else: ?>
 
         <div class="ag-shop-content">

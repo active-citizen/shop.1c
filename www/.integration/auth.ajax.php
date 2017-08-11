@@ -87,6 +87,10 @@
         || $sLockPhone == '79036619266'
         || $sLockPhone == '79151086593'
         || $sLockPhone == '79178146980'
+        || $sLockPhone == '79209672105'
+        || $sLockPhone == '79063443775'
+        || $sLockPhone == '79063443775'
+        || $sLockPhone == '79377979855'
     ){
     }
     else{
