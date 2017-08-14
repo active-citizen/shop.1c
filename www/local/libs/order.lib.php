@@ -52,7 +52,9 @@ function orderPropertiesUpdate(
 
         $arFilter = array(
             "ORDER_ID"=>$arOrder["ID"],
-            "ORDER_PROPS_ID"=>$arProp["ID"]
+            "ORDER_PROPS_ID"=>$arProp["ID"],
+            "CODE"=>$sCode,
+            "NAME"=>$arProp["NAME"]
         );
     
         if(
@@ -61,8 +63,8 @@ function orderPropertiesUpdate(
         ){
             $arFilter["VALUE"] = $sValue;
             if($bDebug){
-//              echo "Edit\n";
-//              print_r($arFilter);
+              echo "Edit\n";
+              print_r($arFilter);
             }
             if(!CSaleOrderPropsValue::Update(
                 $arExistPropValue["ID"],
@@ -78,8 +80,8 @@ function orderPropertiesUpdate(
         elseif($sValue){
             $arFilter["VALUE"] = $sValue;
             if($bDebug){
-//            echo "Add\n";
-//            print_r($arFilter);
+                echo "Add\n";
+                print_r($arFilter);
             }
             if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
                 echo "Addik error\n";
