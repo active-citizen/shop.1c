@@ -20,7 +20,7 @@
     $CatalogIblockId = CATALOG_IB_ID;
     $OfferIblockId = OFFER_IB_ID;
     
-    //$res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
+   //$res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
     
     // Получаем имя файла заказов
     $ordersFilename = $_GET["filename"];
@@ -75,7 +75,6 @@
         $ordersFilename = $arZipStat["name"];
     }
 
-    CModule::IncludeModule("sale");
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
     CModule::IncludeModule("price");
@@ -118,6 +117,7 @@
 
     $nOrderCounter = 0;
     if(file_exists($uploadDir.$ordersFilename)){
+
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
         //$arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
@@ -127,6 +127,7 @@
             $arOrders["Документ"] = array($arOrders["Документ"]);
         elseif(!isset($arOrders->Документ[0]))
             $arOrders->Документ = array($arOrders->Документ);
+
 
         $ccc = 0;
         foreach($arOrders->Документ as $arDocument){
@@ -140,7 +141,10 @@
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
-                array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1),
+                array(),
+                array("XML_ID"=>$arDocument["Ид"]),
+                false,
+                array("nTopCount"=>1),
                 array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO","STORE_ID")
             );
             $existsOrder = $res->GetNext();
@@ -154,7 +158,7 @@
                 );
                 $existsOrder = $res->GetNext();
             }
-    
+
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{5,11}$#",$arDocument["Телефон"])){
                 if(IMPORT_DEBUG){
@@ -165,7 +169,7 @@
                 continue;
             }
  
-            // Нормализация товаров
+             // Нормализация товаров
             if(!isset($arDocument["Товары"]["Товар"][0]))
                 $arDocument["Товары"]["Товар"] = 
                     array($arDocument["Товары"]["Товар"]);
@@ -718,7 +722,28 @@
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
          	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+
+                // Прописываем дату истечения бронирования
+                if(
+                    isset($arDocument["ДатаИстеченияБронирования"])
+                    &&
+                    $arDocument["ДатаИстеченияБронирования"]
+                ){
+                    $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
+                    $sDateClose = 
+                        sprintf("%04d",$tmp["year"])
+                        ."-".sprintf("%02d",$tmp["month"])
+                        ."-".sprintf("%02d",$tmp["day"])
+                    ;
+                    orderPropertiesUpdate($existsOrder["ID"], IMPORT_DEBUG,
+                        'CLOSE_DATE',$sDateClose
+                    );
+                }
+
+
+
             }
+            // При выполнении заказа прописываем в дату статуса дату выполнения
             if($statusId=='F')$DB->Query("
                 UPDATE 
                     `b_sale_order` 
@@ -733,7 +758,10 @@
         
     }
     
-    if($nOrderCounter)echo "success";
+    if($nOrderCounter)
+        echo "success";
+    else    
+        echo "failed: orders.xml not contains valid orders. Some errors were occured.";
 
 
 ?>

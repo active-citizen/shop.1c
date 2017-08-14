@@ -6,7 +6,12 @@ require_once(
 /**
     Обновление свойств у заказа
 */
-function orderPropertiesUpdate($nOrderId, $bDebug = false){
+function orderPropertiesUpdate(
+    $nOrderId, 
+    $bDebug = false,
+    $sCode = '',
+    $sValue = ''
+){
     
     $arOrder = CSaleOrder::GetList(
         array(),
@@ -28,6 +33,62 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
         array("nTopCount"=>1)
     )->GetNext();
     $nPropGroup = $arPropGroup["ID"];
+
+    if($sCode){
+        $arProp = CSaleOrderProps::GetList(
+            array("SORT" => "ASC"),
+            array(
+                    "ORDER_ID"          => $arOrder["ID"],
+                    "PERSON_TYPE_ID"    => 1,
+                    "PROPS_GROUP_ID"    => $nPropGroup,
+                    "CODE"              => $sCode
+                ),
+            false,
+            false,
+            array("ID","CODE","NAME")
+        )->Fetch();
+
+
+        $arFilter = array(
+            "ORDER_ID"=>$arOrder["ID"],
+            "ORDER_PROPS_ID"=>$arProp["ID"]
+        );
+    
+        if(
+            $arExistPropValue = 
+            CSaleOrderPropsValue::GetList(Array(), $arFilter)->Fetch()
+        ){
+            $arFilter["VALUE"] = $sValue;
+            if($bDebug){
+//              echo "Edit\n";
+//              print_r($arFilter);
+            }
+            if(!CSaleOrderPropsValue::Update(
+                $arExistPropValue["ID"],
+                $arFilter 
+            ) && $bDebug){
+                echo "Eddik error\n";
+                print_r($arExistPropValue);
+                print_r($arPropValue);
+                print_r($arOrder);
+                die;
+            }
+        }
+        elseif($sValue){
+            $arFilter["VALUE"] = $sValue;
+            if($bDebug){
+//            echo "Add\n";
+//            print_r($arFilter);
+            }
+            if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
+                echo "Addik error\n";
+                print_r($arFilter);
+                print_r($arOrder);
+                die;
+            }
+        }
+        return true;
+    }
 
     $resPropValues = CSaleOrderProps::GetList(
         array("SORT" => "ASC"),
@@ -66,6 +127,8 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
             "PROPERTY_VALUE"    =>  $arValue
         );
     }
+    print_r($arOrder["PROPERTIES"]);
+    die;
     if($nextFlag)continue;
     $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["PROPERTY_VALUE"] = 
         $arOrder["USER_LAST_NAME"]." ".$arOrder["USER_NAME"];
@@ -138,37 +201,6 @@ function orderPropertiesUpdate($nOrderId, $bDebug = false){
     $arOrder["PROPERTIES"]["SECTION_URL"]["PROPERTY_VALUE"] =  
         $arCategory["SECTION_PAGE_URL"];
 
-    $arOrder["EXPIRES"] = $arCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"];
-    $arOrder["USE_BEFORE"] = $arCatalog["PROPERTY_USE_BEFORE_DATE"];
- 
-    $tmp_0  = date_parse($arOrder["DATE_INSERT"]);
-    $tmp_1  = date_parse($arOrder["USE_BEFORE"]);
-
-    $arOrder["EXPIRES_TS"] = 
-        mktime(
-            $tmp_0["hour"],$tmp_0["minute"],$tmp_0["second"],
-            $tmp_0["month"],$tmp_0["day"],$tmp_0["year"]
-        )
-        +
-        $arOrder["EXPIRES"]*24*60*60;
-    $arOrder["USE_BEFORE_TS"] = 
-        $tmp_1["errors"]
-        ?
-        mktime(0,0,0,12,12,3050)
-        :
-        mktime(
-            $tmp_1["hour"],$tmp_1["minute"],$tmp_1["second"],
-            $tmp_1["month"],$tmp_1["day"],$tmp_1["year"]
-        );
-    $arOrder["PROPERTIES"]["CLOSE_DATE"]["PROPERTY_VALUE"] =  
-        $arOrder["EXPIRES_TS"]<$arOrder["USE_BEFORE_TS"]
-        ?
-        $arOrder["EXPIRES_TS"]
-        :
-        $arOrder["USE_BEFORE_TS"]
-        ;
-    $arOrder["PROPERTIES"]["CLOSE_DATE"]["PROPERTY_VALUE"] = 
-        date("Y-m-d",intval($arOrder["PROPERTIES"]["CLOSE_DATE"]["PROPERTY_VALUE"]));
 
     $objCSaleOrderPropsValue = new CSaleOrderPropsValue;
 //    $bDebug = true;

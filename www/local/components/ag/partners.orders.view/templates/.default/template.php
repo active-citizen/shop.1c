@@ -116,6 +116,21 @@
             </td>
         </tr>
         <? endif ?>
+        <? if($arResult["ORDER"]["PROPERTIES"]["CLOSE_DATE"]["VALUE"]):?>
+        <tr>
+            <td class="field-name">
+                 Дата истечения бронирования:
+            </td><td>
+                <?= 
+                    $DB->FormatDate(
+                        $arResult["ORDER"]["PROPERTIES"]["CLOSE_DATE"]["VALUE"],
+                        "YYYY-MM-DD",
+                        "DD.MM.YYYY"
+                    );
+                ?>
+            </td>
+        </tr>
+        <? endif ?>
         <tr>
             <td class="field-name">
                 Cертификат во вложении к уведомлениям   
