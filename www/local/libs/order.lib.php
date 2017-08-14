@@ -12,6 +12,7 @@ function orderPropertiesUpdate(
     $sCode = '',
     $sValue = ''
 ){
+    $objCSaleOrderPropsValue = new CSaleOrderPropsValue;
     
     $arOrder = CSaleOrder::GetList(
         array(),
@@ -127,8 +128,6 @@ function orderPropertiesUpdate(
             "PROPERTY_VALUE"    =>  $arValue
         );
     }
-    print_r($arOrder["PROPERTIES"]);
-    die;
     if($nextFlag)continue;
     $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["PROPERTY_VALUE"] = 
         $arOrder["USER_LAST_NAME"]." ".$arOrder["USER_NAME"];
