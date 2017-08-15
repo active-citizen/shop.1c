@@ -130,7 +130,7 @@ function orderPropertiesUpdate(
             "PROPERTY_VALUE"    =>  $arValue
         );
     }
-    if($nextFlag)continue;
+
     $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["PROPERTY_VALUE"] = 
         $arOrder["USER_LAST_NAME"]." ".$arOrder["USER_NAME"];
     
