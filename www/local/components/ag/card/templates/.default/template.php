@@ -6,8 +6,19 @@
 <?
 //$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 ?>
-        <? if(isset($arResult["OFFERS"][0]) &&
-        $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'):?>
+        <? if($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
+            <h3>Поощрение недоступно</h3>
+            (снято с реализации)
+        <? elseif(
+            !$arResult["TotalAmount"] && 
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_IF_ABSENT"][0]["VALUE_ENUM"]=='да'
+        ):?>
+            <h3>Поощрение недоступно</h3>
+            (исчерпание остатков)
+        <? elseif(
+            isset($arResult["OFFERS"][0]) 
+            && $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'
+        ):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
                 var totalStoreId = <? foreach($arResult["OFFERS_JSON"] as $offer){foreach($offer["STORAGES"] as $storeId=>$store){echo $storeId;break;};break;}?>;
@@ -433,10 +444,14 @@
                               <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
                             </tr>
                             <? endif ?>
-                            <? if(trim($arResult["STORAGES"][$id]["EMAIL"])):?>
+                            <? if($arResult["STORAGES"][$id]["EMAIL"]):?>
                             <tr>
                               <td>Сайт:</td>
-                              <td><a href="<?= $arResult["STORAGES"][$id]["EMAIL"] ?>" target="_blank"><?= $arResult["STORAGES"][$id]["EMAIL"] ?></a></td>
+                              <td><a href="<?=
+                              $arResult["STORAGES"][$id]["EMAIL"]
+                              ?>" target="_blank"><?=
+                              linkTruncate($arResult["STORAGES"][$id]["EMAIL"]) 
+                              ?></a></td>
                             </tr>
                             <? endif ?>
                           </table>
@@ -451,10 +466,38 @@
               </div>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__field ag-shop-card__field--no-gaps">
-                  <div class="ag-shop-card__fieldname">Описание:</div>
+                <? if(trim($arResult["CATALOG_ITEM"]["DETAIL_TEXT"])):?>
+                  <h4>Описание:</h4>
                   <p class="ag-shop-card__description"><?= 
                     $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
                   ?></p>
+                <? endif ?>
+                  <? if(
+                      $arResult["CATALOG_ITEM"]["PROPERTIES"]
+                        ["RECEIVE_RULES"][0]["~VALUE"]["TEXT"]
+                  ):?>
+                  <h4>Правила получения:</h4>
+                  <p>
+                  <?=
+                  $arResult["CATALOG_ITEM"]["PROPERTIES"]
+                    ["RECEIVE_RULES"][0]["~VALUE"]["TEXT"]
+                  ?>
+                  </p>
+                  <? endif ?>
+
+                  <? if(
+                      $arResult["CATALOG_ITEM"]["PROPERTIES"]
+                        ["CANCEL_RULES"][0]["~VALUE"]["TEXT"]
+                  ):?>
+                  <h4>Правила отмены:</h4>
+                  <p>
+                  <?=
+                  $arResult["CATALOG_ITEM"]["PROPERTIES"]
+                    ["CANCEL_RULES"][0]["~VALUE"]["TEXT"]
+                  ?>
+                  </p>
+                  <? endif ?>
+
                 </div>
                 <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]):?>
                 <div class="ag-shop-card__warning"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>срок действия вашего заказа <?= $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]?> <?= get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);?> с момента оформления</span></div>
@@ -650,8 +693,6 @@
       </div>
     </div>
 
-        <? elseif($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
-            Поощрение недоступно
         <? else: ?>
-            Нет доступных предложений
+            <h3>Нет доступных предложений</h3>
         <? endif ?>

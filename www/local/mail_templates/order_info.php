@@ -37,7 +37,8 @@ $html .='
                     <td style="text-align: right;color:#08B0A8;font-weight:bold">'.(
                         $orderInfo["CATALOG"]['EXPIRES']
                     ).'</td>
-                </tr>
+                </tr>';
+        include("promocodes.php");
+        $html .= '
             </table>
-        </p>
-';
+        </p> ';

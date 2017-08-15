@@ -363,12 +363,13 @@ function productConfirmNext(){
                             function(){
                                 $('#order-process-done').css('display','none');
                                 $('.ok-button').css('display','block');
-                                var error_text = '<ul>';
+                                var error_text = '';
                                 for(i in answer.order.ERROR){
-                                    error_text += "<li>"+answer.order.ERROR[i]+'</li>';
+                                    error_text += ""+answer.order.ERROR[i]+'<br/>';
                                 }
-                                error_text += '</ul>';
-                                $('.ag-shop-modal__container').append('<div class="error">'+error_text+'</div>')
+                                error_text += '';
+                                $('.ag-shop-modal__container .ag-shop-card__warning').remove();
+                                $('.ag-shop-modal__container').append('<div class="ag-shop-card__warning">'+error_text+'</div>')
 //                              $('.ag-shop-modal-wrap').fadeOut('fast');
                             }
                         );

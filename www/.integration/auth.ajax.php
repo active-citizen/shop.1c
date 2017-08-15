@@ -76,6 +76,28 @@
         $answer["errors"][] = $profile["errorMessage"];
         
     if(isset($profile["result"]))$answer["profile"] = $profile["result"];
+
+    // Заглушка
+    $sLockPhone = $answer["profile"]["personal"]["phone"];
+    if(
+        $sLockPhone=='79171189696'
+        || $sLockPhone == '79269189938'
+        || $sLockPhone == '79262068246'
+        || $sLockPhone == '79772612862'
+        || $sLockPhone == '79036619266'
+        || $sLockPhone == '79151086593'
+        || $sLockPhone == '79178146980'
+        || $sLockPhone == '79209672105'
+        || $sLockPhone == '79063443775'
+        || $sLockPhone == '79063443775'
+        || $sLockPhone == '79377979855'
+    ){
+    }
+    else{
+        die;
+    }
+
+
     // Если пользователь разлогинился на АГ, но залогинен в битриксомом магазина 
     // - разлогиниваем и в битриксе и редиректимся
     if(

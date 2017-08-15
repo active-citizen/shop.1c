@@ -31,7 +31,8 @@
             $this->phone = str_replace("u","",$arUser["LOGIN"]);
             if(!preg_match("#^7\d{10}$#",$this->phone)){
                 $this->error = __CLASS__.':'.__LINE__
-                    .':Неверный формат телефона пользователя';
+                    .':Неверный формат телефона пользователя:'.
+                    '"'.$this->phone.'"';
                 return false;
             }
 

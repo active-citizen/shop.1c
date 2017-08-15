@@ -20,7 +20,7 @@
     $CatalogIblockId = CATALOG_IB_ID;
     $OfferIblockId = OFFER_IB_ID;
     
-    //$res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
+   //$res = CSaleOrder::GetList(array("DATE_INSERT"=>"ASC"));
     
     // Получаем имя файла заказов
     $ordersFilename = $_GET["filename"];
@@ -75,7 +75,6 @@
         $ordersFilename = $arZipStat["name"];
     }
 
-    CModule::IncludeModule("sale");
     CModule::IncludeModule("catalog");
     CModule::IncludeModule("iblock");
     CModule::IncludeModule("price");
@@ -118,6 +117,7 @@
 
     $nOrderCounter = 0;
     if(file_exists($uploadDir.$ordersFilename)){
+
         $xmlOrders = file_get_contents($uploadDir.$ordersFilename);
         $arOrders = simplexml_load_string($xmlOrders, "SimpleXMLElement" );
         //$arOrders = json_decode(json_encode((array)$arOrders), TRUE);        
@@ -127,6 +127,7 @@
             $arOrders["Документ"] = array($arOrders["Документ"]);
         elseif(!isset($arOrders->Документ[0]))
             $arOrders->Документ = array($arOrders->Документ);
+
 
         $ccc = 0;
         foreach($arOrders->Документ as $arDocument){
@@ -140,7 +141,10 @@
             $t0 = microtime(true);
             // Поиск заказа под XML-Ид
             $res = CSaleOrder::GetList(
-                array(),array("XML_ID"=>$arDocument["Ид"]),false,array("nTopCount"=>1),
+                array(),
+                array("XML_ID"=>$arDocument["Ид"]),
+                false,
+                array("nTopCount"=>1),
                 array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO","STORE_ID")
             );
             $existsOrder = $res->GetNext();
@@ -154,7 +158,7 @@
                 );
                 $existsOrder = $res->GetNext();
             }
-    
+
             // Бортуем заказы с неверно указанным телефоном
             if(!preg_match("#^\d{5,11}$#",$arDocument["Телефон"])){
                 if(IMPORT_DEBUG){
@@ -165,9 +169,10 @@
                 continue;
             }
  
-            // Нормализация товаров
+             // Нормализация товаров
             if(!isset($arDocument["Товары"]["Товар"][0]))
-                $arDocument["Товары"]["Товар"] = array($arDocument["Товары"]["Товар"]);
+                $arDocument["Товары"]["Товар"] = 
+                    array($arDocument["Товары"]["Товар"]);
             // пОЛУЧЕНИЕ МАССИВА ТОВАРОВ КОРЗИНЫ
             $basketProducts = array();
             foreach($arDocument["Товары"]["Товар"] as $product){
@@ -178,10 +183,28 @@
                         ".print_r($product["Ид"],1)."\n";
                     continue;
                 }
-                
+
+
+                if(isset($product["ИмяПоля1"]) || isset($product["ИмяПоля2"]))
+                    $product["Промокоды"] = array(
+                        "ИмяПараметра1"     =>
+                            isset($product["ИмяПоля1"])?$product["ИмяПоля1"]:"",
+                        "ЗначениеПараметра1"=>
+                            isset($product["ЗначПоля1"])?$product["ЗначПоля1"]:"",
+                        "ИмяПараметра2"     =>
+                            isset($product["ИмяПоля2"])?$product["ИмяПоля2"]:"",
+                        "ЗначениеПараметра2"=>
+                            isset($product["ЗначПоля2"])?$product["ЗначПоля2"]:"",
+                    );
+                // Запоминаем промокоды для письма
+                if(isset($product["Промокоды"]))
+                    $GLOBALS["promocodes"] = $product["Промокоды"];
+               
                 $XML_ID = $product["Ид"];
                 $resOffer = CIblockElement::GetList(
-                    array(),array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),false,
+                    array(),
+                    array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),
+                    false,
                     array("nTopCount"=>1),array("ID")
                 );
                 $existsOffer = $resOffer->GetNext();
@@ -196,9 +219,11 @@
                         "SITE_ID"       =>  "s1",
                         "XML_ID"        =>  $product["product_xml_id"],
                         "NAME"          =>  $product["Наименование"],
-                        "CODE"          =>  Cutil::translit($product["Наименование"],"ru",
-                            array("replace_space"=>"-","replace_other"=>"-")
-                        )."-".$product["product_id"],
+                        "CODE"          =>  Cutil::translit(
+                                $product["Наименование"],
+                                "ru",
+                                array("replace_space"=>"-","replace_other"=>"-")
+                            )."-".$product["product_id"],
                         "IBLOCK_ID"     =>  $CatalogIblockId,
                         "DETAIL_TEXT"   =>  '',
                         "PREVIEW_TEXT"  =>  '',
@@ -394,6 +419,7 @@
                 $arDocument["История"]["Состояние"][0]["СостояниеЗаказа"] =
                     date("Y-m-d H:i:s");
 
+
             $arDate = date_parse(
                 $arDocument["История"]["Состояние"][0]["ДатаИзменения"]
             );
@@ -426,6 +452,9 @@
                 break;
                 case 'Отменен':
                     $statusId = "AG";$canceled = "Y";
+                break;
+                case 'Отклонен':
+                    $statusId = "AF";$canceled = "Y";
                 break;
             }
            
@@ -574,12 +603,24 @@
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
-                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
-                // отправляем в любом случае
-                elseif($statusId=='N' || $statusId=='F'){
-                    eventOrderStatusSendEmail($orderId, $statusId, ($arFields = array()), $statusId);
+                // отправляем в любом случае при обратном толчке
+                // Когла статус не меняется
+                elseif(
+                    $existsOrder["STATUS_ID"]==$statusId && (
+                        $statusId=='N' 
+                        || $statusId=='F' 
+                        || $statusId=='AI'
+                        || $statusId=='AG'
+                    )
+                ){
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
                 }
                 // Обрабатываем отмену
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
@@ -606,8 +647,12 @@
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }
+                    eventOrderStatusSendEmail(
+                        $orderId, $statusId, ($arFields = array()), $statusId
+                    );
 
                     // Увеличикаем запасы на складе 
+                    /*
                     $objCCatalogStoreProduct = new CCatalogStoreProduct;
                     $objCCatalogProduct = new CCatalogProduct;
                     foreach($basketProducts as $productId=>$item){
@@ -643,6 +688,7 @@
                         }
 
                     }
+                    */
                 }
 
                 // Конец обработки отмены
@@ -676,7 +722,28 @@
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
          	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+
+                // Прописываем дату истечения бронирования
+                if(
+                    isset($arDocument["ДатаИстеченияБронирования"])
+                    &&
+                    $arDocument["ДатаИстеченияБронирования"]
+                ){
+                    $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
+                    $sDateClose = 
+                        sprintf("%04d",$tmp["year"])
+                        ."-".sprintf("%02d",$tmp["month"])
+                        ."-".sprintf("%02d",$tmp["day"])
+                    ;
+                    orderPropertiesUpdate($existsOrder["ID"], IMPORT_DEBUG,
+                        'CLOSE_DATE',$sDateClose
+                    );
+                }
+
+
+
             }
+            // При выполнении заказа прописываем в дату статуса дату выполнения
             if($statusId=='F')$DB->Query("
                 UPDATE 
                     `b_sale_order` 
@@ -691,7 +758,10 @@
         
     }
     
-    if($nOrderCounter)echo "success";
+    if($nOrderCounter)
+        echo "success";
+    else    
+        echo "failed: orders.xml not contains valid orders. Some errors were occured.";
 
 
 ?>

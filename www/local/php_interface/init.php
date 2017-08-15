@@ -13,6 +13,10 @@
         
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
+    
+    define("IS_MOBILE",
+        isset($_COOKIE["EMPSESSION"])
+    );
 
     //
     define("COMMON_CACHE_TIME",3600);
@@ -90,7 +94,7 @@
     AddEventHandler("sale", "OnSaleStatusEMail", "eventSaleStatusEMail");
     // Назначаем обработчик отправки письма о смене статуса заказа
     AddEventHandler(
-        "sale", "OnOrderStatusSendEmail", "eventOrderStatusSendEmail"
+        "sale", "OnOrderStatusSendEmail", "eventOrderStatusSendEmailNull"
     );
     //AddEventHandler(
     //    "sale", "OnSaleStatusOrder", "eventOrderStatusSendEmail"
@@ -154,7 +158,7 @@
 
         // Заголовки основного текста письма 
         $sMailTextHeaders = "--$boundary\r\n"
-            ."Content-Type: text/html; UTF-8\r\n"
+            ."Content-Type: text/html; charset=UTF-8\r\n"
             //."Content-Transfer-Encoding: base64\r\n"
             ."\r\n"
         ;
@@ -358,6 +362,9 @@
     ){return false;}
     function eventOrderRecurringSendEmail($orderID, &$eventName, &$arFields)
         {return false;}
+    function eventOrderStatusSendEmailNull( $orderId, &$eventName, &$arFields, $orderStatus
+    ){return false;}
+
  
     
     /**

@@ -1,0 +1,67 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Редактирование названий статувос заказов
+     */
+    class sale_statuses extends Migration{
+        function Run(){
+            
+            global $DB;
+            
+            $statuses = array(
+                "AF" => array(
+                    array(
+                        "ID"            =>  "AF",
+                        "LID"           =>  "ru",
+                        "NAME"          =>  "Отклонен",
+                        "DESCRIPTION"   =>  "Отклонен",
+                    ),
+                    array(
+                        "ID"            =>  "AF",
+                        "LID"           =>  "en",
+                        "NAME"          =>  "Отклонен",
+                        "DESCRIPTION"   =>  "Отклонен",
+                    )
+                ),
+            );
+
+            CModule::IncludeModule("sale");
+            foreach($statuses as $statusId=>$langs){
+                foreach($langs as $status){
+
+                    
+                    $resBitrix = CSaleStatus::GetList(array(),array(
+                        "ID"=>$statusId,
+                        "LID"=>$status["LID"]
+                    ));
+                    
+                    $arrFields = array(
+                        "ID"=>$status["ID"],
+                        "SORT"=>500,
+                        "LANG"=>$langs
+                    );
+                    
+                    if($arrStatus = $resBitrix->GetNext()){
+                        CSaleStatus::Update($status["ID"], $arrFields);
+                    }
+                    else{
+                        CSaleStatus::Add($arrFields);
+                    }
+                
+                }
+            }
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$sale_statuses = new sale_statuses();
+// Откатываем, если неудачно
+if(!$sale_statuses->Run())$sale_statuses->RollBack();

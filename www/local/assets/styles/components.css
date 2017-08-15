@@ -233,7 +233,7 @@
 /*hide the middle line*/
 }
 .ag-shop-menu__button span {
-  background: #263146;
+/*  background: #263146; */
   border-radius: 1px;
   display: block;
   height: 2px;
@@ -245,8 +245,8 @@
 }
 .ag-shop-menu__button span::before,
 .ag-shop-menu__button span::after {
-  background: #263146;
-  border-radius: 1px;
+/*  background: #263146; */
+  border-radius: 1px */;
   display: block;
   height: 2px;
   transition: 0.35s;
@@ -269,18 +269,24 @@
 }
 .ag-shop-menu__button--close span::before,
 .ag-shop-menu__button--close span::after {
+/*
   -webkit-transform-origin: 50% 50%;
           transform-origin: 50% 50%;
   top: 0;
   width: 20px;
+*/
 }
 .ag-shop-menu__button--close span::before {
+/*
   -webkit-transform: rotate3d(0, 0, 1, 45deg);
           transform: rotate3d(0, 0, 1, 45deg);
+*/
 }
 .ag-shop-menu__button--close span::after {
+/*
   -webkit-transform: rotate3d(0, 0, 1, -45deg);
           transform: rotate3d(0, 0, 1, -45deg);
+*/
 }
 .ag-shop {
   position: relative;

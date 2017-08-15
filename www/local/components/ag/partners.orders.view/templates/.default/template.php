@@ -116,6 +116,21 @@
             </td>
         </tr>
         <? endif ?>
+        <? if($arResult["ORDER"]["PROPERTIES"]["CLOSE_DATE"]["VALUE"]):?>
+        <tr>
+            <td class="field-name">
+                 Дата истечения бронирования:
+            </td><td>
+                <?= 
+                    $DB->FormatDate(
+                        $arResult["ORDER"]["PROPERTIES"]["CLOSE_DATE"]["VALUE"],
+                        "YYYY-MM-DD",
+                        "DD.MM.YYYY"
+                    );
+                ?>
+            </td>
+        </tr>
+        <? endif ?>
         <tr>
             <td class="field-name">
                 Cертификат во вложении к уведомлениям   
@@ -128,6 +143,7 @@
                 <? endif ?>
             </td>
         </tr>
+        <? if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']=='да'):?> 
         <tr>
             <td class="field-name">
                 Сертификат
@@ -153,6 +169,7 @@
                 <iframe src="" name="cert" style="display:none;"></iframe>
             </td>
         </tr>
+        <? endif ?>
         <? if(
             isset($arResult["ORDER"]["PROPERTIES"]["TROIKA"]["VALUE"])
             &&

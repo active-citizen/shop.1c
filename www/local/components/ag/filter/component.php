@@ -13,11 +13,37 @@
 
     $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"WANTS"));
     $arResult["IWANTS"] = array();
-    while($iwant = $res->getNext())$arResult["IWANTS"][$iwant["ID"]]=$iwant;
+    while($iwant = $res->getNext()){
+        if($arr = CIBlockElement::GetList(
+            array(),
+            array(
+                "IBLOCK_ID" =>  CATALOG_IB_ID,
+                "ACTIVE"    =>  "Y",
+                "PROPERTY_WANTS_VALUE"=>$iwant["VALUE"]
+            ),
+            false,
+            array("nTopCount"=>1),
+            array("ID")
+        )->Fetch())
+        $arResult["IWANTS"][$iwant["ID"]]=$iwant;
+    }
     
     $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"INTERESTS"));
     $arResult["INTERESTS"] = array();
-    while($interest = $res->getNext())$arResult["INTERESTS"][$interest["ID"]]=$interest;
+    while($interest = $res->getNext()){
+        if($arr = CIBlockElement::GetList(
+            array(),
+            array(
+                "IBLOCK_ID" =>  CATALOG_IB_ID,
+                "ACTIVE"    =>  "Y",
+                "PROPERTY_INTERESTS_VALUE"=>$interest["VALUE"]
+            ),
+            false,
+            array("nTopCount"=>1),
+            array("ID")
+        )->Fetch())
+        $arResult["INTERESTS"][$interest["ID"]]=$interest;
+    }
     
     $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"TYPES"));
     $TYPES = array();

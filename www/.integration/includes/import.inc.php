@@ -179,8 +179,9 @@
     foreach($arGroups as $arGroup){
         $arFields = array(
             "NAME"      => $arGroup["Наименование"],
-            //"ACTIVE"    => "Y",
-            "ACTIVE"    => preg_match("#Транспорт#",$arGroup["Наименование"])?"N":"Y",
+
+//            "ACTIVE"    => $arGroup["Включен"]=='Да'?"Y":"N",
+            //"ACTIVE"    => preg_match("#Транспорт#",$arGroup["Наименование"])?"N":"Y",
             "SORT"      => $arGroup["Сортировка"],
             "IBLOCK_ID" => $CATALOG_IBLOCK_ID,
             "XML_ID"    => $arGroup["Ид"],
@@ -358,6 +359,9 @@
         // Возможность отмены
         $arProperties["CANCEL_ABILITY"]     = 
             $arProduct["ВозможностьОтмены"]=='Да'?$ENUM["CANCEL_ABILITY"]["да"]:0;
+        // Отключатьб при нулевом остатке
+        $arProperties["HIDE_IF_ABSENT"]     = 
+            $arProduct["ОтключатьБезОстатка"]=='Да'?$ENUM["HIDE_IF_ABSENT"]["да"]:0;
         // Новинка
         $arProperties["NEWPRODUCT"] = 
             $arProduct["Новинка"]=='Да'?$ENUM["NEWPRODUCT"]["да"]:0;

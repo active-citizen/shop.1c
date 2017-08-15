@@ -79,14 +79,18 @@
                         $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
                         ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= ceil($arOrder["IN_WORK"]) ?> <?= get_days(ceil($arOrder["IN_WORK"]))?>)<? endif ?></div>
                         <div class="ag-shop-profile-order__number">Заказ <?= $arOrder["ADDITIONAL_INFO"]?></div>
-                        <div class="ag-shop-profile-order__date">от <?= $arOrder["DATE_SHORT"]?></div>
+                        <div class="ag-shop-profile-order__date">от <?=
+                        $arOrder["DATE_MIDDLE"]?></div>
                       </div>
                     </div>
                     <div class="grid__col-shrink">
                       <div class="ag-shop-profile-order__desktop-controls">
+                        <? if($arOrder["SEND_CERT"] &&
+                        file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
                           <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
                               <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
                           </a>
+                        <? endif ?>
                           <a class="ag-shop-profile-order__control" href="#"
                           onclick="return showOrdersFeedbackForm('<?=
                           $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
@@ -166,8 +170,15 @@
                 </div>
                 <div class="ag-shop-profile-order__mobile-controls">
                   <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <div class="grid__col-shrink"><a
-                    class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a></div>
+                    <? if($arOrder["SEND_CERT"]  && 
+                     file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
+                    <div class="grid__col-shrink">
+                        <a class="ag-shop-profile-order__control" href="#" 
+                        onclick="return printOrder(<?= 
+                            $arOrder["ID"]
+                        ?>);"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a>
+                    </div>
+                    <? endif ?>
                     <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=
                           $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
                     <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>

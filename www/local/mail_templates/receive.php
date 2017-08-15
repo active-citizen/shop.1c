@@ -1,5 +1,6 @@
 <?
 
+
 if(trim($orderInfo["PROPERTIES"]["RECEIVE_RULES"]["VALUE"]["TEXT"]))
 $html .='
         <p>

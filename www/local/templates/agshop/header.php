@@ -20,6 +20,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/libs/slick.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/faq.css");
+$APPLICATION->SetAdditionalCSS("/local/assets/styles/semantic.css");
 
 
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");
@@ -90,6 +91,17 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <?
 	$APPLICATION->ShowPanel();
     ?>
+<? if(
+    1 
+    &&
+    !$USER->IsAuthorized()
+    &&
+    !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+):?>
+<h2 style="width: 80%;margin: 100px auto; text-align: center;">Раздел<br/> "Магазина<br/> поощрений"<br/> временно<br/> недоступен<br/>
+в связи<br/> с обновлениями.
+<br/>Приносим свои<br/> извинения.</h2>
+<? else: ?>
     <div class="ag-shop">
     <? if(
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
@@ -114,6 +126,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
       <div class="ag-shop__main">
     <? if(
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+        &&
+        !IS_MOBILE
     ):?>
     <?$APPLICATION->IncludeComponent("ag:menu.top", "", array(
             "CACHE_TIME"      =>  COMMON_CACHE_TIME
@@ -122,7 +136,68 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     );?>
     <? endif ?>
 
+    <? if(IS_MOBILE):?>
+        <div class="ag-shop-menu">
+          <div class="ag-shop-menu__container">
+            <div class="ag-shop-menu__header">
+              <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
+                <div class="grid__col grid__col-shrink">
+                  <h2 class="ag-shop-menu__current">
+                    <? if(preg_match("#^/catalog/$#",$_SERVER["REQUEST_URI"])):?>
+                        Главная
+                    <? elseif(preg_match("#^/profile/order/#",$_SERVER["REQUEST_URI"])):?>
+                        Мои заказы
+                    <? elseif(preg_match("#^/profile/wishes/#",$_SERVER["REQUEST_URI"])):?>
+                        Мои желания
+                    <? elseif(preg_match("#^/rules/hiw/#",$_SERVER["REQUEST_URI"])):?>
+                        Как это работает
+                    <? elseif(preg_match("#^/rules/stores/#",$_SERVER["REQUEST_URI"])):?>
+                        Адреса
+                    <? elseif(preg_match("#^/rules/faq/#",$_SERVER["REQUEST_URI"])):?>
+                        FAQ
+                    <? else:?>
+                        Навигация
+                    <? endif ?>
+                  </h2>
+                </div>
+                <div class="grid__col grid__col-shrink">
+                  <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" type="button"><span></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="ag-shop-menu__items js-menu__list">
+              <div class="ag-shop-menu__item"><a
+              class="ag-shop-menu__link"><a class="ag-shop-menu__link" href="/">Главная</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link<?if(preg_match("#^/profile/order/.*#",$_SERVER["REQUEST_URI"])){?> ag-shop-menu__link--active<?}?>" href="/profile/order/">Мои заказы</a></div>
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link<?if(preg_match("#^/profile/wishes/.*#",$_SERVER["REQUEST_URI"])){?> ag-shop-menu__link--active<?}?>" href="/profile/wishes/">Мои желания</a></div>
+              <div class="ag-shop-menu__item">
+                <a class="ag-shop-menu__link<?if(preg_match("#/rules/hiw/.*#",$_SERVER["REQUEST_URI"])){?> ag-shop-menu__link--active<?}?>" href="/rules/hiw/">Как это работает?</a>
+              </div>
+              <div class="ag-shop-menu__item">
+                <a class="ag-shop-menu__link<?if(preg_match("#/rules/stores/.*#",$_SERVER["REQUEST_URI"])){?> ag-shop-menu__link--active<?}?>" href="/rules/stores/">Адреса</a>
+              </div>
+              <div class="ag-shop-menu__item">
+                <a class="ag-shop-menu__link<?if(preg_match("#/rules/faq/.*#",$_SERVER["REQUEST_URI"])){?> ag-shop-menu__link--active<?}?>" href="/rules/faq/">FAQ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <?
+        
+            $APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
+                "CACHE_TIME"      =>  COMMON_CACHE_TIME
+            ),
+            false
+        );
+        
+        ?>
+
+    <? endif ?>
+
     <? if(
+        !IS_MOBILE
+        &&
         preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
     ):?>
     <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
@@ -132,5 +207,6 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     );?>
     <? endif ?>
 
+<? endif ?>
 
 

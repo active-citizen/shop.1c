@@ -1,4 +1,15 @@
 <?
+
+if(trim( $orderInfo["PROPERTIES"]["RECEIVE_RULES"]["~VALUE"]["TEXT"]))
+    $html .= '<p><b>Правила получения заказа</b><br>'.
+    $orderInfo["PROPERTIES"]["RECEIVE_RULES"]["~VALUE"]["TEXT"]
+    .'</p>';
+
+if(trim($orderInfo["PROPERTIES"]["CANCEL_RULES"]["~VALUE"]["TEXT"]))
+    $html .= '<p><b>Правила отмены заказа</b><br>'.
+    $orderInfo["PROPERTIES"]["CANCEL_RULES"]["~VALUE"]["TEXT"]
+    .'</p>';
+
 $html .= 
 '        <p>
             Данное письмо отправлено автоматически и не требует ответа.

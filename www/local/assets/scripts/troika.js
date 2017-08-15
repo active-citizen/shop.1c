@@ -8,6 +8,28 @@ $(document).ready(function(){
 
     // Проверяем номер каждое изменение поля выбора прикреплённых   
     $('#troyka-card-number').change(function(){check_filling_troika();});
+
+    $('.ag-shop-card__card-number-input').keydown(function(event){
+        var moved = 
+            parseInt(event.which)==8 
+            || parseInt(event.which)==46
+            || parseInt(event.which)==35
+            || parseInt(event.which)==36
+            || parseInt(event.which)==37
+            || parseInt(event.which)==38
+            || parseInt(event.which)==39
+            || parseInt(event.which)==40
+            ?
+            true
+            :
+            false;
+        var re = /[0-9]+/;
+
+        if(parseInt($(this).val().length)>=10 && !moved)return false;
+        if(!moved && !re.test(event.key))return false;
+        return true;
+    });
+
     // Проверяем номер каждый введённый символ в поле номера
     $('.ag-shop-card__card-number-input').keyup(function(){check_filling_troika();});
    
@@ -162,6 +184,27 @@ function confirmTroika(){
         check_filling_code(); 
     });
 
+    $('#confirm-code').keydown(function(event){
+        var moved = 
+            parseInt(event.which)==8 
+            || parseInt(event.which)==46
+            || parseInt(event.which)==35
+            || parseInt(event.which)==36
+            || parseInt(event.which)==37
+            || parseInt(event.which)==38
+            || parseInt(event.which)==39
+            || parseInt(event.which)==40
+            ?
+            true
+            :
+            false;
+        var re = /[0-9]+/;
+
+        if(parseInt($(this).val().length)>=5 && !moved)return false;
+        if(!moved && !re.test(event.key))return false;
+        return true;
+    });
+
     // Проверяем номер каждый введённый символ в поле номера
     $('#confirm-code').keyup(function(){check_filling_code();});
  
@@ -260,12 +303,17 @@ function buyTroika(){
                                         function(){
                                             $('#order-process-done').css('display','none');
                                             $('.ok-button').css('display','block');
-                                            var error_text = '<ul>';
+                                            var error_text = '';
                                             for(i in answer.order.ERROR){
-                                                error_text += "<li>"+answer.order.ERROR[i]+'</li>';
+                                                error_text += ""+answer.order.ERROR[i]+'<br/>';
                                             }
-                                            error_text += '</ul>';
-                                            $('.ag-shop-modal__container').append('<div class="error">'+error_text+'</div>')
+                                            error_text += '';
+                                            $('.ag-shop-modal__container .ag-shop-card__warning').remove();
+                                            $('.ag-shop-modal__container').append(
+                                                '<div class="ag-shop-card__warning">'
+                                                    +error_text+
+                                                '</div>'
+                                            );
             //                              $('.ag-shop-modal-wrap').fadeOut('fast');
                                         }
                                     );

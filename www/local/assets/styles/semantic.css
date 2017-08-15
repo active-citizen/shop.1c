@@ -1,0 +1,34 @@
+h3{
+    color: rgba(0,122,108,1);
+}
+
+h4{
+    color: rgba(0,122,108,1);
+}
+
+.ag-shop-card__container a{
+    color: rgba(0,122,108,1);
+}
+
+.ag-shop-card__container a:hover{
+    color: rgba(0,152,138,1);
+    cursor: pointer;
+}
+
+
+.ag-shop-card__container {
+    font-family: 'SF UI Text', Arial, sans-serif !important;
+    font-size: 1rem !important;
+    color: #626e7d !important;
+    line-height: 27px !important;
+}
+
+.ag-shop-card__container p{
+    text-indent: 16px;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    margin-top:10px;
+    margin-bottom: 10px;
+}

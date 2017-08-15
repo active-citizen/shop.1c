@@ -347,11 +347,11 @@ $(document).ready(function(){
                                 function(){
                                     $('#order-process-done').css('display','none');
                                     $('.ok-button').css('display','block');
-                                    var error_text = '<ul>';
+                                    var error_text = '';
                                     for(i in answer.order.error){
-                                        error_text += '<li>'+answer.order.error[i]+'</li>';
+                                        error_text += ''+answer.order.error[i]+'<br/>';
                                     }
-                                    error_text +='</ul>';
+                                    error_text +='';
                                     $('.catalog_item_confirm_message').fadeOut('fast');
                                     ag_ci_rise_error(error_text);
                                 }
@@ -410,6 +410,8 @@ function next_page(){
     $('.catalog-page-input').remove();
     // Конец промотки
     if(!query_string)return false;
+    var button_text = $('.next-page').html();
+    $('.next-page').html('<img src="/local/assets/images/loading.gif">');
     $.get(
         "/catalog/index.ajax.php?"+query_string,
         function(data){
@@ -421,6 +423,8 @@ function next_page(){
                 scrollTop: $('body').height()
             }, 1600);
             */
+            // Возвращаем надпись на кнопку
+            $('.next-page').html(button_text);
             //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
             if(!$('.catalog-page-input').last().val())$('.next-page').remove();
         }

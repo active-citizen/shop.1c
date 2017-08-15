@@ -535,13 +535,13 @@ elseif(isset($_GET["add_order"])){
             orderSetZNI($orderId,'F','AA');
         // Если тойка провалилась - Аннулирован
         elseif($stoykaStatus == 2)
-            orderSetZNI($orderId,'AI','AA');
+            orderSetZNI($orderId,'AF','AA');
         // Если парковка успешно заказалась - Выполнен
         elseif($sParkingStatus == 1)
             orderSetZNI($orderId,'F','AA');
         // Если парковка провалилась - Аннулирован
         elseif($sParkingStatus == 2)
-            orderSetZNI($orderId,'AI','AA');
+            orderSetZNI($orderId,'AF','AA');
         // Во всех остальных случаях - В работее
         else
             orderSetZNI($orderId,'N','AA');
