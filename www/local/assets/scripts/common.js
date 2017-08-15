@@ -60,7 +60,7 @@ $(document).ready(function() {
   $('.ag-shop-filter__variants input').click(function(){
     if($(this).parent().parent().find('input:checked').length>3){
        $(this).removeAttr('checked');
-        alert('Нельзя выбирать более 3 элементов');
+        riseError('Нельзя выбирать более 3 элементов');
         return false;
     }
     return true;
@@ -70,7 +70,7 @@ $(document).ready(function() {
   $('.ag-shop-filter__variants input').change(function(){
     if($(this).parent().parent().find('input:checked').length>3){
         $(this).removeAttr('checked');
-        alert('Нельзя выбирать более 3 элементов');
+        riseError('Нельзя выбирать более 3 элементов');
         return false;
     }
     input_variant_click($(this));
@@ -228,7 +228,9 @@ function selectStorage(storageId){
     if(value = arStorages[storageId].PHONE)$('.ag-shop-card__selected-place-table').append(getStorageRow('Телефон',value));
     if(value = arStorages[storageId].SCHEDULE)$('.ag-shop-card__selected-place-table').append(getStorageRow('Режим',value));
     if(value = arStorages[storageId].EMAIL)
-        $('.ag-shop-card__selected-place-table').append(getStorageRow('Сайт','<a href="'+value+'" target="_blank">'+value+'</a>'));
+        $('.ag-shop-card__selected-place-table').append(getStorageRow('Сайт','<a href="'+value+'" target="_blank">'+
+        arStorages[storageId].EMAIL_SHORT
+        +'</a>'));
     $('.ag-shop-card__selected-place-station').html(arStorages[storageId].TITLE);
     $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').css('display','none');
     $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').each(function(){
@@ -263,15 +265,15 @@ function addComment(){
     var mark = $('.ag-shop-card__review-form-container .ag-shop-card__rating').attr("rel");
     var productId = $('.ag-shop-card__review-form').attr("prodictid");
     if(!mark){
-        alert('Вы не поставили оценку');
+        riseError('Вы не поставили оценку');
         return false;
     }
     if(!productId){
-        alert('Не указан ID продукта');
+        riseError('Не указан ID продукта');
         return false;
     }
     if(comment.length<3){
-        alert('Вы не написали текст комментария');
+        riseError('Вы не написали текст комментария');
         return false;
     }
     $.post(
@@ -286,11 +288,11 @@ function addComment(){
                 var answer = JSON.parse(data);
             }   
             catch(e){
-                alert(data);
+                riseError(data);
             }
         
             if(answer.error && !answer.success){
-                alert(answer.error);
+                riseError(answer.error);
                 return false;
             }
             $('.ag-shop-card__review-form').fadeOut();
@@ -319,6 +321,11 @@ function loadComments(){
 
 function productConfirm(){
     totalStoreId = $("input[name='place']:checked").val();
+    // Не выбран склад
+    if(!totalStoreId){
+        riseError('Выберите склад получения');
+        return false;
+    }
     $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
@@ -401,11 +408,11 @@ function sendCommonFeedbackForm(){
     post["order"] = $('#order-feedback-form-ordernum').html();
     
     if(!post["text"]){
-        alert('Введите сообщение');
+        riseError('Введите сообщение');
         return false;
     }
     if(!post["type"]){
-        alert('Выберите тип обращения');
+        riseError('Выберите тип обращения');
         return false;
     }
 
@@ -425,7 +432,7 @@ function sendCommonFeedbackForm(){
                     });
                 },2000);
             else
-                alert(answer.error);
+                riseError(answer.error);
         }
     );
     return false;
@@ -485,11 +492,11 @@ function sendOrdersFeedbackForm(){
     post["name"] = $('#order-feedback-form-fio').html();
     post["text"] = $('#order-feedback-form-text').val();
     if(!post["text"]){
-        alert('Введите сообщение');
+        riseError('Введите сообщение');
         return false;
     }
     if(!post["type"]){
-        alert('Выберите тип обращения');
+        riseError('Выберите тип обращения');
         return false;
     }
 
@@ -525,7 +532,7 @@ function orderCancel(orderId, obj){
         function(data){
             var answer = JSON.parse(data);
             if(answer.error){
-                alert(answer.error);
+                riseError(answer.error);
                 return false;
             }
             document.location.href='/profile/order/';
@@ -534,5 +541,8 @@ function orderCancel(orderId, obj){
     return false;
 }
 
-
+function riseError(message){
+    $("#rise-error #rise-error-message").html(message);
+    $("#rise-error").fadeIn();
+}
 

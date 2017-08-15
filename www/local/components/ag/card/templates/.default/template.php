@@ -7,24 +7,43 @@
 //$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 ?>
         <? if($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
-            <h3>Поощрение недоступно</h3>
-            (снято с реализации)
+            <div class="ag-shop-modal__alert">
+                <i class="ag-shop-icon ag-shop-icon--attention"></i>
+                <span>Поощрение недоступно (снято с реализации)
+                </span>
+            </div>
         <? elseif(
             !$arResult["TotalAmount"] && 
-            $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_IF_ABSENT"][0]["VALUE_ENUM"]=='да'
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_IF_ABSENT"]
+                [0]["VALUE_ENUM"]=='да'
         ):?>
-            <h3>Поощрение недоступно</h3>
-            (исчерпание остатков)
+            <div class="ag-shop-modal__alert">
+                <i class="ag-shop-icon ag-shop-icon--attention"></i>
+                <span>Поощрение недоступно (исчерпание остатков)
+                </span>
+            </div>
         <? elseif(
             isset($arResult["OFFERS"][0]) 
             && $arResult["CATALOG_ITEM"]["ACTIVE"]=='Y'
         ):?>
             <script>
                 var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
-                var totalStoreId = <? foreach($arResult["OFFERS_JSON"] as $offer){foreach($offer["STORAGES"] as $storeId=>$store){echo $storeId;break;};break;}?>;
-                var accountSum=<?= round($arResult["ACCOUNT"]["CURRENT_BUDGET"])?>;
+                var totalStoreId = <? 
+                    foreach($arResult["OFFERS_JSON"] as $offer){
+                        foreach($offer["STORAGES"] as $storeId=>$store){
+                            echo $storeId;break;
+                        };
+                        break;
+                    }?>;
+                var accountSum=<?= 
+                    round($arResult["ACCOUNT"]["CURRENT_BUDGET"])
+                ?>;
                 var offerCounts = <? 
-                    foreach($arResult["OFFERS"][0]["STORAGES"] as $storageId=>$storageCount){
+                    foreach(
+                        $arResult["OFFERS"][0]["STORAGES"] 
+                        as 
+                        $storageId=>$storageCount
+                    ){
                         $arResult["OFFERS"][0]["STORAGES"];break;
                     }
                     echo $storageCount;
@@ -36,7 +55,9 @@
         
             <div class="ag-shop-card">
             <? if(
-                $arResult["ACCOUNT"]["CURRENT_BUDGET"] < $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
+                $arResult["ACCOUNT"]["CURRENT_BUDGET"] 
+                < 
+                $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
                 &&
                 CUser::IsAuthorized()
             ): ?>
@@ -44,17 +65,27 @@
                 <div class="ag-shop-card__requirements">
                     Для заказа данного поощрения необходимо набрать 
                         <?= 
-                            number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0)
+                            number_format(
+                                $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0
+                            )
                         ?> 
                         <?= 
-                            get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," "))
+                            get_points(number_format(
+                                $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],
+                                0,","," ")
+                            )
                         ?>.
                 </div>
               </div>
             <? elseif(
-                !trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
+                !trim(
+                    $arResult["USER_INFO"]["UF_USER_AG_STATUS"]
+                )
                 &&
-                !trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
+                !trim(
+                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                    [0]["VALUE"]
+                )
             ):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
@@ -396,7 +427,13 @@
                         <div class="ag-shop-card__places">
                           <? $count=0;foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount): $count++;?>
                           <label>
-                            <input  onclick="return selectStorage('<?= $id;?>');"type="radio" name="place" value="<?= $id ?>" <? if($count==count($arResult["OFFERS"][0]["STORAGES"])){?>checked<? }?>>
+                            <input  onclick="return selectStorage('<?= $id;?>');"type="radio" name="place" value="<?= $id ?>" <? 
+                                if(count($arResult["OFFERS"][0]["STORAGES"])==1)echo " checked ";
+                                /*
+                                if($count==count($arResult["OFFERS"][0]["STORAGES"]))echo
+                                    " checked ";
+                                */
+                            ?>>
                             <div class="ag-shop-card__places-item"><?= $arResult["STORAGES"][$id]["TITLE"] ?></div>
                           </label>
                           <? endforeach ?>
@@ -405,10 +442,17 @@
                           <div class="ag-shop-card__selected-place-header">
                             <div class="grid grid--bleed grid--justify-space-between">
                               <div class="grid__col-shrink">
-                                <div class="ag-shop-card__selected-place-station"><i class="ag-shop-icon ag-shop-icon--metro"></i><span><?= $arResult["STORAGES"][$id]["TITLE"] ?></span></div>
+                                <div class="ag-shop-card__selected-place-station">
+                                    <i class="ag-shop-icon ag-shop-icon--metro"></i>
+                                    <span>
+                                    <? if(count($arResult["OFFERS"][0]["STORAGES"])==1):?>
+                                    <?= $arResult["STORAGES"][$id]["TITLE"] ?>
+                                    <? endif?>
+                                    </span>
+                                </div>
                               </div>
                               <div class="grid__col-shrink">
-                                <div class="ag-shop-card__remaining-count"><span class="ag-shop-card__remaining-count-title">осталось:</span>
+                                <div class="ag-shop-card__remaining-count">
                                   <? foreach(array(
                                     array(0,0,"отсутствует"),
                                     array(1,10,"мало"),
@@ -418,42 +462,58 @@
                                     <span class="ag-shop-card__remaining-count-text" 
                                     fromAmmount="<?= $arAmmount[0]?>"
                                     toAmmount="<?= $arAmmount[1]?>"
-                                    style="display: <? if($ammount>=$arAmmount[0] && $ammount<=$arAmmount[1]):?>inline-block;<? else:?>none;<? endif ?>"
-                                    ><?= $arAmmount[2]?></span>
+                                    style="display: <?
+                                    if(
+                                        count($arResult["OFFERS"][0]["STORAGES"])==1
+                                        &&
+                                        (
+                                            $ammount>=$arAmmount[0] 
+                                            &&
+                                            $ammount<=$arAmmount[1]
+                                        )
+                                    ):?>inline-block;<? else:?>none;<? endif ?>"
+                                    >
+                                    <span
+                                        class="ag-shop-card__remaining-count-title">
+                                        осталось:
+                                    </span>                                    
+                                    <?= $arAmmount[2]?></span>
                                   <? endforeach ?>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <table class="ag-shop-card__selected-place-table">
-                            <? if(trim($arResult["STORAGES"][$id]["ADDRESS"])):?>
-                            <tr>
-                              <td>Адрес:</td>
-                              <td><?= $arResult["STORAGES"][$id]["ADDRESS"] ?></td>
-                            </tr>
-                            <? endif ?>
-                            <? if(trim($arResult["STORAGES"][$id]["PHONE"])):?>
-                            <tr>
-                              <td>Телефон:</td>
-                              <td><?= $arResult["STORAGES"][$id]["PHONE"] ?></td>
-                            </tr>
-                            <? endif ?>
-                            <? if(trim($arResult["STORAGES"][$id]["SCHEDULE"])):?>
-                            <tr>
-                              <td>Режим:</td>
-                              <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
-                            </tr>
-                            <? endif ?>
-                            <? if($arResult["STORAGES"][$id]["EMAIL"]):?>
-                            <tr>
-                              <td>Сайт:</td>
-                              <td><a href="<?=
-                              $arResult["STORAGES"][$id]["EMAIL"]
-                              ?>" target="_blank"><?=
-                              linkTruncate($arResult["STORAGES"][$id]["EMAIL"]) 
-                              ?></a></td>
-                            </tr>
-                            <? endif ?>
+                          <? if(count($arResult["OFFERS"][0]["STORAGES"])==1):?>
+                                <? if(trim($arResult["STORAGES"][$id]["ADDRESS"])):?>
+                                <tr>
+                                  <td>Адрес:</td>
+                                  <td><?= $arResult["STORAGES"][$id]["ADDRESS"] ?></td>
+                                </tr>
+                                <? endif ?>
+                                <? if(trim($arResult["STORAGES"][$id]["PHONE"])):?>
+                                <tr>
+                                  <td>Телефон:</td>
+                                  <td><?= $arResult["STORAGES"][$id]["PHONE"] ?></td>
+                                </tr>
+                                <? endif ?>
+                                <? if(trim($arResult["STORAGES"][$id]["SCHEDULE"])):?>
+                                <tr>
+                                  <td>Режим:</td>
+                                  <td><?= $arResult["STORAGES"][$id]["SCHEDULE"] ?></td>
+                                </tr>
+                                <? endif ?>
+                                <? if($arResult["STORAGES"][$id]["EMAIL"]):?>
+                                <tr>
+                                  <td>Сайт:</td>
+                                  <td><a href="<?=
+                                  $arResult["STORAGES"][$id]["EMAIL"]
+                                  ?>" target="_blank"><?=
+                                  linkTruncate($arResult["STORAGES"][$id]["EMAIL"]) 
+                                  ?></a></td>
+                                </tr>
+                                <? endif ?>
+                          <? endif ?>
                           </table>
                           <? if(trim($arResult["STORAGES"][$id]["DESCRIPTION"])):?>
                           <p class="ag-shop-card__selected-place-description"><?= $arResult["STORAGES"][$id]["DESCRIPTION"] ?></p>
@@ -608,14 +668,19 @@
             <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-store"><span>415</span> баллов</div>
             <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-store-id" style="display:none;"></div>
           </div>
+          <?
+          if(
+              $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_ABILITY"]
+              [0]["VALUE_ENUM"] != 'да'
+          ):?>
           <div class="ag-shop-modal__row">
-            <?
-            if(
-                $arResult["CATALOG_ITEM"]["PROPERTIES"]["CANCEL_ABILITY"][0]["VALUE_ENUM"]
-                !=
-                'да'
-            ):?>
-            <div class="ag-shop-modal__alert"><i class="ag-shop-icon ag-shop-icon--attention"></i><span>При нажатии кнопки «Оформить заказ» баллы, потраченные на данное поощрение, не возвращаются.</span></div>
+            <div class="ag-shop-modal__alert">
+                <i class="ag-shop-icon ag-shop-icon--attention"></i>
+                <span>
+                    При нажатии кнопки «Оформить заказ» баллы, потраченные на 
+                    данное поощрение, не возвращаются.
+                </span>
+            </div>
           </div>
           <? endif?>
           <div class="ag-shop-modal__row">

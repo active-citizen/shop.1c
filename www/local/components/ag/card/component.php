@@ -147,7 +147,6 @@
 
         // Если дневной лимит не вышел - получаем остатки по складам
         if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
-            
             if(!$arStorage["AMOUNT"])continue;
             $arOffer["STORAGES"][$arStorage["STORE_ID"]] =
                 $arStorage["AMOUNT"]-(
@@ -177,7 +176,8 @@
                 $arStoreItem = CCatalogStore::GetList(
                     array(),array("ID"=>$arStorage["STORE_ID"])
                 )->GetNext();
-                
+
+                $arStoreItem["EMAIL_SHORT"] = linkTruncate($arStoreItem["EMAIL"]);
                 $arResult["STORAGES"][$arStorage["STORE_ID"]] = $arStoreItem;
             }
             foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)

@@ -134,6 +134,28 @@
         <? endif?>
 
 
+    <div class="ag-shop-modal-wrap" id="rise-error" style="display:none">
+      <div class="ag-shop-modal">
+        <div class="ag-shop-modal__container">
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__alert">
+                <i class="ag-shop-icon ag-shop-icon--attention"></i>
+                <span id="rise-error-message"></span>
+            </div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__buttons-wrap">
+              <button class="ag-shop-modal__button
+              ag-shop-modal__button--cancel" type="button"
+              onclick="$('#rise-error').fadeOut();">Закрыть</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >

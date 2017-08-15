@@ -145,7 +145,7 @@ input.ag-balls[type="radio"]{
 }
 
 #common-feedback-form{
-    z-index: 9999;
+    z-index: 9900;
 }
 
 #input-ordernum{
@@ -193,7 +193,7 @@ input.ag-balls[type="radio"]{
     margin-top: -40px;
     margin-left: -100px;
     background-color: white;
-    z-index: 9999;
+    z-index: 9998;
     border: 1px #aaa solid;
     border-radius: 10px;
     background-image: url(/local/assets/images/loader1.gif);
@@ -291,6 +291,9 @@ a.ag-shop-item-card > h3.ag-shop-item-card__name{
     display:none;
 }
 
+#rise-error{
+    z-index: 9999;
+}
 
 
 
@@ -433,4 +436,8 @@ div.ag-shop-menu{
 
 .ag-shop-menu__button--close{
     background-image: url(/local/assets/images/menu-close-but.png);
+}
+
+.ag-shop-modal__button{
+    width: 220px;
 }
