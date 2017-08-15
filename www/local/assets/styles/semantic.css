@@ -34,8 +34,6 @@ h4{
 }
 
 .ag-shop-card__container img{
-    width: 98%;
+    max-width: 98%;
     margin: 1%;
-    float: left;
-    clear: both;
 }
