@@ -32,3 +32,10 @@ h4{
     margin-top:10px;
     margin-bottom: 10px;
 }
+
+.ag-shop-card__container img{
+    width: 98%;
+    margin: 1%;
+    float: left;
+    clear: both;
+}
