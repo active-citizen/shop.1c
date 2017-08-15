@@ -61,7 +61,8 @@
       <? endforeach ?>
     </div>
 
-    <div class="ag-shop-filter__variants filter-passive" id="balls-filter" style="height: 42px;">
+    <div class="ag-shop-filter__variants filter-passive" id="balls-filter"
+    style="min-height: 42px;">
         <? $pureBalls = str_replace(" ","",$arResult["MY_BALLS"]);?>
         <? $arBallsLimits=
         array(500,1000,1500,2000,2500,3000,15000);?>
