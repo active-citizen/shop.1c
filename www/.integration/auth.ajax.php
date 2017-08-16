@@ -29,6 +29,7 @@
     $arAuthAnswer = $oUser->authUserCross();
     echo json_encode($arAuthAnswer);
 
+
     require(
         $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php"
     );
