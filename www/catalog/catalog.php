@@ -52,11 +52,40 @@ if(
 }
 
 
+
+
 ?>
 
 <? if(0 && !$USER->IsAuthorized()):?>
 <? else: ?>
 
+    <?
+        /*
+        $sProductTitle = '';
+        if($product_code){
+            $arProductMeta = CIBlockElement::GetList(
+                array(),
+                array(
+                    "IBLOCK_ID" =>  CATALOG_IB_ID,
+                    "CODE"      =>  $product_code
+                ),
+                false,
+                array("nTopCount"=>1)
+            )->GetNext();
+            if(isset($arProductMeta["NAME"]) && trim($arProductMeta["NAME"]))
+               $sProductTitle = $arProductMeta["NAME"]; 
+        }
+
+
+        // Вычисляем метатеги для браузера
+        if($product_code && $catalog_code){
+        }
+        elseif($product_code){
+        }
+        echo "Product  = $product_code<br>";
+        echo "Cаtalog = $catalog_code <br>";
+        */
+    ?>
 
     <? if(!$product_code && $catalog_code){?>
         <div class="ag-shop-content">
