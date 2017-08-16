@@ -13,10 +13,14 @@
         
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
-    
+   
+    //$_COOKIE["EMPSESSION"] = '';
+
     define("IS_MOBILE",
         isset($_COOKIE["EMPSESSION"])
     );
+
+
 
     //
     define("COMMON_CACHE_TIME",3600);
@@ -54,25 +58,8 @@
     define("PARTNERS_GROUP_ID",9);
     define("OPERATORS_GROUP_ID",10);
 
-    // Предзагрузочная авторизация для мобил
-    if(
-        IS_MOBILE 
-        &&
-        (
-            preg_match("#^/catalog/(.*/)?$#",$_SERVER["REQUEST_URI"])
-            ||
-            preg_match("#^/catalog/$#",$_SERVER["REQUEST_URI"])
-            ||
-            preg_match("#^/profile/#",$_SERVER["REQUEST_URI"])
-        )
-    ){
-        $_REQUEST["session_id"] = $_COOKIE["EMPSESSION"];
-        require_once(
-            $_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php"
-        );
-        $oUser = new bxUser();
-        $arAuthAnswer = $oUser->authUserCross();
-    }
+    AddEventHandler("main", "OnBeforeProlog", "MyOnBeforePrologHandler", 50);
+
 
     // Если режим обмена заказами - глушим отправку письма при создании заказа
     if(ORDERS_EXCHANGE_ADMIN_MODE){
@@ -569,4 +556,30 @@
         );
     }
 
+
+    function MyOnBeforePrologHandler()
+    {
+        global $USER;
+        // Предзагрузочная авторизация для мобил
+        if(
+            IS_MOBILE 
+            &&
+            (
+                preg_match("#^/catalog/(.*/)?$#",$_SERVER["REQUEST_URI"])
+                ||
+                preg_match("#^/catalog/$#",$_SERVER["REQUEST_URI"])
+                ||
+                preg_match("#^/profile/#",$_SERVER["REQUEST_URI"])
+            )
+        ){
+            $_REQUEST["session_id"] = $_COOKIE["EMPSESSION"];
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php"
+            );
+            $oUser = new bxUser();
+            if(!is_object($USER))$USER = new CUser;
+            $arAuthAnswer = $oUser->authUserCross();
+        }
+
+    }
 

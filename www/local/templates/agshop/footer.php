@@ -87,7 +87,7 @@
                 && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
                 && (
-                    1
+                    0
                     &&
                     !IS_MOBILE
                     //!isset($_COOKIE["EMPSESSION"])

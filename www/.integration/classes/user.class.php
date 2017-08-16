@@ -285,12 +285,11 @@
             Прозрачная авторизация пользователя
         */
         function authUserCross(){
-            global $USER;
-            if(!$USER)$User = new CUser;
-
             require_once($_SERVER["DOCUMENT_ROOT"].
                 "/.integration/classes/active-citizen-bridge.class.php");
-            require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php"
+            );
             // Секретный файлк с токенами и ключами
             require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
             
@@ -350,6 +349,7 @@
 
             // Заглушка
             $sLockPhone = $answer["profile"]["personal"]["phone"];
+            
             if(
                 $sLockPhone=='79171189696'
                 || $sLockPhone == '79269189938'
@@ -365,13 +365,14 @@
             ){
             }
             else{
-                die;
+                return false;
             }
+            
 
 
             // Если пользователь разлогинился на АГ, но залогинен в битриксомом магазина 
             // - разлогиниваем и в битриксе и редиректимся
-            if(!$USER)$USER = new CUser;
+            if(!is_object($USER))$USER = new CUser;
             if(
                 $USER->isAuthorized() 
                 && (
@@ -380,7 +381,7 @@
                     !trim($profile["session_id"])
                 )
             ){
-                $USER->Logout();
+                CUSer::Logout();
                 $answer["errors"] = array();
         //        $answer["redirect"] =
         //        trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
@@ -436,7 +437,7 @@
             }
 
            
-            if($USER->isAuthorized()){
+            if(CUser::isAuthorized()){
             }
             
             return $answer;        
