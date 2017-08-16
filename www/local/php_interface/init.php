@@ -54,6 +54,26 @@
     define("PARTNERS_GROUP_ID",9);
     define("OPERATORS_GROUP_ID",10);
 
+    // Предзагрузочная авторизация для мобил
+    if(
+        IS_MOBILE 
+        &&
+        (
+            preg_match("#^/catalog/(.*/)?$#",$_SERVER["REQUEST_URI"])
+            ||
+            preg_match("#^/catalog/$#",$_SERVER["REQUEST_URI"])
+            ||
+            preg_match("#^/profile/#",$_SERVER["REQUEST_URI"])
+        )
+    ){
+        $_REQUEST["session_id"] = $_COOKIE["EMPSESSION"];
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php"
+        );
+        $oUser = new bxUser();
+        $arAuthAnswer = $oUser->authUserCross();
+    }
+
     // Если режим обмена заказами - глушим отправку письма при создании заказа
     if(ORDERS_EXCHANGE_ADMIN_MODE){
         AddEventHandler(
