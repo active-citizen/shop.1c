@@ -3,6 +3,7 @@
 
 
             <!-- Profile {{{-->
+            <? /* ?>
             <div class="ag-shop-profile-tabs">
               <div class="ag-shop-profile-tabs__link<? if($arParams["TAB"]=='use'): ?> ag-shop-profile-tabs__link--active<? endif ?>">
                   <a href="?tab=use">Могу использовать</a>
@@ -14,6 +15,7 @@
                 <a href="?tab=all">Все заказы</a>
               </div>
             </div>
+            <? */?>
             
 <?if ($arParams["SHOW_TOP_PAGINATION"] && count($arResult["PAGES"])>1):?>
   <div class="ag-shop-profile-tabs points_pagination">
