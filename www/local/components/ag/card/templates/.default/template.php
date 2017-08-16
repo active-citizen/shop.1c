@@ -199,8 +199,16 @@
                               </div>
                             </div>
                             -->
-                            <? if($USER->IsAuthorized() && !$arResult["MARK"]):?>
-                            <div class="ag-shop-card__action"><a href="#review" onclick="$('.ag-shop-card__review-form-input').focus();"><i class="ag-shop-card__icon ag-shop-card__icon--write"></i><span>оставить отзыв</span></a></div>
+                            <? if(
+                                0
+                                &&
+                                $USER->IsAuthorized() && !$arResult["MARK"]):?>
+                                <div class="ag-shop-card__action">
+                                    <a href="#review" onclick="$('.ag-shop-card__review-form-input').focus();">
+                                        <i class="ag-shop-card__icon ag-shop-card__icon--write"></i>
+                                        <span>оставить отзыв</span>
+                                    </a>
+                               </div>
                             <? endif ?>
                           </div>
                         </div>
