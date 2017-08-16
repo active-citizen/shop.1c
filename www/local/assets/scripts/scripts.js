@@ -121,6 +121,7 @@ $(document).ready(function(){
             $('.catalog-ajax-block').removeClass('catalog-ajax-block-loader');
             // Показывать или прятать кнопку "исчо"
             if($('.catalog-page-input').last().val()){
+                $('.ag-shop-catalog__more-button').html('Ещё');
                 $('.ag-shop-catalog__more-button').fadeIn();
             }
             else{

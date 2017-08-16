@@ -344,7 +344,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     
     <?if(
     //    $res->SelectedRowsCount()>($PAGE*$ON_PAGE)
-    $nOunputted
+    $nOunputted >= 12
     ):?>
         <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
     <?else:?>
