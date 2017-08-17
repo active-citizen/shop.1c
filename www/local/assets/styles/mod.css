@@ -441,3 +441,62 @@ div.ag-shop-menu{
 .ag-shop-modal__button{
     width: 220px;
 }
+
+
+div.ag-shop-mob-nav{
+    height: 24px;
+    background-color: rgba(0,122,108,1);
+    color: #fff;
+    font-family: 'SF UI Text', Arial, sans-serif;
+    font-size: 0.8rem;
+    text-align: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 9998;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-top: 8px;
+    padding-left: 24px;
+    border-bottom: 1px rgba(0,128,118,1);
+    text-shadow: 0 0 3px rgba(0,0,0,0.4);
+}
+
+div.ag-shop-mob-nav:before{
+    content:"";
+    display:block;
+    height:28px;
+    position:absolute;
+    right:0px;
+    top: 0px;
+    width: 24px;
+    background-image:linear-gradient(
+        90deg, 
+        rgba(0, 122, 108, 0), 
+        rgba(0,122,108,1)
+    );
+    float: right;
+}
+ 
+.ag-shop-mob-back{
+    position: absolute;
+    left: 0px;
+    top: 2px;
+    width: 24px;
+    height: 24px;
+    float: left;
+    margin-right: 10px;
+    background-color: rgba(0,122,108,1);
+    background-image: url(/local/assets/images/icons.png);
+    background-position: -5px -181px;
+}
+
+.ag-shop-mob-top-spacer{
+    height: 28px;
+}
+
+div.ag-shop-mob-title{
+    position: absolute;
+    z-index: 9997;
+}

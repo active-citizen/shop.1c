@@ -47,50 +47,13 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <meta name="msapplication-tap-highlight" content="no"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-
-    <?  
-    //$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/colors.css");                                                                                                                       
-    //$APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css");
-    ?>
-
-    <?
-
-/*    
-
-    <link rel="stylesheet" href="/local/assets/styles/fonts.css">
-    <link rel="stylesheet" href="/local/assets/styles/components.css">
-    <link rel="stylesheet" href="/local/assets/styles/profile.css">
-    <link rel="stylesheet" href="/local/assets/styles/catalog.css">
-    <link rel="stylesheet" href="/local/assets/styles/rules.css">
-    <link rel="stylesheet" href="/local/assets/styles/card.css">
-    <link rel="stylesheet" href="/local/assets/libs/jquery-ui.css">
-    <link rel="stylesheet" href="/local/assets/libs/slick.css">
-    <link rel="stylesheet" href="/local/assets/styles/mod.css">
-    <link rel="stylesheet" href="/local/assets/styles/troika.css">
-    
-    <script src="/local/assets/libs/jquery.min.js"></script>
-    <script src="/local/assets/libs/jquery-ui.js"></script>
-    <script src="/local/assets/libs/slick.min.js"></script>
-    <script src="/local/assets/scripts/index.js"></script>
-    <script src="/local/assets/scripts/scripts.js"></script>
-    <script src="/local/assets/scripts/common.js"></script>
-    <script src="/local/assets/scripts/troika.js"></script>
-*/
-  
-    ?>
-
-    <?
-      $APPLICATION->ShowHead();
-    ?>                                                                                                                                                           
-
-    
+    <? $APPLICATION->ShowHead(); ?>                                                                                                                                                           
     <title><?$APPLICATION->ShowTitle()?></title>
 
   </head>
   <body>
-    <?
-	$APPLICATION->ShowPanel();
-    ?>
+    <?  $APPLICATION->ShowPanel(); ?>
+
 <? if(
     1 
     &&
@@ -106,6 +69,17 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <? if(
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
     ):?>
+    <? if(IS_MOBILE):?>
+      <div class="ag-shop-mob-nav">
+        <a class="ag-shop-mob-back" href="#"
+        onclick="window.history.back()"
+        ></a>
+        <?= $APPLICATION->ShowTitle()?>
+      </div>
+      <div class="ag-shop-mob-top-spacer">
+        &#160;
+      </div>
+    <? endif ?>
       <div class="ag-shop__sidebar">
         <!-- Sidebar {{{-->
         <div class="ag-shop-sidebar">

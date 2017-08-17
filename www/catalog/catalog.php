@@ -6,7 +6,8 @@ $res = CIBlockProperty::GetList(array(),array("IBLOCK_ID"=>3));
 
 $offerProps = array();
 while($arrProp = $res->GetNext())
-    if(preg_match("#^PROP1C_.*#i", $arrProp["CODE"]))$offerProps[] = $arrProp["CODE"];
+    if(preg_match("#^PROP1C_.*#i", $arrProp["CODE"]))
+        $offerProps[] = $arrProp["CODE"];
     
 $product_code = '';
 $catalog_code = '';
@@ -60,7 +61,7 @@ if(
 <? else: ?>
 
     <?
-        /*
+        
         $sProductTitle = '';
         if($product_code){
             $arProductMeta = CIBlockElement::GetList(
@@ -76,15 +77,33 @@ if(
                $sProductTitle = $arProductMeta["NAME"]; 
         }
 
+        if($catalog_code){
+            $arCatalogMeta = CIBlockSection::GetList(
+                array(),
+                array(
+                    "IBLOCK_ID" =>  CATALOG_IB_ID,
+                    "CODE"      =>  $catalog_code
+                ),
+                false,
+                array("NAME"),
+                array("nTopCount"=>1)
+            )->GetNext();
+            if(isset($arCatalogMeta["NAME"]) && trim($arCatalogMeta["NAME"]))
+               $sCatalogTitle = $arCatalogMeta["NAME"]; 
+        }
+
 
         // Вычисляем метатеги для браузера
-        if($product_code && $catalog_code){
+        if($sProductTitle && $sCatalogTitle){
+            $sTitle  = "$sProductTitle";
         }
-        elseif($product_code){
+        elseif($sCatalogTitle){
+            $sTitle = "$sCatalogTitle";
         }
-        echo "Product  = $product_code<br>";
-        echo "Cаtalog = $catalog_code <br>";
-        */
+        else{
+            $sTitle = "";
+        }
+        $APPLICATION->SetTitle($sTitle);
     ?>
 
     <? if(!$product_code && $catalog_code){?>

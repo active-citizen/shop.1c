@@ -14,7 +14,7 @@
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
    
-    //$_COOKIE["EMPSESSION"] = '';
+//    $_COOKIE["EMPSESSION"] = '';
 
     define("IS_MOBILE",
         isset($_COOKIE["EMPSESSION"])

@@ -1,6 +1,10 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     CModule::IncludeModule("iblock");
+    $APPLICATION->SetTitle(
+        "Магазин поощрений &laquo;Активный Гражданин&raquo;"
+    );
+    
 ?>
 <? if(0 && !$USER->IsAuthorized()):?>
 <? else: ?>

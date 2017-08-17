@@ -8,7 +8,25 @@ h4{
 
 .ag-shop-card__container a{
     color: rgba(0,122,108,1);
+    max-width: 250px;
+    white-space:nowrap;
+    overflow: hidden;
+    display: inline-flex;
+    position: relative;
 }
+
+.ag-shop-card__container a:before{
+    content: "___";
+    position: absolute;
+    right: 0px;;
+    background-image:linear-gradient(
+        90deg, 
+        rgba(255, 255, 255, 0), 
+        rgba(255,255,255,1)
+    );
+    color: white;
+}
+
 
 .ag-shop-card__container a:hover{
     color: rgba(0,152,138,1);
