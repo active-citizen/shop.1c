@@ -56,27 +56,34 @@
     <? endif ?>
   <? foreach($arResult["ORDERS"] as $arOrder):?>
   <div class="ag-shop-profile-order ag-shop-profile-order--<?
+  $aStatus = "";
   switch($arOrder["STATUS_ID"]){
     case 'N':
-        echo "active";
+        $sStatus = "active";
     break;
     case 'F':
-        echo "done";
+        $sStatus = "done";
     break;
     case 'AG':
-        echo "canceled";
+        $sStatus = "canceled";
     break;
     case 'AW':
-        echo "canceled";
+        $sStatus = "canceled";
     break;
     // Брак стилистически аналогичен отмене
     case 'AC':
-        echo "canceled";
+        $sStatus = "canceled";
     break;
     case 'AI':
-        echo "annuled";
+        $sStatus = "annuled";
     break;
   }
+    if(
+        $arOrder["STATUS_ID"]=='N'        
+        && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]     
+        && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'
+   )$sStatus = 'precanceled';
+  echo $sStatus;
   ?>">
     <div class="ag-shop-profile-order__container">
       <div class="grid grid--bleed grid--justify-space-between">
@@ -123,7 +130,8 @@
                   <a
                     class="ag-shop-profile-order__control"        
                     onclick="return false;" href="#">
-                    <span>Заявка на отмену принята</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
+                    <span>Заявка на отмену принята</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"
+                    style="background-position: 0 -404px;"></i>
                   </a>
             <? elseif( $arOrder["STATUS_ID"]!='AA'):?>
                 <div class="ag-shop-profile-order__control">
@@ -145,7 +153,9 @@
           </div>
           <div class="grid__col-shrink">
             <div class="ag-shop-profile-order__review">
+            <!-- 
               <a href="<?= $arProduct["CATALOG_URL"]?>#review"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
+            -->
             </div>
           </div>
         </div>
@@ -188,8 +198,63 @@
         <? endif ?>
         <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=
               $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
+        <!-- 
         <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
-        <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i><span>Отменить заказ</span></a></div>
+        -->
+
+          <? if(
+            $arOrder["STATUS_ID"]=='AG'
+            ||
+            preg_match("#^\d+$#",$arOrder["ADDITIONAL_INFO"])
+          ): ?>
+          <? elseif(
+            $arOrder["STATUS_ID"]=='N' 
+            && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]
+            && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]!='AG'):
+          ?>
+            <div class="grid__col-shrink">
+            <a 
+                class="ag-shop-profile-order__control" 
+                href="#"
+                onclick="return orderCancel(<?= $arOrder["ID"]?>,this);"
+            >
+                <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
+                <span>Отменить заказ</span>
+            </a>
+            </div>
+        <? elseif(      
+            $arOrder["STATUS_ID"]=='N'        
+            && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]     
+            && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'):
+        ?>        
+            <div class="grid__col-shrink">
+            <a 
+                class="ag-shop-profile-order__control" 
+                href="#"
+                onclick="return false;"
+            >
+                <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close" 
+                style="background-position: 0 -404px;"></i>
+                <span>Заявка на отмену принята</span>
+            </a>
+            </div>
+        <? 
+            else:
+            //elseif( $arOrder["STATUS_ID"]!='AA'):
+        ?>
+            <div class="grid__col-shrink">
+            <a 
+                class="ag-shop-profile-order__control" 
+                href="#"
+                onclick="return false;"
+            >
+                <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i>
+                <span>Отмена невозможна</span>
+            </a>
+            </div>
+          <? endif ?>
+
+
       </div>
     </div>
   </div>

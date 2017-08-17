@@ -1052,6 +1052,9 @@ body {
 .ag-shop-profile-order--canceled {
   background: #f7e1e1;
 }
+.ag-shop-profile-order--precanceled {
+  background: #f7f9f1;
+}
 .ag-shop-profile-order--done {
   background: #d5effe;
 }
