@@ -69,12 +69,71 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <? if(
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
     ):?>
-    <? if(IS_MOBILE):?>
+    <? if(IS_MOBILE && $_SERVER["REQUEST_URI"]!='/catalog/'):?>
       <div class="ag-shop-mob-nav">
-        <a class="ag-shop-mob-back" href="#"
-        onclick="window.history.back()"
+        <a class="ag-shop-mob-back" href="<? 
+            if(
+                $arPath = explode("/",$_SERVER["REQUEST_URI"])
+            ){
+                if($arPath[1]!='catalog'){
+                    echo "/catalog/";
+                }
+                elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
+                !trim($arPath[3])){
+                    echo "/catalog/";
+                }
+                elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
+                trim($arPath[3])){
+                    echo "/catalog/".$arPath[2]."/";
+                }
+                else{
+                    echo "/catalog/";
+                }
+
+            }
+        ?>"
         ></a>
-        <?= $APPLICATION->ShowTitle()?>
+        <?  
+            if(
+                $arPath = explode("/",$_SERVER["REQUEST_URI"])
+            ){
+                if($arPath[1]!='catalog'){
+                    echo "Главная";
+                }
+                elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
+                !trim($arPath[3])){
+                    echo "Главная";
+                }
+                elseif(
+                    $arPath[1]=='catalog' 
+                    && 
+                    trim($arPath[2]) 
+                    &&
+                    trim($arPath[3])
+                ){
+                    $arCatalogMeta = CIBlockSection::GetList(
+                        array(),
+                        array(
+                            "IBLOCK_ID" =>  CATALOG_IB_ID,
+                            "CODE"      =>  $DB->ForSql($arPath[2])
+                        ),
+                        false,
+                        array("NAME"),
+                        array("nTopCount"=>1)
+                    )->GetNext();
+                    if(
+                        isset($arCatalogMeta["NAME"]) 
+                        && 
+                        trim($arCatalogMeta["NAME"])
+                    )
+                    echo $arCatalogMeta["NAME"];
+                }
+                else{
+                    echo "Главная";
+                }
+
+            }
+        ?>
       </div>
       <div class="ag-shop-mob-top-spacer">
         &#160;

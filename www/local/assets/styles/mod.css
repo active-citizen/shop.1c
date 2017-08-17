@@ -444,8 +444,8 @@ div.ag-shop-menu{
 
 
 div.ag-shop-mob-nav{
-    height: 24px;
-    background-color: rgba(0,122,108,1);
+    height: 26px;
+    background-color: rgba(12,142,130,1);
     color: #fff;
     font-family: 'SF UI Text', Arial, sans-serif;
     font-size: 0.8rem;
@@ -458,23 +458,23 @@ div.ag-shop-mob-nav{
     overflow: hidden;
     white-space: nowrap;
     padding-top: 8px;
-    padding-left: 24px;
-    border-bottom: 1px rgba(0,128,118,1);
+    padding-left: 0px;
+    border-bottom: 1px rgba(12,142,130,1);
     text-shadow: 0 0 3px rgba(0,0,0,0.4);
 }
 
 div.ag-shop-mob-nav:before{
     content:"";
     display:block;
-    height:28px;
+    height:36px;
     position:absolute;
     right:0px;
     top: 0px;
-    width: 24px;
+    width: 36px;
     background-image:linear-gradient(
         90deg, 
-        rgba(0, 122, 108, 0), 
-        rgba(0,122,108,1)
+        rgba(12,142,130, 0), 
+        rgba(12,142,130,1)
     );
     float: right;
 }
@@ -482,14 +482,15 @@ div.ag-shop-mob-nav:before{
 .ag-shop-mob-back{
     position: absolute;
     left: 0px;
-    top: 2px;
-    width: 24px;
-    height: 24px;
+    top: 0px;
+    width: 36px;
+    height: 36px;
     float: left;
     margin-right: 10px;
-    background-color: rgba(0,122,108,1);
-    background-image: url(/local/assets/images/icons.png);
-    background-position: -5px -181px;
+    background-color: rgba(12, 142,130,1);
+    background-image: url(/local/assets/images/back-arrow.png);
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
 }
 
 .ag-shop-mob-top-spacer{

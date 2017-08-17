@@ -96,12 +96,15 @@ if(
         // Вычисляем метатеги для браузера
         if($sProductTitle && $sCatalogTitle){
             $sTitle  = "$sProductTitle";
+            $sTitle .= " / $sCatalogTitle";
+            $sTitle .= " / Магазин поощрений &laquo;Активный Гражданин&raquo;";
         }
         elseif($sCatalogTitle){
             $sTitle = "$sCatalogTitle";
+            $sTitle.= " / Магазин поощрений &laquo;Активный Гражданин&raquo;";
         }
         else{
-            $sTitle = "";
+            $sTitle = "Магазин поощрений &laquo;Активный Гражданин&raquo;";
         }
         $APPLICATION->SetTitle($sTitle);
     ?>
