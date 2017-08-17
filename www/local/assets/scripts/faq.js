@@ -6,11 +6,13 @@ $(document).ready(function(){
         ];
     var section_id = hash.split(".")[0];
     var item_id = hash.split(".")[0];
+    /*
     if(section_id){
         $('#faq-section-id-'+section_id).css('display','block');
         $('#faq-section-id-'+section_id).parent().
             find('a').first().addClass('faq-section-active');
     }
+    */
 
     $('.faq-section>a').click(function(){
          var activity = $(this).hasClass('faq-section-active'); 

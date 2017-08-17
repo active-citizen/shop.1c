@@ -1,7 +1,84 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?
     $this->createFrame()->begin("Загрузка");
+
+    // Забираем сохранённые фильтры для этой страницы из сессии
+    $arSessionFilter = $_SESSION["FILTERS"][$_SERVER["REQUEST_URI"]];
+    $arSessionSorting = $_SESSION["SORTINGS"][$_SERVER["REQUEST_URI"]];
+
+    // Хочу
+    $sHashString = "filter_iwant="
+        .implode(",",$arSessionFilter["PROPERTY_WANTS"]);
+    // Интересуюсь
+    $sHashString .= "&filter_interest="
+        .implode(",",$arSessionFilter["PROPERTY_INTERESTS"]);
+
+    // ДИапазон цен
+    if(
+        isset($arSessionFilter["<=PROPERTY_MINIMUM_PRICE"])
+        &&
+        isset($arSessionFilter[">=PROPERTY_MINIMUM_PRICE"])
+    )
+        $sHashString .= "&filter_balls="
+            .$arSessionFilter[">=PROPERTY_MINIMUM_PRICE"]
+            .","
+            .$arSessionFilter["<=PROPERTY_MINIMUM_PRICE"];
+    else
+        $sHashString .= "&filter_balls=undefined";
+
+    // Новое
+    if(
+        isset($arSessionFilter["PROPERTY_NEWPRODUCT"])
+        &&
+        $arSessionFilter["PROPERTY_NEWPRODUCT"]
+    )
+        $sHashString .= "&flag=news";
+
+    // Хит
+    elseif(
+        isset($arSessionFilter["PROPERTY_SALELEADER"])
+        &&
+        $arSessionFilter["PROPERTY_SALELEADER"]
+    )
+        $sHashString .= "&flag=populars";
+
+    // Акция
+    elseif(
+        isset($arSessionFilter["PROPERTY_SPECIALOFFER"])
+        &&
+        $arSessionFilter["PROPERTY_SPECIALOFFER"]
+    )
+        $sHashString .= "&flag=actions";
+
+    else
+        $sHashString .= "&flag=all";
+
+    // Сортировки
+    if(
+        isset($arSessionSorting["PROPERTY_MINIMUM_PRICE"]) 
+        && 
+        $arSessionSorting["PROPERTY_MINIMUM_PRICE"]=='ASC'
+    )
+        $sHashString .= "&sorting=price-asc";
+    elseif(
+        isset($arSessionSorting["PROPERTY_MINIMUM_PRICE"]) 
+        && 
+        $arSessionSorting["PROPERTY_MINIMUM_PRICE"]=='DESC'
+    )
+        $sHashString .= "&sorting=price-desc";
+    elseif(
+        isset($arSessionSorting["PROPERTY_RATING"]) 
+        && 
+        $arSessionSorting["PROPERTY_RATING"]=='DESC'
+    )
+        $sHashString .= "&sorting=rating-desc";
+        
+
 ?>
+<script>
+document.location.hash = '#<?= $sHashString;?>';
+</script>
+
 
   <!-- Filter {{{-->
   <form class="ag-shop-filter">

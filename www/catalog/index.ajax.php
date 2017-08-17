@@ -140,6 +140,19 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     $arrFilter["IBLOCK_ID"] = CATALOG_IB_ID;
     if(!$arrFilter["SECTION_ID"]) $arrFilter["SECTION_ID"] = $arSectionsIds;
 
+    $sUri = str_replace("http://".$_SERVER["HTTP_HOST"],"",$_SERVER["HTTP_REFERER"]);
+    $sUri = str_replace("https://".$_SERVER["HTTP_HOST"],"",$sUri);
+    // Запоминаем фильтры в сессии
+    if(!isset($_SESSION["FILTERS"]))$_SESSION["FILTERS"] = array();
+    $_SESSION["FILTERS"][$sUri] = $arrFilter;
+
+    // Запоминаем сортировки в сессии
+    if(!isset($_SESSION["SORTINGS"]))$_SESSION["SORTINGS"] = array();
+    $_SESSION["SORTINGS"][$sUri] = $arrSorting;
+
+
+
+   
     $res = CIBlockElement::GetList(
         $arrSorting,
         $arrFilter,
