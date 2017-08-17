@@ -4,7 +4,7 @@
 ?>
 
 <?
-//$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
+$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 ?>
         <? if($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
             <div class="ag-shop-modal__alert">
@@ -111,7 +111,7 @@
                   <div class="ag-shop-card__left-column">
                     <div class="ag-shop-card__image-block">
                       <div class="ag-shop-card__image-wrap">
-                        <!-- для темного фона добавить: ag-shop-item-card--dark-->
+                        <!-- для темного фона добавить: ag-shop-item-card--dark -->
                         <div class="ag-shop-card__image-container" style="background-image: url(<?= 
                             $arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"][0]["FILE_PATH"]
                           ?>)">
@@ -314,12 +314,12 @@
                                     var answer = JSON.parse(data);
                                 }
                                 catch(e){
-                                    alert('Не могу получить список карт');                                    
+                                    riseError('Не могу получить список карт');                                    
                                     return false;
                                 }
 
                                 if(answer.error){
-                                    alert('Не могу получить список карт:'+answer.error);
+                                    riseError('Не могу получить список карт:'+answer.error);
                                 }
 
                                 for(i in answer.cards){
@@ -661,15 +661,10 @@
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">Единица:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-unit">Штука</div>
-          </div>
-          <div class="ag-shop-modal__row">
-            <div class="ag-shop-modal__label">Количество:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-amount">Штука</div>
-          </div>
-          <div class="ag-shop-modal__row">
-            <div class="ag-shop-modal__label">Стоимость:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-cost"><span>415</span> баллов</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="confirm-unit"><?=
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["QUANT"][0]["VALUE"]
+            ?></div>
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">Получение:</div>

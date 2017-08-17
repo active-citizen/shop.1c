@@ -48,148 +48,153 @@
   </div>
 <?endif;?>
 
-            <div class="ag-shop-profile__orders">
-              <? foreach($arResult["ORDERS"] as $arOrder):?>
-              <div class="ag-shop-profile-order ag-shop-profile-order--<?
-              switch($arOrder["STATUS_ID"]){
-                case 'N':
-                    echo "active";
-                break;
-                case 'F':
-                    echo "done";
-                break;
-                case 'AG':
-                    echo "canceled";
-                break;
-                case 'AW':
-                    echo "canceled";
-                break;
-                // Брак стилистически аналогичен отмене
-                case 'AC':
-                    echo "canceled";
-                break;
-                case 'AI':
-                    echo "annuled";
-                break;
-              }
-              ?>">
-                <div class="ag-shop-profile-order__container">
-                  <div class="grid grid--bleed grid--justify-space-between">
-                    <div class="grid__col-auto">
-                      <div class="ag-shop-profile-order__info">
-                        <div class="ag-shop-profile-order__status"><?=
-                        $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
-                        ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= ceil($arOrder["IN_WORK"]) ?> <?= get_days(ceil($arOrder["IN_WORK"]))?>)<? endif ?></div>
-                        <div class="ag-shop-profile-order__number">Заказ <?= $arOrder["ADDITIONAL_INFO"]?></div>
-                        <div class="ag-shop-profile-order__date">от <?=
-                        $arOrder["DATE_MIDDLE"]?></div>
-                      </div>
-                    </div>
-                    <div class="grid__col-shrink">
-                      <div class="ag-shop-profile-order__desktop-controls">
-                        <? if($arOrder["SEND_CERT"] &&
-                        file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
-                          <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
-                              <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
-                          </a>
-                        <? endif ?>
-                          <a class="ag-shop-profile-order__control" href="#"
-                          onclick="return showOrdersFeedbackForm('<?=
-                          $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
-                          <? if(
-                            $arOrder["STATUS_ID"]=='AG'
-                            ||
-                            preg_match("#^\d+$#",$arOrder["ADDITIONAL_INFO"])
-                          ): ?>
-                          <? elseif(
-                            $arOrder["STATUS_ID"]=='N' 
-                            && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]
-                            && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]!='AG'):
-                          ?><a 
-                                class="ag-shop-profile-order__control" 
-                                onclick="return orderCancel(<?= $arOrder["ID"]?>,this);" 
-                                href="#"
-                            ><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a>
-                        <? elseif(      
-                            $arOrder["STATUS_ID"]=='N'        
-                            && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]     
-                            && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'):
-                        ?>        
-                              <a
-                                class="ag-shop-profile-order__control"        
-                                onclick="return false;" href="#">
-                                <span>Заявка на отмену принята</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
-                              </a>
-                        <? elseif( $arOrder["STATUS_ID"]!='AA'):?>
-                            <div class="ag-shop-profile-order__control">
-                                <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i>
-                                <span>Отмена невозможна</span>
-                            </div>
-                          <? endif ?>
-                      </div>
-                    </div>
-                  </div>
-                  <? foreach($arOrder["PRODUCTS"] as $arProduct):?>
-                  <div class="ag-shop-profile-order__content">
-                    <div class="ag-shop-profile-order__image-container" style="background-image: url('<?= $arProduct["PIC_PATH"];?>')">
-                    </div>
-                    <div class="ag-shop-profile-order__points"><?= number_format($arProduct["PRICE"]*$arProduct["QUANTITY"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"]*$arProduct["QUANTITY"])) ?></div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-center">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__name"><?= html_entity_decode($arProduct["NAME"])?></div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__review">
-                          <a href="<?= $arProduct["CATALOG_URL"]?>#review"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid grid--bleed grid--justify-space-between grid--align-end">
-                      <div class="grid__col-auto">
-                        <div class="ag-shop-profile-order__place">
-                            <? if(trim($arOrder["STORE_INFO"]["TITLE"])){?>
-                                <span>Забирать здесь:</span>
-                                <br class="hide-on-desktop">
-                                <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
-                                    <a href="/rules/stores/#<?= $arOrder["STORE_INFO"]["ID"] ?>">
-                                        <?= $arOrder["STORE_INFO"]["TITLE"]?>
-                                        <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
-                                        (<?= $arOrder["STORE_INFO"]["ADDRESS"]?>)
-                                        <? }?>
-                                    </a>
-                                <? }else{ ?>
-                                    <?= $arOrder["STORE_INFO"]["TITLE"]?>
-                                <? } ?>
-                            <? } ?>
-                        </div>
-                      </div>
-                      <div class="grid__col-shrink">
-                        <div class="ag-shop-profile-order__count"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <? endforeach ?>
+<div class="ag-shop-profile__orders">
+    <? if(!count($arResult["ORDERS"])):?>
+    <div style="color: rgba(0,122,108,1);text-align: center;margin-top: 20px;">
+        У вас пока нет заказов
+    </div>
+    <? endif ?>
+  <? foreach($arResult["ORDERS"] as $arOrder):?>
+  <div class="ag-shop-profile-order ag-shop-profile-order--<?
+  switch($arOrder["STATUS_ID"]){
+    case 'N':
+        echo "active";
+    break;
+    case 'F':
+        echo "done";
+    break;
+    case 'AG':
+        echo "canceled";
+    break;
+    case 'AW':
+        echo "canceled";
+    break;
+    // Брак стилистически аналогичен отмене
+    case 'AC':
+        echo "canceled";
+    break;
+    case 'AI':
+        echo "annuled";
+    break;
+  }
+  ?>">
+    <div class="ag-shop-profile-order__container">
+      <div class="grid grid--bleed grid--justify-space-between">
+        <div class="grid__col-auto">
+          <div class="ag-shop-profile-order__info">
+            <div class="ag-shop-profile-order__status"><?=
+            $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]
+            ?><? if($arOrder["IN_WORK"] && $arOrder["STATUS_ID"]=='N'):?>(<?= ceil($arOrder["IN_WORK"]) ?> <?= get_days(ceil($arOrder["IN_WORK"]))?>)<? endif ?></div>
+            <div class="ag-shop-profile-order__number">Заказ <?= $arOrder["ADDITIONAL_INFO"]?></div>
+            <div class="ag-shop-profile-order__date">от <?=
+            $arOrder["DATE_MIDDLE"]?></div>
+          </div>
+        </div>
+        <div class="grid__col-shrink">
+          <div class="ag-shop-profile-order__desktop-controls">
+            <? if($arOrder["SEND_CERT"] &&
+            file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
+              <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
+                  <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
+              </a>
+            <? endif ?>
+              <a class="ag-shop-profile-order__control" href="#"
+              onclick="return showOrdersFeedbackForm('<?=
+              $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
+              <? if(
+                $arOrder["STATUS_ID"]=='AG'
+                ||
+                preg_match("#^\d+$#",$arOrder["ADDITIONAL_INFO"])
+              ): ?>
+              <? elseif(
+                $arOrder["STATUS_ID"]=='N' 
+                && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]
+                && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]!='AG'):
+              ?><a 
+                    class="ag-shop-profile-order__control" 
+                    onclick="return orderCancel(<?= $arOrder["ID"]?>,this);" 
+                    href="#"
+                ><span>Отменить заказ</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i></a>
+            <? elseif(      
+                $arOrder["STATUS_ID"]=='N'        
+                && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]     
+                && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'):
+            ?>        
+                  <a
+                    class="ag-shop-profile-order__control"        
+                    onclick="return false;" href="#">
+                    <span>Заявка на отмену принята</span><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
+                  </a>
+            <? elseif( $arOrder["STATUS_ID"]!='AA'):?>
+                <div class="ag-shop-profile-order__control">
+                    <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--attention"></i>
+                    <span>Отмена невозможна</span>
                 </div>
-                <div class="ag-shop-profile-order__mobile-controls">
-                  <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-                    <? if($arOrder["SEND_CERT"]  && 
-                     file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
-                    <div class="grid__col-shrink">
-                        <a class="ag-shop-profile-order__control" href="#" 
-                        onclick="return printOrder(<?= 
-                            $arOrder["ID"]
-                        ?>);"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a>
-                    </div>
-                    <? endif ?>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=
-                          $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
-                    <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i><span>Отменить заказ</span></a></div>
-                  </div>
-                </div>
-              </div>
-              <? endforeach ?>
+              <? endif ?>
+          </div>
+        </div>
+      </div>
+      <? foreach($arOrder["PRODUCTS"] as $arProduct):?>
+      <div class="ag-shop-profile-order__content">
+        <div class="ag-shop-profile-order__image-container" style="background-image: url('<?= $arProduct["PIC_PATH"];?>')">
+        </div>
+        <div class="ag-shop-profile-order__points"><?= number_format($arProduct["PRICE"]*$arProduct["QUANTITY"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"]*$arProduct["QUANTITY"])) ?></div>
+        <div class="grid grid--bleed grid--justify-space-between grid--align-center">
+          <div class="grid__col-auto">
+            <div class="ag-shop-profile-order__name"><?= html_entity_decode($arProduct["NAME"])?></div>
+          </div>
+          <div class="grid__col-shrink">
+            <div class="ag-shop-profile-order__review">
+              <a href="<?= $arProduct["CATALOG_URL"]?>#review"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
             </div>
+          </div>
+        </div>
+        <div class="grid grid--bleed grid--justify-space-between grid--align-end">
+          <div class="grid__col-auto">
+            <div class="ag-shop-profile-order__place">
+                <? if(trim($arOrder["STORE_INFO"]["TITLE"])){?>
+                    <span>Забирать здесь:</span>
+                    <br class="hide-on-desktop">
+                    <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
+                        <a href="/rules/stores/#<?= $arOrder["STORE_INFO"]["ID"] ?>">
+                            <?= $arOrder["STORE_INFO"]["TITLE"]?>
+                            <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
+                            (<?= $arOrder["STORE_INFO"]["ADDRESS"]?>)
+                            <? }?>
+                        </a>
+                    <? }else{ ?>
+                        <?= $arOrder["STORE_INFO"]["TITLE"]?>
+                    <? } ?>
+                <? } ?>
+            </div>
+          </div>
+          <div class="grid__col-shrink">
+            <div class="ag-shop-profile-order__count"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
+          </div>
+        </div>
+      </div>
+      <? endforeach ?>
+    </div>
+    <div class="ag-shop-profile-order__mobile-controls">
+      <div class="grid grid--bleed grid--justify-space-around grid--align-center">
+        <? if($arOrder["SEND_CERT"]  && 
+         file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
+        <div class="grid__col-shrink">
+            <a class="ag-shop-profile-order__control" href="#" 
+            onclick="return printOrder(<?= 
+                $arOrder["ID"]
+            ?>);"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a>
+        </div>
+        <? endif ?>
+        <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=
+              $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
+        <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
+        <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i><span>Отменить заказ</span></a></div>
+      </div>
+    </div>
+  </div>
+  <? endforeach ?>
+</div>
               
               
 <?if ($arParams["SHOW_TOP_PAGINATION"] && count($arResult["PAGES"])>1):?>
