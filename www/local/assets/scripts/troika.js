@@ -10,23 +10,29 @@ $(document).ready(function(){
     $('#troyka-card-number').change(function(){check_filling_troika();});
 
     $('.ag-shop-card__card-number-input').keydown(function(event){
-        var moved = 
-            parseInt(event.which)==8 
-            || parseInt(event.which)==46
-            || parseInt(event.which)==35
-            || parseInt(event.which)==36
-            || parseInt(event.which)==37
-            || parseInt(event.which)==38
-            || parseInt(event.which)==39
-            || parseInt(event.which)==40
-            ?
-            true
-            :
-            false;
-        var re = /[0-9]+/;
 
-        if(parseInt($(this).val().length)>=10 && !moved)return false;
-        if(!moved && !re.test(event.key))return false;
+        event = event || window.event;
+
+        var oldvalue = $(this).val().toString();
+        var newvalue = $(this).val().toString() + event.key.toString();
+
+        var controlKeys = {
+            'Insert':'1','Home':'1','Backspace':'1','Delete':'1',
+            'Tab':'1','Escape':'1','PageUp':'1',
+            'PageDowd':'1','ArrowDown':'1','ArrowUp':'1',
+            'ArrowLeft':'1','ArrowRight':'1',
+            'Shift':'1','Control':'1','Alt':'1','Meta':'1',
+            'ContextMenu':'1','Print':'1','ScrollLock':'1',
+            'Pause':'1','NumLock':'1','CapsLock':'1','F1':'1',
+            'F2':'1','F3':'1','F4':'1','F5':'1','F6':'1','F7':'1',
+            'F8':'1','F9':'1','F10':'1','F11':'1','F12':'1'
+        };
+
+        if(controlKeys[event.key]){return true;}
+
+        var re = /^[0-9]{0,10}$/;
+        if(!re.test(newvalue))return false;
+
         return true;
     });
 
@@ -185,23 +191,28 @@ function confirmTroika(){
     });
 
     $('#confirm-code').keydown(function(event){
-        var moved = 
-            parseInt(event.which)==8 
-            || parseInt(event.which)==46
-            || parseInt(event.which)==35
-            || parseInt(event.which)==36
-            || parseInt(event.which)==37
-            || parseInt(event.which)==38
-            || parseInt(event.which)==39
-            || parseInt(event.which)==40
-            ?
-            true
-            :
-            false;
-        var re = /[0-9]+/;
+        event = event || window.event;
 
-        if(parseInt($(this).val().length)>=5 && !moved)return false;
-        if(!moved && !re.test(event.key))return false;
+        var oldvalue = $(this).val().toString();
+        var newvalue = $(this).val().toString() + event.key.toString();
+
+        var controlKeys = {
+            'Insert':'1','Home':'1','Backspace':'1','Delete':'1',
+            'Tab':'1','Escape':'1','PageUp':'1',
+            'PageDowd':'1','ArrowDown':'1','ArrowUp':'1',
+            'ArrowLeft':'1','ArrowRight':'1',
+            'Shift':'1','Control':'1','Alt':'1','Meta':'1',
+            'ContextMenu':'1','Print':'1','ScrollLock':'1',
+            'Pause':'1','NumLock':'1','CapsLock':'1','F1':'1',
+            'F2':'1','F3':'1','F4':'1','F5':'1','F6':'1','F7':'1',
+            'F8':'1','F9':'1','F10':'1','F11':'1','F12':'1'
+        };
+
+        if(controlKeys[event.key]){return true;}
+
+        var re = /^[0-9]{0,5}$/;
+        if(!re.test(newvalue))return false;
+
         return true;
     });
 
