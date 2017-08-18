@@ -750,6 +750,14 @@
                     &&
                     $arDocument["ДатаИстеченияБронирования"]
                 ){
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "T"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "Т"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
                     $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
                     $sDateClose = 
                         sprintf("%04d",$tmp["year"])
