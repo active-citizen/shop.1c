@@ -1,7 +1,6 @@
 <?php
     // Output debug messages to 1C exchange
     define("IMPORT_DEBUG",false);
-
     if(!isset($_SERVER["DOCUMENT_ROOT"]) || !$_SERVER["DOCUMENT_ROOT"])
         $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/..");
 
@@ -91,13 +90,13 @@
         array("ID"=>"ASC"),
         array("NAME"=>"Внутренний счет"),
         false,array("nTopCount"=>1),array("ID")
-    )->GetNext();
+    )->Fetch();
     if(!$arPaySystem)
         $arPaySystem = CSalePaySystem::GetList(
             array("ID"=>"ASC"),
             array("ACTIVE"=>"Y"),
             false,array("nTopCount"=>1),array("ID")
-        )->GetNext();
+        )->Fetch();
     // Определяем ID системы доставки "Самовывоз"
     // нет - берём первый же активный
     //echo "asd";
@@ -105,11 +104,13 @@
         array("ID"=>"ASC"),
         array("NAME"=>"Самовывоз"),
         false,array("nTopCount"=>1,array("ID"))
-    )->GetNext();
+    )->Fetch();
     if(!$arDelivery)
         $arDelivery = CSaleDelivery::GetList(
-            array("ID"=>"ASC"),array("ACTIVE"=>"Y"),false,array("nTopCount"=>1,array("ID"))
-        )->GetNext();
+            array("ID"=>"ASC"),array("ACTIVE"=>"Y"),false,array(
+                "nTopCount"=>1,array("ID")
+            )
+        )->Fetch();
    
     header("Content-type: text/plain; charset=UTF-8");
 //    echo file_get_contents($uploadDir.$ordersFilename);
@@ -131,6 +132,7 @@
 
         $ccc = 0;
         foreach($arOrders->Документ as $arDocument){
+
             $ccc++;
             $arDocument = json_decode(json_encode((array)$arDocument), TRUE); 
             $arDocument["Телефон"] = preg_replace("#[^\d]#","",$arDocument["Телефон"]);
@@ -138,8 +140,20 @@
 //                if(IMPORT_DEBUG)
 //                    echo "      ".round(($t1-$t0)*1000,2)."ms\n$ccc) ";
             }
-            $t0 = microtime(true);
+
             // Поиск заказа под XML-Ид
+            $sQuery = "
+                SELECT
+                    `ID`,`PAYED`,`STATUS_ID`,`ADDITIONAL_INFO`,`STORE_ID`
+                FROM
+                    `b_sale_order`
+                WHERE
+                    `XML_ID`='".$arDocument["Ид"]."'
+                LIMIT
+                    1
+            ";
+            $existsOrder = $DB->Query($sQuery)->Fetch();
+            /*
             $res = CSaleOrder::GetList(
                 array(),
                 array("XML_ID"=>$arDocument["Ид"]),
@@ -147,16 +161,30 @@
                 array("nTopCount"=>1),
                 array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO","STORE_ID")
             );
-            $existsOrder = $res->GetNext();
+            $existsOrder = $res->Fetch();
+            */ 
 
             // Поиск заказа по номеру
             if(!$existsOrder){
+                $sQuery = "
+                    SELECT
+                        `ID`,`PAYED`,`STATUS_ID`,`ADDITIONAL_INFO`,`STORE_ID`
+                    FROM
+                        `b_sale_order`
+                    WHERE
+                        `ADDITIONAL_INFO`='".$arDocument["Номер"]."'
+                    LIMIT
+                        1
+                ";
+                $existsOrder = $DB->Query($sQuery)->Fetch();
+                /*
                 $res = CSaleOrder::GetList(
                     array(),array("ADDITIONAL_INFO"=>$arDocument["Номер"]),false,
                     array("nTopCount"=>1),
                     array("ID","PAYED","STATUS_ID","ADDITIONAL_INFO")
                 );
-                $existsOrder = $res->GetNext();
+                $existsOrder = $res->Fetch();
+                */
             }
 
             // Бортуем заказы с неверно указанным телефоном
@@ -165,7 +193,6 @@
                     echo "Order_num=".$arDocument["Номер"].
                         ": Incorrect phone ".print_r($arDocument["Телефон"],1)."\n";
                 }
-                $t1 = microtime(true);
                 continue;
             }
  
@@ -207,7 +234,7 @@
                     false,
                     array("nTopCount"=>1),array("ID")
                 );
-                $existsOffer = $resOffer->GetNext();
+                $existsOffer = $resOffer->Fetch();
                 // Если продукта нет - создаём его прототип
                 if(!$existsOffer){
                     $product["product_id"] = explode("-",$product["Ид"]);
@@ -245,7 +272,6 @@
                         if(IMPORT_DEBUG)
                             echo "Order_num=".$arDocument["Номер"].
                                 ": Cant create catalog item ".print_r($arrFields, 1)."\n";
-                        $t1 = microtime(true);
                         continue;
                     }
                     else{
@@ -265,7 +291,6 @@
                         if(IMPORT_DEBUG)
                             echo "Order_num=".$arDocument["Номер"].
                                 "   : Cant offer item ".print_r($arrFields, 1)."\n";
-                        $t1 = microtime(true);
                         continue;
                     }
                     
@@ -348,7 +373,7 @@
             
             // Определяем пользователя, если нет - создаём
             $resUser = CUser::GetByLogin($userData["LOGIN"]);
-            $existsUser = $resUser->GetNext();
+            $existsUser = $resUser->Fetch();
             // Если пользователя нет - создаём
 
         
@@ -359,7 +384,6 @@
                     if(IMPORT_DEBUG)
                         echo "Order_num=".$arDocument["Номер"].
                             ": Cant create user ".print_r($userData, 1)."\n";
-                    $t1 = microtime(true);
                     continue;
                 }
             }
@@ -387,7 +411,6 @@
             ){
                 if(IMPORT_DEBUG)
                     echo "Store ID undefined ".print_r($arDocument,1)."\n";
-                $t1 = microtime(true);
                 continue;
             }
             
@@ -398,13 +421,12 @@
                 false,
                 array("nTopCount"=>1),
                 array("ID")
-            )->GetNext()){
+            )->Fetch()){
                 if(IMPORT_DEBUG){
                     echo "Order_num=".$arDocument["Номер"]." Store ID not found ".
                         $arDocument["История"]["Состояние"][0]["Склад"]."\n";
 //                    print_r($arDocument);
                 }
-                $t1 = microtime(true);
                 continue;
             }
             
@@ -511,7 +533,6 @@
                         echo "Not created:";
                         print_r($arOrder);
                         print_r($objOrder);
-                        $t1 = microtime(true);
                         continue;
                     }
                 }
@@ -751,9 +772,11 @@
                     `DATE_STATUS`='".
                         $sDateStatus."'
                 WHERE
-                    `ID`='".$orderId."'");
+                    `ID`='".$orderId."'
+                LIMIT
+                    1
+                ");
             $nOrderCounter++;
-            $t1 = microtime(true);
         }
         
     }
@@ -762,7 +785,6 @@
         echo "success";
     else    
         echo "failed: orders.xml not contains valid orders. Some errors were occured.";
-
 
 ?>
 

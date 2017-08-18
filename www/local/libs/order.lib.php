@@ -12,6 +12,7 @@ function orderPropertiesUpdate(
     $sCode = '',
     $sValue = ''
 ){
+    global $DB;
     $objCSaleOrderPropsValue = new CSaleOrderPropsValue;
     
     $arOrder = CSaleOrder::GetList(
@@ -108,14 +109,33 @@ function orderPropertiesUpdate(
     $arOrder["PROPERTIES"] = array();
     $nextFlag = false;
     while($arProp = $resPropValues->GetNext()){
+        $sQuery = "
+            SELECT
+                `VALUE`
+            FROM
+                `b_sale_order_props_value`
+            WHERE
+                `ORDER_ID`='".$arOrder["ID"]."'
+                AND
+                `ORDER_PROPS_ID`='".$arProp["ID"]."'
+            LIMIT 
+                1
+        ";
+        $arValue = $DB->Query($sQuery)->Fetch();
+        /*
+        Во имя оптимизации
         $arValue =  
             CSaleOrderPropsValue::GetList(
                 array(),
                 $arFilterProp = array(
                     "ORDER_ID"=>$arOrder["ID"],
                     "ORDER_PROPS_ID"=>$arProp["ID"]
-                )
+                ),
+                false,
+                array("nTopCount"=>1),
+                array("VALUE_ORIG","VALUE")
             )->GetNext();
+        */
 
         if(is_array($arValue["VALUE_ORIG"]))
             $arValue = '';
@@ -130,7 +150,6 @@ function orderPropertiesUpdate(
             "PROPERTY_VALUE"    =>  $arValue
         );
     }
-
     $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["PROPERTY_VALUE"] = 
         $arOrder["USER_LAST_NAME"]." ".$arOrder["USER_NAME"];
     
@@ -176,6 +195,7 @@ function orderPropertiesUpdate(
         array("ID","NAME")
     )->GetNext();
 
+
     $arOrder["PROPERTIES"]["PRODUCT_URL"]["PROPERTY_VALUE"] = 
         $arCatalog["DETAIL_PAGE_URL"];
     $arOrder["PROPERTIES"]["PRODUCT_NAME"]["PROPERTY_VALUE"] = 
@@ -213,9 +233,31 @@ function orderPropertiesUpdate(
             "NAME"          =>  $arPropValue["PROPERTY_SETTINGS"]["NAME"]
         );
 
+        $sQuery = "
+            SELECT
+                `VALUE`
+            FROM
+                `b_sale_order_props_value`
+            WHERE
+                `ORDER_ID`='".$arFilter["ORDER_ID"]."'
+                AND
+                `ORDER_PROPS_ID`='".$arFilter["ORDER_PROPS_ID"]."'
+            LIMIT 
+                1
+        ";
+        // Ищем существующее значение
+        $arExistPropValue = 
+        $DB->Query($sQuery)->Fetch();
+        // Обновляем существующее значение, если оно отличается от предлагаемого
         if(
-            $arExistPropValue = 
+            isset($arExistPropValue["VALUE"])
+            &&
+            $arExistPropValue["VALUE"]
+            &&
+            $arExistPropValue["VALUE"]!= $arPropValue["PROPERTY_VALUE"]
+            /*
             CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
+            */
         ){
             $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
             if($bDebug){
@@ -233,7 +275,11 @@ function orderPropertiesUpdate(
                 die;
             }
         }
-        elseif($arPropValue["PROPERTY_VALUE"]){
+        elseif(
+            !isset($arExistPropValue["VALUE"])
+            &&
+            $arPropValue["PROPERTY_VALUE"]
+        ){
             $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
             if($bDebug){
 //            echo "Add\n";
@@ -246,8 +292,8 @@ function orderPropertiesUpdate(
                 die;
             }
         }
-        
     }
+
     return true;
 }
 
