@@ -10,6 +10,7 @@ $(document).ready(function(){
     $('#troyka-card-number').change(function(){check_filling_troika();});
 
     var oldvalueTroyka = '';
+    var oldvalueCode = '';
     // Сохраняем начальное состояние
     $('.ag-shop-card__card-number-input').focus(function(event){
         oldvalueTroyka=$(this).val();
@@ -18,12 +19,8 @@ $(document).ready(function(){
 
     // Проверяем введённые в тройку символы. Просто не даёв вводить ересь
     $('.ag-shop-card__card-number-input').keyup(function(event){
+        event = event || window.event;
         oldvalueTroyka = troykaInputCheck(event,this,10,oldvalueTroyka);
-    });
-
-    $(this).on('paste', function(event) {
-        oldvalueTroyka = troykaInputCheck(event,this,10,oldvalueTroyka);
-        
     });
 
 
@@ -183,33 +180,12 @@ function confirmTroika(){
     });
 
     $('#confirm-code').focus(function(){
-        $(this).val();
+        oldvalueCode = $(this).val();
     });
 
-    $('#confirm-code').keydown(function(event){
+    $('#confirm-code').keyup(function(event){
         event = event || window.event;
-
-        var oldvalue = $(this).val().toString();
-        var newvalue = $(this).val().toString() + event.key.toString();
-
-        var controlKeys = {
-            'Insert':'1','Home':'1','Backspace':'1','Delete':'1',
-            'Tab':'1','Escape':'1','PageUp':'1',
-            'PageDowd':'1','ArrowDown':'1','ArrowUp':'1',
-            'ArrowLeft':'1','ArrowRight':'1',
-            'Shift':'1','Control':'1','Alt':'1','Meta':'1',
-            'ContextMenu':'1','Print':'1','ScrollLock':'1',
-            'Pause':'1','NumLock':'1','CapsLock':'1','F1':'1',
-            'F2':'1','F3':'1','F4':'1','F5':'1','F6':'1','F7':'1',
-            'F8':'1','F9':'1','F10':'1','F11':'1','F12':'1'
-        };
-
-        if(controlKeys[event.key]){return true;}
-
-        var re = /^[0-9]{0,5}$/;
-        if(!re.test(newvalue))return false;
-
-        return true;
+        oldvalueCode = troykaInputCheck(event,this,5,oldvalueCode);
     });
 
     // Проверяем номер каждый введённый символ в поле номера
@@ -385,7 +361,7 @@ function troykaInputCheck(event,obj,digitsCount,myOldvalue){
 
     if(controlKeys[event.key]){return newvalue;}
 
-    var re = /^[0-9]{0,10}$/;
+    var re = new RegExp("^[0-9]{0,"+digitsCount+"}$");
     if(!re.test(newvalue)){
         $(obj).val(myOldvalue);
         return myOldvalue;
