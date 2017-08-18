@@ -9,34 +9,26 @@ $(document).ready(function(){
     // Проверяем номер каждое изменение поля выбора прикреплённых   
     $('#troyka-card-number').change(function(){check_filling_troika();});
 
-    $('.ag-shop-card__card-number-input').keydown(function(event){
+    var oldvalueTroyka = '';
+    // Сохраняем начальное состояние
+    $('.ag-shop-card__card-number-input').focus(function(event){
+        oldvalueTroyka=$(this).val();
+    });
+    
 
-        event = event || window.event;
-
-        var oldvalue = $(this).val().toString();
-        var newvalue = $(this).val().toString() + event.key.toString();
-
-        var controlKeys = {
-            'Insert':'1','Home':'1','Backspace':'1','Delete':'1',
-            'Tab':'1','Escape':'1','PageUp':'1',
-            'PageDowd':'1','ArrowDown':'1','ArrowUp':'1',
-            'ArrowLeft':'1','ArrowRight':'1',
-            'Shift':'1','Control':'1','Alt':'1','Meta':'1',
-            'ContextMenu':'1','Print':'1','ScrollLock':'1',
-            'Pause':'1','NumLock':'1','CapsLock':'1','F1':'1',
-            'F2':'1','F3':'1','F4':'1','F5':'1','F6':'1','F7':'1',
-            'F8':'1','F9':'1','F10':'1','F11':'1','F12':'1'
-        };
-
-        if(controlKeys[event.key]){return true;}
-
-        var re = /^[0-9]{0,10}$/;
-        if(!re.test(newvalue))return false;
-
-        return true;
+    // Проверяем введённые в тройку символы. Просто не даёв вводить ересь
+    $('.ag-shop-card__card-number-input').keyup(function(event){
+        oldvalueTroyka = troykaInputCheck(event,this,10,oldvalueTroyka);
     });
 
+    $(this).on('paste', function(event) {
+        oldvalueTroyka = troykaInputCheck(event,this,10,oldvalueTroyka);
+        
+    });
+
+
     // Проверяем номер каждый введённый символ в поле номера
+    // Активируем заказ при правильном номере
     $('.ag-shop-card__card-number-input').keyup(function(){check_filling_troika();});
    
 
@@ -188,6 +180,10 @@ function confirmTroika(){
     // Первоначальная проверка кода подтведжения
     $('#confirm-code').each(function(){
         check_filling_code(); 
+    });
+
+    $('#confirm-code').focus(function(){
+        $(this).val();
     });
 
     $('#confirm-code').keydown(function(event){
@@ -368,5 +364,34 @@ function troykaRiseError(errorText,hideCode){
     $('#troyka-error').show();
     $('#troyka-error').html( errorText );
     if(hideCode)$('#confirm-code').parent().parent().hide();
+}
+
+function troykaInputCheck(event,obj,digitsCount,myOldvalue){
+    event = event || window.event;
+
+    var newvalue = $(obj).val();
+
+    var controlKeys = {
+        'Insert':'1','Home':'1','Backspace':'1','Delete':'1',
+        'Tab':'1','Escape':'1','PageUp':'1',
+        'PageDowd':'1','ArrowDown':'1','ArrowUp':'1',
+        'ArrowLeft':'1','ArrowRight':'1',
+        'Shift':'1','Control':'1','Alt':'1','Meta':'1',
+        'ContextMenu':'1','Print':'1','ScrollLock':'1',
+        'Pause':'1','NumLock':'1','CapsLock':'1','F1':'1',
+        'F2':'1','F3':'1','F4':'1','F5':'1','F6':'1','F7':'1',
+        'F8':'1','F9':'1','F10':'1','F11':'1','F12':'1'
+    };
+
+    if(controlKeys[event.key]){return newvalue;}
+
+    var re = /^[0-9]{0,10}$/;
+    if(!re.test(newvalue)){
+        $(obj).val(myOldvalue);
+        return myOldvalue;
+    }
+
+    return newvalue;
+
 }
 
