@@ -111,6 +111,7 @@ function orderPropertiesUpdate(
     while($arProp = $resPropValues->GetNext()){
         $sQuery = "
             SELECT
+                `ID`,
                 `VALUE`
             FROM
                 `b_sale_order_props_value`
@@ -235,6 +236,7 @@ function orderPropertiesUpdate(
 
         $sQuery = "
             SELECT
+                `ID`,
                 `VALUE`
             FROM
                 `b_sale_order_props_value`
