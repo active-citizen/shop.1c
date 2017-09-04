@@ -657,7 +657,8 @@ $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный граждани
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">Цена:</div>
-            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-price"><span>415</span> баллов</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="confirm-price"><span>415</span> <span class="balls">баллов</span></div>
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">Единица:</div>

@@ -329,6 +329,8 @@ function productConfirm(){
     $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
+    $('#confirm-price span.balls').html($('.ag-shop-item-card__points-text').html());
+    
     $('#confirm-unit').html($('.ag-shop-card__total-points').html());
     $('#confirm-amount').html($('.ag-shop-card__count-number').html());
     $('#confirm-cost span').html($('#ag-shop-card__total-points').html());
