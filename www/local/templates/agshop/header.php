@@ -55,7 +55,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <?  $APPLICATION->ShowPanel(); ?>
 
 <? if(
-    1 
+    // Заглушка
+    0 
     &&
     !$USER->IsAuthorized()
     &&

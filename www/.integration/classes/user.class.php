@@ -349,7 +349,9 @@
 
             // Заглушка
             $sLockPhone = $answer["profile"]["personal"]["phone"];
-            
+           
+            /*
+            Заглушка
             if(
                 $sLockPhone=='79171189696'
                 || $sLockPhone == '79269189938'
@@ -367,6 +369,7 @@
             else{
                 return false;
             }
+            */
             
 
 
