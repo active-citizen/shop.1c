@@ -42,6 +42,8 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
         array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
         array("PROPERTY_WISH_PRODUCT")
     );
+
+    if($res->result->num_rows):
     
     while($wishProduct = $res->GetNext()){
         
@@ -164,6 +166,15 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
         
         <?
     }
+    else:
+    ?>
+            <div class="grid__col-shrink">
+                  <div class="ag-shop-catalog__item">
+                  <h2 style="color: rgba(0,122,108,1)">Список желаний пуст</h2>
+                  </div>
+            </div>
+    <?
+    endif;
     
     $request = "";
     foreach($_REQUEST as $key=>$value){$request.="$key=$value&";}
