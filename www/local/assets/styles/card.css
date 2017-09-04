@@ -1713,6 +1713,7 @@ input:checked + .ag-shop-card__places-item:before {
   display: inline-block;
   vertical-align: middle;
   margin-left: 10px;
+  margin-top: -11px;
   font-family: 'SF UI Text', Arial, sans-serif;
   font-size: 13px;
   font-size: 0.8125rem;
