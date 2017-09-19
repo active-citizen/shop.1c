@@ -538,6 +538,7 @@ function getMounthProductCount(
             AND `c`.`IBLOCK_PROPERTY_ID`=$nPropId
             AND `c`.`VALUE_NUM`=$nProductId
             AND `a`.`USER_ID`=$nUserId
+            AND `a`.`STATUS_ID` IN ('F','AA','N')
             AND `a`.`DATE_INSERT`>'$sStartDate'
         LIMIT
             1
