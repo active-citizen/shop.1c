@@ -65,7 +65,7 @@ if(
             <? if($stopMonLimit):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
-                    В этом месясце вы исчерпали лимит заказов данного поощрения.
+                    Вы исчерпали месячный лимит заказов данного поощрения.
                     Лимит заказов для одного пользователя в месяц составляет <?=
                     $stopMonLimit ?>.
                 </div>
