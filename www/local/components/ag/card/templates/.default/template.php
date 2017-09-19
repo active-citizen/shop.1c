@@ -5,6 +5,14 @@
 
 <?
 $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
+$stopMonLimit = 0;
+if(
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"] &&
+    $arResult["MON_ORDERS"]
+        >=
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"]
+)$stopMonLimit =
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"];
 ?>
         <? if($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
             <div class="ag-shop-modal__alert">
@@ -54,7 +62,15 @@ $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный граждани
             </script>
         
             <div class="ag-shop-card">
-            <? if(
+            <? if($stopMonLimit):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    В этом месясце вы исчерпали лимит заказов данного поощрения.
+                    Лимит заказов для одного пользователя в месяц составляет <?=
+                    $stopMonLimit ?>.
+                </div>
+              </div>
+            <? elseif(
                 $arResult["ACCOUNT"]["CURRENT_BUDGET"] 
                 < 
                 $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
@@ -358,6 +374,8 @@ $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный граждани
                       </script>
                       <? endif ?>
                       <? if(
+                        !$stopMonLimit
+                        &&
                         // Если дата мероприятия ещё не вышла
                         $ts1+24*60*60>time()
                         &&
@@ -572,6 +590,8 @@ $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный граждани
                 <? endif ?>
 
                 <? if(
+                    !$stopMonLimit
+                    &&
                     // Если дата мероприятия не вышла
                     (
                         !$ts1    // НЕ определена дата мероприятия

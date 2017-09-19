@@ -309,6 +309,18 @@ elseif(isset($_GET["add_order"])){
         echo json_encode($answer);
         die;
     }
+    // Проверяем месячный лимит (возвращает месячный лимит если он исчерпан)
+    if($failedLimit = failedMonLimit(CUSer::GetId(),$arrBasket["PRODUCT_ID"])){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "В этом месясце вы исчерпали лимит заказов данного поощрения."
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
 
     $arFields = array();
     $arFields["LID"] = SITE_ID;

@@ -1,6 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
     $RU = $_SERVER["REQUEST_URI"];
     // Значения по умолчанию
     if(!isset($arParams["PRODUCT_CODE"]))$arParams["PRODUCT_CODE"] = '';
@@ -62,6 +63,12 @@
             $arProp["FILE_PATH"] = CFile::GetPath($arProp["VALUE"]);
         $arResult["CATALOG_ITEM"]["PROPERTIES"][$arProp["CODE"]][] = $arProp;
     }
+
+    // Вычисляем количество заказанного в этом месяце товара пользователем
+    $arResult["MON_ORDERS"] = getMounthProductCount(
+        CUser::GetId(),
+        $arResult["CATALOG_ITEM"]["ID"]
+    );
 
     // Вычисляем рейтинг
     $arResult["CATALOG_ITEM"]["RATING"] = round($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]*5,2);
@@ -257,6 +264,10 @@
     $this->IncludeComponentTemplate();
 //}
 
+    /**
+        Очиска текста товара от лишних cстилей для достижения единообразия
+        вёрстки 
+    */
     function cardTextClear($text){
 
         $text =  str_replace(
