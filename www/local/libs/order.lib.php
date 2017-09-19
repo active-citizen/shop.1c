@@ -515,7 +515,10 @@ function getMounthProductCount(
 
     $arProp = $DB->Query($sQuery)->Fetch();
     $nPropId = isset($arProp["id"])?$arProp["id"]:0;
-    $sStartDate = date("Y-m-01 00:00:00");
+    $sStartDate = date("Y-m-d H:i:s",mktime(
+        date("H").date("i"),date("s"),
+        date("m")-1,date("d"),date("Y")
+    ));
 
     $sQuery = "
         SELECT
