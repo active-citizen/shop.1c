@@ -17,14 +17,16 @@ if ($this->StartResultCache(false, CUser::GetID())) {
     /////  Составляем справочник хотелок
     ////////////////////////////////////////////////////
     $arResult["IWANTS"] = filterGetTags(
-        IWANT_IBLOCK_ID,IWANT_PROPERTY_ID
+        IWANT_IBLOCK_ID,IWANT_PROPERTY_ID,
+        $arParams["SECTION_ID"]
     );
 
     ////////////////////////////////////////////////////
     /////  Составляем справочник интересов
     ////////////////////////////////////////////////////
     $arResult["INTERESTS"] = filterGetTags(
-        INTEREST_IBLOCK_ID,INTEREST_PROPERTY_ID
+        INTEREST_IBLOCK_ID,INTEREST_PROPERTY_ID,
+        $arParams["SECTION_ID"]
     );
 
 
@@ -43,9 +45,11 @@ if ($this->StartResultCache(false, CUser::GetID())) {
     */
     function filterGetTags(
         $nIblockId, //!< ID инфоблока с тегами
-        $nWantPropertyId //!< ID св-ва в инфблоке товаров, ссылающееся на тег
+        $nWantPropertyId, //!< ID св-ва в инфблоке товаров, ссылающееся на тег
+        $nSectionId = 0 //!< ID раздела
     ){
         global $DB;
+        $nSectionId = intval($nSectionId);
         $nCmlPropertyId = CML2_LINK_PROPERTY_ID;
         $nHideIfAbsentPropertyId = HIDE_IF_ABSENT_PROPERTY_ID; 
         $nYesEnum = YES_HIDE_FLAG_ID;
@@ -89,7 +93,15 @@ if ($this->StartResultCache(false, CUser::GetID())) {
             WHERE
                 `a`.`IBLOCK_ID` = ".$nIblockId."
                 AND `a`.`ACTIVE`='Y'
-                AND `g`.`ACTIVE`='Y'
+                AND `g`.`ACTIVE`='Y'"
+                .(
+                    $nSectionId
+                    ?
+                    "AND `g`.`IBLOCK_SECTION_ID`=".$nSectionId
+                    :
+                    ""
+
+                )."                
                 AND (
                     `f`.`VALUE_ENUM`!=".$nYesEnum."
                     ||
