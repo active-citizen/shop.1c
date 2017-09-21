@@ -3,6 +3,8 @@
     $sCode = '';
     if(preg_match("#/catalog/(.*?)/.*#",$_SERVER["REQUEST_URI"],$m))
         $sCode = $m[1];
+
+    if($sCode)
     $arSection = CIBlockSection::GetList(
         array(),
         array(
