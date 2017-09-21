@@ -84,17 +84,21 @@ document.location.hash = '#<?= $sHashString;?>';
   <form class="ag-shop-filter">
     <div class="ag-shop-filter__filters">
       <div class="ag-shop-filter__filters-item">
+    <? if($arResult["IWANTS"]):?>
         Я хочу 
         <span class="ag-shop-filter__trigger ag-shop-filter__trigger--active" rel="wish-filter" 
         alltitle="всё">
           всё
         </span>
+    <? endif ?>
       </div>
       <div class="ag-shop-filter__filters-item">
+    <? if($arResult["INTERESTS"]):?>
         интересуюсь 
         <span class="ag-shop-filter__trigger" rel="interests-filter" alltitle="всем">
           всем
         </span>
+    <? endif ?>
       </div>
       <div class="ag-shop-filter__filters-item">
         <? if($USER->IsAuthorized()):?>
@@ -117,7 +121,8 @@ document.location.hash = '#<?= $sHashString;?>';
         <?endif?>
       </div>
     </div>
-    
+   
+    <? if($arResult["IWANTS"]):?>
     <div class="ag-shop-filter__variants" id="wish-filter">
       <? foreach($arResult["IWANTS"] as $WANT_ID=>$WANT):?>
       <label>
@@ -129,7 +134,9 @@ document.location.hash = '#<?= $sHashString;?>';
       </label>
       <? endforeach ?>
     </div>
+    <? endif ?>
     
+    <? if($arResult["INTERESTS"]):?>
     <div class="ag-shop-filter__variants" id="interests-filter">
       <? foreach($arResult["INTERESTS"] as $INTEREST_ID=>$INTEREST):?>
       <label>
@@ -141,6 +148,7 @@ document.location.hash = '#<?= $sHashString;?>';
       </label>
       <? endforeach ?>
     </div>
+    <? endif ?>
 
     <div class="ag-shop-filter__variants filter-passive" id="balls-filter"
     style="min-height: 42px;">
