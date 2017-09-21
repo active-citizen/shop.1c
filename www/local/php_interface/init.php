@@ -42,21 +42,53 @@
     $arr = CIBlockProperty::GetList(
         array(), array(
             "IBLOCK_ID"=>CATALOG_IB_ID,
-            "NAME"=>"Хочу"
+            "CODE"=>"WANTS"
         )
-    )->GetNext();
+    )->Fetch();
     define("IWANT_PROPERTY_ID",$arr["ID"]);
     // Определяем ID свойства ИНТЕРЕСУЮСЬ 
     $arr = CIBlockProperty::GetList(
         array(), array(
             "IBLOCK_ID"=>CATALOG_IB_ID,
-            "NAME"=>"Интересуюсь"
+            "CODE"=>"INTERESTS"
         )
-    )->GetNext();
+    )->Fetch();
     define("INTEREST_PROPERTY_ID",$arr["ID"]);
+    // Определяем ID свойства ссылка на товар каталога
+    $arr = CIBlockProperty::GetList(
+        array(), array(
+            "IBLOCK_ID"=>OFFER_IB_ID,
+            "CODE"=>"CML2_LINK"
+        )
+    )->Fetch();
+    define("CML2_LINK_PROPERTY_ID",$arr["ID"]);
+    // Определяем ID свойства прятать при исчерпании остатков
+    $arr = CIBlockProperty::GetList(
+        array(), array(
+            "IBLOCK_ID"=>CATALOG_IB_ID,
+            "CODE"=>"HIDE_IF_ABSENT"
+        )
+    )->Fetch();
+    define("HIDE_IF_ABSENT_PROPERTY_ID",$arr["ID"]);
+    // Определяем ID флага свойства прятать при исчерпании
+    $arr = CIBlockPropertyEnum::GetList(
+        array(), array(
+            "PROPERTY_ID"=>HIDE_IF_ABSENT_PROPERTY_ID,
+            "VALUE"=>"да"
+        )
+    )->Fetch();
+    define("YES_HIDE_FLAG_ID",$arr["ID"]);
+    
     // Определяем ID групп Операторы МФЦ и Партнёры
     define("PARTNERS_GROUP_ID",9);
     define("OPERATORS_GROUP_ID",10);
+    // Определяем ID инфоблока ХОЧУ
+    $arr = CIBlock::GetList(array(),array("CODE"=>"iwant"))->GetNext();
+    define("IWANT_IBLOCK_ID",$arr["ID"]);
+    // Определяем ID инфоблока ИНТЕРЕСУЮСЬ
+    $arr = CIBlock::GetList(array(),array("CODE"=>"interestme"))->GetNext();
+    define("INTEREST_IBLOCK_ID",$arr["ID"]);
+    
 
     AddEventHandler("main", "OnBeforeProlog", "MyOnBeforePrologHandler", 50);
 

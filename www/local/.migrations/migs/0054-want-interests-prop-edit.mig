@@ -1,0 +1,140 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление шаблона к основному сайту
+     */
+    class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+            // Имя шаблона для сайта 
+            $ibData = array(
+                array(
+                    "ID"        =>  "catalog",
+                    "SECTIONS"  =>  "Y",
+                    "LANG"      =>  array(
+                        "ru"        =>  array("NAME"          =>  "Каталоги",),
+                        "en"        =>  array("NAME"          =>  "Catalogs",),
+                    ),
+                    "IBLOCKS"=>array(
+                        array(
+                            "NAME"=>"Одежда",
+                            "SITE_ID"=>"s1",
+                            "CODE"=>"clothes",
+                            "PROPERTIES"=>array(
+                                "INTERESTS" =>array(
+                                    "NAME"=>"Интересуюсь",
+                                    "PROPERTY_TYPE" =>"E",
+                                    "MULTIPLE"      =>"Y",
+                                    "ROW_COUNT"     =>"8",
+                                    "LINK_IBLOCK_ID"=>INTEREST_IBLOCK_ID
+                                ),
+                                "WANTS" =>array(
+                                    "NAME"=>"Хочу",
+                                    "PROPERTY_TYPE" =>"E",
+                                    "MULTIPLE"      =>"Y",
+                                    "ROW_COUNT"     =>"8",
+                                    "LINK_IBLOCK_ID"=>IWANT_IBLOCK_ID
+                                ),
+                            ),
+                            "ITEMS"=>array()
+                        ),
+                    )
+                )
+            );
+            
+            CModule::IncludeModule("iblock");
+            $ibTypeObj = new CIBlockType;
+            $ibObj = new CIBlock;
+            $ibPropObj = new CIBlockProperty;
+            $ibElemObj = new CIBlockElement;
+            foreach($ibData as $ibType){
+                $data = $ibType;
+                unset($data["IBLOCKS"]);
+                $res = CIBlockType::GetList(array(),array("ID"=>$ibType["ID"]));
+                if(!$ibTypeElem = $res->getNext())
+                    $ibTypeObj->Add($data);
+                else
+                    $ibTypeObj->Update($ibTypeElem["ID"],$data);
+                
+                foreach($ibType["IBLOCKS"] as $ib){
+                    $data = $ib;
+                    unset($data["PROPERTIES"]);
+                    unset($data["ITEMS"]);
+                    $data["IBLOCK_TYPE_ID"] = $ibType["ID"];
+                    $res = CIBlock::GetList(array(),array("CODE"=>$ib["CODE"]));
+                    if(!$ibElem = $res->getNext())
+                        $ibObj->Add($data);
+                    else
+                        $ibObj->Update($ibElem["ID"],$data);
+                    $res = CIBlock::GetList(array(),array("CODE"=>$ib["CODE"]));
+                    $ibElem = $res->getNext();
+                    
+                    foreach($ib["PROPERTIES"] as $CODE => $ibProp){
+                        $ibProp["IBLOCK_ID"] = $ibElem["ID"];
+                        $ibProp["CODE"]=$CODE;
+                        $res = CIBlockProperty::GetList(array(),array("CODE"=>$ibProp["CODE"]));
+                        if(!$ibPropElem = $res->getNext()){
+                            $ibPropObj->Add($ibProp);
+                        }
+                        else{
+                            $ibPropObj->Update($ibPropElem["ID"],$ibProp);
+                        }
+                    }
+                    
+                    foreach($ib["ITEMS"] as $item){
+                        $item["IBLOCK_ID"] = $ibElem["ID"];
+                        $res = CIBlockElement::GetList(array(),array("IBLOCK_ID"=>$item["IBLOCK_ID"],"NAME"=>$item["NAME"]));
+                        
+                        if(!$ibElemElem = $res->getNext()){
+                            $ID = $ibElemObj->Add($item);
+                            foreach($item["PROPERTIES"] as $prop_code=>$prop_value){
+                                if(isset($ib["PROPERTIES"][$prop_code]["PROPERTY_TYPE"]) && $ib["PROPERTIES"][$prop_code]["PROPERTY_TYPE"]=='F'){
+                                    if(file_exists($prop_value)){
+                                        $stat = stat($prop_value);
+                                        $prop_value = CFile::SaveFile(
+                                            array(
+                                                "name" => md5($prop_value).".jpg",
+                                                "size" => $stat['size'],
+                                                "tmp_name" => $prop_value,
+                                                "type" => "image/jpg",
+                                                "old_file" => 0,
+                                                "del" => "N",
+                                                "MODULE_ID" => "iblock",
+                                                "description" => "описание файла"
+                                            ),
+                                            "baners"
+                                        );
+                                        echo "\n|$prop_value|\n";
+                                    }
+                                }
+                                    
+                                CIBlockElement::SetPropertyValues($ID,$item["IBLOCK_ID"],$prop_value,$prop_code);
+                            }
+                        }
+                        else{
+                            /*
+                            $ibElemObj->Update($ibElemElem["ID"],$item);
+                            foreach($item["PROPERTIES"] as $prop_code=>$prop_value)
+                                CIBlockElement::SetPropertyValues($ibElemElem["ID"],$item["IBLOCK_ID"],$prop_value,$prop_code);
+                            */
+                        }
+                    }
+                    
+                }
+            }
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$migration = new add_ag_template();
+// Откатываем, если неудачно
+if(!$migration->Run())$migration->RollBack();

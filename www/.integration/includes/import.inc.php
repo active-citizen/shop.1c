@@ -34,9 +34,8 @@
     ////////////////////////////////////////////////////////////////////////
 
     // Составляем индекс уже существующих в битриксе хотелок
-    $resPropertiesEnum = CIBlockPropertyEnum::GetList(
-        array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
-        "PROPERTY_ID"=>IWANT_PROPERTY_ID)
+    $resPropertiesEnum = CIBlockElement::GetList(
+        array(), array( "IBLOCK_ID"=>IWANT_IBLOCK_ID)
     );
     $arAlreadyBxIWantIndex = array();
     while($arWant = $resPropertiesEnum->getNext())$arAlreadyBxIWantIndex[$arWant["XML_ID"]] = $arWant;
@@ -48,15 +47,17 @@
     // Находим среди битриксовых хотел те, которых нет в XML и удаляем их
     foreach($arAlreadyBxIWantIndex as $XML_ID=>$arWantItem)
         if(!isset($arXMLWantsIndex[$XML_ID]))
-            CIBlockPropertyEnum::Delete($arWantItem["ID"]);
+            CIBlockElement::Delete($arWantItem["ID"]);
+
 
     // Находим среди XML хотелки, которых нет среди битриксовых и добавляем
     // И вносим в индекс
+    $CIBlockElement = new CIBlockElement;
     foreach($arXMLWantsIndex as $XML_ID=>$arWantItem)
         if(!isset($arAlreadyBxIWantIndex[$XML_ID])){
-            $nIWID = CIBlockPropertyEnum::Add(array(
-                "PROPERTY_ID"   =>  IWANT_PROPERTY_ID,
-                "VALUE"         =>  $arWantItem["Наименование"],
+            $nIWID = $CIBlockElement->Add(array(
+                "IBLOCK_ID"     =>  IWANT_IBLOCK_ID,
+                "NAME"          =>  $arWantItem["Наименование"],
                 "XML_ID"        =>  $arWantItem["Ид"]
             ));
             $arAlreadyBxIWantIndex[$arWantItem["Ид"]] = array(
@@ -67,32 +68,30 @@
     $arIwantIndex = $arAlreadyBxIWantIndex;
 
 
+
     // Составляем индекс уже существующих в битриксе интересов
-    $resPropertiesEnum = CIBlockPropertyEnum::GetList(
-        array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
-        "PROPERTY_ID"=>INTEREST_PROPERTY_ID)
+    $resPropertiesEnum = CIBlockElement::GetList(
+        array(), array( "IBLOCK_ID"=>INTEREST_IBLOCK_ID)
     );
     $arAlreadyBxInterestIndex = array();
     while($arInterest = $resPropertiesEnum->getNext())
         $arAlreadyBxInterestIndex[$arInterest["XML_ID"]] = $arInterest;
-
     // Составляем индекс пришедших в XML интересов 
     $arXMLInterestIndex = array();
     foreach($arInterests as $index)$arXMLInterestIndex[$index["Ид"]] = $index;
 
-
     // Находим среди битриксовых интересов те, которых нет в XML и удаляем их
     foreach($arAlreadyBxInterestIndex as $XML_ID=>$arInterestItem)
         if(!isset($arXMLInterestIndex[$XML_ID]))
-            CIBlockPropertyEnum::Delete($arInterestItem["ID"]);
+            CIBlockElement::Delete($arInterestItem["ID"]);
 
-    // Находим среди XML хотелки, которых нет среди битриксовых и добавляем
+    // Находим среди XML интекресы, которых нет среди битриксовых и добавляем
     // И вносим в индекс
     foreach($arXMLInterestIndex as $XML_ID=>$arInterest)
         if(!isset($arAlreadyBxInterestIndex[$XML_ID])){
-            $nInterestID = CIBlockPropertyEnum::Add(array(
-                "PROPERTY_ID"   =>  INTEREST_PROPERTY_ID,
-                "VALUE"         =>  $arInterest["Наименование"],
+            $nInterestID = $CIBlockElement->Add(array(
+                "IBLOCK_ID"     =>  INTEREST_IBLOCK_ID,
+                "NAME"          =>  $arInterest["Наименование"],
                 "XML_ID"        =>  $arInterest["Ид"]
             ));
             $arAlreadyBxIWantIndex[$arInterest["Ид"]] = array(
@@ -103,6 +102,7 @@
     $arInterestIndex = $arAlreadyBxInterestIndex;
 
     // Чистим от предыдущих значений 
+    /*
     $resPropertiesEnum = CIBlockPropertyEnum::GetList(
         array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
         "PROPERTY_ID"=>INTEREST_PROPERTY_ID)
@@ -122,6 +122,7 @@
             "ID"    =>  $nIntID
         );
     }
+    */
 
     ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем производителей

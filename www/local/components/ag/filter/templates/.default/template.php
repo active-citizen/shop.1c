@@ -122,8 +122,10 @@ document.location.hash = '#<?= $sHashString;?>';
       <? foreach($arResult["IWANTS"] as $WANT_ID=>$WANT):?>
       <label>
         <input type="checkbox" class="ag-iwant" value="<?= $WANT_ID ?>" title="<?= 
-        $WANT["VALUE"]?>">
-        <div class="ag-shop-filter__variants-item"><?= $WANT["VALUE"]?></div>
+        $WANT["NAME"]?>">
+        <div class="ag-shop-filter__variants-item"><?= $WANT["NAME"]?> (<?=
+            $WANT["COUNT"]
+        ?>)</div>
       </label>
       <? endforeach ?>
     </div>
@@ -132,8 +134,10 @@ document.location.hash = '#<?= $sHashString;?>';
       <? foreach($arResult["INTERESTS"] as $INTEREST_ID=>$INTEREST):?>
       <label>
         <input type="checkbox" class="ag-interest" value="<?= $INTEREST_ID ?>" title="<?= 
-        $INTEREST["VALUE"]?>">
-        <div class="ag-shop-filter__variants-item"><?= $INTEREST["VALUE"]?></div>
+        $INTEREST["NAME"]?>">
+        <div class="ag-shop-filter__variants-item"><?= $INTEREST["NAME"]?> (<?=
+            $INTEREST["COUNT"]
+        ?>)</div>
       </label>
       <? endforeach ?>
     </div>
