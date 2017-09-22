@@ -56,11 +56,11 @@ if ($this->StartResultCache(false, CUser::GetID())) {
         $sQuery = "
             SELECT
                 -- Имя тега
-                `a`.`NAME` as `NAME`,
+                `a`.`NAME` as `NAME`
                 -- ID тега
-                `a`.`ID` as `ID`,
+                ,`a`.`ID` as `ID`
                 -- Число элементов у тега
-                COUNT(DISTINCT `b`.`id`) as `COUNT`
+                -- , COUNT(DISTINCT `g`.`ID`) as `COUNT`
             FROM
                 -- Таблица тегов
                 `b_iblock_element` as `a`
