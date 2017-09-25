@@ -143,7 +143,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
       <div class="ag-shop__sidebar">
         <!-- Sidebar {{{-->
         <div class="ag-shop-sidebar">
-          <div class="ag-shop-sidebar__logo-container"><a class="ag-shop-sidebar__logo" href="/catalog/"></a></div>
+          <div class="ag-shop-sidebar__logo-container"><a
+          class="ag-shop-sidebar__logo" href="http://ag.mos.ru/"></a></div>
           <div class="ag-shop-sidebar__social-container">
             <div class="ag-shop-sidebar__social-link"><a
             class="ag-shop-social-link ag-shop-social-link--vk"
