@@ -113,9 +113,6 @@
         }
     }
     $arInterestIndex = $arAlreadyBxInterestIndex;
-echo "<pre>";
-print_r($arXMLWantsIndex);
-die;
     // Чистим от предыдущих значений 
     /*
     $resPropertiesEnum = CIBlockPropertyEnum::GetList(
