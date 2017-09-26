@@ -185,10 +185,10 @@ if(
                       <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                         <div class="grid__col-12 grid__col-md-shrink">
                           <div class="ag-shop-card__rating">
-                            <? for($i=0;$i<round($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]);$i++):?>
+                            <? if(0)for($i=0;$i<round($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]);$i++):?>
                             <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
                             <? endfor ?>
-                            <? for($j=0;$j<5-round($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]);$j++):?>
+                            <? if(0)for($j=0;$j<5-round($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]);$j++):?>
                             <div class="ag-shop-slider-card__rating-item"></div>
                             <? endfor ?>
                               
