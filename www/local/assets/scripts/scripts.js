@@ -551,12 +551,15 @@ function ag_filter(){
     $('.ag-shop-catalog__items-container > div').load(url,function(){
         $('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');
 
+        /*
+        // Перемотка на центр при выборе
         $('body,html').animate(
             {
                 scrollTop: 630
             }, 
             800
         );
+        */
         
         if($('.catalog-page-input').last().val()){
             $('.ag-shop-catalog__more-button').fadeIn();
