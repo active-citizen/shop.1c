@@ -17,7 +17,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     CModule::IncludeModule("catalog");
 
     $arrFilter = array();
-    $arrSorting = array();
+    $arrSorting = array("SORT"=>"ASC");
     
     // Составляем справочник флагов
     $ENUMS = array();
