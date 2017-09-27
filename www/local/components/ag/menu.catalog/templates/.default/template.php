@@ -4,6 +4,7 @@
 ?>
 
 <!-- Menu {{{-->
+<?/*
 <div class="ag-shop-menu">
   <div class="ag-shop-menu__container">
     <div class="ag-shop-menu__header">
@@ -26,7 +27,9 @@
         </div>
       </div>
     </div>
+*/?>
     <? /*if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):*/?>
+<?/*
     <div class="ag-shop-menu__items js-menu__list">
         <?php foreach($arResult["SECTIONS"] as $section):?>
         <? if(!$section["products"])continue;?>
@@ -40,9 +43,12 @@
         </div>
         <?endforeach?>
     </div>
+*/?>
     <?/* endif */?>
+<?/*
   </div>
 </div>
 <!-- }}} Menu-->
+*/?>
 
 
