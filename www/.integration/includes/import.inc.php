@@ -62,7 +62,7 @@
             "ACTIVE"        =>  $arWantItem["Включен"]=='Да'?"Y":"N"
         );
         if(!isset($arAlreadyBxIWantIndex[$XML_ID])){
-            $nIWID = $CIBlockElement->Add();
+            $nIWID = $CIBlockElement->Add($arFields);
             $arAlreadyBxIWantIndex[$arWantItem["Ид"]] = array(
                 "NAME"  =>  $arWantItem["Наименование"],
                 "ID"    =>  $nIWID
