@@ -338,14 +338,14 @@ elseif(
     $arFilter["STORE_ID"] = $arParams["FILTER"]["STORE"];
 }
 
-$arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $arParams["MY_MANS_IDS"];
+$arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = $arParams["MY_MANS_IDS"];
 if(
     $arParams["FILTER"]["MAN"] 
     && intval($arParams["FILTER"]["MAN"])
     && !$arUser["UF_USER_MAN_ALL"]
     && in_array($arParams["FILTER"]["MAN"],$arUser["UF_USER_MAN_ID"])
 ){
-    $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $arParams["FILTER"]["MAN"];
+    $arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = $arParams["FILTER"]["MAN"];
 }
 elseif(
     $arParams["FILTER"]["MAN"] 
@@ -353,7 +353,7 @@ elseif(
     && !$arUser["UF_USER_MAN_ALL"]
     && !in_array($arParams["FILTER"]["MAN"],$arUser["UF_USER_MAN_ID"])
 ){
-     $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = 0;
+     $arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = 0;
 }
 elseif(
     !$arParams["FILTER"]["MAN"]
@@ -364,7 +364,7 @@ elseif(
        && $arParams["FILTER"]["MAN"] == 'all'
     )
 ){
-   $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $arParams["MY_MANS_IDS"];
+   $arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = $arParams["MY_MANS_IDS"];
 }
 elseif(
     $arParams["FILTER"]["MAN"] 
@@ -372,7 +372,7 @@ elseif(
     && $arUser["UF_USER_MAN_ALL"]
     && $arParams["FILTER"]["MAN"] != 'all'
 ){
-    $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $arParams["FILTER"]["MAN"];
+    $arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = $arParams["FILTER"]["MAN"];
 }
 
 
@@ -424,10 +424,12 @@ if($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▲')
 elseif($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▼')
     $arOrder["USER_LOGIN"] = 'ASC';
 
-echo "<!-- ";
-print_r($arOrder);
+//echo "<!-- ";
+//print_r($arOrder);
+echo "<pre>";
 print_r($arFilter);
-echo " -->";
+echo "</pre>";
+//echo " -->";
 
 
 
