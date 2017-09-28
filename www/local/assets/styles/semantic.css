@@ -8,12 +8,19 @@ h4{
 
 .ag-shop-card__container a{
     color: rgba(0,122,108,1);
-    max-width: 250px;
-    white-space:nowrap;
     overflow: hidden;
-    display: inline-flex;
-    position: relative;
+    display: inline-flex; 
 }
+
+/*
+@media (max-width: 460px) {
+    .ag-shop-card__container a{
+        white-space:nowrap;
+        max-width: 250px; 
+        position: relative; 
+    }
+}
+*/
 
 .ag-shop-card__container a:before{
     content: "___";
