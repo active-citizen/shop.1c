@@ -243,9 +243,17 @@ $arFilter = array(
     //"%ADDITIONAL_INFO"=>"Б"
 );
 
+// Получаем ID свойств заказа
+$arOrderPropIndex = [];
+$resProp = CSaleOrderProps::GetList();
+while($arProp = $resProp->Fetch())$arOrderPropIndex[$arProp["CODE"]] =
+    $arProp["ID"];
+
+
 if($arParams["FILTER"]["NUM"])
     $arFilter["%ADDITIONAL_INFO"] = $arParams["FILTER"]["NUM"];
 
+/*
 if($arParams["FILTER"]["LAST_NAME"])
     $arFilter["%PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"] = 
        $arParams["FILTER"]["LAST_NAME"];
@@ -258,11 +266,31 @@ if($arParams["FILTER"]["SECTION"])
     $arFilter["PROPERTY_VAL_BY_CODE_SECTION_ID"] = 
        $arParams["FILTER"]["SECTION"];
 
-
 if($arParams["FILTER"]["CLOSE_DATE"]){
     $tmp = explode(".",$arParams["FILTER"]["CLOSE_DATE"]);
     $t0 = date("Y-m-d",mktime(0,0,0,$tmp[1],$tmp[0],$tmp[2]));
     $arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"] = $t0; 
+}
+
+
+*/
+if($arParams["FILTER"]["LAST_NAME"])
+    $arFilter["%PROPERTY_VALUE_".$arOrderPropIndex["NAME_LAST_NAME"]] = 
+       $arParams["FILTER"]["LAST_NAME"];
+
+if($arParams["FILTER"]["PRODUCT"])
+    $arFilter["%PROPERTY_VALUE_".$arOrderPropIndex["PRODUCT_NAME"]] = 
+       $arParams["FILTER"]["PRODUCT"];
+
+if($arParams["FILTER"]["SECTION"])
+    $arFilter["PROPERTY_VALUE_".$arOrderPropIndex["SECTION_ID"]] = 
+       $arParams["FILTER"]["SECTION"];
+
+
+if($arParams["FILTER"]["CLOSE_DATE"]){
+    $tmp = explode(".",$arParams["FILTER"]["CLOSE_DATE"]);
+    $t0 = date("Y-m-d",mktime(0,0,0,$tmp[1],$tmp[0],$tmp[2]));
+    $arFilter["PROPERTY_VALUE_".$arOrderPropIndex["CLOSE_DATE"]] = $t0; 
 }
 
 
