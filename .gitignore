@@ -98,5 +98,6 @@ www/local/assets/libs/images/
 *.backup
 *.pem
 
-
+# связи троек с номерами телефонов 
+www/local/.migrations/migs/data/troika.csv
 11.php
