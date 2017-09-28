@@ -102,7 +102,8 @@
             <? if($arOrder["SEND_CERT"] &&
             file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
               <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
-                  <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span>
+                  <i class="ag-shop-profile-order__icon
+                  ag-shop-profile-order__icon--print"></i><span>Сохранить</span>
               </a>
             <? endif ?>
               <a class="ag-shop-profile-order__control" href="#"
@@ -193,7 +194,8 @@
             <a class="ag-shop-profile-order__control" href="#" 
             onclick="return printOrder(<?= 
                 $arOrder["ID"]
-            ?>);"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--print"></i><span>Распечатать</span></a>
+            ?>);"><i class="ag-shop-profile-order__icon
+            ag-shop-profile-order__icon--print"></i><span>Сохранить</span></a>
         </div>
         <? endif ?>
         <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=

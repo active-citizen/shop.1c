@@ -521,7 +521,7 @@ function sendOrdersFeedbackForm(){
 }
 
 function printOrder(orderId){
-    $('body').append('<iframe style="display:none;" src="/profile/order/print.png.ajax.php?id='+orderId+'&act=print"></iframe>');
+    $('body').append('<iframe style="display:none;" src="/profile/order/print.png.ajax.php?act=download&id='+orderId+'"></iframe>');
     return false;
 }
 
