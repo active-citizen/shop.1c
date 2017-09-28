@@ -1,11 +1,4 @@
 <?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Тэги::Кабинет партнёра");
-?>
-<div class="partners-main">
-    <h1>Тэги</h1>
-    <? include("../menu.php"); ?>
-<?
     $resProduct  = CIBlockElement::GetList(
         ["SORT"=>"ASC","NAME"=>"ASC"],
         [
@@ -138,7 +131,6 @@ $APPLICATION->SetTitle("Тэги::Кабинет партнёра");
     </tr>
     <? endwhile ?>
 </table>
-</div>
 
 <style>
 .iwant{
@@ -173,4 +165,3 @@ th.interests{
 </style>
 
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

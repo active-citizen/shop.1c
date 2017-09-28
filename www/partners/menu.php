@@ -72,14 +72,6 @@
                     Настройки
                 </a>
             </li>
-            <li class="<?
-            if(preg_match("#^/partners/tags/#",$_SERVER["REQUEST_URI"]))echo
-            "active";?>">
-                <a href="/partners/tags/">
-                <span class="glyphicon glyphicon-tags"></span>
-                    Теги
-                </a>
-            </li>
         <? endif ?>
         <li style="float:right;">
             <a href="/partners/orders/?logout=yes">Выход</a>
