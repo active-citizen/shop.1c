@@ -73,6 +73,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <? if(IS_MOBILE && $_SERVER["REQUEST_URI"]!='/catalog/'):?>
       <div class="ag-shop-mob-nav">
         <a class="ag-shop-mob-back" href="<? 
+            echo "/catalog/";
+            /*
             if(
                 $arPath = explode("/",$_SERVER["REQUEST_URI"])
             ){
@@ -92,6 +94,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                 }
 
             }
+            */
         ?>"
         ></a>
         <?  
@@ -105,6 +108,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                 !trim($arPath[3])){
                     echo "Главная";
                 }
+                /*
                 elseif(
                     $arPath[1]=='catalog' 
                     && 
@@ -129,6 +133,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                     )
                     echo $arCatalogMeta["NAME"];
                 }
+                */
                 else{
                     echo "Главная";
                 }
