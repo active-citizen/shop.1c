@@ -99,13 +99,6 @@
         </div>
         <div class="grid__col-shrink">
           <div class="ag-shop-profile-order__desktop-controls">
-            <? if($arOrder["SEND_CERT"] &&
-            file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
-              <a class="ag-shop-profile-order__control" href="#" onclick="return printOrder(<?= $arOrder["ID"]?>);">
-                  <i class="ag-shop-profile-order__icon
-                  ag-shop-profile-order__icon--print"></i><span>Сохранить</span>
-              </a>
-            <? endif ?>
               <a class="ag-shop-profile-order__control" href="#"
               onclick="return showOrdersFeedbackForm('<?=
               $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a>
@@ -164,7 +157,6 @@
           <div class="grid__col-auto">
             <div class="ag-shop-profile-order__place">
                 <? if(trim($arOrder["STORE_INFO"]["TITLE"])){?>
-                    <span>Забирать здесь:</span>
                     <br class="hide-on-desktop">
                     <? if(trim($arOrder["STORE_INFO"]["ADDRESS"])){?>
                         <a href="/rules/stores/#<?= $arOrder["STORE_INFO"]["ID"] ?>">
@@ -175,8 +167,19 @@
                         </a>
                     <? }else{ ?>
                         <?= $arOrder["STORE_INFO"]["TITLE"]?>
+
+        <? if($arOrder["SEND_CERT"]  && 
+         file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
+            ( <a class="" href="#" 
+            onclick="return printOrder(<?= 
+                $arOrder["ID"]
+            ?>);"><span>Сохранить</span></a>)
+        <? endif ?>
+                        
                     <? } ?>
                 <? } ?>
+
+
             </div>
           </div>
           <div class="grid__col-shrink">
@@ -188,16 +191,6 @@
     </div>
     <div class="ag-shop-profile-order__mobile-controls">
       <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-        <? if($arOrder["SEND_CERT"]  && 
-         file_exists($_SERVER["DOCUMENT_ROOT"]."/../renders/png/".$arOrder["ID"].".png")):?>
-        <div class="grid__col-shrink">
-            <a class="ag-shop-profile-order__control" href="#" 
-            onclick="return printOrder(<?= 
-                $arOrder["ID"]
-            ?>);"><i class="ag-shop-profile-order__icon
-            ag-shop-profile-order__icon--print"></i><span>Сохранить</span></a>
-        </div>
-        <? endif ?>
         <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=
               $arOrder["ADDITIONAL_INFO"]?>');"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--letter"></i><span>Связаться с администрацией</span></a></div>
         <!-- 
