@@ -502,3 +502,26 @@ div.ag-shop-mob-title{
     position: absolute;
     z-index: 9997;
 }
+
+.ag-shop-filter__filters{
+    position: relative;
+}
+
+.filter-clear{
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 10px;
+    top: 10px;
+    background-image: url(/local/assets/images/icons.svg);
+    background-repeat: no-repeat;
+    background-position: 0 -645px;
+    cursor: pointer;
+    background-size: 600%;
+}
+
+/*
+.filter-clear:hover{
+    background-position: 0 -890px;
+}
+*/

@@ -83,6 +83,7 @@ document.location.hash = '#<?= $sHashString;?>';
   <!-- Filter {{{-->
   <form class="ag-shop-filter">
     <div class="ag-shop-filter__filters">
+    <div class="filter-clear" onclick="return filter_clear();" title="Очистить фильтр"></div>
       <div class="ag-shop-filter__filters-item">
     <? if($arResult["IWANTS"]):?>
         Я хочу 

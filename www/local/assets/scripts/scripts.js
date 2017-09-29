@@ -516,6 +516,12 @@ function mywish(object){
 }
 
 
+function filter_clear(){
+    $('.ag-shop-filter').find('input:checked').prop('checked',false);
+    $('span.ag-shop-filter__trigger').each(function(){$(this).html($(this).attr('alltitle'));});
+    ag_filter();
+}
+
 function ag_filter(){
     $('.catalog-ajax-block').last().addClass('catalog-ajax-block-loader');
     
