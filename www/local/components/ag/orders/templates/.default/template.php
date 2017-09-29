@@ -173,7 +173,7 @@
             ( <a class="" href="#" 
             onclick="return printOrder(<?= 
                 $arOrder["ID"]
-            ?>);"><span>Сохранить</span></a>)
+            ?>);">Сохранить</a> )
         <? endif ?>
                         
                     <? } ?>
