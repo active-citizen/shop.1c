@@ -13,6 +13,7 @@
 cd source
 pdflatex index.tex
 bibtex index.gls
+makeindex index.idx
 pdflatex index.tex
 pdflatex index.tex
 mv index.pdf ../../ag_shop_manual.pdf
@@ -35,6 +36,6 @@ find .|grep '.ist$'|xargs rm -f
 find .|grep '.back$'|xargs rm -f
 
 # Открываем получившийся PDF
-xpdf ../../ag_shop_manual.pdf
+evince ../../ag_shop_manual.pdf
 
 

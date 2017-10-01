@@ -1,3 +1,160 @@
-\chapter{Функционал пользователя групп <<\gloss{partner_ag}>> и <<\gloss{partner_ag}>>}
-    см раздел.\ref{sec:order_work}.
+\chapter{Функционал пользователей групп <<\gloss{partner_ag}>> и <<\gloss{partner_ag}>>}
+    \section{Работа с заказами}
+    \label{sec:orders_work}
+        \subsection{Список заказов. Поиск и фильтрация заказов}
+            На рис. \ref{fig:admin_func_list_filter_search} показан вид списка 
+            заказов и отмечены элементы поиска и фильтрации:
+            \begin{enumerate}
+                \item по складу \index{склад};
+                \item по производителю(партнёру) \index{производитель} \index{партнёр};
+                \item по номеру заказа\index{номер заказа};
+                \item по имени покупателя \index{имя покупателя};
+                \item по статусу заказа \index{статус заказа};
+                \item по email покупателя \index{email покупателя};
+                \item по дате добавления заказа\index{дата добавления заказа};
+                \item по названию товара \index{название товара};
+                \item по телефону покупателя \index{телефон покупателя};
+                \item по категории товаров \index{категория товаров};
+                \item по дате истечения бронирования \index{дата истечения бронирования};
+            \end{enumerate}
 
+            \begin{figure}
+                \center
+                \includegraphics[width=170mm]{05_admin_funcs/figures/01.eps}
+                \caption{Список заказов. Поиск и фильтрация заказов}
+                \label{fig:admin_func_list_filter_search}
+            \end{figure}
+
+        \subsection{Просмотр заказа}
+        На рис. \ref{fig:admin_func_list_filter_search} меткой <<12>> отмечена ссылка
+        перехода на страницу просмотра конкретного заказа (см.рис 
+            \ref{fig:admin_func_order_detail}
+            \ref{fig:admin_func_order_products}
+            \ref{fig:admin_func_order_history}
+        )
+        
+        
+            \subsubsection{Детали заказа}
+            Во вкладке <<детали заказа>> можно узнать следующую информацию
+            \begin{enumerate}
+                \item номер заказа \index{Номер заказа} (со ссылкой на просмотр логов обмена по заказу, см. \ref{sec:order_exchange_logs});
+                \item ФИО покупателя;
+                \item email покупателя \index{email покупателя};
+                \item телефон покупателя \index{телефон покупателя};
+                \item общую сумму заказа \index{сумма заказа};
+                \item статус заказа \index{статус заказа};
+                \item дату добавления заказа \index{дата добавления заказа};
+                \item дату изменения заказа \index{дата изменения заказа};
+                \item высылается ли по заказу сертификат \index{сертификат заказа};
+                \item дату истечения бронирования\index{дата истечения бронирования};
+            \end{enumerate}
+
+            \begin{figure}
+                \center
+                \includegraphics[width=170mm]{05_admin_funcs/figures/02.eps}
+                \caption{Просмотр заказа. Детали заказа.}
+                \label{fig:admin_func_order_detail}
+            \end{figure}
+                
+            \subsubsection{Товары}
+            Во вкладке <<товары>> представлена следующая информация (см.рис. \ref{fig:admin_func_order_products})
+            \begin{enumerate}
+                \item наименование товара \index{наименование товара};
+                \item категория товаров \index{категория товаров};
+                \item склад для получения \index{склад};
+                \item количество заказанного товара;
+                \item цена за единицу \index{цена поощрения};
+                \item итоговая стоимость заказа \index{стоимость заказа};
+                \item фотография поощрения;
+                \item ссылка на печать акта;
+            \end{enumerate}
+
+            \begin{figure}
+                \center
+                \includegraphics[width=170mm]{05_admin_funcs/figures/03.eps}
+                \caption{Просмотр заказа. Товары.}
+                \label{fig:admin_func_order_products}
+            \end{figure}
+            
+                \paragraph{Печать акта}
+                Из вкладки <<товары>> доступна загрузка формы печати акта, который
+                покупатель подписывает при приёме товара в формате Excel. 
+                (см. рис.\ref{fig:admin_func_act_print})
+
+                \begin{figure}
+                    \center
+                    \includegraphics[width=170mm]{05_admin_funcs/figures/04.eps}
+                    \caption{Просмотр заказа. Печать акта.}
+                    \label{fig:admin_func_act_print}
+                \end{figure}
+                
+            \subsubsection{История}
+                Во вкладке <<История заказа>> доступен журнал изменения статуса заказа 
+                \index{статус заказа} и обмена с \gloss{UNF} \index{1С УНФ} в виде
+                таблицы со следующими столбцами (см. рис.\ref{fig:admin_func_order_history})
+                \begin{enumerate}
+                    \item дата события;
+                    \item автор (инициатор события);
+                    \item тип события;
+                    \item статус (если не указан, значит не изменился с прошлого события) \index{статус заказа};
+                    \item предыдущий статус (отладочная информация)
+                    \item выпадающий список статусов и кнопка изменения статуса
+                \end{enumerate}
+
+                
+                \begin{figure}
+                    \center
+                    \includegraphics[width=170mm]{05_admin_funcs/figures/05.eps}
+                    \caption{Просмотр заказа. История.}
+                    \label{fig:admin_func_order_history}
+                \end{figure}
+%                 
+                \paragraph{Исполнение заказа}
+                    \index{исполнение заказа}
+                    При выборе нового статуса и нажатии кнокпи <<запросить смену статуса>>
+                    в очерез на отправку в \gloss{UNF} \index{1С УНФ} встаёт \gloss{zni} \index{ЗНИ}.
+                    Об этом свидетельссвует информационное сообщение вверху страницы (см. рис.\ref{fig:admin_func_order_history}).
+        
+        \subsection{Выгрузка заказов по критерию}
+        
+            В данной вкладке реализована возможность выгрузть в формате Excel
+            таблицу заказов по определённым критериям (см. рис.\ref{fig:admin_func_order_download})
+            \begin{itemize}
+                \item телефон \index{телефон покупателя};
+                \item имя покупателя \index{имя покупателя};
+                \item статус заказа \index{статус заказа};
+                \item по производитель(партнёр) \index{производитель} (\index{партнёр});
+                \item склад \index{склад};
+                \item начальная дата добавления заказа \index{дата добавления заказа};
+                \item конечная дата добавления заказа \index{дата добавления заказа};
+                \item начальная дата истечения бронирования \index{дата истечения бронирования};
+                \item конечная дата истечения бронирования \index{дата истечения бронирования};
+                \item начальная дата изменения \index{дата изменения заказа};
+                \item конечная дата изменения \index{дата изменения заказа};
+                \item начальная дата выполнения \index{дата выполнения заказа};
+                \item конечная дата выполнения \index{дата выполнения заказа};
+                \item сортировка
+                    \begin{itemize}
+                        \item Номер заказа \index{номер заказа}
+                        \item Покупатель \index{имя покупателя}
+                        \item Email \index{email покупателя}
+                        \item Статус заказа \index{статус заказа}
+                        \item Дата оформления заказа \index{дата добавления заказа}
+                        \item Дата изменения заказа \index{дата изменения заказа}
+                        \item Телефон \index{телефон покупателя}
+                        \item Центр выдачи(склад) \index{склад}
+                        \item Дата истечения бронирования \index{дата истечения бронирования}
+                        \item Категория \index{категория товаров}
+                        \item Производитель(партнёр) \index{производитель} \index{партнёр}
+                        \item Цена в баллах
+                    \end{itemize}
+                \item направление сортировки
+            \end{itemize}
+
+        
+            \begin{figure}
+                \center
+                \includegraphics[width=170mm]{05_admin_funcs/figures/06.eps}
+                \caption{Просмотр заказа. Выгрузка заказов по критерию.}
+                \label{fig:admin_func_order_download}
+            \end{figure}

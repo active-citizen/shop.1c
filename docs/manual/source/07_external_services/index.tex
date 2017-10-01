@@ -1,25 +1,18 @@
 \chapter{Взаимодействие с внешними сервисами}
-
-    \section{Связь пользователя с контрагентом в \gloss{UNF}}
-        \begin{enumerate}
-            \item Связь объектом \gloss{BXUSER} с контрагентом в \gloss{UNF} устанавливается во время действия \gloss{exchange1c}.
-            \item Связь устанавливается на основе параметра <<телефон пользователя>>.
-        \end{enumerate}
-
-    \section{Связь \gloss{BXUSER} \gloss{AG}}
-        \begin{enumerate}
-            \item Связь устанавливается на основе параметра <<телефон пользователя>>.
-        \end{enumerate}
-
-    \section{Связь заказа в \gloss{shop} и \gloss{UNF}}
-        \begin{enumerate}
-            \item Связь устанавливается во время действия \gloss{exchange1c}.
-            \item Связь устанавливается на основе \gloss{XMLID} заказа.
-        \end{enumerate}
-    
-    \section{Связь объектов \gloss{AGTRANSACT} и \gloss{BXTRANSACT}}
-        \begin{enumerate}
-            \item Связь устанавливается во время действия получение истории баллов (см. \ref{sec:get_points_history}).
-            \item Связь устанавливается на основе комментария в объекте \gloss{AGTRANSACT} номера заказа в объекте \gloss{BXORDER}.
-        \end{enumerate}
-    
+    \section{Взаимодействие с \gloss{UNF}}
+        \subsection{Общие принципы}
+        \subsection{Выгрузка каталога из \gloss{UNF}}
+        \subsection{Обмен заказами}
+            \subsubsection{Получение заказов из \gloss{UNF}}
+            \subsubsection{Передача заказов в \gloss{UNF}}
+            \subsubsection{ЗНИ на изменение статуса заказа}
+    \section{Взаимодействие с \gloss{shop}  с \gloss{AGAPI}}
+        \subsection{Авторизация пользователя}
+        \subsection{Получение профиля}
+        \subsection{Отправка СМС}
+    \section{Взаимодействие с \gloss{shop}  с \gloss{kkb}}
+    \section{Взаимодействие с \gloss{kkb}  с \gloss{AGAPI}}
+    \section{Взаимодействие с сервисами партнёров}
+        \section{Перевод средств на карту <<Тройка>>}
+        \section{Перевод средств на аккаунт в сервисе <<Парковки>>}
+    \section{Отправка писем}

@@ -16,7 +16,7 @@
 \usepackage[english,russian]{babel}	% локализация и переносы
 
 \usepackage{gloss}
-
+\usepackage{makeidx}
 %%% Дополнительная работа с математикой
 \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} % AMS
 \usepackage{icomma} % "Умная" запятая: $0,2$ --- число, $0, 2$ --- перечисление
@@ -110,9 +110,9 @@
 \date{\today}
 
 \makegloss
+\makeindex
 
 \begin{document} % конец преамбулы, начало документа
-
 \maketitle
 \tableofcontents
 
@@ -124,7 +124,8 @@
 \include{./09_partner_operator/index}
 \include{./06_content_funcs/index}
 \include{./07_external_services/index}
+\include{./08_usecases/index}
 
-% \include{./08_usecases/index}
+\printindex
 
 \end{document}
