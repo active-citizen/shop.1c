@@ -1,0 +1,323 @@
+\chapter{Описание протокола обмена \gloss{extBCC} и \gloss{extAPI}}
+    \section{Общие сведения}
+        \begin{enumerate}
+            \item Обмен запросами между \gloss{extBCC} и \gloss{extAPI} осуществляется по 
+            защищённому https-протоколу \index{https}
+        \end{enumerate}
+    
+    \section{Общий вид запроса к \gloss{extBCC}}
+    \label{sec:request_common}
+    
+        \begin{enumerate}
+        
+            \item Запрос к \gloss{extBCC} осуществляется методом POST, тело которого передаётся в формате
+            \textbf{x-www-form-urlencoded}. \index{x-www-form-urlencoded} \index{POST}
+            
+            \item URL запроса к \gloss{extBCC} содержит \gloss{AppID} и подпись запроса, сделанную 
+            в процессе авторизации (см. \ref{sec:auth})
+            \item \gloss{AppID} передаётся с помощью GET-параметра \textit{app\_pd} \index{app\_id} \index{GET}
+            \item Подпись запроса передаётся с помощью GET-параметра \textit{sign} \index{sign} \index{GET}
+            
+        \end{enumerate}
+
+    \section{Авторизация.}
+    \label{sec:auth}
+    
+        Каждый запрос, приходящий от от \gloss{ext_app} к \gloss{extBCC} должен быть 
+        подписан с помощью \gloss{AppKey}, выданного в процессе регистрации \index{подпись запроса}
+        (см. \ref{sec:registration}). Алгоритм подписи следующий:
+        
+        \begin{enumerate}
+            \item Формируем ассоциативный массив параметров запроса
+            \item Сортируем массив по ключу в порядке возрастания
+            \item Прообразуем в \textbf{x-www-form-urlencoded} формат \index{x-www-form-urlencoded}
+            \item Подписываем ключом \gloss{AppKey} hmac \index{hmac} подписью c помощью алгоритма \textbf{sha256} \index{sha256}
+            \item Теперь подобный запрос можно отправить согласно \ref{sec:request_common}
+        \end{enumerate}
+        
+        Пример реализации запроса на начисление \gloss{points} пользователю на PHP \index{PHP}
+        \begin{verbatim}
+<?php
+
+$sAppId = '51c5a7be7f0df5227e15b432c3397e5a';
+$aAppKey = '026d88daef41724467402f4e4d6439de';
+$sSessionId = "215ed9b8ddf3e7aae8d2d0b3f435d019"
+$sAddPointsURL = 'https://bcc.ag.mos.ru/api/v1.0/addPoints';
+
+// Формируем запрос на начисление баллов
+$arRequest = [
+    "title"         =>  "Комментарий к начислению"
+    // Сессия пользователя которому начисляем баллы
+    "session_id"    =>  $sSessionId,
+    // Количество начисляемых баллов
+    "points"        =>  "10"
+    // debit/credit - начисляем или списываем
+    "action"        =>  "debit"
+];
+
+// Сортируем массив по ключам
+ksort($arResult);
+
+// Формируем x-www-form-urlencoded тело POST-запроса
+$arRequest = [];
+foreach($arResult as $sKey=>$sValue)
+    $arRequest[] = $sKey."=".urlencode($sValue);
+$sRequestBody = implode("&",$arRequest); 
+
+// Подписываем тело запроса
+$sSignature = hash_hmac("sha256", $sRequestBody, $aAppKey);
+
+// Формируем URL для запроса
+$sAddPointsURL .= '?app_id='.$sAppId.'&sign='.$sSignature;
+
+// Отправляем запрос и получаем ответ
+$ch = curl_init();
+curl_setopt ($ch, CURLOPT_URL, $sAddPointsURL);
+curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+curl_setopt ($ch, CURLOPT_POST, 1);
+curl_setopt ($ch, CURLOPT_POSTFIELDS, $sRequestBody);
+curl_setopt ($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+$sAnswer = json_decode(curl_exec ($ch));
+curl_close($ch);
+        \end{verbatim}
+        
+        
+    \section{Специальный вид запроса к \gloss{extAPI}}
+    \label{sec:request_special}
+        \begin{enumerate}
+            \item Запрос к \gloss{extAPI} для получения профиля (см. \ref{sec:getProfile}) \index{getProfile}
+            осуществляется методом GET без использования авторизации (считается 
+            что сложность подбора \gloss{SESSION_ID} вместе с использованием 
+            https-протокола сводит вероятность получения данных профиля пользователя 
+            третьими лицами к минимуму)
+            \item     \gloss{SESSION_ID} передаётся с помощью cookie \textit{session\_id}.
+        \end{enumerate}
+        
+        Пример такого запроса, выполненного с  помощью утилиты \textit{wget}
+    
+        \begin{verbatim}
+$wget --header="Cookie: session_id =215ed9b8ddf3e7aae8d2d0b3f435d019" \
+    "https://api.service.ru/api/v2.0/getProfile"
+        \end{verbatim}
+        
+    
+
+    \section{Получение профиля пользователя.}
+    \label{sec:getProfile} \index{getProfile}
+    
+    Данный метод реализуется на стороне \gloss{extAPI} и должен вернуть данные о профиле 
+    \gloss{user} для которого осуществляется запрос. 
+    
+        \subsection{Формат запроса}
+        \begin{enumerate}
+            \item Запрос отправляется по \textbf{URL метода получения профиля} (см \ref{sec:registration_input})
+                \index{URL метода получения профиля}
+            \item Запрос отправляется согласно специальной процедуре запросов к \gloss{extAPI}
+                (см. \ref{sec:request_special})
+        \end{enumerate}
+        
+        \subsection{Формат ответа}
+        
+        Ответ должен быть возвращен в формате JSON \index{JSON} в следующем виде
+        \begin{verbatim}
+{
+    "personal":{
+        "sex"       :     "male",
+        "firstname" :     "Иван",
+        "middlename":     "Иванович",
+        "surname"   :     "Иванов",
+        "phone"     :     "79171189797",
+        "birthday"  :     "29.08.1983",
+        "email"     :     "user@mail.ru"
+    }
+}
+
+        \end{verbatim}
+        
+        \begin{enumerate}
+            \item \textbf{phone*} - телефон пользователя, на которое было зарегистрировано 
+                \gloss{ext_app}. \textbf{Обязательное и крайне важное поле}. Именно по нему 
+                    пользователь будет идентифицироваться в \gloss{bcc};\index{номер телефона пользователя}
+            \item \textbf{email} - Крайне желательное поле. При отсутствии будет 
+                сгенерированно автоматически на основе номера телефона \index{email пользователя}
+            \item \textbf{sex} - пол пользователя. Значения: mail или female;
+            \item \textbf{firstname} - имя пользователя;
+            \item \textbf{middlename} - отчество пользователя;
+            \item \textbf{email} - дата рождения пользователя в формате \textbf{ДД.ММ.ГГГГ} \index{дата рождения пользователя}
+        \end{enumerate}
+
+        
+    \section{Метод начисления/удержания \gloss{points} у \gloss{user}.}
+    \label{sec:addPoints} \index{addPoints}
+    
+    Метод реализуется на стороне \gloss{bcc} и позволяет \gloss{ext_app} начислять 
+    или удерживать у \gloss{user} за полезное действие нужное число \gloss{points}
+    
+        \subsection{Формат запроса}
+        \begin{enumerate}
+            \item Запрос отправляется по \textbf{URL метода начисления и списания баллов} (см \ref{sec:registration_output})
+            \index{URL метода начисления и списания баллов}
+            \item Запрос совершается согласно общим правилам выполнения запросов 
+                к \gloss{extBCC} (см. \ref{sec:request_common})
+        \end{enumerate}
+
+        \subsection{Поля запроса}
+            \begin{tabular}{|m{2cm}|m{5cm}|m{9cm}|}
+                \hline
+                \textbf{Параметр} & \textbf{Значения} & \textbf{Описание} \tabularnewline
+                \hline
+                \hline
+                title 
+                & Строка до 128 символов. Лишнее обрезается
+                & Комментарий к начислению или удержанию баллов \tabularnewline
+                \hline
+
+                session\_id 
+                & Строка с \gloss{SESSION_ID} в принятом для \gloss{ext_app} формате,
+                но не длиннее 40 символов.
+                & Используя это значение будет сделан запрос к методу getPoints \index{getPoints}
+                (см. \ref{sec:getProfile})
+                для подтверждения факта авторизации пользователя на \gloss{ext_app} и
+                получения его профиля.
+                \tabularnewline
+                \hline
+
+                points 
+                & Целое число. Установлен лимит в 1000 для одной транзакции
+                & Количество начисляемых/удерживаемых \gloss{points}
+                \tabularnewline 
+                \hline
+                
+                action
+                & debit или credit
+                & При значении \textit{debit} баллы начисляются, при \textit{credit} - 
+                списываются. При этом поле \textit{points} берётся по модулю.
+                \tabularnewline
+                \hline
+                
+            \end{tabular}
+
+        \subsection{Формат ответа.}
+        Ответ будет возвращен в формате JSON \index{JSON} в следующем виде:
+\begin{verbatim}
+{
+    "result":{
+        "errors":[
+            {
+                "code"          :   0,
+                "description"   :   "Успешно"
+            }
+        ],
+        "status":{
+            "current_points"    :       "233",
+            "all_points"        :       "1234",
+            "spent_points"      :       "1001",
+            "ag_status"         :       "Активный гражданин"
+        }
+    }
+}
+\end{verbatim}
+
+    \begin{enumerate}
+        \item \textbf{errors} - массив ошибок выполнения запроса (см.\ref{sec:errors})
+            
+        \item \textbf{status} - информация о текущем состоянии счёта пользователя 
+            для данного \gloss{ext_app}:
+        \begin{enumerate}
+            \item \textbf{current\_points} - текущий баланс пользователя;
+            \item \textbf{all\_points} - общее число начисленных \gloss{points};
+            \item \textbf{spent\_points} - общее число удержанных \gloss{points};
+            \item \textbf{ag\_status} - строка, описывающая статус пользователя;
+        \end{enumerate}
+
+    \end{enumerate}
+
+        
+    \section{Метод получения истории начисления/списания \gloss{points} у \gloss{user}.}
+    \label{sec:getHistory} \index{getHistory}
+
+    Метод реализуется на стороне \gloss{bcc} и позволяет \gloss{ext_app} получить
+    у \gloss{bcc} для \gloss{user} полную историю получения и списания \gloss{points}
+    
+        \subsection{Формат запроса}
+        \begin{enumerate}
+            \item Запрос отправляется по \textbf{URL метода получения истории баллов} (см \ref{sec:registration_output})
+                \index{URL метода получения истории баллов}
+            \item Запрос совершается согласно общим правилам выполнения запросов 
+                к \gloss{extBCC} (см. \ref{sec:request_common})
+        \end{enumerate}
+
+        \subsection{Поля запроса}
+            \begin{tabular}{|m{2cm}|m{5cm}|m{9cm}|}
+                \hline
+                \textbf{Параметр} & \textbf{Значения} & \textbf{Описание} \tabularnewline
+                \hline
+                \hline
+
+                session\_id 
+                & Строка с \gloss{SESSION_ID} в принятом для \gloss{ext_app} формате,
+                но не длиннее 40 символов.
+                & Используя это значение будет сделан запрос к методу getPoints \index{getPoints}
+                (см. \ref{sec:getProfile})
+                для подтверждения факта авторизации пользователя на \gloss{ext_app} и
+                получения его профиля.
+                \tabularnewline
+                \hline
+            \end{tabular}
+        
+    
+        \subsection{Формат ответа.}
+        Ответ будет возвращен в формате JSON \index{JSON} в следующем виде:
+\begin{verbatim}
+{
+    "result":{
+        "history":[
+            {
+                "date"      :   "2017-10-01 09:10:11"
+                "points"    :   10
+                "action"    :   "debit"
+                "title"     :   "За полезное действие"
+            },
+            ...
+        ],
+        "errors":[
+            {
+                "code"          :   0,
+                "description"   :   "Успешно"
+            }
+        ],
+        "status":{
+            "current_points"    :       "233",
+            "all_points"        :       "1234",
+            "spent_points"      :       "1001",
+            "ag_status"         :       "Активный гражданин"
+        }
+    }
+}
+\end{verbatim}
+
+    \begin{enumerate}
+        \item \textbf{history} - массив истории начислений/списаний \gloss{points}
+        \begin{enumerate}
+            \item \textbf{date} - дата операции по Гринвичу(UTC);
+            \item \textbf{points} - количество начисленных/удержанных \gloss{points};
+            \item \textbf{action} - debit(начисление) или credit(списание)
+            \item \textbf{title} - комментарий к действию;
+        \end{enumerate}
+        
+        \item \textbf{errors} - массив ошибок выполнения запроса (см.\ref{sec:errors})
+            
+        \item \textbf{status} - информация о текущем состоянии счёта пользователя 
+            для данного \gloss{ext_app}:
+        \begin{enumerate}
+            \item \textbf{current\_points} - текущий баланс пользователя;
+            \item \textbf{all\_points} - общее число начисленных \gloss{points};
+            \item \textbf{spent\_points} - общее число удержанных \gloss{points};
+            \item \textbf{ag\_status} - строка, описывающая статус пользователя;
+        \end{enumerate}
+
+    \end{enumerate}
+
+    
+    

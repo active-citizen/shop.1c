@@ -1,0 +1,41 @@
+\chapter{ѕроцедура регистрации \gloss{ext_app}}
+\label{sec:registration}
+
+    \section{ќб€зательные услови€ дл€ начала процедуры регистрации}
+    \label{sec:registration_cond}
+        \begin{enumerate}
+            \item –азработчик \gloss{ext_app} должен на своей стороне реализовать 
+            у \gloss{extAPI} метод получени€ профил€ прользовател€ по \gloss{SESSION_ID}
+            (см. \ref{sec:getProfile}) \index{getProfile}
+        \end{enumerate}
+
+
+    \section{ƒанные, необходимые дл€ проведени€ регистрации}
+    \label{sec:registration_input}
+        \begin{enumerate}
+            \item Ќазвание приложени€;
+            \item URL метода получени€ профил€ (см.\ref{sec:getProfile}); \index{URL метода получени€ профил€}
+        \end{enumerate}
+
+    \section{ƒанные, получаемые разработчиком \gloss{ext_app} по завершению регистрации}
+    \label{sec:registration_output}
+        \begin{enumerate}
+            \item \gloss{AppID};
+            \item \gloss{AppKey};
+            \item URL метода получени€ истории баллов (см.\ref{sec:getHistory});
+                \index{URL метода получени€ истории баллов}
+            \item URL метода начислени€ и списани€ баллов  (см.\ref{sec:addPoints});
+                \index{URL метода начислени€ и списани€ баллов}
+        \end{enumerate}
+
+    \section{ѕроцесс регистрации}
+        \begin{enumerate}
+            \item выполнить услови€ дл€ начала процедуры регистрации (см. \ref{sec:registration_cond});
+            \item подать за€вку на регистрацию \gloss{ext_app};
+            \item предоставить данные, необходимые дл€ проведени€ регистрации (см. \ref{sec:registration_input});
+            \item получить данные по завершению регистрации (см.\ref{sec:registration_output});
+            \item реализовать в своЄм \gloss{ext_app} методы \textit{getHistory} и \textit{addPoints} 
+            ( см.\ref{sec:getHistory} и \ref{sec:addPoints});
+        \end{enumerate}
+        
+        

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmi.version="1.2" verified="false" xmlns:UML="http://schema.omg.org/spec/UML/1.3" timestamp="2017-10-01T12:08:00">
+ <XMI.header>
+  <XMI.documentation>
+   <XMI.exporter>umbrello uml modeller http://umbrello.kde.org</XMI.exporter>
+   <XMI.exporterVersion>1.6.9</XMI.exporterVersion>
+   <XMI.exporterEncoding>UnicodeUTF8</XMI.exporterEncoding>
+  </XMI.documentation>
+  <XMI.metamodel xmi.version="1.3" href="UML.xml" xmi.name="UML"/>
+ </XMI.header>
+ <XMI.content>
+  <UML:Model xmi.id="m1" name="UML Model" isAbstract="false" isRoot="false" isLeaf="false" isSpecification="false">
+   <UML:Namespace.ownedElement>
+    <UML:Stereotype xmi.id="folder" name="folder" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="m1" isSpecification="false"/>
+    <UML:Model xmi.id="Logical View" name="Logical View" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="m1" isSpecification="false">
+     <UML:Namespace.ownedElement>
+      <UML:Package xmi.id="Datatypes" name="Datatypes" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="Logical View" isSpecification="false" stereotype="folder">
+       <UML:Namespace.ownedElement/>
+      </UML:Package>
+      <UML:Class xmi.id="DEFeH9F3pyZ5" name="АПВП" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="Logical View" isSpecification="false"/>
+      <UML:Class xmi.id="H25rwOG9aTmr" name="ВП" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="Logical View" isSpecification="false"/>
+      <UML:Class xmi.id="00dH5ndMpjDk" name="API ВП" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="Logical View" isSpecification="false"/>
+      <UML:Class xmi.id="qLXMUZlSZOic" name="API ККБ" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="Logical View" isSpecification="false"/>
+      <UML:Class xmi.id="bZDBWFBhHykL" name="API ВП(профиль)" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="Logical View" isSpecification="false"/>
+     </UML:Namespace.ownedElement>
+     <XMI.extension xmi.extender="umbrello">
+      <diagrams>
+       <diagram linecolor="#ff0000" localid="-1" linewidth="0" showpackage="1" name="sequence diagram" usefillcolor="1" showscope="1" griddotcolor="#d3d3d3" snapcsgrid="0" canvaswidth="1130" font="Sans Serif,9,-1,5,50,0,0,0,0,0" snapgrid="0" autoincrementsequence="1" snapx="25" zoom="100" textcolor="#000000" showpubliconly="0" showgrid="0" showattsig="1" xmi.id="KO7x8EsjbwJP" backgroundcolor="#ffffff" canvasheight="700" showops="1" showattribassocs="1" showatts="1" documentation="" fillcolor="#ffff00" snapy="25" showstereotype="1" type="3" isopen="1" showopsig="1">
+        <widgets>
+         <objectwidget linecolor="#ff0000" localid="24f6utyFH5AO" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="59" usesdiagramfillcolor="1" width="60" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="DEFeH9F3pyZ5" drawasactor="1" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-1209" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="bzvQyST0W94Q" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="50" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="H25rwOG9aTmr" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-1016" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="5RrgvdVWbQuZ" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="66" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="00dH5ndMpjDk" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-813" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="CLwz48h8XZmQ" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="75" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="qLXMUZlSZOic" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-620" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="TbCFQykJoW1x" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="134" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="bZDBWFBhHykL" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-426" decon="0"/>
+         <notewidget linecolor="#ff0000" localid="WEWx9QK9uWj6" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="169" usesdiagramfillcolor="0" width="136" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возвращаются &#xa;- номер телефона*, &#xa;- email*&#xa;- ФИО* &#xa;- прочие параметры не влияющие на идентификацию пользователя" noteType="0" xmi.id="dEu6drYwoU5z" fillcolor="#ffff00" showstereotype="1" y="383" x="-536"/>
+         <notewidget linecolor="#ff0000" localid="IKaDkevGtRD0" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="170" usesdiagramfillcolor="0" width="145" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возвращается история начисления и списания баллов, сделанных через данное ВП, согласно протоколу обменв API ВП и API ККБ" noteType="0" xmi.id="sVAk1roc6jih" fillcolor="#ffff00" showstereotype="1" y="379" x="-746"/>
+         <notewidget linecolor="#ff0000" localid="YEdMigM11uEj" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="172" usesdiagramfillcolor="0" width="146" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возврачается история начисления и списания баллов согласно протоколу обмена API ВП и ВП&#xa;" noteType="0" xmi.id="Y7zPWAQMfa5e" fillcolor="#ffff00" showstereotype="1" y="376" x="-949"/>
+         <notewidget linecolor="#ff0000" localid="PtEVawC6AoTr" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="171" usesdiagramfillcolor="0" width="159" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возвращается история начисления и списания баллов в удобном для восприятия пользователем виде согласно бизнес-логике работы ВП" noteType="0" xmi.id="UnsTh4CDB9dh" fillcolor="#ffff00" showstereotype="1" y="376" x="-1166"/>
+        </widgets>
+        <messages>
+         <messagewidget linecolor="#ff0000" localid="CHwlgoKWAprc" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="bzvQyST0W94Q" usefillcolor="1" height="205" usesdiagramfillcolor="1" width="196" textid="HbRPQGzps4kq" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="24f6utyFH5AO" sequencemessagetype="1000" textcolor="none" xmi.id="Oc5xynX86U89" fillcolor="none" showstereotype="1" operation="Переход к истории баллов" y="158" x="-1179" seqnum="1">
+          <floatingtext linecolor="#ff0000" localid="anH7M1YXISIw" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="208" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="Переход к истории баллов" xmi.id="HbRPQGzps4kq" fillcolor="none" showstereotype="1" y="139" x="-1174"/>
+         </messagewidget>
+         <messagewidget linecolor="#ff0000" localid="pGzwk55KqKRD" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="5RrgvdVWbQuZ" usefillcolor="1" height="124" usesdiagramfillcolor="1" width="219" textid="tqnkADvTAd3a" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="bzvQyST0W94Q" sequencemessagetype="1000" textcolor="none" xmi.id="LxibQ0Wfbx20" fillcolor="none" showstereotype="1" operation="Запрос истории баллов(session_id)" y="211" x="-991" seqnum="2">
+          <floatingtext linecolor="#ff0000" localid="D1n34XrtnqnV" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="262" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="Запрос истории баллов(session_id)" xmi.id="tqnkADvTAd3a" fillcolor="none" showstereotype="1" y="192" x="-986"/>
+         </messagewidget>
+         <messagewidget linecolor="#ff0000" localid="jwOrXRQ90dKU" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="CLwz48h8XZmQ" usefillcolor="1" height="78" usesdiagramfillcolor="1" width="206" textid="5Kn5y7apajxz" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="5RrgvdVWbQuZ" sequencemessagetype="1000" textcolor="none" xmi.id="tVB8RvRsVb7v" fillcolor="none" showstereotype="1" operation="getHistory(session_id,AppId,подпись)" y="245" x="-780" seqnum="3">
+          <floatingtext linecolor="#ff0000" localid="ZqCMMCH58fwe" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="272" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="getHistory(session_id,AppId,подпись)" xmi.id="5Kn5y7apajxz" fillcolor="none" showstereotype="1" y="226" x="-775"/>
+         </messagewidget>
+         <messagewidget linecolor="#ff0000" localid="fOr8xz3XnDr9" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="TbCFQykJoW1x" usefillcolor="1" height="44" usesdiagramfillcolor="1" width="231" textid="Lzx8BoFawR6i" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="CLwz48h8XZmQ" sequencemessagetype="1000" textcolor="none" xmi.id="P8CWl6AqRxwP" fillcolor="none" showstereotype="1" operation="getProfile(session_id)" y="258" x="-582" seqnum="4">
+          <floatingtext linecolor="#ff0000" localid="2UCaD9XqVOyS" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="164" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="getProfile(session_id)" xmi.id="Lzx8BoFawR6i" fillcolor="none" showstereotype="1" y="239" x="-528"/>
+         </messagewidget>
+        </messages>
+        <associations/>
+       </diagram>
+       <diagram linecolor="#ff0000" localid="-1" linewidth="0" showpackage="1" name="sequence diagram_1" usefillcolor="1" showscope="1" griddotcolor="#d3d3d3" snapcsgrid="0" canvaswidth="917" font="Sans Serif,9,-1,5,50,0,0,0,0,0" snapgrid="0" autoincrementsequence="0" snapx="25" zoom="100" textcolor="#000000" showpubliconly="0" showgrid="0" showattsig="1" xmi.id="J12wZ7YyymSZ" backgroundcolor="#ffffff" canvasheight="515" showops="1" showattribassocs="1" showatts="1" documentation="" fillcolor="#ffff00" snapy="25" showstereotype="1" type="3" isopen="1" showopsig="1">
+        <widgets>
+         <objectwidget linecolor="#ff0000" localid="cZmliNQ2MSwv" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="134" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="bZDBWFBhHykL" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-426" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="KKK7KY4rv1w3" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="75" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="qLXMUZlSZOic" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-620" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="Aq9N36S9GfaX" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="50" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="H25rwOG9aTmr" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-1016" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="6azabVbp4K37" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="59" usesdiagramfillcolor="1" width="60" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="DEFeH9F3pyZ5" drawasactor="1" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-1209" decon="0"/>
+         <objectwidget linecolor="#ff0000" localid="7cekO3SAlWd4" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" usefillcolor="1" height="25" usesdiagramfillcolor="1" width="66" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" xmi.id="00dH5ndMpjDk" drawasactor="0" multipleinstance="0" fillcolor="none" showstereotype="1" y="80" x="-813" decon="0"/>
+         <notewidget linecolor="#ff0000" localid="XMx4AIn0RRcJ" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="169" usesdiagramfillcolor="0" width="174" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возвращаются &#xa;- номер телефона*, &#xa;- email*&#xa;- ФИО* &#xa;- прочие параметры не влияющие на идентификацию пользователя" noteType="0" xmi.id="dEu6drYwoU5z" fillcolor="#ffff00" showstereotype="1" y="377" x="-534"/>
+         <notewidget linecolor="#ff0000" localid="6CFTHxibH0hb" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="213" usesdiagramfillcolor="0" width="147" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возвращается информация о результате начисления баллов + текущая информация о счёте пользователя в данном ВП согласно протоколу обмена API ККБ и API ВП" noteType="0" xmi.id="sVAk1roc6jih" fillcolor="#ffff00" showstereotype="1" y="379" x="-746"/>
+         <notewidget linecolor="#ff0000" localid="GbkE2dOipvPS" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="171" usesdiagramfillcolor="0" width="159" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возвращается статус совершения полезного действия в удобном для восприятия пользователем виде согласно бизнес-логике работы ВП" noteType="0" xmi.id="UnsTh4CDB9dh" fillcolor="#ffff00" showstereotype="1" y="376" x="-1166"/>
+         <notewidget linecolor="#ff0000" localid="nj3TLF5rQgra" isinstance="0" linewidth="0" usesdiagramusefillcolor="0" usefillcolor="1" height="172" usesdiagramfillcolor="0" width="146" font="Sans Serif,9,-1,5,50,0,0,0,0,0" textcolor="#000000" text="Возврачается информация о статусе полезного действия согласно протоколу обмена API ВП и ВП" noteType="0" xmi.id="Y7zPWAQMfa5e" fillcolor="#ffff00" showstereotype="1" y="376" x="-949"/>
+        </widgets>
+        <messages>
+         <messagewidget linecolor="#ff0000" localid="Mgti7odeJSAW" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="KKK7KY4rv1w3" usefillcolor="1" height="88" usesdiagramfillcolor="1" width="206" textid="meyvdEmztehy" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="7cekO3SAlWd4" sequencemessagetype="1000" textcolor="none" xmi.id="tVB8RvRsVb7v" fillcolor="none" showstereotype="1" operation="addPoints(session_id,AppId,подпись,баллы,комментарий)" y="241" x="-780" seqnum="3">
+          <floatingtext linecolor="#ff0000" localid="kFQey9ylYART" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="412" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="addPoints(session_id,AppId,подпись,баллы,комментарий)" xmi.id="meyvdEmztehy" fillcolor="none" showstereotype="1" y="222" x="-775"/>
+         </messagewidget>
+         <messagewidget linecolor="#ff0000" localid="ybMrD2nfIQM1" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="Aq9N36S9GfaX" usefillcolor="1" height="205" usesdiagramfillcolor="1" width="196" textid="s8gcuUzt3JiG" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="6azabVbp4K37" sequencemessagetype="1000" textcolor="none" xmi.id="Oc5xynX86U89" fillcolor="none" showstereotype="1" operation="Полезное действие" y="158" x="-1179" seqnum="1">
+          <floatingtext linecolor="#ff0000" localid="BZSBDX81ZnLi" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="158" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="Полезное действие" xmi.id="s8gcuUzt3JiG" fillcolor="none" showstereotype="1" y="139" x="-1174"/>
+         </messagewidget>
+         <messagewidget linecolor="#ff0000" localid="XADnnnIP1QFF" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="cZmliNQ2MSwv" usefillcolor="1" height="52" usesdiagramfillcolor="1" width="231" textid="gCXhdHn8P0tC" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="KKK7KY4rv1w3" sequencemessagetype="1000" textcolor="none" xmi.id="P8CWl6AqRxwP" fillcolor="none" showstereotype="1" operation="getProfile(session_id)" y="268" x="-582" seqnum="4">
+          <floatingtext linecolor="#ff0000" localid="Eh3kXH5jyTuA" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="164" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="getProfile(session_id)" xmi.id="gCXhdHn8P0tC" fillcolor="none" showstereotype="1" y="249" x="-528"/>
+         </messagewidget>
+         <messagewidget linecolor="#ff0000" localid="S9tVTuaQKNAd" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" widgetbid="7cekO3SAlWd4" usefillcolor="1" height="136" usesdiagramfillcolor="1" width="219" textid="YCb2CA4cHy7i" font="Sans,10,-1,5,50,0,0,0,0,0" widgetaid="Aq9N36S9GfaX" sequencemessagetype="1000" textcolor="none" xmi.id="LxibQ0Wfbx20" fillcolor="none" showstereotype="1" operation="Запрос на полезное действие(session_id) " y="211" x="-991" seqnum="2">
+          <floatingtext linecolor="#ff0000" localid="WM2s81KLgdCb" isinstance="0" linewidth="0" usesdiagramusefillcolor="1" posttext="" usefillcolor="1" pretext="" height="19" usesdiagramfillcolor="1" width="311" font="Sans,10,-1,5,50,0,0,0,0,0" role="704" textcolor="none" text="Запрос на полезное действие(session_id) " xmi.id="YCb2CA4cHy7i" fillcolor="none" showstereotype="1" y="192" x="-986"/>
+         </messagewidget>
+        </messages>
+        <associations/>
+       </diagram>
+      </diagrams>
+     </XMI.extension>
+    </UML:Model>
+    <UML:Model xmi.id="Use Case View" name="Use Case View" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="m1" isSpecification="false">
+     <UML:Namespace.ownedElement/>
+     <XMI.extension xmi.extender="umbrello">
+      <diagrams>
+       <diagram linecolor="#ff0000" localid="-1" linewidth="0" showpackage="1" name="use case diagram" usefillcolor="1" showscope="1" griddotcolor="#d3d3d3" snapcsgrid="0" canvaswidth="0" font="Sans Serif,9,-1,5,50,0,0,0,0,0" snapgrid="0" snapx="25" zoom="100" textcolor="#000000" showpubliconly="0" showgrid="0" showattsig="1" xmi.id="mhlVI3Xc4qFu" backgroundcolor="#ffffff" canvasheight="0" showops="1" showattribassocs="1" showatts="1" documentation="" fillcolor="#ffff00" snapy="25" showstereotype="1" type="2" isopen="1" showopsig="1">
+        <widgets/>
+        <messages/>
+        <associations/>
+       </diagram>
+      </diagrams>
+     </XMI.extension>
+    </UML:Model>
+    <UML:Model xmi.id="Component View" name="Component View" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="m1" isSpecification="false">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+    <UML:Model xmi.id="Deployment View" name="Deployment View" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="m1" isSpecification="false">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+    <UML:Model xmi.id="Entity Relationship Model" name="Entity Relationship Model" visibility="public" isAbstract="false" isRoot="false" isLeaf="false" namespace="m1" isSpecification="false">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+   </UML:Namespace.ownedElement>
+  </UML:Model>
+ </XMI.content>
+ <XMI.extensions xmi.extender="umbrello">
+  <docsettings uniqueid="7cekO3SAlWd4" viewid="J12wZ7YyymSZ" documentation=""/>
+  <listview>
+   <listitem type="800" open="1" id="Views">
+    <listitem type="821" open="1" id="Component View"/>
+    <listitem type="827" open="1" id="Deployment View"/>
+    <listitem type="836" open="1" id="Entity Relationship Model"/>
+    <listitem type="801" open="1" id="Logical View">
+     <listitem type="813" open="1" id="DEFeH9F3pyZ5"/>
+     <listitem type="813" open="1" id="H25rwOG9aTmr"/>
+     <listitem type="813" open="1" id="00dH5ndMpjDk"/>
+     <listitem type="813" open="1" id="bZDBWFBhHykL"/>
+     <listitem type="813" open="1" id="qLXMUZlSZOic"/>
+     <listitem type="830" open="0" id="Datatypes"/>
+     <listitem type="810" label="sequence diagram" open="0" id="KO7x8EsjbwJP"/>
+     <listitem type="810" label="sequence diagram_1" open="0" id="J12wZ7YyymSZ"/>
+    </listitem>
+    <listitem type="802" open="1" id="Use Case View">
+     <listitem type="805" label="use case diagram" open="0" id="mhlVI3Xc4qFu"/>
+    </listitem>
+   </listitem>
+  </listview>
+  <codegeneration>
+   <codegenerator language="PHP5"/>
+  </codegeneration>
+ </XMI.extensions>
+</XMI>

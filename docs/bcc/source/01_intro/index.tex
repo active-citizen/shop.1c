@@ -1,0 +1,60 @@
+\renewcommand{\glossname}{Термины и определения}                                
+% \addcontentsline{toc}{chapter}{Термины и определения}                         
+\printgloss{index} 
+
+\chapter{Введение.}
+        
+    \section{Соглашение об использовании и процедура получения доступа к \gloss{bcc}}
+        \begin{enumerate}
+            \item Доступ к \gloss{bcc} может получить любой разработчик 
+            \gloss{ext_app} прошедший процедуру регистрации приложения (см. \ref{sec:registration})
+            
+            \item За действия третьих лиц, обусловленные утерей разработчиком \gloss{ext_app}
+            выданных ему в процессе процедуры регистрации (см. \ref{sec:registration})
+            \gloss{AppID} и \gloss{AppKey} или их компрометации, 
+            администрация \gloss{bcc} ответственности не несёт
+            
+            \item Время отклика \gloss{bcc} на запросы
+            зависит от времени отклика \gloss{extAPI} за запрос о предоставлении 
+            сессии пользователя (см.\ref{sec:getProfile}) и ответственность за 
+            его временные параметры ложится на разработчика \gloss{extAPI}
+        \end{enumerate}
+
+    
+    \section{Общие сведения}
+        \begin{enumerate}
+            \item \gloss{bcc} предназначен для приёма, хранения и выдачи информации о 
+            \gloss{points}, получаемых \gloss{user} за полезные с точки зрения 
+            \gloss{ext_app} действия, а так же расходовании полученных баллов или 
+            обмен на различные поощрения.
+            
+            \item основой протокола взаимодействия является https \index{https}-протокол для 
+            обмена данными по сети и JSON \index{JSON} для её представления.
+            
+        \end{enumerate}
+    
+    \section{Общие принципы работы.}    
+    
+        \subsection{Получение истории начислений и списаний \gloss{points}}
+        Диаграмма на \ref{fig:get_history} описывает получение истории начисления и списания \gloss{points}
+        для \gloss{user} через \gloss{ext_app}.
+        
+        \begin{figure}
+            \center
+            \includegraphics[width=170mm]{01_intro/figures/sequence_diagram.eps}
+            \caption{Получение истории начисления и списания \gloss{points} для \gloss{user}}
+            \label{fig:get_history}
+        \end{figure}
+
+        \subsection{Начисление или списание \gloss{points} для конкретного \gloss{user}}
+        Диаграмма на \ref{fig:add_points} описывает начисление и списание \gloss{points}
+        для \gloss{user} через \gloss{ext_app}.
+        
+        \begin{figure}
+            \center
+            \includegraphics[width=170mm]{01_intro/figures/sequence_diagram1.eps}
+            \caption{Начисление или списание \gloss{points} для \gloss{user}}
+            \label{fig:add_points}
+        \end{figure}
+        
+        
