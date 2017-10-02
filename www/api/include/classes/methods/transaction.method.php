@@ -37,7 +37,9 @@
 
         function go($args=''){
             // Получаем SSO_ID пользователя, который залогинен от этой сессии
+
             $CTransaction = new CTransaction;
+
             if(!$CTransaction->addEMPPoints(
                 $this->session_id,
                 $args->debit,

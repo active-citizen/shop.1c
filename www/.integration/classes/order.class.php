@@ -488,6 +488,7 @@
                     '.'"session_id":"'.$session_id.'"'.'
                 }
             ');
+            
             $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
 
             $data = json_decode($data);

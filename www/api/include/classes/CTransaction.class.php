@@ -253,7 +253,9 @@
             }';
             require_once(realpath(dirname(__FILE__)."/curl.class.php"));
             $curl = new curlTool;
+
             $data = $curl->post($url, $data, array("Content-Type: application/json"));
+
             if(!$data = json_decode($data))return false;
             if(!property_exists($data, "errorCode") || $data->errorCode)return false;
             return true;
@@ -271,11 +273,16 @@
         function getSSOIdBySession($sSessionId){
             $CSession = new CSession;
             $CUser = new CUser;
+
+
             $arSession = $CSession->get($sSessionId);
+
             if(!$arSession)return false;
             $nUserId = $arSession["user_id"];
             $arUser = $CUser->getById($nUserId);
+
             if(!$arUser)return false;
+
             return $arUser["sso_id"];
         }
         

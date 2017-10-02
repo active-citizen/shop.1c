@@ -173,5 +173,9 @@ function html2text($html){
     $html = preg_replace("#<li.*?>#i","\n - ",$html);
     $html = preg_replace("#<ul.*?>#i","\n",$html);
     $html = preg_replace("#<ol.*?>#i","\n",$html);
+    $html = str_replace("</div>","\n",$html);
+    $html = str_replace("\t","    ",$html);
+    $html = str_replace("\r","",$html);
+    $html = strip_tags($html);
     return $html;
 }

@@ -464,8 +464,6 @@ elseif(isset($_GET["add_order"])){
             $objParking->linkOrderTransact($sOrderNum);
         }
 
-
-        
         // Если тойка провалилась - баллы не снимаем
         if($stoykaStatus == 2){
         }
@@ -538,7 +536,6 @@ elseif(isset($_GET["add_order"])){
                 
             }
         }
-
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
         ///// Ставим в очередь на ЗНИ

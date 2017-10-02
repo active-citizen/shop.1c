@@ -176,11 +176,11 @@ if(
                     <div class="ag-shop-card__container">
                       <div class="ag-shop-card__header ag-shop-card__header--mobile">
                         <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
-                        <? if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
+                        <? /* if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
                         <div class="ag-shop-card__header-code">Артикул: <strong><?= 
                             $arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                         ?></strong></div>
-                        <? endif ?>
+                        <? endif */ ?>
                       </div>
                       <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                         <div class="grid__col-12 grid__col-md-shrink">
@@ -238,7 +238,7 @@ if(
                       <div class="ag-shop-card__header">
                         <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
                         
-                        <? if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
+                        <? /* if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
                         <div class="ag-shop-card__header-code">Артикул: <strong><?= 
                             $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                         ?></strong></div>
@@ -246,7 +246,7 @@ if(
                         <div class="ag-shop-card__header-code">Артикул: <strong><?= 
                             $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                         ?></strong></div>
-                        <? endif ?>
+                        <? endif */ ?>
 
                         <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["PERFOMANCE_DATE"][0]["VALUE"]):?>
                         <div class="ag-shop-card__header-code">Дата мероприятия: <strong><?= 

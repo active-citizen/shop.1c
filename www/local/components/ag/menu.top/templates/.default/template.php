@@ -28,7 +28,8 @@
       </div>
       <? endif;?>
       <div class="grid__col-auto grid__col-md-shrink">
-        <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/">
+        <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#",
+        $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/hiw/">
             <i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--rules"></i>
             <div class="ag-shop-nav__link-caption">
                 Правила

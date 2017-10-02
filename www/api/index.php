@@ -119,6 +119,13 @@
         exit;
     }
     else{
+            $ssskey = time();
+
+            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/tmp/err7_".$ssskey.".txt","w");
+            fwrite($fd,print_r($objRequest, 1));
+            fwrite($fd,print_r($objMethod, 1));
+            fclose($fd);
+
         echo json_encode(array(
             "errorCode" =>  CAll::ERROR_EXECUTE_UNKNOWN, 
             "errorMessage" =>  CAll::getErrorMessage(
