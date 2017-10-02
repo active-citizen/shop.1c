@@ -29,6 +29,7 @@
         
         \begin{enumerate}
             \item Формируем ассоциативный массив параметров запроса
+            \item Добавляем параметр \textit{date} - дату запроса по Гринвичу(UTC) в формате ISO 8601 (запрос действителен в течение 10 мин.)
             \item Сортируем массив по ключу в порядке возрастания
             \item Прообразуем в \textbf{x-www-form-urlencoded} формат \index{x-www-form-urlencoded}
             \item Подписываем ключом \gloss{AppKey} hmac \index{hmac} подписью c помощью алгоритма \textbf{sha256} \index{sha256}
@@ -54,6 +55,8 @@ $arRequest = [
     // debit/credit - начисляем или списываем
     "action"        =>  "debit"
 ];
+// Добавляем дату запроса
+$arRequest["date"] = gmdate("c");
 
 // Сортируем массив по ключам
 ksort($arResult);
