@@ -101,6 +101,7 @@ document.location.hash = '#<?= $sHashString;?>';
         </span>
     <? endif ?>
       </div>
+      <!-- 
       <div class="ag-shop-filter__filters-item">
         <? if($USER->IsAuthorized()):?>
         у меня 
@@ -121,6 +122,7 @@ document.location.hash = '#<?= $sHashString;?>';
         </span>
         <?endif?>
       </div>
+      -->
     </div>
    
     <? if($arResult["IWANTS"]):?>

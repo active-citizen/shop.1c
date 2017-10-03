@@ -354,7 +354,19 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     foreach($_REQUEST as $key=>$value){$request.="$key=$value&";}
     
     ?>
-    
+  
+
+    <? if(!$counter && !$nOunputted):?>
+    <div class="grid__col-shrink">
+        <div class="ag-shop-catalog__item">
+            <h2 style="text-align:center;color: rgba(0,122,108,1)">Нет товаров,
+            <br/>удовлетворяющих <br/>условиям
+            фильтра</h2>
+        </div>
+    </div>
+    <? endif ?>
+
+
     <?if(
     //    $res->SelectedRowsCount()>($PAGE*$ON_PAGE)
     $nOunputted >= 12

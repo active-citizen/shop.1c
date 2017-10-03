@@ -4,23 +4,23 @@ $(document).ready(function() {
 
   // list toggle
   (function () {
-    var menuButton = $('.js-menu__button');
+    var menuButton = $('.ag-shop-menu__header');
     var menuList = $('.js-menu__list');
 
     menuButton.on('click', function(e) {
         e.preventDefault();
-        if ( $(this).parent().parent().parent().parent().parent()
+        if ( $(this).parent()
                 .find('.js-menu__list').first().is(':visible') ) {
-            $(this).parent().parent().parent().parent().parent()
+            $(this).parent()
                 .find('.js-menu__list').first().slideUp(animationDelay);
-            $(this).removeClass('ag-shop-menu__button--close');
+            $(this).find('button').removeClass('ag-shop-menu__button--close');
 
             //menuList.slideUp(animationDelay);
             //menuButton.removeClass('ag-shop-menu__button--close');
         } else {
-            $(this).parent().parent().parent().parent().parent()
+            $(this).parent()
                 .find('.js-menu__list').first().slideDown(animationDelay);
-            $(this).addClass('ag-shop-menu__button--close');
+            $(this).find('button').addClass('ag-shop-menu__button--close');
 
 //            menuList.slideDown(animationDelay);
 //            menuButton.addClass('ag-shop-menu__button--close');
