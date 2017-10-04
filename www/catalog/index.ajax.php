@@ -37,7 +37,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     
     if(!isset($_REQUEST['sorting']) || !$_REQUEST['sorting'])$_REQUEST['sorting']='rating-desc';
 
-    /*
     if(isset($_REQUEST['sorting']) && $_REQUEST['sorting']=='rating-desc'){
         $arrSorting["PROPERTY_RATING"]="DESC";
     }
@@ -47,7 +46,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     else{
         $arrSorting["PROPERTY_MINIMUM_PRICE"]="ASC";
     }
-    */
     
     if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='news'){
         $arrFilter["PROPERTY_NEWPRODUCT"] = $ENUMS['NEWPRODUCT']["да"];
@@ -60,7 +58,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     }
     
    
-    /*
     if(isset($_REQUEST['filter_iwant']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_iwant'])){
         $iwant = explode(",",$_REQUEST['filter_iwant']);
         if(!count($iwant)){
@@ -76,7 +73,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             $arrFilter["PROPERTY_TYPES"] = $type;
         }
     }
-    */
     
     if(
         isset($_REQUEST['filter_interest']) 
@@ -109,7 +105,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     }
 
 
-    /*
     if(
         isset($_REQUEST['filter_balls']) 
         && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])
@@ -121,7 +116,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     elseif(!isset($_REQUEST['filter_balls'])){
         $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1000000000;
     }
-    */
     // Не выводить неактивные
     if(!preg_match("#/profile/wishes/#",$_SERVER["HTTP_REFERER"]))
         $arrFilter["ACTIVE"] = 'Y';
@@ -143,98 +137,365 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     $_SESSION["SORTINGS"][$sUri] = $arrSorting;
 
 
+//    echo "<pre>";
+//    print_r($arrFilter);
+//    echo "</pre>";
 
-   
-    $res = CIBlockElement::GetList(
-        $arrSorting,
-        $arrFilter,
-        false,
-//        array("iNumPage"=>$PAGE,"nPageSize"=>$ON_PAGE),
-        false,
-        array(
-            "PROPERTY_RATING","PROPERTY_MINIMUM_PRICE","ID","DETAIL_PICTURE",
-            "DETAIL_PAGE_URL","PREVIEW_TEXT","IBLOCK_SECTION_ID","NAME","WANTS",
-            "PROPERTY_HIDE_IF_ABSENT"
-            )
-    );
+    // Составляем справочник свойств
+    $sQuery = "
+        SELECT 
+            `ID`,`CODE`
+        FROM
+            `b_iblock_property`
+    ";
+    $res = $DB->Query($sQuery);
 
-    $counter = 0;
-    $nOunputted = 0;
-    while($product = $res->GetNext()){
-        // Вычисляем остатки товара
-        $resOffers = CIBlockElement::GetList(array(),array(
-            "IBLOCK_ID"=> OFFER_IB_ID,
-            "PROPERTY_CML2_LINK"=>$product["ID"],
-            ),
-            false,false,array("ID","NAME")
-        );
-        $nTotalAmount = 0;
-        $nTotalOffers = 0;
-        while($arOffer = $resOffers->Fetch()){
-            $nTotalOffers += 1;
-            $resStoreProduct = CCatalogStoreProduct::GetList(
-                array(),
-                array(
-                    "PRODUCT_ID" => $arOffer["ID"],
-                    ">AMOUNT"=>0
+    $arPropList = [];
+    while($arProp = $res->Fetch())
+        $arPropList[$arProp["CODE"]] = $arProp["ID"];
+
+    $sQuerySelect = "
+            `catalog`.`ID` as `ID`,
+            `catalog`.`NAME` as `NAME`,
+            `catalog`.`CODE` as `CODE`,
+            `catalog`.`PREVIEW_TEXT` as `PREVIEW_TEXT`,
+            `catalog`.`IBLOCK_SECTION_ID` as `SECTION_ID`,
+            `catalog`.`DETAIL_PICTURE` as `DETAIL_PICTURE_ID`,
+            `section`.`NAME` as `SECTION_NAME`,
+            `section`.`CODE` as `SECTION_CODE`
+    ";
+
+    $sQueryFrom = "
+            `b_iblock_element` as `catalog`
+                LEFT JOIN
+            `b_iblock_section` as `section`
+                ON
+                `catalog`.`IBLOCK_SECTION_ID`=`section`.`ID`
+                AND
+                `section`.`IBLOCK_ID`=".CATALOG_IB_ID."
+                LEFT JOIN
+            `b_iblock_element_property` as `offerlink`
+                ON
+                `catalog`.`ID`=`offerlink`.`VALUE_NUM`
+                LEFT JOIN
+            `b_catalog_store_product` as `store`
+                ON
+                `offerlink`.`IBLOCK_ELEMENT_ID`=`store`.`PRODUCT_ID`
+                AND
+                `store`.`AMOUNT`>0
+                LEFT JOIN
+            `b_iblock_element_property` as `hide`
+                ON
+                `hide`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `hide`.`IBLOCK_PROPERTY_ID` = ".$arPropList["HIDE_IF_ABSENT"]."
+
+                
+    ";
+    if(
+        isset($arrFilter[">PROPERTY_MINIMUM_PRICE"])
+        ||
+        isset($arrFilter[">PROPERTY_MINIMUM_PRICE"])
+        ||
+        isset($arrSorting["PROPERTY_MINIMUM_PRICE"])
+    )$sQueryFrom .= "
+                LEFT JOIN
+            `b_iblock_element_property` as `minprice`
+                ON
+                `minprice`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `minprice`.`IBLOCK_PROPERTY_ID`=".$arPropList["MINIMUM_PRICE"]."
+    ";
+    if(isset($arrFilter["PROPERTY_WANTS"]))$sQueryFrom .= "
+                LEFT JOIN
+            `b_iblock_element_property` as `iwant`
+                ON
+                `iwant`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `iwant`.`IBLOCK_PROPERTY_ID`=".$arPropList["WANTS"]."
+    ";
+    if(isset($arrFilter["PROPERTY_INTERESTS"]))$sQueryFrom .= "
+                LEFT JOIN
+            `b_iblock_element_property` as `interests`
+                ON
+                `interests`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `interests`.`IBLOCK_PROPERTY_ID`=".$arPropList["INTERESTS"]."
+    ";
+    if(isset($arrFilter["PROPERTY_SPECIALOFFER"]))$sQueryFrom .= "
+                LEFT JOIN
+            `b_iblock_element_property` as `specoffer`
+                ON
+                `specoffer`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `specoffer`.`IBLOCK_PROPERTY_ID`=".$arPropList["SPECIALOFFER"]."
+    ";
+    if(isset($arrFilter["PROPERTY_SALELEADER"]))$sQueryFrom .= "
+                LEFT JOIN
+            `b_iblock_element_property` as `salelider`
+                ON
+                `salelider`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `salelider`.`IBLOCK_PROPERTY_ID`=".$arPropList["SALELEADER"]."
+    ";
+    if(isset($arrFilter["PROPERTY_NEWPRODUCT"]))$sQueryFrom .= "
+                LEFT JOIN
+            `b_iblock_element_property` as `newprod`
+                ON
+                `newprod`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `newprod`.`IBLOCK_PROPERTY_ID`=".$arPropList["NEWPRODUCT"]."
+    ";
+           
+    
+        
+
+    $sQueryWhere = "
+            1
+            AND (
+                `store`.`ID` IS NOT NULL
+                OR
+                (
+                    `store`.`ID` IS NULL
+                    AND
+                    `hide`.`ID` IS NULL
                 )
-            ); 
-            while($arProductStore = $resStoreProduct->Fetch())
-                $nTotalAmount += $arProductStore["AMOUNT"];
-        }
+            )
+            AND `catalog`.`ACTIVE`='Y'
+            AND `section`.`ACTIVE`='Y'
+            AND `catalog`.`IBLOCK_ID` = ".CATALOG_IB_ID." ";
+    if(isset($arrFilter["SECTION_ID"]) && intval($arrFilter["SECTION_ID"]))
+        $sQueryWhere .= " 
+            AND `catalog`.`IBLOCK_SECTION_ID` IN (".(
+                $arrFilter["SECTION_ID"]
+                ?
+                implode(",",$arrFilter["SECTION_ID"])
+                :
+                0
+            ).")";
 
-        // Если остатков нет и есть флаг "Прятать при отсутствии - пропускаем"
-        if(
-            !preg_match("#/profile/wishes/#",$_SERVER["HTTP_REFERER"])
-            &&
-            $product["PROPERTY_HIDE_IF_ABSENT_VALUE"]=='да'
-            &&
-            !$nTotalAmount
-        )continue;
-        if(!$nTotalOffers)continue;
-        // Пришибленный механизм пагинации из за флага HIDE_IF_ABSENT
-        $counter++;
-        if($counter<=(($PAGE-1)*$ON_PAGE))continue;
-        if($counter>($PAGE*$ON_PAGE))break;
-        $nOunputted ++;
+    if(isset($arrFilter[">PROPERTY_MINIMUM_PRICE"]))
+        $sQueryWhere .= "
+            AND `minprice`.`VALUE_NUM`>".$arrFilter[">PROPERTY_MINIMUM_PRICE"].""; 
+    elseif(isset($arrFilter[">=PROPERTY_MINIMUM_PRICE"]))
+        $sQueryWhere .= "
+            AND `minprice`.`VALUE_NUM`>=".$arrFilter[">=PROPERTY_MINIMUM_PRICE"].""; 
 
-        // Получение всех свойств товара
-        $res2 = CIBlockElement::GetProperty($arrFilter["IBLOCK_ID"],$product["ID"]);
-        $product["ALL_PROPERTIES"] = array();
-        while($row = $res2->GetNext())$product["ALL_PROPERTIES"][$row["CODE"]] = $row;
-        
-        $image_url = '';
-        if($file_id = intval($product["DETAIL_PICTURE"]))$image_url = CFile::GetPath($file_id);
+    if(isset($arrFilter["<=PROPERTY_MINIMUM_PRICE"]))
+        $sQueryWhere .= "
+            AND `minprice`.`VALUE_NUM`<=".$arrFilter["<=PROPERTY_MINIMUM_PRICE"].""; 
 
-        // Входит ли товар с писок моих желаний
-        $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_USER"=>CUser::GetID(),"PROPERTY_WISH_PRODUCT"=>$product["ID"]);
-        $res1 = CIBlockElement::GetList(array(),$arFilter,false, array("nTopCount"=>1));
-        $product["mywish"] = $res1->SelectedRowsCount();
-        
-        // Сколько у товара всего желающих
-        $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_PRODUCT"=>$product["ID"]);
-        $res1 = CIBlockElement::GetList(array(),$arFilter,false, array());
-        $product["wishes"] = $res1->SelectedRowsCount();
+    if(isset($arrFilter["PROPERTY_INTERESTS"]))$sQueryWhere .= "
+            AND `interests`.`VALUE_NUM` IN("
+                .implode(",",$arrFilter["PROPERTY_INTERESTS"])
+                .")";
 
-        // Вычисляем раздел
-        $resCatalogSection = CIBlockSection::GetList(
-            array(),
-            array(
-                "IBLOCK_ID"   =>  CATALOG_IB_ID,
-                "ID"=>$product["IBLOCK_SECTION_ID"]
-            ),
-            false,
-            array("nTopCount"=>1),
-            array("NAME")
-        );
-        $arCatalogSection = $resCatalogSection->GetNext();
-        $product["SECTION_NAME"] = $arCatalogSection["NAME"];
+    if(isset($arrFilter["PROPERTY_WANTS"]))$sQueryWhere .= "
+            AND `iwant`.`VALUE_NUM` IN("
+                .implode(",",$arrFilter["PROPERTY_WANTS"])
+                .")";
 
-        // Вычисляем рейтинг
-        $product["RATING"] = round($product["PROPERTY_RATING_VALUE"],2);
-        // Обеззараживаем текст описания
-        $product["PREVIEW_TEXT"] = strip_tags($product["PREVIEW_TEXT"]);
-        $product["mark"] = $product["PROPERTY_RATING_VALUE"];
+    if(isset($arrFilter["PROPERTY_SPECIALOFFER"]))$sQueryWhere .= "
+            AND `specoffer`.`ID` IS NOT NULL";
+
+    if(isset($arrFilter["PROPERTY_SALELEADER"]))$sQueryWhere .= "
+            AND `salelider`.`ID` IS NOT NULL";
+
+    if(isset($arrFilter["PROPERTY_NEWPRODUCT"]))$sQueryWhere .= "
+            AND `newprod`.`ID` IS NOT NULL";
+
+    $sQueryLimit = "
+            ".(($PAGE-1)*$ON_PAGE).",
+            ".($ON_PAGE)."
+      ";
+
+    $sQuerySorting = "";
+    if(isset($arrSorting["PROPERTY_RATING"])){
+        $sQuerySorting = " 
+        ORDER BY 
+            `WISHES` "
+            .$DB->ForSql($arrSorting["PROPERTY_RATING"]);
+    }
+    elseif(isset($arrSorting["PROPERTY_MINIMUM_PRICE"])){
+        $sQuerySorting = " 
+        ORDER BY 
+            `minprice`.`VALUE_NUM` "
+            .$DB->ForSql($arrSorting["PROPERTY_MINIMUM_PRICE"]);
+    }
+    if($sQuerySorting)$sQuerySorting.=",";
+    $sQuerySorting .= "
+            `catalog`.`SORT` ASC";
+
+
+    // Запрос для определения общего числа товаров по фильтру
+    $sQuery = "
+        SELECT  
+            COUNT(DISTINCT `catalog`.`ID`) as `COUNT`
+        FROM    
+            $sQueryFrom
+        WHERE
+            $sQueryWhere
+    ";
+   
+    /*
+    echo "<pre>";
+    echo $sQuery;
+    echo "</pre>";
+    echo "<pre>";
+    print_r($arrFilter);
+    print_r($arrSorting);
+    echo "</pre>";
+    */
+   
+    
+
+    $nTotalCount = $DB->Query($sQuery)->Fetch();
+    $nTotalCount = $nTotalCount["COUNT"];
+
+
+
+    // Запрос для вывода конкретной страницы
+    $sQuery = "
+        SELECT
+            $sQuerySelect,
+            COUNT(`wishes`.`ID`) as `WISHES`
+        FROM 
+            $sQueryFrom
+                LEFT JOIN
+            `b_iblock_element_property` as `wishes`
+                ON
+                `catalog`.`ID`=`wishes`.`VALUE_NUM`
+                AND
+                `wishes`.`IBLOCK_PROPERTY_ID`=".$arPropList["WISH_PRODUCT"]."
+        WHERE
+            $sQueryWhere
+        GROUP BY
+            `catalog`.`ID`
+        $sQuerySorting
+        LIMIT 
+            $sQueryLimit
+    ";
+    
+    
+
+    $res = $DB->Query($sQuery);
+    $arProducts = [];
+    $arProductsIds = [];
+    // Набираем массив товаров
+    while($arProduct = $res->Fetch()){
+        $arProductsIds[] = $arProduct["ID"];
+        if($arProduct["DETAIL_PICTURE_ID"])
+           $arFilesIds[] = $arProduct["DETAIL_PICTURE_ID"];
+        $arProducts[$arProduct["ID"]] = $arProduct;
+    }
+    // Составляем индекс свойств
+    $sQuery = "
+    SELECT 
+        `a`.`IBLOCK_ELEMENT_ID` as `ELEMENT_ID`,
+        `a`.`VALUE` as `PROPERTY_VALUE`,
+        `b`.`CODE` as `PROPERTY_CODE`
+    FROM
+        `b_iblock_element_property` as `a`
+            LEFT JOIN 
+        `b_iblock_property` as `b`
+            ON 
+            `a`.`IBLOCK_PROPERTY_ID`=`b`.`ID`
+    WHERE   
+        `a`.`IBLOCK_ELEMENT_ID` IN (".(
+            $arProductsIds
+            ?
+            implode(",",$arProductsIds)
+            :
+            0
+            ).")
+    ";
+    $res = $DB->Query($sQuery);
+    $arPropertyIndex = [];
+    while($arProp = $res->Fetch()){
+        if(!isset($arPropertyIndex[$arProp["ELEMENT_ID"]]))
+            $arPropertyIndex[$arProp["ELEMENT_ID"]] = array();
+        $arPropertyIndex[$arProp["ELEMENT_ID"]][$arProp["PROPERTY_CODE"]] = 
+            $arProp["PROPERTY_VALUE"];
+    }
+    
+    // Составляем индекс изображений
+    $sQuery = "
+        SELECT
+            `ID`,
+            CONCAT('/upload/iblock/',LEFT(`FILE_NAME`,3),'/',`FILE_NAME`) as `FILE_NAME`
+        FROM    
+            `b_file`
+        WHERE 
+            `ID` IN (".
+                (
+                    $arFilesIds
+                    ?
+                    implode(",",$arFilesIds)
+                    :
+                    0
+                )
+            .")
+    ";
+    $res = $DB->Query($sQuery);
+    $arFilesIndex = [];
+    while($arFile = $res->Fetch())
+        $arFilesIndex[$arFile["ID"]] = $arFile["FILE_NAME"];
+
+    // Составляем индекс флагов
+    $sQuery = "
+        SELECT
+            `ID`,`VALUE`
+        FROM 
+            `b_iblock_property_enum`
+    ";
+    $res = $DB->Query($sQuery);
+    $arEnumIndex = [];
+    while($arEnum = $res->Fetch())
+        $arEnumIndex[$arEnum["ID"]] = $arEnum["VALUE"];
+
+    // Расчитываем желания
+    $sQuery = "
+        SELECT
+            FLOOR(`wishes`.`VALUE_NUM`) as `ID`,
+            `wuser`.`ID` as `MY`
+        FROM
+            `b_iblock_element_property` as `wishes`
+                LEFT JOIN
+            `b_iblock_element_property` as `wuser`
+                ON
+                `wuser`.`IBLOCK_PROPERTY_ID`=".$arPropList["WISH_USER"]."
+                AND
+                `wuser`.`IBLOCK_ELEMENT_ID`=`wishes`.`IBLOCK_ELEMENT_ID`
+                AND
+                `wuser`.`VALUE_NUM`=".$USER->GetId()."
+                     
+        WHERE
+            1
+            AND `wishes`.`VALUE_NUM` IN (".(
+                $arProductsIds
+                ?
+                implode(",",$arProductsIds)
+                :
+                0
+            ).")
+            AND
+            `wishes`.`IBLOCK_PROPERTY_ID`=".$arPropList["WISH_PRODUCT"]."
+    ";
+    $arWishes = [];
+    $res = $DB->Query($sQuery);
+    while($arWish = $res->Fetch())
+        $arWishes[$arWish["ID"]] = $arWish;
+    
+    
+
+    foreach($arProducts as $product){
+
+        $product["DETAIL_PAGE_URL"] = "/catalog/"
+            .$product["SECTION_CODE"]."/"
+            .$product["CODE"]."/";
+
+        $product["PROPERTY_MINIMUM_PRICE_VALUE"] = $arPropertyIndex[$product["ID"]]["MINIMUM_PRICE"];
+        $product['PREVIEW_TEXT'] = strip_tags($product['PREVIEW_TEXT']);
 
         // Выбираем цвет настроения
         /*
@@ -268,7 +529,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                   <div class="ag-shop-catalog__item">
                     <!-- Обычная карточка товара-->
                     <button class="ag-shop-slider-card__likes" type="button">
-                      <div class="ag-shop-slider-card__likes-icon<? if($product["mywish"]){?> wish-on<? }else{?> wish-off<? }?>"
+                      <div class="ag-shop-slider-card__likes-icon<?
+                      if($arWishes[$product["ID"]]["MY"]){?> wish-on<? }else{?> wish-off<? }?>"
                         productid="<?= $product["ID"]?>" 
                         <? if($USER->IsAuthorized() && !$arResult["MARK"]):?>
                         onclick="return mywish(this);"
@@ -276,7 +538,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                       ></div>
                       <div class="ag-shop-slider-card__likes-count"
                       id="wishid<?= $product["ID"]?>"><?= 
-                        $product["wishes"]
+                        $product["WISHES"]
                       ?></div>
                     </button>
                       <?
@@ -287,36 +549,37 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                            .$arSplitUrl[2]."/";
                      ?>
                       <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>"
-                      style="background-image: url(<?= $image_url?>);">
+                      style="background-image: url(<?=
+                      $arFilesIndex[$product["DETAIL_PICTURE_ID"]]?>);">
                         <div class="ag-shop-item-card-cover <?= $sClassName?>"></div>
                         <div class="ag-shop-item-card__points">
                           <div class="ag-shop-item-card__points-count"><?= number_format($product["PROPERTY_MINIMUM_PRICE_VALUE"],0,","," ")?></div>
                           <div class="ag-shop-item-card__points-text"><?= get_points($product["PROPERTY_MINIMUM_PRICE_VALUE"])?></div>
                         </div>
                       <div class="ag-shop-item-card__badges">
-                      <? if($product["ALL_PROPERTIES"]["NEWPRODUCT"]["VALUE_ENUM"]=='да'):?>
+                      <?
+                      if($arEnumIndex[$arPropertyIndex[$product["ID"]]["NEWPRODUCT"]]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png">
                       <? endif?>
-                      <? if($product["ALL_PROPERTIES"]["SALELEADER"]["VALUE_ENUM"]=='да'):?>
+                      <?
+                      if($arEnumIndex[$arPropertyIndex[$product["ID"]]["SALELEADER"]]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png">
                       <? endif?>
-                      <? if($product["ALL_PROPERTIES"]["SPECIALOFFER"]["VALUE_ENUM"]=='да'):?>
+                      <?
+                      if($arEnumIndex[$arPropertyIndex[$product["ID"]]["SPECIALOFFER"]]=='да'):?>
                         <img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png">
                       <? endif?>
                       </div>
                           <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
                       <div class="ag-shop-item-card__info-layer">
                         <div class="ag-shop-item-card__colors">
-                          <!--
-                          <div class="ag-shop-item-card__colors-item" style="background-color:#ffffff"></div>
-                          <div class="ag-shop-item-card__colors-item" style="background-color:#80807E"></div>
-                          <div class="ag-shop-item-card__colors-item" style="background-color:#0F0F0F"></div>
-                          -->
                         </div>
                         <div class="ag-shop-item-card__info">
                           <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
-                          <p class="ag-shop-item-card__category"><?= $product["SECTION_NAME"];?></p>
+                          <p class="ag-shop-item-card__category"><?=
+                          $product["SECTION_NAME"];?></p>
                           <div class="ag-shop-item-card__rating">
+                            <? /*  Пока убираем рейтинг */?>
                             <? if(0)for($i=0;$i<round($product["RATING"]);$i++):?>
                             <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
                             <? endfor ?>
@@ -348,7 +611,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     ?>
   
 
-    <? if(!$counter && !$nOunputted):?>
+    <? if(!$nTotalCount):?>
     <div class="grid__col-shrink">
         <div class="ag-shop-catalog__item">
             <h2 style="text-align:center;color: rgba(0,122,108,1)">Нет товаров,
@@ -360,9 +623,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 
     <?if(
-    //    $res->SelectedRowsCount()>($PAGE*$ON_PAGE)
-    $nOunputted >= 12
+        $nTotalCount>($PAGE*$ON_PAGE)
     ):?>
+        <?= $nTotalCount ?>
         <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
     <?else:?>
     <?endif?>

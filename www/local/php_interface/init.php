@@ -38,6 +38,9 @@
     // Определяем ID инфоблока производителей
     $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
     define("MANUFACTURER_IB_ID",$arr["ID"]);
+    // Определяем ID инфоблока желаний
+    $arr = CIBlock::GetList(array(),array("CODE"=>"whishes"))->GetNext();
+    define("WISHES_IB_ID",$arr["ID"]);
     // Определяем ID свойства ХОЧУ
     $arr = CIBlockProperty::GetList(
         array(), array(

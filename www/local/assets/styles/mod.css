@@ -578,10 +578,11 @@ div.ag-shop-mob-title{
 
 .catalog-item-loader{
     transition: 1s;
-    opacity: 0.7;
+    opacity: 0.5;
 }
 
 
 .ag-shop-filter__variants{
     background: none;
 }
+
