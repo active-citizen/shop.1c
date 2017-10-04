@@ -82,10 +82,11 @@ document.location.hash = '#<?= $sHashString;?>';
 
   <!-- Filter {{{-->
   <form class="ag-shop-filter">
+    <!-- 
     <div class="ag-shop-filter__filters">
     <!--
     <div class="filter-clear" onclick="return filter_clear();" title="Очистить фильтр"></div>
-    -->
+
     <? if($arResult["IWANTS"]):?>
       <div class="ag-shop-filter__filters-item">
         Я хочу 
@@ -103,7 +104,6 @@ document.location.hash = '#<?= $sHashString;?>';
         </span>
     <? endif ?>
       </div>
-      <!-- 
       <div class="ag-shop-filter__filters-item">
         <? if($USER->IsAuthorized()):?>
         у меня 
@@ -124,8 +124,8 @@ document.location.hash = '#<?= $sHashString;?>';
         </span>
         <?endif?>
       </div>
-      -->
     </div>
+      -->
    
     <? if($arResult["IWANTS"]):?>
     <div class="ag-shop-filter__variants" id="wish-filter">
@@ -147,7 +147,8 @@ document.location.hash = '#<?= $sHashString;?>';
     <? endif ?>
     
     <? if($arResult["INTERESTS"]):?>
-    <div class="ag-shop-filter__variants" id="interests-filter">
+    <div class="ag-shop-filter__variants" id="interests-filter" style="display:
+    block; text-align: center;">
       <? foreach($arResult["INTERESTS"] as $INTEREST_ID=>$INTEREST):?>
       <label>
         <input type="checkbox" class="ag-interest" value="<?= $INTEREST_ID ?>" title="<?= 
@@ -189,9 +190,10 @@ document.location.hash = '#<?= $sHashString;?>';
           </label>
      </div>
 
-    
+    <!-- 
     <div class="ag-shop-filter__confirm filter-passive">
     </div>
+    -->
     <input type="hidden" id="ag-flag" value="all"/>
     <input type="hidden" id="ag-sorting" value="price-asc"/>
   </form>

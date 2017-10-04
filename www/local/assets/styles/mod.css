@@ -581,3 +581,7 @@ div.ag-shop-mob-title{
     opacity: 0.7;
 }
 
+
+.ag-shop-filter__variants{
+    background: none;
+}
