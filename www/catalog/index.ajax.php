@@ -4,6 +4,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
 // Запись в ручной кэш (в обход битрикса)
 //customCache();
 //customCacheClear();
+sleep(1);
 
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
@@ -35,6 +36,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
     
     if(!isset($_REQUEST['sorting']) || !$_REQUEST['sorting'])$_REQUEST['sorting']='rating-desc';
+
+    /*
     if(isset($_REQUEST['sorting']) && $_REQUEST['sorting']=='rating-desc'){
         $arrSorting["PROPERTY_RATING"]="DESC";
     }
@@ -44,6 +47,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     else{
         $arrSorting["PROPERTY_MINIMUM_PRICE"]="ASC";
     }
+    */
     
     if(isset($_REQUEST['flag']) && $_REQUEST['flag']=='news'){
         $arrFilter["PROPERTY_NEWPRODUCT"] = $ENUMS['NEWPRODUCT']["да"];

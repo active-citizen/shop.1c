@@ -577,7 +577,7 @@ div.ag-shop-mob-title{
 }
 
 .catalog-item-loader{
-    transition: 0.5s;
-    opacity: 0.5;
+    transition: 1s;
+    opacity: 0.7;
 }
 
