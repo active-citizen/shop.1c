@@ -524,6 +524,8 @@ function filter_clear(){
 
 function ag_filter(){
     $('.catalog-ajax-block').last().addClass('catalog-ajax-block-loader');
+
+    $('.ag-shop-catalog__item').addClass('catalog-item-loader');
     
     var iwant =  Array();
     $('.ag-iwant').each(function(){if($(this).is(":checked"))iwant.push($(this).val())});

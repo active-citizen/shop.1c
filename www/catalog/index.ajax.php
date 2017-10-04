@@ -5,7 +5,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
 //customCache();
 //customCacheClear();
 
-
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
@@ -56,7 +55,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $arrFilter["PROPERTY_SALELEADER"] = $ENUMS['SALELEADER']["да"];
     }
     
-    
+   
+    /*
     if(isset($_REQUEST['filter_iwant']) && preg_match("#^\d+(\,\d+)*$#",$_REQUEST['filter_iwant'])){
         $iwant = explode(",",$_REQUEST['filter_iwant']);
         if(!count($iwant)){
@@ -72,6 +72,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             $arrFilter["PROPERTY_TYPES"] = $type;
         }
     }
+    */
     
     if(
         isset($_REQUEST['filter_interest']) 
@@ -104,6 +105,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     }
 
 
+    /*
     if(
         isset($_REQUEST['filter_balls']) 
         && preg_match("#^[\d\ ]+(\,[\d\ ]+)*$#",$_REQUEST['filter_balls'])
@@ -111,25 +113,11 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $balls = explode(",",$_REQUEST['filter_balls']);
         $arrFilter[">=PROPERTY_MINIMUM_PRICE"] = $balls[0];
         $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = $balls[1];
-        /*
-        // Узнаём ID инфоблока
-        $res = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"));
-        $iblock = $res->GetNext();
-        //$arrFilter["<=CATALOG_PRICE_1"] = $balls;
-        $arrFilter[] = array(
-            "LOGIC"=>"OR",
-            array(
-                "<=CATALOG_PRICE_1"=>$balls
-            ),
-            array(
-                "=ID"=>CIBlockElement::SubQuery("PROPERTY_CML2_LINK",array("IBLOCK_ID"=>$iblock["ID"],"<=CATALOG_PRICE_1"=>$balls))
-            )
-        );
-        */
     }
     elseif(!isset($_REQUEST['filter_balls'])){
         $arrFilter["<=PROPERTY_MINIMUM_PRICE"] = 1000000000;
     }
+    */
     // Не выводить неактивные
     if(!preg_match("#/profile/wishes/#",$_SERVER["HTTP_REFERER"]))
         $arrFilter["ACTIVE"] = 'Y';

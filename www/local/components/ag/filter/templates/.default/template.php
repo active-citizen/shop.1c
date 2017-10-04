@@ -83,16 +83,18 @@ document.location.hash = '#<?= $sHashString;?>';
   <!-- Filter {{{-->
   <form class="ag-shop-filter">
     <div class="ag-shop-filter__filters">
+    <!--
     <div class="filter-clear" onclick="return filter_clear();" title="Очистить фильтр"></div>
-      <div class="ag-shop-filter__filters-item">
+    -->
     <? if($arResult["IWANTS"]):?>
+      <div class="ag-shop-filter__filters-item">
         Я хочу 
         <span class="ag-shop-filter__trigger ag-shop-filter__trigger--active" rel="wish-filter" 
         alltitle="всё">
           всё
         </span>
-    <? endif ?>
       </div>
+    <? endif ?>
       <div class="ag-shop-filter__filters-item">
     <? if($arResult["INTERESTS"]):?>
         интересуюсь 

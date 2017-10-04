@@ -5,6 +5,8 @@ if ($this->StartResultCache(false, CUser::GetID())) {
     $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
     $arResult['account'] = $res->GetNext();
     
+
+    /*
     $arResult['MY_BALLS'] = number_format(
         $arResult['account']["CURRENT_BUDGET"],0 ,',',' '
     );    
@@ -20,6 +22,8 @@ if ($this->StartResultCache(false, CUser::GetID())) {
         IWANT_IBLOCK_ID,IWANT_PROPERTY_ID,
         $arParams["SECTION_ID"]
     );
+    */
+
 
     ////////////////////////////////////////////////////
     /////  Составляем справочник интересов
