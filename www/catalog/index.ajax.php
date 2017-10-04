@@ -358,7 +358,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     $sQuery = "
         SELECT
             $sQuerySelect,
-            COUNT(`wishes`.`ID`) as `WISHES`
+            COUNT(DISTINCT `wishes`.`ID`) as `WISHES`
         FROM 
             $sQueryFrom
                 LEFT JOIN
