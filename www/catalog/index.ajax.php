@@ -625,7 +625,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     <?if(
         $nTotalCount>($PAGE*$ON_PAGE)
     ):?>
-        <?= $nTotalCount ?>
         <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
     <?else:?>
     <?endif?>
