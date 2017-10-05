@@ -454,6 +454,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
         $arEnumIndex[$arEnum["ID"]] = $arEnum["VALUE"];
 
     // Расчитываем желания
+    $nUserId = $USER->GetId();
     $sQuery = "
         SELECT
             FLOOR(`wishes`.`VALUE_NUM`) as `ID`,
@@ -467,7 +468,13 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                 AND
                 `wuser`.`IBLOCK_ELEMENT_ID`=`wishes`.`IBLOCK_ELEMENT_ID`
                 AND
-                `wuser`.`VALUE_NUM`=".$USER->GetId()."
+                `wuser`.`VALUE_NUM`=".(
+                    $nUSerId
+                    ?
+                    $nUserId
+                    :
+                    0
+                )."
                      
         WHERE
             1
