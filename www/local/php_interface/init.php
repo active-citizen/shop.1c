@@ -28,16 +28,29 @@
     define("DEFAULT_STORE_LIMIT",0);
 
     // Определяем ID инфоблока каталога
+    /*
     $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
     define("CATALOG_IB_ID",$arr["ID"]);
+    */
+    define("CATALOG_IB_ID",2);
+
     // Определяем ID инфоблока предложений
+    /*
     $arr = CIBlock::GetList(
         array(), array("CODE"=>"clothes_offers")
     )->GetNext();
     define("OFFER_IB_ID",$arr["ID"]);
+    */
+    define("OFFER_IB_ID",3);
+
+
     // Определяем ID инфоблока производителей
+    /*
     $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
     define("MANUFACTURER_IB_ID",$arr["ID"]);
+    */
+    define("MANUFACTURER_IB_ID",9);
+
     // Определяем ID инфоблока желаний
     $arr = CIBlock::GetList(array(),array("CODE"=>"whishes"))->GetNext();
     define("WISHES_IB_ID",$arr["ID"]);
@@ -49,6 +62,8 @@
         )
     )->Fetch();
     define("IWANT_PROPERTY_ID",$arr["ID"]);
+//    define("IWANT_PROPERTY_ID",11);
+
     // Определяем ID свойства ИНТЕРЕСУЮСЬ 
     $arr = CIBlockProperty::GetList(
         array(), array(
@@ -57,6 +72,8 @@
         )
     )->Fetch();
     define("INTEREST_PROPERTY_ID",$arr["ID"]);
+//    define("INTEREST_PROPERTY_ID",12);
+
     // Определяем ID свойства ссылка на товар каталога
     $arr = CIBlockProperty::GetList(
         array(), array(
