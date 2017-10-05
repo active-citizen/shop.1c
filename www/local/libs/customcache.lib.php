@@ -4,8 +4,10 @@
     */
     define("CUSTOM_CACHE_DIR", $_SERVER["DOCUMENT_ROOT"]."/upload/custom_cache");
 
-    function customCache($lifetime = 86400,$sUserLogin = 0){
+    function customCache($lifetime = 300,$sUserLogin = 0){
         // Если пользователь кэша не указан - используем текущего из кук
+        $sUserLogin = '';
+        /*
         if(
             !$sUserLogin 
             && 
@@ -13,6 +15,7 @@
             &&
             $_COOKIE["LOGIN"]
         ) $sUserLogin = $_COOKIE["LOGIN"];
+        */
 
         // Если пользователь анонимус - то туда ему и дорога
         if(!$sUserLogin)$sUserLogin = 'anonymous';

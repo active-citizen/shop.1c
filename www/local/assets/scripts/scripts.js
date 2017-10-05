@@ -79,7 +79,7 @@ $(document).ready(function(){
                     markObj.text('');
                 }
                 else{
-                    alert(answer.error);
+                    riseError(answer.error);
                 }
             }
         );
@@ -127,6 +127,7 @@ $(document).ready(function(){
             else{
                 $('.ag-shop-catalog__more-button').fadeOut();
             }
+            wishes_load_catalog();
         });
     }
     
@@ -428,6 +429,8 @@ function next_page(){
             $('.next-page').html(button_text);
             //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
             if(!$('.catalog-page-input').last().val())$('.next-page').remove();
+            // Загружаем сердечки
+            wishes_load_catalog();
         }
     );
     return false;
@@ -447,6 +450,7 @@ function wishes_load(){
                     scrollTop: $('body').height()
                 }, 1600);
             */
+            wishes_load_catalog();
         }
     );
     
@@ -509,7 +513,7 @@ function mywish(object){
                 $('#wishid'+product_id).html(answer.wishes);
             }
             else{
-                alert(answer.error);
+                riseError(answer.error);
             }
         }
     );
@@ -558,6 +562,7 @@ function ag_filter(){
     document.location.hash = uri;
     $('.ag-shop-catalog__items-container > div').load(url,function(){
         $('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');
+        wishes_load_catalog();
 
         /*
         // Перемотка на центр при выборе
@@ -580,6 +585,34 @@ function ag_filter(){
     return false;
 }
 
+// Загрузка индивидуальных сердечек
+function wishes_load_catalog(){
+    var productIds = $('input[name="products"]').last().val();
+    $.post(
+        "/catalog/wishes.ajax.php",
+        {
+            "products":productIds
+        },
+        function(data){
+            try{
+                var answer = JSON.parse(data);
+            }
+            catch(err){
+                riseError('Ошибка получения желаний пользователя:' + data);
+            }
+            var obj;
+            var i;
+            for(i in answer){
+                obj = $('div[productid="'+answer[i]+'"]');
+                if(!obj.hasClass('wish-on')){
+                    obj.removeClass('wish-off');
+                    obj.addClass('wish-on');
+                }
+            }
+        }
+
+    );
+}
 
 function agauth(encsession){
 

@@ -2,7 +2,7 @@
 // Включаем безбитриксовое кеширование
 require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
 // Запись в ручной кэш (в обход битрикса)
-//customCache();
+customCache();
 //customCacheClear();
 //sleep(1);
 
