@@ -618,6 +618,32 @@
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
                 //echo "Update order_id = $orderId ";
+
+                // Прописываем дату истечения бронирования
+                if(
+                    isset($arDocument["ДатаИстеченияБронирования"])
+                    &&
+                    $arDocument["ДатаИстеченияБронирования"]
+                ){
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "T"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "Т"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
+                    $sDateClose = 
+                        sprintf("%04d",$tmp["year"])
+                        ."-".sprintf("%02d",$tmp["month"])
+                        ."-".sprintf("%02d",$tmp["day"])
+                    ;
+                    orderPropertiesUpdate($orderId, IMPORT_DEBUG,
+                        'CLOSE_DATE',$sDateClose
+                    );
+                }
+
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
@@ -747,30 +773,6 @@
 
 
 
-            }
-            // Прописываем дату истечения бронирования
-            if(
-                isset($arDocument["ДатаИстеченияБронирования"])
-                &&
-                $arDocument["ДатаИстеченияБронирования"]
-            ){
-                $arDocument["ДатаИстеченияБронирования"] = str_replace(
-                    "T"," ",
-                    $arDocument["ДатаИстеченияБронирования"]
-                );
-                $arDocument["ДатаИстеченияБронирования"] = str_replace(
-                    "Т"," ",
-                    $arDocument["ДатаИстеченияБронирования"]
-                );
-                $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
-                $sDateClose = 
-                    sprintf("%04d",$tmp["year"])
-                    ."-".sprintf("%02d",$tmp["month"])
-                    ."-".sprintf("%02d",$tmp["day"])
-                ;
-                orderPropertiesUpdate($orderId, IMPORT_DEBUG,
-                    'CLOSE_DATE',$sDateClose
-                );
             }
             // При выполнении заказа прописываем в дату статуса дату выполнения
             if($statusId=='F')$DB->Query("
