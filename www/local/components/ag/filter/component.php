@@ -2,7 +2,7 @@
 
 if ($this->StartResultCache(
     false
-    //, CUser::GetID()
+    ,CUser::GetID()
 )) {
     CModule::IncludeModule("sale");
     $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));

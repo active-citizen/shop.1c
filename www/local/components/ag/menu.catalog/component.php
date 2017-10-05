@@ -1,7 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 
-if ($this->StartResultCache(false)) {
+//if ($this->StartResultCache(false)) {
     // Получаем корневых разделов
 
     // Вычисляем ID свойства "привязка элемента каталога к товарному предложению"
@@ -93,5 +93,5 @@ if ($this->StartResultCache(false)) {
     }
  
     $this->IncludeComponentTemplate();
-}
+//}
 
