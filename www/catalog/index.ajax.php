@@ -269,7 +269,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             AND `catalog`.`IBLOCK_SECTION_ID` IN (".(
                 $arrFilter["SECTION_ID"]
                 ?
-                implode(",",$arrFilter["SECTION_ID"])
+                (is_array($arrFilter["SECTION_ID"])?implode(",",$arrFilter["SECTION_ID"]):$arrFilter["SECTION_ID"])
                 :
                 0
             ).")";
@@ -337,7 +337,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             $sQueryWhere
     ";
    
-    /*
+    /*    
     echo "<pre>";
     echo $sQuery;
     echo "</pre>";
@@ -346,6 +346,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     print_r($arrSorting);
     echo "</pre>";
     */
+    
    
     
 
@@ -632,6 +633,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     <?if(
         $nTotalCount>($PAGE*$ON_PAGE)
     ):?>
+        <input type="hidden" name="products" value="<?=
+        implode(",",$arProductsIds)?>">
         <input type="hidden" class="catalog-page-input" value="<?= $request."PAGE=".($PAGE+1);?>"/>
     <?else:?>
     <?endif?>
