@@ -454,48 +454,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     while($arEnum = $res->Fetch())
         $arEnumIndex[$arEnum["ID"]] = $arEnum["VALUE"];
 
-    // Расчитываем желания
-    $nUserId = $USER->GetId();
-    $sQuery = "
-        SELECT
-            FLOOR(`wishes`.`VALUE_NUM`) as `ID`,
-            `wuser`.`ID` as `MY`
-        FROM
-            `b_iblock_element_property` as `wishes`
-                LEFT JOIN
-            `b_iblock_element_property` as `wuser`
-                ON
-                `wuser`.`IBLOCK_PROPERTY_ID`=".$arPropList["WISH_USER"]."
-                AND
-                `wuser`.`IBLOCK_ELEMENT_ID`=`wishes`.`IBLOCK_ELEMENT_ID`
-                AND
-                `wuser`.`VALUE_NUM`=".(
-                    $nUSerId
-                    ?
-                    $nUserId
-                    :
-                    0
-                )."
-                     
-        WHERE
-            1
-            AND `wishes`.`VALUE_NUM` IN (".(
-                $arProductsIds
-                ?
-                implode(",",$arProductsIds)
-                :
-                0
-            ).")
-            AND
-            `wishes`.`IBLOCK_PROPERTY_ID`=".$arPropList["WISH_PRODUCT"]."
-    ";
-    $arWishes = [];
-    $res = $DB->Query($sQuery);
-    while($arWish = $res->Fetch())
-        $arWishes[$arWish["ID"]] = $arWish;
-    
-    
-
     foreach($arProducts as $product){
 
         $product["DETAIL_PAGE_URL"] = "/catalog/"
