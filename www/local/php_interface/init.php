@@ -14,82 +14,92 @@
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
    
-    //$_COOKIE["EMPSESSION"] = '';
-
+    // А не мобильное ли ты приложение
     define("IS_MOBILE",
         isset($_COOKIE["EMPSESSION"])
     );
 
-
-
-    //
+    define("CONFIG_STATIC",true);
     define("COMMON_CACHE_TIME",3600);
     // Значение невыбираемого остатка по умолчанию
     define("DEFAULT_STORE_LIMIT",0);
-
-    // Определяем ID инфоблока каталога
-    /*
-    $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
-    define("CATALOG_IB_ID",$arr["ID"]);
-    */
-    define("CATALOG_IB_ID",2);
-
-    // Определяем ID инфоблока предложений
-    /*
-    $arr = CIBlock::GetList(
-        array(), array("CODE"=>"clothes_offers")
-    )->GetNext();
-    define("OFFER_IB_ID",$arr["ID"]);
-    */
-    define("OFFER_IB_ID",3);
+    // Определяем ID групп Операторы МФЦ и Партнёры
+    define("PARTNERS_GROUP_ID",9);
+    define("OPERATORS_GROUP_ID",10);
 
 
-    // Определяем ID инфоблока производителей
-    /*
-    $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
-    define("MANUFACTURER_IB_ID",$arr["ID"]);
-    */
-    define("MANUFACTURER_IB_ID",9);
+    if(CONFIG_STATIC){
+        if(file_exists("config.inc.php")){
+            require_once("config.inc.php");
+        }
+        else{
+            require_once("config.inc.dist.php");
+        }
+    }
+    else{
+        //
+        // Определяем ID инфоблока каталога
+        $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
+        define("CATALOG_IB_ID",$arr["ID"]);
 
-    // Определяем ID инфоблока желаний
-    $arr = CIBlock::GetList(array(),array("CODE"=>"whishes"))->GetNext();
-    define("WISHES_IB_ID",$arr["ID"]);
-    // Определяем ID свойства ХОЧУ
-    $arr = CIBlockProperty::GetList(
-        array(), array(
-            "IBLOCK_ID"=>CATALOG_IB_ID,
-            "CODE"=>"WANTS"
-        )
-    )->Fetch();
-    define("IWANT_PROPERTY_ID",$arr["ID"]);
-//    define("IWANT_PROPERTY_ID",11);
+        // Определяем ID инфоблока предложений
+        $arr = CIBlock::GetList(
+            array(), array("CODE"=>"clothes_offers")
+        )->GetNext();
+        define("OFFER_IB_ID",$arr["ID"]);
 
-    // Определяем ID свойства ИНТЕРЕСУЮСЬ 
-    $arr = CIBlockProperty::GetList(
-        array(), array(
-            "IBLOCK_ID"=>CATALOG_IB_ID,
-            "CODE"=>"INTERESTS"
-        )
-    )->Fetch();
-    define("INTEREST_PROPERTY_ID",$arr["ID"]);
-//    define("INTEREST_PROPERTY_ID",12);
+        // Определяем ID инфоблока производителей
+        $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
+        define("MANUFACTURER_IB_ID",$arr["ID"]);
 
-    // Определяем ID свойства ссылка на товар каталога
-    $arr = CIBlockProperty::GetList(
-        array(), array(
-            "IBLOCK_ID"=>OFFER_IB_ID,
-            "CODE"=>"CML2_LINK"
-        )
-    )->Fetch();
-    define("CML2_LINK_PROPERTY_ID",$arr["ID"]);
-    // Определяем ID свойства прятать при исчерпании остатков
-    $arr = CIBlockProperty::GetList(
-        array(), array(
-            "IBLOCK_ID"=>CATALOG_IB_ID,
-            "CODE"=>"HIDE_IF_ABSENT"
-        )
-    )->Fetch();
-    define("HIDE_IF_ABSENT_PROPERTY_ID",$arr["ID"]);
+        // Определяем ID инфоблока желаний
+        $arr = CIBlock::GetList(array(),array("CODE"=>"whishes"))->GetNext();
+        define("WISHES_IB_ID",$arr["ID"]);
+        // Определяем ID свойства ХОЧУ
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"WANTS"
+            )
+        )->Fetch();
+        define("IWANT_PROPERTY_ID",$arr["ID"]);
+
+        // Определяем ID свойства ИНТЕРЕСУЮСЬ 
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"INTERESTS"
+            )
+        )->Fetch();
+        define("INTEREST_PROPERTY_ID",$arr["ID"]);
+
+        // Определяем ID свойства ссылка на товар каталога
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>OFFER_IB_ID,
+                "CODE"=>"CML2_LINK"
+            )
+        )->Fetch();
+        define("CML2_LINK_PROPERTY_ID",$arr["ID"]);
+        // Определяем ID свойства прятать при исчерпании остатков
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"HIDE_IF_ABSENT"
+            )
+        )->Fetch();
+        define("HIDE_IF_ABSENT_PROPERTY_ID",$arr["ID"]);
+        
+        // Определяем ID групп Операторы МФЦ и Партнёры
+        define("PARTNERS_GROUP_ID",9);
+        define("OPERATORS_GROUP_ID",10);
+        // Определяем ID инфоблока ХОЧУ
+        $arr = CIBlock::GetList(array(),array("CODE"=>"iwant"))->GetNext();
+        define("IWANT_IBLOCK_ID",$arr["ID"]);
+        // Определяем ID инфоблока ИНТЕРЕСУЮСЬ
+        $arr = CIBlock::GetList(array(),array("CODE"=>"interestme"))->GetNext();
+        define("INTEREST_IBLOCK_ID",$arr["ID"]);
+    }
     // Определяем ID флага свойства прятать при исчерпании
     $arr = CIBlockPropertyEnum::GetList(
         array(), array(
@@ -98,17 +108,6 @@
         )
     )->Fetch();
     define("YES_HIDE_FLAG_ID",$arr["ID"]);
-    
-    // Определяем ID групп Операторы МФЦ и Партнёры
-    define("PARTNERS_GROUP_ID",9);
-    define("OPERATORS_GROUP_ID",10);
-    // Определяем ID инфоблока ХОЧУ
-    $arr = CIBlock::GetList(array(),array("CODE"=>"iwant"))->GetNext();
-    define("IWANT_IBLOCK_ID",$arr["ID"]);
-    // Определяем ID инфоблока ИНТЕРЕСУЮСЬ
-    $arr = CIBlock::GetList(array(),array("CODE"=>"interestme"))->GetNext();
-    define("INTEREST_IBLOCK_ID",$arr["ID"]);
-    
 
     AddEventHandler("main", "OnBeforeProlog", "MyOnBeforePrologHandler", 50);
 

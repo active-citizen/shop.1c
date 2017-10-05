@@ -11,7 +11,7 @@
         <div class="grid__col grid__col-shrink">
           <h2 class="ag-shop-menu__current"><? 
 
-            $sCAtalogName = 'Главная';
+            $sCAtalogName = 'Все категории';
 
             foreach($arResult["SECTIONS"] as $arSection){
                 if($arSection["SECTION_PAGE_URL"]==$_SERVER["REQUEST_URI"])
