@@ -2173,9 +2173,11 @@ class PHPMailer
         }
         //If lines are too long, and we're not already using an encoding that will shorten them,
         //change to quoted-printable transfer encoding for the body part only
+        /*
         if ('base64' != $this->Encoding and self::hasLineLongerThanMax($this->Body)) {
             $bodyEncoding = 'quoted-printable';
         }
+        */
 
         $altBodyEncoding = $this->Encoding;
         $altBodyCharSet = $this->CharSet;
@@ -2187,9 +2189,11 @@ class PHPMailer
         }
         //If lines are too long, and we're not already using an encoding that will shorten them,
         //change to quoted-printable transfer encoding for the alt body part only
+        /*
         if ('base64' != $altBodyEncoding and self::hasLineLongerThanMax($this->AltBody)) {
             $altBodyEncoding = 'quoted-printable';
         }
+        */
         //Use this as a preamble in all multipart message types
         $mimepre = "This is a multi-part message in MIME format." . $this->LE . $this->LE;
         switch ($this->message_type) {

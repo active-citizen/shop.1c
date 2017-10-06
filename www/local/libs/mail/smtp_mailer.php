@@ -75,6 +75,7 @@
                     $mail->Subject = $subject;
                     $mail->Body    = $message;
                     $mail->addAddress($sTo);
+                    $mail->Encoding = '8bit';
 
 
                     if(!$mail->send()) {
