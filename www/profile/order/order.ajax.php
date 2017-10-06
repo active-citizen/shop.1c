@@ -556,15 +556,12 @@ elseif(isset($_GET["add_order"])){
             orderSetZNI($orderId,'N','AA');
  
         // Снова заливаем историю баллов
-        // пока не надо. слишком тормозит процесс заказа
-        /**
         $agBrige->setMethod('pointsHistory');
         $agBrige->setMode('emp');
         $agBrige->setArguments($args);
         $history = $agBrige->exec();
         $bxPoint = new bxPoint;
         $bxPoint->updatePoints($history["result"], CUser::GetID());
-        */
      }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);
