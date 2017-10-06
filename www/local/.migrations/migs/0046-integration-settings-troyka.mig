@@ -65,6 +65,10 @@
                     "TITLE"=>"Квант пополнения (руб)",
                     "VALUE"=>"175.00"
                 ),
+                "TROYKA_LIMIT" => array(
+                    "TITLE"=>"Дневной лимит транзакций",
+                    "VALUE"=>"500"
+                ),
             );
             $sQuery = "SELECT * FROM `$sTable` WHERE `code`='$sCode' LIMIT 1";
             if($DB->Query($sQuery)->Fetch()){

@@ -151,6 +151,24 @@
             $bIsLimited = $objParking->isLimited();
             $arReqult["PARKING_TODAY"] = $objParking->transactsToday;
         }
+        // Если это тройка и дневной лимит вышел - показываем фигу
+        if(
+            isset($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"])
+            &&
+            $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
+                =='troyka'
+        ){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"].
+                "/.integration/classes/troyka.class.php"
+            );
+            $arUser = $USER->GetById($USER->GetId())->Fetch();
+            $objTroya = new CTroyka(str_replace("u","",$arUser["LOGIN"]));
+            
+            // Определяем вышел ли дневной лимит парковок 
+            $bIsLimited = $objTroya->isLimited();
+            $arReqult["PARKING_TODAY"] = $objTroya->transactsToday;
+        }
 
         // Если дневной лимит не вышел - получаем остатки по складам
         if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
