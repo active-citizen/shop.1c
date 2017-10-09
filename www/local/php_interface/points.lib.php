@@ -48,7 +48,7 @@
     /**
         Проверка необходимости подгрузить баллы по времени
     */
-    function pointsAlreadyUpdate($nPointsUpdatePeriod = 600){
+    function pointsAlreadyUpdate($nPointsUpdatePeriod = 6000000){
 
         global $USER;
         $sUserLogin = $USER->GetLogin();
