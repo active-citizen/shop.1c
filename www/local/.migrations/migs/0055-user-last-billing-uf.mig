@@ -1,0 +1,41 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с логом профилия
+     */
+    class ag_status_uf extends Migration{
+        function Run(){
+            // Если нет - добавляем
+            $arFilter = array(
+                "ENTITY_ID"     =>  "USER",
+                "FIELD_NAME"    =>  "UF_USER_LAST_UPDATE",
+                "USER_TYPE_ID"  =>  "datetime"
+            );
+            $arEditFormLabel = array(
+                "EDIT_FORM_LABEL"=>array(
+                    "ru"=>"Дата последнего обновления баллов",
+                    "en"=>"Last points update date"
+                )
+            );
+            if(!$arUserField =  CUserTypeEntity::GetList(array(),$arFilter)->GetNext()){
+                $arFields = array_merge($arFilter,$arEditFormLabel);
+                $obUserField  = new CUserTypeEntity;
+                if(!$obUserField->Add($arFields)){
+                    echo "error in ".__LINE__;
+                    die($obUserField->LAST_ERROR);
+                }
+            }
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$ag_status_uf = new ag_status_uf();
+// Откатываем, если неудачно
+if(!$ag_status_uf->Run())$ag_status_uf->RollBack();
