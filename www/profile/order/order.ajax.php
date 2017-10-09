@@ -247,26 +247,8 @@ elseif(isset($_GET["add_order"])){
     );
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
-    $agBrige = new ActiveCitizenBridge;
-    $bxUser = new bxUser;
+    pointsUpdate();   
 
-    // Загружаем историю начисления баллов
-    $session_id = $bxUser->getEMPSessionId();
-    
-    // Обновляем историю баллов
-    $args = array(
-        "session_id"    =>  $session_id,
-        "token"         =>  $EMP_TOKENS[CONTOUR]
-    );
-    
-    // Заливаем историю баллов и проверяем баланс пользователя 
-    $agBrige->setMethod('pointsHistory');
-    $agBrige->setMode('emp');
-    $agBrige->setArguments($args);
-    $history = $agBrige->exec();
-    $bxPoint = new bxPoint;
-    $bxPoint->updatePoints($history["result"], CUser::GetID());
-    
     // Проверяем сумму на счёте
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
     $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
@@ -554,14 +536,9 @@ elseif(isset($_GET["add_order"])){
         // Во всех остальных случаях - В работее
         else
             orderSetZNI($orderId,'N','AA');
+
+        pointsUpdate();   
  
-        // Снова заливаем историю баллов
-        $agBrige->setMethod('pointsHistory');
-        $agBrige->setMode('emp');
-        $agBrige->setArguments($args);
-        $history = $agBrige->exec();
-        $bxPoint = new bxPoint;
-        $bxPoint->updatePoints($history["result"], CUser::GetID());
      }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);
