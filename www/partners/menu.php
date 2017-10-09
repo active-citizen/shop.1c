@@ -40,6 +40,7 @@
                     Отчеты
                 </a>
             </li>
+            <!--
             <li class="<?
             if(preg_match("#^/partners/dump/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
@@ -48,12 +49,21 @@
                      Перенос данных
                 </a>
             </li>
+            -->
             <li class="<?
             if(preg_match("#^/partners/logs/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
                 <a href="/partners/logs/">
                 <span class="glyphicon glyphicon-eye-open"></span>
                     Логи обмена
+                </a>
+            </li>
+            <li class="<?
+            if(preg_match("#^/partners/mails/#",$_SERVER["REQUEST_URI"]))echo
+            "active";?>">
+                <a href="/partners/mails/">
+                <span class="glyphicon glyphicon-envelope"></span>
+                    Письма
                 </a>
             </li>
             <li class="<?
