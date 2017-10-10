@@ -113,6 +113,23 @@
         padding: 10px;
     }
 
+    .send-mail{
+        margin: 20px;
+    }
+    .send-mail textarea{
+        height: 100px;
+        background-color: #f2dede;
+    }
+
+    .send-mail .mail-to{
+        width: 95%;
+        margin: 1%;
+    }
+
+    .send-mail .send{
+        margin: 10px;
+    }
+
   </style>
 
 </head>
@@ -128,12 +145,13 @@ $sRequest
     Прямая ссылка на дамп этого запроса
 </a>
 <h3><?= $sRequest ?></h3>
-<form action="/partners/mails/send.php" method="POST" class="send-mail">
-<input name="emp" value="<?= $sFolderPath?>/<?= 
-$sRequest?>" style="width:600px;" type="hidden">
-<input type="submit" class="btn btn-primary" 
-value="Послать письмо повторно">
-</form>
+<?
+    $sTo = preg_replace(
+        "#^\d+\-\d+\-\d+\-\d+\-\d+\-\d+\-(.*)\.eml$#",
+        "$1",
+        $sRequest
+    );
+?>
 <div id="accordion">
 
 <? foreach($arParts as $nPartNo=>$arPart):?>
@@ -154,9 +172,28 @@ value="Послать письмо повторно">
         </td></tr>
         <? endforeach ?>
         </table>
+<form action="/partners/mails/send.php" method="POST" class="send-mail"
+role="form">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Кому</label>
+        <input type="text" class="form-control mail-to" value="<?= $sTo?>"
+        name="to" id="to">
+     </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Комментарий службы поддержки</label>
+        <textarea class="form-control" name="comment" id="comment"
+        placeholder="Комментарий к письму."></textarea>
+    </div>
+    <div class="form-group">
+        <input name="emp" value="<?= $sFolderPath?>/<?= 
+        $sRequest?>" style="width:600px;" type="hidden">
+        <input type="submit" class="btn btn-primary send"
+        value="Послать письмо повторно">
+    </div>
+</form>
         </div>
     <? else: ?>
-    <h3>Часть <?= ($nPartNo-1)?></h3>
+    <h3>Вложение <?= ($nPartNo-1)?></h3>
         <div>
             <pre><?= implode("\n",$arPart["headers"]) ?></pre> 
         <? if(preg_match("#html#",$arPart["content-type"])):?>

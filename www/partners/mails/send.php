@@ -32,7 +32,7 @@
 
     // Отделяем заголовки от тела и попутно узнаём адрес отправителя и subj
     $counter = 0;
-    $sTo = '';
+    $sTo = $_POST["to"];
     $sSubject = '';
     $arHeaders = [];
     foreach($arLines as $nNum=>$sLine){
@@ -41,20 +41,37 @@
         if(!$sLine && $counter==2)break;
         $tmp = explode(":",$sLine);
         if(preg_match("#^to#i",trim($tmp[0]),$m)){
-            $sTo = trim($tmp[1]);
+//            $sTo = trim($tmp[1]);
+            unset($arLines[$nNum]);
             continue;
         }
         if(preg_match("#^Subject#i",trim($tmp[0]),$m)){
             $sSubject = trim($tmp[1]);
+            unset($arLines[$nNum]);
             continue;
         }
         if($sLine)$arHeaders[] = $sLine;
         unset($arLines[$nNum]);
     }
 
+    // Добавляем коммент службы поддержки
+    $sComment = '';
+    if(isset($_POST["comment"]) && trim($_POST["comment"])){
+        $_POST["comment"] = str_replace("\n","<br>",$_POST["comment"]);
+       
+        $sComment =
+            '<div style="background-color: #f2dede; padding: 10px; margin: 10px;">
+                <h3 style="font-size: 16px; margin: 0px 0px 10px 0px;">
+                    Комментарий службы поддержки
+                </h3>
+                '.$_POST["comment"].'
+            </div>';
+    }
+
     $sBody = '';
     foreach($arLines as $sLine)
         $sBody .= trim($sLine)."\r\n";
+    $sBody = str_replace("</body>","$sComment</body>", $sBody);
     
     $sHeaders = '';
     foreach($arHeaders as $sLine)
