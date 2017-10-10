@@ -40,10 +40,11 @@
             			if(!mkdir($sFullPath))return false;
         		    }
     			}
-                define("LOCAL_MAIL_SMTP_LOG_FILENAME",$sFullPath."/".$sFilename);
+                $_SERVER["LOCAL_MAIL_SMTP_LOG_FILENAME"] = $sFullPath."/".$sFilename
+                ;
                 $mail->Debugoutput = function($str,$level){
-                    $fd = fopen(LOCAL_MAIL_SMTP_LOG_FILENAME,"a");
-                    fwrite($fd,"$str");
+                    $fd = fopen($_SERVER["LOCAL_MAIL_SMTP_LOG_FILENAME"],"a");
+                    fwrite($fd,$str);
                     fclose($fd);
                 };
 		    }

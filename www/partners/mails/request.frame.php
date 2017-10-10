@@ -17,21 +17,17 @@
 
     $sBasePath = $sRootFolder.$sFolderPath."/".$sRequest;
     $sSMTPLogBasePath = str_replace(
-        "/logs/maildir/","./logs/smtplog/",$sBasePath
+        "/logs/maildir/","/logs/smtplog/",$sBasePath
     );
     $sSMTPLogBasePath = preg_replace(
         "#^(.*)\.eml$#","$1.txt",
         $sSMTPLogBasePath
     );
-    echo $sSMTPLogBasePath;
 
     $arSMTPLog = [];
     if(file_exists($sSMTPLogBasePath)){
         $arSMTPLog = file($sSMTPLogBasePath);
     }
-    echo "<pre>";
-    print_r($arSMTPLog);
-    die;
 
     $sRawMail = '';
     $fd = fopen($sBasePath,"r");
@@ -108,19 +104,59 @@
     });
   } );
   </script>
+  <style>
+    .headers td{
+        padding: 3px 10px 3px 20px;
+    }
+
+    .mail-status{
+        padding: 10px;
+    }
+
+  </style>
+
 </head>
 <body>
+<? if(isset($_REQUEST["status"]) && $_REQUEST["status"]==1):?>
+    <p class="bg-success mail-status">Письмо отправлено повторно</p>
+<? elseif(isset($_REQUEST["status"]) && $_REQUEST["status"]==2):?>
+    <p class="bg-danger mail-status">Ошибка повторной отправки письма</p>
+<? endif ?>
 <a href="request.frame.php?folder=<?= $sFolderPath?>&request=<?=
 $sRequest    
 ?>" targer="_blank">
     Прямая ссылка на дамп этого запроса
 </a>
 <h3><?= $sRequest ?></h3>
-
+<form action="/partners/mails/send.php" method="POST" class="send-mail">
+<input name="emp" value="<?= $sFolderPath?>/<?= 
+$sRequest?>" style="width:600px;" type="hidden">
+<input type="submit" class="btn btn-primary" 
+value="Послать письмо повторно">
+</form>
 <div id="accordion">
 
 <? foreach($arParts as $nPartNo=>$arPart):?>
-    <h3>Часть <?= $nPartNo?></h3>
+    <? if($nPartNo==1):?>
+    <h3>Информация</h3>
+        <div>
+        <table class="headers">
+        <? foreach($arPart["headers"] as $sHeader):?>
+        <? 
+            list($sName,$sValue) = explode(":",$sHeader);
+            if(preg_match("#^.*=\?UTF\-8\?B\?(.+)=\?=(.*)$#", $sValue, $m))
+                $sValue = htmlspecialchars(base64_decode($m[1]))
+                    ." ".htmlspecialchars($m[2]);
+            
+        ?>
+        <tr><th>
+        <?= $sName?></th><td><?= $sValue?>
+        </td></tr>
+        <? endforeach ?>
+        </table>
+        </div>
+    <? else: ?>
+    <h3>Часть <?= ($nPartNo-1)?></h3>
         <div>
             <pre><?= implode("\n",$arPart["headers"]) ?></pre> 
         <? if(preg_match("#html#",$arPart["content-type"])):?>
@@ -133,7 +169,18 @@ $sRequest
             implode("",$arPart["body"])?>">
         <? endif ?>
         </div>
+    <? endif ?>
 <? endforeach ?>
+<? if($arSMTPLog):?>
+    <h3>Журнал обмена с SMTP-сервером</h3>
+        <div>
+        <pre><?
+            foreach($arSMTPLog as $sLine)
+                echo htmlspecialchars(trim($sLine))."\n";
+        ?></pre>
+        </div>
+
+<? endif ?>
 
 </div>
 </body>
