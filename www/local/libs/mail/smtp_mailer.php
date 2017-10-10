@@ -4,24 +4,31 @@
 		    $headers =array();
 		    if(trim($additional_headers))$headers = explode("\n",$additional_headers);
 #		    $to = 'andrey@fmf.ru';
+            $sMonth = date("m");    $sDay = date("d");  $sYear = date("Y"); 
+            $sHour = date("Y");     $sMin = date("i");  $sSec = date("s");
 
 		    if(LOCAL_MAIL_DISK_ENABLE===true){
-            		disk_custom_mail($sTo, $subject, $message, $additional_headers);
+            		disk_custom_mail(
+                        $sTo, $subject, $message, $additional_headers,
+                        $sMonth, $sDay, $sYear, $sHour, $sMin, $sSec
+                    );
 		    }
 		    if(LOCAL_MAIL_SMTP_ENABLE===false)return true;
 
-                    require_once(realpath(dirname(__FILE__)."/phpmailer/PHPMailerAutoload.php"));
+                    require_once(
+                        realpath(
+                            dirname(__FILE__)."/phpmailer/PHPMailerAutoload.php"
+                        )
+                    );
                     $mail = new PHPMailer;
 
 
 		    if(LOCAL_MAIL_SMPT_LOG_ENABLE){
-                	$mail->SMTPDebug = 2;
-    			$sMonth = date("m");    $sDay = date("d");  $sYear = date("Y"); 
-    			$sHour = date("Y");     $sMin = date("i");  $sSec = date("s");
+               	$mail->SMTPDebug = 2;
     			$sBaseDir = LOCAL_MAIL_SMTP_LOG_BASEDIR;
     			$arPath = array(
         		    "$sYear-$sMonth",
-			    "$sYear-$sMonth-$sDay",
+			        "$sYear-$sMonth-$sDay",
         		    "$sTo"
     			);
     			$sFilename = "$sYear-$sMonth-$sDay-$sHour-$sMin-$sSec-$sTo.txt";

@@ -6,10 +6,14 @@
         $sTo,
         $sSubject,
         $sData,
-        $sHeaders
+        $sHeaders,
+        $sMonth,
+        $sDay,
+        $sYear,
+        $sHour,
+        $sMin,
+        $sSec
     ){
-        $sMonth = date("m");    $sDay = date("d");  $sYear = date("Y"); 
-        $sHour = date("Y");     $sMin = date("i");  $sSec = date("s");
         $sBaseDir = LOCAL_MAIL_DISK_BASEDIR;
 
         $arPath = array(
