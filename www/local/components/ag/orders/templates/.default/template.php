@@ -147,13 +147,13 @@
           <div class="grid__col-auto">
             <div class="ag-shop-profile-order__name"><?= html_entity_decode($arProduct["NAME"])?></div>
           </div>
+          <!--
           <div class="grid__col-shrink">
             <div class="ag-shop-profile-order__review">
-            <!-- 
               <a href="<?= $arProduct["CATALOG_URL"]?>#review"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>оставить отзыв</span></a>
-            -->
             </div>
           </div>
+          -->
         </div>
         <div class="grid grid--bleed grid--justify-space-between grid--align-end">
           <div class="grid__col-auto">
@@ -193,12 +193,12 @@
     </div>
     <div class="ag-shop-profile-order__mobile-controls">
       <div class="grid grid--bleed grid--justify-space-around grid--align-center">
-        <div class="grid__col-shrink"><!-- 
+        <!-- <div class="grid__col-shrink"> 
         <a class="ag-shop-profile-order__control" href="#" onclick="return showOrdersFeedbackForm('<?=
               $arOrder["ADDITIONAL_INFO"]?>');"><i
               class="ag-shop-profile-order__icon
               ag-shop-profile-order__icon--letter"></i><span>Связаться с
-              администрацией</span></a> --></div>
+              администрацией</span></a> </div> -->
         <!-- 
         <div class="grid__col-shrink"><a class="ag-shop-profile-order__control" href="#"><i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--write"></i><span>Оставить отзыв</span></a></div>
         -->
@@ -219,7 +219,8 @@
                 href="#"
                 onclick="return orderCancel(<?= $arOrder["ID"]?>,this);"
             >
-                <i class="ag-shop-profile-order__icon ag-shop-profile-order__icon--close"></i>
+                asd<i class="ag-shop-profile-order__icon
+                ag-shop-profile-order__icon--close"></i>
                 <span>Отменить заказ</span>
             </a>
             </div>
