@@ -586,3 +586,11 @@ div.ag-shop-mob-title{
     background: none;
 }
 
+
+.ag-shop-profile-order__mobile-controls .ag-shop-profile-order__icon{
+}
+
+.ag-shop-profile-order__mobile-controls .ag-shop-profile-order__control span{
+    padding-left: 10px;
+    font-size: 14px;   
+}
