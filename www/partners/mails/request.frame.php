@@ -16,6 +16,22 @@
     )$sRequest = '';
 
     $sBasePath = $sRootFolder.$sFolderPath."/".$sRequest;
+    $sSMTPLogBasePath = str_replace(
+        "/logs/maildir/","./logs/smtplog/",$sBasePath
+    );
+    $sSMTPLogBasePath = preg_replace(
+        "#^(.*)\.eml$#","$1.txt",
+        $sSMTPLogBasePath
+    );
+    echo $sSMTPLogBasePath;
+
+    $arSMTPLog = [];
+    if(file_exists($sSMTPLogBasePath)){
+        $arSMTPLog = file($sSMTPLogBasePath);
+    }
+    echo "<pre>";
+    print_r($arSMTPLog);
+    die;
 
     $sRawMail = '';
     $fd = fopen($sBasePath,"r");
@@ -109,6 +125,12 @@ $sRequest
             <pre><?= implode("\n",$arPart["headers"]) ?></pre> 
         <? if(preg_match("#html#",$arPart["content-type"])):?>
             <?= implode("\n",$arPart["body"])?>
+        <? elseif(preg_match("#image#",$arPart["content-type"])):
+            $tmp = explode(";", $arPart["content-type"]);
+            $sCType = $tmp[0]; 
+        ?>
+            <img src="data:<?= $sCType?>;base64,<?=
+            implode("",$arPart["body"])?>">
         <? endif ?>
         </div>
 <? endforeach ?>

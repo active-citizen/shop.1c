@@ -37,7 +37,7 @@
         }
         closedir($dd);
         ksort($arFolders);
-        krsort($arRequests);
+        ksort($arRequests);
 
         $arPath = array();
         $tmp = explode("/",$sFolderPath);

@@ -1,9 +1,9 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Заказы::Отправленные письма");
+$APPLICATION->SetTitle("Письма");
 ?>
 <div class="partners-main">
-    <h1>Просмотр логов обмена</h1>
+    <h1>Отправленные письма</h1>
     <? include("../menu.php"); ?>
     <div class="log-palette">
         <div class="left-menu">
