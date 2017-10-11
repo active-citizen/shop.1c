@@ -3,12 +3,14 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
+<table class="catalog-menu-table scroll-absolute"><tr><td style="width: <?
+if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
 <!-- Menu {{{-->
-<div class="ag-shop-menu">
+<div class="ag-shop-menu<? if($arResult["IN_CATALOG"]):?>  catalog-menu<? endif ?>">
   <div class="ag-shop-menu__container">
     <div class="ag-shop-menu__header">
       <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
-        <div class="grid__col grid__col-shrink">
+        <div class="grid__col grid__col-shrink" style="width: 80% !important">
           <h2 class="ag-shop-menu__current"><? 
 
             $sCAtalogName = 'Все категории';
@@ -45,7 +47,7 @@
       </div>
     </div>
     <? /*if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):*/?>
-    <div class="ag-shop-menu__items js-menu__list">
+    <div class="ag-shop-menu__items js-menu__list" style="">
         <?php foreach($arResult["SECTIONS"] as $section):?>
         <? if(!$section["products"])continue;?>
         <div class="ag-shop-menu__item">
@@ -98,4 +100,52 @@
   </div>
 </div>
 <!-- }}} Menu-->
+</td><td>
 
+<!-- Menu {{{-->
+<? if($arResult["INTERESTS"]):?>
+<div class="ag-shop-menu<? if($arResult["IN_CATALOG"]):?> tags-menu<? endif ?>">
+  <div class="ag-shop-menu__container">
+    <div class="ag-shop-menu__header">
+      <div class="grid grid--bleed grid--justify-space-between grid--align-content-center">
+        <div class="grid__col grid__col-shrink">
+          <h2 class="ag-shop-menu__current">Фильтры<span class="filter-counts"></span></h2>
+        </div>
+        <div class="grid__col grid__col-shrink">
+          <button class="ag-shop-menu__button ag-shop-menu__button--lines js-menu__button" 
+          type="button"><span></span></button>
+        </div>
+      </div>
+    </div>
+    <? /*if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):*/?>
+    <div class="ag-shop-menu__items js-menu__list"
+    style="margin-left:-132%;width:225%;">
+    
+    <? if($arResult["INTERESTS"]):?>
+    <div class="ag-shop-filter__variants" id="interests-filter" style="display:
+    block; text-align: center;">
+      <? foreach($arResult["INTERESTS"] as $INTEREST_ID=>$INTEREST):?>
+      <label>
+        <input type="checkbox" class="ag-interest" value="<?= $INTEREST_ID ?>" title="<?= 
+        $INTEREST["NAME"]?>">
+        <div class="ag-shop-filter__variants-item">
+            <?= $INTEREST["NAME"]?> 
+            <? if($INTEREST["COUNT"]):?>
+            (<?=
+            $INTEREST["COUNT"]
+            ?>)
+            <? endif ?>
+        </div>
+      </label>
+      <? endforeach ?>
+    </div>
+    <? endif ?>
+    
+    </div>
+    <?/* endif */?>
+  </div>
+</div>
+<? endif ?>
+<!-- }}} Menu-->
+
+</td></tr></table>

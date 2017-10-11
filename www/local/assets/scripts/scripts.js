@@ -2,6 +2,42 @@ var scrollProcess = 0;
 
 $(document).ready(function(){
     
+    // Удаляем в мобильных экранах лишнее
+    if(
+        (window.pageYOffset && window.pageYOffset<460)   
+        ||
+        (window.innerWidth && window.innerWidth<460)
+    ){
+        $('.desktop-filter').remove();
+
+        var headerHeight = 0;
+        if($('.ag-shop-nav').outerHeight())
+            headerHeight = $('.ag-shop-nav').outerHeight();
+
+        $('.catalog-menu-table').css('top',headerHeight+'px')
+        $(window).scroll(function(){
+            if($(window).scrollTop() > headerHeight){
+                $('.catalog-menu-table').css('top', '0px')
+                $('.catalog-menu-table').addClass('scroll-fixed');
+                $('.catalog-menu-table').removeClass('scroll-absolute');
+            }
+            else{
+                $('.catalog-menu-table').css('top',headerHeight+'px')
+                $('.catalog-menu-table').addClass('scroll-absolute');
+                $('.catalog-menu-table').removeClass('scroll-fixed');
+            }
+        });
+
+        $('.catalog-menu').css('width',
+            $('.tags-menu').length
+            ?
+            parseInt($(window).width()*0.55)+'px'
+            :
+            '100%'
+        );
+        $('.tags-menu').css('width',parseInt($(window).width()*0.43)+'px');
+        $('.catalog-menu .js-menu__list').css('width', parseInt($(window).width()*0.98)+'px')
+    }
     
     $('#go-login').click(function(){
         
@@ -402,6 +438,7 @@ $(document).ready(function(){
     $('#ag-basket-amount').spinner("value",1);
 
 
+    calcFilterCount();
 });
 
 
@@ -526,6 +563,16 @@ function filter_clear(){
     ag_filter();
 }
 
+function calcFilterCount(){
+    var count = $('.ag-shop-filter__variants input:checked').length;
+    if(count){ 
+        $('.filter-counts').html('('+count+')');
+    }
+    else{
+        $('.filter-counts').html('');
+    }
+}
+
 function ag_filter(){
     $('.catalog-ajax-block').last().addClass('catalog-ajax-block-loader');
 
@@ -562,6 +609,7 @@ function ag_filter(){
     document.location.hash = uri;
     $('.ag-shop-catalog__items-container > div').load(url,function(){
         $('.catalog-ajax-block').last().removeClass('catalog-ajax-block-loader');
+        calcFilterCount();
         wishes_load_catalog();
 
         /*

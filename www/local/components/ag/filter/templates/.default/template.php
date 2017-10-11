@@ -81,7 +81,8 @@ document.location.hash = '#<?= $sHashString;?>';
 
 
   <!-- Filter {{{-->
-  <form class="ag-shop-filter">
+  <? if(!IS_MOBILE):?>
+  <form class="ag-shop-filter desktop-filter">
     <!-- 
     <div class="ag-shop-filter__filters">
     <!--
@@ -197,4 +198,5 @@ document.location.hash = '#<?= $sHashString;?>';
     <input type="hidden" id="ag-flag" value="all"/>
     <input type="hidden" id="ag-sorting" value="price-asc"/>
   </form>
+  <? endif ?>
   <!-- }}} Filter-->
