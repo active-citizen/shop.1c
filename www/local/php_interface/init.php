@@ -16,6 +16,7 @@
    
     // А не мобильное ли ты приложение
     define("IS_MOBILE",
+        //true
         isset($_COOKIE["EMPSESSION"])
     );
 

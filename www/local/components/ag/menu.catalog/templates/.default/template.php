@@ -122,7 +122,7 @@ if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
     style="margin-left:-132%;width:225%;">
     
     <? if($arResult["INTERESTS"]):?>
-    <div class="ag-shop-filter__variants" id="interests-filter" style="display:
+    <div class="ag-shop-filter__variants mobile-filter" id="interests-filter" style="display:
     block; text-align: center;">
       <? foreach($arResult["INTERESTS"] as $INTEREST_ID=>$INTEREST):?>
       <label>

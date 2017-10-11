@@ -38,6 +38,21 @@ $(document).ready(function(){
         $('.tags-menu').css('width',parseInt($(window).width()*0.43)+'px');
         $('.catalog-menu .js-menu__list').css('width', parseInt($(window).width()*0.98)+'px')
     }
+    else{
+        $('.mobile-filter').remove();
+    }
+
+    // Вывод фильтров
+    $('.ag-shop-catalog__filter-instance a[rel="filters"]').click(function(){
+
+        if($('.desktop-filter').css('display')=='none')
+            $('.desktop-filter').slideDown();
+        else
+            $('.desktop-filter').slideUp();
+
+        if($('.desktop-filter').css('display')=='none')$(this).removeClass('ag-shop-menu__link--active');
+        return false;
+    });
     
     $('#go-login').click(function(){
         
@@ -567,9 +582,12 @@ function calcFilterCount(){
     var count = $('.ag-shop-filter__variants input:checked').length;
     if(count){ 
         $('.filter-counts').html('('+count+')');
+        $('.desktop-filters-count').html(count);
+
     }
     else{
         $('.filter-counts').html('');
+        $('.desktop-filters-count').html('0');
     }
 }
 

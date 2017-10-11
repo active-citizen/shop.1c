@@ -638,6 +638,13 @@ div.ag-shop-mob-title{
     .tags-menu{
         display: none;
     }
+    .desktop-filter{
+        display: none;
+    }
+
+    .ag-shop-content{
+        padding-top: 10px;
+    }
 }
 
 

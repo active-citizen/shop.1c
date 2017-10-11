@@ -16,6 +16,16 @@
                     <a rel="populars" class="ag-shop-menu__link ag-shop-menu__link_flag" href="#">Хит</a>
                 </div>
               </div>
+
+              <div class="ag-shop-catalog__filter-instance">
+                <div class="ag-shop-catalog__filter-item">
+                    <a rel="filters" 
+                    class="ag-shop-menu__link ag-shop-menu__link_sorting" 
+                    href="#">Выбрано фильтров: <span
+                    class="desktop-filters-count">0</span></a>
+                </div>
+              </div>
+
               <div class="ag-shop-catalog__filter-instance">Сначала:
                 <div class="ag-shop-catalog__filter-item">
                     <a rel="price-asc" class="ag-shop-menu__link ag-shop-menu__link_sorting" href="#">Недорогие</a>
