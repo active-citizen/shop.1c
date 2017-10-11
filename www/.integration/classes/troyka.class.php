@@ -406,6 +406,7 @@
                 !isset($arSoapResult["errorCode"]) 
             ){
                 $sErrorText = 'Транзакция тройки не вернула кода ошибки';
+                $sErrorCode = 1;
             }
 
             if(isset($arSoapResult["errorDesc"]))

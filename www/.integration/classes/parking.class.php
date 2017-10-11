@@ -52,8 +52,13 @@
 
             // Сохраняем текст ошибок и выходим
             if(
-                isset($arAnswer["@attributes"]["errors"])
-                && intval($arAnswer["@attributes"]["errors"])
+                (
+                    isset($arAnswer["@attributes"]["errors"])
+                    && 
+                    intval($arAnswer["@attributes"]["errors"])
+                )
+                ||
+                !isset($arAnswer["@attributes"]["errors"])
             ){
                 $this->riseError(print_r($arAnswer["error"],1));
                 
