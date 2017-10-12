@@ -1,0 +1,6 @@
+0 2 * * * find /home/bitrix/www/upload/logger/ -mtime +31|xargs rm -f
+30 2 * * * find /home/bitrix/logs/maildir/ -mtime +14|xargs rm -f
+0 3 * * * find /home/bitrix/logs/smtplog/ -mtime +14|xargs rm -f
+0 4 * * * mysql -u shop_ag_mos_ru -ps6ehd_Jhgak! shop_ag_mos_ru < /home/bitrix/sql/optimize_all_tables.sql > /home/bitrix/sql/optimize_all_tables.log
+0 5 * * * find /home/bitrix/renders/png/ -mtime +14|xargs rm -f
+
