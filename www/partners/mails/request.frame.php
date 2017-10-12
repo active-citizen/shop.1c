@@ -23,7 +23,6 @@
         "#^(.*)\.eml$#","$1.txt",
         $sSMTPLogBasePath
     );
-
     $arSMTPLog = [];
     if(file_exists($sSMTPLogBasePath)){
         $arSMTPLog = file($sSMTPLogBasePath);
@@ -38,6 +37,7 @@
     fclose($fd);
 
     $arParts = mailParse($sRawMail); 
+
     $nCounter++;
     function mailParse($sRawMail){
         $arLines = explode("\n", $sRawMail);
@@ -147,7 +147,7 @@ $sRequest
 <h3><?= $sRequest ?></h3>
 <?
     $sTo = preg_replace(
-        "#^\d+\-\d+\-\d+\-\d+\-\d+\-\d+\-(.*)\.eml$#",
+        "#^\d+\-\d+\-\d+\-\d+\-\d+\-\d+\-\d+\-(.*)\.eml$#",
         "$1",
         $sRequest
     );

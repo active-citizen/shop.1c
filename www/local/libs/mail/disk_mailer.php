@@ -12,24 +12,31 @@
         $sYear,
         $sHour,
         $sMin,
-        $sSec
+        $sSec,
+        $sStoreFolder = ''
     ){
-        $sBaseDir = LOCAL_MAIL_DISK_BASEDIR;
+        $sBaseDir = $sStoreFolder
+            ?
+            $sStoreFolder
+            :
+            LOCAL_MAIL_DISK_BASEDIR;
 
         $arPath = array(
             "$sYear-$sMonth",
             "$sYear-$sMonth-$sDay",
             "$sTo"
         );
+
         $sFilename = "$sYear-$sMonth-$sDay-$sHour-$sMin-$sSec-$sTo.eml";
         $sRelPath = '';
-        foreach($arPath as $sFolder){
+        if(!$sStoreFolder)foreach($arPath as $sFolder){
             $sRelPath .="/".$sFolder;
             $sFullPath = $sBaseDir.$sRelPath;
             if(!is_dir($sFullPath)){
                 if(!mkdir($sFullPath))return false;
             }
         }
+        if($sStoreFolder)$sFullPath = $sStoreFolder;
         if(!$fd = fopen($sFullPath."/".$sFilename,"w"))return false;
         fwrite($fd, "To: $sTo\r\n");
         fwrite($fd, "Subject: $sSubject\r\n");

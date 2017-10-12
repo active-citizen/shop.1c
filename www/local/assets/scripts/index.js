@@ -11,6 +11,7 @@ $(document).ready(function() {
         e.preventDefault();
         if ( $(this).parent()
                 .find('.js-menu__list').first().is(':visible') ) {
+
             $(this).parent()
                 .find('.js-menu__list').first().slideUp(animationDelay);
             $(this).find('button').removeClass('ag-shop-menu__button--close');
@@ -18,6 +19,9 @@ $(document).ready(function() {
             //menuList.slideUp(animationDelay);
             //menuButton.removeClass('ag-shop-menu__button--close');
         } else {
+            $('.js-menu__list').slideUp(animationDelay);
+            $('button').removeClass('ag-shop-menu__button--close');;
+
             $(this).parent()
                 .find('.js-menu__list').first().slideDown(animationDelay);
             $(this).find('button').addClass('ag-shop-menu__button--close');

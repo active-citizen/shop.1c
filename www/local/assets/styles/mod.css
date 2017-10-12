@@ -485,6 +485,7 @@ div.ag-shop-mob-nav{
     padding-left: 36px;
     border-bottom: 1px rgba(12,142,130,1);
     text-shadow: 0 0 3px rgba(0,0,0,0.4);
+    display: none;
 }
 
 div.ag-shop-mob-nav:before{
@@ -573,6 +574,115 @@ div.ag-shop-mob-title{
         background: none;
     }
 
+    .catalog-menu{
+        width: 100%;
+        margin: 0px;
+    }
+
+    .tags-menu{
+        width: 100%;
+        margin: 0px;
+    }
+
+    .desktop-filter{
+        display: none;
+    }
+
+    table.catalog-menu-table{
+        width: 100% !important;
+        position: fixed;
+        top: 0px;
+        z-index: 9998;
+        background-color: white;
+        left: 0px !important;
+        right: 0px !important;
+        border-spacing: 0px !important;
+    }
+
+    table.catalog-menu-table td{
+        width: 50%;
+        border-collapse: collapse !important;
+        padding: 0px !important;
+    }
+
+    div.js-menu__list{
+        width:210%;
+        margin-left: -5%;
+    }
+
+    .ag-shop-menu__header{
+        padding-left: 10px;
+        padding: right: 0px;
+    }
+
+    .ag-shop-menu__header h2{
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-flex;
+        position: relative;
+        color: rgba(0,122,108,1);
+//        padding-right: 10px;
+    }
+
+    .scroll-fixed{
+        position: fixed;
+        top: 32px;
+        z-index: 9998;
+        background-color: white;
+    }
+
+    .scroll-absolute{
+        position: absolute;
+        z-index: 9998;
+        top: 32px;
+        background-color: white;
+    }
+
+    .ag-shop-content{
+        padding-top: 30px;
+    }
+
+    .ag-shop-menu__link{
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+
+    .ag-shop-content__limited-container{
+        padding-top: 30px;
+    }
+
+
+    .ag-shop-item-card__points{
+        top: -70px;
+    }
+
+    .on-top{
+        top: 0px !important;
+    }
+
+    .ag-shop-content__limited-container{
+        padding-top: 0px;
+    }
+
+    .ag-shop-nav__container .grid--bleed{
+        display: none;
+    }
+
+}
+
+@media(min-width: 460px){
+    .tags-menu{
+        display: none;
+    }
+    .desktop-filter{
+        display: none;
+    }
+
+    .ag-shop-content{
+        padding-top: 10px;
+    }
+
 
 }
 
@@ -594,3 +704,26 @@ div.ag-shop-mob-title{
     padding-left: 10px;
     font-size: 14px;   
 }
+
+
+.ag-shop-nav__link--active{
+    width: 100%;
+}
+
+.ag-shop-menu__link{
+    white-space: nowrap;
+}
+
+
+table.catalog-menu-table{
+    width: 100% !important;
+}
+
+.catalog-menu{
+    width: 100%;
+}
+
+    table.catalog-menu-table .ag-shop-menu__link{
+        padding: 12px 0px;
+    }
+

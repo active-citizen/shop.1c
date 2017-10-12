@@ -3,6 +3,13 @@
 
 //if ($this->StartResultCache(false)) {
     // Получаем корневых разделов
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/catalog.lib.php");
+    // Получаем теги для отображения в каталоге мобильного приложения
+
+    $arResult["IN_CATALOG"] = false;
+    if(preg_match("#^/catalog/.*$#", $_SERVER["REQUEST_URI"]))
+        $arResult["IN_CATALOG"] = true;
+    
 
     // Вычисляем ID свойства "привязка элемента каталога к товарному предложению"
     $sQuery = "SELECT `ID` FROM `b_iblock_property` WHERE "
@@ -69,6 +76,25 @@
     $arrItems = array();
     while($arr = $res->Fetch())$arrItems[] = $arr["SECTION_ID"];
 //  print_r($arrItems);
+
+    $arParams["SECTION_ID"] = 0;
+    if(preg_match("#^/catalog/(.*?)/.*$#", $_SERVER["REQUEST_URI"], $m)){
+        $arSection = CIBlockSection::GetList(
+            [],["CODE"=>$m[1]],false,["ID"],["nTopCount"=>1]
+        )->Fetch();
+        $arParams["SECTION_ID"] = $arSection["ID"];
+    }
+
+
+    if($arResult["IN_CATALOG"] 
+        // Не выводить фильтры в карточках
+        &&  count(explode("/",$_SERVER["REQUEST_URI"]))<5
+    ){
+        $arResult["INTERESTS"] = filterGetTags(
+            INTEREST_IBLOCK_ID,INTEREST_PROPERTY_ID,
+            $arParams["SECTION_ID"]
+        );
+    }
 
 
     CModule::IncludeModule("iblock");

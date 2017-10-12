@@ -73,7 +73,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <? if(IS_MOBILE && $_SERVER["REQUEST_URI"]!='/catalog/'):?>
       <div class="ag-shop-mob-nav">
         <a class="ag-shop-mob-back ag-shop-mob-nav" href="<? 
-            echo "/catalog/";
+//            echo "/catalog/";
+            echo "#";
             /*
             if(
                 $arPath = explode("/",$_SERVER["REQUEST_URI"])
@@ -95,20 +96,20 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
 
             }
             */
-        ?>"
-        >
+        ?>" onclick="window.history.go(-1);">
         <?  
             if(
                 $arPath = explode("/",$_SERVER["REQUEST_URI"])
             ){
                 if($arPath[1]!='catalog'){
+                    //echo "Назад";
                     echo "Главная";
                 }
                 elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
                 !trim($arPath[3])){
+                    //echo "Назад";
                     echo "Главная";
                 }
-                /*
                 elseif(
                     $arPath[1]=='catalog' 
                     && 
@@ -116,6 +117,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                     &&
                     trim($arPath[3])
                 ){
+                    /*    
                     $arCatalogMeta = CIBlockSection::GetList(
                         array(),
                         array(
@@ -126,15 +128,20 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                         array("NAME"),
                         array("nTopCount"=>1)
                     )->GetNext();
+
                     if(
                         isset($arCatalogMeta["NAME"]) 
                         && 
                         trim($arCatalogMeta["NAME"])
                     )
                     echo $arCatalogMeta["NAME"];
+                    */
+                    echo "Главная";
+                    
+                    //echo "Назад";
                 }
-                */
                 else{
+                    //echo "Назад";
                     echo "Главная";
                 }
 

@@ -9,6 +9,13 @@
         realpath($_SERVER["DOCUMENT_ROOT"]."/../logs/smtplog/")
     );
     
+    define("LOCAL_MAIL_SMTP_QUEUE",
+        realpath($_SERVER["DOCUMENT_ROOT"]."/../mail_queue/")
+    );
+
+    // Сколько писем слать за раз
+    define("LOCAL_MAIL_SMTP_QUANT", 30);
+
     define("LOCAL_MAIL_SMTP_HOST",$MAIL["smtp.host"]);
     define("LOCAL_MAIL_SMTP_PORT",$MAIL["smtp.port"]);
     define("LOCAL_MAIL_SMTP_AUTH",true);
