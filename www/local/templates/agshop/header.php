@@ -108,7 +108,6 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                 !trim($arPath[3])){
                     echo "Главная";
                 }
-                /*
                 elseif(
                     $arPath[1]=='catalog' 
                     && 
@@ -133,7 +132,6 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                     )
                     echo $arCatalogMeta["NAME"];
                 }
-                */
                 else{
                     echo "Главная";
                 }

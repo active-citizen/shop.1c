@@ -3,7 +3,7 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
-<table class="catalog-menu-table scroll-absolute"><tr><td style="width: <?
+<table class="catalog-menu-table scroll-fixed"><tr><td style="width: <?
 if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
 <!-- Menu {{{-->
 <div class="ag-shop-menu<? if($arResult["IN_CATALOG"]):?>  catalog-menu<? endif ?>">
@@ -48,6 +48,13 @@ if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
     </div>
     <? /*if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):*/?>
     <div class="ag-shop-menu__items js-menu__list" style="">
+        <? if($_SERVER["REQUEST_URI"]!='/catalog/'):?>
+        <div class="ag-shop-menu__item">
+            <a class="ag-shop-menu__link" href="/catalog/" >
+                Все категории
+            </a>
+        </div>
+        <? endif ?>
         <?php foreach($arResult["SECTIONS"] as $section):?>
         <? if(!$section["products"])continue;?>
         <div class="ag-shop-menu__item">

@@ -10,22 +10,32 @@ $(document).ready(function(){
     ){
         $('.desktop-filter').remove();
 
+
         var headerHeight = 0;
         if($('.ag-shop-nav').outerHeight())
             headerHeight = $('.ag-shop-nav').outerHeight();
 
-        $('.catalog-menu-table').css('top',headerHeight+'px')
+        var backNavWidth = 0;
+        if($('.ag-shop-mob-nav').outerHeight())
+            backNavWidth = $('.ag-shop-mob-nav').outerHeight();
+
+        var totalHeader = parseInt(headerHeight)+parseInt(backNavWidth);
+        var oldScroll = $(window).scrollTop();
+        var newScroll = oldScroll;
+
+        $('.catalog-menu-table').css('top', totalHeader+'px')
         $(window).scroll(function(){
-            if($(window).scrollTop() > headerHeight){
-                $('.catalog-menu-table').css('top', '0px')
-                $('.catalog-menu-table').addClass('scroll-fixed');
-                $('.catalog-menu-table').removeClass('scroll-absolute');
+
+            newScroll = $(window).scrollTop();
+
+            if(newScroll>oldScroll){
+                $('.catalog-menu-table').slideUp()
             }
             else{
-                $('.catalog-menu-table').css('top',headerHeight+'px')
-                $('.catalog-menu-table').addClass('scroll-absolute');
-                $('.catalog-menu-table').removeClass('scroll-fixed');
+                $('.catalog-menu-table').slideDown()
             }
+
+            oldScroll = newScroll;
         });
 
         $('.catalog-menu').css('width',
@@ -35,8 +45,14 @@ $(document).ready(function(){
             :
             '100%'
         );
-        $('.tags-menu').css('width',parseInt($(window).width()*0.43)+'px');
-        $('.catalog-menu .js-menu__list').css('width', parseInt($(window).width()*0.98)+'px')
+        $('.tags-menu').css('width',parseInt($(window).width()*0.45)+'px');
+        $('.tags-menu .js-menu__list').css(
+            'width',parseInt($(window).width()*1.05)+'px'
+        );
+        $('.catalog-menu .js-menu__list').css(
+            'width', parseInt($(window).width()*1.05)+'px'
+        );
+
     }
     else{
         $('.mobile-filter').remove();

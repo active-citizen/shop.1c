@@ -589,6 +589,10 @@ div.ag-shop-mob-title{
 
     table.catalog-menu-table{
         width: 100% !important;
+        position: fixed;
+        top: 32px;
+        z-index: 9998;
+        background-color: white;
     }
 
     table.catalog-menu-table td{
@@ -596,7 +600,8 @@ div.ag-shop-mob-title{
     }
 
     div.js-menu__list{
-        width:200%;
+        width:210%;
+        margin-left: -5%;
     }
 
     .ag-shop-menu__header{
@@ -607,12 +612,25 @@ div.ag-shop-mob-title{
     .ag-shop-menu__header h2{
         white-space: nowrap;
         overflow: hidden;
+        display: inline-flex;
+        position: relative;
+        color: rgba(0,122,108,1);
+        padding-right: 10px;
     }
 
+    .ag-shop-menu__header h2:before,
+    a.ag-shop-menu__link:before{
+        content: "___";
+        position: absolute;
+        right: 0px;
+        width: 20px;
+        color: transparent;
+        background: linear-gradient(to right, transparent, white);
+    }
 
     .scroll-fixed{
         position: fixed;
-        top: 0px;
+        top: 32px;
         z-index: 9998;
         background-color: white;
     }
@@ -620,6 +638,7 @@ div.ag-shop-mob-title{
     .scroll-absolute{
         position: absolute;
         z-index: 9998;
+        top: 32px;
         background-color: white;
     }
 
@@ -630,6 +649,16 @@ div.ag-shop-mob-title{
     .ag-shop-menu__link{
         overflow: hidden;
         white-space: nowrap;
+    }
+
+
+    .ag-shop-content__limited-container{
+        padding-top: 30px;
+    }
+
+
+    .ag-shop-item-card__points{
+        top: -70px;
     }
 
 }
