@@ -27,8 +27,6 @@
             "$sTo"
         );
 
-        $sSec .= sprintf("%04d", rand(0,10000));
-
         $sFilename = "$sYear-$sMonth-$sDay-$sHour-$sMin-$sSec-$sTo.eml";
         $sRelPath = '';
         if(!$sStoreFolder)foreach($arPath as $sFolder){

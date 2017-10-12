@@ -1,5 +1,7 @@
 <?php
-        function custom_mail($sTo, $subject, $message, $additional_headers, $additional_parameters){
+        function custom_mail(
+            $sTo, $subject, $message, $additional_headers, $additional_parameters
+        ){
 
 		    $headers =array();
 		    if(trim($additional_headers))$headers = explode("\n",$additional_headers);
@@ -10,19 +12,15 @@
                     isset($tmp[1])?trim($tmp[1]):'';
             }
 
-
-           
-
-#		    $to = 'andrey@fmf.ru';
             $sMonth = date("m");    $sDay = date("d");  $sYear = date("Y"); 
-            $sHour = date("Y");     $sMin = date("i");  $sSec = date("s");
+            $sHour = date("H");     $sMin = date("i");  $sSec = date("s")."-".rand(0,1000);
 
             // Если нет заголовка "отправить прямо сейчас", то сохранить письмо 
             // в очередь
             if(
-                !isset($arHashHeaders["sent-now"]) 
+                !isset($arHashHeaders["send-now"]) 
                 ||
-                strtolower($arHashHeaders["sent-now"])!='yes'
+                strtolower($arHashHeaders["send-now"])!='yes'
             ){
                 disk_custom_mail(
                     $sTo, $subject, $message, $additional_headers,
@@ -30,6 +28,13 @@
                     LOCAL_MAIL_SMTP_QUEUE
                 );
                 return true;
+            }
+            else{
+                /*
+                echo "<pre>";
+                echo $message;
+                die;
+                */
             }
 
  		    if(LOCAL_MAIL_DISK_ENABLE===true){
@@ -119,3 +124,38 @@
             $mail->ClearCustomHeaders();
             return true;
         }
+
+    function send_from_eml($sFilename){
+
+        $sTo = "";
+        $sSubject = "";
+        $arHeaders = [];
+        $arLines = file($sFilename);
+        foreach($arLines as $nKey=>$sLine){
+            $sLine = trim($sLine);
+            unset($arLines[$nKey]);
+            if(!$sLine)break;
+            if(preg_match("#^\s*To\s*:\s*(.*)\s*$#i", $sLine,$m)){
+                $sTo = $m[1];
+                continue;
+            }
+            if(preg_match("#^\s*Subject\s*:\s*(.*)\s*$#i", $sLine,$m)){
+                $sSubject = $m[1];
+                continue;
+            }
+            $arHeaders[] = $sLine;
+        }
+
+        foreach($arLines as $k=>$v)$arLines[$k] = trim($v);
+
+        $tmp = explode("/", $sFilename);
+        $arHeaders[] = "Send-now:yes";
+
+        if(custom_mail(
+            $sTo, 
+            $sSubject,
+            implode("\n", $arLines),
+            implode("\n",$arHeaders)
+        ))unlink($sFilename);
+
+    }
