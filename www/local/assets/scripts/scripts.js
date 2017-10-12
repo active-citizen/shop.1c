@@ -10,7 +10,7 @@ $(document).ready(function(){
     ){
         $('.desktop-filter').remove();
 
-
+        /*
         var headerHeight = 0;
         if($('.ag-shop-nav').outerHeight())
             headerHeight = $('.ag-shop-nav').outerHeight();
@@ -22,8 +22,9 @@ $(document).ready(function(){
         var totalHeader = parseInt(headerHeight)+parseInt(backNavWidth);
         var oldScroll = $(window).scrollTop();
         var newScroll = oldScroll;
+        */
 
-        $('.catalog-menu-table').css('top', totalHeader+'px')
+        /*
         $(window).scroll(function(){
 
             newScroll = $(window).scrollTop();
@@ -37,6 +38,7 @@ $(document).ready(function(){
 
             oldScroll = newScroll;
         });
+        */
 
         $('.catalog-menu').css('width',
             $('.tags-menu').length
@@ -52,6 +54,7 @@ $(document).ready(function(){
         $('.catalog-menu .js-menu__list').css(
             'width', parseInt($(window).width()*1.05)+'px'
         );
+
 
     }
     else{

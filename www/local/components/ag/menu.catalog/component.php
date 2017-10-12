@@ -85,7 +85,11 @@
         $arParams["SECTION_ID"] = $arSection["ID"];
     }
 
-    if($arResult["IN_CATALOG"]){
+
+    if($arResult["IN_CATALOG"] 
+        // Не выводить фильтры в карточках
+        &&  count(explode("/",$_SERVER["REQUEST_URI"]))<5
+    ){
         $arResult["INTERESTS"] = filterGetTags(
             INTEREST_IBLOCK_ID,INTEREST_PROPERTY_ID,
             $arParams["SECTION_ID"]

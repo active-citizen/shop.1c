@@ -3,9 +3,11 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
-<table class="catalog-menu-table scroll-fixed"><tr><td style="width: <?
-if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
+<table class="catalog-menu-table scroll-fixed<?
+if($_SERVER["REQUEST_URI"]=='/catalog/'):?> on-top<? endif ?>"><tr><td style="width: <?
+if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
 <!-- Menu {{{-->
+<tr><td>
 <div class="ag-shop-menu<? if($arResult["IN_CATALOG"]):?>  catalog-menu<? endif ?>">
   <div class="ag-shop-menu__container">
     <div class="ag-shop-menu__header">
@@ -16,7 +18,8 @@ if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
             $sCAtalogName = 'Все категории';
 
             foreach($arResult["SECTIONS"] as $arSection){
-                if($arSection["SECTION_PAGE_URL"]==$_SERVER["REQUEST_URI"])
+                if(strpos($_SERVER["REQUEST_URI"],
+                $arSection["SECTION_PAGE_URL"])!==false)
                     $sCAtalogName = $arSection["NAME"];
             }
                 $arPath = explode("/",$_SERVER["REQUEST_URI"]);
@@ -48,10 +51,12 @@ if($arResult["INTERESTS"]):?>55%;<? else:?>100%<? endif ?>">
     </div>
     <? /*if(preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])):*/?>
     <div class="ag-shop-menu__items js-menu__list" style="">
-        <? if($_SERVER["REQUEST_URI"]!='/catalog/'):?>
+        <? if($_SERVER["REQUEST_URI"]!='/catalog/' && IS_MOBILE):?>
         <div class="ag-shop-menu__item">
             <a class="ag-shop-menu__link" href="/catalog/" >
-                Все категории
+                <? 
+                    echo "Все категории" 
+                ?>
             </a>
         </div>
         <? endif ?>
