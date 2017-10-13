@@ -22,6 +22,10 @@
  * 
  */
 
+    /**
+        AJAX скрипт фонового обновления баллов
+    */
+
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
     require_once("classes/active-citizen-bridge.class.php");
@@ -50,21 +54,33 @@
     if(!$answer["errors"] && !$history = $agBrige->exec()){
         $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
     }
-        
-        
-        
+    
+    if(
+        !isset($history["result"]["status"])
+        ||
+        !isset($history["result"]["status"])
+    ){
+        return json_encode([
+            "errors"=>["Не получено состояние счёта"]
+        ]);
+    }
+
     if(isset($history["errorMessage"]) && $history["errorMessage"])
         $answer["errors"][] = $history["errorMessage"];
         
     $bxPoint = new bxPoint;
-    $bxPoint->updatePoints($history["result"]['history'], CUser::GetID());
-    
-    
+    if(!$bxPoint->updateAccount($history["result"]["status"], CUser::GetID()))
+        $answer["errors"][] = $bxPoint->error;
+
+    $answer["status"] = $history["result"]["status"];
+
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
+
+    $answer["title"] = 
+        number_format($history["result"]["status"]["current_points"],0,","," ")
+        ." "
+        .get_points(intval($history["result"]["status"]["current_points"]));
     
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
-    
-    //echo "<pre>";
-    //print_r($profile);
-    
     

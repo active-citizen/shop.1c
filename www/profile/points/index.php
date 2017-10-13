@@ -4,7 +4,10 @@ $APPLICATION->SetTitle("Мои баллы");
 
 
 if($_SERVER["REQUEST_URI"]=='/profile/points/'){
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/active-citizen-bridge.class.php");
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/.integration/classes/active-citizen-bridge.class.php"
+    );
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
 

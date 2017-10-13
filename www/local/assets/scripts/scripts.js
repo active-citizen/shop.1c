@@ -10,36 +10,6 @@ $(document).ready(function(){
     ){
         $('.desktop-filter').remove();
 
-        /*
-        var headerHeight = 0;
-        if($('.ag-shop-nav').outerHeight())
-            headerHeight = $('.ag-shop-nav').outerHeight();
-
-        var backNavWidth = 0;
-        if($('.ag-shop-mob-nav').outerHeight())
-            backNavWidth = $('.ag-shop-mob-nav').outerHeight();
-
-        var totalHeader = parseInt(headerHeight)+parseInt(backNavWidth);
-        var oldScroll = $(window).scrollTop();
-        var newScroll = oldScroll;
-        */
-
-        /*
-        $(window).scroll(function(){
-
-            newScroll = $(window).scrollTop();
-
-            if(newScroll>oldScroll){
-                $('.catalog-menu-table').slideUp()
-            }
-            else{
-                $('.catalog-menu-table').slideDown()
-            }
-
-            oldScroll = newScroll;
-        });
-        */
-
         $('.catalog-menu').css('width',
             $('.tags-menu').length
             ?
@@ -72,7 +42,8 @@ $(document).ready(function(){
         if($('.desktop-filter').css('display')=='none')$(this).removeClass('ag-shop-menu__link--active');
         return false;
     });
-    
+
+
     $('#go-login').click(function(){
         
         var myObj = $(this);
@@ -353,44 +324,10 @@ $(document).ready(function(){
             ag_ci_rise_error('Не определён ID торгового предложения');
             return false;
         }
-
-
-        // создаём заказ
-        /*
-        $('#order-process-done').css('display','block');
-        $('.ok-button').css('display','none');
-        $.post(
-            "/profile/order/order.ajax.php",
-            {
-                "quantity":$('#ag-basket-amount').spinner("value"),
-                "create_order":$('.catalog_item_confirm_message .ag-window #offer_id').html(),
-                "store_id":$('.catalog_item_confirm_message .ag-window #store_id').html(),
-                "name":$('.catalog_item_confirm_message .ag-window #ag-name').html(),
-                "email":$('.catalog_item_confirm_message .ag-window #ag-email').html(),
-                "address":$('.catalog_item_confirm_message .ag-window #ag-address').html()
-            },
-            function(data){
-                var answer = JSON.parse(data);
-                if(answer.redirect_url){
-                    document.location.href=answer.redirect_url;
-                }
-                else{
-                    $('#order-process-done').css('display','none');
-                    $('.ok-button').css('display','block');
-                    var error_text = '';
-                    for(i in answer.order.ERROR){
-                        error_text += i+": "+answer.order.ERROR[i];
-                    }
-                    $('.catalog_item_confirm_message').fadeOut('fast');
-                    ag_ci_rise_error(error_text);            }
-                }
-        )
-        return false;
-        ///////////////////////////////////////////////////////////////
-        */
         
-        
-        var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="+offer_id+"&quantity="+$('#ag-basket-amount').spinner("value")+"&store_id="+store_id;
+        var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="
+            +offer_id+"&quantity="
+            +$('#ag-basket-amount').spinner("value")+"&store_id="+store_id;
 
         // добавляем в корзину
         $('#order-process-done').css('display','block');
@@ -406,7 +343,8 @@ $(document).ready(function(){
                 }
                 
                 $.get(
-                    "/profile/order/order.ajax.php?add_order=Y&store_id="+answer.store_id,
+                    "/profile/order/order.ajax.php?add_order=Y&store_id="
+                    +answer.store_id,
                     function(data){
                         var answer = JSON.parse(data);
                         if(answer.redirect_url){
@@ -471,10 +409,34 @@ $(document).ready(function(){
     $('#ag-basket-amount').spinner("enable");
     $('#ag-basket-amount').spinner("value",1);
 
-
+    // Пересчитываем число выбранных фильтров
     calcFilterCount();
+
+    // Подгружем в фоне баллы пользователя
+    loadUserPoints();
 });
 
+
+/**
+    Фоновая подгрузка баллов пользователя
+*/
+function loadUserPoints(){
+    $.get(
+        "/.integration/points.ajax.php",
+        function(data){
+            var answer = {};
+            try{
+                answer = JSON.parse(data);   
+            }
+            catch(err){
+                return fasle;
+            }
+            if(typeof answer.title !== undefined){
+                $('.ag-shop-nav__profile-points').html(answer.title);
+            }
+        }
+    );
+}
 
 function next_page(){
     // Берём информацию о следующей странице для подгрузки из input
