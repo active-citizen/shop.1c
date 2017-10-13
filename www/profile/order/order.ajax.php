@@ -558,7 +558,8 @@ elseif(isset($_GET["add_order"])){
             orderSetZNI($orderId,'N','AA');
      }
     else{
-        $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);
+        $answer["error"] = "Не могу создать заказ: "
+            .($account["CURRENT_BUDGET"]+2*$totalSum);
     }
     
 }

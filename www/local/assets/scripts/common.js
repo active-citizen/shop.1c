@@ -359,9 +359,26 @@ function productConfirmNext(){
             }
             
             $.get(
-                "/profile/order/order.ajax.php?add_order=Y&store_id="+answer.store_id,
+                "/profile/order/order.ajax.php?add_order=Y&store_id="
+                    +answer.store_id,
                 function(data){
-                    var answer = JSON.parse(data);
+                    answer = {};
+                    try{
+                        var answer = JSON.parse(data);
+                    }
+                    catch(err){
+                        $('.ag-shop-modal__container .ag-shop-card__warning')
+                            .remove();
+                        $('.ag-shop-modal__container')
+                            .append(
+                                '<div class="ag-shop-card__warning">'
+                                +data+'</div>'
+                            );
+                        $("#card-order-confirm-button").html("Ошибка");
+                        setTimeout(function(){
+                            $("#card-order-confirm-button").fadeOut();
+                        },1000);
+                    }
                     if(answer.redirect_url){
                         document.location.href=answer.redirect_url;
                     }
@@ -377,10 +394,18 @@ function productConfirmNext(){
                                     error_text += ""+answer.order.ERROR[i]+'<br/>';
                                 }
                                 error_text += '';
-                                $('.ag-shop-modal__container .ag-shop-card__warning').remove();
-                                $('.ag-shop-modal__container').append('<div class="ag-shop-card__warning">'+error_text+'</div>')
-//                              $('.ag-shop-modal-wrap').fadeOut('fast');
-                            }
+                                $('.ag-shop-modal__container .ag-shop-card__warning')
+                                    .remove();
+                                $('.ag-shop-modal__container')
+                                    .append(
+                                        '<div class="ag-shop-card__warning">'
+                                        +error_text+'</div>'
+                                    );
+                                $("#card-order-confirm-button").html("Ошибка");
+                                setTimeout(function(){
+                                    $("#card-order-confirm-button").fadeOut();
+                                },1000);
+                           }
                         );
                     }
                 }
