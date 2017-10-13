@@ -287,12 +287,31 @@ elseif(isset($_GET["add_order"])){
         $_SERVER["DOCUMENT_ROOT"]
             ."/.integration/classes/active-citizen-bridge.class.php"
     );
+
+    // Получаем состояние счёта чере API
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
-    pointsUpdate();   
+    $objPoints = new bxPoint; 
+    $arPoints = $objPoints->fetchAccountFromAPI();
+    if(
+        $arPoints["errors"]
+        ||
+        !isset($arPoints["status"]["current_points"])
+    ){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Ошибка получения состояния счёта.".
+                    print_r($arPoints["errors"], 1)
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
 
     // Проверяем сумму на счёте
-    $account = CSaleUserAccount::GetByUserID(CUSer::GetID(),"BAL");
+    $account = ["CURRENT_BUDGET"=>$arPoints["status"]["current_points"]]; 
     $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
     if($account["CURRENT_BUDGET"]<$totalSum){
         $answer = array(
@@ -537,9 +556,6 @@ elseif(isset($_GET["add_order"])){
         // Во всех остальных случаях - В работее
         else
             orderSetZNI($orderId,'N','AA');
-
-        pointsUpdate();   
- 
      }
     else{
         $answer["error"] = "Не могу создать заказ: ".($account["CURRENT_BUDGET"]+2*$totalSum);

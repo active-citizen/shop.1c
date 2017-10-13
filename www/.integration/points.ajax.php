@@ -28,59 +28,11 @@
 
 
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require_once("classes/active-citizen-bridge.class.php");
-    require_once("classes/user.class.php");
     require_once("classes/point.class.php");
-    
-    $agBrige = new ActiveCitizenBridge;
-    
-    $answer = array(
-        "errors"=>""
-    );
-    
-    
-    $bxUser = new bxUser;
-    $session_id = $bxUser->getEMPSessionId();
-    
-    $args = array(
-        "session_id"     =>  $session_id,
-        "token"     =>  $EMP_TOKENS[CONTOUR]
-    );
-    $agBrige->setMethod('pointsHistory');
-    $agBrige->setMode('emp');
-    $agBrige->setArguments($args);
-    $answer["errors"] = $agBrige->getErrors();
-    $profile = array();
-    if(!$answer["errors"] && !$history = $agBrige->exec()){
-        $answer["errors"] = array_merge($answer["errors"],$agBrige->getErrors());
-    }
-    
-    if(
-        !isset($history["result"]["status"])
-        ||
-        !isset($history["result"]["status"])
-    ){
-        return json_encode([
-            "errors"=>["Не получено состояние счёта"]
-        ]);
-    }
 
-    if(isset($history["errorMessage"]) && $history["errorMessage"])
-        $answer["errors"][] = $history["errorMessage"];
-        
-    $bxPoint = new bxPoint;
-    if(!$bxPoint->updateAccount($history["result"]["status"], CUser::GetID()))
-        $answer["errors"][] = $bxPoint->error;
+    $objPoints = new bxPoint;
 
-    $answer["status"] = $history["result"]["status"];
-
-    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
-
-    $answer["title"] = 
-        number_format($history["result"]["status"]["current_points"],0,","," ")
-        ." "
-        .get_points(intval($history["result"]["status"]["current_points"]));
-    
+    $answer = $objPoints->fetchAccountFromAPI();
     echo json_encode($answer);
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
     
