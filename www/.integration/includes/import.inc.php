@@ -433,6 +433,14 @@
         $arProperties["RATING_LIMIT"] = $arProduct["РейтингДляПокупки"];
         // Невыбираемый остаток
         $arProperties["STORE_LIMIT"] = $arProduct["НевыбираемыйОстаток"];
+        // Дата сокрытия
+        $tmp = date_parse($arProduct["ДатаОтключения"]);
+        if(isset($tmp["error_count"]) && !$tmp["error_count"]){
+            $arProperties["HIDE_DATE"] = 
+                $tmp["day"].".".$tmp["month"].".".$tmp["year"]." "
+                .$tmp["hour"].":".$tmp["minute"].":".$tmp["second"];
+        }
+
          
         // Дата мероприятия
         if(trim($arProduct["ДатаМероприятия"])){
