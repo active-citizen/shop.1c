@@ -272,19 +272,18 @@ elseif(isset($_GET["add_order"])){
         )
     )->GetNext();
 
+
     if(
-        0
-        &&
         (
         !isset($arProductStore["AMOUNT"])
         ||
-        $arProductStore["AMOUNT"]-$nStoreLimit<=0
+        $arProductStore["AMOUNT"]<=0
         )
     ){
         $answer = array(
             "order"=>array(
                 "ERROR"=>array(
-                    "Количество товаров на складе меньше невыбираемого остатка"
+                    "Исчерпание остатков."
                 )
             )
         );
