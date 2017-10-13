@@ -170,6 +170,7 @@ elseif(isset($_GET["add_to_basket"])){
 }
 elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
+    CModule::IncludeModule("catalog");
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
     
     $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"), array(
@@ -186,6 +187,47 @@ elseif(isset($_GET["add_order"])){
     $basketId = $basket["ID"];
     
     $arrBasket = CSaleBasket::GetByID($basketId);
+
+    // Проверяем количество на складе
+    $arProductStore = CCatalogStoreProduct::GetList(
+        array(),
+        array(
+            "STORE_ID"  =>  intval($_GET["store_id"]),
+            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
+        )
+    )->GetNext();
+
+
+    if(
+        (
+        !isset($arProductStore["AMOUNT"])
+        ||
+        $arProductStore["AMOUNT"]<=0
+        )
+    ){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Исчерпание остатков."
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+    // Проверяем месячный лимит (возвращает месячный лимит если он исчерпан)
+    if($failedLimit = failedMonLimit(CUSer::GetId(),$arrBasket["PRODUCT_ID"])){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Вы исчерпали месячный лимит заказов данного поощрения."
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+
 
     // Получаем ID элемента каталога для данного предложения
     $arProduct = CIBlockElement::GetList(
@@ -263,46 +305,6 @@ elseif(isset($_GET["add_order"])){
         echo json_encode($answer);
         die;
     }
-    // Проверяем количество на складе
-    $arProductStore = CCatalogStoreProduct::GetList(
-        array(),
-        array(
-            "STORE_ID"  =>  intval($_GET["store_id"]),
-            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
-        )
-    )->GetNext();
-
-
-    if(
-        (
-        !isset($arProductStore["AMOUNT"])
-        ||
-        $arProductStore["AMOUNT"]<=0
-        )
-    ){
-        $answer = array(
-            "order"=>array(
-                "ERROR"=>array(
-                    "Исчерпание остатков."
-                )
-            )
-        );
-        echo json_encode($answer);
-        die;
-    }
-    // Проверяем месячный лимит (возвращает месячный лимит если он исчерпан)
-    if($failedLimit = failedMonLimit(CUSer::GetId(),$arrBasket["PRODUCT_ID"])){
-        $answer = array(
-            "order"=>array(
-                "ERROR"=>array(
-                    "Вы исчерпали месячный лимит заказов данного поощрения."
-                )
-            )
-        );
-        echo json_encode($answer);
-        die;
-    }
-
     $arFields = array();
     $arFields["LID"] = SITE_ID;
     $arFields["PERSON_TYPE_ID"] = 1;
