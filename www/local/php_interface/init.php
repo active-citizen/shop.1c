@@ -161,9 +161,11 @@
     
 
     require_once("mail.lib.php");
+
+    /*
     require_once("points.lib.php");
-   
     register_shutdown_function('pointsAlreadyUpdate'); 
+    */
 
 
     function MyOnBeforePrologHandler()
