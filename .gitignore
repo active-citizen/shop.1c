@@ -89,6 +89,8 @@ tests/stress/libs/conf.pm
 www/local/libs/phpqrcode/cache/*
 !www/local/libs/phpqrcode/cache/README.md
 
+# Игнорировать почтовую очередь
+mail_queue/*.eml
 
 # Игнорировать прочее
 #
