@@ -1,11 +1,67 @@
 \chapter{Взаимодействие с внешними сервисами}
     \section{Взаимодействие с \gloss{UNF}}
         \subsection{Общие принципы}
-        \subsection{Выгрузка каталога из \gloss{UNF}}
+        
+            \begin{enumerate}
+            
+                \item Взаимодействие осуществляется через http-протокол.
+                \item Во время любого акта взаимодействия \gloss{UNF} формирует 
+                    и посылает http-запрос на \gloss{exchange_url}, авторизуясь базовой
+                    http-авторизацией. Логин и пароль для http-авторизации указывается 
+                    от любого Bitrix-пользователя, имеющего права администратора.
+                \item \textbf{До тех пор пока \gloss{UNF} не пошлёт в \gloss{shop} по 
+                    \gloss{exchange_url} запрос, \gloss{shop} никакой информации в 
+                    \gloss{UNF} передать не может. Инициатор запросов - это строго 
+                    \gloss{UNF}}
+                \item Протокол обмена совместим с протоколом \textbf{CommerceML}, 
+                    организованный на основе \index{CommerceML} \textbf{XML} \index{XML}
+            \end{enumerate}
+
+        
+        \subsection{Выгрузка каталога, торговых предложений и складских остатков из \gloss{UNF}}
+            Выгрузка производится в 3 этапа:
+            \begin{enumerate}
+                \item выгрузка в \gloss{shop} архива с обменными файлами и файлами ресурсов(картинками);
+                \item экспорт каталога;
+                \item экспорт товарных предложений и складских отстатков;
+            \end{enumerate}
+            
+            \subsubsection{Схема выгрузки}
+                    
+            \subsubsection{Содержимое архива}
+
+        
         \subsection{Обмен заказами}
-            \subsubsection{Получение заказов из \gloss{UNF}}
-            \subsubsection{Передача заказов в \gloss{UNF}}
-            \subsubsection{ЗНИ на изменение статуса заказа}
+            \subsubsection{Передача заказов из \gloss{shop} в \gloss{UNF}}
+            \label{sec:send_order_to_unf}
+                При создании заказа посетителем \gloss{shop} он становится в очередь 
+                на отправку и для него формируется \gloss{zhi}.
+                
+                \paragraph{Схема передачи заказов из \gloss{shop} в \gloss{UNF}}
+                \paragraph{Содержимое XML-файла}
+                
+            \subsubsection{Передача заказов из \gloss{UNF} в \gloss{shop}}
+                Инициируется \gloss{UNF} в следующих случаях:
+                \begin{enumerate}
+                    \item создание нового заказа в \gloss{UNF};
+                    \item изменение статуса заказа и прочих параметров в \gloss{UNF}
+                    \item как реакция за загрузку заказа из \gloss{shop}, для передачи в магазин:
+                        \begin{itemize}
+                            \item реального статуса заказа в \gloss{UNF}; \index{статус заказа}
+                            \item \gloss{GoodsEndLockDate} \index{дата окончания бронирования}
+                        \end{itemize}
+                        передаётся в сеансе обмена, следующего за сенсом во время которого заказ был передан 
+                        в \gloss{UNF} из \gloss{shop} (см.\ref{sec:send_order_to_unf})
+                    \item в качестве \gloss{BackRequest} при аннулировании заказа \index{аннулирование заказа}
+                        в \gloss{UNF}
+                \end{enumerate}
+
+                \paragraph{Схема передачи заказов из \gloss{UNF} в \gloss{shop}}
+                \paragraph{Содержимое XML-файла}
+                
+                
+            \subsubsection{Выполнение заказа}
+            
     \section{Взаимодействие с \gloss{shop}  с \gloss{AGAPI}}
         \subsection{Авторизация пользователя}
         \subsection{Получение профиля}
