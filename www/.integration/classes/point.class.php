@@ -37,27 +37,6 @@
             
             CModule::IncludeModule("sale");
             
-            // Получаем номер счёта данного пользователя
-            $objSaleUserAccount = new CSaleUserAccount;
-            $res = $objSaleUserAccount->GetList(
-                array(),
-                array("USER_ID"=>$userId,"CURRENCY"=>"BAL")
-             );
-            $accountId = 0;
-            $accountAmount = 0;
-            // Создаём личный счет если ещё нет
-            if($arrAccount = $res->getNext()){
-                $accountId = $arrAccount["ID"];
-            }
-            else{
-        	$accountId = $objSaleUserAccount->Add(array(
-        	    "USER_ID"=>$userId,
-        	    "CURRENCY"=>"BAL",
-        	    "CURRENT_BUDGET"=>0
-        	));
-            }
-            
-            
             // Создаём индекс транзакций счёта, чтобы определять
             // есть ли уже начисление/списание из $history в транзакциях или нет
             // Ключ индекса - DEBIT+TRANSACT_DATE+DESCRIPTION
@@ -134,16 +113,43 @@
                 }
                    
             }
+            
+            $this->updateAccount($arPointsStatus, $userId);
+       }
+
+        /*
+            Обновление состяния счёта
+        */
+        function updateAccount($arPointsStatus, $userId){
+
+            // Получаем номер счёта данного пользователя
+            $objSaleUserAccount = new CSaleUserAccount;
+            $res = $objSaleUserAccount->GetList(
+                [], ["USER_ID"=>$userId,"CURRENCY"=>"BAL"],
+                false, ["nTopCount"=>1],["ID"]
+             );
+            $accountId = 0;
+            // Создаём личный счет если ещё нет
+            if($arrAccount = $res->getNext()){
+                $accountId = $arrAccount["ID"];
+            }
+            else{
+                $accountId = $objSaleUserAccount->Add(array(
+                    "USER_ID"=>$userId,
+                    "CURRENCY"=>"BAL",
+                    "CURRENT_BUDGET"=>0
+                ));
+            }
 
             // Изменяем размер счёта
             CSaleUserAccount::Update(
                 $accountId,
-                array(
+                $arFields = [
                     "USER_ID"       =>  $userId,
                     "CURRENT_BUDGET"=>  $arPointsStatus["current_points"],
                     "CURRENCY"      =>  "BAL",
                     "NOTES"         =>  "" 
-                )
+                ]
             );
 
             // Обновляем число заработанных баллов
@@ -163,15 +169,8 @@
                     $arPointsStatus["ag_status"]
                 ));
 
-    // Чистим кэш компонента фильтра для пользователя 
-    $objComponent = new CBitrixComponent();
-    $objComponent->initComponent("ag:filter");
-    $objComponent->clearResultCache(CUser::GetID());
-    
-    // Чистим кэш компонента главного меню 
-    $objComponent = new CBitrixComponent();
-    $objComponent->initComponent("ag:menu.top");
-    $objComponent->clearResultCache(CUser::GetID());
+            return true;
  
-        }
+         }
+
     }
