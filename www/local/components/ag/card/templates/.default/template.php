@@ -14,7 +14,11 @@ if(
 )$stopMonLimit =
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"];
 ?>
-        <? if($arResult["CATALOG_ITEM"]["ACTIVE"]=='N'):?>
+        <? if(
+            $arResult["CATALOG_ITEM"]["ACTIVE"]=='N' 
+            ||
+            $arResult["HIDE_ON_DATE"]
+        ):?>
             <div class="ag-shop-modal__alert">
                 <i class="ag-shop-icon ag-shop-icon--attention"></i>
                 <span>Поощрение недоступно (снято с реализации)

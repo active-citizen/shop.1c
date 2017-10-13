@@ -14,7 +14,10 @@
     //Определяем сумму на счету пользователя
     CModule::IncludeModule("sale");
     CModule::IncludeModule("forum");
-    $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>$arParams["USER_ID"]));
+    $res = CSaleUserAccount::GetList(
+        ["TIMESTAMP_X"=>"DESC"],
+        ["USER_ID"=>$arParams["USER_ID"]]
+    );
     $arResult["ACCOUNT"] = $res->GetNext();
 
 
@@ -41,7 +44,10 @@
     )->GetNext();
 
     // Сколько у товара всего желающих
-    $arFilter = array("IBLOCK_CODE"=>"whishes", "PROPERTY_WISH_PRODUCT"=>$arResult["CATALOG_ITEM"]["ID"]);
+    $arFilter = array(
+        "IBLOCK_CODE"=>"whishes", 
+        "PROPERTY_WISH_PRODUCT"=>$arResult["CATALOG_ITEM"]["ID"]
+    );
     $res1 = CIBlockElement::GetList(array(),$arFilter,false, array());
     $arResult["WISHES"] = $res1->SelectedRowsCount();
 
@@ -55,7 +61,9 @@
 
     // Свойства элемента каталога
     $arResult["CATALOG_ITEM"]["PROPERTIES"] = array();
-    $resProps = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$arResult["CATALOG_ITEM"]["ID"]);
+    $resProps = CIBlockElement::GetProperty(
+        $arParams["CATALOG_IBLOCK_ID"],$arResult["CATALOG_ITEM"]["ID"]
+    );
     while($arProp = $resProps->GetNext()){
         if(!isset($arResult["CATALOG_ITEM"]["PROPERTIES"]))
             $arResult["CATALOG_ITEM"]["PROPERTIES"][$arProp["CODE"]] = array();
@@ -278,6 +286,26 @@
 //        "{break}","\n",$arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
 //    );
 
+
+    // Вычисляем нужно ли прятать по дате отключения
+    $arResult["HIDE_ON_DATE"] = false;
+    if(
+        isset($arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_DATE"][0]["VALUE"])
+        && 
+        $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_DATE"][0]["VALUE"]
+    ){
+        $tmp =
+            date_parse(
+                $arResult["CATALOG_ITEM"]["PROPERTIES"]["HIDE_DATE"][0]["VALUE"]
+            );
+        if(isset($tmp["error_count"]) && !$tmp["error_count"]){
+            $nHideTimestamp = mktime(
+                $tmp["hour"], $tmp["minute"], $tmp["second"],
+                $tmp["month"], $tmp["day"], $tmp["year"]
+            );
+            if(time()>$nHideTimestamp)$arResult["HIDE_ON_DATE"] = true;
+        }
+    }
 
     $this->IncludeComponentTemplate();
 //}

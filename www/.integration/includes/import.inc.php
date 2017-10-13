@@ -437,15 +437,25 @@
         $tmp = date_parse($arProduct["ДатаОтключения"]);
         if(isset($tmp["error_count"]) && !$tmp["error_count"]){
             $arProperties["HIDE_DATE"] = 
-                $tmp["day"].".".$tmp["month"].".".$tmp["year"]." "
-                .$tmp["hour"].":".$tmp["minute"].":".$tmp["second"];
+                $tmp["day"]
+                .".".$tmp["month"]
+                .".".$tmp["year"]
+                ." ".($tmp["hour"]?$tmp["hour"]:"00")
+                .":".($tmp["minute"]?$tmp["minute"]:"00")
+                .":".($tmp["second"]?$tmp["second"]:"00")
+            ;
+        }
+        else{
+            $arProperties["HIDE_DATE"] =  "";
         }
 
          
         // Дата мероприятия
         if(trim($arProduct["ДатаМероприятия"])){
             $tmp = date_parse($arProduct["ДатаМероприятия"]);
-            $arProduct["ДатаМероприятия"] = date("d.m.Y",mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
+            $arProduct["ДатаМероприятия"] = date(
+                "d.m.Y",mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"])
+            );
             $arProperties["PERFOMANCE_DATE"] = $arProduct["ДатаМероприятия"];
         }
         else{
@@ -455,7 +465,9 @@
         // Использовать по дату
         if(trim($arProduct["ИспользоватьПоДату"])){
             $tmp2 = date_parse($arProduct["ИспользоватьПоДату"]);
-            $arProduct["ИспользоватьПоДату"] = date("d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"]));
+            $arProduct["ИспользоватьПоДату"] = date(
+                "d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"])
+            );
             $arProperties["USE_BEFORE_DATE"] = $arProduct["ИспользоватьПоДату"];
         }
         else{
