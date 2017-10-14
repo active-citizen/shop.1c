@@ -7,12 +7,24 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
     <? include("../menu.php"); ?>
     <? include("menu.php"); ?>
 
+    <?
+        switch($_REQUEST["type"]){
+            case "stores":
+                $type = 'stores';
+            break;
+            case "tags":
+                $type='tags';
+            break;
+            default:
+                $type = '';
+            break;
+        }
+    ?>
+
     <? if(
-        isset($_REQUEST["type"])
-        && preg_match("#[\w\d]+#",$_REQUEST["type"])
-        && file_exists("types/".$_REQUEST["type"].".type.php")
+        $type
     ):?>
-        <? include("types/".$_REQUEST["type"].".type.php");?>
+        <? include("types/".$type.".type.php");?>
     <? else:?>
         <div class="alert alert-error">Некорректный тип отчета</div>
     <? endif?>

@@ -121,7 +121,7 @@
                 <script>
                 $.post(
                 '/.integration/auth.ajax.php?backurl='+document.location.href,
-                {"session_id":'<?= $_COOKIE["EMPSESSION"];?>'},
+                {"session_id":'<?= htmlspecialchars($_COOKIE["EMPSESSION"]);?>'},
                 function(data){
                     var answer = {};
                     try{

@@ -140,7 +140,7 @@
     <? endif ?>
     <? if(!$arSearchResult):?>
     <div class="refresh">
-        <a href="?folder=<?= $sFolderPath?>&mode=<?= $sMode?>">
+        <a href="?folder=<?= $sFolderPath?>&mode=<?= htmlspecialchars($sMode)?>">
             <span class="glyphicon glyphicon-repeat"></span>
             Обновить
         </a>

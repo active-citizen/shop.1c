@@ -11,8 +11,6 @@
     )$sFolderPath = '';
 
     $sMode = '';
-    if(isset($_REQUEST['mode']) && $_REQUEST['mode'])
-        $sMode = $_REQUEST['mode'];
 
     $sFilename = $sRootFolder.$sFolderPath;
     if(is_dir($sFilename)){

@@ -1,6 +1,8 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы::Логи обмена");
+$sQuery = $_REQUEST["query"];
+if(!preg_match("#^[\s\d+]+$#",$sQuery))$sQuery= '';
 ?>
 <div class="partners-main">
     <h1>Просмотр логов обмена</h1>
@@ -9,7 +11,7 @@ $APPLICATION->SetTitle("Заказы::Логи обмена");
         <div class="left-menu">
            <iframe src="/partners/logs/tree.frame.php<? 
             if(isset($_REQUEST["query"]) && $_REQUEST["query"])
-                echo "?query=".$_REQUEST["query"];
+                echo "?query=".$sQuery;
            ?>"> 
            </iframe>
         </div>

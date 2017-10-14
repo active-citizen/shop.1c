@@ -7,11 +7,7 @@ $APPLICATION->SetTitle("Письма");
     <? include("../menu.php"); ?>
     <div class="log-palette">
         <div class="left-menu">
-           <iframe src="/partners/mails/tree.frame.php<? 
-            if(isset($_REQUEST["query"]) && $_REQUEST["query"])
-                echo "?query=".$_REQUEST["query"];
-           ?>"> 
-           </iframe>
+           <iframe src="/partners/mails/tree.frame.php"></iframe>
         </div>
         <div class="request-win">
             <iframe name="request_win"></iframe>
