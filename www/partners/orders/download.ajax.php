@@ -9,6 +9,12 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/includes/datafilter.lib.ph
 // Количество заказов, выгружаемых за квант
 define("ORDERS_QUANT",1000);
 
+$isPartnerOperator = ( 
+    in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+    ||
+    in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+);
+
 CModule::IncludeModule('catalog');
 
 // Если пользователь - не оператор и не партнёр и не админ - выкидываем его
@@ -318,11 +324,18 @@ if(isset($_REQUEST["download"])){
         "NUM_ROWS"=>$nNumRows
     );
 
+
+
     $fd = fopen($sFilename,"w");
     $row = mb_convert_encoding( 
         '"№"'
-        .";".'"ФИО покупателя"'
-        .";".'"Email"'   
+        .(
+            !$isPartnerOperator
+            ?
+            ";".'"ФИО покупателя"'.";".'"Email"'   
+            :
+            ""
+        )
         .";".'"Статус"'  
         .";".'"История статусов"'    
         .";".'"Дата добавления"'
@@ -503,12 +516,18 @@ if(isset($_REQUEST["continue"])){
         $nNum++;
         $row = mb_convert_encoding( 
             '"'.$arOrder["ADDITIONAL_INFO"].'"'
-            .";".'"'
-                .dataNormalize($arOrder["USER_LAST_NAME"])
-                ." "
-                .dataNormalize($arOrder["USER_NAME"])
-                .'"'
-            .";".'"'.$arOrder["USER_EMAIL"].'"'   
+            .(
+                !$isPartnerOperator
+                ?(
+                    ";".'"' .$isPartnerOperator.dataNormalize($arOrder["USER_LAST_NAME"])
+                    ." " .dataNormalize($arOrder["USER_NAME"])
+                    .'"'
+
+                    .";".'"'.$arOrder["USER_EMAIL"].'"'   
+                )
+                :
+                ""
+            )
             .";".'"'.$arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"].'"'  
             .";".''/*.'"История статусов"'*/
             .";".$arOrder["DATE_INSERT"]
