@@ -15,6 +15,9 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
             case "tags":
                 $type='tags';
             break;
+            case "order-doubles":
+                $type = 'order-doubles';
+            break;
             default:
                 $type = '';
             break;
@@ -29,6 +32,9 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
         <div class="alert alert-error">Некорректный тип отчета</div>
     <? endif?>
 
+    <form method="POST">
+    <input type="submit" name="save" value="Применить" class="btn btn-primary"
+    style="margin: 10px;">
     <table class="table table-bordered" id="result">
         <tr>
             <th>
@@ -68,6 +74,7 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
         </tr>
         <? endforeach ?>
     </table>
+    </form>
 
 
 </div>
