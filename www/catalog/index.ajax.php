@@ -136,7 +136,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     if(!isset($_SESSION["SORTINGS"]))$_SESSION["SORTINGS"] = array();
     $_SESSION["SORTINGS"][$sUri] = $arrSorting;
 
-customCache();
+//customCache();
 
 //    echo "<pre>";
 //    print_r($arrFilter);
@@ -163,7 +163,8 @@ customCache();
             `catalog`.`IBLOCK_SECTION_ID` as `SECTION_ID`,
             `catalog`.`DETAIL_PICTURE` as `DETAIL_PICTURE_ID`,
             `section`.`NAME` as `SECTION_NAME`,
-            `section`.`CODE` as `SECTION_CODE`
+            `section`.`CODE` as `SECTION_CODE`,
+            `hide_date`.`VALUE` as `hide_date`
     ";
 
     $sQueryFrom = "
@@ -190,7 +191,12 @@ customCache();
                 `hide`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
                 AND
                 `hide`.`IBLOCK_PROPERTY_ID` = ".$arPropList["HIDE_IF_ABSENT"]."
-
+                LEFT JOIN
+            `b_iblock_element_property` as `hide_date`
+                ON
+                `hide_date`.`IBLOCK_ELEMENT_ID`=`catalog`.`ID`
+                AND
+                `hide_date`.`IBLOCK_PROPERTY_ID` = ".$arPropList["HIDE_DATE"]."
                 
     ";
     if(
@@ -264,6 +270,7 @@ customCache();
             )
             AND `catalog`.`ACTIVE`='Y'
             AND `section`.`ACTIVE`='Y'
+            AND `hide_date`.`VALUE`>NOW()
             AND `catalog`.`IBLOCK_ID` = ".CATALOG_IB_ID." ";
     if(isset($arrFilter["SECTION_ID"]) && intval($arrFilter["SECTION_ID"]))
         $sQueryWhere .= " 
