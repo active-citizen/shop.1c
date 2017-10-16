@@ -360,7 +360,7 @@ elseif(isset($_GET["add_order"])){
         // Утратила актуальность в связи с добавление свойства заказа ЗНИ
         // 21.07.2017
         // CSaleOrder::Update($orderId, array("DATE_UPDATE"=>'00.00.00 00:00:00'));
-        $answer["redirect_url"] = "/profile/order/detail/$orderId/";
+        $answer["redirect_url"] = "/profile/order/";
 
         //// Обновляем свойства заказа из значений товарного каталога
         orderPropertiesUpdate($orderId);
