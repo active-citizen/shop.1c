@@ -51,6 +51,12 @@
                 <? endif?>
             </td>
         </tr>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <tr>
             <td class="field-name">
                 Клиент:     
@@ -66,6 +72,7 @@
                 <?= $arResult["ORDER"]["USER_EMAIL"]?>
             </td>
         </tr>
+        <? endif ?>
         <tr>
             <td class="field-name">
                  Телефон:    
