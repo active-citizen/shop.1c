@@ -2,7 +2,7 @@
 // Включаем безбитриксовое кеширование
 require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
 // Запись в ручной кэш (в обход битрикса)
-customCache();
+//customCache();
 //customCacheClear();
 //sleep(1);
 
@@ -136,6 +136,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     if(!isset($_SESSION["SORTINGS"]))$_SESSION["SORTINGS"] = array();
     $_SESSION["SORTINGS"][$sUri] = $arrSorting;
 
+customCache();
 
 //    echo "<pre>";
 //    print_r($arrFilter);
