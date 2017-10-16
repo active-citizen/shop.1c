@@ -134,12 +134,19 @@ onchange="document.getElementById('form_filter').submit();"
             value="<?= $arResult["FILTER"]["NUM"]?>"
             >
         </td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <td>
             <input type="text" name="filter_name" id="filter-name" 
             class="form-control"
             value="<?= $arResult["FILTER"]["LAST_NAME"]?>"
             >
         </td>
+        <? endif ?>
         <td>
             <select name="filter_status" id="filter-status" class="form-control">
                 <option value="">-все-</option>
@@ -161,12 +168,19 @@ onchange="document.getElementById('form_filter').submit();"
             echo Calendar( 'filter_adddate', '','form_filter');
             ?></div>
         </td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <td>
             <input type="text" name="filter_email" id="filter-email" 
             class="form-control"
             value="<?= $arResult["FILTER"]["EMAIL"]?>"
             >
         </td>
+        <? endif ?>
         <td>
             
             <input type="text" name="filter_product" id="filter-product" 
