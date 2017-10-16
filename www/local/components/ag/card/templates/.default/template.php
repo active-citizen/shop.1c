@@ -86,7 +86,7 @@ if(
                     Для заказа данного поощрения необходимо набрать 
                         <?= 
                             number_format(
-                                $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0
+                                $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," "
                             )
                         ?> 
                         <?= 
