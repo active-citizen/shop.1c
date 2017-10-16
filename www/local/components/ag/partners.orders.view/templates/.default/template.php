@@ -317,6 +317,13 @@ href="/partners/orders/print.php?print=cancel&order=<?=
             <td>
                 <?= intval($arBasket["BASKET_ITEM"]["PRICE"])?> б. 
              </td>
+        <tr>
+            <td style="width:200px;" colspan="2">
+            <?= 
+                $arBasket["PRODUCT"]["DETAIL_TEXT"]
+            ?>
+            </td>
+        </tr>
         </tr>
     </table>
 </td></tr></table>

@@ -114,8 +114,8 @@ while($arBasket = $resBasket->Fetch()){
         false,
         array("nTopCount"=>1),
         array(
-            "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE",
-            "PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
+            "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE","DETAIL_TEXT"
+            ,"PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
         )
     //  array()
     )->Fetch();
