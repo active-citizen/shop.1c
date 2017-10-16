@@ -40,6 +40,14 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_num" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
+
+
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <th>
             Имя покупателя
             <input name="sort_name" type="submit" value="&#9650;" 
@@ -47,6 +55,7 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_name" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
+        <? endif ?>
         <th width="80px">
             Статус
             <input name="sort_status" type="submit" value="&#9650;" 
@@ -61,6 +70,12 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_adddate" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <th width="200px">
             Email покупателя
             <input name="sort_email" type="submit" value="&#9650;" 
@@ -68,6 +83,7 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_email" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
+        <? endif ?>
         <th>
             Название товара
             <input name="sort_product" type="submit" value="&#9650;" 
@@ -118,12 +134,19 @@ onchange="document.getElementById('form_filter').submit();"
             value="<?= $arResult["FILTER"]["NUM"]?>"
             >
         </td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <td>
             <input type="text" name="filter_name" id="filter-name" 
             class="form-control"
             value="<?= $arResult["FILTER"]["LAST_NAME"]?>"
             >
         </td>
+        <? endif ?>
         <td>
             <select name="filter_status" id="filter-status" class="form-control">
                 <option value="">-все-</option>
@@ -145,12 +168,19 @@ onchange="document.getElementById('form_filter').submit();"
             echo Calendar( 'filter_adddate', '','form_filter');
             ?></div>
         </td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <td>
             <input type="text" name="filter_email" id="filter-email" 
             class="form-control"
             value="<?= $arResult["FILTER"]["EMAIL"]?>"
             >
         </td>
+        <? endif ?>
         <td>
             
             <input type="text" name="filter_product" id="filter-product" 
@@ -209,9 +239,16 @@ onchange="document.getElementById('form_filter').submit();"
         <td class="td-num">
             <?= $arOrder["ADDITIONAL_INFO"]?>
         </td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <td class="td-fio">
             <?= $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["VALUE"]?>
         </td>
+        <? endif ?>
         <td class="td-status">
             <?= $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]?><?
             if($arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]):?><br/>
@@ -225,9 +262,16 @@ onchange="document.getElementById('form_filter').submit();"
         <td class="td-date">
             <?= $arOrder["DATE_INSERT"]?>
         </td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <td class="td-email">
                 <?= $arOrder["USER_EMAIL"]?>
         </td>
+        <? endif ?>
         <td class="td-product">
             <a href="<?= $arOrder["PROPERTIES"]["PRODUCT_URL"]["VALUE"]?>" 
             target="_blank">
