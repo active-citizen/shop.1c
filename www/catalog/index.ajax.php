@@ -270,7 +270,13 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
             )
             AND `catalog`.`ACTIVE`='Y'
             AND `section`.`ACTIVE`='Y'
-            AND `hide_date`.`VALUE`>NOW()
+            AND (
+                `hide_date`.`VALUE`>NOW()
+                OR
+                `hide_date`.`VALUE` IS NULL
+                OR
+                `hide_date`.`VALUE`=''
+            )
             AND `catalog`.`IBLOCK_ID` = ".CATALOG_IB_ID." ";
     if(isset($arrFilter["SECTION_ID"]) && intval($arrFilter["SECTION_ID"]))
         $sQueryWhere .= " 
