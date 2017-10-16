@@ -136,7 +136,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     if(!isset($_SESSION["SORTINGS"]))$_SESSION["SORTINGS"] = array();
     $_SESSION["SORTINGS"][$sUri] = $arrSorting;
 
-//customCache();
+customCache();
 
 //    echo "<pre>";
 //    print_r($arrFilter);
