@@ -10,7 +10,7 @@ $arParams["PAGE"] =
     intval($_REQUEST["PAGEN_1"])
     :
     1;
-$arParams["ON_PAGE"]=20;
+$arParams["ON_PAGE"]=100;
 
 // Список складов, доступных пользователю
 $arUser = CUser::GetList(

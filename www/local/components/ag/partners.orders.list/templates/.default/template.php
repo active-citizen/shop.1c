@@ -161,12 +161,12 @@ onchange="document.getElementById('form_filter').submit();"
         <td>
             <div class="partners-date">
             <input type="text" name="filter_adddate" id="filter-adddate" 
-            class="form-control" 
+            class="form-control form-date" 
             value="<?= $arResult["FILTER"]["ADDDATE"]?>"
             >
-            <?
+            <?/*
             echo Calendar( 'filter_adddate', '','form_filter');
-            ?></div>
+            */?></div>
         </td>
         <? if(
             !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
@@ -219,12 +219,12 @@ onchange="document.getElementById('form_filter').submit();"
         <td>
             <div class="partners-date">
             <input type="text" name="filter_closedate" id="filter-closedate" 
-            class="form-control" 
+            class="form-control form-date" 
             value="<?= $arResult["FILTER"]["CLOSE_DATE"]?>"
             >
-            <?
+            <?/*
             echo Calendar( 'filter_closedate', '','form_filter');
-            ?></div>
+            */?></div>
         </td>
         <td>
             <input type="submit" name="filter" id="filter" 
@@ -318,5 +318,7 @@ onchange="document.getElementById('form_filter').submit();"
     'Заказы', '', 'Y');
 ?>
 </form>
-
+<script>
+$( ".form-date" ).datepicker({dateFormat:"dd.mm.yy"});
+</script>
 
