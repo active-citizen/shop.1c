@@ -142,12 +142,14 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
                           <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
                           <p class="ag-shop-item-card__category"><?= $product["SECTION_NAME"];?></p>
                           <div class="ag-shop-item-card__rating">
+                          <?/*
                             <? for($i=0;$i<round($product["RATING"]);$i++):?>
                             <div class="ag-shop-slider-card__rating-item ag-shop-slider-card__rating-item--active"></div>
                             <? endfor ?>
                             <? for($j=0;$j<5-round($product["RATING"]);$j++):?>
                             <div class="ag-shop-slider-card__rating-item"></div>
                             <? endfor ?>
+                          */?>
                           </div>
                           <div class="ag-shop-item-card__sizes">
                             <!--
