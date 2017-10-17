@@ -522,7 +522,8 @@ function getMounthProductCount(
 
     $sQuery = "
         SELECT
-            count(`b`.`ID`) as `count`
+            count(`b`.`ID`) as `count`,
+            DATE_FORMAT(DATE_ADD(`a`.`DATE_INSERT`, INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
             -- ,`a`.`DATE_INSERT` as `order_date`
             -- ,`c`.`VALUE_NUM` as `product_id`
             -- ,`a`.`ID` as `order_id`
@@ -547,7 +548,10 @@ function getMounthProductCount(
             1
     ";
     $arQuery = $DB->Query($sQuery)->Fetch();
-    return isset($arQuery["count"])?$arQuery["count"]:0; 
+    return [
+        "next"  =>  isset($arQuery["next"])?$arQuery["next"]:date("d.m.Y H:i:s"),
+        "count" =>  isset($arQuery["count"])?$arQuery["count"]:0
+    ]; 
 }
 
 /**
@@ -581,11 +585,13 @@ function failedMonLimit(
         array("PROPERTY_MON_LIMIT","ID")
     )->Fetch();
 
-    $failedLimit = 
+    $arFailedLimit = 
     getMounthProductCount(
         $nUserId,
         $arProduct["ID"]
-    ); 
+    );
+    $failedLimit = $arFailedLimit["count"];
+
     if(
         $arProduct["PROPERTY_MON_LIMIT_VALUE"]
         &&

@@ -73,10 +73,12 @@
     }
 
     // Вычисляем количество заказанного в этом месяце товара пользователем
-    $arResult["MON_ORDERS"] = getMounthProductCount(
+    $arLimitInfo = getMounthProductCount(
         CUser::GetId(),
         $arResult["CATALOG_ITEM"]["ID"]
     );
+    $arResult["MON_ORDERS"] = $arLimitInfo["count"];
+    $arResult["NEXT_ORDER"] = $arLimitInfo["next"];
 
     // Вычисляем рейтинг
     $arResult["CATALOG_ITEM"]["RATING"] = round($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]*5,2);
