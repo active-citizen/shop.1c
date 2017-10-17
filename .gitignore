@@ -72,6 +72,7 @@ docs/bcc/source/*.ilg
 .config
 .mc
 .elinks
+.mysql_history
 
 # Игнорировать конфиги http-авторизации
 etc/nginx/auth/*.conf
@@ -115,3 +116,5 @@ www/local/assets/libs/images/
 # связи троек с номерами телефонов 
 www/local/.migrations/migs/data/troika.csv
 11.php
+www/api/migrations/optimize.log
+
