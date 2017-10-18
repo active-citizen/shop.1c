@@ -74,6 +74,15 @@
         )->Fetch();
         define("INTEREST_PROPERTY_ID",$arr["ID"]);
 
+        // Определяем ID свойства ЦЕНА
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"MINIMUM_PRICE"
+            )
+        )->Fetch();
+        define("PRICE_PROPERTY_ID",$arr["ID"]);
+
         // Определяем ID свойства ссылка на товар каталога
         $arr = CIBlockProperty::GetList(
             array(), array(

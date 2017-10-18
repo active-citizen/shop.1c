@@ -32,7 +32,9 @@
         // Определяем ID свойства прятать при исчерпании остатков
         define("HIDE_IF_ABSENT_PROPERTY_ID", 84);
 
-        
+        // Определяем ID свойства цена
+        define("PRICE_PROPERTY_ID", 20);
+         
 
 
 

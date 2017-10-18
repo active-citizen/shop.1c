@@ -571,6 +571,22 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
             ON
                 `man_name`.`ORDER_PROPS_ID`=".$arProps["MANUFACTURER_NAME"]."
                 AND `man_name`.`ORDER_ID`=`order`.`ID`";
+        $sFrom .= "
+            LEFT JOIN
+        `b_sale_basket` as `basket`
+            ON
+                `basket`.`ORDER_ID`=`order`.`ID`
+            LEFT JOIN
+        `b_iblock_element_property` as `product_link`
+            ON 
+                `product_link`.`IBLOCK_PROPERTY_ID`= ".CML2_LINK_PROPERTY_ID."
+                AND `basket`.`PRODUCT_ID`=`product_link`.`IBLOCK_ELEMENT_ID`
+            LEFT JOIN
+        `b_iblock_element_property` as `price`
+            ON
+                `price`.`IBLOCK_PROPERTY_ID`=".PRICE_PROPERTY_ID."
+                AND `product_link`.`VALUE_NUM`=`price`.`IBLOCK_ELEMENT_ID`";
+
 
         $sWhere = "
             1";
@@ -826,7 +842,8 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
                 `product`.`VALUE` as `PRODUCT_NAME`,
                 `order`.`STORE_ID` as `STORE_ID`,
                 `section`.`VALUE` as `SECTION_NAME`,
-                `man_name`.`VALUE` as `MANUFACTURER_NAME`
+                `man_name`.`VALUE` as `MANUFACTURER_NAME`,
+                `price`.`VALUE_NUM` as `PRICE`
             FROM
                 $sFrom
             WHERE
@@ -849,7 +866,7 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
             $arOrder["STATUS_NAME"] = $arStatuses[$arOrder["STATUS_ID"]]["NAME"];
             $arOrders[] = $arOrder;
         }
-    
+
         return $arOrders;
     }
 
