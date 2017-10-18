@@ -384,7 +384,7 @@ if(isset($_REQUEST["continue"])){
     )
         $nOffset = 0;
     else
-        $nOffset = intval($_GET["PAGE"])*ORDERS_QUANT;
+        $nOffset = (intval($_GET["page"])-1)*ORDERS_QUANT;
 
     $arOrders = getDownloadOrders(
         $arFilter,$arOrder, false, $nLimit, $nOffset
@@ -485,7 +485,7 @@ type="text/css"  rel="stylesheet" />
 <script>
 <? if(
     (
-        (intval($_REQUEST['page'])-1)*ORDERS_QUANT
+        (intval($_REQUEST['page']))*ORDERS_QUANT
     )<=$_SESSION["ORDER_DOWNLOAD"]["NUM_ROWS"]
 ):
 ?>
