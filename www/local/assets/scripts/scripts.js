@@ -678,7 +678,8 @@ function agauth(encsession){
 	    catch(e){
             answer.errors = new Array(e.message);
 	    }
-	    
+	   
+        console.log(answer);
 	    // Ошибок нет - возвращаемся на страницу откуда авторизовались
 	    if(!answer.errors.length && answer.redirect){
             document.location.href = answer.redirect;
