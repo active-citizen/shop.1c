@@ -18,8 +18,9 @@ if($_SERVER["REQUEST_URI"]=='/profile/points/'){
     $session_id = $bxUser->getEMPSessionId();
     
     $args = array(
-        "session_id"     =>  $session_id,
-        "token"     =>  $EMP_TOKENS[CONTOUR]
+        "session_id"=>  $session_id,
+        "token"     =>  $EMP_TOKENS[CONTOUR],
+        "sync"      =>  true 
     );
     $agBrige->setMethod('pointsHistory');
     $agBrige->setMode('emp');

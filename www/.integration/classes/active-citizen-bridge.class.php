@@ -86,6 +86,10 @@
                         "require"   =>  true,
                         "regexp"    =>  "#^.{1,32}$#"
                     ),
+                    "sync" =>   [
+                        "name"=>"Синхронизация таблиц ККБ",
+                        "require"=>false
+                    ]
                 ),
                 "mode"=>"emp"
             ),
