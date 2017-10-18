@@ -430,7 +430,7 @@ if(isset($_REQUEST["continue"])){
             .'"'   
             .";".'""'//'"Модель"'  
             .";".'"'.($arOrder["STORE_NAME"]).'"'
-            .";".get_date($arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"],false)
+            .";".get_date($arOrder["CLOSE_DATE"],false)
             .";".'"'.($arOrder["SECTION_NAME"]).'"'
             .";".'"'.($arOrder["MANUFACTURER_NAME"]).'"'   
             .";".round($arOrder["PRICE"])
@@ -843,7 +843,8 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
                 `order`.`STORE_ID` as `STORE_ID`,
                 `section`.`VALUE` as `SECTION_NAME`,
                 `man_name`.`VALUE` as `MANUFACTURER_NAME`,
-                `price`.`VALUE_NUM` as `PRICE`
+                `price`.`VALUE_NUM` as `PRICE`,
+                `close`.`VALUE` as `CLOSE_DATE`
             FROM
                 $sFrom
             WHERE
