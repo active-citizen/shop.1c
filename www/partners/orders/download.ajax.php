@@ -292,28 +292,17 @@ if(isset($_REQUEST["download"])){
     if($_REQUEST["filter_sort"]=='category_name')
         $arOrder["PROPERTY_VAL_BY_CODE_SECTION_NAME"] = $_REQUEST["filter_order"];
     if($_request["filter_sort"]=='manufacturer_name')
-        $arorder["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $_request["filter_order"];
+        $arOrder["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $_request["filter_order"];
     if($_request["filter_sort"]=='price')
-        $arorder["PRICE"] = $_request["filter_order"];
+        $arOrder["PRICE"] = $_request["filter_order"];
 
 
     //echo "<pre>";
     //print_r($arFilter);
     //die;
 
-    // Запрашиваем
-    $resOrders = CSaleOrder::GetList(
-        $arOrder?$arOrder:array("ID"=>"DESC"),
-        $arFilter,
-        false,
-        array(
-           "nPageSize"  =>  1,
-           "iNumPage"   =>  1
-        ),
-        $arSelect
-    );
-
-    $nNumRows = $resOrders->SelectedRowsCount();
+    // Получаем общее число записей
+    $nNumRows = getDownloadOrders($arFilter,$arOrder, true);
 
     // Сохраняем параметры в сессию
     $_SESSION["ORDER_DOWNLOAD"] = array(
@@ -387,135 +376,28 @@ if(isset($_REQUEST["continue"])){
     $nextPage = intval($_REQUEST["page"])+1;
     $arOrder    = $_SESSION["ORDER_DOWNLOAD"]["ORDER"];
     $arFilter   = $_SESSION["ORDER_DOWNLOAD"]["FILTER"];
-    $arSelect   = array(
-        "ID",
-        "STATUS_ID",
-        "ADDITIONAL_INFO",
-        "USER_LAST_NAME",
-        "USER_NAME",
-        "DATE_INSERT",
-        "DATE_UPDATE",
-        "DATE_STATUS",
-        "USER_EMAIL",
-        "USER_LOGIN",
-        "STORE_ID",
-        "PRICE"
-    );
+    $nLimit = ORDERS_QUANT;
+    if(
+        !isset($_GET["page"])
+        ||
+        !intval($_GET["page"])
+    )
+        $nOffset = 0;
+    else
+        $nOffset = intval($_GET["PAGE"])*ORDERS_QUANT;
 
-    // Запрашиваем
-    $resOrders = CSaleOrder::GetList(
-        $arOrder?$arOrder:array("ID"=>"DESC"),
-        $arFilter,
-        false,
-        array(
-           "nPageSize"  => ORDERS_QUANT,
-           "iNumPage"   => intval($_REQUEST["page"]) 
-        ),
-        array()//$arSelect
-    );
+    $arOrders = getDownloadOrders(
+        $arFilter,$arOrder, false, $nLimit, $nOffset
+    );    
 
     $fd = fopen($_SESSION["ORDER_DOWNLOAD"]["FILENAME"],"a");
     $nNum = 0;
 
-    // Справочник статусов
-    $resStatuses = CSaleStatus::GetList();
-    $arResult["STATUSES"] = array();
-    while($arStatus = $resStatuses->Fetch())
-        $arResult["STATUSES"][$arStatus["ID"]] = $arStatus;
-
-    // Справочник центров выдачи
-    $resStores  = CCatalogStore::GetList(
-        array(),
-        array(),
-        false,false
-    );
-    $arStores = array();
-    while($arStore = $resStores->GetNext()){
-        $arStores[$arStore["ID"]] = $arStore;
-    }
-
-
-    // ID группы свойств
-    $arPropGroup = CSaleOrderPropsGroup::GetList(
-        array(),
-        $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
-        false,
-        array("nTopCount"=>1)
-    )->GetNext();
-    $nPropGroup = $arPropGroup["ID"];
-
-
-    while($arOrder = $resOrders->GetNext()){
+    foreach($arOrders as $arOrder){
         // Получаем историю заказа
-        
-        $arHistory = array();
-        $resHistory = CSaleOrderChange::GetList(
-            array("ID"=>"DESC"),
-            array(
-                "ORDER_ID"=>$arOrder["ID"]
-            ),
-            false,
-            array("nTopCount"=>10)
-
-        );
-        while($arHistoryItem = $resHistory->Fetch()){
-            $arHistory[] = $arHistoryItem;
-        }
-        // Получаем свойства 
-        /*
-        $resPropValues = CSaleOrderProps::GetList(
-            array("SORT" => "ASC"),
-            array(
-                    "ORDER_ID"       => $arOrder["ID"],
-                    "PERSON_TYPE_ID" => 1,
-                    "PROPS_GROUP_ID" => $nPropGroup,
-                    "CODE"           =>
-                        $arCodes = array("PRODUCT_NAME", "CLOSE_DATE", "SECTION_NAME",
-                        "MANUFACTURER_NAME") 
-                ),
-            false,
-            array("nTopCount"=>4),
-            array("ID","CODE")
-        );
-        //    PRODUCT_NAME, CLOSE_DATE, SECTION_NAME, MANUFACTURER_NAME, 
-
-        $arOrder["PROPERTIES"] = array();
-        while($arProp = $resPropValues->GetNext()){
-            
-            $arOrder["PROPERTIES"][$arProp["CODE"]] = 
-                CSaleOrderPropsValue::GetList(
-                    array(),
-                    $arFilterProp = array(
-                        "ORDER_ID"=>$arOrder["ID"],
-                        "ORDER_PROPS_ID"=>$arProp["ID"]
-                    ),false, array("nTopCount"=>1),
-                    array("VALUE")
-                )->GetNext();
-        }
-        */
-        $sSql = "
-            SELECT 
-                `CODE`,`VALUE` 
-            FROM 
-                `b_sale_order_props_value` 
-            WHERE
-                `ORDER_ID`=".$arOrder["ID"]." 
-                AND 
-                `CODE` IN
-                (
-                    'CLOSE_DATE'
-                    ,'MANUFACTURER_NAME'
-                    ,'PRODUCT_NAME'
-                    ,'SECTION_NAME'
-                );";
-        $res = $DB->query($sSql);
-        $arOrder["PROPERTIES"] = array();
-        while($arProp = $res->Fetch())
-            $arOrder["PROPERTIES"][$arProp["CODE"]] = $arProp;
-
         $nNum++;
         $row = mb_convert_encoding( 
-            '"'.$arOrder["ADDITIONAL_INFO"].'"'
+            '"'.$arOrder["ORDER_NUM"].'"'
             .(
                 !$isPartnerOperator
                 ?(
@@ -528,7 +410,7 @@ if(isset($_REQUEST["continue"])){
                 :
                 ""
             )
-            .";".'"'.$arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"].'"'  
+            .";".'"'.$arOrder["STATUS_NAME"].'"'  
             .";".''/*.'"История статусов"'*/
             .";".$arOrder["DATE_INSERT"]
             .";".$arOrder["DATE_UPDATE"]
@@ -544,13 +426,13 @@ if(isset($_REQUEST["continue"])){
             .";".'"'.str_replace("u","8",$arOrder["USER_LOGIN"]).'"' 
             .";".'" "'//'"Тип товара"'  
             .";".'"'.
-                dataNormalize($arOrder["PROPERTIES"]["PRODUCT_NAME"]["VALUE"])
+                ($arOrder["PRODUCT_NAME"])
             .'"'   
             .";".'""'//'"Модель"'  
-            .";".'"'.dataNormalize($arStores[$arOrder["STORE_ID"]]["TITLE"]).'"'
+            .";".'"'.($arOrder["STORE_NAME"]).'"'
             .";".get_date($arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"],false)
-            .";".'"'.dataNormalize($arOrder["PROPERTIES"]["SECTION_NAME"]["VALUE"]).'"'
-            .";".'"'.dataNormalize($arOrder["PROPERTIES"]["MANUFACTURER_NAME"]["VALUE"]).'"'   
+            .";".'"'.($arOrder["SECTION_NAME"]).'"'
+            .";".'"'.($arOrder["MANUFACTURER_NAME"]).'"'   
             .";".round($arOrder["PRICE"])
             .";".'""'//'"Стоимость в рублях"'
             ."\r\n",
@@ -615,3 +497,355 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
 <? endif ?>
 </script>
 </body>
+<?
+    /**
+        Получение списка заказов по фильтру
+    */
+    function getDownloadOrders(
+        $arFilter,
+        $arOrder,
+        $bOnlyCount=true, 
+        $nLimit=0,
+        $nOffset=0
+    ){
+        global $DB;
+
+        // Справочник статусов
+        $resStatuses = CSaleStatus::GetList();
+        $arStatuses = [];
+        while($arStatus = $resStatuses->Fetch())
+            $arStatuses[$arStatus["ID"]] = $arStatus;
+
+        // Справочник центров выдачи
+        $resStores  = CCatalogStore::GetList(
+            array(),
+            array(),
+            false,false
+        );
+        $arStores = array();
+        while($arStore = $resStores->GetNext()){
+            $arStores[$arStore["ID"]] = $arStore;
+        }
+
+
+        // Составляем справочник свойств
+        $sQuery = "SELECT `ID`,`CODE` FROM `b_sale_order_props`";        
+        $res = $DB->Query($sQuery);
+        $arProps = [];
+        while($arProp = $res->Fetch())$arProps[$arProp["CODE"]]=$arProp["ID"];
+
+        $sFrom = "
+            `b_sale_order` as `order`";
+        $sFrom .= "
+            LEFT JOIN
+        `b_user` as `user`
+            ON
+                `user`.`ID`=`order`.`USER_ID` ";
+        $sFrom .= "
+                LEFT JOIN
+            `b_sale_order_props_value` as `man`
+                ON
+                    `man`.`ORDER_PROPS_ID`=".$arProps["MANUFACTURER_ID"]."
+                    AND `man`.`ORDER_ID`=`order`.`ID`";
+        $sFrom .= "
+            LEFT JOIN
+        `b_sale_order_props_value` as `close`
+            ON
+                `close`.`ORDER_PROPS_ID`=".$arProps["CLOSE_DATE"]."
+                AND `close`.`ORDER_ID`=`order`.`ID`";
+        $sFrom .= "
+            LEFT JOIN
+        `b_sale_order_props_value` as `product`
+            ON
+                `product`.`ORDER_PROPS_ID`=".$arProps["PRODUCT_NAME"]."
+                AND `product`.`ORDER_ID`=`order`.`ID`";
+        $sFrom .= "
+            LEFT JOIN
+        `b_sale_order_props_value` as `section`
+            ON
+                `section`.`ORDER_PROPS_ID`=".$arProps["SECTION_NAME"]."
+                AND `section`.`ORDER_ID`=`order`.`ID`";
+        $sFrom .= "
+            LEFT JOIN
+        `b_sale_order_props_value` as `man_name`
+            ON
+                `man_name`.`ORDER_PROPS_ID`=".$arProps["MANUFACTURER_NAME"]."
+                AND `man_name`.`ORDER_ID`=`order`.`ID`";
+
+        $sWhere = "
+            1";
+
+
+
+        if(isset($arFilter["STATUS_ID"]))
+            $sWhere .= " 
+            AND `order`.`STATUS_ID`='".$DB->ForSql($arFilter["STATUS_ID"])."'";
+
+        if(isset($arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"])){
+             if(is_array($arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"]))
+                $sWhere .= "
+                    AND `man`.`VALUE` IN ("
+                        .$DB->ForSql(
+                            implode(",",
+                                $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"]
+                            )
+                        )
+                    .")";
+             else
+                $sWhere .= "
+                    AND `man`.`VALUE`= '"
+                        .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"])
+                    ."'";
+                
+        }
+
+
+
+        if(isset($arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
+            $sWhere .= "
+            AND `close`.`ORDER_ID` IS NOT NULL ";
+            $sWhere .= "
+                AND `close`.`VALUE`>= '"
+                    .ConvertDateTime(
+                        $arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"][0],
+                        "YYYY-MM-DD 00:00:00",
+                        "DD.MM.YYYY HH:MI:SS"
+                    )
+                ."' 
+                AND `close`.`VALUE`<= '"
+                    .ConvertDateTime(
+                        $arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"][1],
+                        "YYYY-MM-DD 23:59:59",
+                        "DD.MM.YYYY HH:MI:SS"
+                    )
+                ."'";
+        }
+        if(isset($arFilter[">PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
+            $sWhere .= "
+            AND `close`.`ORDER_ID` IS NOT NULL ";
+            $sWhere .= "
+                    AND `close`.`ORDER_ID`=`order`.`ID`
+                    AND `close`.`VALUE`>= '"
+                        .ConvertDateTime(
+                            $arFilter[">PROPERTY_VAL_BY_CODE_CLOSE_DATE"],
+                            "YYYY-MM-DD 00:00:00",
+                            "DD.MM.YYYY HH:MI:SS"
+                        )
+                    ."'";
+
+        }
+        if(isset($arFilter["<PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
+            $sWhere .= "
+            AND `close`.`ORDER_ID` IS NOT NULL ";
+            $sWhere .= "
+                    AND `close`.`ORDER_ID`=`order`.`ID`
+                    AND `close`.`VALUE`<='"
+                        .ConvertDateTime(
+                            $arFilter["<PROPERTY_VAL_BY_CODE_CLOSE_DATE"],
+                            "YYYY-MM-DD 23:59:59",
+                            "DD.MM.YYYY HH:MI:SS"
+                        )
+                    ."'";
+        }
+
+
+        if(isset($arFilter["STORE_ID"])){
+            if(is_array($arFilter["STORE_ID"]))
+                $sWhere .= "
+                AND `order`.`STORE_ID` IN ("
+                    .$DB->ForSql(implode(",",$arFilter["STORE_ID"]))
+                .")";
+            else
+                $sWhere .= "
+                AND `order`.`STORE_ID`=".intval($arFilter["STORE_ID"])."";
+        }
+
+        if(isset($arFilter["><DATE_INSERT"])){
+            $sWhere .= "
+            AND `order`.`DATE_INSERT`>='"
+                .ConvertDateTime(
+                    $arFilter["><DATE_INSERT"][0],
+                    "YYYY-MM-DD 00:00:00",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'
+            AND `order`.`DATE_INSERT`<='"
+                .ConvertDateTime(
+                    $arFilter["><DATE_INSERT"][1],
+                    "YYYY-MM-DD 23:59:59",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."' ";
+        }
+        if(isset($arFilter[">DATE_INSERT"])){
+            $sWhere .= "
+            AND `order`.`DATE_INSERT`>='"
+                .ConvertDateTime(
+                    $arFilter[">DATE_INSERT"],
+                    "YYYY-MM-DD 00:00:00",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'";
+        }
+        if(isset($arFilter["<DATE_INSERT"])){
+            $sWhere .= "
+            AND `order`.`DATE_INSERT`<='"
+                .ConvertDateTime(
+                    $arFilter["<DATE_INSERT"],
+                    "YYYY-MM-DD 23:59:59",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'";
+        }
+
+
+        if(isset($arFilter["><DATE_UPDATE"])){
+            $sWhere .= "
+            AND `order`.`DATE_UPDATE`>='"
+                .ConvertDateTime(
+                    $arFilter["><DATE_UPDATE"][0],
+                    "YYYY-MM-DD 00:00:00",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'
+            AND `order`.`DATE_UPDATE`<='"
+                .ConvertDateTime(
+                    $arFilter["><DATE_UPDATE"][1],
+                    "YYYY-MM-DD 23:59:59",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."' ";
+        }
+        if(isset($arFilter[">DATE_UPDATE"])){
+            $sWhere .= "
+            AND `order`.`DATE_UPDATE`>='"
+                .ConvertDateTime(
+                    $arFilter[">DATE_UPDATE"],
+                    "YYYY-MM-DD 00:00:00",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'";
+        }
+        if(isset($arFilter["<DATE_UPDATE"])){
+            $sWhere .= "
+            AND `order`.`DATE_UPDATE`<='"
+                .ConvertDateTime(
+                    $arFilter["<DATE_UPDATE"],
+                    "YYYY-MM-DD 23:59:59",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'";
+        }
+
+        if(isset($arFilter[">=DATE_STATUS"])){
+            $sWhere .= "
+            AND `order`.`DATE_STATUS`>='"
+                .ConvertDateTime(
+                    $arFilter[">=DATE_STATUS"],
+                    "YYYY-MM-DD 00:00:00",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'";
+        }
+
+        if(isset($arFilter["<=DATE_STATUS"])){
+            $sWhere .= "
+            AND `order`.`DATE_STATUS`<='"
+                .ConvertDateTime(
+                    $arFilter["<=DATE_STATUS"],
+                    "YYYY-MM-DD 23:59:59",
+                    "DD.MM.YYYY HH:MI:SS"
+                )
+            ."'";
+        }
+
+        if(isset($arFilter["%USER_LOGIN"])){
+            $sWhere .= "
+            AND `user`.`LOGIN` LIKE '%".$arFilter["%USER_LOGIN"]."%' ";
+        }
+
+        if(isset($arFilter["%PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"])){
+            $sWhere .="
+            AND
+            (
+                `user`.`NAME` LIKE '%"
+                    .$DB->ForSql($arFilter["%PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"])
+                    ."%'
+                OR
+                `user`.`LAST_NAME` LIKE '%"
+                    .$DB->ForSql($arFilter["%PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"])
+                ."%'
+            ) ";
+        }
+
+        $sGroupBy = "";
+
+        $sQuery = "
+            SELECT
+                COUNT(DISTINCT `order`.`ID`) as `COUNT`
+            FROM
+                $sFrom
+            WHERE
+                $sWhere
+        ";
+        $resOrder = $DB->Query($sQuery);
+        if($bOnlyCount){
+            $arOrder = $resOrder->Fetch();
+            return $arOrder["COUNT"];
+        }
+
+        if($nOffset && $nLimit)
+            $sLimit = "LIMIT $nOffset, $nLimit";
+        elseif($nLimit)
+            $sLimit = "LIMIT $nLimit";
+        else
+            $sLimit = "LIMIT 10";
+
+        if(isset($arOrder)){
+            $sOrder = '';
+            foreach($arOrder as $sField=>$sDirection)
+                $sOrder .= $sField." ".$sDirection.",";
+            $sOrder .= " `order`.`ID` ASC";
+        }
+        else{
+            $sOrder = "`order`.`ID` ASC";
+        }
+
+        $sQuery = "
+            SELECT
+                `order`.`ID` as `ORDER_ID`,
+                `order`.`ADDITIONAL_INFO` as `ORDER_NUM`,
+                `user`.`NAME` as `USER_NAME`,
+                `user`.`LAST_NAME` as `USER_LAST_NAME`,
+                `user`.`EMAIL` as `USER_EMAIL`,
+                `order`.`STATUS_ID` as `STATUS_ID`,
+                DATE_FORMAT(`order`.`DATE_INSERT`,'%d.%m.%Y') as `DATE_INSERT`,
+                DATE_FORMAT(`order`.`DATE_UPDATE`,'%d.%m.%Y') as `DATE_UPDATE`,
+                DATE_FORMAT(`order`.`DATE_STATUS`,'%d.%m.%Y') as `DATE_STATUS`,
+                `user`.`LOGIN` as `USER_LOGIN`,
+                `product`.`VALUE` as `PRODUCT_NAME`,
+                `order`.`STORE_ID` as `STORE_ID`,
+                `section`.`VALUE` as `SECTION_NAME`,
+                `man_name`.`VALUE` as `MANUFACTURER_NAME`
+            FROM
+                $sFrom
+            WHERE
+                $sWhere
+            $sGroupBy
+            ORDER BY
+                $sOrder
+            $sLimit
+        ";
+        $res = $DB->Query($sQuery);
+
+
+        $arOrders = [];
+        while($arOrder = $res->Fetch()){
+            $arOrder["STORE_NAME"] = $arStores[$arOrder["STORE_ID"]]["TITLE"];
+            $arOrder["STATUS_NAME"] = $arStatuses[$arOrder["STATUS_ID"]]["NAME"];
+            $arOrders[] = $arOrder;
+        }
+    
+        return $arOrders;
+    }
+
