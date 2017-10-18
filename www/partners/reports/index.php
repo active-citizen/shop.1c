@@ -18,6 +18,9 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
             case "order-doubles":
                 $type = 'order-doubles';
             break;
+            case "orders-export":
+                $type = 'orders-export';
+            break;
             default:
                 $type = '';
             break;
@@ -95,5 +98,8 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
     table#result th.row{
     }
 </style>
+<script>
+$( ".form-date" ).datepicker({dateFormat:"dd.mm.yy"});
+</script>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
 

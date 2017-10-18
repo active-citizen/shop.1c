@@ -36,6 +36,7 @@
                 {
                     "method":"points",
                     "args":{
+                        "sync":'.(isset($args["sync"]) && $args["sync"]?1:0).'
                     },
                     "session_id":"'.$args["session_id"].'"
                 }

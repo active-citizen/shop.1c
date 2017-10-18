@@ -29,7 +29,8 @@
                 property_exists($args, "debet") && $args->debet?$args->debet:false,
                 property_exists($args, "from") && $args->from?intval($args->from):false,
                 property_exists($args, "to") && $args->to?intval($args->to):false,
-                property_exists($args, "accepted") && $args->accepted?$args->accepted:false
+                property_exists($args, "accepted") && $args->accepted?$args->accepted:false,
+                property_exists($args, "sync") && $args->sync?$args->sync:false
             );
             return $result;
         }

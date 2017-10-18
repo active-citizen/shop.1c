@@ -399,26 +399,38 @@ href="/partners/orders/print.php?print=cancel&order=<?=
     </tr>
     <? endforeach ?>
 </table>
-<? if($arResult["ORDER"]["STATUS_ID"]=='N'):?>
-<select name="status_id" class="form-control" id="status_id">
-    <option value="F">Выполнен</option>
-</select>
-<input type="submit" name="chansge_status" value="Запросить смену статуса"
-class="btn btn-primary">
-<? endif ?>
+<? if($USER->IsAdmin()):?>
+    <select name="status_id" class="form-control" id="status_id">
+        <option value="F">Выполнен</option>
+        <option value="AI">Аннулирован</option>
+        <option value="N">В работе</option>
+        <option value="AF">Отклонён</option>
+        <option value="AC">Брак</option>
+        
+    </select>    
+    <input type="submit" name="chansge_status" value="Запросить смену статуса"
+    class="btn btn-primary">
+<? else:?>
+    <? if($arResult["ORDER"]["STATUS_ID"]=='N'):?>
+    <select name="status_id" class="form-control" id="status_id">
+        <option value="F">Выполнен</option>
+    </select>
+    <input type="submit" name="chansge_status" value="Запросить смену статуса"
+    class="btn btn-primary">
+    <? endif ?>
 
-<? if(
-    $arResult["ORDER"]["STATUS_ID"]=='F' 
-    &&
-    isset($arResult["ORDER"]["CURL_LOG"])
-):?>
-<select name="status_id" class="form-control" id="status_id">
-    <option value="AG">Отменён</option>
-</select>
-<input type="submit" name="chansge_status" value="Запросить смену статуса"
-class="btn btn-primary">
+    <? if(
+        $arResult["ORDER"]["STATUS_ID"]=='F' 
+        &&
+        isset($arResult["ORDER"]["CURL_LOG"])
+    ):?>
+    <select name="status_id" class="form-control" id="status_id">
+        <option value="AG">Отменён</option>
+    </select>
+    <input type="submit" name="chansge_status" value="Запросить смену статуса"
+    class="btn btn-primary">
+    <? endif ?>
 <? endif ?>
-
 </form>
 </div>
 

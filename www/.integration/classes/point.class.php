@@ -183,7 +183,9 @@
                 
             ]
         */
-        function fetchAccountFromAPI(){
+        function fetchAccountFromAPI(
+            $sync = false //!< Вызвать синхронизацию таблиц ККБ
+        ){
             require(
                 realpath(dirname(__FILE__)."/..")
                 ."/secret.inc.php"
@@ -207,8 +209,9 @@
             $session_id = $bxUser->getEMPSessionId();
             
             $args = array(
-                "session_id"     =>  $session_id,
-                "token"     =>  $EMP_TOKENS[CONTOUR]
+                "session_id"=>  $session_id,
+                "token"     =>  $EMP_TOKENS[CONTOUR],
+                "sync"      =>  $sync
             );
             $agBrige->setMethod('pointsHistory');
             $agBrige->setMode('emp');

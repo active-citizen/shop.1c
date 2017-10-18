@@ -20,8 +20,8 @@
     ,0);
     $GLOBALS["DB"]->delete("transacts_brief_00",["user_id"=>0], "" ,0);
 
-    $GLOBALS["DB"]->sql_query("OPTIMIZE TABLE `transacts_brief_00`");
-    $GLOBALS["DB"]->sql_query("OPTIMIZE TABLE `transacts_detail_00`");
+    $GLOBALS["DB"]->sql_query("OPTIMIZE TABLE `transacts_brief_00`","CHANGE");
+    $GLOBALS["DB"]->sql_query("OPTIMIZE TABLE `transacts_detail_00`","CHANGE");
 ?>
 <script>
 setTimeout(function(){document.location.href='/api/sess.php';},30000);

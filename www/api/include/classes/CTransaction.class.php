@@ -71,58 +71,61 @@
             $sDebet=0, 
             $nFromTimestamp = false,
             $nToTimestamp = false,
-            $nAccepted = 1
+            $nAccepted = 1,
+            $bSync = false
         ){
             // Получаем ID пользователя по сесссии
             $CSession = new CSession;
             $arSession = $CSession->get($sSessionId);
             
             // Обновляем транзакции из ЕМП
-            $this->updatePointsFromEMP($sSessionId,$arSession["user_id"]);
-           
+            $arEMPAnswer = $this->updatePointsFromEMP($sSessionId,$arSession["user_id"],$bSync);
+            
             $sUserSuffix = CUser::getSuffix($arSession["user_id"]);
             
-            // Условия для выборки
-            $sCond = "`a`.`user_id`=".intval($arSession["user_id"]);
-            if($nAppId!==false)
-                $sCond .= " AND  `a`.`application_id`='".$nAppId."'";
+            if($bSync){
+                // Условия для выборки
+                $sCond = "`a`.`user_id`=".intval($arSession["user_id"]);
+                if($nAppId!==false)
+                    $sCond .= " AND  `a`.`application_id`='".$nAppId."'";
+                    
+                if(intval($sDebet)>0)
+                    $sCond .= " AND  `a`.`debet`>0";
+                elseif(intval($sDebet)<0)
+                    $sCond .= " AND  `a`.`debet`<0";
+                    
+                if($nFromTimestamp!==false)
+                    $sCond .= " AND  `a`.`ctime`>='".date("Y-m-d H:i:s",intval($nFromTimestamp))."'";
+                if($nToTimestamp!==false)
+                    $sCond .= " AND  `a`.`ctime`<='".date("Y-m-d H:i:s",intval($nToTimestamp))."'";
+                if($nAccepted!==false)
+                    $sCond .= " AND  `a`.`accepted`='".$nAccepted."'";
+                    
+                $arTables = array();
+                $arTables["a"] = "transacts_brief_".$sUserSuffix;
+                $arTables["b"] = "transacts_detail_".$sUserSuffix;
+                $arJoin["`a`.`id`=`b`.`transaction_id`"] = "LEFT";
                 
-            if(intval($sDebet)>0)
-                $sCond .= " AND  `a`.`debet`>0";
-            elseif(intval($sDebet)<0)
-                $sCond .= " AND  `a`.`debet`<0";
-                
-            if($nFromTimestamp!==false)
-                $sCond .= " AND  `a`.`ctime`>='".date("Y-m-d H:i:s",intval($nFromTimestamp))."'";
-            if($nToTimestamp!==false)
-                $sCond .= " AND  `a`.`ctime`<='".date("Y-m-d H:i:s",intval($nToTimestamp))."'";
-            if($nAccepted!==false)
-                $sCond .= " AND  `a`.`accepted`='".$nAccepted."'";
-                
-            $arTables = array();
-            $arTables["a"] = "transacts_brief_".$sUserSuffix;
-            $arTables["b"] = "transacts_detail_".$sUserSuffix;
-            $arJoin["`a`.`id`=`b`.`transaction_id`"] = "LEFT";
-            
-            $arFields = array(
-                "UNIX_TIMESTAMP(`a`.`ctime`)"                   =>  "date",
-                "`a`.`quantity`*`a`.`debit`*`a`.`accepted`"     =>  "points",
-                "`b`.`comment`"                                 =>  "title",
-                "IF(`a`.`debit`>0,'debit','credit')"            =>  "action",
+                $arFields = array(
+                    "UNIX_TIMESTAMP(`a`.`ctime`)"                   =>  "date",
+                    "`a`.`quantity`*`a`.`debit`*`a`.`accepted`"     =>  "points",
+                    "`b`.`comment`"                                 =>  "title",
+                    "IF(`a`.`debit`>0,'debit','credit')"            =>  "action",
 
-                "`a`.`ctime`"                                   =>  "ctime",
-                "DATE_FORMAT(`a`.`ctime`,'%d.%m.%Y %H:%i:%s')"  =>  "ctimef",
-                "`a`.`quantity`"                                =>  "quantity",
-                "`a`.`debit`"                                   =>  "debit",
-                "`a`.`accepted`"                                =>  "accepted",
-                "`a`.`crc32`"                                   =>  "crc32",
-            );
-            
-            $GLOBALS["DB"]->rows =array();
-            $GLOBALS["DB"]->search($arTables,$arJoin,array(),$sCond, "`a`.`ctime` DESC", 0,0,$arFields);
-            $arHistory = $GLOBALS["DB"]->rows;
-            $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
+                    "`a`.`ctime`"                                   =>  "ctime",
+                    "DATE_FORMAT(`a`.`ctime`,'%d.%m.%Y %H:%i:%s')"  =>  "ctimef",
+                    "`a`.`quantity`"                                =>  "quantity",
+                    "`a`.`debit`"                                   =>  "debit",
+                    "`a`.`accepted`"                                =>  "accepted",
+                    "`a`.`crc32`"                                   =>  "crc32",
+                );
                 
+                $GLOBALS["DB"]->rows =array();
+                $GLOBALS["DB"]->search($arTables,$arJoin,array(),$sCond, "`a`.`ctime` DESC", 0,0,$arFields);
+                $arHistory = $GLOBALS["DB"]->rows;
+            }
+            $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
+
             return array(
                 "history"   =>  $arHistory,
                 "status"    =>  $arUserPoints
@@ -132,7 +135,7 @@
         /**
          *  Обновляем баллы из ЕМП в таблицах
         */
-        function updatePointsFromEMP($sSessionId, $nUserId){
+        function updatePointsFromEMP($sSessionId, $nUserId,$bSync = false){
             $CUser = new CUser;
 
             $data = array(
@@ -151,7 +154,7 @@
                 $data, 
                 array("Content-Type: application/json")
             );
-            
+           
             $data = json_decode($data);       
             // Обновляем EMP поебень
             if(
@@ -211,7 +214,7 @@
             )
                 $arPoints = $data->result->history;
                 
-            if(is_array($arPoints))foreach($arPoints as $arPoint){
+            if($bSync && is_array($arPoints))foreach($arPoints as $arPoint){
                 $arExistsTransaction = $this->get(
                     $nUserId,
                     $arPoint->date,
@@ -232,6 +235,8 @@
             }
             // пересчитываем баланс пользователя
             $CUser->updateBalance($nUserId);
+
+            return $data;
         }
         
         

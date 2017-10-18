@@ -96,8 +96,17 @@
                 ($order_by?"ORDER BY $order_by":"")." LIMIT 1";
     
             $stha = $this->sql_query($query, "select");
-            $this->record = $stha->fetch_assoc();
-            if(is_array($this->record) && $this->stripcslashes)foreach($this->record as $k=>$v)$this->record[$k] = stripcslashes($v);
+            if(method_exists($stha,"fetch_assoc")){
+                $this->record = $stha->fetch_assoc();
+            }
+            else{
+        	$fd = fopen($_SERVER["DOCUMENT_ROOT"]."/scc_err.txt","w");
+        	fwrite($fd, print_r(debug_backtrace(), 1));
+        	fclose($fd);
+
+            }
+            
+	    if(is_array($this->record) && $this->stripcslashes)foreach($this->record as $k=>$v)$this->record[$k] = stripcslashes($v);
             unset($stha);unset($query);unset($where);
     
             if(!$this->record)return false;

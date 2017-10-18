@@ -18,7 +18,12 @@
         ["TIMESTAMP_X"=>"DESC"],
         ["USER_ID"=>$arParams["USER_ID"]]
     );
-    $arResult["ACCOUNT"] = $res->GetNext();
+
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
+    $objPoints = new bxPoint;
+    $arPoints = $objPoints->fetchAccountFromAPI();
+    $arResult["ACCOUNT"] =
+       ["CURRENT_BUDGET"=>$arPoints["status"]["current_points"]];
 
 
     CModule::IncludeModule('iblock');
