@@ -413,7 +413,13 @@
                     $answer["errors"][] = $this->error;
                 }
                 else{
+                    /*
+                    require_once("classes/point.class.php");
+                    $objPoints = new bxPoint;
+                    $answer["points"] = $objPoints->fetchAccountFromAPI();
+                    */
                     //=========== Стягиваем баллы =========
+                    /*
                     $args = array(
                         "session_id"    =>  $profile["session_id"],
                         "token"         =>  $EMP_TOKENS[CONTOUR]
@@ -435,6 +441,7 @@
                     }
         //            $answer["redirect"] =
         //            trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
+                    */
                     return $answer;
                 }
             }
