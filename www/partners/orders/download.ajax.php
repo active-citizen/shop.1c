@@ -485,7 +485,7 @@ type="text/css"  rel="stylesheet" />
 <script>
 <? if(
     (
-        (intval($_REQUEST['page']))*ORDERS_QUANT
+        (intval($_REQUEST['page'])-1)*ORDERS_QUANT
     )<=$_SESSION["ORDER_DOWNLOAD"]["NUM_ROWS"]
 ):
 ?>
@@ -819,9 +819,9 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
                 `user`.`LAST_NAME` as `USER_LAST_NAME`,
                 `user`.`EMAIL` as `USER_EMAIL`,
                 `order`.`STATUS_ID` as `STATUS_ID`,
-                DATE_FORMAT(`order`.`DATE_INSERT`,'%d.%m.%Y') as `DATE_INSERT`,
-                DATE_FORMAT(`order`.`DATE_UPDATE`,'%d.%m.%Y') as `DATE_UPDATE`,
-                DATE_FORMAT(`order`.`DATE_STATUS`,'%d.%m.%Y') as `DATE_STATUS`,
+                DATE_FORMAT(`order`.`DATE_INSERT`,'%d.%m.%Y %H:%i:%s') as `DATE_INSERT`,
+                DATE_FORMAT(`order`.`DATE_UPDATE`,'%d.%m.%Y %H:%i:%s') as `DATE_UPDATE`,
+                DATE_FORMAT(`order`.`DATE_STATUS`,'%d.%m.%Y %H:%i:%s') as `DATE_STATUS`,
                 `user`.`LOGIN` as `USER_LOGIN`,
                 `product`.`VALUE` as `PRODUCT_NAME`,
                 `order`.`STORE_ID` as `STORE_ID`,
@@ -838,6 +838,10 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
         ";
         $res = $DB->Query($sQuery);
 
+
+//        echo "<pre>";
+//        echo $sQuery;
+//        die;
 
         $arOrders = [];
         while($arOrder = $res->Fetch()){
