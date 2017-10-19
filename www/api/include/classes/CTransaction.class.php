@@ -82,7 +82,8 @@
             $arEMPAnswer = $this->updatePointsFromEMP($sSessionId,$arSession["user_id"],$bSync);
             
             $sUserSuffix = CUser::getSuffix($arSession["user_id"]);
-            
+           
+            $arHistory = [];
             if($bSync){
                 // Условия для выборки
                 $sCond = "`a`.`user_id`=".intval($arSession["user_id"]);
@@ -124,11 +125,11 @@
                 $GLOBALS["DB"]->search($arTables,$arJoin,array(),$sCond, "`a`.`ctime` DESC", 0,0,$arFields);
                 $arHistory = $GLOBALS["DB"]->rows;
             }
-            $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
+//          $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
 
             return array(
                 "history"   =>  $arHistory,
-                "status"    =>  $arUserPoints
+                "status"    =>  get_object_vars($arEMPAnswer->result->status)
             );
         }
         
