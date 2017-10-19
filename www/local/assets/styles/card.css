@@ -916,6 +916,7 @@ body {
   position: relative;
   margin: 0 auto;
   width: 320px;
+  min-height: 320px;
   height: 320px;
   background: #f8f8f8;
   border-radius: 3px;
@@ -957,6 +958,7 @@ body {
 }
 .ag-shop-card__preview {
   display: inline-block;
+  min-height: 60px;
   height: 60px;
   width: 60px;
   margin-left: 9px;
@@ -2020,6 +2022,7 @@ input:checked + .ag-shop-card__places-item:before {
 
   .ag-shop-card__image-container {
     width: 420px;
+    min-height: 420px;
     height: 420px;
   }
 }

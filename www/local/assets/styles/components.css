@@ -554,6 +554,7 @@
   position: relative;
   margin: 0 auto;
   width: 320px;
+  min-height: 320px;
   height: 320px;
   padding: 60px;
   background: #f8f8f8;
@@ -728,6 +729,7 @@
 }
 .ag-shop-item-card__likes-icon {
   width: 26px;
+  min-height: 24px;
   height: 24px;
   background-image: url("../images/icons.png");
   background-image: linear-gradient(to bottom, transparent, transparent), url("../images/icons.svg");
@@ -1106,6 +1108,7 @@
 }
 .ag-shop-slider-card__likes-icon {
   width: 26px;
+  min-height: 24px;
   height: 24px;
   background-image: url("../images/icons.png");
   background-image: linear-gradient(to bottom, transparent, transparent), url("../images/icons.svg");
