@@ -426,7 +426,7 @@ if(isset($_REQUEST["continue"])){
             .";".'"'.str_replace("u","8",$arOrder["USER_LOGIN"]).'"' 
             .";".'" "'//'"Тип товара"'  
             .";".'"'.
-                ($arOrder["PRODUCT_NAME"])
+                htmlentities($arOrder["PRODUCT_NAME"],ENT_QUOTES|ENT_HTML401)
             .'"'   
             .";".'""'//'"Модель"'  
             .";".'"'.($arOrder["STORE_NAME"]).'"'
