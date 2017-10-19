@@ -265,7 +265,7 @@ href="/partners/orders/print.php?print=cancel&order=<?=
 <iframe src="" name="print" style="display:none;"></iframe>
 </div>
 <?foreach($arResult["ORDER"]["BASKET"] as $arBasket):?>
-<table><tr><td style="width:450px;">
+<table><tr><td style="width:450px; vertical-align: top;">
     <div class="product-image">
         <img src="<?= $arBasket["PRODUCT"]["IMAGE"]?>"
         class="img-thumbnail partners-product-photo" alt="Responsive image"> 
