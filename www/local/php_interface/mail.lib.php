@@ -5,7 +5,7 @@
     function eventOrderStatusSendEmail(
         $orderId, &$eventName, &$arFields, $orderStatus
     ){
-        
+    
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderId);
 

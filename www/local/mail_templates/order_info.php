@@ -40,5 +40,16 @@ $html .='
                 </tr>';
         include("promocodes.php");
         $html .= '
-            </table>
-        </p> ';
+            </table>'
+        .(
+            isset($arFields["SUPPORT_COMMENT"])
+            &&
+            trim($arFields["SUPPORT_COMMENT"])
+            ?
+            '<div style="margin:20px;color: red;">Комментарий: <span style="font-weight:bold;">'
+            .$arFields["SUPPORT_COMMENT"]
+            .'</span></div>'
+            :
+            ""
+        )
+        .'</p> ';

@@ -413,7 +413,11 @@
                     echo "Store ID undefined ".print_r($arDocument,1)."\n";
                 continue;
             }
-            
+           
+            // Запоминаем комментарий к заказу
+            $sSupportComment =
+               $arDocument["История"]["Состояние"][0]["Комментарий"];
+
             $sStoreId = $arDocument["История"]["Состояние"][0]["Склад"];
             if(!$arStore = CCatalogStore::GetList(
                 array(),
@@ -651,7 +655,9 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     eventOrderStatusSendEmail(
-                        $orderId, $statusId, ($arFields = array()), $statusId
+                        $orderId, $statusId, ($arFields = array(
+                            "SUPPORT_COMMENT"=>$sSupportComment
+                        )), $statusId
                     );
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
@@ -666,7 +672,9 @@
                     )
                 ){
                     eventOrderStatusSendEmail(
-                        $orderId, $statusId, ($arFields = array()), $statusId
+                        $orderId, $statusId, ($arFields = array(
+                            "SUPPORT_COMMENT"=>$sSupportComment
+                        )), $statusId
                     );
                 }
                 // Обрабатываем отмену
@@ -695,7 +703,9 @@
                         $answer["error"] .= "Заказ не был отменён.";
                     }
                     eventOrderStatusSendEmail(
-                        $orderId, $statusId, ($arFields = array()), $statusId
+                        $orderId, $statusId, ($arFields = array(
+                            "SUPPORT_COMMENT"=>$sSupportComment
+                        )), $statusId
                     );
 
                     // Увеличикаем запасы на складе 
