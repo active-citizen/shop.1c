@@ -139,7 +139,7 @@ if(
                           <div class="ag-shop-card__image"></div>
                           <div class="ag-shop-card__image-info">
                             <div class="ag-shop-card__image-points">
-                              <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,",","")?></div>
+                              <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")?></div>
                               <div class="ag-shop-item-card__points-text"><?=
                               get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," "))?></div>
                             </div>
