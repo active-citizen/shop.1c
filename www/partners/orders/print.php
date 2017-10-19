@@ -170,10 +170,16 @@ if($_REQUEST["print"]=='act'){
     $oExcel->getActiveSheet()->setCellValue('G15', 
         intval($arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["PRICE"])
     );
-    $oExcel->getActiveSheet()->setCellValue('C18', 
-        $arResult["USER"]["LAST_NAME"]
-        ." ".$arResult["USER"]["NAME"]
-    ); 
+    $sConsumerFIO = (
+        !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+        &&
+        !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+        ?
+        $arResult["USER"]["LAST_NAME"] ." ".$arResult["USER"]["NAME"]
+        :
+        ""
+    );
+    $oExcel->getActiveSheet()->setCellValue('C18', $sConsumerFIO); 
     $oExcel->getActiveSheet()->setCellValue('C23', 
         $arResult["SALER"]["LAST_NAME"]
         ." ".$arResult["SALER"]["NAME"]
