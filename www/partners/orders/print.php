@@ -171,19 +171,21 @@ if($_REQUEST["print"]=='act'){
         intval($arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["PRICE"])
     );
     $sConsumerFIO = (
+        (
         !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
         &&
         !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+        )
         ?
-        $arResult["USER"]["LAST_NAME"] ." ".$arResult["USER"]["NAME"]
+        $arResult["SALER"]["LAST_NAME"]
+        ." ".$arResult["SALER"]["NAME"]
         :
         ""
     );
-    $oExcel->getActiveSheet()->setCellValue('C18', $sConsumerFIO); 
-    $oExcel->getActiveSheet()->setCellValue('C23', 
-        $arResult["SALER"]["LAST_NAME"]
-        ." ".$arResult["SALER"]["NAME"]
-    );
+    $oExcel->getActiveSheet()->setCellValue('C18', 
+        $arResult["USER"]["LAST_NAME"] ." ".$arResult["USER"]["NAME"]
+    ); 
+    $oExcel->getActiveSheet()->setCellValue('C23', $sConsumerFIO);
     $oExcel->getActiveSheet()->getCell('B25')->setValueExplicit('1.1',
     PHPExcel_Cell_DataType::TYPE_STRING);
     $sPhone = str_replace("u7","  ",$arResult["SALER"]["LOGIN"]);
