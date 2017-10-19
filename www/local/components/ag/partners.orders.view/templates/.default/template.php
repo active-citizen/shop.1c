@@ -287,6 +287,14 @@ href="/partners/orders/print.php?print=cancel&order=<?=
         </tr>
         <tr>
             <td style="width:200px;">
+                Единица измерения
+            </td>
+            <td>
+                <?= $arBasket["PRODUCT"]["PROPERTY_QUANT_VALUE"]?> 
+            </td>
+        </tr>
+        <tr>
+            <td style="width:200px;">
                 Категория
             </td>
             <td>
