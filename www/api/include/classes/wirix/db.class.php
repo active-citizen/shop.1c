@@ -321,7 +321,7 @@
             return true;
         }
 
-        private function escape($string){
+        function escape($string){
             if(is_array($string))print_r($string);
             return $this->link->real_escape_string($string);
         }

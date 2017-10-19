@@ -350,9 +350,11 @@ elseif(isset($_GET["add_order"])){
         //// Запоминаем номер заказа
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>$sOrderNum));
         // Делаем заказ оплаченным
+
         CSaleOrder::PayOrder(
             $orderId, "Y", false
         );
+
 
         // Назначаем заказу корзину
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
@@ -479,10 +481,17 @@ elseif(isset($_GET["add_order"])){
                     ."/.integration/classes/order.class.php"
             );
             $obOrder = new bxOrder();
-            $resOrder = $obOrder->addEMPPoints(
+            if(!$bPointsSuccess = $obOrder->addEMPPoints(
                 -$totalSum,
                 "Заказ Б-$orderId в магазине поощрений АГ"
-            );
+            )){
+                $answer = [
+                    "order"=>[
+                        "ERROR" => [$obOrder->error]
+                    ]
+                ];
+            }
+
             ///////////
         }
 
@@ -492,7 +501,8 @@ elseif(isset($_GET["add_order"])){
         // Если парковка провалилась - остатки не снимаем
         elseif($sParkingStatus == 2){
         }
-        else{
+        // Если не снялись баллы - остатки не снимаем
+        elseif($bPointsSuccess){
             //////////////////////// Снимаем остатки ////////////////////////
             // Получаем список товаров к заказу
             $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
@@ -552,6 +562,9 @@ elseif(isset($_GET["add_order"])){
             orderSetZNI($orderId,'F','AA');
         // Если парковка провалилась - Аннулирован
         elseif($sParkingStatus == 2)
+            orderSetZNI($orderId,'AF','AA');
+        // Если не удалось снять баллы - аннулирован
+        elseif(!$bPointsSuccess)
             orderSetZNI($orderId,'AF','AA');
         // Во всех остальных случаях - В работее
         else

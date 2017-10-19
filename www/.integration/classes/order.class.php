@@ -489,11 +489,13 @@
                 }
             ');
             
-            $data = $curl->post($url, $data, array("Content-Type: application/x-www-form-urlencoded"));
+            $data = $curl->post($url, $data, array(
+                "Content-Type: application/x-www-form-urlencoded"
+            ));
 
             $data = json_decode($data);
             if(property_exists($data, "errorCode") && !$data->errorCode)return true;
-            
+
             $this->error = $data->errorMessage;
             return false;
         }

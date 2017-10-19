@@ -33,7 +33,11 @@
             // Если сессии нет, но по её ID удаётся получить у ЕМП профиль пользователя
             elseif($objEMPProfile = $CUser->getEMPProfile($sessionId)){
                 // Если такой пользователь уже есть в БД - получаем его ID
-                if($arUser = $CUser->getBySSOID($objEMPProfile->result->ssoId)){
+                if($arUser = $CUser->getByPhone($objEMPProfile->result->msisdn)){
+                    $CUser->UpdateSSOId(
+                        $objEMPProfile->result->ssoId,
+                        $objEMPProfile->result->msisdn
+                    );
                     $nUserId = $arUser['id'];
                 }
                 // Если такого пользователя в БД нет - создаём и получаем его ID

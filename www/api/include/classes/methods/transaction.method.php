@@ -46,6 +46,10 @@
                 $args->points,
                 $args->comment
             )){
+                echo json_encode([
+                    "errorMessage"=>$CTransaction->error
+                ]);
+                die;
                 return false;
             }
 

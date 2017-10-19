@@ -35,6 +35,13 @@
             return $GLOBALS["DB"]->record;
         }
 
+        /**
+         * Получение подльзователя по SSO_ID
+        */
+        function getByPhone($sPhone){
+            $GLOBALS["DB"]->search_one("users",array("phone"=>$sPhone));
+            return $GLOBALS["DB"]->record;
+        }
 
         /**
          * Получение подльзователя по ID
@@ -61,6 +68,14 @@
             return $nUserId;
         }
         
+        function UpdateSSOId($sPhone, $sSSOId){
+            $GLOBALS["DB"]->update("users", [
+                "sso_id"=>  $GLOBALS["DB"]->escape($sSSOId),
+            ],[
+                "phone" =>  $GLOBALS["DB"]->escape($sPhone)
+            ]);
+        }
+
         function updateBalance($nUserId,$field = "balance",$value=""){
 
             if($field=="balance")

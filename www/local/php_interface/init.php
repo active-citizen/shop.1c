@@ -13,7 +13,7 @@
         
     CModule::IncludeModule("sale");
     CModule::IncludeModule("iblock");
-   
+
     // А не мобильное ли ты приложение
     define("IS_MOBILE",
         //true

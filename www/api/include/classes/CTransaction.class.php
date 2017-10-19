@@ -10,6 +10,7 @@
     class CTransaction extends CAll{
 
         var $verbose = true;
+        var $error = '';
 
         function __construct(){
         }
@@ -262,8 +263,17 @@
 
             $data = $curl->post($url, $data, array("Content-Type: application/json"));
 
-            if(!$data = json_decode($data))return false;
-            if(!property_exists($data, "errorCode") || $data->errorCode)return false;
+            $data =  json_decode($data);
+            $data = json_decode(json_encode((array)$data), TRUE);
+            if(!isset($data["errorCode"]) || $data["errorCode"])return false;
+            if(
+                isset($data["result"]["statuses"][$sSSOId]["error"])
+                && 
+                $data["result"]["statuses"][$sSSOId]["error"]
+            ){
+                $this->error = $data["result"]["statuses"][$sSSOId]["error"];
+                return false;
+            }
             return true;
         }
         
