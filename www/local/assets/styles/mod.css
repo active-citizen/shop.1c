@@ -727,3 +727,6 @@ table.catalog-menu-table{
         padding: 12px 0px;
     }
 
+.bx-session-message{
+    display: none;
+}
