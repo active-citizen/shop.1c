@@ -728,5 +728,5 @@ table.catalog-menu-table{
     }
 
 .bx-session-message{
-    display: none;
+    display: none !important;
 }
