@@ -453,7 +453,15 @@ elseif(isset($_GET["add_order"])){
                 $answer = array(
                     "order"=>array(
                         "ERROR"=>array(
-                            $objParking->error
+                            $objParking->error.(
+                                IS_MOBILE
+                                ?
+                                " Попробуйте выйти из мобильного приложения и
+                                снова зайти под своим аккаунтом."
+                                :
+                                " Попробуйте выйти и снова зайти в свой аккаунт
+                                на сайте http://ag.mos.ru."
+                            )
                         )
                     )
                 );

@@ -45,12 +45,14 @@
             Добавление лога соответствий ssoid и session_id
         */
         function addSSOIDSessionLog($sSessionId, $sPhone, $sSSOID){
+            /*
             return $GLOBALS["DB"]->insert("ssoid_log",[
                 "ctime"         =>  date("Y-m-d H:i:s"),
                 "session_id"    =>  $sSessionId,
                 "phone"         =>  $sPhone,
                 "sso_id"        =>  $sSSOID
             ]);
+            */
         }
 
         /**
