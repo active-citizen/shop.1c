@@ -1,7 +1,7 @@
 <?php
     require_once(realpath(dirname(__FILE__)."/../common.php"));
-
     require_once(realpath(dirname(__FILE__)."/wirix/db.class.php"));
+    require_once(realpath(dirname(__FILE__)."/CSession.class.php"));
 
     /**
      * Класс работы с пользователями
@@ -51,6 +51,19 @@
             return $GLOBALS["DB"]->record;
         }
         
+        /**
+         * Получение подльзователя по ID сессии
+        */
+        function getBySessionId($nId){
+            $CSession = new CSession;
+            $arSession = $CSession->get($sSessionId);
+
+            if(!$arSession)return false;
+            $nUserId = $arSession["user_id"];
+            $arUser = $this->getById($nUserId);
+            return $arUser;
+        }
+
         /**
         
         Добавление пользователя

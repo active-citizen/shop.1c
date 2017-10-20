@@ -248,7 +248,23 @@
             $nPoints, 
             $sComment
         ){
-            $sSSOId = $this->getSSOIdBySession($sSessionId);
+            $CUser = new CUser;
+            $arEMPProfile = $CUser->getEMPProfile($sSessionId);
+            $arEMPProfile = json_decode(json_encode((array)$arEMPProfile), TRUE);
+
+            if(
+                !isset($arEMPProfile["result"]["ssoId"])
+                ||
+                !$arEMPProfile["result"]["ssoId"]
+            ){
+                $this->error = 'Не удалось получить sso-id';
+                return false;
+            }
+            $sSSOId = $arEMPProfile["result"]["ssoId"];
+//              Сохранение sso-id (нужно ли ...)
+//            $arUser = $CUser->getBySessionId($sSessionId);
+//            $CUser->UpdateSSOId($arUser["phone"],$sSSOId);
+
             if(!$sSSOId)return false;
             $url = "https://emp.mos.ru/v0.3/support/addPoints";
             $data = '{
