@@ -86,6 +86,9 @@
            
             $arHistory = [];
             if($bSync){
+                $CUser = new CUser;
+                $arEMPProfile = $CUser->getEMPProfile($sSessionId);
+
                 // Условия для выборки
                 $sCond = "`a`.`user_id`=".intval($arSession["user_id"]);
                 if($nAppId!==false)

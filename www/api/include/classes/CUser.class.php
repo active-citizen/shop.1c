@@ -22,9 +22,35 @@
             require_once("curl.class.php");
             $sUrl = "http://api.emp.msk.ru:8090/json/v1.0/citizens/profile/get?token=".
                 $GLOBALS["CONF"]["emp_token"]."&session_id=".$sessionId;
-            
+           
             $objCurl = new curlTool;
-            return json_decode($objCurl->get($sUrl));
+            $objAnswer = json_decode($objCurl->get($sUrl));
+            $arAnswer = json_decode(json_encode((array)$objAnswer), TRUE);
+            if(
+                isset($arAnswer["result"]["ssoId"])
+                &&
+                $arAnswer["result"]["ssoId"]
+            ){
+                $this->addSSOIDSessionLog(
+                    $sessionId,
+                    $arAnswer["result"]["msisdn"],
+                    $arAnswer["result"]["ssoId"]
+                );
+            }
+
+            return $objAnswer;
+        }
+
+        /**
+            Добавление лога соответствий ssoid и session_id
+        */
+        function addSSOIDSessionLog($sSessionId, $sPhone, $sSSOID){
+            return $GLOBALS["DB"]->insert("ssoid_log",[
+                "ctime"         =>  date("Y-m-d H:i:s"),
+                "session_id"    =>  $sSessionId,
+                "phone"         =>  $sPhone,
+                "sso_id"        =>  $sSSOID
+            ]);
         }
 
         /**
