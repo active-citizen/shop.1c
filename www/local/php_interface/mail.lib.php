@@ -389,25 +389,11 @@
         while( $ar = $resManufactProps->GetNext())
             $arManufactProps[$ar["CODE"]] = $ar;
         
-        $tmp = date_parse($arProperties["USE_BEFORE_DATE"]["VALUE"]);
-        $date1 = date(
-            "d.m.Y",
-            $ts1 = mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"])
-        );
-        $ts2 = time()+$arProperties["DAYS_TO_EXPIRE"]["VALUE"]*24*60*60;
-        $date2 = date("d.m.Y",$ts2);
-        if(trim($arProperties["USE_BEFORE_DATE"]["VALUE"]) && $ts1<$ts2){
-            $arCatalog["EXPIRES"] = $date1;
-        }
-        elseif(trim($arProperties["USE_BEFORE_DATE"]["VALUE"]) && $ts1>=$ts2){
-            $arCatalog["EXPIRES"] = $date2;
-        }
-        else{
-            $arCatalog["EXPIRES"] = $date2;
-        }
-
         $arOrderProperties = orderGetProperties($orderID);
+        $tmp = date_parse($arOrderProperties['CLOSE_DATE']['VALUE']);
 
+        $arCatalog['EXPIRES'] = 
+            $tmp['day'].".".$tmp['month'].".".$tmp['year'];
        
         $send_cert = (
                 (
