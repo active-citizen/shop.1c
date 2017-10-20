@@ -188,33 +188,6 @@ elseif(isset($_GET["add_order"])){
     
     $arrBasket = CSaleBasket::GetByID($basketId);
 
-    // Проверяем количество на складе
-    $arProductStore = CCatalogStoreProduct::GetList(
-        array(),
-        array(
-            "STORE_ID"  =>  intval($_GET["store_id"]),
-            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
-        )
-    )->GetNext();
-
-
-    if(
-        (
-        !isset($arProductStore["AMOUNT"])
-        ||
-        $arProductStore["AMOUNT"]<=0
-        )
-    ){
-        $answer = array(
-            "order"=>array(
-                "ERROR"=>array(
-                    "Исчерпание остатков."
-                )
-            )
-        );
-        echo json_encode($answer);
-        die;
-    }
     // Проверяем месячный лимит (возвращает месячный лимит если он исчерпан)
     if($failedLimit = failedMonLimit(CUSer::GetId(),$arrBasket["PRODUCT_ID"])){
         $answer = array(
@@ -283,12 +256,17 @@ elseif(isset($_GET["add_order"])){
         die;
     }
 
-    require_once(
+
+    // Получаем состояние счёта чере API
+    /*
+
+    Обновляется при каждой загрузке страницы - тут не нужно
+
+
+    equire_once(
         $_SERVER["DOCUMENT_ROOT"]
             ."/.integration/classes/active-citizen-bridge.class.php"
     );
-
-    // Получаем состояние счёта чере API
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
     $objPoints = new bxPoint; 
@@ -309,15 +287,44 @@ elseif(isset($_GET["add_order"])){
         echo json_encode($answer);
         die;
     }
+    $account = ["CURRENT_BUDGET"=>$arPoints["status"]["current_points"]]; 
+    */
 
     // Проверяем сумму на счёте
-    $account = ["CURRENT_BUDGET"=>$arPoints["status"]["current_points"]]; 
     $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
+    $account = CSaleUserAccount::GetByUserID(CUSer::GetID(), 'BAL');
     if($account["CURRENT_BUDGET"]<$totalSum){
         $answer = array(
             "order"=>array(
                 "ERROR"=>array(
                     "Недостаточно баллов на счёте"
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+    // Проверяем количество на складе
+    $arProductStore = CCatalogStoreProduct::GetList(
+        array(),
+        array(
+            "STORE_ID"  =>  intval($_GET["store_id"]),
+            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
+        )
+    )->GetNext();
+
+
+    if(
+        (
+        !isset($arProductStore["AMOUNT"])
+        ||
+        $arProductStore["AMOUNT"]<=0
+        )
+    ){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Исчерпание остатков."
                 )
             )
         );
