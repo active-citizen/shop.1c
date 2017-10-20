@@ -35,5 +35,15 @@
         false      // is null
     );
 
+    $objCMigration->setColumn(
+        "ssoid_log",  // table name
+        "phone",       // column name
+        "CHAR",      // column type
+        11,         // size
+        false,          // default
+        false,
+        'Номер телефона',// comment
+        false      // is null
+    );
 
 
