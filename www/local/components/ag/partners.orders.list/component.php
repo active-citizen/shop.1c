@@ -310,7 +310,7 @@ if($arParams["FILTER"]["EMAIL"])
 if($arParams["FILTER"]["PHONE"])
     $arFilter["%USER_LOGIN"] = $arParams["FILTER"]["PHONE"];
 
-//$arFilter["STORE_ID"] = $arParams["MY_STORES_IDS"];
+$arFilter["STORE_ID"] = $arParams["MY_STORES_IDS"];
 if(
     $arParams["FILTER"]["STORE"] 
     && intval($arParams["FILTER"]["STORE"])
@@ -336,7 +336,7 @@ elseif(
     $arFilter["STORE_ID"] = $arParams["FILTER"]["STORE"];
 }
 
-//$arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = $arParams["MY_MANS_IDS"];
+$arFilter["PROPERTY_VALUE_".$arOrderPropIndex["MANUFACTURER_ID"]] = $arParams["MY_MANS_IDS"];
 if(
     $arParams["FILTER"]["MAN"] 
     && intval($arParams["FILTER"]["MAN"])

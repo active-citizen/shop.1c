@@ -358,7 +358,7 @@ function getDownloadOrders(
             "PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"=>"FIO",
             "ADDITIONAL_INFO"=>"ADDITIONAL_INFO",
             "STATUS_ID"=>"STATUS_ID",
-            "DATE_INSERT"=>"DATE_INSERT",
+            "DATE_INSERT"=>"`order`.`DATE_INSERT`",
             "USER_EMAIL"=>"USER_EMAIL",
             "PROPERTY_VAL_BY_CODE_PRODUCT_NAME"=>"PRODUCT_NAME",
             "USER_LOGIN"=>"USER_LOGIN",
