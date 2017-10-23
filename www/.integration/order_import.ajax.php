@@ -530,7 +530,12 @@
 
 
             // Если заказа нет - создаём, есть - обновляем
-            if(!$existsOrder && !preg_match("#^.*\-\d+$#i", $arOrder["ADDITIONAL_INFO"])){
+            if(!$existsOrder 
+                && (
+                    preg_match("#^НЭМС\-\d+$#i", $arOrder["ADDITIONAL_INFO"])
+                )
+            ){
+                
                 if(!$orderId = $objOrder->Add($arOrder)){
                     if(IMPORT_DEBUG){
                         echo "failed\n";
@@ -540,12 +545,14 @@
                         continue;
                     }
                 }
+                
 
                 //echo "Add order_id=$orderId  ";
 
                 // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
                 // Добавляем в корзину продукты
+                $nTotalSum = 0;
                 foreach($basketProducts as $productId=>$item){
             	    $strSql = "
                         INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
@@ -564,6 +571,7 @@
                         'N'
                     )";
             	    $DB->Query($strSql);
+                    $nTotalSum += $item["price"];
                 }
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
                 orderPropertiesUpdate($orderId,IMPORT_DEBUG);
@@ -571,8 +579,7 @@
                 // Уменьшаем запасы на складе 
                 $objCCatalogStoreProduct = new CCatalogStoreProduct;
                 $objCCatalogProduct = new CCatalogProduct;
-                /**
-                С отключением опенкарта это будет ненужно
+                //С отключением опенкарта это будет ненужно
                 foreach($basketProducts as $productId=>$item){
                     /// Получаем текущее значение этого товара сейчас на складе
                     $nQuantity = 0;
@@ -592,7 +599,7 @@
                     else{
                         continue;
                     }
-                    // Высисляем новый остаток, при отреицательном - нуль
+
                     $nDQuantity = 0;
                     if($nQuantity-$item["count"]>=0)
                         $nDQuantity = $nQuantity - $item["count"];
@@ -608,8 +615,16 @@
                     }
 
                 }
+               
+                /*
+                Без уведомления пользователей (потом прикрутим)
+                eventOrderStatusSendEmail(
+                    $orderId, $statusId, ($arFields = array(
+                        "SUPPORT_COMMENT"=>$sSupportComment
+                    )), $statusId
+                );
                 */
-
+                
 
                 //CSaleOrder::PayOrder($orderId,"Y",false,false); //?????
                 // Удаляем транзакцию, вызвагую этим заказом (ибо через импорт баллов она придёт)
@@ -622,31 +637,6 @@
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
                 //echo "Update order_id = $orderId ";
-
-                // Прописываем дату истечения бронирования
-                if(
-                    isset($arDocument["ДатаИстеченияБронирования"])
-                    &&
-                    $arDocument["ДатаИстеченияБронирования"]
-                ){
-                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
-                        "T"," ",
-                        $arDocument["ДатаИстеченияБронирования"]
-                    );
-                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
-                        "Т"," ",
-                        $arDocument["ДатаИстеченияБронирования"]
-                    );
-                    $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
-                    $sDateClose = 
-                        sprintf("%04d",$tmp["year"])
-                        ."-".sprintf("%02d",$tmp["month"])
-                        ."-".sprintf("%02d",$tmp["day"])
-                    ;
-                    orderPropertiesUpdate($orderId, IMPORT_DEBUG,
-                        'CLOSE_DATE',$sDateClose
-                    );
-                }
 
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
@@ -778,12 +768,34 @@
                 }
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
-         	    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-
-
-
-
             }
+            orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+
+            // Прописываем дату истечения бронирования
+            if(
+                isset($arDocument["ДатаИстеченияБронирования"])
+                &&
+                $arDocument["ДатаИстеченияБронирования"]
+            ){
+                $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                    "T"," ",
+                    $arDocument["ДатаИстеченияБронирования"]
+                );
+                $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                    "Т"," ",
+                    $arDocument["ДатаИстеченияБронирования"]
+                );
+                $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
+                $sDateClose = 
+                    sprintf("%04d",$tmp["year"])
+                    ."-".sprintf("%02d",$tmp["month"])
+                    ."-".sprintf("%02d",$tmp["day"])
+                ;
+                orderPropertiesUpdate($orderId, IMPORT_DEBUG,
+                    'CLOSE_DATE',$sDateClose
+                );
+            }
+
             
             // Обновляем индексную таблицу
             require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
