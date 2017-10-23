@@ -1,0 +1,25 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с индексом пользователей
+     */
+    class index_order extends Migration{
+        function Run(){
+            require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
+            syncAllUser();
+            
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_order = new index_order();
+// Откатываем, если неудачно
+if(!$index_order->Run())$index_order->RollBack();
