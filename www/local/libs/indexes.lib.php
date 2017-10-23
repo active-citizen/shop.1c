@@ -33,12 +33,12 @@
                 UPDATE
                     `index_user`
                 SET
-                    `LOGIN`='".$arUser["LOGIN"]."',
-                    `NAME`='".$arUser["NAME"]."',
-                    `LAST_NAME`='".$arUser["LAST_NAME"]."',
-                    `EMAIL`='".$arUser["EMAIL"]."'
+                    `LOGIN`='".$DB->ForSql($arUser["LOGIN"])."',
+                    `NAME`='".$DB->ForSql($arUser["NAME"])."',
+                    `LAST_NAME`='".$DB->ForSql($arUser["LAST_NAME"])."',
+                    `EMAIL`='".$DB->ForSql($arUser["EMAIL"])."'
                 WHERE
-                    `ID`='".$arUser["ID"]."'
+                    `ID`='".$DB->ForSql($arUser["ID"])."'
                 LIMIT 1
             ";
         }
@@ -46,11 +46,11 @@
             $sQuery = "
                 INSERT INTO `index_user`(`ID`,`LOGIN`,`NAME`,`LAST_NAME`,`EMAIL`)
                 VALUES(
-                    '".$arUser["ID"]."',
-                    '".$arUser["LOGIN"]."',
-                    '".$arUser["NAME"]."',
-                    '".$arUser["LAST_NAME"]."',
-                    '".$arUser["EMAIL"]."'
+                    '".$DB->ForSql($arUser["ID"])."',
+                    '".$DB->ForSql($arUser["LOGIN"])."',
+                    '".$DB->ForSql($arUser["NAME"])."',
+                    '".$DB->ForSql($arUser["LAST_NAME"])."',
+                    '".$DB->ForSql($arUser["EMAIL"])."'
                 )
             ";
         }
@@ -98,13 +98,13 @@
                 UPDATE
                     `index_order`
                 SET
-                    `USER_ID`='".$arOrder["USER_ID"]."',
-                    `STORE_ID`='".$arOrder["STORE_ID"]."',
-                    `STATUS_ID`='".$arOrder["STATUS_ID"]."',
-                    `DATE_INSERT`='".$arOrder["DATE_INSERT"]."',
-                    `DATE_UPDATE`='".$arOrder["DATE_UPDATE"]."',
-                    `DATE_STATUS`='".$arOrder["DATE_STATUS"]."',
-                    `ADDITIONAL_INFO`='".$arOrder["ADDITIONAL_INFO"]."'
+                    `USER_ID`='".$DB->ForSql($arOrder["USER_ID"])."',
+                    `STORE_ID`='".$DB->ForSql($arOrder["STORE_ID"])."',
+                    `STATUS_ID`='".$DB->ForSql($arOrder["STATUS_ID"])."',
+                    `DATE_INSERT`='".$DB->ForSql($arOrder["DATE_INSERT"])."',
+                    `DATE_UPDATE`='".$DB->ForSql($arOrder["DATE_UPDATE"])."',
+                    `DATE_STATUS`='".$DB->ForSql($arOrder["DATE_STATUS"])."',
+                    `ADDITIONAL_INFO`='".$DB->ForSql($arOrder["ADDITIONAL_INFO"])."'
                 WHERE
                     `ID`='".$arOrder["ID"]."'
                 LIMIT 1
@@ -118,10 +118,14 @@
                     ,`ADDITIONAL_INFO`
                 )
                 VALUES(
-                    '".$arOrder["ID"]."','".$arOrder["USER_ID"]."'
-                    ,'".$arOrder["STORE_ID"]."','".$arOrder["STATUS_ID"]."'
-                    ,'".$arOrder["DATE_INSERT"]."','".$arOrder["DATE_UPDATE"]."'
-                    ,'".$arOrder["DATE_STATUS"]."','".$arOrder["ADDITIONAL_INFO"]."'
+                    '".$DB->ForSql($arOrder["ID"])."'
+                    ,'".$DB->ForSql($arOrder["USER_ID"])."'
+                    ,'".$DB->ForSql($arOrder["STORE_ID"])."'
+                    ,'".$DB->ForSql($arOrder["STATUS_ID"])."'
+                    ,'".$DB->ForSql($arOrder["DATE_INSERT"])."'
+                    ,'".$DB->ForSql($arOrder["DATE_UPDATE"])."'
+                    ,'".$DB->ForSql($arOrder["DATE_STATUS"])."'
+                    ,'".$DB->ForSql($arOrder["ADDITIONAL_INFO"])."'
                 )
             ";
         }
