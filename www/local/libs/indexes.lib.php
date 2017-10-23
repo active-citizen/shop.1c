@@ -128,3 +128,21 @@
         $DB->Query($sQuery);
 
     }
+
+
+    function syncAllUsers(){
+        global $DB;
+        $resUsers = $DB->Query("SELECT `ID` FROM `b_user` ORDER BY `ID` DESC");
+        while($arUser = $resUsers->Fetch())
+            syncUser($arUser["ID"]);
+        
+    }
+
+    function syncAllOrders(){
+        global $DB;
+        $resOrders = $DB->Query("SELECT `ID` FROM `b_sale_order` ORDER BY `ID` DESC");
+        while($arOrder = $resOrders->Fetch())
+            syncOrder($arOrder["ID"]);
+    }
+
+
