@@ -1,0 +1,44 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с индексом пользователей
+     */
+    class index_user extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `index_user`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `index_user`(
+                    `ID` INT(11) UNSIGNED NOT NULL,
+                    `LOGIN` CHAR(32),
+                    `EMAIL` CHAR(32),
+                    `NAME` CHAR(32),
+                    `LAST_NAME` CHAR(16),
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `LOGIN`(`LOGIN`),
+                    KEY `EMAIL`(`EMAIL`),
+                    KEY `NAME`(`NAME`),
+                    KEY `LAST_NAME`(`LAST_NAME`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_user = new index_user();
+// Откатываем, если неудачно
+if(!$index_user->Run())$index_user->RollBack();
