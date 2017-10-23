@@ -220,6 +220,8 @@
             );
             */
         }
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
+        if($arrOrder["ID"])syncOrder($arrOrder["ID"]);
 
         // Отмечаем заказ как "отданный в рамках транзакции $session_id"
         orderSetZNI($arrOrder["ID"],'',$arrOrder["STATUS_ID"]);

@@ -563,8 +563,11 @@ elseif(isset($_GET["add_order"])){
             }
         }
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
+        // Обновляем индексную таблицу
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
         syncUser(CUser::GetID());
+        if($orderId)syncOrder($orderId);
 
         ///// Ставим в очередь на ЗНИ
         // Если тойка успешно заказалась - Выполнен
