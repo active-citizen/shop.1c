@@ -374,7 +374,6 @@ elseif(isset($_GET["add_order"])){
         //// Обновляем свойства заказа из значений товарного каталога
         orderPropertiesUpdate($orderId);
 
-
         // Статус тройки
         // 0 - не заказывалась
         // 1 - успешный заказ
@@ -564,6 +563,8 @@ elseif(isset($_GET["add_order"])){
             }
         }
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
+        syncUser(CUser::GetID());
 
         ///// Ставим в очередь на ЗНИ
         // Если тойка успешно заказалась - Выполнен
