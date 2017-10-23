@@ -1,0 +1,50 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с индексом пользователей
+     */
+    class index_order extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `index_order`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `index_order`(
+                    `ID` INT(11) UNSIGNED NOT NULL,
+                    `USER_ID` INT(11) UNSIGNED,
+                    `STORE_ID` SMALLINT(32) UNSIGNED,
+                    `STATUS_ID` CHAR(2),
+                    `DATE_INSERT` DATETIME,
+                    `DATE_UPDATE` DATETIME,
+                    `DATE_STATUS` DATETIME,
+                    `ADDITIONAL_INFO` CHAR(16),
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `USER_ID`(`USER_ID`),
+                    KEY `STORE_ID`(`STORE_ID`),
+                    KEY `STATUS_ID`(`STATUS_ID`),
+                    KEY `DATE_INSERT`(`DATE_INSERT`),
+                    KEY `DATE_UPDATE`(`DATE_UPDATE`),
+                    KEY `DATE_STATUS`(`DATE_STATUS`),
+                    KEY `ADDITIONAL_INFO`(`ADDITIONAL_INFO`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_order = new index_order();
+// Откатываем, если неудачно
+if(!$index_order->Run())$index_order->RollBack();
