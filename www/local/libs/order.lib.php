@@ -638,10 +638,10 @@ function getDownloadOrders(
     while($arProp = $res->Fetch())$arProps[$arProp["CODE"]]=$arProp["ID"];
 
     $sFrom = "
-        `b_sale_order` as `order`";
+        `index_order` as `order`";
     $sFrom .= "
         LEFT JOIN
-    `b_user` as `user`
+    `index_user` as `user`
         ON
             `user`.`ID`=`order`.`USER_ID` ";
     $sFrom .= "
