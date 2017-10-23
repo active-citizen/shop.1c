@@ -30,6 +30,7 @@ onchange="document.getElementById('form_filter').submit();"
         ><?= $arMan["NAME"]?></option>
     <? endforeach ?>
 </select>
+<? getPagination($arResult, $arParams);?>
 <table class="table table-bordered">
     <tr>
         <th><input type="checkbox" name="selectall" id="selectall"></th>
@@ -246,7 +247,7 @@ onchange="document.getElementById('form_filter').submit();"
 
         ):?>
         <td class="td-fio">
-            <?= $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["VALUE"]?>
+            <?= $arOrder["FIO"]?>
         </td>
         <? endif ?>
         <td class="td-status">
@@ -273,10 +274,7 @@ onchange="document.getElementById('form_filter').submit();"
         </td>
         <? endif ?>
         <td class="td-product">
-            <a href="<?= $arOrder["PROPERTIES"]["PRODUCT_URL"]["VALUE"]?>" 
-            target="_blank">
-                <?= $arOrder["PROPERTIES"]["PRODUCT_NAME"]["VALUE"]?>
-            </a>
+            <?= $arOrder["PRODUCT_NAME"]?>
         </td>
         <!--
         <td>
@@ -287,16 +285,13 @@ onchange="document.getElementById('form_filter').submit();"
             <?= str_replace("u","",$arOrder["USER_LOGIN"])?>
         </td>
         <td class="td-section">
-            <a href="<?= $arOrder["PROPERTIES"]["SECTION_URL"]["VALUE"]?>" 
-            target="_blank">
-                <?= $arOrder["PROPERTIES"]["SECTION_NAME"]["VALUE"]?>
-            </a>
+            <?= $arOrder["SECTION_NAME"]?>
         </td>
         <td class="td-date">
             <?= 
                 preg_match(
                     "#^(\d+)\-(\d+)\-(\d+)$#",
-                    $arOrder["PROPERTIES"]["CLOSE_DATE"]["VALUE"],
+                    $arOrder["CLOSE_DATE"],
                     $m
                 )
                 ?
@@ -313,12 +308,32 @@ onchange="document.getElementById('form_filter').submit();"
     </tr>
     <? endforeach?>
 </table>
-<?
-    echo  $arResult["resOrders"]->GetPageNavStringEx($navComponentObject,
-    'Заказы', '', 'Y');
-?>
+<? getPagination($arResult, $arParams);?>
 </form>
 <script>
 $( ".form-date" ).datepicker({dateFormat:"dd.mm.yy"});
 </script>
+<?
+function getPagination($arResult, $arParams){
+?>
+<div class="pages">
+    Страницы: 
+    <? foreach($arResult["PAGES"] as $nOffset=>$sPage):?>
+        <? if($arParams["PAGE"]!=$sPage):?>
+            <a href="<?= $arResult["BASE_URL"]?>?PAGEN_1=<?= ($nOffset+1)?>&<?=
+            $arResult["QUERY"]?>">
+        <? endif ?>
+            <?= $sPage?>
+        <? if($arParams["PAGE"]!=($nOffset+1)):?>
+            </a>
+        <? endif ?>
+    <? endforeach ?>
+    (Всего записей: <?= $arResult["TOTAL"]?>)
+</div>
+<style>
+div.pages{
+}
+</style>
+<?
+}
 

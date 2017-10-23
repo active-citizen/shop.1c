@@ -424,13 +424,35 @@ if($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▲')
 elseif($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▼')
     $arOrder["USER_LOGIN"] = 'ASC';
 
-echo "<!-- ";
+//echo "<!-- ";
 //print_r($arOrder);
-//ho "<pre>";
-print_r($arFilter);
-//ho "</pre>";
-echo " -->";
+//echo " -->";
 
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/orderList.lib.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/common.lib.php");
+
+$arOrders = getDownloadOrders(
+    $arFilter,$arOrder,false
+    ,$arParams["ON_PAGE"],($arParams["PAGE"]-1)*$arParams["ON_PAGE"]
+);
+$arResult["ORDERS"] = $arOrders;
+$arResult["TOTAL"] = getDownloadOrders($arFilter,$arOrder,true);
+$arResult["PAGES"] = get_pages_list(
+    $arResult["TOTAL"], 
+    ($arParams["PAGE"]-1)*$arParams["ON_PAGE"], 
+    $arParams["ON_PAGE"], 
+    10 
+);
+
+$tmp = explode("&",$_SERVER["QUERY_STRING"]);
+foreach($tmp as $k=>$v){
+    $tmp2 = explode("=", $v);
+    if($tmp2[0]=='PAGEN_1')unset($tmp[$k]);
+}
+$arResult["QUERY"] = implode("&",$tmp);
+$arResult["BASE_URL"] = $_SERVER["SCRIPT_NAME"];
+
+/*
 
 
 $arSelect = array(
@@ -504,7 +526,9 @@ while($arOrder = $arResult["resOrders"]->GetNext()){
 //echo "<pre>";
 //print_r($arResult["ORDERS"]);
 //echo "</pre>";
-    
+ 
+
+*/
 $this->IncludeComponentTemplate();
 
 
