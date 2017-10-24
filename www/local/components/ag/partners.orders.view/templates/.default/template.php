@@ -40,6 +40,7 @@
             </td><td>
                 <?= $arResult["ORDER"]["ADDITIONAL_INFO"]?>
                 <? if($USER->isAdmin()):?>
+                <!--
                 (
                     <a href="/partners/logs/?query=<?=
                     $arResult["ORDER"]["ADDITIONAL_INFO"]?>"
@@ -48,6 +49,7 @@
                     Посмотреть в логах
                     </a>
                 )
+                -->
                 <? endif?>
             </td>
         </tr>
@@ -214,8 +216,26 @@
             </td>
         </tr>
         <? endif ?>
+        <? if( isset($arResult["ERROR_CODE"])):?>
+        <tr>
+            <td class="field-name">
+                Код ошибки
+            </td><td>
+                <?= $arResult["ERROR_CODE"] ?>
+            </td>
+        </tr>
+        <? endif ?>
+        <? if( isset($arResult["ERROR_DESC"])):?>
+        <tr>
+            <td class="field-name">
+                Код описания ошибки
+            </td><td>
+                <?= $arResult["ERROR_DESC"] ?>
+            </td>
+        </tr>
+        <? endif ?>
     </table>
-        <? if(isset($arResult["ORDER"]["CURL_LOG"])):?>
+        <? if(isset($arResult["ORDER"]["CURL_LOG"]) && $USER->isAdmin()):?>
             <div id="accordion">
                 <h3>
                     Журнал обмена (доступен администраторам)

@@ -27,6 +27,7 @@
     // Определяем ID групп Операторы МФЦ и Партнёры
     define("PARTNERS_GROUP_ID",9);
     define("OPERATORS_GROUP_ID",10);
+    define("SHOP_ADMIN",7);
 
 
     if(CONFIG_STATIC){

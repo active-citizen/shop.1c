@@ -122,9 +122,11 @@ while($arHistoryItem = $resHistory->Fetch()){
             <th style="width: 100px">
                 Текущий статус
             </th>
+            <!--
             <th style="width: 150px">
                 Действия
             </th>
+            -->
         </tr>
         <? foreach($arHistory as $arHistoryItem):?>
         <tr 
@@ -164,6 +166,7 @@ while($arHistoryItem = $resHistory->Fetch()){
                 $arStatuses[$arHistoryItem["STATUS_ID"]]["COLOR"]?>">
                 <?= $arStatuses[$arHistoryItem["STATUS_ID"]]["NAME"]?> 
             </td>
+            <!--
             <td class="actions">
                 <a href="/partners/logs/?query=<?= $arHistoryItem["ORDER_NUM"]?>"
                 target="_blank"
@@ -171,6 +174,7 @@ while($arHistoryItem = $resHistory->Fetch()){
                     <span class="glyphicon glyphicon-eye-open"></span>Логи
                 </a>
             </td>
+            -->
         </tr>
         <? endforeach ?>
     </table>

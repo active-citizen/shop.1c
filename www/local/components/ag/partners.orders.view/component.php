@@ -183,12 +183,34 @@ while($arHistoryItem = $resHistory->Fetch()){
 //echo " -->";
 
 // Админам доступны логи обмена
-if($USER->isAdmin()){
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curllogger.class.php");
+if(
+$USER->isAdmin()
+||
+in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+){
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/.integration/classes/curllogger.class.php"
+    );
     $objCurlLogger = new CCurlLogger();
     $arResult["ORDER"]["CURL_LOG"] = $objCurlLogger->getByOrderNum(
         $arResult["ORDER"]["ADDITIONAL_INFO"]
     );
+
+    foreach($arResult["ORDER"]["CURL_LOG"] as $arLog)break;
+    $objLog = json_decode($arLog["data"]);
+    if(
+        $objLog
+        &&
+        is_object($objLog)
+        &&
+        property_exists($objLog,"errorCode")
+        &&
+        property_exists($objLog,"errorDesc")
+    ){
+        
+        $arResult["ERROR_CODE"] = $objLog->errorCode;
+        $arResult["ERROR_DESC"] = $objLog->errorDesc;
+    }
 }
 
 $this->IncludeComponentTemplate();

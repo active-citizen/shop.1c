@@ -132,6 +132,7 @@ $arParams["FILTER"]["NUM"] =
     $_REQUEST["filter_num"]
     :
     "";
+
 $arParams["FILTER"]["LAST_NAME"] = 
     isset($_REQUEST["filter_name"])
     ?
@@ -177,6 +178,7 @@ $arParams["FILTER"]["PHONE"] =
     $_REQUEST["filter_phone"]
     :
     "";
+
 
 $arParams["SORT"] = array();
 $arParams["SORT"]["NUM"] = 

@@ -3,7 +3,11 @@
             "/bitrix/modules/main/include/prolog_before.php");
     require("common.php");
 
-    if(!$USER->isAdmin())die;
+    if(
+    !$USER->isAdmin()
+    &&
+    !in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+    )die;
 
     $sFolderPath = $_REQUEST["folder"]?$_REQUEST["folder"]:'';
     if(

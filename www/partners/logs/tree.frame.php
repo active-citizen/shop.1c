@@ -123,10 +123,12 @@
 </head>
 <body>
 
+    <!--
     <form>
         <input type="text" name="query" class="form-control" placeholder="Поиск"
         value="<?= htmlspecialchars($_REQUEST["query"])?>">
     </form>
+    -->
 
     <? if(0 && $arPath):?>
     <ul class="tree-path">
