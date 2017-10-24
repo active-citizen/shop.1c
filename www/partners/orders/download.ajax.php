@@ -20,8 +20,9 @@ CModule::IncludeModule('catalog');
 
 // Если пользователь - не оператор и не партнёр и не админ - выкидываем его
 if(
-    !in_array(9, $USER->GetUserGroupArray())
-    && !in_array(10, $USER->GetUserGroupArray())
+    !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+    && !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+    && !in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
     && !$USER->IsAdmin()
    
 ){
