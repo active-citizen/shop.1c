@@ -124,6 +124,9 @@ onchange="document.getElementById('form_filter').submit();"
             class="partners-sort-down">
             -->
         </th>
+        <th>
+            Дополнительно
+        </th>
         <th>Действие</th>
     </tr>
     <tr>
@@ -299,6 +302,23 @@ onchange="document.getElementById('form_filter').submit();"
                 :
                 ""
             ?>
+        </td>
+        <td>
+            <? if($arOrder["TROIKA_NUM"]):?>
+            <div class="data-extra">
+                Номер тройки: <span><?= $arOrder["TROIKA_NUM"]?></span>
+            </div>
+            <? endif ?>
+            <? if($arOrder["TROIKA_TRANSACT"]):?>
+            <div class="data-extra">
+                Транзакция тройки: <span><?= $arOrder["TROIKA_TRANSACT"]?></span>
+            </div>
+            <? endif ?>
+            <? if($arOrder["PARKING_TRANSACT"]):?>
+            <div class="data-extra">
+                Транзакция парковки: <span><?= $arOrder["PARKING_TRANSACT"]?></span>
+            </div>
+            <? endif ?>
         </td>
         <td class="td-action">
             [<a href="/partners/orders/<?= $arOrder["ID"]?>/">

@@ -179,6 +179,14 @@ $arParams["FILTER"]["PHONE"] =
     :
     "";
 
+$arParams["FILTER"]["EXTRA"] = 
+    isset($_REQUEST["filter_extra"]) 
+    ?
+    $_REQUEST["filter_extra"]
+    :
+    "";
+
+
 
 $arParams["SORT"] = array();
 $arParams["SORT"]["NUM"] = 

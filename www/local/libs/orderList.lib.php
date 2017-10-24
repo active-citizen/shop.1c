@@ -282,6 +282,17 @@ function getDownloadOrders(
             ."'";
     }
 
+    if(isset($arFilter["EXTRA"])){
+        $sWhere .= "
+            AND (
+                `order`.`TROIKA_NUM`= '"
+                    .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])."'
+                OR `order`.`TROIKA_TRANSACT`='"
+                    .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])."'
+                OR `order`.`PARKING_TRANSACT`='"
+                    .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])."'
+            )";
+    }
 
     $sGroupBy = "";
 
@@ -338,7 +349,10 @@ function getDownloadOrders(
             `user`.`LOGIN` as `USER_LOGIN`,
             `order`.`PRODUCT_NAME` as `PRODUCT_NAME`,
             `order`.`SECTION_NAME` as `SECTION_NAME`,
-            `order`.`CLOSE_DATE` as `CLOSE_DATE`
+            `order`.`CLOSE_DATE` as `CLOSE_DATE`,
+            `order`.`TROIKA_NUM` as `TROIKA_NUM`,
+            `order`.`TROIKA_TRANSACT` as `TROIKA_TRANSACT`,
+            `order`.`PARKING_TRANSACT` as `PARKING_TRANSACT`
         FROM
             $sFrom
         WHERE
