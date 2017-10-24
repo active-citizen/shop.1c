@@ -33,7 +33,10 @@
     }
 
     $sRawMail = '';
-    $fd = fopen($sBasePath,"r");
+    if(!$fd = fopen($sBasePath,"r")){
+        echo "File not found";
+        die;
+    }
     $counter = 0;
     while(!feof($fd)){
         $sRawMail .= fgets($fd);

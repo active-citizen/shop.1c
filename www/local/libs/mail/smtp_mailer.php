@@ -168,7 +168,7 @@
         ))unlink($sFilename);
 
 
-        if($sDiskFilename && $nOrderId){
+        if($sDiskFilename && $nMailId){
             $sDiskFilename = preg_replace("#^(.*)\.txt$#", "$1.eml", $sDiskFilename);
             $obMail->setFilename($nMailId, $sDiskFilename);    
         }

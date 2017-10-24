@@ -63,9 +63,11 @@
         <?
             if(!$arMail["FILENAME"])continue;
             $tmp = explode("-",$arMail["FILENAME"]);
+            $tmp2 = $tmp;
+            for($i=0;$i<7;$i++)unset($tmp2[$i]);
             $sFolder = "/".$tmp[0]."-".$tmp[1]
                 ."/".$tmp[0]."-".$tmp[1]."-".$tmp[2]
-                ."/".preg_replace("#^.*\-(.*)\.eml$#","$1",$arMail["FILENAME"]);
+                ."/".preg_replace("#^(.*)\.eml$#", "$1",implode("-",$tmp2));
         ?>
         <tr>
             <td>

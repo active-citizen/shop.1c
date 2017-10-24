@@ -644,6 +644,7 @@
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
+                    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
@@ -661,6 +662,7 @@
                         || $statusId=='AG'
                     )
                 ){
+                    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
@@ -692,6 +694,7 @@
                     if(!CSaleOrder::CancelOrder($existsOrder["ID"],"Y","Передумал")){
                         $answer["error"] .= "Заказ не был отменён.";
                     }
+                    orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
@@ -769,7 +772,6 @@
                 */
                 // Заполняем свойсва заказа из свойст товара на случай
             }
-            orderPropertiesUpdate($orderId,IMPORT_DEBUG);
 
             // Прописываем дату истечения бронирования
             if(
