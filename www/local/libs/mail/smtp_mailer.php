@@ -156,8 +156,8 @@
         $nOrderId = $m[1];
         $obMail = new CMailIndex;
         if(preg_match("#/mail_proof.php\?id=([0-9a-f]+)#", $sBody, $m)){
-            $nOrderId = $m[1];
-            $sMailId = $obMail->setSentDate($nOrderId);
+            $nMailId = $m[1];
+            $sMailId = $obMail->setSentDate($nMailId);
         }
 
         if($sDiskFilename = custom_mail(
@@ -170,7 +170,7 @@
 
         if($sDiskFilename && $nOrderId){
             $sDiskFilename = preg_replace("#^(.*)\.txt$#", "$1.eml", $sDiskFilename);
-            $obMail->setFilename($nOrderId, $sDiskFilename);    
+            $obMail->setFilename($nMailId, $sDiskFilename);    
         }
 
     }
