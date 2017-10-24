@@ -22,12 +22,11 @@
                 ||
                 strtolower($arHashHeaders["send-now"])!='yes'
             ){
-                disk_custom_mail(
+                return disk_custom_mail(
                     $sTo, $subject, $message, $additional_headers,
                     $sMonth, $sDay, $sYear, $sHour, $sMin, $sSec,
                     LOCAL_MAIL_SMTP_QUEUE
                 );
-                return true;
             }
             else{
                 /*
@@ -150,6 +149,15 @@
 
         $tmp = explode("/", $sFilename);
         $arHeaders[] = "Send-now:yes";
+
+        $sBody = implode("", $arLines);
+        if(preg_match("#/mail_proof.php\?id=([0-9a-f]+)#", $sBody, $m)){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/CMailIndex.class.php"
+            );
+            $obMail = new CMailIndex;
+            $sMailId = $obMail->setSentDate($m[1]);
+        }
 
         if(custom_mail(
             $sTo, 
