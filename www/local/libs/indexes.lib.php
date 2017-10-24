@@ -81,6 +81,37 @@
                 1
         ";
         $arOrder = $DB->Query($sQuery)->Fetch();
+
+        //Получаем свойсва заказа
+        $arProps = [];
+        $sQuery = "SELECT CODE FROM `b_sale_order_props` WHERE 1";
+        $resProps = $DB->Query($sQuery);
+        while($arProp = $resProps->Fetch())
+            $arProps[$arProp["CODE"]] = "";
+        // Получаем свойства конкретного заказа
+        $sQuery = "SELECT CODE,VALUE FROM `b_sale_order_props_value` WHERE
+        `ORDER_ID`=".$arOrder["ID"];
+        $resProps = $DB->Query($sQuery);
+        while($arProp = $resProps->Fetch())
+            $arProps[$arProp["CODE"]] = $arProp["VALUE"];
+
+        // Находим ID прозукта
+        $sQuery = "
+            SELECT
+               `prod_link`.`VALUE_NUM` as `ID`
+            FROM
+                `b_sale_basket` as `basket`
+                    LEFT JOIN
+                `b_iblock_element_property` as `prod_link`
+                    ON
+                    `basket`.`PRODUCT_ID`=`prod_link`.`IBLOCK_ELEMENT_ID`
+                    AND
+                    `IBLOCK_PROPERTY_ID` = ".CML2_LINK_PROPERTY_ID." 
+            WHERE
+                `basket`.`ORDER_ID`=".$arOrder["ID"]."
+        ";
+        $arProduct = $DB->Query($sQuery)->Fetch();
+
         $sQuery = "
             SELECT
                 `ID`
@@ -104,7 +135,19 @@
                     `DATE_INSERT`='".$DB->ForSql($arOrder["DATE_INSERT"])."',
                     `DATE_UPDATE`='".$DB->ForSql($arOrder["DATE_UPDATE"])."',
                     `DATE_STATUS`='".$DB->ForSql($arOrder["DATE_STATUS"])."',
-                    `ADDITIONAL_INFO`='".$DB->ForSql($arOrder["ADDITIONAL_INFO"])."'
+                    `ADDITIONAL_INFO`='".$DB->ForSql($arOrder["ADDITIONAL_INFO"])."',
+                    `CLOSE_DATE`='".$DB->ForSql($arProps["CLOSE_DATE"])."',
+                    `TROIKA_NUM`='".$DB->ForSql($arProps["TROIKA"])."',
+                    `TROIKA_TRANSACT`='".$DB->ForSql(
+                        $arProps["TROIKA_TRANSACT_ID"])."',
+                    `PARKING_TRANSACT`='".$DB->ForSql(
+                        $arProps["PARKING_TRANSACT_ID"])."',
+                    `MAN_ID`='".$DB->ForSql($arProps["MANUFACTURER_ID"])."',
+                    `SECTION_ID`='".$DB->ForSql($arProps["SECTION_ID"])."',
+                    `SECTION_NAME`='".$DB->ForSql($arProps["SECTION_NAME"])."',
+                    `MAN_NAME`='".$DB->ForSql($arProps["MANUFACTURER_NAME"])."',
+                    `PRODUCT_NAME`='".$DB->ForSql($arProps["PRODUCT_NAME"])."',
+                    `PRODUCT_ID`='".$DB->ForSql($arProduct["ID"])."'
                 WHERE
                     `ID`='".$arOrder["ID"]."'
                 LIMIT 1
@@ -116,6 +159,16 @@
                     `ID`,`USER_ID`,`STORE_ID`,`STATUS_ID`
                     ,`DATE_INSERT`,`DATE_UPDATE`,`DATE_STATUS`
                     ,`ADDITIONAL_INFO`
+                    ,`CLOSE_DATE`
+                    ,`TROIKA_NUM`
+                    ,`TROIKA_TRANSACT`
+                    ,`PARKING_TRANSACT`
+                    ,`PRODUCT_ID`
+                    ,`SECTION_ID`
+                    ,`MAN_ID`
+                    ,`PRODUCT_NAME`
+                    ,`SECTION_NAME`
+                    ,`MAN_NAME`
                 )
                 VALUES(
                     '".$DB->ForSql($arOrder["ID"])."'
@@ -126,11 +179,20 @@
                     ,'".$DB->ForSql($arOrder["DATE_UPDATE"])."'
                     ,'".$DB->ForSql($arOrder["DATE_STATUS"])."'
                     ,'".$DB->ForSql($arOrder["ADDITIONAL_INFO"])."'
+                    ,'".$DB->ForSql($arProp["CLOSE_DATE"])."'
+                    ,'".$DB->ForSql($arProp["TROIKA"])."'
+                    ,'".$DB->ForSql($arProp["TROIKA_TRANSACT_ID"])."'
+                    ,'".$DB->ForSql($arProp["PARKING_TRANSACT_ID"])."'
+                    ,'".$DB->ForSql($arProduct["ID"])."'
+                    ,'".$DB->ForSql($arProp["SECTION_ID"])."'
+                    ,'".$DB->ForSql($arProp["MANUFACTURER_ID"])."'
+                    ,'".$DB->ForSql($arProp["PRODUCT_NAME"])."'
+                    ,'".$DB->ForSql($arProp["SECTION_NAME"])."'
+                    ,'".$DB->ForSql($arProp["MANUFACTURER_NAME"])."'
                 )
             ";
         }
         $DB->Query($sQuery);
-
     }
 
 

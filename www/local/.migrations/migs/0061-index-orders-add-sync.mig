@@ -1,0 +1,50 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с индексом пользователей
+     */
+    class index_order extends Migration{
+        function Run(){
+	        global $DB;
+            $sQuery = "
+                ALTER TABLE `index_order` 
+                ADD COLUMN `CLOSE_DATE` DATE,
+                ADD COLUMN `TROIKA_NUM` INT(11) UNSIGNED,
+                ADD COLUMN `TROIKA_TRANSACT` BIGINT(20) UNSIGNED,
+                ADD COLUMN `PARKING_TRANSACT` BIGINT(20) UNSIGNED,
+                ADD COLUMN `PRODUCT_ID` INT(11) UNSIGNED,
+                ADD COLUMN `SECTION_ID` INT(11) UNSIGNED,
+                ADD COLUMN `MAN_ID` INT(11) UNSIGNED,
+                ADD COLUMN `PRODUCT_NAME` CHAR(128),
+                ADD COLUMN `SECTION_NAME` CHAR(64),
+                ADD COLUMN `MAN_NAME` CHAR(128),
+                ADD KEY `CLOSE_DATE`(`CLOSE_DATE`),
+                ADD KEY `TROIKA_NUM`(`TROIKA_NUM`),
+                ADD KEY `TROIKA_TRANSACT`(`TROIKA_TRANSACT`),
+                ADD KEY `PARKING_TRANSACT`(`PARKING_TRANSACT`),
+                ADD KEY `PRODUCT_ID`(`PRODUCT_ID`),
+                ADD KEY `SECTION_ID`(`SECTION_ID`),
+                ADD KEY `MAN_ID`(`MAN_ID`),
+                ADD KEY `PRODUCT_NAME`(`PRODUCT_NAME`),
+                ADD KEY `SECTION_NAME`(`SECTION_NAME`),
+                ADD KEY `MAN_NAME`(`MAN_NAME`)
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_order = new index_order();
+// Откатываем, если неудачно
+if(!$index_order->Run())$index_order->RollBack();
