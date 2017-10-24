@@ -31,7 +31,88 @@
             История
         </a>
     </li>
+    <? if($arResult["MAILS"]):?>
+    <li>
+        <a href="#" rel="order-mails">
+            Письма
+        </a>
+    </li>
+    <? endif ?>
 </ul>
+<? if($arResult["MAILS"]):?>
+<div class="partners-order-main" id="order-mails" style="display:none">
+    <table class="table table-striped mails">
+        <tr>
+            <th style="width:50px">
+                Статус
+            </th>
+            <th>
+                В очереди
+            </th>
+            <th>
+                Отправлено
+            </th>
+            <th>
+                Прочтено
+            </th>
+            <th>
+                Действия
+            </th>
+        </tr>
+        <? foreach($arResult["MAILS"] as $arMail):?>
+        <?
+            if(!$arMail["FILENAME"])continue;
+            $tmp = explode("-",$arMail["FILENAME"]);
+            $sFolder = "/".$tmp[0]."-".$tmp[1]
+                ."/".$tmp[0]."-".$tmp[1]."-".$tmp[2]
+                ."/".preg_replace("#^.*\-(.*)\.eml$#","$1",$arMail["FILENAME"]);
+        ?>
+        <tr>
+            <td>
+                <?if($arMail["DATE_RECEIVE"]):?>
+                    <i class="glyphicon glyphicon-ok"
+                    title="Прочитано"
+                    ></i>
+                <? elseif($arMail["DATE_SENT"]):?>
+                    <i class="glyphicon glyphicon-send"
+                    title="Отправлено"
+                    ></i>
+                <? elseif($arMail["DATE_CREATE"]):?>
+                    <i class="glyphicon glyphicon-envelope" 
+                    title="Готово к отправке"></i>
+                <? endif ?>
+            </td>
+            <td>
+                <?= $arMail["DATE_CREATE"]?>
+            </td>
+            <td>
+                <?= $arMail["DATE_SENT"]?>
+            </td>
+            <td>
+                <?= $arMail["DATE_RECEIVE"]?>
+            </td>
+            <td>
+                <? if($arMail["DATE_SENT"]):?>
+                [
+                <a target="_blank"
+                href="/partners/mails/request.frame.php?folder=<?= $sFolder ?>&request=<?= 
+                $arMail["FILENAME"]
+                ?>">
+                    Просмотр
+                </a>
+                ]
+                <? endif ?>
+            </td>
+        </tr>
+        <? endforeach ?>
+    </table>
+</div>
+<style>
+table.mails td{
+    text-align: center;
+}
+</style>
+<? endif ?>
 <div class="partners-order-main" id="order-detail">
     <table class="table table-striped" >
         <tr>

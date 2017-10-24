@@ -211,6 +211,14 @@ in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
         $arResult["ERROR_CODE"] = $objLog->errorCode;
         $arResult["ERROR_DESC"] = $objLog->errorDesc;
     }
+
+    // Добавляем информацию о письме в индекс
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/CMailIndex.class.php"
+    );
+    $obMail = new CMailIndex;
+      
+    $arResult["MAILS"] = $obMail->getByOrderId($arParams["ORDER_ID"]);
 }
 
 $this->IncludeComponentTemplate();

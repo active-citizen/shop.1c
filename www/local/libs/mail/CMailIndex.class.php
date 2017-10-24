@@ -68,4 +68,28 @@
             ";
             $DB->Query($sQuery);
         }
+
+        function getByOrderId($nOrderId){
+            global $DB;
+            $nOrderId = intval($nOrderId);   
+            $sQuery = "
+                SELECT
+                    DATE_FORMAT(`DATE_CREATE`,'%d.%m.%Y %H:%i:%s') as `DATE_CREATE`,
+                    DATE_FORMAT(`DATE_SENT`,'%d.%m.%Y %H:%i:%s') as `DATE_SENT`,
+                    DATE_FORMAT(`DATE_RECEIVE`,'%d.%m.%Y %H:%i:%s') as
+                    `DATE_RECEIVE`,
+                    `FILENAME` as `FILENAME`
+                FROM
+                    `index_mail`
+                WHERE
+                    `ORDER_ID`=$nOrderId
+                ORDER BY
+                    `DATE_CREATE` DESC
+            ";
+            $arMails = [];
+            $res = $DB->Query($sQuery);
+            while($arMail = $res->Fetch())
+                $arMails[] = $arMail;
+            return $arMails;
+        }
     }
