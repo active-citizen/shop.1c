@@ -312,7 +312,7 @@ onchange="document.getElementById('form_filter').submit();"
         <td>
             <? if($arOrder["TROIKA_NUM"]):?>
             <div class="data-extra">
-                Номер тройки: <span><?= $arOrder["TROIKA_NUM"]?></span>
+                Номер тройки: <span><?= sprintf("%010d",$arOrder["TROIKA_NUM"])?></span>
             </div>
             <? endif ?>
             <? if($arOrder["TROIKA_TRANSACT"]):?>
