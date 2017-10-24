@@ -19,7 +19,7 @@
                     `DATE_CREATE` DATETIME,
                     `DATE_SENT` DATETIME,
                     `DATE_RECEIVE` DATETIME,
-                    `ORDER_ID` DATETIME,
+                    `ORDER_ID` INT(11) UNSIGNED,
                     `FILENAME` VARCHAR(255),
                     PRIMARY KEY `ID`(`ID`),
                     KEY `ORDER_ID`(`ORDER_ID`)
