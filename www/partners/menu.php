@@ -23,7 +23,12 @@
                 Помощь
             </a>
         </li>
-        <? if($USER->IsAdmin()):?>
+        <? if(
+        $USER->IsAdmin() 
+        || 
+        in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+        ):?>
+            <? if($USER->IsAdmin()):?>
             <li class="<?
             if(preg_match("#^/partners/users/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
@@ -32,6 +37,7 @@
                     Пользователи
                 </a>
             </li>
+            <? endif ?>
             <li class="<?
             if(preg_match("#^/partners/reports/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
@@ -74,6 +80,7 @@
                     ЗНИ
                 </a>
             </li>
+            <? if($USER->IsAdmin()):?>
             <li class="<?
             if(preg_match("#^/partners/settings/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
@@ -82,6 +89,7 @@
                     Настройки
                 </a>
             </li>
+            <? endif ?>
         <? endif ?>
         <li style="float:right;">
             <a href="/partners/orders/?logout=yes">Выход</a>

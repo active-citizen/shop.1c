@@ -231,6 +231,12 @@ onchange="document.getElementById('form_filter').submit();"
             */?></div>
         </td>
         <td>
+            <input type="text" name="filter_extra" id="filter-extra" 
+            class="form-control"
+            value="<?= $arResult["FILTER"]["EXTRA"]?>"
+            >
+        </td>
+        <td>
             <input type="submit" name="filter" id="filter" 
             class="btn btn-primary" value="Фильтровать">
         </td>

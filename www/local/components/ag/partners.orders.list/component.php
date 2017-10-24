@@ -431,6 +431,7 @@ if($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▲')
     $arOrder["USER_LOGIN"] = 'DESC';
 elseif($arParams["SORT"]["PHONE"] && $arParams["SORT"]["PHONE"]=='▼')
     $arOrder["USER_LOGIN"] = 'ASC';
+$arFilter["EXTRA"] = $arParams["FILTER"]["EXTRA"];
 
 //echo "<!-- ";
 //print_r($arOrder);

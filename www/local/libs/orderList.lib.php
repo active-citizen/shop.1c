@@ -286,11 +286,11 @@ function getDownloadOrders(
         $sWhere .= "
             AND (
                 `order`.`TROIKA_NUM`= '"
-                    .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])."'
+                    .$DB->ForSql($arFilter["EXTRA"])."'
                 OR `order`.`TROIKA_TRANSACT`='"
-                    .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])."'
+                    .$DB->ForSql($arFilter["EXTRA"])."'
                 OR `order`.`PARKING_TRANSACT`='"
-                    .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])."'
+                    .$DB->ForSql($arFilter["EXTRA"])."'
             )";
     }
 
