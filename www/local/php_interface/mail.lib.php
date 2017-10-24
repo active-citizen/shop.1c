@@ -8,6 +8,13 @@
     
         // Получаем информацию о заказе
         $orderInfo = initOrderGetInfo($orderId);
+        // Добавляем информацию о письме в индекс
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/CMailIndex.class.php"
+        );
+        $obMail = new CMailIndex;
+        $sMailId = $obMail->add($orderId);
+
 
         // Зунуляем письма о заказах с опенкарта
         if(preg_match("#^\d+$#", $orderInfo["ORDER"]["ADDITIONAL_INFO"]))
@@ -123,7 +130,7 @@
 //        echo chunk_split(base64_encode($sMailAttach));
 //        die;
 
-        $sMailFunction(
+        $sFilename = $sMailFunction(
             $sTo, 
             $sSubject, 
             $sMailTextHeaders
@@ -143,6 +150,8 @@
             , 
             $sHeaders
         );
+
+        $obMail->setFilename($sMailId, $sFilename);
 
     }
     

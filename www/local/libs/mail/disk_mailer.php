@@ -45,5 +45,5 @@
         fwrite($fd, $sData);
         fclose($fd);
 
-        return true;
+        return $sFilename;
     }

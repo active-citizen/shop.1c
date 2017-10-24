@@ -18,7 +18,9 @@ $html .=
         </p>
 
     </div>
-
+'.'<img src="http://'
+            .MAIN_DOMAIN.'/.integration/mail_proof.php?id='.
+            $sMailId.'">'.'
 </body>
 </html>
 ';
