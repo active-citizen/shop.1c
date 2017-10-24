@@ -59,44 +59,6 @@ function getDownloadOrders(
     `index_user` as `user`
         ON
             `user`.`ID`=`order`.`USER_ID` ";
-    $sFrom .= "
-            LEFT JOIN
-        `b_sale_order_props_value` as `man`
-            ON
-                `man`.`ORDER_PROPS_ID`=".$arProps["MANUFACTURER_ID"]."
-                AND `man`.`ORDER_ID`=`order`.`ID`";
-    $sFrom .= "
-        LEFT JOIN
-    `b_sale_order_props_value` as `close`
-        ON
-            `close`.`ORDER_PROPS_ID`=".$arProps["CLOSE_DATE"]."
-            AND `close`.`ORDER_ID`=`order`.`ID`";
-    $sFrom .= "
-        LEFT JOIN
-    `b_sale_order_props_value` as `product`
-        ON
-            `product`.`ORDER_PROPS_ID`=".$arProps["PRODUCT_NAME"]."
-            AND `product`.`ORDER_ID`=`order`.`ID`";
-    $sFrom .= "
-        LEFT JOIN
-    `b_sale_order_props_value` as `section`
-        ON
-            `section`.`ORDER_PROPS_ID`=".$arProps["SECTION_NAME"]."
-            AND `section`.`ORDER_ID`=`order`.`ID`";
-    $sFrom .= "
-        LEFT JOIN
-    `b_sale_order_props_value` as `man_name`
-        ON
-            `man_name`.`ORDER_PROPS_ID`=".$arProps["MANUFACTURER_NAME"]."
-            AND `man_name`.`ORDER_ID`=`order`.`ID`";
-    $sFrom .= "
-        LEFT JOIN
-    `b_sale_order_props_value` as `section_id`
-        ON
-            `section_id`.`ORDER_PROPS_ID`=".$arProps["SECTION_ID"]."
-            AND `section_id`.`ORDER_ID`=`order`.`ID`";
-
-
 
     $sWhere = "
         1";
@@ -110,7 +72,7 @@ function getDownloadOrders(
     if(isset($arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"])){
          if(is_array($arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"]))
             $sWhere .= "
-                AND `man`.`VALUE` IN ("
+                AND `order`.`MAN_ID` IN ("
                     .$DB->ForSql(
                         implode(",",
                             $arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"]
@@ -119,7 +81,7 @@ function getDownloadOrders(
                 .")";
          else
             $sWhere .= "
-                AND `man`.`VALUE`= '"
+                AND `order`.`MAN_ID`= '"
                     .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"])
                 ."'";
             
@@ -129,32 +91,27 @@ function getDownloadOrders(
 
     if(isset($arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
         $sWhere .= "
-        AND `close`.`ORDER_ID` IS NOT NULL ";
-        $sWhere .= "
-            AND `close`.`VALUE`>= '"
+            AND `order`.`CLOSE_DATE`>= '"
                 .ConvertDateTime(
                     $arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"][0],
-                    "YYYY-MM-DD 00:00:00",
+                    "YYYY-MM-DD",
                     "DD.MM.YYYY HH:MI:SS"
                 )
             ."' 
-            AND `close`.`VALUE`<= '"
+            AND `order`.`CLOSE_DATE`<= '"
                 .ConvertDateTime(
                     $arFilter["><PROPERTY_VAL_BY_CODE_CLOSE_DATE"][1],
-                    "YYYY-MM-DD 23:59:59",
+                    "YYYY-MM-DD",
                     "DD.MM.YYYY HH:MI:SS"
                 )
             ."'";
     }
     if(isset($arFilter[">PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
         $sWhere .= "
-        AND `close`.`ORDER_ID` IS NOT NULL ";
-        $sWhere .= "
-                AND `close`.`ORDER_ID`=`order`.`ID`
-                AND `close`.`VALUE`>= '"
+                AND `order`.`CLOSE_DATE`>= '"
                     .ConvertDateTime(
                         $arFilter[">PROPERTY_VAL_BY_CODE_CLOSE_DATE"],
-                        "YYYY-MM-DD 00:00:00",
+                        "YYYY-MM-DD",
                         "DD.MM.YYYY HH:MI:SS"
                     )
                 ."'";
@@ -162,13 +119,10 @@ function getDownloadOrders(
     }
     if(isset($arFilter["<PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
         $sWhere .= "
-        AND `close`.`ORDER_ID` IS NOT NULL ";
-        $sWhere .= "
-                AND `close`.`ORDER_ID`=`order`.`ID`
-                AND `close`.`VALUE`<='"
+                AND `order`.`CLOSE_DATE`<='"
                     .ConvertDateTime(
                         $arFilter["<PROPERTY_VAL_BY_CODE_CLOSE_DATE"],
-                        "YYYY-MM-DD 23:59:59",
+                        "YYYY-MM-DD",
                         "DD.MM.YYYY HH:MI:SS"
                     )
                 ."'";
@@ -316,14 +270,14 @@ function getDownloadOrders(
 
     if(isset($arFilter["%PROPERTY_VAL_BY_CODE_PRODUCT_NAME"])){
         $sWhere .="
-            AND `product`.`VALUE` LIKE '%"
+            AND `order`.`PRODUCT_NAME` LIKE '%"
             .$arFilter["%PROPERTY_VAL_BY_CODE_PRODUCT_NAME"]
             ."%' ";
     }
 
     if(isset($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])){
         $sWhere .= "
-            AND `close`.`VALUE`= '"
+            AND `order`.`CLOSE_DATE`= '"
                 .$DB->ForSql($arFilter["PROPERTY_VAL_BY_CODE_CLOSE_DATE"])
             ."'";
     }
@@ -382,9 +336,9 @@ function getDownloadOrders(
             `order`.`STATUS_ID` as `STATUS_ID`,
             DATE_FORMAT(`order`.`DATE_INSERT`,'%d.%m.%Y %H:%i:%s') as `DATE_INSERT`,
             `user`.`LOGIN` as `USER_LOGIN`,
-            `product`.`VALUE` as `PRODUCT_NAME`,
-            `section`.`VALUE` as `SECTION_NAME`,
-            `close`.`VALUE` as `CLOSE_DATE`
+            `order`.`PRODUCT_NAME` as `PRODUCT_NAME`,
+            `order`.`SECTION_NAME` as `SECTION_NAME`,
+            `order`.`CLOSE_DATE` as `CLOSE_DATE`
         FROM
             $sFrom
         WHERE
