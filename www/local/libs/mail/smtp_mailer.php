@@ -114,14 +114,13 @@
             $mail->addAddress($sTo);
             $mail->Encoding = '8bit';
 
-
             if(!$mail->send()) {
                 echo $mail->ErrorInfo;
-                return false;
+                return $sFilename;
             }
             $mail->clearAddresses();
             $mail->ClearCustomHeaders();
-            return true;
+            return $sFilename;
         }
 
     function send_from_eml($sFilename){
@@ -151,19 +150,27 @@
         $arHeaders[] = "Send-now:yes";
 
         $sBody = implode("", $arLines);
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/CMailIndex.class.php"
+        );
+        $nOrderId = $m[1];
+        $obMail = new CMailIndex;
         if(preg_match("#/mail_proof.php\?id=([0-9a-f]+)#", $sBody, $m)){
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/CMailIndex.class.php"
-            );
-            $obMail = new CMailIndex;
-            $sMailId = $obMail->setSentDate($m[1]);
+            $nOrderId = $m[1];
+            $sMailId = $obMail->setSentDate($nOrderId);
         }
 
-        if(custom_mail(
+        if($sDiskFilename = custom_mail(
             $sTo, 
             $sSubject,
             implode("\n", $arLines),
             implode("\n",$arHeaders)
         ))unlink($sFilename);
+
+
+        if($sDiskFilename && $nOrderId){
+            $sDiskFilename = preg_replace("#^(.*)\.txt$#", "$1.eml", $sDiskFilename);
+            $obMail->setFilename($nOrderId, $sDiskFilename);    
+        }
 
     }
