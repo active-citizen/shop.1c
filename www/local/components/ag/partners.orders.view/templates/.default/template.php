@@ -318,7 +318,12 @@ table.mails td{
         </tr>
         <? endif ?>
     </table>
-        <? if(isset($arResult["ORDER"]["CURL_LOG"]) && $USER->isAdmin()):?>
+        <? if(isset($arResult["ORDER"]["CURL_LOG"]) && (
+            $USER->isAdmin()
+            ||
+            in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+            )
+        ):?>
             <div id="accordion">
                 <h3>
                     Журнал обмена (доступен администраторам)
