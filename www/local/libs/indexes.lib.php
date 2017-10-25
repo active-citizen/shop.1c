@@ -88,10 +88,12 @@
         $resProps = $DB->Query($sQuery);
         while($arProp = $resProps->Fetch())
             $arProps[$arProp["CODE"]] = "";
+
         // Получаем свойства конкретного заказа
         $sQuery = "SELECT CODE,VALUE FROM `b_sale_order_props_value` WHERE
         `ORDER_ID`=".$arOrder["ID"];
         $resProps = $DB->Query($sQuery);
+
         while($arProp = $resProps->Fetch())
             $arProps[$arProp["CODE"]] = $arProp["VALUE"];
 
@@ -156,8 +158,13 @@
         else{
             $sQuery = "
                 INSERT INTO `index_order`(
-                    `ID`,`USER_ID`,`STORE_ID`,`STATUS_ID`
-                    ,`DATE_INSERT`,`DATE_UPDATE`,`DATE_STATUS`
+                    `ID`
+                    ,`USER_ID`
+                    ,`STORE_ID`
+                    ,`STATUS_ID`
+                    ,`DATE_INSERT`
+                    ,`DATE_UPDATE`
+                    ,`DATE_STATUS`
                     ,`ADDITIONAL_INFO`
                     ,`CLOSE_DATE`
                     ,`TROIKA_NUM`
