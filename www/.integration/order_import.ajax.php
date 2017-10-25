@@ -528,14 +528,31 @@
             if($storeId)$arOrder["STORE_ID"] = $storeId;
             */
 
-
+            /*
+            +--------------+---------+---------------+-----------------+
+            |   Префикс    | Откуда  | Снятие баллов | Снятие остатков |
+            +--------------+---------+---------------+-----------------+
+            |       Б      | Битрикс |      +        |        +        |
+            |       О      |    1С   |      +        |        +        |
+            |       М      |    1С   |      -        |        +        |
+            +--------------+---------+---------------+-----------------+
+           
+            */
             // Если заказа нет - создаём, есть - обновляем
-            if(!$existsOrder 
+            // Определяем префикс заказа
+            $sPrefix = '';
+            if(preg_match("#^(.*)\-(.*)$#", $arOrder["ADDITIONAL_INFO"], $m))
+                $sPrefix = $m[1];
+
+           $login = "u".$arDocument["Телефон"];
+           if(!$existsOrder 
                 && (
-                    preg_match("#^НЭМС\-\d+$#i", $arOrder["ADDITIONAL_INFO"])
+                    $sPrefix=="О"
+                    ||
+                    $sPrefix=="М"
                 )
             ){
-                
+                 
                 if(!$orderId = $objOrder->Add($arOrder)){
                     if(IMPORT_DEBUG){
                         echo "failed\n";
@@ -625,14 +642,18 @@
                 );
                 */
                 
-
-                //CSaleOrder::PayOrder($orderId,"Y",false,false); //?????
-                // Удаляем транзакцию, вызвагую этим заказом (ибо через импорт баллов она придёт)
-                /*
-                $objTransact = new CSaleUserTransact;
-                $arTransact = $objTransact->GetList(array(),array("ORDER_ID"=>$orderId))->GetNext();
-                if(isset($arTransact["ID"]))$objTransact->Delete($arTransact["ID"]);
-                */
+                // Снимаем баллы
+                if($sPrefix=="О"){
+                    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+                    $obOrder = new bxOrder();
+                    $orderSum = - $arOrder["SUM_PAID"];
+                    if(!$obOrder->addEMPPoints($orderSum,"Заказ ".$arOrder["ADDITIONAL_INFO"]
+                        ." в магазине поощрений АГ",$login)
+                    ){
+                        echo $arOrder["ADDITIONAL_INFO"]
+                            .": points transaction error: ".$obOrder->error." ";
+                    }
+                }
             }
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
@@ -673,7 +694,6 @@
                 elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
    
-                    $login = "u".$arDocument["Телефон"];
                     // Считаем сумму заказа
                     $orderSum = $arOrder["SUM_PAID"];
 
