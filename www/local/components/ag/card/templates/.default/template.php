@@ -306,7 +306,11 @@ if(
                         
                       </div>
                       <?
-                      if($arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]=='troyka'):?>
+                      if(
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]=='troyka'
+                        &&
+                        $USER->IsAuthorized()
+                      ):?>
                       <div class="ag-shop-card__field">
                         <div class="ag-shop-card__fieldname">Введите номер карты Тройка:</div>
                         <div class="ag-shop-card__card-number">
