@@ -31,6 +31,7 @@
         && $arOrder["USER_ID"]!=$USER->GetId()
         && !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
         && !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+        && !in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
     ){
         echo "Access denied";
         die;
