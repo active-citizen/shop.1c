@@ -313,6 +313,48 @@ elseif(isset($_GET["add_order"])){
         )
     )->GetNext();
 
+    // Проверяем дневные лимиты троек и парковок
+    $isLimited = false;
+    if(
+        $sArtNumber=='parking'
+    ){
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"].
+            "/.integration/classes/parking.class.php"
+        );
+        $arUser = $USER->GetById($USER->GetId())->Fetch();
+        $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+        
+        // Определяем вышел ли дневной лимит парковок 
+        $bIsLimited = $objParking->isLimited();
+    }
+    // Если это тройка и дневной лимит вышел - показываем фигу
+    if(
+        $sArtNumber=='troyka'
+    ){
+        require_once(
+            $_SERVER["DOCUMENT_ROOT"].
+            "/.integration/classes/troyka.class.php"
+        );
+        $arUser = $USER->GetById($USER->GetId())->Fetch();
+        $objTroya = new CTroyka(str_replace("u","",$arUser["LOGIN"]));
+        
+        // Определяем вышел ли дневной лимит парковок 
+        $bIsLimited = $objTroya->isLimited();
+    }
+    if($isLimited){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Дневной лимит заказа данного поощрения исчерпан."
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+
+
 
     if(
         (
