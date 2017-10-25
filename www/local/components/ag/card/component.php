@@ -164,7 +164,7 @@
             
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objParking->isLimited();
-            $arReqult["PARKING_TODAY"] = $objParking->transactsToday;
+            $arResult["PARKING_TODAY"] = $objParking->transactsToday;
         }
         // Если это тройка и дневной лимит вышел - показываем фигу
         if(
@@ -182,7 +182,7 @@
             
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objTroya->isLimited();
-            $arReqult["PARKING_TODAY"] = $objTroya->transactsToday;
+            $arResult["PARKING_TODAY"] = $objTroya->transactsToday;
         }
 
         // Если дневной лимит не вышел - получаем остатки по складам

@@ -314,7 +314,7 @@ elseif(isset($_GET["add_order"])){
     )->GetNext();
 
     // Проверяем дневные лимиты троек и парковок
-    $isLimited = false;
+    $bIsLimited = false;
     if(
         $sArtNumber=='parking'
     ){
@@ -342,7 +342,7 @@ elseif(isset($_GET["add_order"])){
         // Определяем вышел ли дневной лимит парковок 
         $bIsLimited = $objTroya->isLimited();
     }
-    if($isLimited){
+    if($bIsLimited){
         $answer = array(
             "order"=>array(
                 "ERROR"=>array(
