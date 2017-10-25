@@ -313,6 +313,9 @@
             if(time()>$nHideTimestamp)$arResult["HIDE_ON_DATE"] = true;
         }
     }
+    // Картинки по порядку
+    $arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"] = 
+        array_reverse($arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"]);
 
     $this->IncludeComponentTemplate();
 //}

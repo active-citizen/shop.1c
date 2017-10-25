@@ -169,9 +169,6 @@ if(
                           </button>
                         </div>
                         <div class="ag-shop-card__previews-container">
-                        <? 
-                            array_reverse($arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"]);
-                        ?>
                         <? foreach($arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto):?>
                           <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?= 
                           $morePhoto["FILE_PATH"]
