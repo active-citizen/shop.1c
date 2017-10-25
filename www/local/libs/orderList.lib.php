@@ -318,7 +318,7 @@ function getDownloadOrders(
         $sLimit = "LIMIT 10";
 
     if(isset($arOrder) && $arOrder){
-        $sOrder = "`order`.`ID` ASC";
+        $sOrder = "`order`.`ID` DESC";
         $arOrderIndex = [
             "PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"=>"FIO",
             "ADDITIONAL_INFO"=>"ADDITIONAL_INFO",
@@ -335,7 +335,7 @@ function getDownloadOrders(
                 ." ".$DB->ForSql($value);
     }
     else{
-        $sOrder = "`order`.`ID` ASC";
+        $sOrder = "`order`.`ID` DESC";
     }
 
     $sQuery = "
