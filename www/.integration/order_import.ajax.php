@@ -541,7 +541,7 @@
             // Если заказа нет - создаём, есть - обновляем
             // Определяем префикс заказа
             $sPrefix = '';
-            if(preg_match("#^(.*)\-(.*)$#", $arOrder["ADDITIONAL_INFO"], $m))
+            if(preg_match("#^.*?(.)\-(.*)$#u", $arOrder["ADDITIONAL_INFO"], $m))
                 $sPrefix = $m[1];
 
            $login = "u".$arDocument["Телефон"];
