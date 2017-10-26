@@ -8,6 +8,18 @@
         $nSectionId = 0 //!< ID раздела
     ){
         global $DB;
+
+        // Если кэш не протух - даём из кэша
+        $arResult = filterGetCache(
+            $nIblockId,
+            $nWantPropertyId,
+            $nSectionId,
+            $nLifetime = 600
+        );
+        if($arResult!==false){
+            return $arResult;
+        }
+
         $nSectionId = intval($nSectionId);
         $nCmlPropertyId = CML2_LINK_PROPERTY_ID;
         $nHideIfAbsentPropertyId = HIDE_IF_ABSENT_PROPERTY_ID; 
@@ -81,6 +93,62 @@
         while($arQuery = $resQuery->Fetch()){
             $result[$arQuery["ID"]] = $arQuery;
         }
+
+        // Сохраняем результат запроса в кэш
+        filterSaveCache(
+            $result,
+            $nIblockId,
+            $nWantPropertyId,
+            $nSectionId
+        );
         return $result;
     }
 
+    function filterSaveCache(
+        $arResult,
+        $nIblockId,
+        $nWantPropertyId,
+        $nSectionId
+    ){
+        $sCacheFilename = filterGetCacheFilename(
+            $nIblockId,
+            $nWantPropertyId,
+            $nSectionId
+        );
+
+        $fd = fopen($sCacheFilename, "w");
+        fwrite($fd, serialize($arResult));
+        fclose($fd);
+    }
+
+    function filterGetCache(
+        $nIblockId,
+        $nWantPropertyId,
+        $nSectionId,
+        $nLifetime = 600
+    ){
+        $sCacheFilename = filterGetCacheFilename(
+            $nIblockId,
+            $nWantPropertyId,
+            $nSectionId
+        );
+
+        $mtime = 0;
+        if(file_exists($sCacheFilename)){
+            $stat = stat($sCacheFilename);
+            $mtime = $stat['mtime'];
+            if(($mtime+$nLifetime)>time())
+                return unserialize(file_get_contents($sCacheFilename));
+        }
+        return false;
+    }
+
+    function filterGetCacheFilename(
+        $nIblockId,
+        $nWantPropertyId,
+        $nSectionId
+    ){
+        if(!$nSection)$nSection=0;
+         return $_SERVER["DOCUMENT_ROOT"]
+            ."/upload/filter_cache/$nIblockId.$nWantPropertyId.$nSectionId.cache";
+    }
