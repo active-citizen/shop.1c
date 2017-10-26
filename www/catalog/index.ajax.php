@@ -528,7 +528,7 @@ customCache();
                            $product["DETAIL_PAGE_URL"] = "/catalog/root/"
                            .$arSplitUrl[2]."/";
                      ?>
-                      <a class="ag-shop-item-card" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>"
+                      <a class="ag-shop-item-card <?= IS_MOBILE ? 'ag-shop-item-card--app' : '' ?>" href="<?= $product["DETAIL_PAGE_URL"]?>" title="<?= $product["NAME"];?>"
                       style="background-image: url(<?=
                       $arFilesIndex[$product["DETAIL_PICTURE_ID"]]?>);">
                         <div class="ag-shop-item-card-cover <?= $sClassName?>"></div>

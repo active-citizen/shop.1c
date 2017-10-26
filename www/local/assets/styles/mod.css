@@ -341,16 +341,16 @@ a.ag-shop-item-card > h3.ag-shop-item-card__name{
 
 
 
-a.ag-shop-item-card:hover .ag-shop-item-card-cover{
+.ag-shop-item-card:not(.ag-shop-item-card--app):hover .ag-shop-item-card-cover {
     display:none;
 }
 
-a.ag-shop-item-card:hover h3.ag-shop-item-card__name{
+.ag-shop-item-card:not(.ag-shop-item-card--app):hover .ag-shop-item-card__name {
     position: initial;
     display: block;
 }
 
-a.ag-shop-item-card:hover > h3.ag-shop-item-card__name{
+.ag-shop-item-card:not(.ag-shop-item-card--app):hover > .ag-shop-item-card__name {
     display:none;
 }
 
@@ -361,11 +361,6 @@ a.ag-shop-item-card:hover > h3.ag-shop-item-card__name{
 
 .ag-shop-slider-card__points{
     background-color: rgba(255,194,14,1) !important;
-}
-
-input:checked + .ag-shop-filter__variants-item {
-    background: #ffc20e !important;
-    border: 1px solid #ffc20e !important;
 }
 
 .ag-shop-slider-card__points-count{
@@ -433,18 +428,6 @@ div.ag-shop-menu{
 
 .ag-shop-menu__items{
     z-index: 9999 !important;
-}
-
-
-.ag-shop-menu__button{
-    background-image: url(/local/assets/images/menu-open-but.png);
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: 16px;
-}
-
-.ag-shop-menu__button--close{
-    background-image: url(/local/assets/images/menu-close-but.png);
 }
 
 .ag-shop-modal__button{

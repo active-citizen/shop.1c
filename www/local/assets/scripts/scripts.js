@@ -137,7 +137,8 @@ $(document).ready(function(){
 
     $('.ag-shop-sidebar__up').click(function () {
         $('body,html').animate({
-            scrollTop: 630
+            // https://jira.altarix.ru/browse/AG-611
+            scrollTop: 0
         }, 800);
         return false;
     });

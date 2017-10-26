@@ -983,8 +983,8 @@ body {
   background: rgba(246,239,138,0.2);
 }
 input:checked + .ag-shop-filter__variants-item {
-  background: #f6ef8a;
-  border: 1px solid #f6ef8a;
+  background: #ffc20e;
+  border: 1px solid #ffc20e;
 }
 .ag-shop-filter__confirm {
   padding: 24px 0 24px;
