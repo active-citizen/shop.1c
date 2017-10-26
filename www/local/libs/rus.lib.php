@@ -179,3 +179,23 @@ function html2text($html){
     $html = strip_tags($html);
     return $html;
 }
+
+function getStatusAlias($sStatus){
+    $arAliases = [
+        /*
+        "НОВЫЙ"     =>  "В обработке",
+        "В РАБОТЕ"  =>  "Готов"
+        */
+    ];
+
+    $sResult = $sStatus;
+    if(isset($arAliases[mb_strtoupper($sStatus)]))
+        $sResult = $arAliases[mb_strtoupper($sStatus)];
+
+    if(
+       in_array($sStatus,$arAliases)
+    )return false;
+    
+    
+    return $sResult;
+}

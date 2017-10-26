@@ -11,7 +11,7 @@ $html .='
             .' от '.(
                 $orderInfo["ORDER"]["DATE_INSERT"]
             ).'            <br>
-            Статус заказа: '.(
+            Статус заказа: '.getStatusAlias(
                 $orderInfo["STATUSES"][$orderInfo["ORDER"]["STATUS_ID"]]["NAME"]
             ).'        
             <table style="border-spacing: 0px;border-collapse: collapse;">

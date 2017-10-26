@@ -8,10 +8,9 @@
         $arResult["STATUSES"][
             $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
         ]["COLOR"]
-    ?>"><?= 
-        $arResult["STATUSES"][
+    ?>"><?= getStatusAlias($arResult["STATUSES"][
             $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
-        ]["NAME"]
+        ]["NAME"])
     ?></span>&raquo;</p>
     <? endif ?>
 
@@ -180,9 +179,9 @@ table.mails td{
                 Статус заказа:  
             </td><td style="color:<?= $arResult["STATUSES"][
                     $arResult["ORDER"]["STATUS_ID"]]["COLOR"]?>">
-                <?= $arResult["STATUSES"][
+                <?= getStatusAlias($arResult["STATUSES"][
                     $arResult["ORDER"]["STATUS_ID"]
-                ]["NAME"]?>
+                ]["NAME"])?>
             </td>
         </tr>
         <tr>
@@ -501,12 +500,17 @@ href="/partners/orders/print.php?print=cancel&order=<?=
             <td style="color: <?=
                 $arResult["STATUSES"][$arItem["DATA"]["STATUS_ID"]]["COLOR"]
             ?>">
-                <?= $arResult["STATUSES"][$arItem["DATA"]["STATUS_ID"]]["NAME"]?>
+                <?=
+                getStatusAlias($arResult["STATUSES"][$arItem["DATA"]["STATUS_ID"]]["NAME"])?>
             </td>
             <td style="color: <?=
                 $arResult["STATUSES"][$arItem["DATA"]["OLD_STATUS_ID"]]["COLOR"]
             ?>">
-                <?= $arResult["STATUSES"][$arItem["DATA"]["OLD_STATUS_ID"]]["NAME"]?>
+                <?= 
+                    getStatusAlias(
+                    $arResult["STATUSES"][$arItem["DATA"]["OLD_STATUS_ID"]]["NAME"]
+                    )
+                ?>
             </td>
         <? else:?>
             <td colspan="2">
@@ -517,11 +521,11 @@ href="/partners/orders/print.php?print=cancel&order=<?=
 </table>
 <? if($USER->IsAdmin()):?>
     <select name="status_id" class="form-control" id="status_id">
-        <option value="F">Выполнен</option>
-        <option value="AI">Аннулирован</option>
-        <option value="N">В работе</option>
-        <option value="AF">Отклонён</option>
-        <option value="AC">Брак</option>
+        <option value="F"><?= getStatusAlias('Выполнен')?></option>
+        <option value="AI"><?= getStatusAlias('Аннулирован')?></option>
+        <option value="N"><?= getStatusAlias('В работе')?></option>
+        <option value="AF"><?= getStatusAlias('Отклонён')?></option>
+        <option value="AC"><?= getStatusAlias('Брак')?></option>
         
     </select>    
     <input type="submit" name="chansge_status" value="Запросить смену статуса"
@@ -529,7 +533,7 @@ href="/partners/orders/print.php?print=cancel&order=<?=
 <? else:?>
     <? if($arResult["ORDER"]["STATUS_ID"]=='N'):?>
     <select name="status_id" class="form-control" id="status_id">
-        <option value="F">Выполнен</option>
+        <option value="F"><?= getStatusAlias('Выполнен')?></option>
     </select>
     <input type="submit" name="chansge_status" value="Запросить смену статуса"
     class="btn btn-primary">
@@ -541,7 +545,7 @@ href="/partners/orders/print.php?print=cancel&order=<?=
         isset($arResult["ORDER"]["CURL_LOG"])
     ):?>
     <select name="status_id" class="form-control" id="status_id">
-        <option value="AG">Отменён</option>
+        <option value="AG"><?= getStatusAlias('Отменён')?></option>
     </select>
     <input type="submit" name="chansge_status" value="Запросить смену статуса"
     class="btn btn-primary">

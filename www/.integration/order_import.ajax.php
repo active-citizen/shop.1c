@@ -821,7 +821,11 @@
             
             // Обновляем индексную таблицу
             require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
-            if($orderId)syncOrder($orderId);
+            if($orderId){
+                syncOrder($orderId);
+                syncUser($userId);
+            }
+
 
             // При выполнении заказа прописываем в дату статуса дату выполнения
             if($statusId=='F')$DB->Query("

@@ -116,6 +116,21 @@
 
         $sQuery = "
             SELECT
+               `man_link`.`VALUE_NUM` as `ID`
+            FROM
+                `b_iblock_element_property` as `man_link`
+            WHERE
+                `man_link`.`IBLOCK_ELEMENT_ID`=".$arProduct["ID"]."
+                AND
+                `IBLOCK_PROPERTY_ID` = ".MANUFACTURER_PROPERTY_ID." 
+            LIMIT
+                1
+            
+        ";
+        $arMan = $DB->Query($sQuery)->Fetch();
+
+        $sQuery = "
+            SELECT
                 `ID`
             FROM
                 `index_order`
@@ -144,7 +159,7 @@
                         $arProps["TROIKA_TRANSACT_ID"])."',
                     `PARKING_TRANSACT`='".$DB->ForSql(
                         $arProps["PARKING_TRANSACT_ID"])."',
-                    `MAN_ID`='".$DB->ForSql($arProps["MANUFACTURER_ID"])."',
+                    `MAN_ID`='".$DB->ForSql($arMan["ID"])."',
                     `SECTION_ID`='".$DB->ForSql($arProps["SECTION_ID"])."',
                     `SECTION_NAME`='".$DB->ForSql($arProps["SECTION_NAME"])."',
                     `MAN_NAME`='".$DB->ForSql($arProps["MANUFACTURER_NAME"])."',
@@ -192,7 +207,7 @@
                     ,'".$DB->ForSql($arProp["PARKING_TRANSACT_ID"])."'
                     ,'".$DB->ForSql($arProduct["ID"])."'
                     ,'".$DB->ForSql($arProp["SECTION_ID"])."'
-                    ,'".$DB->ForSql($arProp["MANUFACTURER_ID"])."'
+                    ,'".$DB->ForSql($arMan["ID"])."'
                     ,'".$DB->ForSql($arProp["PRODUCT_NAME"])."'
                     ,'".$DB->ForSql($arProp["SECTION_NAME"])."'
                     ,'".$DB->ForSql($arProp["MANUFACTURER_NAME"])."'

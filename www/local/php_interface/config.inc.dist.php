@@ -34,7 +34,9 @@
 
         // Определяем ID свойства цена
         define("PRICE_PROPERTY_ID", 20);
-         
+
+        // Определяем ID свойства производитель
+        define("MANUFACTURER_PROPERTY_ID", 73);
 
 
 

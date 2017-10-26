@@ -100,6 +100,14 @@
             )
         )->Fetch();
         define("HIDE_IF_ABSENT_PROPERTY_ID",$arr["ID"]);
+        // Определяем ID свойства производитель 
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"MANUFACTURER_LINK"
+            )
+        )->Fetch();
+        define("MANUFACTURER_PROPERTY_ID",$arr["ID"]);
         
         // Определяем ID групп Операторы МФЦ и Партнёры
         define("PARTNERS_GROUP_ID",9);

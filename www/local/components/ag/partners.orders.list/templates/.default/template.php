@@ -155,10 +155,15 @@ onchange="document.getElementById('form_filter').submit();"
             <select name="filter_status" id="filter-status" class="form-control">
                 <option value="">-все-</option>
                 <? foreach($arResult["STATUSES"]as $arStatus):?>
+                <? 
+                    if(
+                        !getStatusAlias($arStatus["NAME"])
+                    )continue;
+                ?>
                 <option value="<?= $arStatus["ID"]?>" style="color:
                 <?= $arStatus["COLOR"]?>"
                 <? if($arStatus["ID"]==$arResult["FILTER"]["STATUS"]):?>selected<? endif?>
-                ><?= $arStatus["NAME"]?></option>
+                ><?= getStatusAlias($arStatus["NAME"])?></option>
                 <? endforeach?>
             </select>
         </td>
@@ -260,12 +265,16 @@ onchange="document.getElementById('form_filter').submit();"
         </td>
         <? endif ?>
         <td class="td-status">
-            <?= $arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"]?><?
+            <?=
+            getStatusAlias($arResult["STATUSES"][$arOrder["STATUS_ID"]]["NAME"])?><?
             if($arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]):?><br/>
             &#8595;<br/>
             <span style="color:<?=
             $arResult["STATUSES"][$arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]]["COLOR"]?>">
-            <?= $arResult["STATUSES"][$arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]]["NAME"]?>
+            <?=
+            getStatusAlias(
+                $arResult["STATUSES"][$arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]]["NAME"]
+            )?>
             </span>
             <? endif ?>
         </td>
