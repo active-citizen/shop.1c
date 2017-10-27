@@ -1,0 +1,45 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с индексом писем
+     */
+    class index_lock extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `index_lock`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `index_lock`(
+                    `ID` INT(11) NOT NULL AUTO_INCREMENT,
+                    `CTIME` DATETIME,
+                    `USER_ID` INT(11),
+                    `TYPE` CHAR(8),
+                    `STATUS` CHAR(4),
+                    `LOCK_DATE` DATETIME,
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `USER_ID`(`USER_ID`),
+                    KEY `TYPE`(`TYPE`),
+                    KEY `STATUS`(`STATUS`),
+                    KEY `LOCK_DATE`(`LOCK_DATE`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_lock = new index_lock();
+// Откатываем, если неудачно
+if(!$index_lock->Run())$index_lock->RollBack();
