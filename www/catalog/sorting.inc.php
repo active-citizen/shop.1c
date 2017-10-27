@@ -1,4 +1,4 @@
-            <a name="products"><h1></h1></a>
+            <a name="products"></a>
             <div class="ag-shop-catalog__filter">
               <div class="ag-shop-catalog__filter-instance">
                 <div class="ag-shop-catalog__filter-item">

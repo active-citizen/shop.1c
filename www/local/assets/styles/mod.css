@@ -111,6 +111,10 @@ input.ag-balls[type="radio"]{
     margin-left: 10px;
 }
 
+.points_pagination .ag-shop-profile-tabs__link {
+    display: inline;
+}
+
 .ag-shop-card__image-container{
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -402,10 +406,6 @@ a.ag-shop-item-card > h3.ag-shop-item-card__name{
     padding-left: 60px;
 }
 
-.ag-shop-profile-tabs__link{
-    display: inline;
-}
-
 
 .ag-shop-modal__container .error{
     margin: 10px;
@@ -670,9 +670,9 @@ div.ag-shop-mob-title{
         display: none;
     }
 
-    .ag-shop-content{
+    /* .ag-shop-content{
         padding-top: 10px;
-    }
+    } */
 
 
 }

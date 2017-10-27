@@ -936,6 +936,9 @@ body {
 * + .ag-shop-profile-tabs__link {
   margin-top: 8px;
 }
+.ag-shop-profile-points {
+  margin-bottom: 15px;
+}
 .ag-shop-profile-points__header {
   display: none;
   padding: 15px 10px;

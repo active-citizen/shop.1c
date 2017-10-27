@@ -978,12 +978,15 @@ body {
   font-size: 0.875rem;
   color: #0e2f4b;
   transition: all 0.1s ease-in-out;
+  /* for clipping rounded corners in Android 4.0-4.3 */
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 }
 .ag-shop-filter__variants-item:hover {
-  background: rgba(246,239,138,0.2);
+  background-color: rgba(246,239,138,0.2);
 }
 input:checked + .ag-shop-filter__variants-item {
-  background: #ffc20e;
+  background-color: #ffc20e;
   border: 1px solid #ffc20e;
 }
 .ag-shop-filter__confirm {

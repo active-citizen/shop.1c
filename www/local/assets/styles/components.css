@@ -1591,6 +1591,8 @@
   font-size: 1rem;
   color: #fff;
   transition: 0.2s ease-out;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 }
 .ag-shop-modal__button::moz-focus-inner {
   border: 0;

@@ -4,8 +4,7 @@
       <div class="ag-shop-card__container">
         <div class="ag-shop-card__requirements">
             Для просмотра данной страницы необходимо 
-            <a class="ag-shop-menu__link--active"
-            href="http://ag.mos.ru/">авторизоваться</a>
+            <a href="http://ag.mos.ru/">авторизоваться</a>
         </div>
       </div>
 <? else: ?>
@@ -58,9 +57,9 @@
 
     <div class="ag-shop-profile__orders">
         <? if(!count($arResult["ORDERS"])):?>
-        <div style="color: rgba(0,122,108,1);text-align: center;margin-top: 20px;">
+        <h2 style="color:rgba(0,122,108,1);text-align:center;">
             У вас пока нет заказов
-        </div>
+        </h2>
         <? endif ?>
       <? foreach($arResult["ORDERS"] as $arOrder):?>
       <div class="ag-shop-profile-order ag-shop-profile-order--<?

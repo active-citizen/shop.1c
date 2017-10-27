@@ -121,8 +121,7 @@ if(
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
                     Для заказа данного поощрения необходимо 
-                    <a class="ag-shop-menu__link--active"
-                    href="http://ag.mos.ru/">авторизоваться</a>
+                    <a href="http://ag.mos.ru/">авторизоваться</a>
                 </div>
               </div>
             <? endif ?>
@@ -475,7 +474,7 @@ if(
                         <div class="ag-shop-card__selected-place">
                           <div class="ag-shop-card__selected-place-header">
                             <div class="grid grid--bleed grid--justify-space-between">
-                              <div class="grid__col-shrink">
+                              <div class="grid__col-xs-12 grid__col-sm-shrink">
                                 <div class="ag-shop-card__selected-place-station">
                                     <i class="ag-shop-icon ag-shop-icon--metro"></i>
                                     <span>
@@ -485,19 +484,18 @@ if(
                                     </span>
                                 </div>
                               </div>
-                              <div class="grid__col-shrink">
-                                <div class="ag-shop-card__remaining-count">
+                              <div class="grid__col-xs-12 grid__col-sm-shrink">
                                   <? foreach(array(
                                     array(0,0,"отсутствует"),
                                     array(1,10,"мало"),
                                     array(11,100,"достаточно"),
                                     array(101,1000000000,"много")
                                   ) as $arAmmount):?>
-                                    <span class="ag-shop-card__remaining-count-text" 
+                                    <div class="ag-shop-card__remaining-count" 
                                     fromAmmount="<?= $arAmmount[0]?>"
                                     toAmmount="<?= $arAmmount[1]?>"
                                     style="display: <?
-                                    if(
+                                      if(
                                         count($arResult["OFFERS"][0]["STORAGES"])==1
                                         &&
                                         (
@@ -505,15 +503,16 @@ if(
                                             &&
                                             $ammount<=$arAmmount[1]
                                         )
-                                    ):?>inline-block;<? else:?>none;<? endif ?>"
+                                      ): ?>inline-block;<? else:?>none;<? endif ?>"
                                     >
-                                    <span
-                                        class="ag-shop-card__remaining-count-title">
+                                      <span class="ag-shop-card__remaining-count-title">
                                         осталось:
-                                    </span>                                    
-                                    <?= $arAmmount[2]?></span>
+                                      </span>
+                                      <span class="ag-shop-card__remaining-count-text">
+                                        <?= $arAmmount[2]?>
+                                      </span>
+                                    </div>
                                   <? endforeach ?>
-                                </div>
                               </div>
                             </div>
                           </div>
