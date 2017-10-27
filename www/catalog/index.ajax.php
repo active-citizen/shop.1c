@@ -136,7 +136,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     if(!isset($_SESSION["SORTINGS"]))$_SESSION["SORTINGS"] = array();
     $_SESSION["SORTINGS"][$sUri] = $arrSorting;
 
-customCache();
+//customCache();
 
 //    echo "<pre>";
 //    print_r($arrFilter);
@@ -469,7 +469,29 @@ customCache();
         $arEnumIndex[$arEnum["ID"]] = $arEnum["VALUE"];
 
     foreach($arProducts as $product){
-
+        // Костылим суточные лимиты тройки-паркови
+        if(preg_match("#parkov#",$product["CODE"])){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"].
+                "/.integration/classes/parking.class.php"
+            );
+            $objParking = new CParking($USER->GetLogin());
+            
+            // Определяем вышел ли дневной лимит парковок 
+            $bIsLimited = $objParking->isLimited();
+            if($bIsLimited)continue;
+        }
+        if(preg_match("#troyka#",$product["CODE"])){
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"].
+                "/.integration/classes/troyka.class.php"
+            );
+            $objTroya = new CTroyka($USER->GetLogin());
+            
+            // Определяем вышел ли дневной лимит парковок 
+            $bIsLimited = $objTroya->isLimited();
+            if($bIsLimited)continue;
+        }
         $product["DETAIL_PAGE_URL"] = "/catalog/"
             .$product["SECTION_CODE"]."/"
             .$product["CODE"]."/";

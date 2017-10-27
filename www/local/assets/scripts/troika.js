@@ -169,9 +169,7 @@ function confirmTroika(){
 
     // Цена товара
     $('#card-order-confirm-troika #confirm-price').html(
-        parseInt(
-            $('.ag-shop-card__image-points .ag-shop-item-card__points-count').html()
-        )
+        $('.ag-shop-card__image-points .ag-shop-item-card__points-count').html()
     );
 
     // Первоначальная проверка кода подтведжения
