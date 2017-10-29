@@ -161,6 +161,7 @@
             );
             $arUser = $USER->GetById($USER->GetId())->Fetch();
             $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+            $objParking->clearLocks();
             
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objParking->isLimited();
@@ -179,10 +180,12 @@
             );
             $arUser = $USER->GetById($USER->GetId())->Fetch();
             $objTroya = new CTroyka(str_replace("u","",$arUser["LOGIN"]));
+            $objTroya->clearLocks();
             
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objTroya->isLimited();
             $arResult["PARKING_TODAY"] = $objTroya->transactsToday;
+
         }
 
         // Если дневной лимит не вышел - получаем остатки по складам

@@ -544,8 +544,8 @@
             if(preg_match("#^.*?(.)\-(.*)$#u", $arOrder["ADDITIONAL_INFO"], $m))
                 $sPrefix = $m[1];
 
-           $login = "u".$arDocument["Телефон"];
-           if(!$existsOrder 
+            $login = "u".$arDocument["Телефон"];
+            if(!$existsOrder 
                 && (
                     $sPrefix=="О"
                     ||
@@ -562,31 +562,43 @@
                         continue;
                     }
                 }
-                
 
                 //echo "Add order_id=$orderId  ";
-
                 // Прицепить сессии корзину
                 $userBasketId = $objBasket->GetBasketUserID();
                 // Добавляем в корзину продукты
                 $nTotalSum = 0;
                 foreach($basketProducts as $productId=>$item){
             	    $strSql = "
-                        INSERT INTO b_sale_basket(FUSER_ID, ORDER_ID, PRODUCT_ID, QUANTITY, NAME, PRICE, DATE_UPDATE, CURRENCY, LID, MODULE, CAN_BUY, DELAY)
-            	    VALUES(
-                    '".$userId."', 
-                	'".$orderId."', 
-                        '".$productId."',
-                        '".$item["count"]."',
-                        '".$DB->ForSql($item["name"])."',
-                        '".$item["price"]."',
-                        '".$DB->GetNowFunction()."',
-                        'BAL',
-                        's1',
-                        'catalog',
-                        'Y',
-                        'N'
-                    )";
+                        INSERT INTO b_sale_basket(
+                            FUSER_ID, 
+                            ORDER_ID, 
+                            PRODUCT_ID, 
+                            QUANTITY, 
+                            NAME, 
+                            PRICE, 
+                            DATE_UPDATE, 
+                            CURRENCY, 
+                            LID, 
+                            MODULE, 
+                            CAN_BUY, 
+                            DELAY
+                        )
+                	    VALUES(
+                            '".$userId."', 
+                        	'".$orderId."', 
+                            '".$productId."',
+                            '".$item["count"]."',
+                            '".$DB->ForSql($item["name"])."',
+                            '".$item["price"]."',
+                            '".$DB->GetNowFunction()."',
+                            'BAL',
+                            's1',
+                            'catalog',
+                            'Y',
+                            'N'
+                        )
+                    ";
             	    $DB->Query($strSql);
                     $nTotalSum += $item["price"];
                 }
@@ -598,41 +610,34 @@
                 $objCCatalogProduct = new CCatalogProduct;
                 //С отключением опенкарта это будет ненужно
                 foreach($basketProducts as $productId=>$item){
-                    /// Получаем текущее значение этого товара сейчас на складе
-                    $nQuantity = 0;
-                    // Если записей с остатком нет - пропустить его уменьшение
-                    if($arStoreProduct = $objCCatalogStoreProduct->GetList(
-                        array(),
-                        $arStoreProductFilter = array(
-                            "PRODUCT_ID"=>  $productId,
-                            "STORE_ID"  =>  $arStore["ID"]
-                        ),
-                        false,
-                        array("nTopCount"=>1),
-                        array("AMOUNT","ID","PRODUCT_ID","STORE_ID")
-                    )->GetNext()){
-                        $nQuantity = $arStoreProduct["AMOUNT"];
-                    }
-                    else{
-                        continue;
-                    }
-
-                    $nDQuantity = 0;
-                    if($nQuantity-$item["count"]>=0)
-                        $nDQuantity = $nQuantity - $item["count"];
-
-                    // Устанавливаем новое значение остатка
-                    if(!$objCCatalogStoreProduct->Update(
-                        $arStoreProduct["ID"],
-                        $arF = array(
-                            "AMOUNT"              =>  $nDQuantity
-                    ))){
-                        print_r($objCCatalogStoreProduct);
-                        die;
-                    }
-
+                    orderStorageChange( $productId, $arStore["ID"], -1);
                 }
                
+                // Прописываем дату истечения бронирования
+                if(
+                    isset($arDocument["ДатаИстеченияБронирования"])
+                    &&
+                    $arDocument["ДатаИстеченияБронирования"]
+                ){
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "T"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "Т"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
+                    $sDateClose = 
+                        sprintf("%04d",$tmp["year"])
+                        ."-".sprintf("%02d",$tmp["month"])
+                        ."-".sprintf("%02d",$tmp["day"])
+                    ;
+                    orderPropertiesUpdate($orderId, IMPORT_DEBUG,
+                        'CLOSE_DATE',$sDateClose
+                    );
+                }
+                
                 /*
                 Без уведомления пользователей (потом прикрутим)
                 eventOrderStatusSendEmail(
@@ -659,6 +664,31 @@
                 $orderId = $existsOrder["ID"];
                 //echo "Update order_id = $orderId ";
 
+                // Прописываем дату истечения бронирования
+                if(
+                    isset($arDocument["ДатаИстеченияБронирования"])
+                    &&
+                    $arDocument["ДатаИстеченияБронирования"]
+                ){
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "T"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $arDocument["ДатаИстеченияБронирования"] = str_replace(
+                        "Т"," ",
+                        $arDocument["ДатаИстеченияБронирования"]
+                    );
+                    $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
+                    $sDateClose = 
+                        sprintf("%04d",$tmp["year"])
+                        ."-".sprintf("%02d",$tmp["month"])
+                        ."-".sprintf("%02d",$tmp["day"])
+                    ;
+                    orderPropertiesUpdate($orderId, IMPORT_DEBUG,
+                        'CLOSE_DATE',$sDateClose
+                    );
+                }
+
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){
                     CSaleOrder::Update($orderId, $arOrder);
@@ -683,6 +713,11 @@
                         || $statusId=='AG'
                     )
                 ){
+                    /*
+                    Утратило силу 29.10.2017 в связи с переход на изменение статуса
+                    обратным толчком, но пусть будет для совместимости и прямых
+                    толчков из 1С
+                    */
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
@@ -703,7 +738,8 @@
                     if(preg_match("#^.*\-\d+$$#", $existsOrder["ADDITIONAL_INFO"])){
                         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
                         $obOrder = new bxOrder();
-                        if(!$obOrder->addEMPPoints($orderSum,"Отмена заказа Б-".$existsOrder["ID"]." в магазине поощрений АГ",$login)){
+                        if(!$obOrder->addEMPPoints($orderSum,"Отмена заказа ".
+                            $existsOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",$login)){
                             echo "Points transaction error: ".$obOrder->error;
                         }
                         $moneyBack = true;
@@ -793,30 +829,6 @@
                 // Заполняем свойсва заказа из свойст товара на случай
             }
 
-            // Прописываем дату истечения бронирования
-            if(
-                isset($arDocument["ДатаИстеченияБронирования"])
-                &&
-                $arDocument["ДатаИстеченияБронирования"]
-            ){
-                $arDocument["ДатаИстеченияБронирования"] = str_replace(
-                    "T"," ",
-                    $arDocument["ДатаИстеченияБронирования"]
-                );
-                $arDocument["ДатаИстеченияБронирования"] = str_replace(
-                    "Т"," ",
-                    $arDocument["ДатаИстеченияБронирования"]
-                );
-                $tmp = date_parse($arDocument["ДатаИстеченияБронирования"]);
-                $sDateClose = 
-                    sprintf("%04d",$tmp["year"])
-                    ."-".sprintf("%02d",$tmp["month"])
-                    ."-".sprintf("%02d",$tmp["day"])
-                ;
-                orderPropertiesUpdate($orderId, IMPORT_DEBUG,
-                    'CLOSE_DATE',$sDateClose
-                );
-            }
 
             
             // Обновляем индексную таблицу

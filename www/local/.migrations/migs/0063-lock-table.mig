@@ -18,12 +18,14 @@
                     `ID` INT(11) NOT NULL AUTO_INCREMENT,
                     `CTIME` DATETIME,
                     `USER_ID` INT(11),
+                    `ORDER_ID` INT(11),
                     `TYPE` CHAR(8),
                     `STATUS` CHAR(4),
                     `LOCK_DATE` DATETIME,
                     PRIMARY KEY `ID`(`ID`),
                     KEY `USER_ID`(`USER_ID`),
                     KEY `TYPE`(`TYPE`),
+                    KEY `ORDER_ID`(`ORDER_ID`),
                     KEY `STATUS`(`STATUS`),
                     KEY `LOCK_DATE`(`LOCK_DATE`)
                 )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;

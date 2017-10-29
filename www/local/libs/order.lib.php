@@ -925,3 +925,53 @@ function getDownloadOrders(
     return $arOrders;
 }
 
+/**
+*/
+function orderStorageChange(
+    $nOfferId,  // У какого торгового предложения
+    $nStoreId, // На каком складе
+    $nCount     // На сколько (+1 , -1)
+){
+    global $DB;  
+    $nOfferId = intval($nOfferId);
+    $nStoreId = intval($nStoreId);
+    $sQuery = "
+        UPDATE
+            `b_catalog_store_product`
+        SET
+            `AMOUNT`=`AMOUNT`+$nCount
+        WHERE
+            `PRODUCT_ID`= $nOfferId
+            AND 
+            `STORE_ID`= $nStoreId
+    ";
+    $DB->Query($sQuery);
+}
+
+/*
+    @return количество товара на складе
+*/
+function orderStorageAmount(
+    $nOfferId,  // У какого торгового предложения
+    $nStoreId  // На каком складе
+){
+    global $DB;
+    $nOfferId = intval($nOfferId);
+    $nStoreId = intval($nStoreId);
+    $sQuery = "
+        SELECT
+            ID,AMOUNT
+        FROM
+            `b_catalog_store_product`
+        WHERE
+            `PRODUCT_ID`= $nOfferId
+            AND 
+            `STORE_ID`= $nStoreId
+    ";
+
+    $arProductStore = $DB->Query($sQuery)->Fetch();
+    if(isset($arProductStore["AMOUNT"]))
+        return $arProductStore["AMOUNT"];
+    return 0;
+}
+

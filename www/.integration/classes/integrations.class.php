@@ -18,16 +18,19 @@
         var $transactsToday = 0;//!<Сделано транзакций сегодня. 
 
 
-        function __construct(){
+        function __construct($sMnemonic = ''){
             // Получаем настройки из БД
             require($_SERVER["DOCUMENT_ROOT"]."/.integration/secret.inc.php");
 
-            $this->mnemonic = mb_strtoupper(mb_substr(get_called_class(),1));
+            if(!$sMnemonic)
+                $this->mnemonic = mb_strtoupper(mb_substr(get_called_class(),1));
+            else
+                $this->mnemonic = $sMnemonic;
 
             $objSettings = new CIntegrationSettings($this->mnemonic);
-            if($objSettings->error)$this->error = $objSettings->error;
             $this->settings = $objSettings->get(); 
             unset($objSettings);
+            if($objSettings->error)$this->error = $objSettings->error;
         }
 
         /**
@@ -273,6 +276,7 @@
 
 
             // Получение ID группы свойств заказа
+            /*
             $arPropGroup = CSaleOrderPropsGroup::GetList(
                 array(),
                 $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
@@ -280,6 +284,7 @@
                 array("nTopCount"=>1)
             )->GetNext();
             $nPropGroup = $arPropGroup["ID"];
+            */
 
             // Костыли, костылёчки, костылики
             if($this->mnemonic == 'TROYKA')
@@ -288,6 +293,7 @@
                 $mnemonic = $this->mnemonic;
 
             // Получаем ID свойства закака "транзакция
+            /*
             $arPropValue = CSaleOrderProps::GetList(
                 array("SORT" => "ASC"),
                 $arFilter = array(
@@ -301,11 +307,13 @@
                 array("ID","CODE","NAME")
             )->Fetch();
             $nOrderPropsId = $arPropValue["ID"];
+            */
 
             $sStartDate = date("Y-m-d",$nTimestamp)." 00:00:00";
             $sEndDate =  date("Y-m-d",$nTimestamp)." 23:59:59";
 
             // Через битриксовый API слишком жирно. Делаем прямой запрос к БД
+            /*
             $sQuery = "
                 SELECT 
                     COUNT(`a`.`ID`) as `count`
@@ -326,6 +334,21 @@
                     1
                         
             ";
+            */
+            $sQuery = "
+                SELECT 
+                    COUNT(ID) as `count`
+                FROM
+                    `index_lock`
+                WHERE
+                    `TYPE`='".$this->mnemonic."'
+                    AND
+                    `CTIME`>='$sStartDate'
+                    AND 
+                    `CTIME`<='$sEndDate'
+                LIMIT
+                    1
+            ";
 
             $arResult = $DB->Query($sQuery)->Fetch();
             // Если ошибка запроса - объявляем, что всё, баста
@@ -333,7 +356,7 @@
             $this->transactsToday = $arResult["count"];
             // Баста
             if(
-                $arResult["count"]
+                $this->transactsToday
                 >=
                 $this->settings[$this->mnemonic."_LIMIT"]["VALUE"]
             ) return true;
@@ -359,5 +382,85 @@
             }
 
         }
-          
+
+        /**
+            Естановка блокировни на единицу товара в день
+        */
+        function setLock($nUserId = 0){
+            global $USER;
+            global $DB;
+            $nUserId = $USER->GetID();
+            $sDate = date("Y-m-d H:i:s");
+            $sQuery = "
+                INSERT INTO `index_lock`(
+                    `CTIME`,
+                    `USER_ID`,
+                    `TYPE`,
+                    `STATUS`,
+                    `LOCK_DATE`
+                )
+                VALUES(
+                    '$sDate',
+                    '$nUserId',
+                    '".$this->mnemonic."',
+                    'LOCK',
+                    '$sDate'
+                )
+            ";
+            $res = $DB->Query($sQuery);
+            return $DB->LastID();
+              
+        }
+
+        /**
+            Удаление блокировки - товар снова доступен
+            к заказу
+        */
+        function resetLock($nLockId){
+            global $DB;
+            $nLock = intval($nLock);
+            $sQuery = "
+                DELETE FROM `index_lock`
+                WHERE `ID` = $nLockId
+                LIMIT 1
+            ";
+            $DB->Query($sQuery);
+        }
+
+        /**
+            Зафиксировать блокировку. Товар куплен
+        */
+        function doneLock(
+            $nLockId,
+            $nOrderId = 0
+        ){
+            global $DB;
+            $nLock = intval($nLock);
+            $sQuery = "
+                UPDATE `index_lock`
+                SET 
+                    `ORDER_ID` = ".intval($nOrderId).",
+                    `LOCK_DATE`='0000-00-00 00:00:00',
+                    `STATUS`= 'DONE'
+                WHERE `ID` = $nLockId
+                LIMIT 1
+            ";
+            $DB->Query($sQuery);
+        }
+    
+        /**
+            Удалить зависшие блокировки
+        */
+        function clearLocks($nLifeTime = 600){
+            global $DB;
+            $sDate = date("Y-m-d H:i:s", time()-$nLifeTime);
+            $sQuery = "
+                DELETE FROM `index_lock`
+                WHERE 
+                    `LOCK_DATE`!='0000-00-00 00:00:00'
+                    AND
+                    `LOCK_DATE` <= '$sDate'
+            ";
+            $DB->Query($sQuery);
+        }
     }

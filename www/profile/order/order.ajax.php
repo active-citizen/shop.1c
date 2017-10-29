@@ -172,21 +172,38 @@ elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
     CModule::IncludeModule("catalog");
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
-    
+   
+    /////// Получаем корзину пользователя
     $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"), array(
         "FUSER_ID" => CSaleBasket::GetBasketUserID(),
         "LID" => SITE_ID,
         "ORDER_ID" => "NULL"
     ),false,false,array("ID"));
-    
     if(!$basket = $res->GetNext()){
         $answer = array("error"=>"Корзина пуста");
         echo json_encode($answer);
         die;
     }
     $basketId = $basket["ID"];
-    
     $arrBasket = CSaleBasket::GetByID($basketId);
+
+    /////////// Проверяем количество на складе
+    $nStoreAmount = orderStorageAmount(
+        $arrBasket["PRODUCT_ID"],
+        intval($_GET["store_id"])
+    );
+    if($nStoreAmount<=0){
+        $answer = array( "order"=>array(
+            "ERROR"=>array( "Исчерпание остатков."))
+        );
+        echo json_encode($answer);
+        die;
+    }
+
+    ///// Снимаем товар со склада (резервирование)
+    orderStorageChange( $arrBasket["PRODUCT_ID"], intval($_GET["store_id"]),
+        -1
+    );
 
     // Проверяем месячный лимит (возвращает месячный лимит если он исчерпан)
     if($failedLimit = failedMonLimit(CUSer::GetId(),$arrBasket["PRODUCT_ID"])){
@@ -197,12 +214,17 @@ elseif(isset($_GET["add_order"])){
                 )
             )
         );
+        // Возврашаем зарезервированный товар на склад
+        orderStorageChange( 
+            $arrBasket["PRODUCT_ID"], 
+            intval($_GET["store_id"]),
+            1
+        );
         echo json_encode($answer);
         die;
     }
 
-
-    // Получаем ID элемента каталога для данного предложения
+    //// Получаем ID элемента каталога для данного предложения
     $arProduct = CIBlockElement::GetList(
         array(),
         array(
@@ -241,6 +263,37 @@ elseif(isset($_GET["add_order"])){
     
     $sArtNumber = $arArtNumber["VALUE"];
 
+    // Проверяем дневные лимиты троек и парковок
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"].
+        "/.integration/classes/integrations.class.php"
+    );
+    $bIsLimited = false;
+
+    if( $sArtNumber=='parking'){
+        $objIntegration = new CIntegration('PARKING');
+    }
+    // Если это тройка и дневной лимит вышел - показываем фигу
+    if( $sArtNumber=='troyka'){
+        $objIntegration = new CIntegration("TROYKA");
+    }
+    if($sArtNumber=='parking' ||  $sArtNumber=='troyka'){
+        // Определяем вышел ли дневной лимит 
+        $bIsLimited = $objIntegration->isLimited();
+        if($bIsLimited){
+            $answer = array(
+                "order"=>array(
+                    "ERROR"=>array(
+                        "Дневной лимит заказа данного поощрения исчерпан."
+                    )
+                )
+            );
+            echo json_encode($answer);
+            die;
+        }
+        // Ставим блокировку
+        $nLockId = $objIntegration->setLock();
+    }
 
     $res = CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
     if(!$paySystem = $res->GetNext()){
@@ -256,40 +309,6 @@ elseif(isset($_GET["add_order"])){
         die;
     }
 
-
-    // Получаем состояние счёта чере API
-    /*
-
-    Обновляется при каждой загрузке страницы - тут не нужно
-
-
-    equire_once(
-        $_SERVER["DOCUMENT_ROOT"]
-            ."/.integration/classes/active-citizen-bridge.class.php"
-    );
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
-    $objPoints = new bxPoint; 
-    $arPoints = $objPoints->fetchAccountFromAPI();
-    if(
-        $arPoints["errors"]
-        ||
-        !isset($arPoints["status"]["current_points"])
-    ){
-        $answer = array(
-            "order"=>array(
-                "ERROR"=>array(
-                    "Ошибка получения состояния счёта.".
-                    print_r($arPoints["errors"], 1)
-                )
-            )
-        );
-        echo json_encode($answer);
-        die;
-    }
-    $account = ["CURRENT_BUDGET"=>$arPoints["status"]["current_points"]]; 
-    */
-
     // Проверяем сумму на счёте
     $totalSum = $arrBasket["PRICE"]*$arrBasket["QUANTITY"];
     $account = CSaleUserAccount::GetByUserID(CUSer::GetID(), 'BAL');
@@ -301,78 +320,17 @@ elseif(isset($_GET["add_order"])){
                 )
             )
         );
-        echo json_encode($answer);
-        die;
-    }
-    // Проверяем количество на складе
-    $arProductStore = CCatalogStoreProduct::GetList(
-        array(),
-        array(
-            "STORE_ID"  =>  intval($_GET["store_id"]),
-            "PRODUCT_ID"=>  $arrBasket["PRODUCT_ID"]
-        )
-    )->GetNext();
-
-    // Проверяем дневные лимиты троек и парковок
-    $bIsLimited = false;
-    if(
-        $sArtNumber=='parking'
-    ){
-        require_once(
-            $_SERVER["DOCUMENT_ROOT"].
-            "/.integration/classes/parking.class.php"
-        );
-        $arUser = $USER->GetById($USER->GetId())->Fetch();
-        $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
-        
-        // Определяем вышел ли дневной лимит парковок 
-        $bIsLimited = $objParking->isLimited();
-    }
-    // Если это тройка и дневной лимит вышел - показываем фигу
-    if(
-        $sArtNumber=='troyka'
-    ){
-        require_once(
-            $_SERVER["DOCUMENT_ROOT"].
-            "/.integration/classes/troyka.class.php"
-        );
-        $arUser = $USER->GetById($USER->GetId())->Fetch();
-        $objTroya = new CTroyka(str_replace("u","",$arUser["LOGIN"]));
-        
-        // Определяем вышел ли дневной лимит парковок 
-        $bIsLimited = $objTroya->isLimited();
-    }
-    if($bIsLimited){
-        $answer = array(
-            "order"=>array(
-                "ERROR"=>array(
-                    "Дневной лимит заказа данного поощрения исчерпан."
-                )
-            )
+        // Возврашаем зарезервированный товар на склад
+        orderStorageChange( 
+            $arrBasket["PRODUCT_ID"], 
+            intval($_GET["store_id"]),
+            1
         );
         echo json_encode($answer);
         die;
     }
 
 
-
-    if(
-        (
-        !isset($arProductStore["AMOUNT"])
-        ||
-        $arProductStore["AMOUNT"]<=0
-        )
-    ){
-        $answer = array(
-            "order"=>array(
-                "ERROR"=>array(
-                    "Исчерпание остатков."
-                )
-            )
-        );
-        echo json_encode($answer);
-        die;
-    }
     $arFields = array();
     $arFields["LID"] = SITE_ID;
     $arFields["PERSON_TYPE_ID"] = 1;
@@ -400,10 +358,7 @@ elseif(isset($_GET["add_order"])){
         $resCSaleOrder->Update($orderId,array("ADDITIONAL_INFO"=>$sOrderNum));
         // Делаем заказ оплаченным
 
-        CSaleOrder::PayOrder(
-            $orderId, "Y", false
-        );
-
+        CSaleOrder::PayOrder( $orderId, "Y", false);
 
         // Назначаем заказу корзину
         CSaleBasket::OrderBasket($orderId, $_SESSION["SALE_USER_ID"], SITE_ID);
@@ -422,7 +377,11 @@ elseif(isset($_GET["add_order"])){
         // 2 - ошибочный заказ
         $stoykaStatus = 0;
         /////// Действия над картой-тройкой
-        if(isset($_REQUEST["troyka"]) && $nTroykaNum = trim($_REQUEST["troyka"])){
+        if(
+            isset($_REQUEST["troyka"]) 
+            && 
+            $nTroykaNum = trim($_REQUEST["troyka"])
+        ){
             require_once(
                 $_SERVER["DOCUMENT_ROOT"]
                     ."/.integration/classes/troyka.class.php"
@@ -501,7 +460,9 @@ elseif(isset($_GET["add_order"])){
                 $answer = array(
                     "order"=>array(
                         "ERROR"=>array(
-                            $objParking->error.(
+                            $objParking->error
+                            /*
+                            .(
                                 IS_MOBILE
                                 ?
                                 " Попробуйте выйти из мобильного приложения и
@@ -510,6 +471,7 @@ elseif(isset($_GET["add_order"])){
                                 " Попробуйте выйти и снова зайти в свой аккаунт
                                 на сайте http://ag.mos.ru."
                             )
+                            */
                         )
                     )
                 );
@@ -550,60 +512,51 @@ elseif(isset($_GET["add_order"])){
 
             ///////////
         }
-
-        // Если тойка провалилась - остатки не снимаем
+        
+        // Если тойка провалилась - остатки возвращаем
         if($stoykaStatus == 2){
+            // Снимаем блокировку
+            $objIntegration->resetLock($nLockId);
+            // Чистим зависшие блогировки
+            $objIntegration->clearLocks();
+            // Возврат остатков на склад
+            orderStorageChange(
+                $arrBasket["PRODUCT_ID"],
+                intval($_GET["store_id"]),
+                1
+            );
         }
-        // Если парковка провалилась - остатки не снимаем
+        // Если парковка провалилась - остатки возвращаем
         elseif($sParkingStatus == 2){
+            // Снимаем блокировку
+            $objIntegration->resetLock($nLockId);
+            // Чистим зависшие блогировки
+            $objIntegration->clearLocks();
+            // Возврат остатков на склад
+            orderStorageChange(
+                $arrBasket["PRODUCT_ID"],
+                intval($_GET["store_id"]),
+                1
+            );
         }
-        // Если не снялись баллы - остатки не снимаем
+        // Если снялись баллы - остатки оставляем снятыми
         elseif($bPointsSuccess){
-            //////////////////////// Снимаем остатки ////////////////////////
-            // Получаем список товаров к заказу
-            $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
-            `ORDER_ID`=".intval($orderId);
-            $res = $DB->Query($sql);
-            while($arProduct = $res->Fetch()){
-                $nQuantity = $arProduct["QUANTITY"];
-                $nProductId = $arProduct["PRODUCT_ID"];
-                $nStoreId = intval($_GET["store_id"]);
-                // Смотрим сколько этого товара на складе
-                $nCQuantity = 0;
-                // Если записей с остатком нет - пропустить его
-                if($arStoreProduct = CCatalogStoreProduct::GetList(
-                    array(),
-                    $arStoreProductFilter = array(
-                        "PRODUCT_ID"=>  $nProductId,
-                        "STORE_ID"  =>  $nStoreId
-                    ),
-                    false,
-                    array("nTopCount"=>1),
-                    array("ID","PRODUCT_ID","AMOUNT")
-                )->GetNext()){
-                    $nCQuantity = $arStoreProduct["AMOUNT"];
-                }
-                else{
-                    continue;
-                }
-           
-                // Устанавливаем новое значение остатка
-                if(!CCatalogStoreProduct::Update(
-                    $arStoreProduct["ID"],
-                    $arF = array(
-                        "AMOUNT"              =>  
-                            $nCQuantity-$nQuantity>=0
-                            ?
-                            $nCQuantity-$nQuantity
-                            :
-                            0
-                ))){
-                    print_r($objCCatalogStoreProduct);
-                    die;
-                }
-                
+            // Отмечаем интеграции как выполненные
+            if( $sArtNumber=='troyka' ||  $sArtNumber=='parking'){
+                $objIntegration->doneLock($nLockId, $orderId) ;
+                $objIntegration->clearLocks();
             }
+            
         }
+        elseif(!$bPointsSuccess){
+            // Возврат остатков на склад если с оплатой вышла беда
+            orderStorageChange(
+                $arrBasket["PRODUCT_ID"],
+                intval($_GET["store_id"]),
+                1
+            );
+        }
+
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
         // Обновляем индексную таблицу

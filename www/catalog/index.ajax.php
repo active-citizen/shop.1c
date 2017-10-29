@@ -136,7 +136,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     if(!isset($_SESSION["SORTINGS"]))$_SESSION["SORTINGS"] = array();
     $_SESSION["SORTINGS"][$sUri] = $arrSorting;
 
-//customCache();
+customCache();
 
 //    echo "<pre>";
 //    print_r($arrFilter);
@@ -476,7 +476,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                 "/.integration/classes/parking.class.php"
             );
             $objParking = new CParking($USER->GetLogin());
-            
+            $objParking->clearLocks();
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objParking->isLimited();
             if($bIsLimited)continue;
@@ -487,10 +487,11 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
                 "/.integration/classes/troyka.class.php"
             );
             $objTroya = new CTroyka($USER->GetLogin());
+            $objTroya->clearLocks();
             
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objTroya->isLimited();
-            if($bIsLimited)continue;
+            //if($bIsLimited)continue;
         }
         $product["DETAIL_PAGE_URL"] = "/catalog/"
             .$product["SECTION_CODE"]."/"

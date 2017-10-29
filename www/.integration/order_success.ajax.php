@@ -62,8 +62,8 @@
             !=
             $arrOrder["STATUS_ID"]
         ){
-            // Если отменяем заказ - ещё и бабло возвращаем
-            // НО ТОЛЬКО ДЛЯ ЗАКАЗОВ БИТРИКСА
+            // Если отменяем заказ - возвращаем баллы и меняем статус
+            // для переходов в остальные статусы статус сменит обратный толчок
             if(
                 $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'
                 && 
@@ -89,6 +89,14 @@
                 );
                 $moneyBack = true;
                 CSaleOrder::PayOrder($arrOrder["ID"],"N",true,false);
+                $DB->Query("
+                    UPDATE 
+                        `b_sale_order` 
+                    SET 
+                        `STATUS_ID`='".$arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]."'
+                    WHERE
+                        `ID`='".$arrOrder["ID"]."'
+                ");
             }
 
 
@@ -100,6 +108,9 @@
                 preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"])
             ){
                 // Получаем список товаров к заказу
+                /*
+                Утратило силу 29.10.2017 в связи с переход на изменение статуса
+                обратным толчком
                 $sql = "SELECT PRODUCT_ID,QUANTITY FROM `b_sale_basket` WHERE
                 `ORDER_ID`=".intval($arrOrder["ID"]);
                 $res = $DB->Query($sql);
@@ -127,18 +138,16 @@
                     }
                 
                     // Устанавливаем новое значение остатка
-                    /*
-                    if(!CCatalogStoreProduct::Update(
-                        $arStoreProduct["ID"],
-                        $arF = array(
-                            "AMOUNT"              =>  $nCQuantity+$nQuantity
-                    ))){
-                        print_r($objCCatalogStoreProduct);
-                        die;
-                    }
-                    */
-                    
+                    // if(!CCatalogStoreProduct::Update(
+                    //    $arStoreProduct["ID"],
+                    //    $arF = array(
+                    //        "AMOUNT"              =>  $nCQuantity+$nQuantity
+                    // ))){
+                    //    print_r($objCCatalogStoreProduct);
+                    //    die;
+                    // }
                 }
+                */                    
             }
 
             // Если подтверждаем принятие заказа в работу - сниманием единицу со
@@ -196,7 +205,12 @@
             }
             */
 
-            
+
+            // Обновление статуса заказа по success-запросу
+            /*
+                Утратило силу 29.10.2017 в связи с переход на изменение статуса
+                обратным толчком
+
             $DB->Query("
                 UPDATE 
                     `b_sale_order` 
@@ -205,6 +219,7 @@
                 WHERE
                     `ID`='".$arrOrder["ID"]."'
             ");
+            */
             /* 
             CSaleOrder::StatusOrder(
                 $arrOrder["ID"],
