@@ -45,7 +45,7 @@ if(CUser::isAuthorized()):
 
     switch($arParams["TAB"]){
         case 'all':
-            //$arFilter["STATUS_ID"] = array();
+            $arFilter["!STATUS_ID"] = array("AF");
         break;
         case 'use':
             $arFilter["STATUS_ID"] = array('N','AA','AB','AF');
