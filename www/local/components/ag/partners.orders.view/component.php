@@ -116,6 +116,8 @@ while($arBasket = $resBasket->Fetch()){
         array(
             "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE","DETAIL_TEXT"
             ,"PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
+            ,"PROPERTY_RECEIVE_RULES","PROPERTY_CANCEL_RULES"
+
         )
     //  array()
     )->Fetch();
@@ -220,6 +222,7 @@ in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
       
     $arResult["MAILS"] = $obMail->getByOrderId($arParams["ORDER_ID"]);
 }
+
 
 $this->IncludeComponentTemplate();
 

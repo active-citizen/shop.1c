@@ -274,6 +274,15 @@ table.mails td{
             </td>
         </tr>
         <? endif ?>
+        <? if($arResult["ORDER"]["PROPERTIES"]["PROMOCODES"]["VALUE"]):?>
+        <tr>
+            <td class="field-name">
+                Промокоды
+            </td><td>
+                <?= $arResult["ORDER"]["PROPERTIES"]["PROMOCODES"]["VALUE"] ?>
+            </td>
+        </tr>
+        <? endif ?>
         <? if(
             isset($arResult["ORDER"]["PROPERTIES"]["TROIKA_TRANSACT_ID"]["VALUE"])
             &&
@@ -444,6 +453,14 @@ href="/partners/orders/print.php?print=cancel&order=<?=
             <?= 
                 $arBasket["PRODUCT"]["DETAIL_TEXT"]
             ?>
+            <? if($arBasket["PRODUCT"]["PROPERTY_RECEIVE_RULES_VALUE"]["TEXT"]):?>
+            <h3>Правила получения</h3>
+            <?= $arBasket["PRODUCT"]["PROPERTY_RECEIVE_RULES_VALUE"]["TEXT"] ?>
+            <? endif ?>
+            <? if($arBasket["PRODUCT"]["PROPERTY_CANCEL_RULES_VALUE"]["TEXT"]):?>
+            <h3>Правила получения</h3>
+            <?= $arBasket["PRODUCT"]["PROPERTY_CANCEL_RULES_VALUE"]["TEXT"] ?>
+            <? endif ?>
             </td>
         </tr>
         </tr>
