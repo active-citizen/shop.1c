@@ -183,7 +183,7 @@ function html2text($html){
 function getStatusAlias($sStatus){
     $arAliases = [
         "НОВЫЙ"     =>  "В обработке",
-        "В РАБОТЕ"  =>  "Выдача"
+        "В РАБОТЕ"  =>  "Готово"
     ];
 
     $sResult = $sStatus;

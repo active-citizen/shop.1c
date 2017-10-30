@@ -491,7 +491,7 @@ customCache();
             
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objTroya->isLimited();
-            //if($bIsLimited)continue;
+            if($bIsLimited)continue;
         }
         $product["DETAIL_PAGE_URL"] = "/catalog/"
             .$product["SECTION_CODE"]."/"
