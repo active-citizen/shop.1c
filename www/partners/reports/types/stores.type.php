@@ -48,13 +48,23 @@ $arResult = array(
 );
 
 // Чистим результат от неактивных товаров
+/*
 foreach($arResult["ROWS"] as $nRowId=>$arRow)
     if($arRow["PRODUCT"]["ACTIVE"]!='Y'){
         unset($arResult["ROWS"][$nRowId]);
         unset($arResult["CELLS"][$nRowId]);
     }
+*/
 
-
+// Вычисляем товары без остатка
+foreach($arResult["CELLS"] as $nRowId=>$arRow){
+    $nCount = 0;
+    foreach($arRow as $nColId=>$nCell)
+        $nCount += intval($nCell);
+    if($nCount>0)continue;
+    if(!$arResult["ROWS"][$nRowId]["CLASS"])
+        $arResult["ROWS"][$nRowId]["CLASS"] = 'absent';
+}
 
 
 //echo "<pre>";
@@ -62,6 +72,13 @@ foreach($arResult["ROWS"] as $nRowId=>$arRow)
 //echo "</pre>";
 
 
+
+uasort($arResult["ROWS"],"storagesSortFunc");
+
+
+function storagesSortFunc($a,$b){
+    return $a["CLASS"]>$b["CLASS"];
+}
 
 /**
     Получение информации от товаре по ID его предложения
@@ -104,5 +121,7 @@ function getProductInfo($nOfferId){
     $arResult["VALUE"] = $arResult["PRODUCT"]["NAME"]." [ID=".$nOfferId."]";
     $arResult["URL"] = '/catalog/'.$arSection["CODE"].'/'.
         $arProduct["CODE"]."/";
+    if( $arResult["PRODUCT"]["ACTIVE"]!='Y')
+        $arResult["CLASS"] = "inactive";
     return $arResult;  
 }

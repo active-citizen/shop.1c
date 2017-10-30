@@ -53,7 +53,7 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
             <? endforeach ?>
         </tr>
         <? $nNum=0;foreach($arResult["ROWS"] as $nRowId=>$arRow):?>
-        <tr>
+        <tr class="<?= $arRow["CLASS"];?>">
             <th>
                 <? $nNum++ ?>
                 <?= $nNum ?>
@@ -97,6 +97,15 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
     }
     table#result th.row{
     }
+
+    table#result tr.inactive td{
+        color: #F88;
+    }
+
+    table#result tr.absent td{
+        color: #88F;
+    }
+
 </style>
 <script>
 $( ".form-date" ).datepicker({dateFormat:"dd.mm.yy"});
