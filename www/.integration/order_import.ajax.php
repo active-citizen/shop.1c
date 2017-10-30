@@ -226,6 +226,7 @@
                 // Запоминаем промокоды для письма
                 if(isset($product["Промокоды"]))
                     $GLOBALS["promocodes"] = $product["Промокоды"];
+                
                
                 $XML_ID = $product["Ид"];
                 $resOffer = CIblockElement::GetList(
@@ -637,6 +638,28 @@
                         'CLOSE_DATE',$sDateClose
                     );
                 }
+                // Прописываем промокоды, если есть 
+                if(isset($GLOBALS["promocodes"])){
+                    $sPromos = '';
+                    if(
+                        isset($GLOBALS["promocodes"]["ИмяПараметра1"])
+                        &&
+                        $GLOBALS["promocodes"]["ИмяПараметра1"]
+                    )$sPromos .= $GLOBALS["promocodes"]["ИмяПараметра1"]
+                        .":".$GLOBALS["promocodes"]["ЗначениеПараметра1"]
+                        ."\n";
+                    if(
+                        isset($GLOBALS["promocodes"]["ИмяПараметра2"])
+                        &&
+                        $GLOBALS["promocodes"]["ИмяПараметра2"]
+                    )$sPromos .= $GLOBALS["promocodes"]["ИмяПараметра2"]
+                        .":".$GLOBALS["promocodes"]["ЗначениеПараметра2"]
+                        ."\n";
+                    orderPropertiesUpdate($orderId, IMPORT_DEBUG,
+                        'PROMOCODES',$sPromos
+                    );
+                }
+
                 
                 /*
                 Без уведомления пользователей (потом прикрутим)
@@ -688,6 +711,26 @@
                         'CLOSE_DATE',$sDateClose
                     );
                 }
+                // Прописываем промокоды, если есть 
+                if(isset($GLOBALS["promocodes"]))
+                    $sPromos = '';
+                    if(
+                        isset($GLOBALS["promocodes"]["ИмяПараметра1"])
+                        &&
+                        $GLOBALS["promocodes"]["ИмяПараметра1"]
+                    )$sPromos .= $GLOBALS["promocodes"]["ИмяПараметра1"]
+                        .":".$GLOBALS["promocodes"]["ЗначениеПараметра1"]
+                        ."\n";
+                    if(
+                        isset($GLOBALS["promocodes"]["ИмяПараметра2"])
+                        &&
+                        $GLOBALS["promocodes"]["ИмяПараметра2"]
+                    )$sPromos .= $GLOBALS["promocodes"]["ИмяПараметра2"]
+                        .":".$GLOBALS["promocodes"]["ЗначениеПараметра2"]
+                        ."\n";
+                    orderPropertiesUpdate($orderId, IMPORT_DEBUG,
+                        'PROMOCODES',$sPromos
+                    );
 
                 // Обрабатываем все статусы кроме отмены
                 if($existsOrder["STATUS_ID"]!=$statusId && $statusId!='AG'){

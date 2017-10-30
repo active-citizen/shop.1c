@@ -30,7 +30,7 @@
     }
 
     $arProperties = array(
-        "PROMOCODES"            =>  "Номер транзакции тройки",
+        "PROMOCODES"            =>  "Промокоды, отправленные пользователю",
     );
 
     foreach($arProperties as $sCode=>$sName){
@@ -49,6 +49,15 @@
             $arFields["NAME"]   = $sName;
             $arFields["TYPE"]   = "TEXT";
             CSaleOrderProps::Add($arFields);
+        }
+        else{
+            $arFields           = $arFilter;
+            $arFields["NAME"]   = $sName;
+            $arFields["TYPE"]   = "TEXT";
+            CSaleOrderProps::Update(
+                $arProp["ID"],
+                $arFields
+            );
         }
     }
 

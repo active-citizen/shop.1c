@@ -352,7 +352,8 @@ function getDownloadOrders(
             `order`.`CLOSE_DATE` as `CLOSE_DATE`,
             `order`.`TROIKA_NUM` as `TROIKA_NUM`,
             `order`.`TROIKA_TRANSACT` as `TROIKA_TRANSACT`,
-            `order`.`PARKING_TRANSACT` as `PARKING_TRANSACT`
+            `order`.`PARKING_TRANSACT` as `PARKING_TRANSACT`,
+            `order`.`PROMOCODES` as `PROMOCODES`
         FROM
             $sFrom
         WHERE

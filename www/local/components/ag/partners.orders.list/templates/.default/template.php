@@ -334,6 +334,11 @@ onchange="document.getElementById('form_filter').submit();"
                 Транзакция парковки: <span><?= $arOrder["PARKING_TRANSACT"]?></span>
             </div>
             <? endif ?>
+            <? if($arOrder["PROMOCODES"]):?>
+            <div class="data-extra">
+                <?= $arOrder["PROMOCODES"]; ?>
+            </div>
+            <? endif ?>
         </td>
         <td class="td-action">
             [<a href="/partners/orders/<?= $arOrder["ID"]?>/">

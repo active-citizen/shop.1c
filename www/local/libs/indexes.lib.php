@@ -164,7 +164,9 @@
                     `SECTION_NAME`='".$DB->ForSql($arProps["SECTION_NAME"])."',
                     `MAN_NAME`='".$DB->ForSql($arProps["MANUFACTURER_NAME"])."',
                     `PRODUCT_NAME`='".$DB->ForSql($arProps["PRODUCT_NAME"])."',
-                    `PRODUCT_ID`='".$DB->ForSql($arProduct["ID"])."'
+                    `PRODUCT_ID`='".$DB->ForSql($arProduct["ID"])."',
+                    `PROMOCODES`='".$DB->ForSql($arProps["PROMOCODES"])."'
+
                 WHERE
                     `ID`='".$arOrder["ID"]."'
                 LIMIT 1
@@ -191,6 +193,7 @@
                     ,`PRODUCT_NAME`
                     ,`SECTION_NAME`
                     ,`MAN_NAME`
+                    ,`PROMOCODES`
                 )
                 VALUES(
                     '".$DB->ForSql($arOrder["ID"])."'
@@ -202,15 +205,16 @@
                     ,'".$DB->ForSql($arOrder["DATE_STATUS"])."'
                     ,'".$DB->ForSql($arOrder["ADDITIONAL_INFO"])."'
                     ,'".$DB->ForSql($arProp["CLOSE_DATE"])."'
-                    ,'".$DB->ForSql($arProp["TROIKA"])."'
-                    ,'".$DB->ForSql($arProp["TROIKA_TRANSACT_ID"])."'
-                    ,'".$DB->ForSql($arProp["PARKING_TRANSACT_ID"])."'
+                    ,'".$DB->ForSql($arProps["TROIKA"])."'
+                    ,'".$DB->ForSql($arProps["TROIKA_TRANSACT_ID"])."'
+                    ,'".$DB->ForSql($arProps["PARKING_TRANSACT_ID"])."'
                     ,'".$DB->ForSql($arProduct["ID"])."'
                     ,'".$DB->ForSql($arProp["SECTION_ID"])."'
                     ,'".$DB->ForSql($arMan["ID"])."'
-                    ,'".$DB->ForSql($arProp["PRODUCT_NAME"])."'
-                    ,'".$DB->ForSql($arProp["SECTION_NAME"])."'
-                    ,'".$DB->ForSql($arProp["MANUFACTURER_NAME"])."'
+                    ,'".$DB->ForSql($arProps["PRODUCT_NAME"])."'
+                    ,'".$DB->ForSql($arProps["SECTION_NAME"])."'
+                    ,'".$DB->ForSql($arProps["MANUFACTURER_NAME"])."'
+                    ,'".$DB->ForSql($arProps["PROMOCODES"])."'
                 )
             ";
         }
