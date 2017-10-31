@@ -182,6 +182,18 @@ if($_REQUEST["print"]=='act'){
         :
         ""
     );
+    $sConsumerEmail = (
+        (
+        !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+        &&
+        !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+        )
+        ?
+        str_replace("u","u",$arResult["SALER"]["EMAIL"])
+        :
+        ""
+    );
+
     $oExcel->getActiveSheet()->setCellValue('C18', 
         $arResult["USER"]["LAST_NAME"] ." ".$arResult["USER"]["NAME"]
     ); 
@@ -196,9 +208,7 @@ if($_REQUEST["print"]=='act'){
         ." ".substr($sPhone,8,2)
         ." ".substr($sPhone,10);
     $oExcel->getActiveSheet()->setCellValue('B25',$sPhone); 
-    $oExcel->getActiveSheet()->setCellValue('B26', 
-        str_replace("u","u",$arResult["SALER"]["EMAIL"])
-    ); 
+    $oExcel->getActiveSheet()->setCellValue('B26', $sConsumerEmail); 
 }
 
 
