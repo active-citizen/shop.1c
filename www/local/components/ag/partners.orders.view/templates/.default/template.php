@@ -235,6 +235,12 @@ table.mails td{
             </td>
         </tr>
         <? if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']=='да'):?> 
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
         <tr>
             <td class="field-name">
                 Сертификат
@@ -260,6 +266,7 @@ table.mails td{
                 <iframe src="" name="cert" style="display:none;"></iframe>
             </td>
         </tr>
+        <? endif ?>
         <? endif ?>
         <? if(
             isset($arResult["ORDER"]["PROPERTIES"]["TROIKA"]["VALUE"])
