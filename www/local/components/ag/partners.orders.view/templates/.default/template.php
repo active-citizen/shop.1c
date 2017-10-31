@@ -501,8 +501,15 @@ href="/partners/orders/print.php?print=cancel&order=<?=
             <?=$arItem["DATE_CREATE"] ?>
         </td>
         <td>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
             <?= $arItem["USER_INFO"]["LAST_NAME"]?>
             <?= $arItem["USER_INFO"]["NAME"]?>
+        <? endif ?>
         </td>
         <td>
             <?=
