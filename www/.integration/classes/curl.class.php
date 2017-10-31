@@ -30,6 +30,7 @@
             $ch = curl_init();
             curl_setopt ($ch, CURLOPT_URL, $url);
             curl_setopt ($ch, CURLOPT_TIMEOUT, $this->timeout);
+            curl_setopt($ch, CURLOPT_REFERER, $_SERVER["HTTP_HOST"]);
             curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
             return curl_exec ($ch);
         }
@@ -41,6 +42,7 @@
             curl_setopt ($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
             curl_setopt($ch, CURLOPT_NOBODY, true );
+            curl_setopt($ch, CURLOPT_REFERER, $_SERVER["HTTP_HOST"]);
             $hd = fopen($tmpfilename,"w");
             curl_setopt ($ch, CURLOPT_WRITEHEADER, $hd);
             $result = curl_exec ($ch);
@@ -62,6 +64,7 @@
             curl_setopt ($ch, CURLOPT_POST, 1);
             curl_setopt ($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_REFERER, $_SERVER["HTTP_HOST"]);
             curl_setopt ($ch, CURLOPT_TIMEOUT, $this->timeout);
             curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
             return curl_exec ($ch);
