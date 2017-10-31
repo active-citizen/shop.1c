@@ -31,30 +31,35 @@ www
 git init
 git remote add origin https://github.com/active-citizen/shop.1c.git
 git fetch
-git checkout feature -ff
+git checkout feature -f
 ```
 
 # Копирование настроечных файлов
 Репозиторий не содержит файлов с паролями и токенами доступпов, поэтому их
 необходимо получить у администрации магазина и скопировать в рабочую копию
-+ /local/.integration/secret.inc.php
-+ /local/php_interface/settings.inc.php
-+ /api/include/config.php
++ www/local/.integration/secret.inc.php
++ www/local/php_interface/settings.inc.php
++ www/api/include/config.php
 
 # Выполнение миграций магазина
 + Авторизуемся от пользователя admin и переходим по адресу /local/.migration
 + Выбираем все пункты и кликаем "Запустить". Дождаться окончания установки
 
 # Выполнение миграций ККБ
-+ 
++ Перейти в www/api/migrations
++ Запустить каждый php-скрипт в каталоге `php {скрипт} dev.shop.ag.mos.ru` в порядке, заданном числом в префиксе их имени
++ Прописать в www/local/php_interface/settings.inc.php у ключа `bcc_url` имя домена, на котором разворачивается копия, а `https` заменить на `http`
 
 # Наполнение каталога товарами
 + Авторизуемся под пользователем admin
-+ Копируем содержимое архива /data/catalog.zip в /upload/1c_cataog/
-+ Запускаем из браузера 
++ Копируем содержимое каталоа www/data/catalog в www/upload/1c_catalog/
++ Запускаем из браузера /.integration/1c_exchange.php?type=catalog&mode=import&filename=import.xml
++ Запускаем из браузера /.integration/1c_exchange.php?type=catalog&mode=import&filename=offers.xml
 
 # Наполнение заказами
-(Выполняется опционально)
++ Получаем у администрации магазина файл orders.xml и кладём в www/upload/1c_exchange/
++ Авторизуемся под пользователем admin
++ Запускаем из браузера /.integration/1c_exchange.php?type=sale&mode=file&filename=orders.xml
 
 
 

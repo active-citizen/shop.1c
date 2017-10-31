@@ -1,0 +1,6 @@
+<?php
+    // Назначаем админу права на все склады и производителей
+    $USER->Update(1,[
+        "UF_USER_MAN_ALL"       =>  true,
+        "UF_USER_STORAGE_ALL"   =>  true
+    ]); 

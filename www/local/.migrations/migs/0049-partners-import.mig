@@ -1,5 +1,5 @@
 <?php
-
+/*
     if(file_exists("../common.php"))
             require_once("../common.php");
 
@@ -106,7 +106,7 @@
         echo $arPartnerInfo["NAME"].";$sLastName $sName;$sLogin;$sPassword\n";
     }
     echo "</pre>";
-
+*/
 
 
 

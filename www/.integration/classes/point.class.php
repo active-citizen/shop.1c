@@ -229,9 +229,9 @@
                 ||
                 !isset($history["result"]["status"])
             ){
-                return json_encode([
+                return [
                     "errors"=>["Не получено состояние счёта"]
-                ]);
+                ];
             }
 
             if(isset($history["errorMessage"]) && $history["errorMessage"])
