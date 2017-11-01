@@ -100,8 +100,6 @@ mail_queue/*.eml
 www/local/.migrations/migs/data/partners.csv
 www/local/assets/libs/images/
 
-
-
 *.swp
 *.swo
 *.zip
@@ -117,4 +115,7 @@ www/local/assets/libs/images/
 www/local/.migrations/migs/data/troika.csv
 11.php
 www/api/migrations/optimize.log
+
+# Игнорировать служебные файлы phpstorm
+.idea
 
