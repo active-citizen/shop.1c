@@ -45,8 +45,6 @@
             $data = $curl->post($url, $data, array(
                 "Content-Type: application/x-www-form-urlencoded"
             ));
-            print_r($data);
-            die;
             return $data;
         }
     }
