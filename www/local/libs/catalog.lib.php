@@ -24,6 +24,8 @@
         $nCmlPropertyId = CML2_LINK_PROPERTY_ID;
         $nHideIfAbsentPropertyId = HIDE_IF_ABSENT_PROPERTY_ID; 
         $nYesEnum = YES_HIDE_FLAG_ID;
+        $nHideDatePropertyId = HIDE_DATE_PROPERTY_ID;
+        $sNowDate = date("Y-m-d H:i:s");
         $sQuery = "
             SELECT
                 -- Имя тега
@@ -40,13 +42,13 @@
                     ON 
                         `b`.`IBLOCK_PROPERTY_ID`=".$nWantPropertyId."
                         AND
-                        `a`.`ID`=`b`.`VALUE`
+                        `a`.`ID`=`b`.`VALUE_NUM`
                    LEFT JOIN
                 `b_iblock_element_property` as `d`
                     ON
                         `d`.`IBLOCK_PROPERTY_ID`=".$nCmlPropertyId."
                         AND
-                        `b`.`IBLOCK_ELEMENT_ID`=`d`.`VALUE`
+                        `b`.`IBLOCK_ELEMENT_ID`=`d`.`VALUE_NUM`
                     LEFT JOIN
                 `b_catalog_store_product` as `e`
                     ON
@@ -61,6 +63,12 @@
                 `b_iblock_element` as `g`
                     ON 
                         `b`.`IBLOCK_ELEMENT_ID`=`g`.`ID`
+                    LEFT JOIN
+                `b_iblock_element_property` as `h`
+                    ON 
+                        `h`.`IBLOCK_ELEMENT_ID`=`g`.`ID` 
+                        AND 
+                        `h`.`IBLOCK_PROPERTY_ID`=".$nHideDatePropertyId."
             WHERE
                 `a`.`IBLOCK_ID` = ".$nIblockId."
                 AND `a`.`ACTIVE`='Y'
@@ -84,9 +92,16 @@
                         `e`.`AMOUNT`>0
                     )
                 )
+                AND (
+                    `h`.`ID` IS NULL
+                    OR
+                    `h`.`VALUE`>='$sNowDate'
+                )
             GROUP BY
                 `a`.`ID`
         ";
+
+        //echo "<!--  $sQuery -->";
 
         $resQuery = $DB->Query($sQuery);
         $result = array();

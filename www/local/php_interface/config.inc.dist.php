@@ -38,5 +38,6 @@
         // Определяем ID свойства производитель
         define("MANUFACTURER_PROPERTY_ID", 73);
 
-
+        // ID свойства "дата отключения
+        define("HIDE_DATE_PROPERTY_ID", 85);
 

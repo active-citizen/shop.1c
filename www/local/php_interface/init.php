@@ -108,6 +108,14 @@
             )
         )->Fetch();
         define("MANUFACTURER_PROPERTY_ID",$arr["ID"]);
+        // Определяем ID свойства дата скрытия 
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"HIDE_DATE"
+            )
+        )->Fetch();
+        define("HIDE_DATE_PROPERTY_ID",$arr["ID"]);
         
         // Определяем ID групп Операторы МФЦ и Партнёры
         define("PARTNERS_GROUP_ID",9);
