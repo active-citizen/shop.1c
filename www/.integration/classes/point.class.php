@@ -223,7 +223,7 @@
                     $answer["errors"],$agBrige->getErrors()
                 );
             }
-            
+
             if(
                 !isset($history["result"]["status"])
                 ||
@@ -238,8 +238,9 @@
                 $answer["errors"][] = $history["errorMessage"];
                 
             $bxPoint = new bxPoint;
-            if(!$bxPoint->updateAccount($history["result"]["status"], CUser::GetID()))
-                $answer["errors"][] = $bxPoint->error;
+            if(!$bxPoint->updateAccount(
+                $history["result"]["status"], CUser::GetID())
+            )$answer["errors"][] = $bxPoint->error;
 
             $answer["status"] = $history["result"]["status"];
 
@@ -247,10 +248,15 @@
 
             $answer["title"] = 
                 number_format(
-                    $history["result"]["status"]["current_points"],0,","," "
+                    $history["result"]["status"]["current_points"]
+                    ,0
+                    ,","
+                    ," "
                 )
                 ." "
-                .get_points(intval($history["result"]["status"]["current_points"]));
+                .get_points(
+                    intval($history["result"]["status"]["current_points"])
+                );
 
             return $answer;
         }

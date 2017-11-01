@@ -27,12 +27,18 @@
     */
 
 
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/bitrix/modules/main/include/prolog_before.php"
+    );
     require_once("classes/point.class.php");
 
     $objPoints = new bxPoint;
 
     $answer = $objPoints->fetchAccountFromAPI();
     echo json_encode($answer);
-    require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/bitrix/modules/main/include/epilog_after.php"
+    );
     
