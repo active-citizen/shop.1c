@@ -18,6 +18,8 @@
 
         function __construct($sLang = 'en'){
             self::setErrorLanguage($sLang);
+            // Определяем контур, на котором работаем
+            
         }
 
         static function getErrorMessage($nErrorCode){
