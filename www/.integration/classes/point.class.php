@@ -229,7 +229,6 @@
                 ||
                 !isset($history["result"]["status"])
             ){
-                CUser::Logout();
                 return [
                     "errors"=>["Не получено состояние счёта"]
                 ];
