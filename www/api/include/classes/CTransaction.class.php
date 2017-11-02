@@ -131,6 +131,14 @@
             }
 //          $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
 
+            if(!$arEMPAnswer->result->status){
+                $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/scc_err2.txt","a");
+                fwrite($fd, print_r($arSession, 1));
+                fwrite($fd, print_r($arEMPAnswer,1));
+                fwrite($fd,"\n====================================================\n");
+                fclose($fd);
+            }
+
             return array(
                 "history"   =>  $arHistory,
                 "status"    =>  get_object_vars($arEMPAnswer->result->status)

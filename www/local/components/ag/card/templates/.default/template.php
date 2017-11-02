@@ -548,7 +548,7 @@ if(
                                 <? endif ?>
                           <? endif ?>
                           </table>
-                          <? if(trim($arResult["STORAGES"][$id]["DESCRIPTION"])):?>
+                          <? if(0 && trim($arResult["STORAGES"][$id]["DESCRIPTION"])):?>
                           <p class="ag-shop-card__selected-place-description"><?= $arResult["STORAGES"][$id]["DESCRIPTION"] ?></p>
                           <? endif ?>
                         </div>
