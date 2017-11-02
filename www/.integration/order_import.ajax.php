@@ -551,6 +551,8 @@
                     $sPrefix=="О"
                     ||
                     $sPrefix=="М"
+                    ||
+                    $sPrefix=="Б"
                 )
             ){
                  
@@ -609,7 +611,7 @@
                 // Уменьшаем запасы на складе 
                 $objCCatalogStoreProduct = new CCatalogStoreProduct;
                 $objCCatalogProduct = new CCatalogProduct;
-                //С отключением опенкарта это будет ненужно
+                if($sPrefix!='Б')
                 foreach($basketProducts as $productId=>$item){
                     orderStorageChange( $productId, $arStore["ID"], -1);
                 }
