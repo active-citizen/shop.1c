@@ -229,6 +229,17 @@
                 ||
                 !isset($history["result"]["status"])
             ){
+                // Операторов, партнёров, администраторов и администраторов
+                // магазина не разлогиниваем
+                if(
+                !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+                &&
+                !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+                &&
+                !in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+                &&
+                !$USER->IsAdmin()
+                ) $USER->Logout();
                 return [
                     "errors"=>["Не получено состояние счёта"]
                 ];
