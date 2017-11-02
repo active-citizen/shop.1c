@@ -384,7 +384,7 @@
                     !trim($profile["session_id"])
                 )
             ){
-                CUSer::Logout();
+                $USER->Logout();
                 $answer["errors"] = array();
         //        $answer["redirect"] =
         //        trim($_REQUEST["backurl"])?$_REQUEST['backurl']:"/catalog/";
