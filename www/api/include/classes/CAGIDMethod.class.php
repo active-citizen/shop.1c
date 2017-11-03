@@ -41,8 +41,9 @@
                 На локальных копиях используем внешний URL
             */
             if(
-                preg_match("#.*\.local$#", $_SERVER["HTTP_HOST"])
-                &&
+// Раскомментить когда будет доступ по локальноЦОДовским адресам
+//                preg_match("#.*\.local$#", $_SERVER["HTTP_HOST"])
+//                &&
                 isset($AG_SECRETS[CONTOUR]["ext_url"])
                 &&
                 trim($AG_SECRETS[CONTOUR]["ext_url"])
@@ -52,6 +53,8 @@
             /*
                 На серверных копиях используем внутренний URL
             */
+// Раскомментить когда будет доступ по локальноЦОДовским адресам
+            /*
             if(
                 !preg_match("#.*\.local$#", $_SERVER["HTTP_HOST"])
                 &&
@@ -63,10 +66,13 @@
 
             if(!$this->url)            
                 return $this->riseError("Нет url API на контуре ".CONTOUR);
+            */
 
             /*
                 На серверных копиях используем внутренний порт
             */
+// Раскомментить когда будет доступ по локальноЦОДовским адресам
+            /*
             if(
                 !preg_match("#.*\.local$#", $_SERVER["HTTP_HOST"])
                 &&
@@ -75,6 +81,7 @@
                 trim($AG_SECRETS[CONTOUR]["local_port"])
             )
                 $this->port = $AG_SECRETS[CONTOUR]["local_port"];
+            */
 
 
             if(!$this->arProfile = $this->getProfile())
