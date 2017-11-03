@@ -126,9 +126,12 @@
                 );
                 
                 $GLOBALS["DB"]->rows =array();
-                $GLOBALS["DB"]->search($arTables,$arJoin,array(),$sCond, "`a`.`ctime` DESC", 0,0,$arFields);
+                $GLOBALS["DB"]->search(
+                    $arTables,$arJoin,array(),$sCond, "`a`.`ctime` DESC", 0,0,$arFields
+                );
                 $arHistory = $GLOBALS["DB"]->rows;
             }
+
 //          $arUserPoints = CUser::getUserPoints($arSession["user_id"]);
 
             if(!$arEMPAnswer->result->status){
@@ -152,24 +155,58 @@
         function updatePointsFromEMP($sSessionId, $nUserId,$bSync = false){
             $CUser = new CUser;
 
-            $data = array(
-                "token"=>$GLOBALS["CONF"]["mvag_token"],
-                "auth"=>array(
-                    "session_id"     =>  $sSessionId,
+            if(CONTOUR=='test' && !$bSync){
+                require_once("include/classes/CAGIDMethod.class.php");
+                $objMethod = new CAGIDMethod($sSessionId);
+                if(!$data = $objMethod->getSummary()){
+                    $this->error = $objMethod->error;
+                    return false;
+                }
+                if(
+                    isset($data["is_active"]) 
+                    && $data["is_active"]
                 )
-            );
+                    $data["state"] = 'Активный гражданин';
+                $data = ["result"=>["status"=>$data]];
+                $data = json_decode(json_encode($data));
+            }
+            elseif(CONTOUR=='test' && $bSync){
+                require_once("include/classes/CAGIDMethod.class.php");
+                $objMethod = new CAGIDMethod($sSessionId);
+                if(!$data = $objMethod->getHistory()){
+                    $this->error = $objMethod->error;
+                    return false;
+                }
+                if(
+                    isset($data["status"]["is_active"]) 
+                    && $data["status"]["is_active"]
+                )
+                    $data["status"]["state"] = 'Активный гражданин';
+                $data = ["result"=>$data];
+                $data = json_decode(json_encode($data));
+            }
+            elseif(CONTOUR=='prod'){
+                $data = array(
+                    "token"=>$GLOBALS["CONF"]["mvag_token"],
+                    "auth"=>array(
+                        "session_id"     =>  $sSessionId,
+                    )
+                );
+
+                require_once(realpath(dirname(__FILE__)."/curl.class.php"));
+                
+                $data = json_encode($data);
+                $curl = new curlTool;
+                $data = $curl->post(
+                    "https://emp.mos.ru/v2.0.0/poll/getHistory", 
+                    $data, 
+                    array("Content-Type: application/json")
+                );
+               
+                $data = json_decode($data);       
+            }
+
             
-            require_once(realpath(dirname(__FILE__)."/curl.class.php"));
-            
-            $data = json_encode($data);
-            $curl = new curlTool;
-            $data = $curl->post(
-                "https://emp.mos.ru/v2.0.0/poll/getHistory", 
-                $data, 
-                array("Content-Type: application/json")
-            );
-           
-            $data = json_decode($data);       
             // Обновляем EMP поебень
             if(
                 is_object($data) 
@@ -260,6 +297,20 @@
             $nPoints, 
             $sComment
         ){
+
+            if(CONTOUR=='test'){
+                require_once("include/classes/CAGIDMethod.class.php");
+                $objMethod = new CAGIDMethod($sSessionId);
+                if(!$objMethod->addPoints(
+                    $nDebit*$nPoints,
+                    $sComment
+                )){
+                    $this->error = $objMethod->error;
+                    return false;
+                }
+                return true;
+            }
+
             $CUser = new CUser;
             $arEMPProfile = $CUser->getEMPProfile($sSessionId);
             $arEMPProfile = json_decode(json_encode((array)$arEMPProfile), TRUE);
