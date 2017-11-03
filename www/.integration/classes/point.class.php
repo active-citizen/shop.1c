@@ -186,6 +186,7 @@
         function fetchAccountFromAPI(
             $sync = false //!< Вызвать синхронизацию таблиц ККБ
         ){
+            global $USER;
             require(
                 realpath(dirname(__FILE__)."/..")
                 ."/secret.inc.php"
