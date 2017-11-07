@@ -100,5 +100,35 @@
             <div class="ag-shop-slider__dots"></div>
           </div>
           <!-- }}} Slider-->
+
+        <script>
+          (function () {
+            $('.js-content-slider').slick({
+              mobileFirst: true,
+              centerPadding: 0,
+              arrows: false,
+              dots: true,
+              dotsClass: 'ag-shop-slider__dots',
+              infinite: true,
+              speed: 300,
+              slidesToShow: 1,
+              centerMode: false,
+              variableWidth: true,
+<? if($arResult["AUTOPLAY_DELAY"]):?>
+              autoplay: true,
+              autoplaySpeed: <?= $arResult["AUTOPLAY_DELAY"]?>,
+<? else:?>
+              autoplay: false,
+<? endif ?>
+              responsive: [{
+                  breakpoint: 992,
+                  settings: {
+                      arrows: true
+                  }
+              }]
+            });
+          })();
+        </script>
+
         <? endif ?>
 

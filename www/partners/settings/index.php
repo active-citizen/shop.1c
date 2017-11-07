@@ -62,6 +62,13 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
         "CODE"  =>  "PARKING",
         "CACHE_TIME"=>COMMON_CACHE_TIME
     ),false);?> 
+
+    <h2>Банеры</h2>
+    <?$APPLICATION->IncludeComponent("ag:settings","",array(
+        "CODE"  =>  "BANNERS",
+        "CACHE_TIME"=>COMMON_CACHE_TIME
+    ),false);?> 
+
 </div>
 
 

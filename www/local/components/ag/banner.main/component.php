@@ -130,6 +130,15 @@ if ($this->StartResultCache(false)) {
        
     }
 
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+
+    $objSettings = new CIntegrationSettings;
+    $objSettings->code = 'BANNERS';
+    $arSettings = $objSettings->get();
+
+    $arResult["AUTOPLAY_DELAY"] =
+       $arSettings["BANNERS_CHANGE_TIME"]["VALUE"]*1000;
+
     $this->IncludeComponentTemplate();
 }
 

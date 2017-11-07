@@ -35,6 +35,7 @@ $(document).ready(function() {
   /**********/
 
   // init slider
+  /*
   (function () {
     $('.js-content-slider').slick({
       mobileFirst: true,
@@ -56,6 +57,7 @@ $(document).ready(function() {
       }]
     });
   })();
+  */
 
   /**********/
 

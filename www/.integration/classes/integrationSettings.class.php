@@ -69,6 +69,22 @@
             return true;
         }
 
+        function add($arData){
+            global $DB;
+            $sQuery = "
+                INSERT INTO `".$this->table."`(
+                    `code`,`data`
+                )
+                VALUE(
+                    '".$this->code."','".
+                    $DB->ForSql(json_encode($arData))
+                    ."'
+                )
+            ";
+            $DB->Query($sQuery);
+            return true;
+        }
+
     }
 
 ?>

@@ -1,0 +1,17 @@
+<?php
+    /* *****************************************************
+        Добавление настройки банеров
+    ****************************************************** */
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+
+    $objSettings = new CIntegrationSettings;
+    $objSettings->code = 'BANNERS';
+    $arSettings = $objSettings->get();
+
+    if(!isset($arSettings["BANNERS_CHANGE_TIME"])){
+        $arSettings["BANNERS_CHANGE_TIME"] = [
+            "TITLE"=>"Время смены банера (секунд)",
+            "VALUE"=>"3"
+        ];
+        $objSettings->add($arSettings);
+    }
