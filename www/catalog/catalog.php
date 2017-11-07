@@ -1,5 +1,15 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+// Редирект в каталоге без слеша -> со слешем
+if(
+    preg_match("#/catalog/(.*?)$#",$_SERVER["REQUEST_URI"],$m)
+    &&
+    !preg_match("#/catalog/(.*?)/$#",$_SERVER["REQUEST_URI"])
+
+){
+    LocalRedirect("/catalog/".$m[1]."/");
+    die;
+}
 
 // Определяемся с именами свойст для предложений 1С
 $res = CIBlockProperty::GetList(array(),array("IBLOCK_ID"=>3));
