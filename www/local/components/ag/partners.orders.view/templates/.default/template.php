@@ -4,7 +4,11 @@
         &&
         trim($arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"])
     ):?>
-    <p class="alert alert-warning">Отправлен запрос изменения статуса на &laquo;<span style="color:<?= 
+    <p class="<?= isset($_REQUEST["error"])?"alert alert-danger":"alert alert-warning" ?>">
+        <? if(isset($_REQUEST["error"])):?>
+            <b>ВНИМАНИЕ!!! </b>
+        <? endif ?>
+        Отправлен запрос изменения статуса на &laquo;<span style="color:<?= 
         $arResult["STATUSES"][
             $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]
         ]["COLOR"]
@@ -550,7 +554,11 @@ href="/partners/orders/print.php?print=cancel&order=<?=
     </tr>
     <? endforeach ?>
 </table>
+
 <? if($USER->IsAdmin()):?>
+    <? if(
+        $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]==''
+    ):?>
     <select name="status_id" class="form-control" id="status_id">
         <option value="F"><?= getStatusAlias('Выполнен')?></option>
         <option value="AI"><?= getStatusAlias('Аннулирован')?></option>
@@ -561,8 +569,13 @@ href="/partners/orders/print.php?print=cancel&order=<?=
     </select>    
     <input type="submit" name="chansge_status" value="Запросить смену статуса"
     class="btn btn-primary">
+    <? endif ?>
 <? else:?>
-    <? if($arResult["ORDER"]["STATUS_ID"]=='N'):?>
+    <? if(
+        $arResult["ORDER"]["STATUS_ID"]=='N'
+        &&
+        $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]==''
+    ):?>
     <select name="status_id" class="form-control" id="status_id">
         <option value="F"><?= getStatusAlias('Выполнен')?></option>
     </select>
@@ -574,6 +587,8 @@ href="/partners/orders/print.php?print=cancel&order=<?=
         $arResult["ORDER"]["STATUS_ID"]=='F' 
         &&
         isset($arResult["ORDER"]["CURL_LOG"])
+        &&
+        $arResult["ORDER"]["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]==''
     ):?>
     <select name="status_id" class="form-control" id="status_id">
         <option value="AG"><?= getStatusAlias('Отменён')?></option>

@@ -56,12 +56,25 @@ while($arProp = $resPropValues->GetNext()){
 
 if(isset($_REQUEST["chansge_status"])){
 
-    orderSetZNI(
-        $arResult["ORDER"]["ID"],
-        $_REQUEST["status_id"],
-        $arResult["ORDER"]["STATUS_ID"]
+    $arProperties =  orderGetProperties($arResult["ORDER"]["ID"],["CHANGE_REQUEST"]);
+    $error = true;
+    if(
+        !isset($arProperties["CHANGE_REQUEST"]["VALUE"])
+        ||
+        !trim($arProperties["CHANGE_REQUEST"]["VALUE"])
+    ){
+        orderSetZNI(
+            $arResult["ORDER"]["ID"],
+            $_REQUEST["status_id"],
+            $arResult["ORDER"]["STATUS_ID"]
+        );
+        $error = false;
+    }
+    
+    LocalRedirect(
+        "/partners/orders/".$arResult["ORDER"]["ID"]."/".
+        ($error?"?error=1":"")
     );
-    LocalRedirect("/partners/orders/".$arResult["ORDER"]["ID"]."/");
 }
 
 

@@ -695,101 +695,108 @@ elseif(isset($_GET["wish"])){
 }
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
-    
-    // Проверить принадлежит ли заказ пользователю
-    CModule::IncludeModule('sale');
-    CModule::IncludeModule('iblock');
-    $order = CSaleOrder::GetByID($order_id);
-    
-    // Определяем для каждого заказа возможность его отменить
-    $res = CIBlockElement::GetList(
-        array(),
-        array("IBLOCK_ID"=>OFFER_IB_ID),
-        false,
-        array("nTopCount"=>1),
-        array("IBLOCK_ID")
-    );
-    $res = $res->GetNext();
-    $IBlockId = $res["IBLOCK_ID"];
-    
-    $res = CIBlockElement::GetList(
-        array(),
-        array("IBLOCK_ID"=>CATALOG_IB_ID),
-        false,
-        array("nTopCount"=>1),
-        array("IBLOCK_ID")
-    );
-    $res = $res->GetNext();
-    $IBlockId2 = $res["IBLOCK_ID"];
-
-    // Вычисляем может ли быьт заказ отменён
-    $res = CSaleBasket::GetList(array(),array("ORDER_ID"=>$order_id),false);
-    $canCancel = true;
-    while($product = $res->GetNext()){
-
-        $res = CIBlockElement::GetProperty(
-            $IBlockId,$product["PRODUCT_ID"],array(), array("CODE"=>"CML2_LINK")
-        );
-        $res = $res->GetNExt();
-        
-        $res = CIBlockElement::GetProperty(
-            $IBlockId2,$res["VALUE"],array(), array("CODE"=>"CANCEL_ABILITY")
-        );
-        $prop = $res->GetNext();
-        
-        if(!$prop["VALUE_ENUM"]){
-            $canCancel = false;
-            break;
-        }
-
-    }
-    if(!$canCancel){
-        $answer = array("error"=>"Заказ ID=$order_id не может быть отменн");
-        die;
-    }
-
-    
-    if(!isset($order["USER_ID"])){
-        $answer = array("error"=>"Нет заказа с ID=$order_id");
-    }
-    elseif(isset($order["USER_ID"]) && $order["USER_ID"]!=CUser::GetID()){
-        $answer = array("error"=>"Это заказ другого пользователя");
-    }
-    elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID() 
-        // Нельзя отменять заказы из опенкарта
-        && preg_match("#^.*\-\d+$$#", $order["ADDITIONAL_INFO"])
+    $arProperties =  orderGetProperties($order_id,["CHANGE_REQUEST"]);
+    if(
+        !isset($arProperties["CHANGE_REQUEST"]["VALUE"])
+        ||
+        !trim($arProperties["CHANGE_REQUEST"]["VALUE"])
     ){
-        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
-        OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
-
-        /*
-        if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
-            //$answer["error"] .= "Заказ не был отменён.";
-        }
-        else{
-            //CSaleOrder::StatusOrder($order["ID"],"AG");
-        }
-        */
-
-        /*
-
-        Смена статуса и манебэк перенесены в success - ответ
-
-        $obOrder = new bxOrder();
-        $resOrder = $obOrder->addEMPPoints(
-            $order["SUM_PAID"],
-            "Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ"
+        // Проверить принадлежит ли заказ пользователю
+        CModule::IncludeModule('sale');
+        CModule::IncludeModule('iblock');
+        $order = CSaleOrder::GetByID($order_id);
+        
+        // Определяем для каждого заказа возможность его отменить
+        $res = CIBlockElement::GetList(
+            array(),
+            array("IBLOCK_ID"=>OFFER_IB_ID),
+            false,
+            array("nTopCount"=>1),
+            array("IBLOCK_ID")
         );
-        $moneyBack = true;
-        CSaleOrder::PayOrder($order["ID"],"N",true,false);
-        CSaleOrder::StatusOrder($order["ID"],"AG");
-        eventOrderStatusSendEmail(
-            $order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG")
+        $res = $res->GetNext();
+        $IBlockId = $res["IBLOCK_ID"];
+        
+        $res = CIBlockElement::GetList(
+            array(),
+            array("IBLOCK_ID"=>CATALOG_IB_ID),
+            false,
+            array("nTopCount"=>1),
+            array("IBLOCK_ID")
         );
+        $res = $res->GetNext();
+        $IBlockId2 = $res["IBLOCK_ID"];
 
-        */
+        // Вычисляем может ли быьт заказ отменён
+        $res = CSaleBasket::GetList(array(),array("ORDER_ID"=>$order_id),false);
+        $canCancel = true;
+        while($product = $res->GetNext()){
 
-        //CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
+            $res = CIBlockElement::GetProperty(
+                $IBlockId,$product["PRODUCT_ID"],array(), array("CODE"=>"CML2_LINK")
+            );
+            $res = $res->GetNExt();
+            
+            $res = CIBlockElement::GetProperty(
+                $IBlockId2,$res["VALUE"],array(), array("CODE"=>"CANCEL_ABILITY")
+            );
+            $prop = $res->GetNext();
+            
+            if(!$prop["VALUE_ENUM"]){
+                $canCancel = false;
+                break;
+            }
+
+        }
+        if(!$canCancel){
+            $answer = array("error"=>"Заказ ID=$order_id не может быть отменн");
+            die;
+        }
+
+        
+        if(!isset($order["USER_ID"])){
+            $answer = array("error"=>"Нет заказа с ID=$order_id");
+        }
+        elseif(isset($order["USER_ID"]) && $order["USER_ID"]!=CUser::GetID()){
+            $answer = array("error"=>"Это заказ другого пользователя");
+        }
+        elseif(isset($order["USER_ID"]) && $order["USER_ID"]==CUser::GetID() 
+            // Нельзя отменять заказы из опенкарта
+            && preg_match("#^.*\-\d+$$#", $order["ADDITIONAL_INFO"])
+        ){
+            require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
+            // Если у заказа уже есть ЗНИ
+            OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
+
+            /*
+            if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
+                //$answer["error"] .= "Заказ не был отменён.";
+            }
+            else{
+                //CSaleOrder::StatusOrder($order["ID"],"AG");
+            }
+            */
+
+            /*
+
+            Смена статуса и манебэк перенесены в success - ответ
+
+            $obOrder = new bxOrder();
+            $resOrder = $obOrder->addEMPPoints(
+                $order["SUM_PAID"],
+                "Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ"
+            );
+            $moneyBack = true;
+            CSaleOrder::PayOrder($order["ID"],"N",true,false);
+            CSaleOrder::StatusOrder($order["ID"],"AG");
+            eventOrderStatusSendEmail(
+                $order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG")
+            );
+
+            */
+
+            //CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
+       }
    }
 }
 else{

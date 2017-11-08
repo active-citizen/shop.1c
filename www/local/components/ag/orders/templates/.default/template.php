@@ -121,7 +121,7 @@
                   <? elseif(
                     $arOrder["STATUS_ID"]=='N' 
                     && $arOrder["PRODUCTS"][0]["CANCEL_ABILITY"]
-                    && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]!='AG'
+                    && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]==''
                     // Отменять только свои заказы
                     && preg_match("#^Б\-\d+$#",$arOrder["ADDITIONAL_INFO"])
                   ):
