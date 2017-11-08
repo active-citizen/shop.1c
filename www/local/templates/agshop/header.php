@@ -216,6 +216,22 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
         false
     );?>
     <? endif ?>
+    <? 
+       require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+       $objSettings = new CIntegrationSettings;
+       $objSettings->code = 'INFO';
+       $arSettings = $objSettings->get();
+    ?>
+    <? if(
+        $arSettings["INFO_MESSAGE"]["VALUE"]
+        &&
+        // Не показывать в АРМ
+        !preg_match("#^/partner#", $_SERVER["REQUEST_URI"])
+    ):?>
+    <div style="<?= $arSettings["INFO_STYLE"]["VALUE"]?>">
+        <?= $arSettings["INFO_MESSAGE"]["VALUE"]?>
+    </div>
+    <? endif ?>
 
 <? endif ?>
 

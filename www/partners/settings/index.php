@@ -69,6 +69,12 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
         "CACHE_TIME"=>COMMON_CACHE_TIME
     ),false);?> 
 
+    <h2>Информационное окно</h2>
+    <?$APPLICATION->IncludeComponent("ag:settings","",array(
+        "CODE"  =>  "INFO",
+        "CACHE_TIME"=>COMMON_CACHE_TIME
+    ),false);?> 
+
 </div>
 
 

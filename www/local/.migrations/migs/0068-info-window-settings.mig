@@ -1,0 +1,25 @@
+<?php
+    /* *****************************************************
+        Добавление настройки информационного окна
+    ****************************************************** */
+    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+
+    $objSettings = new CIntegrationSettings;
+    $objSettings->code = 'INFO';
+    $arSettings = $objSettings->get();
+
+    $arSettings = [];
+    $arSettings["INFO_MESSAGE"] = [
+        "TITLE"=>"Сообщение (оставить пустым, если не нужно)",
+        "VALUE"=>""
+    ];
+    $arSettings["INFO_STYLE"] = [
+        "TITLE"=>"CSS-стиль сообщения",
+        "VALUE"=>"background-color:#f49541;color:#444444;font-size:18px;text-align:center;padding:10px;"
+    ];
+    if(!isset($arSettings["INFO_MESSAGE"])){
+        $objSettings->add($arSettings);
+    }
+    else{
+        $objSettings->set($arSettings);
+    }
