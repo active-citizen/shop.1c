@@ -1,0 +1,43 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с индексом пользователей
+     */
+    class index_order extends Migration{
+        function Run(){
+            global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_1c_monitoring`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_1c_monitoring`(
+                    `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `CTIME` DATETIME,
+                    `MODE` CHAR(8),
+                    `STATUS` CHAR(12),
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `CTIME`(`CTIME`),
+                    KEY `MODE`(`MODE`),
+                    KEY `STATUS`(`STATUS`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
+            ";
+//            echo $sQuery;
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_order = new index_order();
+// Откатываем, если неудачно
+if(!$index_order->Run())$index_order->RollBack();
+

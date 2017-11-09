@@ -87,6 +87,17 @@
     }
 
     function logger_save_buffer($data){
+        global $DB;
+        $DB->Query("
+            INSERT INTO `int_1c_monitoring`(
+                `CTIME`,`MODE`,`STATUS`
+            )
+            VALUES(
+                '".date("Y-m-d H:i:s")."',
+                '".$_REQUEST["mode"]."',
+                '".mb_substr($data,0,12)."'
+            );
+        ");
         $fd = fopen(LOGGER_OUTPUT_FILENAME,"w");
         fwrite($fd,$data);
         fclose($fd);

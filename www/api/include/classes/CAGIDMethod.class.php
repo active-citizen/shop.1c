@@ -246,11 +246,11 @@
                 &&
                 trim($arAnswer['errorMessage'])
             )
-                return $this->riseErro( "Ошибка АГ API: "
+                return $this->riseError( "Ошибка АГ API: "
                     .$arAnswer['errorMessage']);
 
             if( !isset($arAnswer['errorCode']))
-                return $this->riseErro( "Не получен корректный код ошибки");
+                return $this->riseError( "Не получен корректный код ошибки");
             
             if(
                 !isset($arAnswer["result"])
