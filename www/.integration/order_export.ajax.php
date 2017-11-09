@@ -8,11 +8,23 @@
         "/bitrix/modules/main/include/prolog_before.php"
     );
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
     header("Content-type: text/plain; charset=windows-1251;");
     if(!$USER->IsAdmin()){
         echo "Failed\nAccess denied";
         die;
     }
+
+    // Если блокировку поставили и она не протухла - отваливаемся
+    // Иначе ставим свою и выдаём обмен
+    if($nWaitTime = orderQueryIsLocked()){
+        echo "Failed : query is locked. Wait for $nWaitTime seconds";
+        die;
+    }
+    else{
+        orderQuerySetLock();
+    }
+
 
     // Получаем DI сессии обмена
     $session_id = 
@@ -501,7 +513,10 @@
 </Документ>
 <? endforeach?>
 </КоммерческаяИнформация>
-<?require(
+<?
+    // Снимаем блокировку
+    orderQueryResetLock();
+    require(
     $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php"
 );?>
 

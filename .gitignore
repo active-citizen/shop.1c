@@ -74,6 +74,7 @@ docs/bcc/source/*.ilg
 .mc
 .elinks
 .mysql_history
+.lesshst
 
 # Игнорировать конфиги http-авторизации
 etc/nginx/auth/*.conf
@@ -119,4 +120,5 @@ www/api/migrations/optimize.log
 
 # Игнорировать служебные файлы phpstorm
 .idea
-
+adminer.php
+api/adminer.php
