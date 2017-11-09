@@ -53,7 +53,7 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AF" 
         ), // Выводить только не отданные заказы
         false
-//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
     while(
         count($arOrderses)<ORDER_EXPORT_QUANT 
@@ -67,7 +67,7 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AA" 
         ), // Выводить только не отданные заказы
         false
-//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
     while(
         count($arOrderses)<ORDER_EXPORT_QUANT 
@@ -81,7 +81,7 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AG" 
         ), // Выводить только не отданные заказы
         false
-//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
     while(
         count($arOrderses)<ORDER_EXPORT_QUANT 
@@ -95,7 +95,7 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"F" 
         ), // Выводить только не отданные заказы
         false
-//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
     while(
         count($arOrderses)<ORDER_EXPORT_QUANT 
@@ -109,7 +109,7 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"N" 
         ), // Выводить только не отданные заказы
         false
-//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
     while(
         count($arOrderses)<ORDER_EXPORT_QUANT 
@@ -123,7 +123,7 @@
             "PROPERTY_VAL_BY_CODE_CHANGE_REQUEST"=>"AI" 
         ), // Выводить только не отданные заказы
         false
-//        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
+        ,array("nTopCount"=>ORDER_EXPORT_QUANT)
     );
     while(
         count($arOrderses)<ORDER_EXPORT_QUANT 
