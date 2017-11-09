@@ -18,7 +18,7 @@
                     `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `CTIME` DATETIME,
                     `MODE` CHAR(8),
-                    `STATUS` CHAR(12),
+                    `STATUS` CHAR(7),
                     PRIMARY KEY `ID`(`ID`),
                     KEY `CTIME`(`CTIME`),
                     KEY `MODE`(`MODE`),
