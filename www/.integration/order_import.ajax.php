@@ -10,11 +10,22 @@
     require("includes/datafilter.lib.php");
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 
+    // Если блокировку поставили и она не протухла - отваливаемся
+    // Иначе ставим свою и выдаём обмен
+    if($nWaitTime = orderOrderIsLocked()){
+        echo "Failed : query is locked. Wait for $nWaitTime seconds";
+        die;
+    }
+    else{
+        orderOrderSetLock();
+    }
+
+
     if(!$USER->IsAdmin()){
         echo "failure\nAccess Denied\n";
         die;
     }
- 
+
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_exchange/";
     $CatalogIblockId = CATALOG_IB_ID;
     $OfferIblockId = OFFER_IB_ID;
@@ -905,6 +916,10 @@
         echo "success";
     else    
         echo "failed: orders.xml not contains valid orders. Some errors were occured.";
+
+    // Снимаем блокировку
+    orderOrderResetLock();
+
 
 ?>
 

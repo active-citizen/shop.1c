@@ -9,6 +9,12 @@ if(!defined("QUERY_LOCK_FILE"))
         $sFilename = realpath($_SERVER["DOCUMENT_ROOT"]."/..")."/tmp/query.lock"
     );
 
+if(!defined("ORDER_LOCK_FILE"))
+    define(
+        "ORDER_LOCK_FILE",
+        $sFilename = realpath($_SERVER["DOCUMENT_ROOT"]."/..")."/tmp/order.lock"
+    );
+
 /**
     Обновление свойств у заказа
 */
@@ -1018,5 +1024,47 @@ function orderQuerySetLock(){
 */
 function orderQueryResetLock(){
     //unlink(QUERY_LOCK_FILE);
+    return true;
+}
+
+
+
+/**
+    Проверка блокировки загрузки заказов в 1С
+*/
+function orderOrderIsLocked(
+    $lockTime = 50  // Время жизни блокировки
+){
+    if(!file_exists(ORDER_LOCK_FILE))return false;
+    $arStat = stat(ORDER_LOCK_FILE);
+    if(
+        isset($arStat["mtime"])
+        &&
+        $arStat["mtime"]+$lockTime<time()
+    ){
+        return false;
+    }
+    elseif(!isset($arStat)){
+        return false;
+    }
+    return (($arStat["mtime"]+$lockTime)-time());
+}
+
+/**
+    Установка блокировки загрузки заказов в 1С
+*/
+function orderOrderSetLock(){
+    $fd = fopen(ORDER_LOCK_FILE,"w");
+    fwrite($fd, print_r($_SERVER, 1));
+    fclose($fd);
+    return true;
+}
+
+
+/**
+    Сброс блокировки загрузки заказов в 1С
+*/
+function orderOrderResetLock(){
+    //unlink(ORDER_LOCK_FILE);
     return true;
 }
