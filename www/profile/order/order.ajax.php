@@ -292,7 +292,18 @@ elseif(isset($_GET["add_order"])){
             die;
         }
         // Ставим блокировку
-        $nLockId = $objIntegration->setLock();
+        if(!$nLockId = $objIntegration->setLock()){
+            $answer = array(
+                "order"=>array(
+                    "ERROR"=>array(
+                        "Не удалось создать блокировку."
+                    )
+                )
+            );
+            echo json_encode($answer);
+            die;
+        }
+
     }
 
     $res = CSalePaySystem::GetList(array(),array("ACTIVE"=>"Y"));
