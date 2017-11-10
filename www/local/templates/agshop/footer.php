@@ -91,6 +91,12 @@
 
         <? if(1 || !CUser::IsAuthorized()):?>
             <? if(
+                !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+                &&
+                !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+                &&
+                !in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+                &&
                 !preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
