@@ -664,4 +664,9 @@ OPTIMIZE TABLE `shop_ag_mos_ru`.`int_status_import`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`int_storages_import`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`int_troika_error_mapping`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`int_troika_link`;
-;
+
+OPTIMIZE TABLE `shop_ag_mos_ru`.`index_user`;
+OPTIMIZE TABLE `shop_ag_mos_ru`.`index_order`;
+OPTIMIZE TABLE `shop_ag_mos_ru`.`index_mail`;
+OPTIMIZE TABLE `shop_ag_mos_ru`.`index_lock`;
+
