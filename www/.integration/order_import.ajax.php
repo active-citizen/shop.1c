@@ -695,6 +695,12 @@
                             .": points transaction error: ".$obOrder->error." ";
                     }
                 }
+
+                eventOrderStatusSendEmail(
+                    $orderId, $statusId, ($arFields = array(
+                        "SUPPORT_COMMENT"=>$sSupportComment
+                    )), $statusId
+                );
             }
             elseif($existsOrder){
                 $orderId = $existsOrder["ID"];
