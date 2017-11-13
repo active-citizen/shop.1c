@@ -583,6 +583,9 @@
                 // Добавляем в корзину продукты
                 $nTotalSum = 0;
                 foreach($basketProducts as $productId=>$item){
+                    // 
+                    if($sPrefix=="М")$item["price"] = 0;
+                    // 
             	    $strSql = "
                         INSERT INTO b_sale_basket(
                             FUSER_ID, 
