@@ -1068,3 +1068,22 @@ function orderOrderResetLock(){
     //unlink(ORDER_LOCK_FILE);
     return true;
 }
+
+/**
+*/
+function getOrderPrefixById($nOrerId){
+    global $DB;
+    $sQuery = "
+        SELECT
+            LEFT(`ADDITIONAL_INFO`,1) as `NUM`
+        FROM
+            `index_order`
+        WHERE
+            `ID`=".intval($nOrerId)."
+        LIMIT
+            1
+    ";
+    $arOrder = $DB->Query($sQuery)->Fetch();
+    if(isset($arOrder["NUM"]))return $arOrder["NUM"];
+    return false;
+}

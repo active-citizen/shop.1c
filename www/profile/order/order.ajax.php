@@ -706,6 +706,20 @@ elseif(isset($_GET["wish"])){
 }
 elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+    $sOrderPrefix = getOrderPrefixById($order_id);
+
+    if($sOrderPrefix=='М'){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Невозможно вернтуть заказ с префиксом М"
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+
     $arProperties =  orderGetProperties($order_id,["CHANGE_REQUEST"]);
     if(
         !isset($arProperties["CHANGE_REQUEST"]["VALUE"])

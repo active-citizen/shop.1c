@@ -64,10 +64,13 @@
         ){
             // Если отменяем заказ - возвращаем баллы и меняем статус
             // для переходов в остальные статусы статус сменит обратный толчок
+            $sOrderPrefix = getOrderPrefixById($arrOrder["ID"]);
             if(
                 $arrOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]=='AG'
                 && 
                 preg_match("#^.*\-\d+$#i",$arrOrder["ADDITIONAL_INFO"])
+                &&
+                $sOrderPrefix!='М'
             ){
                 require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
                 require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");

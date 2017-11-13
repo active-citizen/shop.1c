@@ -782,7 +782,10 @@
                     );
                 }
                 // Обрабатываем отмену
-                elseif($existsOrder["STATUS_ID"]!=$statusId && $statusId=='AG'){
+                elseif(
+                    $existsOrder["STATUS_ID"]!=$statusId 
+                    && $statusId=='AG'
+                ){
                     CSaleOrder::Update($orderId, $arOrder);
    
                     // Считаем сумму заказа
@@ -791,7 +794,10 @@
                     // Отменяем оплату и возвращаем баллы только если заказ сделан из битрикса
                     $moneyBack = false;
 
-                    if(preg_match("#^.*\-\d+$$#", $existsOrder["ADDITIONAL_INFO"])){
+                    if(
+                        preg_match("#^.*\-\d+$$#", $existsOrder["ADDITIONAL_INFO"])
+                        && $sPrefix!='М'
+                    ){
                         require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
                         $obOrder = new bxOrder();
                         if(!$obOrder->addEMPPoints($orderSum,"Отмена заказа ".
