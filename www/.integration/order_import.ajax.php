@@ -501,7 +501,7 @@
             if(
                 isset($arDocument["История"]["Состояние"][0]['Уведомление'])
                 && $arDocument["История"]["Состояние"][0]['Уведомление']=='Нет'
-            )$bSendEmail = true;
+            )$bSendEmail = false;
            
             $arOrder = array(
                 "ADDITIONAL_INFO"   =>  $arDocument["Номер"],
