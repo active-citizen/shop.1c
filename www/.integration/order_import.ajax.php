@@ -495,6 +495,13 @@
                     $statusId = "AF";$canceled = "Y";
                 break;
             }
+
+            // Посылать ли письмо
+            $bSendEmail = true;
+            if(
+                isset($arDocument["История"]["Состояние"][0]['Уведомление'])
+                && $arDocument["История"]["Состояние"][0]['Уведомление']=='Нет'
+            )$bSendEmail = true;
            
             $arOrder = array(
                 "ADDITIONAL_INFO"   =>  $arDocument["Номер"],
@@ -699,7 +706,7 @@
                     }
                 }
 
-                eventOrderStatusSendEmail(
+                if($bSendEmail)eventOrderStatusSendEmail(
                     $orderId, $statusId, ($arFields = array(
                         "SUPPORT_COMMENT"=>$sSupportComment
                     )), $statusId
@@ -761,7 +768,7 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    eventOrderStatusSendEmail(
+                    if($bSendEmail)eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId
@@ -784,7 +791,7 @@
                     толчков из 1С
                     */
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    eventOrderStatusSendEmail(
+                    if($bSendEmail)eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId
@@ -822,7 +829,7 @@
                         $answer["error"] .= "Заказ не был отменён.";
                     }
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    eventOrderStatusSendEmail(
+                    if($bSendEmail)eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId
