@@ -75,11 +75,15 @@ docs/bcc/source/*.ilg
 .elinks
 .mysql_history
 .lesshst
+.composer
 
 # Игнорировать конфиги http-авторизации
 etc/nginx/auth/*.conf
 !etc/nginx/auth/default.conf
 etc/nginx/auth/*.passwd
+
+# Каталог со сторонними библиотеками
+www/local/libs/vendor/*
 
 #Игнорировать конфиг ККБ
 www/api/include/config.php
@@ -112,6 +116,7 @@ www/local/assets/libs/images/
 *.bz2
 *.backup
 *.pem
+*.lock
 
 # связи троек с номерами телефонов 
 www/local/.migrations/migs/data/troika.csv
