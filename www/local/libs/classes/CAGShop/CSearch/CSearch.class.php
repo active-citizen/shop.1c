@@ -1,5 +1,5 @@
 <?
-namespace \agshop\shop;
+namespace \CAGPhop\CSearch;
 
 /**
     Поиск по товарам магазина
