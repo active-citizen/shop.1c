@@ -1,5 +1,6 @@
 <?
     namespace AGShop;
+    //require_once(realpath(__DIR__."/../..")."/vendor/autoload.php");
     
     class CAGShop{
 

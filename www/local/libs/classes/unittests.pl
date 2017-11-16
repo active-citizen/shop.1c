@@ -15,7 +15,6 @@ $CWD = getcwd();
 
 
 @testsFolders = `find $CWD -type d -name tests`;
-print @testsFolders;
 
 $phpunitPath = abs_path($CWD."/../bin/phpunit.phar");
 
