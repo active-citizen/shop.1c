@@ -3,7 +3,7 @@
 
     class CTroyka extends CIntegration{
         var $number = false;    //!< Номер карты тройка
-        var $simpeMode= false;  //!< Упрощенный режим запросов (2 из 5)
+        var $simpeMode= true;  //!< Упрощенный режим запросов (2 из 5)
         var $cvc = '';          //!< CVC банковской карты
         var $errorDesc=0;       //!< Из протокола тройки
         var $errorMessage=0;    //!< Из протокола тройки
@@ -283,7 +283,11 @@
          */
          function payment($sOrderNum){
 
-            if(!$this->simleMode){
+            if(
+                false
+                &&
+                !$this->simleMode
+            ){
                 $this->getBindings($sOrderNum);
                 $this->checkProviders($sOrderNum);
                 $this->getProviders($sOrderNum);
