@@ -6,8 +6,15 @@
 
 
         private $arErrors = []; //!< Массив последних ошибок
+        var $IBLOCKS = [];
+        var $PROPERTIES = [];
 
         function __construct(){
+            if(defined("CATALOG_IB_ID"))
+                $this->IBLOCKS["CATALOG"] = CATALOG_IB_ID;
+            if(defined("INTEREST_PROPERTY_ID"))
+                $this->PROPERTIES["INTEREST"] = INTEREST_PROPERTY_ID;
+            
         }
 
 

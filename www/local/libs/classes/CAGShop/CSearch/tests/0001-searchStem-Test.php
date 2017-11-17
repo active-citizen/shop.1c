@@ -12,11 +12,13 @@
             Тест создания структуры таблиц для поиска
         */
         function testTableCreate(){
+            /*
             $objCSearch = new \Search\CSearch;
             $this->assertTrue(
                 $objCSearch->tablesRebuild(), 
                 print_r($objCSearch,1)
             );
+            */
         }
 
         /**

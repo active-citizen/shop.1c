@@ -2,6 +2,7 @@
 namespace Search;
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+require_once(realpath(__DIR__)."/CSearch.interface.php");
 
 use AGShop as AGShop;
 use AGShop\DB as DB;
@@ -14,12 +15,12 @@ class CSearchPhrase extends \AGShop\CAGShop{
 
     private $nMinLength = 3;
     private $nMaxResults = 10;
-    private $sTableName = 'csearch_phrases';
 
     function __construct(){
     }
 
     /**
+        Выводим ранее введённые поисковые фразы, совпадающие началом с шаблоном
     */
     function get($sPattern=''){
         $objCDB = new \DB\CDB;
@@ -27,7 +28,7 @@ class CSearchPhrase extends \AGShop\CAGShop{
             SELECT
                 `id`,`ctime`,`phrase`
             FROM
-                `".$this->sTableName."`
+                `".ISearch::t_csearch_phrases."`
             WHERE
                 `phrase` LIKE '".$objCDB->ForSql($sPattern)."%'
             LIMIT
@@ -42,13 +43,14 @@ class CSearchPhrase extends \AGShop\CAGShop{
     function add($sPhrase){
         $objCDB = new \DB\CDB;
         return $objCDB->insert(
-            $this->sTableName,["ctime"=>date("Y-m-d H:i:s"),"phrase"=>$sPhrase]
+            ISearch::t_csearch_phrases,
+            ["ctime"=>date("Y-m-d H:i:s"),"phrase"=>$sPhrase]
         );
     }
     
     function delete($sPhrase){
         $objCDB = new \DB\CDB;
-        return $objCDB->delete($this->sTableName,["phrase"=>$sPhrase]);
+        return $objCDB->delete(ISearch::t_csearch_phrases,["phrase"=>$sPhrase]);
         return true;
     }
     

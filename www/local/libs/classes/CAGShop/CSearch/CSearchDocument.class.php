@@ -5,6 +5,9 @@ require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 require_once(realpath(__DIR__)."/CSearchStem.class.php");
 require_once(realpath(__DIR__)."/CSearchDocumentType.class.php");
+require_once(realpath(__DIR__)."/CSearchDocumentOption.class.php");
+require_once(realpath(__DIR__)."/CSearch.interface.php");
+
 
 use AGShop as AGShop;
 use AGShop\DB as DB;
@@ -18,13 +21,11 @@ class CSearchDocument extends \AGShop\CAGShop{
     private $arStopWords = [];
     private $nMinWordLength = 3;
     private $nMaxWordLength = 24;
-    private $sEntriesTableName = 'csearch_entries';
-    private $sDocsTableName = 'csearch_documents';
 
     function __construct(){
         $this->arStopWords = [
             'ЛИБО','НИБУДЬ','ДЛЯ','ЭТО',
-            'OUT','WITH','UNDER','UNTIL'
+            'OUT','WITH','UNDER','UNTIL','БЕЗ','КАК','ЧТО'
         ];
     }
 
@@ -62,7 +63,7 @@ class CSearchDocument extends \AGShop\CAGShop{
     }
     
     /**
-        Индексирование документа
+        Индексирование текста документа
         @param $sText - документ
         @param $nDocId - внешний ID документа (ID товара, ID статьи и пр.)
         @param $sDocType - тип документа (PRODUCT, ARTICLE и пр.)
@@ -87,6 +88,7 @@ class CSearchDocument extends \AGShop\CAGShop{
             return false;
         }
         $arParsedDoc = $this->parse($sText);
+
         // Размещаем информацию о вхожденийх слов в документы
         foreach($arParsedDoc as $sEntry=>$arEntry){
             $arStem = $objCSearchStem->save($sEntry);
@@ -100,6 +102,12 @@ class CSearchDocument extends \AGShop\CAGShop{
             ];
             $this->saveEntry($arFields);
         }
+        
+        // Индексируем опции документа
+        $CSearchDocumentOption = new \Search\CSearchDocumentOption;
+        $arOptions = $CSearchDocumentOption->fetch($nDocId, $sDocType);
+        $CSearchDocumentOption->save($nDocId, $sDocType, $arOptions);
+        
         // Обновляем/добавляем дату переиндексации
         if(!$this->save($arFields)){
             return false;
@@ -109,7 +117,9 @@ class CSearchDocument extends \AGShop\CAGShop{
     
     
     /**
-     * 
+        Сохранение информации по проиндексированному документу
+        * дата последней индексации
+        * прочее
     */
     function save($arFields){
         
@@ -130,9 +140,17 @@ class CSearchDocument extends \AGShop\CAGShop{
             "doc_type_id"=>$arFields["doc_type_id"]
         ];
         
-        if($objCDB->searchOne($this->sDocsTableName,$arFilter))return true;
-        
-        $objCDB->insert($this->sDocsTableName,$arFilter);
+        $arFields = $arFilter;
+        $arFields['last_index'] = date("Y-m-d H:i:s");
+        if($objCDB->searchOne(ISearch::t_csearch_documents,$arFilter)){
+            $objCDB->update(ISearch::t_csearch_documents, $arFilter, $arFields);
+        }
+        else{
+            if(!$objCDB->insert(ISearch::t_csearch_documents,$arFields)){
+                $this->addError($objCDB->getErrors());
+                return false;
+            }
+        }
         return true;
     }
     
@@ -143,8 +161,8 @@ class CSearchDocument extends \AGShop\CAGShop{
         $objCDB = new \DB\CDB;
         $arFilter = $arFields;
         unset($arFilter['entry']);
-        if(!$objCDB->searchOne($this->sEntriesTableName, $arFilter)){
-            if(!$objCDB->insert($this->sEntriesTableName,$arFields))
+        if(!$objCDB->searchOne(ISearch::t_csearch_entries, $arFilter)){
+            if(!$objCDB->insert(ISearch::t_csearch_entries,$arFields))
                 $this->addError("Cant save entry ".json_encode($arFields));
         }
         else
@@ -152,7 +170,7 @@ class CSearchDocument extends \AGShop\CAGShop{
     }
     
     /**
-        Переиндексация документа
+        Переиндексация текста
         @param $sText - документ
         @param $nDocId - внешний ID документа (ID товара, ID статьи и пр.)
         @param $sDocType - тип документа (PRODUCT, ARTICLE и пр.)
@@ -164,7 +182,7 @@ class CSearchDocument extends \AGShop\CAGShop{
     }
     
     /**
-        Удаление документа из индекса
+        Удаление документа и всех вхождений основ в него
     */
     function delete($nDocId = 999999999, $sDocType='PRODUCT'){
         $objSearchDocumentType = new \Search\CSearchDocumentType;
@@ -175,8 +193,8 @@ class CSearchDocument extends \AGShop\CAGShop{
         
         $objCDB = new \DB\CDB;
         $arFilter = ["doc_id"=>$nDocId,"doc_type_id"=>$nDocType];
-        $objCDB->delete($this->sEntriesTableName, $arFilter);
-        $objCDB->delete($this->sDocsTableName, $arFilter);
+        $objCDB->delete(ISearch::t_csearch_entries, $arFilter);
+        $objCDB->delete(ISearch::t_csearch_documents, $arFilter);
     }
     
     /**
@@ -191,7 +209,7 @@ class CSearchDocument extends \AGShop\CAGShop{
 
         $objCDB = new \DB\CDB;
         $arFilter = ["doc_id"=>$nDocId,"doc_type_id"=>$nDocType];
-        return $objCDB->searchAll($this->sEntriesTableName, $arFilter);
+        return $objCDB->searchAll(ISearch::t_csearch_entries, $arFilter);
     }
     
 }

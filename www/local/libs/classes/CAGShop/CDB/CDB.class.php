@@ -5,6 +5,7 @@
 
    class CDB extends \AGShop\CAGShop{
 
+        var $debug = false;
         /**
             Выполняет запросы из SQL-файла
             @param $sFilename - имя ыйд-afqkf
@@ -32,7 +33,7 @@
             @param $arFilter = ["имя поля"=>"значение",...]
             @return ["имя поля"=>"значение",...]
         */
-        function searchOne($sTableName, $arFilter = []){
+        function searchOne($sTableName, $arFilter = [], $arSelect = []){
             global $DB;
 
             $sWhere = "1";
@@ -41,9 +42,14 @@
                     .$DB->ForSql($sValue)."'";
             }
 
+            if($arSelect)
+                $sSelect = "`".implode("`,`",$arSelect)."`";
+            else
+                $sSelect = "*";
+
             $sQuery = "
                 SELECT
-                    *
+                    $sSelect
                 FROM
                     `$sTableName`
                 WHERE
@@ -61,7 +67,7 @@
             @param $arFilter = ["имя поля"=>"значение",...]
             @return [["имя поля"=>"значение","имя поля"=>"значение",...],...]
         */
-        function searchAll($sTableName, $arFilter = []){
+        function searchAll($sTableName, $arFilter = [], $arSelect = []){
             global $DB;
 
             $sWhere = "1";
@@ -70,9 +76,14 @@
                     .$DB->ForSql($sValue)."'";
             }
 
+            if($arSelect)
+                $sSelect = "`".implode("`,`",$arSelect)."`";
+            else
+                $sSelect = "*";
+
             $sQuery = "
                 SELECT
-                    *
+                    $sSelect
                 FROM
                     `$sTableName`
                 WHERE
@@ -103,6 +114,34 @@
             return true;
         }
 
+        /**
+            Обновление всех записей по условию
+            @param $sTableName - имя таблицы
+            @param $arFilter = ["имя поля"=>"значение",...]
+            @return true
+        */
+        function update($sTableName, $arFilter, $arFields){
+            global $DB;
+
+            $sWhere = "1";
+            foreach($arFilter as $sKey=>$sValue){
+                $sWhere .= " AND `".$DB->ForSql($sKey)."`='"
+                    .$DB->ForSql($sValue)."'";
+            }
+            
+            foreach($arFilter as $sFirstKey=>$sFirstValue)break;
+            $sSet = "`$sFirstKey`=`$sFirstKey`";
+            foreach($arFields as $sKey=>$sValue){
+                $sSet .= " , `".$DB->ForSql($sKey)."`='"
+                    .$DB->ForSql($sValue)."'";
+            }
+            
+
+            $sQuery = "UPDATE `$sTableName` SET $sSet WHERE $sWhere";
+            $this->sqlQuery($sQuery);
+
+            return true;
+        }
 
         /**
             Вставка записи в таблицу
@@ -153,6 +192,9 @@
         */
         function sqlQuery($sQuery){
             global $DB;
+            if($this->debug){
+                echo $sQuery;
+            }
             if(!$resQuery = $DB->Query($sQuery, true)){
                 $this->addError("SQL query error: $sQuery");
                 return false;
