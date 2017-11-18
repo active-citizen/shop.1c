@@ -1,0 +1,26 @@
+<?php
+    require_once(
+        realpath(__DIR__."/../..")
+        ."/libs/classes/CAGShop/CSearch/CSearch.class.php"
+    );
+    
+    use AGShop\Search as Search;
+    $objCSearch = new \Search\CSearch;
+    $objCSearchdDocumentType = new \Search\CSearchDocumentType;
+    
+    $nExpire = 300;
+    
+    // Пересоздаём поисковые таблицы
+    $objCSearch->tablesRebuild();
+    // Получаем число документов, которые устарели за $nExpire секунд
+    $nDocsCount = $objCSearchdDocumentType->getUnindexedDocuments(
+        'PRODUCT', $nExpire
+    );
+    
+    // Индексируем устаревшие документы
+    for($i=1;$i<$nDocsCount;$i++)
+        $objCSearch->indexNextDocument('PRODUCT', $nExpire);
+        
+    // Выводим ошибки, если были
+    if($objCSearch->getErrors())print_r($objCSearch->getErors());
+        

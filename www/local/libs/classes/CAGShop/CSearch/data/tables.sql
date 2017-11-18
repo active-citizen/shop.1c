@@ -63,10 +63,12 @@ CREATE TABLE IF NOT EXISTS `csearch_documents`(
     `doc_id` INT(11) UNSIGNED,
     `doc_type_id` INT(11) UNSIGNED,
     `last_index` DATETIME,
+    `rank` float(8,5),
     PRIMARY KEY `id`(`id`),
     INDEX `last_index`(`last_index`),
     INDEX `doc_id`(`doc_id`),
     INDEX `doc_type_id`(`doc_type_id`),    
+    INDEX `rank`(`rank`),
     UNIQUE KEY `phrase`(`doc_id`,`doc_type_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci 
 COMMENT 'Проиндексированные документы';

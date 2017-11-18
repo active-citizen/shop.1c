@@ -17,14 +17,20 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
     var $nExpires = 86400;  //!< Время переиндексирования документа
 
     private $arOptionTypes = [
-        "SECTION_ID"    =>1,
-        "INTEREST_ID"   =>2,
-        "IN_STORAGE"    =>3
+        "SECTION_ID"    =>1,    //!< Id раздела товара
+        "INTEREST_ID"   =>2,    //!< Id закреплённых тегов интересов
+        "AT_STORAGE"    =>3,    //!< Число товаров на складах
+        "WHISHES"       =>4     //!< Число пожелавших это
     ];
 
     function __construct(){
         parent::__construct();
     }
+
+    /**
+        Получение массива опций документа и их ID
+    */
+    function getTypes(){return $this->arOptionTypes;}
 
     /**
         Получение ID типа документа по его имени
@@ -38,6 +44,15 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         return false;
         
     }
+    /**
+        Получение кода документа по ID
+    */
+    function getCode($nId){
+        foreach($this->arOptionTypes as $sKey=>$sValue)
+            if($sValue==$nId)return $sKey;
+        return false;
+    }
+
     
     /**
         Получаем опции документа из самого документа в БД
@@ -47,7 +62,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         
         $arOptions = [];
         
-        // Получаем опциию интересов
+        ///////////// Получаем опциию интересов
         $arResult = $CDB->searchAll(ISearch::t_iblock_element_property,[
             "IBLOCK_ELEMENT_ID"=>$nDocId,
             "IBLOCK_PROPERTY_ID"=>$this->PROPERTIES["INTEREST"]
@@ -59,7 +74,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
             $arOptions["INTEREST_ID"][] = intval($arItem["VALUE_NUM"]);
         
         
-        // Получаем опцию разделов
+        /////////////// Получаем опцию разделов
         $arResult = $CDB->searchAll(ISearch::t_iblock_element,[
             "ID"=>$nDocId
         ],[
@@ -69,15 +84,57 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         foreach($arResult as $arItem)
             $arOptions["SECTION_ID"][] = intval($arItem["IBLOCK_SECTION_ID"]);
         
-        // Получаем наличие товара, затем индексируем по нему и поднимаем при поиске товары вналичии
-        фывфывфыв
-            
-            
+        //////// Получаем опцию товаров на складах
+        // Получаем ID товарного предложения
+        $arOffer = $CDB->searchOne(ISearch::t_iblock_element_property,[
+            "VALUE_NUM"=>$nDocId,
+            "IBLOCK_PROPERTY_ID"=>$this->PROPERTIES["CML2_LINK"]
+        ],[
+            "IBLOCK_ELEMENT_ID"
+        ]);
+        // Получаем остатки на складах
+        $arStores = [];
+        
+        if(intval($arOffer["IBLOCK_ELEMENT_ID"]))
+            $arStores = $CDB->searchAll(ISearch::t_catalog_store_product,[
+                "PRODUCT_ID"=>$arOffer["IBLOCK_ELEMENT_ID"]
+            ],[
+                "AMOUNT","STORE_ID"
+                
+            ]);
+
+        $nStores = 0;
+        $arOptions["AT_STORAGE"] = [];
+        foreach($arStores as $arStore)
+            if(intval($arStore["AMOUNT"]))
+                $arOptions["AT_STORAGE"][] = $arStore["STORE_ID"];
+
+
+        // Получаем ID свойства "желаемый товар"
+        $arWishProp = $CDB->searchOne(ISearch::t_iblock_property,
+            ["CODE"=>"WISH_PRODUCT"],["ID"]
+        );
+        
+        // Получаем популярность товара (пожелания)
+        $sQuery = "
+            SELECT
+                COUNT(`ID`) as `COUNT`
+            FROM
+                `".ISearch::t_iblock_element_property."` as `prop`
+            WHERE
+                `prop`.`IBLOCK_PROPERTY_ID`=".$arWishProp["ID"]."
+                AND `prop`.`VALUE_NUM`=".$nDocId."
+            LIMIT
+                1
+        ";
+        $arWish = $CDB->sqlSelect($sQuery);
+        if(isset($arWish[0]))$arOptions["WHISHES"] = [$arWish[0]["COUNT"]];
+        
         return $arOptions;
     }
     
     /**
-        Получаем проиндексированные опции документа
+        Получаем проиндексированные опции документа из БД
     */
     function get($nDocId, $sDocType='PRODUCT'){
         $CDB = new \DB\CDB;
@@ -87,6 +144,26 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
             "doc_id"        =>  $nDocId,
             "doc_type_id"   =>  $objCSearchDocumentType->getId($sDocType) 
         ]);
+    }
+    
+    /**
+        Получаем сводку проиндексированных в БД опций документа
+    */
+    function getSummary($nDocId, $sDocType='PRODUCT'){
+        $arOptions = $this->get($nDocId, $sDocType);
+        // Cоcтавляем индекс опций
+        $arOpts = [];
+        foreach($arOptions as $arOption){
+            $sOptCode = $this->getCode(
+                $arOption["opt_type_id"]
+            );
+            if(!isset($arOpts[$sOptCode]))$arOpts[$sOptCode] = array();
+            $arOpts[$sOptCode][] = $arOption["opt_value"];
+        }
+        $arOptTypes = $this->getTypes();
+        foreach($arOptTypes as $optCode=>$optId)
+            if(!isset($arOpts[$optCode]))$arOpts[$optCode] = [];
+        return $arOpts;
     }
     
     /*

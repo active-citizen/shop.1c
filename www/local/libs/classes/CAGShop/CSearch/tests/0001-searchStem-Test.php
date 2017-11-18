@@ -27,45 +27,17 @@
         function testGetStem(){
             $objCSearchStem = new \Search\CSearchStem;
 
-            $this->assertEquals(
-                $objCSearchStem->get("боя"), 
-                "БОЙ",
-                print_r($objCSearch,1)
-            );
-            
-            $this->assertEquals(
-                $objCSearchStem->get("дубы"), 
-                "ДУБ",
-                print_r($objCSearch,1)
-            );
-            
-            $this->assertEquals(
-                $objCSearchStem->get("вышел"), 
-                "ВЫЙТИ",
-                print_r($objCSearch,1)
-            );
-
-            $this->assertEquals(
-                $objCSearchStem->get("уставший"), 
-                "УСТАТЬ",
-                print_r($objCSearch,1)
-            );
+            $this->assertEquals($objCSearchStem->get("боя"), "БОЙ");
+            $this->assertEquals($objCSearchStem->get("дубы"), "ДУБ");
+            $this->assertEquals($objCSearchStem->get("вышел"), "ВЫЙТИ");
+            $this->assertEquals($objCSearchStem->get("уставший"), "УСТАТЬ");
 
             $sWord = 'боя';
             $sBaseForm = 'БОЙ';
             $arBaseForm = $objCSearchStem->save($sWord);
 
-            $this->assertEquals(
-                $arBaseForm["word"], 
-                $sBaseForm,
-                print_r($objCSearch,1)
-            );
-                        
-            $this->assertTrue(
-                boolval(intval($arBaseForm["id"])), 
-                $sBaseForm,
-                print_r($objCSearch,1)
-            );
+            $this->assertEquals($arBaseForm["word"], $sBaseForm);
+            $this->assertTrue(boolval(intval($arBaseForm["id"])), $sBaseForm);
         }
 
 

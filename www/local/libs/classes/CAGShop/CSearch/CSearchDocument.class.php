@@ -91,6 +91,7 @@ class CSearchDocument extends \AGShop\CAGShop{
 
         // Размещаем информацию о вхожденийх слов в документы
         foreach($arParsedDoc as $sEntry=>$arEntry){
+            // Получаем ID базовой формы слова
             $arStem = $objCSearchStem->save($sEntry);
             $arFields = [
                 "entry"         =>  $sEntry,
@@ -100,6 +101,7 @@ class CSearchDocument extends \AGShop\CAGShop{
                 "doc_type_id"   =>  $nDocType,
                 "exact"         =>  ($sEntry==$arStem['word']?1:0)
             ];
+            // Сохраняем вхождение
             $this->saveEntry($arFields);
         }
         
@@ -108,13 +110,47 @@ class CSearchDocument extends \AGShop\CAGShop{
         $arOptions = $CSearchDocumentOption->fetch($nDocId, $sDocType);
         $CSearchDocumentOption->save($nDocId, $sDocType, $arOptions);
         
-        // Обновляем/добавляем дату переиндексации
-        if(!$this->save($arFields)){
+        // Обновляем/добавляем 
+        if(!$this->save([
+            "doc_id"        =>  $nDocId,
+            "doc_type_id"   =>  $nDocType,
+            "rank"          =>  $this->getRank($nDocId, $sDocType)
+        ])){
             return false;
         }
         return count($arParsedDoc);
     }
     
+    
+    /**
+        Вычисление ранга документа
+        @param $arEntries - массив вхождений в документ слов
+        @param $arOptions - массив опций
+    */
+    function getRank($nDocId, $sDocType='PRODUCT'){
+        $objCSearchDocumentOption = new \Search\CSearchDocumentOption;
+
+        // Получаем записи в БД об опциях документа 
+        $arOpts = $objCSearchDocumentOption->getSummary($nDocId, $sDocType);
+        
+        //////////////////////// Веса ///////////////////////////
+        $arWeight = [];
+        $arWeight["INTEREST_ID"] = 0.05 * count($arOpts["INTEREST_ID"]);
+        $arWeight["AT_STORAGE"] = 0.1 * count($arOpts["AT_STORAGE"]);
+        $arWeight["WHISHES"] = 0.01 * (
+            count($arOpts["WHISHES"])
+            ?
+            intval($arOpts["WHISHES"][0])
+            :
+            0
+        );
+        
+        // Считаем итоговый ранг
+        $rank = 1;
+        foreach($arWeight as $nWeight)$rank += $nWeight;
+        
+        return $rank;
+    }
     
     /**
         Сохранение информации по проиндексированному документу
@@ -140,7 +176,7 @@ class CSearchDocument extends \AGShop\CAGShop{
             "doc_type_id"=>$arFields["doc_type_id"]
         ];
         
-        $arFields = $arFilter;
+        $arFields = $arFields;
         $arFields['last_index'] = date("Y-m-d H:i:s");
         if($objCDB->searchOne(ISearch::t_csearch_documents,$arFilter)){
             $objCDB->update(ISearch::t_csearch_documents, $arFilter, $arFields);

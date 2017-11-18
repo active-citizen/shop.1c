@@ -155,6 +155,8 @@ class CSearchDocumentType extends \AGShop\CAGShop{
                     OR
                     `document`.`last_index`<'$sExpires'
                 )
+            ORDER BY
+                `product`.`ID` DESC
             LIMIT
                 1
         ";
@@ -196,6 +198,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
     
     private function __getInfoProduct($nId, $sType='PRODUCT'){
         $CDB = new \DB\CDB;
+        // Получаем раздел продукта
         $arProduct = $CDB->searchOne(ISearch::t_iblock_element,[
             "ID"=>$nId
         ],[
@@ -209,7 +212,6 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         ]);
         unset($arProduct["IBLOCK_SECTION_ID"]);
         $arProduct["SECTION_CODE"] = $arSection["CODE"];
-        $arProduct["SECTION_ID"] = $arSection["ID"];
         
         $arPicture = $CDB->searchOne(ISearch::t_file,[
             "ID"=>$arProduct["DETAIL_PICTURE"]
@@ -221,8 +223,6 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         $arProduct["IMAGE"] = "/upload/".$arPicture["SUBDIR"]."/"
             .$arPicture["FILE_NAME"];
             
-        print_r($arProduct);
-        die;
         return $arProduct;
     }
     
