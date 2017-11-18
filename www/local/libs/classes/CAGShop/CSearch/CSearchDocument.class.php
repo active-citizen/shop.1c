@@ -1,5 +1,4 @@
 <?php
-
 namespace Search;
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
