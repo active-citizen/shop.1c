@@ -46,7 +46,7 @@ $arSections = $objSections->get();
         queryString +="&options[PAGE]="+$('.search-form input[name="options[PAGE]"]').val();
         queryString +="&options[LIMIT]="+$('.search-form input[name="options[LIMIT]"]').val();
         $('.search-results').load(
-            url+queryString
+            url+encodeURI(queryString)
         );
         return false;
     }
