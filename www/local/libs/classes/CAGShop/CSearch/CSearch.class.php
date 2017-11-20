@@ -197,7 +197,11 @@ class CSearch extends \AGShop\CAGShop{
         }
         
         $sWhere = "
-                `entries`.`stem_id` IN ($sStemsIds)
+                (
+                    `entries`.`stem_id` IN ($sStemsIds)
+                    OR
+                    `entries`.`entry` LIKE '".$objCDB->ForSql($sPhase)."%'
+                )
                 AND `sections`.`id` IS NOT NULL
         ";
         foreach($arOptions["FILTER"] as $sFilterOption=>$sFilterOptionValue){
