@@ -665,6 +665,7 @@ OPTIMIZE TABLE `shop_ag_mos_ru`.`int_storages_import`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`int_troika_error_mapping`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`int_troika_link`;
 
+DELETE FROM `shop_ag_mos_ru`.`index_lock` WHERE UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(`shop_ag_mos_ru`.`CTIME`)>24*60*60;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`index_user`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`index_order`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`index_mail`;
