@@ -202,7 +202,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         $arProduct = $CDB->searchOne(ISearch::t_iblock_element,[
             "ID"=>$nId
         ],[
-            "ID","NAME","CODE","IBLOCK_SECTION_ID","DETAIL_PICTURE"
+            "ID","NAME","CODE","IBLOCK_SECTION_ID","DETAIL_PICTURE","ACTIVE"
         ]);
         
         $arSection = $CDB->searchOne(ISearch::t_iblock_section,[
@@ -212,12 +212,44 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         ]);
         unset($arProduct["IBLOCK_SECTION_ID"]);
         $arProduct["SECTION_CODE"] = $arSection["CODE"];
+        $arProduct["SECTION_NAME"] = $arSection["NAME"];
         
         $arPicture = $CDB->searchOne(ISearch::t_file,[
             "ID"=>$arProduct["DETAIL_PICTURE"]
         ],[
             "SUBDIR","FILE_NAME"
         ]);
+        
+        // Цена
+        $arPrice = $CDB->searchOne(ISearch::t_iblock_element_property,[
+            "IBLOCK_PROPERTY_ID" => $this->PROPERTIES["PRICE"],
+            "IBLOCK_ELEMENT_ID"  => $nId
+        ],[
+            "VALUE"
+        ]);
+        $arProduct["PRICE"] = $arPrice["VALUE"];
+
+        // Прятать по дате
+        $arHide = $CDB->searchOne(ISearch::t_iblock_element_property,[
+            "IBLOCK_PROPERTY_ID" => $this->PROPERTIES["HIDE_DATE"],
+            "IBLOCK_ELEMENT_ID"  => $nId
+        ],[
+            "VALUE"
+        ]);
+        if($arHide["VALUE"]){
+            $tmp = date_parse($arHide["VALUE"]);
+            $expire = mktime(
+                $tmp["hour"],$tmp["minute"],$tmp["second"],
+                $tmp["month"],$tmp["day"],$tmp["year"]
+            );
+            if($expire<time())
+                $arProduct["HIDE_ON_DATE"] = 'Y';
+            else
+                $arProduct["HIDE_ON_DATE"] = 'N';
+        }
+        else{
+            $arProduct["HIDE_ON_DATE"] = 'N';
+        }
         
         unset($arProduct["DETAIL_PICTURE"]);
         $arProduct["IMAGE"] = "/upload/".$arPicture["SUBDIR"]."/"

@@ -21,6 +21,8 @@ class CSearch extends \AGShop\CAGShop{
     private $nMaxWords = 10; //!< Максимальное число значащих слов в запросе
     private $nDocsLimit = 12; //!< Число результатов на страницу
     
+    var $resultsCount = 0;
+    
     function __construct(){
     }
 
@@ -206,6 +208,20 @@ class CSearch extends \AGShop\CAGShop{
                 AND `option_$sFilterOption`.`opt_value`='$sFilterOptionValue'
             ";
         }
+
+        $sQuery = "
+            SELECT
+                COUNT(DISTINCT `entries`.`doc_id`) as `COUNT`
+            FROM
+                $sFrom
+            WHERE
+                $sWhere
+            LIMIT
+                1
+        ";
+        $arCount = $objCDB->sqlSelect($sQuery);
+
+        $this->resultsCount = $arCount[0]["COUNT"];
         
         $sQuery = "
             SELECT
@@ -229,6 +245,9 @@ class CSearch extends \AGShop\CAGShop{
             LIMIT
                 $nOffset, $nLimit
         ";
+        
+        
+        
         return $arResult = $objCDB->sqlSelect($sQuery);
     }
 }

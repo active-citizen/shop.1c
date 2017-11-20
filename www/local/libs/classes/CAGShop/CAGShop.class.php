@@ -21,7 +21,12 @@
                 $this->PROPERTIES["INTEREST"] = INTEREST_PROPERTY_ID;
             if(defined("CML2_LINK_PROPERTY_ID"))
                 $this->PROPERTIES["CML2_LINK"] = CML2_LINK_PROPERTY_ID;
+                
+            if(defined("PRICE_PROPERTY_ID"))
+                $this->PROPERTIES["PRICE"] = PRICE_PROPERTY_ID;
             
+            if(defined("HIDE_DATE_PROPERTY_ID"))
+                $this->PROPERTIES["HIDE_DATE"] = HIDE_DATE_PROPERTY_ID;
         }
 
 

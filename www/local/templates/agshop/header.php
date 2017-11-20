@@ -207,8 +207,11 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
 
     <? if(
         !IS_MOBILE
-        &&
-        preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
+        && (
+            preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
+            ||
+            preg_match("#^/search/#", $_SERVER["REQUEST_URI"])
+        )
     ):?>
     <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
             "CACHE_TIME"      =>  COMMON_CACHE_TIME
