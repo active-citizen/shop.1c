@@ -185,7 +185,23 @@
                 $data = ["result"=>$data];
                 $data = json_decode(json_encode($data));
             }
-            elseif(CONTOUR=='prod'){
+            elseif(CONTOUR=='prod' && $bSync){
+                require_once("include/classes/CAGIDMethod.class.php");
+                $objMethod = new CAGIDMethod($sSessionId);
+                if(!$data = $objMethod->getHistory()){
+                    $this->error = $objMethod->error;
+                    return false;
+                }
+                if(
+                    isset($data["status"]["is_active"]) 
+                    && $data["status"]["is_active"]
+                )
+                    $data["status"]["state"] = 'Активный гражданин';
+                $data = ["result"=>$data];
+                $data = json_decode(json_encode($data));
+
+
+                /*
                 $data = array(
                     "token"=>$GLOBALS["CONF"]["mvag_token"],
                     "auth"=>array(
@@ -204,6 +220,23 @@
                 );
                
                 $data = json_decode($data);       
+                */
+
+            }
+            elseif(CONTOUR=='prod' && !$bSync){
+                require_once("include/classes/CAGIDMethod.class.php");
+                $objMethod = new CAGIDMethod($sSessionId);
+                if(!$data = $objMethod->getSummary()){
+                    $this->error = $objMethod->error;
+                    return false;
+                }
+                if(
+                    isset($data["is_active"]) 
+                    && $data["is_active"]
+                )
+                    $data["state"] = 'Активный гражданин';
+                $data = ["result"=>["status"=>$data]];
+                $data = json_decode(json_encode($data));
             }
 
             
@@ -298,7 +331,7 @@
             $sComment
         ){
 
-            if(CONTOUR=='test'){
+            if(CONTOUR=='test' || CONTOUR=='prod'){
                 require_once("include/classes/CAGIDMethod.class.php");
                 $objMethod = new CAGIDMethod($sSessionId);
                 if(!$objMethod->addPoints(
@@ -310,7 +343,16 @@
                 }
                 return true;
             }
+            else{
+                $this->error = 'Недоступно на UAT';
+                return false;
+            }
 
+
+            /*
+            ================================================
+            * Старый метод начисления баллов через поддержку
+            ===============================================
             $CUser = new CUser;
             $arEMPProfile = $CUser->getEMPProfile($sSessionId);
             $arEMPProfile = json_decode(json_encode((array)$arEMPProfile), TRUE);
@@ -354,6 +396,10 @@
                 return false;
             }
             return true;
+            ================================================
+            * Конец. Старый метод начисления баллов через поддержку
+            ===============================================
+            */
         }
         
         function sendTrans(
