@@ -3,7 +3,7 @@
 
     class CTroyka extends CIntegration{
         var $number = false;    //!< Номер карты тройка
-        var $simpeMode= false;  //!< Упрощенный режим запросов (2 из 5)
+        var $simpleMode= false;  //!< Упрощенный режим запросов (2 из 5)
         var $cvc = '';          //!< CVC банковской карты
         var $errorDesc=0;       //!< Из протокола тройки
         var $errorMessage=0;    //!< Из протокола тройки
@@ -45,7 +45,7 @@
             $this->ip               = $this->settings["TROYKA_IP"]["VALUE"];
             $this->bindingId        = $this->settings["TROYKA_BINDING_ID"]["VALUE"];
             $this->emulation        = $this->settings["TROYKA_EMULATION"]["VALUE"];
-            $this->simleMode        =
+            $this->simpleMode        =
                boolval(intval($arSettings["TROYKA_SIMPLE_MODE"]["VALUE"]));
 
 
@@ -99,9 +99,9 @@
             if(isset($arSoapResult["bindings"])){
                 foreach($arSoapResult["bindings"] as $arBinding){
                     if(
-                        isset($arBinding["bindingStatus"])
+                        isset($arBinding["isDefaultBinding"])
                         &&
-                        $arBinding["bindingStatus"]==0
+                        $arBinding["isDefaultBinding"]==1
                         &&
                         isset($arBinding["bindingId"])
                         &&
@@ -283,7 +283,9 @@
          */
          function payment($sOrderNum){
 
-            if(!$this->simleMode){
+            if(
+                !$this->simpleMode
+            ){
                 $this->getBindings($sOrderNum);
                 $this->checkProviders($sOrderNum);
                 $this->getProviders($sOrderNum);
