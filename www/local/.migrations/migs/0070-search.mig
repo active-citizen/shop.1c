@@ -22,5 +22,5 @@
         $objCSearch->indexNextDocument('PRODUCT', $nExpire);
         
     // Выводим ошибки, если были
-    if($objCSearch->getErrors())print_r($objCSearch->getErors());
+    if($objCSearch->getErrors())print_r($objCSearch->getErrors());
         

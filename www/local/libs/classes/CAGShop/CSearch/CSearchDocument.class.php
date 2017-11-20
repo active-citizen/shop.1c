@@ -40,7 +40,7 @@ class CSearchDocument extends \AGShop\CAGShop{
         $sText = str_replace("\n"," ", $sText);
         $sText = str_replace("\r"," ", $sText);
         $sText = preg_replace(
-            "#[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ]#",
+            "#[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ]#u",
             " ",$sText);
         $sText = preg_replace("#\s+#"," ",$sText);
         $arWords = explode(" ",$sText);
