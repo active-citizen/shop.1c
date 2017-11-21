@@ -1,0 +1,25 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление столбца таблицы с индексом писем
+     */
+    class index_lock extends Migration{
+        function Run(){
+	        global $DB;
+            $sQuery = " ALTER TABLE `index_lock` ADD COLUMN `TICKET` SMALLINT(5) UNSIGNED;";
+            $DB->Query($sQuery);
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_lock = new index_lock();
+// Откатываем, если неудачно
+if(!$index_lock->Run())$index_lock->RollBack();

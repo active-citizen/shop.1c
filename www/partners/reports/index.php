@@ -21,7 +21,10 @@ $APPLICATION->SetTitle("Отчеты::Кабинет партнёра");
             case "orders-export":
                 $type = 'orders-export';
             break;
-            default:
+            case "limit-locks":
+                $type = 'limit-locks';
+            break;
+             default:
                 $type = '';
             break;
         }

@@ -129,50 +129,6 @@
             $this->assertTrue($bOnlySection);
             
 
-            // Берём ID склада для следующего запроса
-            foreach($arResult01 as $arResult){
-                $nStorageId = $arResult["OPTIONS"]['AT_STORAGE'][0];
-                break;
-            }
-
-
-            // Запрашиваем с опциями раздела и склада
-            $arResult01 = $objCSearch->results($sPhrase01,[
-                "LIMIT" =>  100,
-                "PAGE"  =>  1,
-                "FILTER"    =>  [
-                    "SECTION_ID"    =>  $nSectionId,
-                    "AT_STORAGE"    =>  $nStorageId
-                ]
-            ]);
-            
-            // Проверяем, что в каждом есть товар с этого склада и этого раздела
-            $bOnlySection = true;
-            
-            foreach($arResult01 as $arResult){
-                if(
-                    !isset($arResult["OPTIONS"]["SECTION_ID"][0])
-                    || $arResult["OPTIONS"]["SECTION_ID"][0]!=$nSectionId
-                ){
-                    $bOnlySection = false;
-                    break;
-                }
-                
-                if(!isset($arResult["OPTIONS"]["AT_STORAGE"][0])){
-                    $bStoreExists = false;
-                    break;
-                }
-                
-                $bStoreExists = false;
-                foreach($arResult["OPTIONS"]["AT_STORAGE"] as $nStore)
-                    if($nStore==$nStorageId){
-                        $bStoreExists = true;
-                        break;
-                    }
-                if(!$bStoreExists)break;
-            }
-            $this->assertTrue($bOnlySection);
-            $this->assertTrue($bStoreExists, print_r($arResult, 1));
         }
         
   

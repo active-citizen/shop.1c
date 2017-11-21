@@ -30,7 +30,6 @@
                     KEY `LOCK_DATE`(`LOCK_DATE`)
                 )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci;
             ";
-//            echo $sQuery;
             $DB->Query($sQuery);
 
 
