@@ -387,6 +387,7 @@
             $resUser = CUser::GetByLogin($userData["LOGIN"]);
             $existsUser = $resUser->Fetch();
             // Если пользователя нет - создаём
+            //  Если есть - обновляем ему EMAIL
 
         
             
@@ -401,7 +402,7 @@
             }
             else{
                 $userId = $existsUser["ID"];
-                //$objUser->Update($userId, $userData);
+                $objUser->Update($userId, ["EMAIL"=>$sEmailRegister]);
             }
 
             // Нормализуем историю
