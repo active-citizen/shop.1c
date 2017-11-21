@@ -397,14 +397,16 @@
                     `USER_ID`,
                     `TYPE`,
                     `STATUS`,
-                    `LOCK_DATE`
+                    `LOCK_DATE`,
+                    `TICKET`
                 )
                 VALUES(
                     '$sDate',
                     '$nUserId',
                     '".$this->mnemonic."',
                     'LOCK',
-                    '$sDate'
+                    '$sDate',
+                    '".$this->transactsToday."'
                 )
             ";
             $res = $DB->Query($sQuery);
