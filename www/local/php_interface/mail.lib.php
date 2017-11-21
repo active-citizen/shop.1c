@@ -306,6 +306,8 @@
             заказывал, но известен номер заказа, поэтому опора на ORDER_ID
         */
         if(
+            $_SERVER["SCRIPT_NAME"]=='/profile/order/print.png.ajax.php'
+            ||
             $_SERVER["SCRIPT_NAME"]=='/profile/order/print.ajax.php'
         ){
             $arFilter = array(
