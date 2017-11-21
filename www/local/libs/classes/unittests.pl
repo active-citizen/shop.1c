@@ -19,12 +19,12 @@ $CWD = getcwd();
 $phpunitPath = abs_path($CWD."/../bin/phpunit.phar");
 
 if($workDir ne $CWD){
-        $command = "$phpunitPath --bootstrap $CWD/bootstrap.php --color=always $workDir";
+        $command = "$phpunitPath --bootstrap $CWD/bootstrap.php --color=always --debug $workDir";
         print `$command`;
 }
 else{
     foreach $testFolder(@testsFolders){
-        $command = "$phpunitPath --bootstrap $CWD/bootstrap.php --color=always $testFolder";
+        $command = "$phpunitPath --bootstrap $CWD/bootstrap.php --color=always --debug $testFolder";
         print `$command`;
     }
 }
