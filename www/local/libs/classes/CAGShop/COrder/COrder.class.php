@@ -5,6 +5,9 @@ require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 require_once(realpath(__DIR__."/..")."/CUser/CUser.class.php");
 require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogSKU.class.php");
+require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogOffer.class.php");
+require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
+require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
 
@@ -13,6 +16,7 @@ use AGShop\DB as DB;
 use AGShop\User as User;
 use AGShop\Catalog as Catalog;
 use AGShop\Order as Order;
+use AGShop\Integration as Integration;
 
 /**
     Управление заказами
@@ -20,20 +24,28 @@ use AGShop\Order as Order;
 class COrder extends \AGShop\CAGShop{
     
     private $arOrderParams = []; // Массив параметров заказа
-    var $objUser = null;
-    var $objStatus = null;
     private $arSKUs = [];
     private $arProps = [];
     
     private $arEnabledOrderParams = [
         "Id"            =>  "ID заказа",
         "Num"           =>  "Номер заказа",
+        "UserId"        =>  "Автор заказа",
+        "StatusId"      =>  "Статус заказа",
         "XML_ID"        =>  "XML_ID заказа",
         "DateInsert"    =>  "Дата добавления заказа",
         "DateUpdate"    =>  "Дата обновления заказа"
     ];
 
+    
+    function __construct(){
+        parent::__construct();
+        $this->objUser = new \User\CUser;
+        $this->objStatus = new \Order\COrderStatus;
+        \CModule::IncludeModule("sale");
+    }
 
+    
     function addSKU($nSKUId, $nStoreId, $nCount){
         $nSKUId = intval($nSKUId);
         $nStoreId = intval($nStoreId);
@@ -55,9 +67,28 @@ class COrder extends \AGShop\CAGShop{
             return false;
         }
         
+        $arSKU = $objSKU->get();
+        
+        // Тройки и парковки - строго по 1
+        if(
+            (
+                isset($arSKU["PRODUCT_PROPERTIES"]["ARTNUMBER"])
+                &&
+                $arSKU["PRODUCT_PROPERTIES"]["ARTNUMBER"]=='troyka'
+            )
+            ||
+            (
+                isset($arSKU["PRODUCT_PROPERTIES"]["ARTNUMBER"])
+                &&
+                $arSKU["PRODUCT_PROPERTIES"]["ARTNUMBER"]=='parking'
+            )
+        )$nCount = 1;
+        
+
         $this->arSKUs[] = [
-            "SKU"       =>$objSKU->get(),
-            "AMOUNT"    => $nCount
+            "SKU"       => $arSKU,
+            "AMOUNT"    => $nCount,
+            "STORE_ID"  => $nStoreId
         ];
         return true;
     }
@@ -66,14 +97,623 @@ class COrder extends \AGShop\CAGShop{
         return $this->arSKUs;
     }
 
-    function create(){
+    function delete(){
+        $CDB = new \DB\CDB;
+        $nOrderId = $this->getParam("Id");
+        
+        $CDB->delete(\AGShop\CAGShop::t_sale_order,["ID"=>$nOrderId]);
+        $CDB->delete(\AGShop\CAGShop::t_index_order,["ID"=>$nOrderId]);
+        $CDB->delete(\AGShop\CAGShop::t_sale_basket,["ORDER_ID"=>$nOrderId]);
+        $CDB->delete(\AGShop\CAGShop::t_sale_order_props_value,["ORDER_ID"=>$nOrderId]);
         return true;
     }
+
+    function createFromSite($sCustomNum = ''){
+        
+        // Получаем выбранные торговые предложения
+        $arSKUs = $this->getSKUs();
+        
+        // Проверяем количество на складе каждого предложения и блокируем, 
+        // если надо (снимаем единицу)
+        $objCCatalogStore = new \Catalog\CCatalogStore;
+        // Массив для запоминания того, что наблокировали и сколько
+        $arStoreLocked = [];
+        $nTotalSum = 0;
+        foreach($arSKUs as $nSkuNum=>$arSKU){
+            // Получаем количество товара на нужном складе
+            $nAmount = $objCCatalogStore->getProductAmount(
+                $arSKU["SKU"]["OFFER"]["ID"],
+                $arSKU["STORE_ID"]
+            );
+            if($nAmount>=$arSKU["AMOUNT"]){
+                // Снимаем нужное количество со склада
+                $objCCatalogStore->move(
+                    $arSKU["SKU"]["OFFER"]["ID"],
+                    $arSKU["STORE_ID"],
+                    -$arSKU["AMOUNT"]
+                );
+                // Запоминаем что забрали
+                $arStoreLocked[] = $nSkuNum;
+                $nTotalSum += $arSKU["AMOUNT"]*$arSKU["SKU"]["PRODUCT_PROPERTIES"]["MAXIMUM_PRICE"];
+            }
+            else{
+                // Возвращаем всё что взяли обратно на склад (не все позиции, а которые уже декрементировали)
+                foreach($arStoreLocked as $nLockedItem)
+                    $objCCatalogStore->move(
+                        $arSKUs[$nLockedItem]["SKU"]["OFFER"]["ID"],
+                        $arSKUs[$nLockedItem]["STORE_ID"],
+                        $arSKUs[$nLockedItem]["AMOUNT"]
+                    );
+                $this->addError("Недостаточно товара ".$arSKU["SKU"]["OFFER"]["NAME"]
+                    ." на складе "
+                    .$objCCatalogStore->getTitleById($arSKU["STORE_ID"])
+                );
+                return false;
+            }
+        }
+        ///////////// После этого считаем, что все SKU заказа зарезервированы на 
+        ///////////// складе и все надо возвращать при ошибках
+        
+        // Проверяем месячные лимиты
+        $objCCatalogOffer = new \Catalog\CCatalogOffer;
+        foreach($arSKUs as $nSkuNum=>$arSKU){
+            if(!$sCustomNum && $failedLimit = $objCCatalogOffer->failedMonLimit(
+                $this->getParam("UserId"), $arSKU["SKU"]["OFFER"]["ID"]
+            )){
+                // Возвращаем всё что взяли на склад
+                $this->returnToStore();
+                $this->addError("Вы исчерпали месячный лимит заказов данного поощрения.");
+                return false;
+            }
+        }
+
+        // Проверяем дневные лимиты по тройкам и парковкам, посылаем в сад, если 
+        // вышел хотя бы один
+        foreach($arSKUs as $nSkuNum=>$arSKU){
+            $sArtNumber = '';
+            if(isset($arSKU["SKU"]["PRODUCT_PROPERTIES"]["ARTNUMBER"]))
+                $sArtNumber = $arSKU["SKU"]["PRODUCT_PROPERTIES"]["ARTNUMBER"];
+            
+            
+            if( $sArtNumber=='parking'){
+                $objIntegration = new \Integration\CIntegration('PARKING');
+            }
+            // Если это тройка и дневной лимит вышел - показываем фигу
+            if( $sArtNumber=='troyka'){
+                $objIntegration = new \Integration\CIntegration("TROYKA");
+            }
+            if($sArtNumber=='parking' ||  $sArtNumber=='troyka'){
+                // Удаляем повисшие блокировки
+                $objIntegration->clearLocks();
+
+                // Определяем вышел ли дневной лимит 
+                $bIsLimited = $objIntegration->isLimited();
+                if($bIsLimited){
+                    // Возвращаем всё что взяли на склад
+                    $this->returnToStore();
+                    $this->addError("Дневной лимит заказа данного поощрения исчерпан.");
+                    return false;
+                }
+                // Ставим блокировку
+                if(!$nLockId = $objIntegration->setLock($this->getParam("UserId"))){
+                    // Возвращаем всё что взяли на склад
+                    $this->returnToStore();
+                    $this->addError("Не удалось создать блокировку.");
+                    return false;
+                }
+            }
+        }
+
+
+        $res = \CSaleDelivery::GetList(array(),array("ACTIVE"=>"Y"));
+        if(!$delivery = $res->GetNext()){
+            $this->addError("Нет активных служб доставки");
+            return false;
+        }
+
+        // Проверяем сумму на счёте
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $arAccount = \CSaleUserAccount::GetByUserID($this->getParam("UserId"), 'BAL');
+        if(!$sCustomNum && $arAccount["CURRENT_BUDGET"]<$nTotalSum){
+            $this->addError("Недостаточно баллов на счёте");
+            // Возвращаем всё что взяли на склад
+            $this->returnToStore();
+            return false;
+        }
+        
+        // Добавляем заказ 
+        $sInitialStatusId = 'AA';
+        
+        $arFields = [];
+        $arFields["LID"] = SITE_ID;
+        $arFields["PERSON_TYPE_ID"] = 1;
+        $arFields["STORE_ID"] = $arSKU["STORE_ID"];
+        $arFields["PAYED"] = 'N';
+        $arFields["CANCELED"] = "N";
+        $arFields["STATUS_ID"] = $sInitialStatusId;
+        $arFields["PRICE"] = $nTotalSum;
+        $arFields["CURRENCY"] = "BAL";
+        $arFields["USER_ID"] = $this->getParam("UserId");
+        //$arFields["PAY_SYSTEM_ID"] = $paySystem["ID"];
+        $arFields["PRICE_DELIVERY"] = 0;
+        $arFields["DELIVERY_ID"] = $delivery["ID"];
+        $arFields["DISCOUNT_VALUE"] = 0;
+        $arFields["TAX_VALUE"] = 0;
+        $arFields["USER_DESCRIPTION"] = "";
+        $objCSaleOrder = new \CSaleOrder;
+        if(!$nOrderId = $objCSaleOrder->Add($arFields)){
+            $this->addError("Не удалось добавить заказ: ".$resCSaleOrder->LAST_ERROR);
+            // Возвращаем всё что взяли на склад
+            $this->returnToStore();
+            return false;
+        }
+        
+        $this->setParam("Id",$nOrderId);
+        $this->setParam("Num",$sCustomNum?$sCustomNum:"Б-".$nOrderId);
+        $this->setParam("StatusId",$sInitialStatusId);
+        // Сохраняем параметры заказа
+        $this->saveParams();
+        // Крепим к нему корзину
+        $this->linkBasket();
+        
+        // Обновляем свойства заказа из свойств товара (для поиска)
+        $this->orderPropertiesUpdate();
+        
+        // Проводим работу по интеграции
+        // Статус тройки
+        // 0 - не заказывалась
+        // 1 - успешный заказ
+        // 2 - ошибочный заказ
+        $stoykaStatus = 0;
+        /////// Действия над картой-тройкой
+        if($sArtNumber = "troyka"){
+            $nTroykaNum = trim($_REQUEST["troyka"]);
+            
+            require_once($_SERVER["DOCUMENT_ROOT"]
+                    ."/.integration/classes/troyka.class.php");
+
+            // Подключаемся и получаем настройки шлюза
+            $objTroyka = new \CTroyka($nTroykaNum);            
+            if($objTroyka->error)$this->addError($objTroyka->error);
+
+            // Запоминаем для заказа номер тройки
+            $objTroyka->linkOrder($this->getParam('Num'));
+            if($objTroyka->error)$this->addError($objTroyka->error);
+
+            // Производим транзакцию в тройку
+            $objTroyka->payment($this->getParam('Num'));
+            if($objTroyka->error){
+                // Мапинг кодов ошибок шлюза в сообщения для посетителя
+                $arErrors = $objTroyka->errorMapping();
+                $this->addError(
+                    isset($arErrors["messageText"])
+                    ?
+                    $arErrors["messageText"]
+                    :
+                    $objTroyka->error
+                );
+                // Сохраняем неуспешный статус
+                $stoykaStatus = 2;
+            }
+            else{
+                // Сохраняем успешный статус
+                $stoykaStatus = 1;
+            }
+
+            // Запоминаем номер транзакции тройки при любом статусе
+            $objTroyka->linkOrderTransact($this->getParam('Num'));
+        }
+
+        // Статус парковки
+        // 0 - не заказывалась
+        // 1 - Успешно
+        // 2 - неудачно
+        $sParkingStatus = 0;
+        if($sArtNumber=='parking'){
+            require_once($_SERVER["DOCUMENT_ROOT"]
+                    ."/.integration/classes/parking.class.php");
+                    
+            $arUser = $USER->GetById($this->getParam("UserId"))->Fetch();
+            $objParking = new \CParking(str_replace("u","",$arUser["LOGIN"]));
+
+            // Производим транзакцию в парковку
+            $objParking->payment($sOrderNum);
+            if($objParking->error){
+                
+                // Мапинг кодов ошибок шлюза в сообщения для посетителя
+                $this->addError($objParking->error);
+                // Сохраняем неуспешный статус
+                $sParkingStatus = 2;
+            }
+            else{
+                // Сохраняем успешный статус
+                $sParkingStatus = 1;
+            }
+            // Запоминаем номер транзакции 
+            $objParking->linkOrderTransact($sOrderNum);
+        }
+
+        
+        // Если тройка провалилась - баллы не снимаем
+        if($stoykaStatus == 2){
+        }
+        // Если парковка провалилась - баллы не снимаем
+        elseif($sParkingStatus == 2){
+        }
+        else{
+            //////////// Снимает баллы
+            require_once(
+                $_SERVER["DOCUMENT_ROOT"]
+                    ."/.integration/classes/order.class.php"
+            );
+            $obOrder = new \bxOrder();
+            if(!$bPointsSuccess = $obOrder->addEMPPoints(
+                -$nTotalSum,
+                "Заказ Б-$orderId в магазине поощрений АГ"
+            ))$this->addError($obOrder->error);
+
+            ///////////
+        }
+        
+        // Если тойка провалилась - остатки возвращаем
+        if($stoykaStatus == 2){
+            // Снимаем блокировку
+            $objIntegration->resetLock($nLockId);
+            // Чистим зависшие блогировки
+            $objIntegration->clearLocks();
+            // Возврат остатков на склад
+            $this->returnToStore();
+        }
+        // Если парковка провалилась - остатки возвращаем
+        elseif($sParkingStatus == 2){
+            // Снимаем блокировку
+            $objIntegration->resetLock($nLockId);
+            // Чистим зависшие блогировки
+            $objIntegration->clearLocks();
+            // Возврат остатков на склад
+            $this->returnToStore();
+        }
+        // Если снялись баллы - остатки оставляем снятыми
+        elseif($bPointsSuccess){
+            // Отмечаем интеграции как выполненные
+            if( $sArtNumber=='troyka' ||  $sArtNumber=='parking'){
+                $objIntegration->doneLock($nLockId, $orderId) ;
+                $objIntegration->clearLocks();
+            }
+            
+        }
+        elseif(!$bPointsSuccess){
+            // Возврат остатков на склад если с оплатой вышла беда
+            $this->returnToStore();
+        }
+        
+        // Ставим статус заказ и отправляем соответствующее ЗНИ, в зависимости от результата заказа
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+
+        // Обновляем индексную таблицу
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
+        syncUser($this->getParam("UserId"));
+        $nOrderId = $this->getParam("Id");
+        if($nOrderId)syncOrder($nOrderId);
+
+        ///// Ставим в очередь на ЗНИ
+        // Если тойка успешно заказалась - Выполнен
+        if($stoykaStatus == 1)
+            orderSetZNI($nOrderId,'F','AA');
+        // Если тойка провалилась - Аннулирован
+        elseif($stoykaStatus == 2)
+            orderSetZNI($nOrderId,'AF','AA');
+        // Если парковка успешно заказалась - Выполнен
+        elseif($sParkingStatus == 1)
+            orderSetZNI($nOrderId,'F','AA');
+        // Если парковка провалилась - Аннулирован
+        elseif($sParkingStatus == 2)
+            orderSetZNI($nOrderId,'AF','AA');
+        // Если не удалось снять баллы - аннулирован
+        elseif(!$bPointsSuccess)
+            orderSetZNI($nOrderId,'AF','AA');
+        // Во всех остальных случаях - В работее
+        else
+            orderSetZNI($nOrderId,'N','AA');
+        
+        return $nOrderId;
+    }
+
+
+    /**
+        Обновление свойств у заказа из свойств товара
+    */
+    function orderPropertiesUpdate(){
+        global $DB;
+        
+        $nOrderId = $this->getParam("Id");
+        $objCSaleOrderPropsValue = new \CSaleOrderPropsValue;
+        
+        $arOrder = \CSaleOrder::GetList(
+            array(),
+            array(
+                "ID"=>$nOrderId
+            ),
+            false,
+            array(
+                "nTopCount"=>1
+            ),
+            array("ID","USER_ID","USER_NAME","USER_LAST_NAME","DATE_INSERT") 
+        )->Fetch();
+        if(!$arOrder)return false;
     
-    function __construct(){
-        parent::__construct();
-        $this->objUser = new \User\CUser;
-        $this->objStatus = new \Order\COrderStatus;
+        $arPropGroup = \CSaleOrderPropsGroup::GetList(
+            array(),
+            $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+            false,
+            array("nTopCount"=>1)
+        )->GetNext();
+        $nPropGroup = $arPropGroup["ID"];
+    
+        $resPropValues = \CSaleOrderProps::GetList(
+            array("SORT" => "ASC"),
+            array(
+                    "ORDER_ID"       => $arOrder["ID"],
+                    "PERSON_TYPE_ID" => 1,
+                    "PROPS_GROUP_ID" => $nPropGroup,
+                ),
+            false,
+            false,
+            array("ID","CODE","NAME")
+        );
+    
+        $arOrder["PROPERTIES"] = array();
+        $nextFlag = false;
+        while($arProp = $resPropValues->GetNext()){
+            $sQuery = "
+                SELECT
+                    `ID`,
+                    `VALUE`
+                FROM
+                    `b_sale_order_props_value`
+                WHERE
+                    `ORDER_ID`='".$arOrder["ID"]."'
+                    AND
+                    `ORDER_PROPS_ID`='".$arProp["ID"]."'
+                LIMIT 
+                    1
+            ";
+            $arValue = $DB->Query($sQuery)->Fetch();
+            /*
+            Во имя оптимизации
+            $arValue =  
+                CSaleOrderPropsValue::GetList(
+                    array(),
+                    $arFilterProp = array(
+                        "ORDER_ID"=>$arOrder["ID"],
+                        "ORDER_PROPS_ID"=>$arProp["ID"]
+                    ),
+                    false,
+                    array("nTopCount"=>1),
+                    array("VALUE_ORIG","VALUE")
+                )->GetNext();
+            */
+    
+            if(is_array($arValue["VALUE_ORIG"]))
+                $arValue = '';
+            else
+                $arValue = $arValue["VALUE"];
+            if($arValue){
+                //$nextFlag = true;
+                //break;
+            }
+            $arOrder["PROPERTIES"][$arProp["CODE"]] = array (
+                "PROPERTY_SETTINGS" =>  $arProp,
+                "PROPERTY_VALUE"    =>  $arValue
+            );
+        }
+        $arOrder["PROPERTIES"]["NAME_LAST_NAME"]["PROPERTY_VALUE"] = 
+            $arOrder["USER_LAST_NAME"]." ".$arOrder["USER_NAME"];
+        
+        $tmp = explode(" ",$arOrder["DATE_INSERT"]);
+    
+        $arBasket = \CSaleBasket::GetList(
+            array(),
+            array("ORDER_ID"=>$arOrder["ID"]),
+            false,
+            array("nTopCount"=>1)
+        )->GetNext();
+    
+        $arOffer = \CIBlockElement::GetList(
+            array(),
+            array(
+                "ID"        =>  $arBasket["PRODUCT_ID"],
+                "IBLOCK_ID" =>  $this->IBLOCKS["OFFER"]
+            ),
+            false,
+            array("nTopCount"=>1),            
+            array("ID","PROPERTY_CML2_LINK")
+        )->GetNext();
+    
+        $arCatalog = \CIBlockElement::GetList(
+            array(),
+            array(
+                "ID"        =>  $arOffer["PROPERTY_CML2_LINK_VALUE"],
+                "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"]
+            ),
+            false,
+            array("nTopCount"=>1),            
+            array(
+                "IBLOCK_SECTION_ID","NAME","DETAIL_PAGE_URL",
+                "PROPERTY_DAYS_TO_EXPIRE","PROPERTY_MANUFACTURER_LINK"
+            )
+        )->GetNext();
+    
+        $arManufacturer = \CIBlockElement::GetList(
+            array(),
+            array("ID"=>$arCatalog["PROPERTY_MANUFACTURER_LINK_VALUE"]),
+            false,
+            array("nTopCount"=>1),
+            array("ID","NAME")
+        )->GetNext();
+    
+    
+        $arOrder["PROPERTIES"]["PRODUCT_URL"]["PROPERTY_VALUE"] = 
+            $arCatalog["DETAIL_PAGE_URL"];
+        $arOrder["PROPERTIES"]["PRODUCT_NAME"]["PROPERTY_VALUE"] = 
+            $arCatalog["NAME"];
+        $arOrder["PROPERTIES"]["SECTION_ID"]["PROPERTY_VALUE"] = 
+            $arCatalog["IBLOCK_SECTION_ID"];
+        $arOrder["PROPERTIES"]["MANUFACTURER_ID"]["PROPERTY_VALUE"] = 
+            $arManufacturer["ID"];
+        $arOrder["PROPERTIES"]["MANUFACTURER_NAME"]["PROPERTY_VALUE"] = 
+            $arManufacturer["NAME"];
+    
+        $arCategory = \CIBlockSection::GetList(
+            array(),
+            array(
+                "ID"        =>  $arCatalog["IBLOCK_SECTION_ID"],
+                "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"]
+            ),
+            false,
+            array("NAME","SECTION_PAGE_URL"),
+            array("nTopCount"=>1)            
+        )->GetNext();
+        $arOrder["PROPERTIES"]["SECTION_NAME"]["PROPERTY_VALUE"] =  
+            $arCategory["NAME"];
+        $arOrder["PROPERTIES"]["SECTION_URL"]["PROPERTY_VALUE"] =  
+            $arCategory["SECTION_PAGE_URL"];
+    
+    
+        $objCSaleOrderPropsValue = new \CSaleOrderPropsValue;
+    //    $bDebug = true;
+        foreach($arOrder["PROPERTIES"] as $sPropName=>$arPropValue){
+            $arFilter = array(
+                "ORDER_ID"      =>  $arOrder["ID"],
+                "ORDER_PROPS_ID"=>  $arPropValue["PROPERTY_SETTINGS"]["ID"],
+                "CODE"          =>  $sPropName,
+                "NAME"          =>  $arPropValue["PROPERTY_SETTINGS"]["NAME"]
+            );
+    
+            $sQuery = "
+                SELECT
+                    `ID`,
+                    `VALUE`
+                FROM
+                    `b_sale_order_props_value`
+                WHERE
+                    `ORDER_ID`='".$arFilter["ORDER_ID"]."'
+                    AND
+                    `ORDER_PROPS_ID`='".$arFilter["ORDER_PROPS_ID"]."'
+                LIMIT 
+                    1
+            ";
+            // Ищем существующее значение
+            $arExistPropValue = 
+            $DB->Query($sQuery)->Fetch();
+            // Обновляем существующее значение, если оно отличается от предлагаемого
+            if(
+                isset($arExistPropValue["VALUE"])
+                &&
+                $arExistPropValue["VALUE"]
+                &&
+                $arExistPropValue["VALUE"]!= $arPropValue["PROPERTY_VALUE"]
+                /*
+                CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
+                */
+            ){
+                $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
+                if($bDebug){
+    //              echo "Edit\n";
+    //              print_r($arFilter);
+                }
+                if(!\CSaleOrderPropsValue::Update(
+                    $arExistPropValue["ID"],
+                    $arFilter 
+                ) && $bDebug){
+                    echo "Eddik error\n";
+                    print_r($arExistPropValue);
+                    print_r($arPropValue);
+                    print_r($arOrder);
+                    die;
+                }
+            }
+            elseif(
+                !isset($arExistPropValue["VALUE"])
+                &&
+                $arPropValue["PROPERTY_VALUE"]
+            ){
+                $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
+                if($bDebug){
+    //            echo "Add\n";
+    //            print_r($arFilter);
+                }
+                if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
+                    echo "Addik error\n";
+                    print_r($arFilter);
+                    print_r($arOrder);
+                    die;
+                }
+            }
+        }
+    
+        return true;
+    }
+
+    /*
+        Сохранение параметров заказа, если известен параметр Id
+    */
+    function saveParams(){
+        $arFields = [];
+        if($sVal = $this->getParam("UserId"))$arFields["USER_ID"] = $sVal;
+        if($sVal = $this->getParam("StatusId"))$arFields["STATUS_ID"] = $sVal;
+        if($sVal = $this->getParam("Num"))$arFields["ADDITIONAL_INFO"] = $sVal;
+        if($sVal = $this->getParam("XML_ID"))$arFields["XML_ID"] = $sVal;
+        if($sVal = $this->getParam("DateInsert"))$arFields["DATE_INSERT"] = $sVal;
+        if($sVal = $this->getParam("DateUpdate"))$arFields["DATE_UPDATE"] = $sVal;
+        $nOrderId = $this->getParam("Id");
+        $objCSaleOrder = new \CSaleOrder;
+        $objCSaleOrder->Update($nOrderId, $arFields);
+        return true;
+    }
+
+    /**
+        Добавляем все SKU в корзину, а корзину к заказу
+    */
+    function linkBasket(){
+        $CDB = new \DB\CDB;
+        $arSKUs = $this->getSKUs();
+        foreach($this->arSKUs as $arSKUs){
+            $CDB->insert(
+                \AGShop\CAGShop::t_sale_basket,
+                [
+                    "FUSER_ID"      =>$this->getParam("UserId"), 
+                    "ORDER_ID"      =>$this->getParam("Id"), 
+                    "PRODUCT_ID"    =>$arSKUs["SKU"]["OFFER"]["ID"], 
+                    "QUANTITY"      =>$arSKUs["AMOUNT"], 
+                    "NAME"          =>$arSKUs["SKU"]["OFFER"]["NAME"], 
+                    "PRICE"         =>$arSKUs["SKU"]["PRODUCT_PROPERTIES"]
+                        ["MINIMUM_PRICE"], 
+                    "DATE_UPDATE"   =>date("Y-m-d H:i:s"), 
+                    "CURRENCY"      =>"BAL", 
+                    "LID"           =>"s1", 
+                    "MODULE"        =>"catalog", 
+                    "CAN_BUY"       =>"Y", 
+                    "DELAY"         =>"N"
+                ]
+            );
+        }
+        return true;
+    }
+
+    /**
+        Вернуть все позиции что зарезервировали на склад
+    */
+    function returnToStore(){
+        return false;
+        $objCCatalogStore = new \Catalog\CCatalogStore;
+        $arSKUs = $this->getSKUs();
+        foreach($arSKUs as $arSKU)
+            $objCCatalogStore->move(
+                $arSKU["SKU"]["OFFER"]["ID"],
+                $arSKU["STORE_ID"],
+                $arSKU["AMOUNT"]
+            );
     }
 
     function getPropertyByCode($sPropCode){
@@ -165,6 +805,31 @@ class COrder extends \AGShop\CAGShop{
         return true;
     }
 
+    function __setParamUserId($sValue){
+        $this->arOrderParams["UserId"] = $sValue;
+        
+        return true;
+    }
+
+    function __setParamId($sValue){
+        $this->arOrderParams["Id"] = $sValue;
+        
+        return true;
+    }
+
+    function __setParamStatusId($sValue){
+        $this->arOrderParams["StatusId"] = $sValue;
+        
+        return true;
+    }
+
+    function __setParamXML_ID($sValue){
+        $this->arOrderParams["XML_ID"] = $sValue;
+        
+        return true;
+    }
+
+
     function __setParamDateInsert($sValue){
         if(!$sDate = $this->getDateISO($sValue))return false;
         $this->arOrderParams["DateInsert"] = $sDate;
@@ -180,6 +845,23 @@ class COrder extends \AGShop\CAGShop{
     function __getParamNum(){
         return $this->arOrderParams["Num"];
     }
+
+    function __getParamId(){
+        return $this->arOrderParams["Id"];
+    }
+
+    function __getParamUserId(){
+        return $this->arOrderParams["UserId"];
+    }
+
+    function __getParamStatusId(){
+        return $this->arOrderParams["StatusId"];
+    }
+
+    function __getParamXML_ID(){
+        return $this->arOrderParams["XML_ID"];
+    }
+
 
     function __getParamDateInsert(){
         return $this->arOrderParams["DateInsert"];

@@ -68,28 +68,30 @@
             $this->assertTrue(boolval($arSKU = $objCSKU->get()));
             
             // Подгружаем пользователя от которого будем делать заказ
-            $this->assertTrue($objCOrder->objUser->fetch("ID", $nUserId));
+            $this->assertTrue($objCOrder->setParam("UserId", $nUserId));
             
             // Добавляем в заказ одну единицу товара c полученного склада
             $this->assertTrue($objCOrder->addSKU(
                 $arStoreExists["PRODUCT_ID"], 
                 $arStoreExists["STORE_ID"], 
-                1
+                $nAmount = intval(rand(1,3))
             ));
-            
             $arSKUs = $objCOrder->getSKUs();
             
             $this->assertArrayHasKey(0,$arSKUs);
             $this->assertArrayHasKey("AMOUNT",$arSKUs[0]);
-            $this->assertEquals(1, $arSKUs[0]["AMOUNT"]);
+            $this->assertEquals($nAmount, $arSKUs[0]["AMOUNT"]);
             $this->assertArrayHasKey("SKU",$arSKUs[0]);
             $this->assertArrayHasKey("OFFER",$arSKUs[0]["SKU"]);
             $this->assertArrayHasKey("ID",$arSKUs[0]["SKU"]["OFFER"]);
             $this->assertEquals($arStoreExists["PRODUCT_ID"], $arSKUs[0]["SKU"]["OFFER"]["ID"]);
             
-            $objCOrder->create();
-            $this->assertTrue(boolval($nOrderId = $objCOrder->getParam("Id")));
-            $this->assertTrue($objCOrder->delete());
+            $this->assertTrue(
+                boolval($nOrderId = $objCOrder->createFromSite(
+                    "Б-90000".date("Ymd")
+                )),
+                print_r($objCOrder->getErrors(),1)
+            );
         }
   
     }

@@ -18,6 +18,10 @@
         const t_catalog_store_product = 'b_catalog_store_product';
         const t_iblock_property = 'b_iblock_property';
         const t_sale_order_props = 'b_sale_order_props';
+        const t_sale_order_props_value = 'b_sale_order_props_value';
+        const t_sale_basket = 'b_sale_basket';
+        const t_sale_order = 'b_sale_order';
+        const t_index_order = 'b_index_order';
 
         function __construct(){
             if(defined("CATALOG_IB_ID"))

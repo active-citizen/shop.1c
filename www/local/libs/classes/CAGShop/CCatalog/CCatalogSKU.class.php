@@ -2,9 +2,13 @@
     namespace Catalog;
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+    require_once(realpath(__DIR__)."/CCatalogOffer.class.php");
+    require_once(realpath(__DIR__)."/CCatalogStore.class.php");
+    require_once(realpath(__DIR__)."/CCatalogProduct.class.php");
 
     use AGShop;
     use AGShop\DB as DB;
+    use AGShop\Catalog as Catalog;
     
     class CCatalogSKU extends \AGShop\CAGShop{
         
@@ -18,74 +22,43 @@
         function fetch($nId = ''){
             $nId = intval($nId);
             $CDB = new \DB\CDB;
+            $objCCatalogOffer = new \Catalog\CCatalogOffer;
+            $objCCatalogProduct = new \Catalog\CCatalogProduct;
+            $objCCatalogStore = new \Catalog\CCatalogStore;
             
             $arFilter = ["IBLOCK_ID" =>  $this->IBLOCKS["OFFER"]];
             if($nId)$arFilter["ID"] = $nId;
             
-            $arOffer = \CIBlockElement::GetList([
-                "ID"=>"DESC"
-            ],$arFilter,false,[
-                "nTopCount"=>1
-            ],[
-                "ID","NAME"
-            ])->Fetch();
+            $arOffer = \CIBlockElement::GetList(["ID"=>"DESC"],$arFilter,false,
+                ["nTopCount"=>1],["ID","NAME"])->Fetch();
             
             $arProperties = [];
-            if(isset($arOffer["ID"])){
-                $sQuery = "
-                    SELECT
-                        `element_prop`.`VALUE` as `VALUE`,
-                        `prop`.`CODE` as `CODE`
-                    FROM
-                        `".\AGShop\CAGShop::t_iblock_element_property."` as `element_prop`
-                            LEFT JOIN
-                        `".\AGShop\CAGShop::t_iblock_property."` as `prop`
-                            ON
-                            `prop`.`ID`=`element_prop`.`IBLOCK_PROPERTY_ID`
-                    WHERE
-                        `element_prop`.`IBLOCK_ELEMENT_ID`= ".$arOffer["ID"]."
-                ";
-                $arResult = $CDB->sqlSelect($sQuery);
-                foreach($arResult as $arItem)
-                    $arProperties[$arItem["CODE"]] = $arItem["VALUE"];
-            }
+            if(isset($arOffer["ID"]))
+                $arProperties = $objCCatalogOffer->getProperties($arOffer["ID"]);
+            
 
             $arStores = [];
-            if(isset($arProperties["CML2_LINK"]) && $arProperties["CML2_LINK"]){
-                $sQuery = "
-                    SELECT
-                        `store_product`.`STORE_ID`,
-                        `store_product`.`AMOUNT`
-                    FROM
-                        `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
-                    WHERE
-                        `store_product`.`PRODUCT_ID`=".$arOffer["ID"]."
-                ";
-                $arResult = $CDB->sqlSelect($sQuery);
-                foreach($arResult as $arItem)
-                    $arStores[$arItem["STORE_ID"]] = $arItem["AMOUNT"];
-            }
+            if(isset($arOffer["ID"]))
+                $arStores = $objCCatalogStore->exists($arOffer["ID"]);
 
             
+            $arProduct = [];
             if(isset($arProperties["CML2_LINK"]) && $arProperties["CML2_LINK"]){
-                $arFilter = [
-                    "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
-                    "ID"=>$arProperties["CML2_LINK"]
-                ];
-                $arProduct = \CIBlockElement::GetList(
-                    [],$arFilter,false,[
-                        "nTopCount"=>1
-                    ],[
-                        "ID","CODE","NAME"
-                    ]
-                )->Fetch();
+                $arProduct = $objCCatalogProduct->get($arProperties["CML2_LINK"]);
             }
+            
+            $arProductProperties = [];
+            if(isset($arProperties["CML2_LINK"]) && $arProperties["CML2_LINK"])
+                $arProductProperties = 
+                    $objCCatalogProduct->getProperties($arProperties["CML2_LINK"]);
+            
             
             $this->arSKUInfo = [
                 "OFFER"         =>  $arOffer,
                 "PROPERTIES"    =>  $arProperties,
                 "STORES"        =>  $arStores,
-                "PRODUCT"       =>  $arProduct
+                "PRODUCT"       =>  $arProduct,
+                "PRODUCT_PROPERTIES"       =>  $arProductProperties
             ];
             return true;
         }

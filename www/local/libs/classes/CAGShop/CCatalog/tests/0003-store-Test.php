@@ -29,4 +29,60 @@
             $this->assertArrayHasKey("TITLE", $arStore);
         }
 
+        function testGetTitleById(){
+            $objCStore = new \Catalog\CCatalogStore;
+            $this->assertTrue(boolval($arExists = $objCStore->getAnyExists()));
+
+            $sTitle = $objCStore->getTitleById($arExists["STORE_ID"]);
+            $this->assertTrue(boolval($sTitle));
+        }
+
+        function testMove(){
+            $objCStore = new \Catalog\CCatalogStore;
+            $this->assertTrue(boolval($arExists = $objCStore->getAnyExists()));
+            
+            // Получаем изначальное число на складе
+            $nStartCount = $objCStore->getProductAmount(
+                $arExists["PRODUCT_ID"], $arExists["STORE_ID"]
+            );
+            $this->assertTrue($nStartCount==$arExists["AMOUNT"]);
+            
+            // Снимаем 2 и проверяем число
+            $this->assertTrue(
+                $objCStore->move(
+                    $arExists["PRODUCT_ID"], $arExists["STORE_ID"], -2
+                ),
+                print_r($objCStore->getErrors(),1)
+            );
+            $nMiddleCount = $objCStore->getProductAmount(
+                $arExists["PRODUCT_ID"], $arExists["STORE_ID"]
+            );
+            $this->assertTrue($nMiddleCount==$arExists["AMOUNT"]-2);
+
+            // Кладём 1 и проверяем число
+            $this->assertTrue(
+                $objCStore->move(
+                    $arExists["PRODUCT_ID"], $arExists["STORE_ID"], 1
+                ),
+                print_r($objCStore->getErrors(),1)
+            );
+            $nPreEndCount = $objCStore->getProductAmount(
+                $arExists["PRODUCT_ID"], $arExists["STORE_ID"]
+            );
+            $this->assertTrue($nPreEndCount==$arExists["AMOUNT"]-1);
+
+
+            // Кладём 1 и проверяем число (должно стать изначальным)
+            $this->assertTrue(
+                $objCStore->move(
+                    $arExists["PRODUCT_ID"], $arExists["STORE_ID"], 1
+                ),
+                print_r($objCStore->getErrors(),1)
+            );
+            $nEndCount = $objCStore->getProductAmount(
+                $arExists["PRODUCT_ID"], $arExists["STORE_ID"]
+            );
+            $this->assertTrue($nEndCount==$arExists["AMOUNT"]);
+
+        }
     }

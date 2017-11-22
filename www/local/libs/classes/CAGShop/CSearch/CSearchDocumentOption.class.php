@@ -63,7 +63,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         $arOptions = [];
         
         ///////////// Получаем опциию интересов
-        $arResult = $CDB->searchAll(ISearch::t_iblock_element_property,[
+        $arResult = $CDB->searchAll(\AGShop\CAGShop::t_iblock_element_property,[
             "IBLOCK_ELEMENT_ID"=>$nDocId,
             "IBLOCK_PROPERTY_ID"=>$this->PROPERTIES["INTEREST"]
         ],[
@@ -75,7 +75,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         
         
         /////////////// Получаем опцию разделов
-        $arResult = $CDB->searchAll(ISearch::t_iblock_element,[
+        $arResult = $CDB->searchAll(\AGShop\CAGShop::t_iblock_element,[
             "ID"=>$nDocId
         ],[
             "IBLOCK_SECTION_ID","NAME"
@@ -86,7 +86,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         
         //////// Получаем опцию товаров на складах
         // Получаем ID товарного предложения
-        $arOffer = $CDB->searchOne(ISearch::t_iblock_element_property,[
+        $arOffer = $CDB->searchOne(\AGShop\CAGShop::t_iblock_element_property,[
             "VALUE_NUM"=>$nDocId,
             "IBLOCK_PROPERTY_ID"=>$this->PROPERTIES["CML2_LINK"]
         ],[
@@ -96,7 +96,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
         $arStores = [];
         
         if(intval($arOffer["IBLOCK_ELEMENT_ID"]))
-            $arStores = $CDB->searchAll(ISearch::t_catalog_store_product,[
+            $arStores = $CDB->searchAll(\AGShop\CAGShop::t_catalog_store_product,[
                 "PRODUCT_ID"=>$arOffer["IBLOCK_ELEMENT_ID"]
             ],[
                 "AMOUNT","STORE_ID"
@@ -111,7 +111,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
 
 
         // Получаем ID свойства "желаемый товар"
-        $arWishProp = $CDB->searchOne(ISearch::t_iblock_property,
+        $arWishProp = $CDB->searchOne(\AGShop\CAGShop::t_iblock_property,
             ["CODE"=>"WISH_PRODUCT"],["ID"]
         );
         
@@ -120,7 +120,7 @@ class CSearchDocumentOption extends \AGShop\CAGShop{
             SELECT
                 COUNT(`ID`) as `COUNT`
             FROM
-                `".ISearch::t_iblock_element_property."` as `prop`
+                `".\AGShop\CAGShop::t_iblock_element_property."` as `prop`
             WHERE
                 `prop`.`IBLOCK_PROPERTY_ID`=".$arWishProp["ID"]."
                 AND `prop`.`VALUE_NUM`=".$nDocId."
