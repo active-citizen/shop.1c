@@ -1,9 +1,9 @@
 <?php
-    namespace Section;
+    namespace Catalog;
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     use AGPhop as AGPhop;
     
-    class CSection extends \AGShop\CAGShop{
+    class CCatalogSection extends \AGShop\CAGShop{
         
         function __construct(){
             parent::__construct();

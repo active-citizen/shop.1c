@@ -103,7 +103,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
             SELECT
                 COUNT(`product`.`ID`) as `count`
             FROM
-                `".ISearch::t_iblock_element."` as `product`
+                `".\AGShop\CAGShop::t_iblock_element."` as `product`
                     LEFT JOIN
                 `".ISearch::t_csearch_documents."` as `document`
                     ON
@@ -140,7 +140,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
             SELECT
                 `product`.`ID` as `ID`
             FROM
-                `".ISearch::t_iblock_element."` as `product`
+                `".\AGShop\CAGShop::t_iblock_element."` as `product`
                     LEFT JOIN
                 `".ISearch::t_csearch_documents."` as `document`
                     ON
@@ -173,7 +173,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         $CDB = new \DB\CDB;
         
         // Получаем общую информацию о продукте
-        $arNextProduct = $CDB->searchOne(ISearch::t_iblock_element,[
+        $arNextProduct = $CDB->searchOne(\AGShop\CAGShop::t_iblock_element,[
             "ID"=>intval($nId)
         ],[
             "ID","NAME"
@@ -199,13 +199,13 @@ class CSearchDocumentType extends \AGShop\CAGShop{
     private function __getInfoProduct($nId, $sType='PRODUCT'){
         $CDB = new \DB\CDB;
         // Получаем раздел продукта
-        $arProduct = $CDB->searchOne(ISearch::t_iblock_element,[
+        $arProduct = $CDB->searchOne(\AGShop\CAGShop::t_iblock_element,[
             "ID"=>$nId
         ],[
             "ID","NAME","CODE","IBLOCK_SECTION_ID","DETAIL_PICTURE","ACTIVE"
         ]);
         
-        $arSection = $CDB->searchOne(ISearch::t_iblock_section,[
+        $arSection = $CDB->searchOne(\AGShop\CAGShop::t_iblock_section,[
             "ID"=>$arProduct["IBLOCK_SECTION_ID"]
         ],[
             "ID","NAME","CODE"
@@ -214,14 +214,14 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         $arProduct["SECTION_CODE"] = $arSection["CODE"];
         $arProduct["SECTION_NAME"] = $arSection["NAME"];
         
-        $arPicture = $CDB->searchOne(ISearch::t_file,[
+        $arPicture = $CDB->searchOne(\AGShop\CAGShop::t_file,[
             "ID"=>$arProduct["DETAIL_PICTURE"]
         ],[
             "SUBDIR","FILE_NAME"
         ]);
         
         // Цена
-        $arPrice = $CDB->searchOne(ISearch::t_iblock_element_property,[
+        $arPrice = $CDB->searchOne(\AGShop\CAGShop::t_iblock_element_property,[
             "IBLOCK_PROPERTY_ID" => $this->PROPERTIES["PRICE"],
             "IBLOCK_ELEMENT_ID"  => $nId
         ],[
@@ -230,7 +230,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
         $arProduct["PRICE"] = $arPrice["VALUE"];
 
         // Прятать по дате
-        $arHide = $CDB->searchOne(ISearch::t_iblock_element_property,[
+        $arHide = $CDB->searchOne(\AGShop\CAGShop::t_iblock_element_property,[
             "IBLOCK_PROPERTY_ID" => $this->PROPERTIES["HIDE_DATE"],
             "IBLOCK_ELEMENT_ID"  => $nId
         ],[
