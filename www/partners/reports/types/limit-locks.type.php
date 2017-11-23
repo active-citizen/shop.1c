@@ -53,6 +53,8 @@ $sQuery = "
             ON
             `order`.`USER_ID`=`user`.`ID`
     WHERE
+        `order`.`STATUS_ID`='F'
+        AND
         `lock`.`ID` IS NULL
         AND
         `order`.`DATE_INSERT`>'$sDate'
