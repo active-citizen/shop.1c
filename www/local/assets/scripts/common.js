@@ -339,6 +339,59 @@ function productConfirm(){
 }
 
 function productConfirmNext(){
+    
+    var add_order_url = "/profile/order/order.ajax.php?add_order=1&id="
+    +totalOfferId
+    +"&quantity="+$('#confirm-amount').html()
+    +"&store_id="+$('#confirm-store-id').html();
+    $.get(
+        add_order_url,
+        function(data){
+            answer = {};
+            try{
+                var answer = JSON.parse(data);
+            }
+            catch(err){
+                $('.ag-shop-modal__container .ag-shop-card__warning')
+                    .remove();
+                $('.ag-shop-modal__container')
+                    .append(
+                        '<div class="ag-shop-card__warning">'
+                        +data+'</div>'
+                    );
+                $("#card-order-confirm-button").html("Ошибка");
+                setTimeout(function(){
+                    $("#card-order-confirm-button").fadeOut();
+                },1000);
+            }
+            if(answer.redirect_url){
+                document.location.href=answer.redirect_url;
+            }
+            else{
+                $('#order-process-done').css('display','none');
+                $('.ok-button').css('display','block');
+                var error_text = '';
+                for(i in answer.order.ERROR){
+                    error_text += ""+answer.order.ERROR[i]+'<br/>';
+                }
+                error_text += '';
+                $('.ag-shop-modal__container .ag-shop-card__warning')
+                    .remove();
+                $('.ag-shop-modal__container')
+                    .append(
+                        '<div class="ag-shop-card__warning">'
+                        +error_text+'</div>'
+                    );
+                $("#card-order-confirm-button").html("Ошибка");
+                setTimeout(function(){
+                    $("#card-order-confirm-button").fadeOut();
+                },1000);
+            }
+        }    
+    );
+    return false;
+    
+    
     var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="
     +totalOfferId
     +"&quantity="+$('#confirm-amount').html()
@@ -348,6 +401,8 @@ function productConfirmNext(){
     $('#card-order-confirm-button').html('Обработка заказа...');
     $('#card-order-confirm-button').attr( "onclick" ,"return false;");
     $('#card-order-confirm-button').css("opacity","0.6");
+    
+    
     $.get(
         add_basket_url,
         function(data){

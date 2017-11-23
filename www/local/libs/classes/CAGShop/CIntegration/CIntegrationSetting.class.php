@@ -15,6 +15,7 @@ class CIntegrationSettings extends \AGShop\CAGShop{
     function __construct($sCode=''){
         parent::__construct();
         $sCode = htmlspecialchars($sCode);
+        if($sCode)$this->code = $sCode;
         $CDB = new \DB\CDB;
         $arSettings = $CDB->searchOne($this->table,[
             "code"=>$this->code

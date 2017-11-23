@@ -4,13 +4,11 @@
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     require_once(realpath(__DIR__."/..")."/CLog/CCurlLogger.class.php");
     require_once(realpath(__DIR__)."/CIntegrationSetting.class.php");
-    require_once($_SERVER["DOCUMENT_ROOT"].
-        "/.integration/classes/curllogger.class.php");
-    require_once($_SERVER["DOCUMENT_ROOT"].
-        "/.integration/classes/integrationSettings.class.php");
 
     use AGShop;
     use AGShop\Log as Log;
+    use AGShop\Order as Order;
+    
 
     class CIntegration extends \AGShop\CAGShop{
         var $transact = '';     //!< ID транзакции
@@ -31,7 +29,10 @@
 
 
             if(!$sMnemonic)
-                $this->mnemonic = mb_strtoupper(mb_substr(get_called_class(),1));
+                $this->mnemonic = str_replace(
+                    "INTEGRATION\CINTEGRATION","",
+                    mb_strtoupper(get_called_class())
+                );
             else
                 $this->mnemonic = $sMnemonic;
 
@@ -55,57 +56,9 @@
             $sPropertyCode = str_replace("TROYKA", "TROIKA",$sPropertyCode);
 
             if(!$nOrderId = $this->checkOrderNum($nOrderNum))return false;
-
-            $arPropGroup = CSaleOrderPropsGroup::GetList(
-                array(),
-                $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
-                false,
-                array("nTopCount"=>1)
-            )->GetNext();
-            $nPropGroup = $arPropGroup["ID"];
-
-
-            $arPropValue = CSaleOrderProps::GetList(
-                array("SORT" => "ASC"),
-                array(
-                        "ORDER_ID"       => $nOrderId,
-                        "PERSON_TYPE_ID" => 1,
-                        "PROPS_GROUP_ID" => $nPropGroup,
-                        "CODE"           => $sPropertyCode 
-                    ),
-                false,
-                false,
-                array("ID","CODE","NAME")
-            )->Fetch();
-
-            $arFilter = array(
-                "ORDER_ID"      =>  $nOrderId,
-                "ORDER_PROPS_ID"=>  $arPropValue["ID"],
-                "CODE"          =>  $arPropValue["CODE"],
-                "NAME"          =>  $arPropValue["NAME"]
-            );
-            if(
-                $arExistPropValue = 
-                CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
-            ){
-                $arFilter["VALUE"] = $sPropertyValue;
-                if(!CSaleOrderPropsValue::Update(
-                    $arExistPropValue["ID"],
-                    $arFilter 
-                )){
-                    $this->addError("Ошибка обновления свойства заказа
-                    ".print_r($arFilter1));
-                    return false;
-                }
-            }
-            elseif($sPropertyValue){
-                $arFilter["VALUE"] = $sPropertyValue;
-                if(!CSaleOrderPropsValue::Add($arFilter)){
-                    $this->addError("Ошибка добавления свойства заказа
-                    ".print_r($arFilter,1));
-                    return false;
-                }
-            }
+            $objOrder = new \Order\COrder;
+            $objOrder->setParam("Id", $nOrderId);
+            $objOrder->saveProperty($sPropertyCode, $sPropertyValue);
             return true;
 
         }
@@ -187,7 +140,7 @@
             $nOrderNum,      // Номер заказа
             $sTroykaNum = '-'// ПУстой номер карты (только для автотеста)
         ){
-           if($sTroykaNum!='-')
+            if($sTroykaNum!='-')
                 $this->number = $sTroykaNum;
             $this->setPropertyByOrderNum(
                 $nOrderNum,$this->mnemonic."_TRANSACT_ID",$this->transact
@@ -229,23 +182,12 @@
         function checkOrderNum(
             $sOrderNum //!< Номер заказа
         ){
-            if(!preg_match("#^(Б\-\d+|\d+)$#",$sOrderNum)){
-                $this->addError("Некорректный номер заказа:".$sOrderNum);
-                return false;
-            }
-
-            $arOrder = CSaleOrder::GetList(
-                array(),
-                array("ADDITIONAL_INFO"=>$sOrderNum),
-                false,
-                array("nTopCount"=>1),
-                array("ID")
-            )->Fetch();
-            if(!isset($arOrder["ID"])){
+            $objOrder = new \Order\COrder;
+            if(!$arOrder = $objOrder->getByNum($sOrderNum)){
                 $this->addError("Заказ с номером '$sOrderNum' не существует");
                 return false;
             }
-
+            
             return $arOrder["ID"];
         }
 

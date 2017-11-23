@@ -11,7 +11,7 @@ class CCurlLogger extends \AGShop\CAGShop{
     var $error = '';
     
     function __construct(){
-        parent::__construct;
+        parent::__construct();
     }
 
     /**

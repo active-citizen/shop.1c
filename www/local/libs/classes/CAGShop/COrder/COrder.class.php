@@ -8,6 +8,8 @@ require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogSKU.class.php");
 require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogOffer.class.php");
 require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
+require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationTroyka.class.php");
+require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationParking.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
 
@@ -250,6 +252,7 @@ class COrder extends \AGShop\CAGShop{
         
         $this->setParam("Id",$nOrderId);
         $this->setParam("Num",$sCustomNum?$sCustomNum:"Б-".$nOrderId);
+        $sOrderNum = $this->getParam("Num");
         $this->setParam("StatusId",$sInitialStatusId);
         // Сохраняем параметры заказа
         $this->saveParams();
@@ -259,21 +262,17 @@ class COrder extends \AGShop\CAGShop{
         // Обновляем свойства заказа из свойств товара (для поиска)
         $this->orderPropertiesUpdate();
         
-        // Проводим работу по интеграции
+        ///////////// Проводим работу по интеграции
         // Статус тройки
         // 0 - не заказывалась
         // 1 - успешный заказ
         // 2 - ошибочный заказ
         $stoykaStatus = 0;
         /////// Действия над картой-тройкой
-        if($sArtNumber = "troyka"){
+        if($sArtNumber == "troyka"){
             $nTroykaNum = trim($_REQUEST["troyka"]);
             
-            require_once($_SERVER["DOCUMENT_ROOT"]
-                    ."/.integration/classes/troyka.class.php");
-
-            // Подключаемся и получаем настройки шлюза
-            $objTroyka = new \CTroyka($nTroykaNum);            
+            $objTroyka = new \Integration\CIntegrationTroyka($nTroykaNum);            
             if($objTroyka->error)$this->addError($objTroyka->error);
 
             // Запоминаем для заказа номер тройки
@@ -282,7 +281,7 @@ class COrder extends \AGShop\CAGShop{
 
             // Производим транзакцию в тройку
             $objTroyka->payment($this->getParam('Num'));
-            if($objTroyka->error){
+            if($objTroyka->errorNo){
                 // Мапинг кодов ошибок шлюза в сообщения для посетителя
                 $arErrors = $objTroyka->errorMapping();
                 $this->addError(
@@ -310,11 +309,13 @@ class COrder extends \AGShop\CAGShop{
         // 2 - неудачно
         $sParkingStatus = 0;
         if($sArtNumber=='parking'){
-            require_once($_SERVER["DOCUMENT_ROOT"]
-                    ."/.integration/classes/parking.class.php");
-                    
-            $arUser = $USER->GetById($this->getParam("UserId"))->Fetch();
-            $objParking = new \CParking(str_replace("u","",$arUser["LOGIN"]));
+            
+            $objCUser = new \User\CUser;
+            $objCUser->fetch("ID", $this->getParam("UserId"));
+            $arUser = $objCUser->get();
+            $objParking = new \Integration\CIntegrationParking(
+                str_replace("u","",$arUser["LOGIN"])
+            );
 
             // Производим транзакцию в парковку
             $objParking->payment($sOrderNum);
@@ -349,7 +350,7 @@ class COrder extends \AGShop\CAGShop{
             $obOrder = new \bxOrder();
             if(!$bPointsSuccess = $obOrder->addEMPPoints(
                 -$nTotalSum,
-                "Заказ Б-$orderId в магазине поощрений АГ"
+                "Заказ Б-$nOrderId в магазине поощрений АГ"
             ))$this->addError($obOrder->error);
 
             ///////////
@@ -377,7 +378,7 @@ class COrder extends \AGShop\CAGShop{
         elseif($bPointsSuccess){
             // Отмечаем интеграции как выполненные
             if( $sArtNumber=='troyka' ||  $sArtNumber=='parking'){
-                $objIntegration->doneLock($nLockId, $orderId) ;
+                $objIntegration->doneLock($nLockId, $nOrderId) ;
                 $objIntegration->clearLocks();
             }
             
@@ -387,36 +388,52 @@ class COrder extends \AGShop\CAGShop{
             $this->returnToStore();
         }
         
-        // Ставим статус заказ и отправляем соответствующее ЗНИ, в зависимости от результата заказа
-        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
-
         // Обновляем индексную таблицу
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
         syncUser($this->getParam("UserId"));
         $nOrderId = $this->getParam("Id");
         if($nOrderId)syncOrder($nOrderId);
 
+        // Ставим статус заказ и отправляем соответствующее ЗНИ, в зависимости от результата заказа
         ///// Ставим в очередь на ЗНИ
         // Если тойка успешно заказалась - Выполнен
         if($stoykaStatus == 1)
-            orderSetZNI($nOrderId,'F','AA');
+            $this->setZNI('F','AA');
         // Если тойка провалилась - Аннулирован
         elseif($stoykaStatus == 2)
-            orderSetZNI($nOrderId,'AF','AA');
+            $this->setZNI('AF','AA');
         // Если парковка успешно заказалась - Выполнен
         elseif($sParkingStatus == 1)
-            orderSetZNI($nOrderId,'F','AA');
+            $this->setZNI('F','AA');
         // Если парковка провалилась - Аннулирован
         elseif($sParkingStatus == 2)
-            orderSetZNI($nOrderId,'AF','AA');
+            $this->setZNI('AF','AA');
         // Если не удалось снять баллы - аннулирован
         elseif(!$bPointsSuccess)
-            orderSetZNI($nOrderId,'AF','AA');
+            $this->setZNI('AF','AA');
         // Во всех остальных случаях - В работее
         else
-            orderSetZNI($nOrderId,'N','AA');
+            $this->setZNI('N','AA');
         
-        return $nOrderId;
+        if(!$this->getErrors())return $nOrderId;
+        
+        return false;
+    }
+
+
+    /*
+        Отправка запроса на изменение
+    */
+    function setZNI($sStatusId,$sOldStatusId){
+        
+        $this->saveProperty("CHANGE_REQUEST", $sStatusId);
+    
+        // Сохраняем запись в истории
+        \CSaleOrderChange::AddRecord($nOrderId,
+            $sStatusId?"ORDER_ZNI":"ORDER_ZNI_CHECK",
+            ["STATUS_ID"=>$sStatusId,"OLD_STATUS_ID"=>$sOldStatusId],
+            "ORDER"
+        );
     }
 
 
@@ -582,75 +599,8 @@ class COrder extends \AGShop\CAGShop{
     
         $objCSaleOrderPropsValue = new \CSaleOrderPropsValue;
     //    $bDebug = true;
-        foreach($arOrder["PROPERTIES"] as $sPropName=>$arPropValue){
-            $arFilter = array(
-                "ORDER_ID"      =>  $arOrder["ID"],
-                "ORDER_PROPS_ID"=>  $arPropValue["PROPERTY_SETTINGS"]["ID"],
-                "CODE"          =>  $sPropName,
-                "NAME"          =>  $arPropValue["PROPERTY_SETTINGS"]["NAME"]
-            );
-    
-            $sQuery = "
-                SELECT
-                    `ID`,
-                    `VALUE`
-                FROM
-                    `b_sale_order_props_value`
-                WHERE
-                    `ORDER_ID`='".$arFilter["ORDER_ID"]."'
-                    AND
-                    `ORDER_PROPS_ID`='".$arFilter["ORDER_PROPS_ID"]."'
-                LIMIT 
-                    1
-            ";
-            // Ищем существующее значение
-            $arExistPropValue = 
-            $DB->Query($sQuery)->Fetch();
-            // Обновляем существующее значение, если оно отличается от предлагаемого
-            if(
-                isset($arExistPropValue["VALUE"])
-                &&
-                $arExistPropValue["VALUE"]
-                &&
-                $arExistPropValue["VALUE"]!= $arPropValue["PROPERTY_VALUE"]
-                /*
-                CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
-                */
-            ){
-                $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
-                if($bDebug){
-    //              echo "Edit\n";
-    //              print_r($arFilter);
-                }
-                if(!\CSaleOrderPropsValue::Update(
-                    $arExistPropValue["ID"],
-                    $arFilter 
-                ) && $bDebug){
-                    echo "Eddik error\n";
-                    print_r($arExistPropValue);
-                    print_r($arPropValue);
-                    print_r($arOrder);
-                    die;
-                }
-            }
-            elseif(
-                !isset($arExistPropValue["VALUE"])
-                &&
-                $arPropValue["PROPERTY_VALUE"]
-            ){
-                $arFilter["VALUE"] = $arPropValue["PROPERTY_VALUE"];
-                if($bDebug){
-    //            echo "Add\n";
-    //            print_r($arFilter);
-                }
-                if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
-                    echo "Addik error\n";
-                    print_r($arFilter);
-                    print_r($arOrder);
-                    die;
-                }
-            }
-        }
+        foreach($arOrder["PROPERTIES"] as $sPropName=>$arPropValue["PROPERTY_VALUE"])
+            $this->saveProperty($sPropName, $sStatusId);
     
         return true;
     }
@@ -669,6 +619,67 @@ class COrder extends \AGShop\CAGShop{
         $nOrderId = $this->getParam("Id");
         $objCSaleOrder = new \CSaleOrder;
         $objCSaleOrder->Update($nOrderId, $arFields);
+        return true;
+    }
+    
+    /*
+        Сохранение свойств заказа, если известен параметр Id
+    */
+    function saveProperties(){
+        foreach($this->arProps as $sPropName=>$sPropValue)
+            $this->saveProperty($sPropName, $sPropValue);
+    }
+    
+    /*
+        Сохранение одного свойства заказа, если известен параметр Id
+    */
+    function saveProperty($sPropertyCode, $sPropValue){
+
+        $nOrderId = $this->getParam("Id");
+        $arPropGroup = \CSaleOrderPropsGroup::GetList(
+            [],$arPropGroupFilter = ["NAME"=>"Индексы для фильтров"],
+            false,["nTopCount"=>1])->GetNext();
+        $nPropGroup = $arPropGroup["ID"];
+
+        $arPropValue = \CSaleOrderProps::GetList(
+            ["SORT" => "ASC"],
+            [
+                "ORDER_ID"       => $nOrderId,
+                "PERSON_TYPE_ID" => 1,
+                "PROPS_GROUP_ID" => $nPropGroup,
+                "CODE"           => $sPropertyCode 
+            ],
+            false,false,["ID","CODE","NAME"]
+        )->Fetch();
+
+        $arFilter = [
+            "ORDER_ID"      =>  $nOrderId,
+            "ORDER_PROPS_ID"=>  $arPropValue["ID"],
+            "CODE"          =>  $arPropValue["CODE"],
+            "NAME"          =>  $arPropValue["NAME"]
+        ];
+        if(
+            $arExistPropValue = 
+            \CSaleOrderPropsValue::GetList([], $arFilter)->GetNext()
+        ){
+            $arFilter["VALUE"] = $sPropValue;
+            if(!\CSaleOrderPropsValue::Update(
+                $arExistPropValue["ID"],
+                $arFilter 
+            )){
+                $this->addError("Ошибка обновления свойства заказа
+                ".print_r($arFilter1));
+                return false;
+            }
+        }
+        elseif($sPropValue){
+            $arFilter["VALUE"] = $sPropValue;
+            if(!\CSaleOrderPropsValue::Add($arFilter)){
+                $this->addError("Ошибка добавления свойства заказа
+                ".print_r($arFilter,1));
+                return false;
+            }
+        }
         return true;
     }
 
@@ -699,6 +710,17 @@ class COrder extends \AGShop\CAGShop{
             );
         }
         return true;
+    }
+
+    /**
+        Получить ID заказ по его номеру
+    */
+    function getByNum($sNum){
+        $CDB = new \DB\CDB;
+        $arResult = $CDB->searchOne(\AGShop\CAGShop::t_sale_order,[
+            "ADDITIONAL_INFO"=>$sNum
+        ]);
+        return $arResult;
     }
 
     /**
