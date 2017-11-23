@@ -49,7 +49,7 @@
                 [],$arFilter,false,[
                     "nTopCount"=>1
                 ],[
-                    "ID","CODE","NAME"
+                    "ID","CODE","NAME","XML_ID"
                 ]
             )->Fetch();
             return $arProduct;

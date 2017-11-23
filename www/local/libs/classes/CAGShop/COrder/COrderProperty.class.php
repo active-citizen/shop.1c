@@ -31,4 +31,18 @@ class COrderProperty extends \AGShop\CAGShop{
         return true;
     }
     
+    function fetchByCode($sPropCode){
+        if(!$this->existsByCode($sPropCode))return false;
+        $CDB = new \DB\CDB;
+        
+        $this->arPropertyInfo = $CDB->searchOne(\AGShop\CAGShop::t_sale_order_props,[
+            "CODE"=>$sPropCode
+        ]);
+        
+    }
+    
+    function get(){
+        return $this->arPropertyInfo;
+    }
+    
 }

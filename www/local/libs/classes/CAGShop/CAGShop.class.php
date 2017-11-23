@@ -21,7 +21,7 @@
         const t_sale_order_props_value = 'b_sale_order_props_value';
         const t_sale_basket = 'b_sale_basket';
         const t_sale_order = 'b_sale_order';
-        const t_index_order = 'b_index_order';
+        const t_index_order = 'index_order';
 
         function __construct(){
             if(defined("CATALOG_IB_ID"))
@@ -47,7 +47,7 @@
         /**
             Конвертация даты из любого допустимого формата в YYYY-MM-DD HH:ii:SS
         */
-        function getDateISO($sDate){
+        function getDateISO($sDate, $bShort = false){
             $tmp = date_parse($sDate);
             if($tmp["error_count"]){
                 $this->addError("Некорректный формат даты ".htmlspecialchars($sDate));
@@ -60,15 +60,15 @@
             return $tmp["year"]."-"
                 .$tmp["month"]
                 ."-".$tmp["day"]
-                ." ".$tmp["hour"]
-                .":".$tmp["minute"]
-                .":".$tmp["second"];
+                .(!$bShort?" ".$tmp["hour"]:"")
+                .(!$bShort?":".$tmp["minute"]:"")
+                .(!$bShort?":".$tmp["second"]:"");
         }
 
         /**
             Конвертация даты из любого допустимого формата в DD.MM.YYYY HH:ii:SS
         */
-        function getDateHum($sDate){
+        function getDateHum($sDate, $bShort = false){
             $tmp = date_parse($sDate);
             if($tmp["error_count"]){
                 $this->addError("Некорректный формат даты ".htmlspecialchars($sDate));
@@ -81,10 +81,30 @@
             return $tmp["day"]."."
                 .$tmp["month"]
                 .".".$tmp["year"]
-                ." ".$tmp["hour"]
-                .":".$tmp["minute"]
-                .":".$tmp["second"];
+                .(!$bShort?" ".$tmp["hour"]:"")
+                .(!$bShort?":".$tmp["minute"]:"")
+                .(!$bShort?":".$tmp["second"]:"");
         }
+
+        /**
+            Конвертация даты из любого допустимого формата в HH:ii:SS
+        */
+        function getTime($sDate){
+            $bShort = false;
+            $tmp = date_parse($sDate);
+            if($tmp["error_count"]){
+                $this->addError("Некорректный формат даты ".htmlspecialchars($sDate));
+                return false;
+            }
+            
+            foreach(["month","day","hour","minute","second"] as $key)
+                $tmp[$key] = sprintf("%02d", $tmp[$key]);
+            
+            return (!$bShort?" ".$tmp["hour"]:"")
+                .(!$bShort?":".$tmp["minute"]:"")
+                .(!$bShort?":".$tmp["second"]:"");
+        }
+
 
         function addError($error){
             if(is_array($error)){  

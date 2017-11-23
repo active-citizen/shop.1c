@@ -2,15 +2,53 @@
 namespace Catalog;
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+require_once(realpath(__DIR__)."/CCatalogProduct.class.php");
 
 use AGShop;
 use AGShop\DB as DB;
+use AGShop\Catalog as Catalog;
 
 class CCatalogOffer extends \AGShop\CAGShop{
     
     function __construct(){
         parent::__construct();
         \CModule::IncludeModule('iblock');
+    }
+    
+    /**
+        Получение информации о товарной позиции по её ID
+    */
+    function getById($nOfferId){
+        $nOfferId = intval($nOfferId);
+        $CDB = new \DB\CDB;
+        $objCCatalogProduct = new \Catalog\CCatalogProduct;
+        
+        $arResult = ["PROPERTIES"=>$this->getProperties($nOfferId)];
+        $arResult["PRODUCT"] = $objCCatalogProduct->get(
+            $arResult["PROPERTIES"]["CML2_LINK"]
+        );
+        $arResult["PRODUCT_PROPERTIES"] = $objCCatalogProduct->getProperties(
+            $arResult["PROPERTIES"]["CML2_LINK"]
+        );
+        
+        $arResult["MAIN"]=$this->getMain($nOfferId);
+        
+        
+        return $arResult;
+    }
+    
+    /**
+        О торговом предложении без свойств и элемента каталога
+    */
+    function getMain($nOfferId){
+        $nOfferId = intval($nOfferId);
+        $CDB = new \DB\CDB;
+        return $CDB->searchOne(\AGShop\CAGShop::t_iblock_element,[
+            "IBLOCK_ID" =>  $this->IBLOCKS["OFFER"],
+            "ID"        =>  $nOfferId
+        ],[
+            "ID","NAME","XML_ID"
+        ]);
     }
     
     function getProperties($nOfferId){

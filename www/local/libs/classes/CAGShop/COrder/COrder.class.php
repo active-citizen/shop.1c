@@ -713,13 +713,48 @@ class COrder extends \AGShop\CAGShop{
     }
 
     /**
-        Получить ID заказ по его номеру
+        Получить заказ по его номеру
     */
     function getByNum($sNum){
         $CDB = new \DB\CDB;
         $arResult = $CDB->searchOne(\AGShop\CAGShop::t_sale_order,[
             "ADDITIONAL_INFO"=>$sNum
         ]);
+        return $arResult;
+    }
+
+    /**
+        Получить заказ по его ID
+    */
+    function getById($nId){
+        $nId = intval($nId);
+        $CDB = new \DB\CDB;
+        $arResult = $CDB->searchOne(\AGShop\CAGShop::t_sale_order,[
+            "ID"=>$nId
+        ]);
+        return $arResult;
+    }
+
+
+    /**
+        Получение корзины по ID заказа
+    */
+    function getBasketById($nId){
+        $nId = intval($nId);
+        $CDB = new \DB\CDB;
+        $sQuery = "
+            SELECT
+                `basket`.`PRODUCT_ID` as `OFFER_ID`,
+                `basket`.`PRICE` as `PRICE`,
+                `basket`.`NAME` as `NAME`,
+                `basket`.`QUANTITY` as `QUANTITY`
+                
+            FROM
+                `".\AGShop\CAGShop::t_sale_basket."` as `basket`
+            WHERE
+                `basket`.`ORDER_ID` = ".$nId."
+        ";
+        $arResult = $CDB->sqlSelect($sQuery);
         return $arResult;
     }
 
@@ -764,7 +799,27 @@ class COrder extends \AGShop\CAGShop{
         $objProp->fetch($sPropName);
     }
     
-    function fetchAllProperties(){
+    /**
+        Получение всех свойств заказа по его ID
+    */
+    function fetchAllProperties($nId){
+        $nId = intval($nId);
+        $CDB = new \DB\CDB;
+        $sQuery = "
+            SELECT
+                `CODE`,`VALUE`
+            FROM
+                ".\AGShop\CAGShop::t_sale_order_props_value."
+            WHERE
+                `ORDER_ID`=$nId
+        ";
+        
+        $arQuery = $CDB->sqlSelect($sQuery);
+        $arResult = [];
+        foreach($arQuery as $arItem)
+            $this->arProps[$arItem["CODE"]] = $arItem["VALUE"];
+        return $arResult;
+        
     }
     
     function getPropery($sPropName){
