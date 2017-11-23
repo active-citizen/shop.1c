@@ -1,8 +1,8 @@
 <?php
-    require_once(realpath(__DIR__."/..")."/CSection.class.php");
-    use AGPhop\Section as Section;
+    require_once(realpath(__DIR__."/..")."/CCatalogSection.class.php");
+    use AGPhop\Catalog as Catalog;
     
-    class agshopSearchStemTest extends PHPUnit_Framework_TestCase{
+    class agshopCatalogSectionTest extends PHPUnit_Framework_TestCase{
 
         function __construct($sTroykaNum){
         }
@@ -11,7 +11,7 @@
             
         */
         function testSectionList(){
-            $objCSection = new \Section\CSection;
+            $objCSection = new \Catalog\CCatalogSection;
             
             $this->assertTrue(boolval($arSections = $objCSection->get()));
             foreach($arSections as $nSectionId=>$arSection){
