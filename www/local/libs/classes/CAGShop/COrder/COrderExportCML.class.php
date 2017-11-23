@@ -155,6 +155,7 @@ class COrderExportCML extends \AGShop\CAGShop{
             }
 
             $arOrder["Товары"] = [];
+            $nTotalSum = 0;
             foreach($arOrderZNI["BASKET"] as $arBasket){
                 $arProduct = [];
                 $arProduct["Количество"] = $arBasket["QUANTITY"];
@@ -179,7 +180,9 @@ class COrderExportCML extends \AGShop\CAGShop{
                 $arProduct["ЦенаЗаЕдиницу"] = $arBasket["PRICE"];
                 
                 $arOrder["Товары"][] = $arProduct;
+                $nTotalSum += $arProduct["Количество"]*$arProduct["ЦенаЗаЕдиницу"];
             }
+            $arOrder["Сумма"] = $nTotalSum;
             
             
             $arResult[] = $arOrder;
