@@ -17,7 +17,6 @@
         ]["NAME"])
     ?></span>&raquo;</p>
     <? endif ?>
-
 <ul class="nav nav-pills nav-stacked partners-order-menu">
     <li class="active">
         <a href="#" rel="order-detail">
@@ -169,8 +168,16 @@ table.mails td{
             </td>
         </tr>
         <tr>
+            <td style="width:200px;">
+                Количество
+            </td>
+            <td>
+                <?= $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["QUANTITY"]?>
+            </td>
+        </tr>
+        <tr>
             <td class="field-name">
-                 Итого:  
+                 Общая сумма:  
             </td><td>
                 <?= 
                     $arResult["ORDER"]["PRICE"]
