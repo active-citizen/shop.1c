@@ -381,10 +381,18 @@ if(
                       </script>
                       <? endif ?>
                       <? if(
+                        $arResult['CATALOG_ITEM']["PROPERTIES"]['ARTNUMBER'][0]["VALUE"]!='troyka'
+                        &&
+                        $arResult['CATALOG_ITEM']["PROPERTIES"]['ARTNUMBER'][0]["VALUE"]!='parking'
+                        &&
                         !$stopMonLimit
                         &&
                         // Если дата мероприятия ещё не вышла
-                        $ts1+24*60*60>time()
+                        (
+                            !$ts1
+                            ||
+                            $ts1+24*60*60>time()
+                        )
                         &&
                         // Если есть на складе
                         count($arResult["OFFERS"][0]["STORAGES"]) 
@@ -413,13 +421,9 @@ if(
                           <div class="ag-shop-card__field">
                             <div class="ag-shop-card__fieldname">Количество:</div>
                             <div class="ag-shop-card__count">
-                            <!--
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--sub" type="button"></button>
-                            -->
                               <div style="padding-top: 3px;" class="ag-shop-card__count-number">1</div>
-                            <!--
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--add" type="button"></button>
-                            -->
                             </div>
                           </div>
                         </div>
@@ -699,6 +703,11 @@ if(
             id="confirm-unit"><?=
             $arResult["CATALOG_ITEM"]["PROPERTIES"]["QUANT"][0]["VALUE"]
             ?></div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Количество:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="confirm-amount">1</div>
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">Получение:</div>

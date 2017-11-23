@@ -220,8 +220,10 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     );?>
     <? endif ?>
     <? 
-       require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
-       $objSettings = new CIntegrationSettings;
+
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+
+       $objSettings = new \Integration\CIntegrationSettings;
        $objSettings->code = 'INFO';
        $arSettings = $objSettings->get();
     ?>

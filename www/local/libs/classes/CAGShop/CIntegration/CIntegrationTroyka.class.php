@@ -1,7 +1,9 @@
 <?
-    require_once(realpath(dirname(__FILE__))."/integrations.class.php");
+    namespace Integration;
+    require_once(realpath(dirname(__FILE__))."/CIntegration.class.php");
+    use AGShop\Integration as Integration;
 
-    class CTroyka extends CIntegration{
+    class CIntegrationTroyka extends \Integration\CIntegration{
         var $number = false;    //!< Номер карты тройка
         var $simpleMode= false;  //!< Упрощенный режим запросов (2 из 5)
         var $cvc = '';          //!< CVC банковской карты
@@ -24,7 +26,6 @@
             if(!$sNum)$sNum = $this->settings["TROYKA_CARD"]["VALUE"];
             if(!$sPhone)$sPhone = $this->settings["TROYKA_PHONE"]["VALUE"];
 
-            CModule::IncludeModule("sale");
             if(!$this->checkTroyka($sNum))return false;
             if(!$this->checkPhone($sPhone))return false;
 
@@ -57,12 +58,10 @@
             @return массив ассоциативных массивов с информацией о карте
         */
         function getBindings(
-            $sOrderNum  //!< Номер заказа в рамках которого идет запрос
+            $sOrderNum=''  //!< Номер заказа в рамках которого идет запрос
         ){
-            if(!$this->checkOrderNum($sOrderNum))return false;
-
             if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new SoapClient(
+            $objSoap = new \SoapClient(
                 $this->url,
                 array(
                     'trace'=>1,
@@ -89,7 +88,7 @@
             
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
 
-            $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
+            $this->curlLog( $this->url, "testcard", $arSoapRequest, $arSoapResult);
 
             if($this->getWsdlErrorInfo($arSoapResult))
                 return false;
@@ -123,7 +122,7 @@
             if(!$this->checkOrderNum($sOrderNum))return false;
 
             if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new SoapClient(
+            $objSoap = new \SoapClient(
                 $this->url,
                 array(
                     'trace'=>1,
@@ -172,7 +171,7 @@
             if(!$this->checkOrderNum($sOrderNum))return false;
 
             if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new SoapClient(
+            $objSoap = new \SoapClient(
                 $this->url,
                 array(
                     'trace'=>1,
@@ -217,7 +216,7 @@
             if(!$this->checkOrderNum($sOrderNum))return false;
 
             if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new SoapClient(
+            $objSoap = new \SoapClient(
                 $this->url,
                 array(
                     'trace'=>1,
@@ -293,7 +292,7 @@
             $this->getPaymentCapabilities($sOrderNum);
 
             if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new SoapClient(
+            $objSoap = new \SoapClient(
                 $this->url,
                 array(
                     'trace'=>1,

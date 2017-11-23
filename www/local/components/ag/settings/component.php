@@ -1,7 +1,8 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+    use AGShop\Integration as Integration;
 
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
-    $objSettings = new CIntegrationSettings($arParams["CODE"]);
+    $objSettings = new \Integration\CIntegrationSettings($arParams["CODE"]);
     if($objSettings->error){
         echo "<pre>";
         print_r($_REQUEST);

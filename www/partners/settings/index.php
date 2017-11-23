@@ -1,6 +1,11 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
+
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+use AGShop\Integration as Integration;
+
+
 ?>
 <div class="partners-main">
     <h1>Настройки</h1>
@@ -23,21 +28,8 @@ $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
     <? if($_REQUEST["GET_BINDINGS"]):?>
     <pre>
     <? 
-        require_once(
-            $_SERVER["DOCUMENT_ROOT"]
-                ."/.integration/classes/troyka.class.php"
-        );
-        $objTroyka = new CTroyka();            
+        $objTroyka = new \Integration\CIntegrationTroyka();            
         $objTroyka->emulation = false;
-
-        $arOrder = CSaleOrder::GetList(
-            array("ID"=>"ASC"),
-            array("!ADDITIONAL_INFO"=>false),
-            false,
-            array("nTopCount"=>1),
-            array("ADDITIONAL_INFO")
-        )->Fetch();
-
 
         if(!$arBindings = $objTroyka->getBindings($arOrder["ADDITIONAL_INFO"])){
             print_r($objTroyka);

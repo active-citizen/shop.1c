@@ -242,14 +242,6 @@ function buyTroika(){
                 $('#card-order-confirm-button-troyka').html('Оформить заказ'); 
             return false;
             }else{
-
-
-                var add_basket_url = "/profile/order/order.ajax.php?add_to_basket=1&id="
-                +totalOfferId
-                +"&quantity="+$('#confirm-amount').html()
-                +"&store_id="+$('#troyka-confirm-store-id').html();
-                
-                // добавляем в корзину
                 $('#card-order-confirm-button-troyka').html('Обработка заказа...');
                 $('#card-order-confirm-button-troyka').prop('disabled', true);
                 $('#card-order-confirm-button-troyka').addClass(
@@ -258,54 +250,37 @@ function buyTroika(){
 
                 $('#card-order-confirm-button-troyka').attr( "onclick" ,"return false;");
                 
+
                 $.get(
-                    add_basket_url,
+                    "/profile/order/order.ajax.php?add_order=Y&id="+totalOfferId
+                        +"&store_id="
+                        +$('#troyka-confirm-store-id').html()
+                        +"&troyka="+troyka_num,
                     function(data){
-                        data = data.replace(/'/gi,'"');
                         var answer = JSON.parse(data);
-                        if(answer.STATUS!='OK'){
-                            ag_ci_rise_error(answer.MESSAGE);
-                            return false;
+                        if(answer.redirect_url){
+                            document.location.href=answer.redirect_url;
+                            $('#card-order-confirm-troika').hide('fast');
                         }
-                        
-                        $.get(
-                            "/profile/order/order.ajax.php?add_order=Y&store_id="+answer.store_id+"&troyka="+troyka_num,
-                            function(data){
-                                var answer = JSON.parse(data);
-                                if(answer.redirect_url){
-                                    document.location.href=answer.redirect_url;
-                                    $('#card-order-confirm-troika').hide('fast');
-                                }
-                                else{
-                                    troykaRiseError(answer.error);
-                                    // Чистим корзину, если заказ неудачен
-                                    $.get(
-                                        "/profile/order/order.ajax.php?clear_basket",
-                                        function(){
-                                            $('#order-process-done').css('display','none');
-                                            $('.ok-button').css('display','block');
-                                            var error_text = '';
-                                            for(i in answer.order.ERROR){
-                                                error_text += ""+answer.order.ERROR[i]+'<br/>';
-                                            }
-                                            error_text += '';
-                                            $('.ag-shop-modal__container .ag-shop-card__warning').remove();
-                                            $('.ag-shop-modal__container').append(
-                                                '<div class="ag-shop-card__warning">'
-                                                    +error_text+
-                                                '</div>'
-                                            );
-            //                              $('.ag-shop-modal-wrap').fadeOut('fast');
-                                        }
-                                    );
-                                }
+                        else{
+                            $('#order-process-done').css('display','none');
+                            $('.ok-button').css('display','block');
+                            var error_text = '';
+                            for(i in answer.order.ERROR){
+                                error_text += ""+answer.order.ERROR[i]+'<br/>';
                             }
-                        );
+                            error_text += '';
+                            $('.ag-shop-modal__container .ag-shop-card__warning').remove();
+                            $('.ag-shop-modal__container').append(
+                                '<div class="ag-shop-card__warning">'
+                                    +error_text+
+                                '</div>'
+                            );
+//                              $('.ag-shop-modal-wrap').fadeOut('fast');
+                        }
                     }
                 );
                 
-
-
             }
         },
         "error" :   function(data){

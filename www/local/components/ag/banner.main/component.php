@@ -130,9 +130,9 @@ if ($this->StartResultCache(false)) {
        
     }
 
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
 
-    $objSettings = new CIntegrationSettings;
+    $objSettings = new \Integration\CIntegrationSettings;
     $objSettings->code = 'BANNERS';
     $arSettings = $objSettings->get();
 

@@ -1,7 +1,9 @@
 <?
-    require_once(realpath(dirname(__FILE__))."/integrations.class.php");
+    namespace Integration;
+    require_once(realpath(dirname(__FILE__))."/CIntegration.class.php");
+    use AGShop\Integration as Integration;
 
-    class CParking extends CIntegration{
+    class CIntegrationParking extends \Integration\CIntegration{
 
         // Доступно только после вызова isLimited 
         function __construct($sPhone){
@@ -63,16 +65,16 @@
                 ||
                 !isset($arAnswer["@attributes"]["errors"])
             ){
-                $this->riseError(print_r($arAnswer["error"],1));
+                $this->addError(print_r($arAnswer["error"],1));
                 
                 return false;
             }
             elseif(!$arAnswer){
-                $this->riseError("Пустой ответ шлюза парковок");
+                $this->addError("Пустой ответ шлюза парковок");
                 return false;
             }
             elseif(isset($arAnswer[0]) && !trim($arAnswer[0])){
-                $this->riseError("Пустой ответ шлюза парковок");
+                $this->addError("Пустой ответ шлюза парковок");
                 return false;
             }
         }
