@@ -80,6 +80,16 @@ elseif(isset($_GET["mark"]) && isset($_GET["product"])){
 
 }
 elseif(isset($_GET["add_order"])){
+
+    require(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CLock/CLock.class.php"
+    );
+    // Пользователь не может сделать более одного заказа в 10 секунд
+    $objLock = new \Lock\CLock("USERORDER", $USER->GetID(), 10);
+    if($objLock->isLocked()){echo json_encode(["no"]);die;}
+    $objLock->lock();
+
     
     if(!$nQuantity = intval($_GET["quantity"]))$nQuantity = 1;
     $nId = intval($_GET["id"]);
