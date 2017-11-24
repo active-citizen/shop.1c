@@ -147,22 +147,14 @@
             120, 602, 
             $objColor, 
             $sBoldFont,
-            (
-                $arOrder["BASKET"]["QUANTITY"]>1
-                ?
-                $arOrder["BASKET"]["QUANTITY"]." шт. по \""
-                :
-                ""
-            )
-            .$arOrder["PROPERTIES"]["QUANT"]["VALUE"]
+            $arOrder["PROPERTIES"]["QUANT"]["VALUE"]
             .(
                 $arOrder["BASKET"]["QUANTITY"]>1
                 ?
-                "\" каждое"
+                " X ".$arOrder["BASKET"]["QUANTITY"]
                 :
                 ""
             )
-            
            ,45
         );
         
