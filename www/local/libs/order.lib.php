@@ -658,10 +658,9 @@ function getDownloadOrders(
             `user`.`ID`=`order`.`USER_ID` ";
     $sFrom .= "
         LEFT JOIN
-    `b_iblock_element_property` as `price`
+    `b_sale_basket` as `basket`
         ON
-            `price`.`IBLOCK_PROPERTY_ID`=".PRICE_PROPERTY_ID."
-            AND `order`.`PRODUCT_ID`=`price`.`IBLOCK_ELEMENT_ID`";
+        `basket`.`ORDER_ID`=`order`.`ID`";
 
 
     $sWhere = "
@@ -910,8 +909,10 @@ function getDownloadOrders(
             `order`.`STORE_ID` as `STORE_ID`,
             `order`.`SECTION_NAME` as `SECTION_NAME`,
             `order`.`MAN_NAME` as `MANUFACTURER_NAME`,
-            `price`.`VALUE_NUM` as `PRICE`,
-            `order`.`CLOSE_DATE` as `CLOSE_DATE`
+            `order`.`CLOSE_DATE` as `CLOSE_DATE`,
+            `basket`.`QUANTITY` as `QUANTITY`,
+            `basket`.`PRICE` as `PRICE`,
+            `basket`.`QUANTITY`*`basket`.`PRICE` as `COST`
         FROM
             $sFrom
         WHERE

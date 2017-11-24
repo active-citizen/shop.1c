@@ -344,6 +344,8 @@ if(isset($_REQUEST["download"])){
         .";".'"Производитель"'   
         .";".'"Стоимость в баллах"'  
         .";".'"Стоимость в рублях"'
+        .";".'"Количество"'  
+        .";".'"Цена в баллах"'
         ."\r\n",
         "cp1251",
         "utf-8"
@@ -435,8 +437,10 @@ if(isset($_REQUEST["continue"])){
             .";".get_date($arOrder["CLOSE_DATE"],false)
             .";".'"'.($arOrder["SECTION_NAME"]).'"'
             .";".'"'.($arOrder["MANUFACTURER_NAME"]).'"'   
-            .";".round($arOrder["PRICE"])
+            .";".round($arOrder["COST"])
             .";".'""'//'"Стоимость в рублях"'
+            .";".round($arOrder["QUANTITY"])
+            .";".round($arOrder["PRICE"])
             ."\r\n",
             "cp1251",
             "utf-8"
