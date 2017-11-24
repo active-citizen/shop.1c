@@ -721,3 +721,11 @@ table.catalog-menu-table{
 .bx-session-message{
     display: none !important;
 }
+
+div.amounter--on{
+    display: flex;
+}
+
+div.amounter--off{
+    display: none;
+}

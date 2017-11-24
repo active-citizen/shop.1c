@@ -251,6 +251,8 @@ function selectStorage(storageId){
             }
         }
     });
+    $('.amounter').removeClass('amounter--off');
+    $('.amounter').addClass('amounter--on');
     loadComments();
 }
 

@@ -408,7 +408,8 @@ if(
                             trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
                         )
                       ):?>
-                      <div class="grid grid--bleed">
+                      <div class="grid grid--bleed amounter amounter<? if(count($arResult["OFFERS"][0]["STORAGES"])==1):
+                      ?>--on<? else: ?>--off<? endif ?>">
 
                         <div class="grid__col-shrink">
                           <div class="ag-shop-card__field ag-shop-card__field--align-right">
