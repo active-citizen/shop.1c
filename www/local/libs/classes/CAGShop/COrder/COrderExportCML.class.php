@@ -188,6 +188,9 @@ class COrderExportCML extends \AGShop\CAGShop{
             $arResult[] = $arOrder;
         }
         
+        // Перекодируем, ибо 1С сопротивляется utf-8
+        $arResult = $this->arrayRecode($arResult);
+        
 //        print_r($arOrdersZNI);
 //        print_r($arResult);
         return $arResult;
@@ -240,6 +243,22 @@ class COrderExportCML extends \AGShop\CAGShop{
         
         $objCOrder = new \Order\COrder;
         $objCOrder->saveProperty("SESSION_ID", $sStatusId);
+    }
+    
+    function arrayRecode($arArray){
+        foreach($arArray as $sKey=>$sValue){
+            if(is_array($sValue)){
+                unset($arArray[$sKey]);
+                $arArray[mb_convert_encoding($sKey,"cp1251","utf-8")] = 
+                    $this->arrayRecode($sValue);
+            }
+            else{
+                unset($arArray[$sKey]);
+                $arArray[mb_convert_encoding($sKey,"cp1251","utf-8")] = 
+                    mb_convert_encoding($sValue,"cp1251","utf-8");
+            }
+        }
+        return $arArray;
     }
     
 }
