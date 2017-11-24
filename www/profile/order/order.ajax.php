@@ -172,6 +172,14 @@ elseif(isset($_GET["add_order"])){
     CModule::IncludeModule('sale');
     CModule::IncludeModule("catalog");
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+    require(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CLock/CLock.class.php"
+    );
+    // Пользователь не может сделать более одного заказа в 10 секунд
+    $objLock = new \Lock\CLock("USERORDER", $USER->GetID(), 10);
+    if($objLock->isLocked()){echo json_encode(["no"]);die;}
+    $objLock->lock();
    
     /////// Получаем корзину пользователя
     $res = CSaleBasket::GetList(array("DATE_INSERT"=>"DESC"), array(
