@@ -86,14 +86,12 @@
             $this->assertArrayHasKey("ID",$arSKUs[0]["SKU"]["OFFER"]);
             $this->assertEquals($arStoreExists["PRODUCT_ID"], $arSKUs[0]["SKU"]["OFFER"]["ID"]);
 
-/*
             $this->assertTrue(
                 boolval($nOrderId = $objCOrder->createFromSite(
                     "Б-90000".date("Ymd")
                 )),
                 print_r($objCOrder->getErrors(),1)
             );
-*/
         }
   
     }

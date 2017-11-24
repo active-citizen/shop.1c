@@ -10,6 +10,7 @@ require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationTroyka.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationParking.class.php");
+require_once(realpath(__DIR__."/..")."/CSync/CSync.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
 
@@ -18,6 +19,7 @@ use AGShop\DB as DB;
 use AGShop\User as User;
 use AGShop\Catalog as Catalog;
 use AGShop\Order as Order;
+use AGShop\Sync as Sync;
 use AGShop\Integration as Integration;
 
 /**
@@ -341,7 +343,8 @@ class COrder extends \AGShop\CAGShop{
         // Если парковка провалилась - баллы не снимаем
         elseif($sParkingStatus == 2){
         }
-        else{
+        // Для админа баллы не снимаем, ибо юниттест
+        elseif($this->getParam("UserId")!=1){
             //////////// Снимает баллы
             require_once(
                 $_SERVER["DOCUMENT_ROOT"]
@@ -389,10 +392,10 @@ class COrder extends \AGShop\CAGShop{
         }
         
         // Обновляем индексную таблицу
-        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
-        syncUser($this->getParam("UserId"));
+        $objCSync = new \Sync\CSync;
+        $objCSync->syncUser($this->getParam("UserId"));
         $nOrderId = $this->getParam("Id");
-        if($nOrderId)syncOrder($nOrderId);
+        if($nOrderId)$objCSync->syncOrder($nOrderId);
 
         // Ставим статус заказ и отправляем соответствующее ЗНИ, в зависимости от результата заказа
         ///// Ставим в очередь на ЗНИ
@@ -599,8 +602,8 @@ class COrder extends \AGShop\CAGShop{
     
         $objCSaleOrderPropsValue = new \CSaleOrderPropsValue;
     //    $bDebug = true;
-        foreach($arOrder["PROPERTIES"] as $sPropName=>$arPropValue["PROPERTY_VALUE"])
-            $this->saveProperty($sPropName, $sStatusId);
+        foreach($arOrder["PROPERTIES"] as $sPropName=>$arPropValue)
+            $this->saveProperty($sPropName, $arPropValue["PROPERTY_VALUE"]);
     
         return true;
     }
@@ -634,7 +637,6 @@ class COrder extends \AGShop\CAGShop{
         Сохранение одного свойства заказа, если известен параметр Id
     */
     function saveProperty($sPropertyCode, $sPropValue){
-
         $nOrderId = $this->getParam("Id");
         $arPropGroup = \CSaleOrderPropsGroup::GetList(
             [],$arPropGroupFilter = ["NAME"=>"Индексы для фильтров"],
