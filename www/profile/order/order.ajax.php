@@ -80,7 +80,6 @@ elseif(isset($_GET["mark"]) && isset($_GET["product"])){
 
 }
 elseif(isset($_GET["add_order"])){
-
     require(
         $_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CLock/CLock.class.php"
