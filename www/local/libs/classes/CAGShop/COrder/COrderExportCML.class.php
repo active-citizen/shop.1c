@@ -109,7 +109,8 @@ class COrderExportCML extends \AGShop\CAGShop{
             $arOrder = [];
             $arOrder["Ид"] = $arOrderZNI["ORDER"]["XML_ID"];
             $arOrder["Номер"] = $arOrderZNI["ORDER"]["ADDITIONAL_INFO"];
-            $arOrder["Дата"] = $arOrderZNI["ORDER"]["DATE_INSERT"];
+            $arOrder["Дата"] =
+            $this->getDateISO($arOrderZNI["ORDER"]["DATE_INSERT"],1);
             $arOrder["ДатаИзменения"] = $this->getDateISO($arOrderZNI["ORDER"]["DATE_UPDATE"]);
             $arOrder["Время"] = $this->getTime($arOrderZNI["ORDER"]["DATE_INSERT"]);
             

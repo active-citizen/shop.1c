@@ -100,7 +100,7 @@
             foreach(["month","day","hour","minute","second"] as $key)
                 $tmp[$key] = sprintf("%02d", $tmp[$key]);
             
-            return (!$bShort?" ".$tmp["hour"]:"")
+            return (!$bShort?"".$tmp["hour"]:"")
                 .(!$bShort?":".$tmp["minute"]:"")
                 .(!$bShort?":".$tmp["second"]:"");
         }

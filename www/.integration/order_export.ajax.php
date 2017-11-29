@@ -9,7 +9,7 @@
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/COrder/COrderExportCML.class.php");
     use AGShop\Order as Order;
 
-    header("Content-type: text/plain; charset=Windows-1251;");
+    header("Content-type: text/plain; charset=windows-1251;");
     if(!$USER->IsAdmin()){
         echo "Failed\nAccess denied";
         die;
@@ -42,7 +42,7 @@
 
     $objExport = new \Order\COrderExportCML;
     $arOrders = $objExport->getLastZNI($session_id);
-    echo '<?xml version="1.0" encoding="utf-8"?>'."\n";
+    echo '<?xml version="1.0" encoding="windows-1251"?>'."\n";
 
 ?><КоммерческаяИнформация xmlns="urn:1C.ru:commerceml_205" <? 
 ?>xmlns:xs="http://www.w3.org/2001/XMLSchema" <?
@@ -129,9 +129,6 @@
             <Ид><? echo $product["Ид"];?></Ид>
             <Наименование><? echo $product["Наименование"];?></Наименование>
             <ЦенаЗаЕдиницу><? echo $product["ЦенаЗаЕдиницу"];?></ЦенаЗаЕдиницу>
-            <ЦенаЗаЕдиницуРублей><? 
-                echo $product["ЦенаЗаЕдиницу"];
-            ?></ЦенаЗаЕдиницуРублей>
             <Количество><? echo intval($product["Количество"]);?></Количество>
             <Сумма><? 
                 echo 
