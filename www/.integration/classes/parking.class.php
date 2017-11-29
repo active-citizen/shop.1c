@@ -55,26 +55,22 @@
 
             // Сохраняем текст ошибок и выходим
             if(
-                (
-                    isset($arAnswer["@attributes"]["errors"])
-                    && 
-                    intval($arAnswer["@attributes"]["errors"])
-                )
-                ||
-                !isset($arAnswer["@attributes"]["errors"])
+                isset($arAnswer["@attributes"]["errors"])
+                && 
+                intval($arAnswer["@attributes"]["errors"])
             ){
-                $this->riseError(print_r($arAnswer["error"],1));
-                
+                $this->riseError("Некорректный ответ сервиса пополнения порковочных баллов");
                 return false;
             }
             elseif(!$arAnswer){
-                $this->riseError("Пустой ответ шлюза парковок");
+                $this->riseError("Пустой ответ сервиса пополнения порковочных баллов");
                 return false;
             }
             elseif(isset($arAnswer[0]) && !trim($arAnswer[0])){
                 $this->riseError("Пустой ответ шлюза парковок");
                 return false;
             }
+            return true;
         }
 
 
