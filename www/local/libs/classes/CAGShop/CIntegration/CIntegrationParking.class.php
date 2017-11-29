@@ -15,7 +15,7 @@
             
         }
 
-        /**
+       /**
             Заказ парковки
         */
         function payment(
@@ -57,28 +57,23 @@
 
             // Сохраняем текст ошибок и выходим
             if(
-                (
-                    isset($arAnswer["@attributes"]["errors"])
-                    && 
-                    intval($arAnswer["@attributes"]["errors"])
-                )
-                ||
-                !isset($arAnswer["@attributes"]["errors"])
+                isset($arAnswer["@attributes"]["errors"])
+                && 
+                intval($arAnswer["@attributes"]["errors"])
             ){
-                $this->addError(print_r($arAnswer["error"],1));
-                
+                $this->riseError("Некорректный ответ сервиса пополнения порковочных баллов");
                 return false;
             }
             elseif(!$arAnswer){
-                $this->addError("Пустой ответ шлюза парковок");
+                $this->riseError("Пустой ответ сервиса пополнения порковочных баллов");
                 return false;
             }
             elseif(isset($arAnswer[0]) && !trim($arAnswer[0])){
-                $this->addError("Пустой ответ шлюза парковок");
+                $this->riseError("Пустой ответ шлюза парковок");
                 return false;
             }
+            return true;
         }
-
 
         /**
             Эмуляния запроса платежа (для прохождения тестов)
