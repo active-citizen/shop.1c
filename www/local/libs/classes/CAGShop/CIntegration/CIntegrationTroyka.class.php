@@ -1,7 +1,9 @@
 <?
     namespace Integration;
     require_once(realpath(dirname(__FILE__))."/CIntegration.class.php");
+    require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
     use AGShop\Integration as Integration;
+    use AGShop\DB as DB;
 
     class CIntegrationTroyka extends \Integration\CIntegration{
         var $number = false;    //!< Номер карты тройка
@@ -492,7 +494,21 @@
             return $arAnswer;
         }
 
+        /**
+            Выдача списка троек по номеру телефона
+        */
+        function unlinkCardByPhone($nCardNum){
+            $CDB = new \DB\CDB;
+            $CDB->delete("int_troika_link",["cardnum"=>$nCardNum]);
+        }
 
+        /**
+            Отвязыкание номера тройки от телефона
+        */
+        function getCardsByPhone($nPhoneNum){
+            $CDB = new \DB\CDB;
+            return $CDB->searchAll("int_troika_link",["login"=>$nPhoneNum]);
+        }
 
     }
 

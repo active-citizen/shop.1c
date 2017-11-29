@@ -1,6 +1,8 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 CModule::IncludeModule('catalog');
-require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+use AGShop\Integration as Integration;
 
 $arParams["ORDER_ID"] = 
     isset($arParams["ORDER_ID"]) && intval($arParams["ORDER_ID"])
@@ -236,7 +238,37 @@ in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
     $arResult["MAILS"] = $obMail->getByOrderId($arParams["ORDER_ID"]);
 }
 
+// Админам доступно отвязывание номеров троек
+if(
+    (
+        $USER->isAdmin()
+        ||
+        in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+    )
+    &&
+    isset($_REQUEST["act"])
+    &&
+    $_REQUEST["act"]=='troyka_del'
+    &&
+    isset($_REQUEST["num"])
+){
+    $objTroyka = new \Integration\CIntegrationTroyka();
+    $objTroyka->unlinkCardByPhone($_REQUEST["num"]);
+}
+
+
+// Админам доступны номера троек для телефона
+if(
+    $USER->isAdmin()
+    ||
+    in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+){
+    $objTroyka = new \Integration\CIntegrationTroyka($USER->GetLogin());
+    $arResult["TROYKA_CARDS"] = $objTroyka->getCardsByPhone(
+        str_replace("u","",$arResult["ORDER"]["USER_LOGIN"])
+    );
+}
+
+
 
 $this->IncludeComponentTemplate();
-
-

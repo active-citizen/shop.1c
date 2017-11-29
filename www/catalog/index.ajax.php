@@ -9,6 +9,12 @@ require($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php");
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
+use AGShop\Integration as Integration;
+
+
     $ON_PAGE = 12;
     $PAGE = isset($_REQUEST["PAGE"])?intval($_REQUEST["PAGE"]):1;
 
@@ -468,27 +474,20 @@ customCache();
     while($arEnum = $res->Fetch())
         $arEnumIndex[$arEnum["ID"]] = $arEnum["VALUE"];
 
+
+
     foreach($arProducts as $product){
         // Костылим суточные лимиты тройки-паркови
         if(preg_match("#parkov#",$product["CODE"])){
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"].
-                "/.integration/classes/parking.class.php"
-            );
-            $objParking = new CParking($USER->GetLogin());
+            $objParking = new \Integration\CIntegrationParking($USER->GetLogin());
             $objParking->clearLocks();
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objParking->isLimited();
             if($bIsLimited)continue;
         }
         if(preg_match("#troyka#",$product["CODE"])){
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"].
-                "/.integration/classes/troyka.class.php"
-            );
-            $objTroya = new CTroyka($USER->GetLogin());
+            $objTroya = new \Integration\CIntegrationTroyka($USER->GetLogin());
             $objTroya->clearLocks();
-            
             // Определяем вышел ли дневной лимит парковок 
             $bIsLimited = $objTroya->isLimited();
             if($bIsLimited)continue;

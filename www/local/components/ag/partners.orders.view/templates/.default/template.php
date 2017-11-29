@@ -167,6 +167,22 @@ table.mails td{
                 <?= str_replace("u","",$arResult["ORDER"]["USER_LOGIN"])?>
             </td>
         </tr>
+        <? if($arResult["TROYKA_CARDS"]):?>
+        <tr>
+            <td>Прикреплённые номера троек</td>
+            <td>
+                <? foreach($arResult["TROYKA_CARDS"] as $arTroyka):?>
+                <div class="troyka">
+                <a href="?act=troyka_del&num=<?= $arTroyka["cardnum"]?>" 
+                title="Отвязать" onclick="return confirm('Точно отвязать \n карту <?= $arTroyka["cardnum"]
+                ?> \n от номера <?= str_replace("u","",$arResult["ORDER"]["USER_LOGIN"])?>?');">
+                    <?= $arTroyka["cardnum"]?><i class="glyphicon glyphicon-remove"></i>
+                </a>
+                </div>
+                <? endforeach ?>
+            </td>
+        </tr>
+        <? endif ?>
         <tr>
             <td style="width:200px;">
                 Количество
