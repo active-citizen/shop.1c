@@ -381,7 +381,8 @@ if(
                       </script>
                       <? endif ?>
                       <? if(
-                        0
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["PROMOCODE"]
+                            [0]["VALUE_ENUM"]!='да'
                         &&
                         CONTOUR=='test'
                         &&

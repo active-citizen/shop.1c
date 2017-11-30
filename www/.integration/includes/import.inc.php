@@ -385,6 +385,8 @@
         // Лидер продаж
         $arProperties["SPECIALOFFER"] = 
             $arProduct["ДоступенПоАкции"]=='Да'?$ENUM["SPECIALOFFER"]["да"]:0;
+        $arProperties["PROMOCODE"] = 
+            $arProduct["Промокод"]=='Да'?$ENUM["PROMOCODE"]["да"]:0;
         // Вычисляем массив хотелок
         $arIwantIds = array();
         if($arProduct["Хотелки"]["Хочу"]){
