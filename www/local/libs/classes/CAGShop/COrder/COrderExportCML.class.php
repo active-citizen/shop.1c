@@ -241,9 +241,9 @@ class COrderExportCML extends \AGShop\CAGShop{
         Установка сесси обмена
     */
     function orderSetSessionId($nOrderId,$sSessionId){
-        
         $objCOrder = new \Order\COrder;
-        $objCOrder->saveProperty("SESSION_ID", $sStatusId);
+        $objCOrder->setParam("Id",$nOrderId);
+        $objCOrder->saveProperty("SESSION_ID", $sSessionId);
     }
     
     function arrayRecode($arArray){
