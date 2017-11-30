@@ -107,7 +107,7 @@ class COrderExportCML extends \AGShop\CAGShop{
             // Отмечаем заказ как "отданный в рамках сессии обмена 
             $this->orderSetSessionId($arOrderZNI["ORDER_ID"],$sSessionId);
             $arOrder = [];
-            $arOrder["Ид"] = $arOrderZNI["ORDER"]["ORDER_ID"];
+            $arOrder["Ид"] = $arOrderZNI["ORDER_ID"];
             $arOrder["Номер"] = $arOrderZNI["ORDER"]["ADDITIONAL_INFO"];
             $arOrder["Дата"] =
             $this->getDateISO($arOrderZNI["ORDER"]["DATE_INSERT"],1);
