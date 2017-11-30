@@ -2,10 +2,11 @@
     /* *****************************************************
         Добавление настройки банеров
     ****************************************************** */
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+    use AGShop\Integration as Integration;
 
-    $objSettings = new CIntegrationSettings;
-    $objSettings->code = 'BANNERS';
+    $objSettings = new \Integration\CIntegrationSettings('BANNERS');
+ 
     $arSettings = $objSettings->get();
 
     if(!isset($arSettings["BANNERS_CHANGE_TIME"])){

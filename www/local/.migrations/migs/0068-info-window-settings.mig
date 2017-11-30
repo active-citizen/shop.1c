@@ -2,10 +2,10 @@
     /* *****************************************************
         Добавление настройки информационного окна
     ****************************************************** */
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/integrationSettings.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+    use AGShop\Integration as Integration;
 
-    $objSettings = new CIntegrationSettings;
-    $objSettings->code = 'INFO';
+    $objSettings = new \Integration\CIntegrationSettings('INFO');
     $arSettings = $objSettings->get();
 
     $arSettings = [];
