@@ -346,6 +346,11 @@ function productConfirmNext(){
     +totalOfferId
     +"&quantity="+$('#confirm-amount').html()
     +"&store_id="+$('#confirm-store-id').html();
+    
+    $('#card-order-confirm-button').html('Обработка заказа...');
+    $('#card-order-confirm-button').attr( "onclick" ,"return false;");
+    $('#card-order-confirm-button').css("opacity","0.6");
+    
     $.get(
         add_order_url,
         function(data){
