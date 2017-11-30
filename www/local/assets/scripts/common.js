@@ -113,7 +113,9 @@ $(document).ready(function() {
         var avaible = parseInt(arOffers[totalOfferId]['STORAGES'][$('input[name="place"]:checked').val()]);
         
         var count = parseInt($('.ag-shop-card__count-number').html());
-        var price = parseInt($('.ag-shop-item-card__points-count').html());
+        var price = $('.ag-shop-item-card__points-count').html();
+        price = price.replace(/ /gi, '');
+        price = parseInt(price);
         if(
             $(this).hasClass('ag-shop-card__count-button--add') 
             && ((count+1)*price)<accountSum
