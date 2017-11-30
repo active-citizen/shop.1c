@@ -321,10 +321,10 @@ class COrder extends \AGShop\CAGShop{
 
             // Производим транзакцию в парковку
             $objParking->payment($sOrderNum);
-            if($objParking->error){
+            if($objParking->getErrors()){
                 
                 // Мапинг кодов ошибок шлюза в сообщения для посетителя
-                $this->addError($objParking->error);
+                $this->addError($objParking->getErrors());
                 // Сохраняем неуспешный статус
                 $sParkingStatus = 2;
             }

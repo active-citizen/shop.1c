@@ -1,4 +1,9 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
+use AGShop\Integration as Integration;
+
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
@@ -155,12 +160,11 @@
             $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                 =='parking'
         ){
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"].
-                "/.integration/classes/parking.class.php"
-            );
             $arUser = $USER->GetById($USER->GetId())->Fetch();
-            $objParking = new CParking(str_replace("u","",$arUser["LOGIN"]));
+
+            $objParking = new \Integration\CIntegrationParking(
+                str_replace("u","",$arUser["LOGIN"])
+            );
             $objParking->clearLocks();
             
             // Определяем вышел ли дневной лимит парковок 
@@ -174,12 +178,10 @@
             $arResult["CATALOG_ITEM"]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                 =='troyka'
         ){
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"].
-                "/.integration/classes/troyka.class.php"
-            );
             $arUser = $USER->GetById($USER->GetId())->Fetch();
-            $objTroya = new CTroyka(str_replace("u","",$arUser["LOGIN"]));
+            $objTroya = new \Integration\CIntegrationTroyka(
+               str_replace("u","",$arUser["LOGIN"])
+            );
             $objTroya->clearLocks();
             
             // Определяем вышел ли дневной лимит парковок 

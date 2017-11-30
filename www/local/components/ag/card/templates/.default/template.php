@@ -381,6 +381,10 @@ if(
                       </script>
                       <? endif ?>
                       <? if(
+                        0
+                        &&
+                        CONTOUR=='test'
+                        &&
                         $arResult['CATALOG_ITEM']["PROPERTIES"]['ARTNUMBER'][0]["VALUE"]!='troyka'
                         &&
                         $arResult['CATALOG_ITEM']["PROPERTIES"]['ARTNUMBER'][0]["VALUE"]!='parking'
