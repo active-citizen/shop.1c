@@ -107,7 +107,7 @@ class COrderExportCML extends \AGShop\CAGShop{
             // Отмечаем заказ как "отданный в рамках сессии обмена 
             $this->orderSetSessionId($arOrderZNI["ORDER_ID"],$sSessionId);
             $arOrder = [];
-            $arOrder["Ид"] = $arOrderZNI["ORDER"]["XML_ID"];
+            $arOrder["Ид"] = $arOrderZNI["ORDER"]["ORDER_ID"];
             $arOrder["Номер"] = $arOrderZNI["ORDER"]["ADDITIONAL_INFO"];
             $arOrder["Дата"] =
             $this->getDateISO($arOrderZNI["ORDER"]["DATE_INSERT"],1);
@@ -178,7 +178,7 @@ class COrderExportCML extends \AGShop\CAGShop{
                 $arProduct["Наименование"] = $arBasket["OFFER"]["MAIN"]["NAME"];
                 $arProduct["Единица"] = $arBasket["OFFER"]["PRODUCT_PROPERTIES"]["QUANT"];
                 $arProduct["Артикул"] = $arBasket["OFFER"]["PRODUCT_PROPERTIES"]["ARTNUMBER"];
-                $arProduct["ЦенаЗаЕдиницу"] = $arBasket["PRICE"];
+                $arProduct["ЦенаЗаЕдиницу"] = number_format($arBasket["PRICE"],2,'.','');
                 
                 $arOrder["Товары"][] = $arProduct;
                 $nTotalSum += $arProduct["Количество"]*$arProduct["ЦенаЗаЕдиницу"];
