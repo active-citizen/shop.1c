@@ -1,7 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Запросы изменения статуса");
-
+require("../group_access.php");
 
 $nRecordsOnPage = 30;
 

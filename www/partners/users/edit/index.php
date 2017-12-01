@@ -1,6 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Редактировать пользователя");
+require("../../group_access.php");
 ?>
 <div class="partners-main">
     <? include("../../menu.php"); ?>

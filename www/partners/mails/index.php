@@ -1,6 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Письма");
+require("../group_access.php");
 ?>
 <div class="partners-main">
     <h1>Отправленные письма</h1>

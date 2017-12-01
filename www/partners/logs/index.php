@@ -1,6 +1,8 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Заказы::Логи обмена");
+require("../group_access.php");
+
 $sQuery = $_REQUEST["query"];
 if(!preg_match("#^[\s\d+]+$#",$sQuery))$sQuery= '';
 ?>
