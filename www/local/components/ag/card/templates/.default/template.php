@@ -504,8 +504,8 @@ if(
                       <? if(
                         $arResult["CATALOG_ITEM"]["PROPERTIES"]["PROMOCODE"]
                             [0]["VALUE_ENUM"]!='да'
-                        &&
-                        CONTOUR=='test'
+//                        &&
+//                        CONTOUR=='test'
                         &&
                         $arResult['CATALOG_ITEM']["PROPERTIES"]['ARTNUMBER'][0]["VALUE"]!='troyka'
                         &&
