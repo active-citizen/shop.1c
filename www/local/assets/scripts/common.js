@@ -111,6 +111,7 @@ $(document).ready(function() {
     $('.ag-shop-card__count-button').click(function(){
         
         var avaible = parseInt(arOffers[totalOfferId]['STORAGES'][$('input[name="place"]:checked').val()]);
+        var mon_limit = parseInt($('#mon-limit').html());
         
         var count = parseInt($('.ag-shop-card__count-number').html());
         var price = $('.ag-shop-item-card__points-count').html();
@@ -118,8 +119,25 @@ $(document).ready(function() {
         price = parseInt(price);
         if(
             $(this).hasClass('ag-shop-card__count-button--add') 
-            && ((count+1)*price)<accountSum
-            && count<avaible
+            && ((count+1)*price)>accountSum
+        ){
+            counterAlert('Для заказа большего количества у вас недостаточно баллов');
+        }
+        else if(
+            $(this).hasClass('ag-shop-card__count-button--add') 
+            && count>=avaible
+        ){
+            counterAlert('В выбранном месте получения нельзя заказать больше');
+        }
+        else if(
+            $(this).hasClass('ag-shop-card__count-button--add') 
+            && mon_limit>0 
+            && count>=mon_limit
+        ){
+            counterAlert('В этом месяце вы не можете заказать больше');
+        }
+        else if(
+            $(this).hasClass('ag-shop-card__count-button--add') 
         ){
             count++;
         }
@@ -131,6 +149,14 @@ $(document).ready(function() {
         $('.ag-shop-card__submit-button strong').html(count*price);
         $('.ag-shop-card__submit-button span').html(pointsForms(count*price));
     });
+
+    function counterAlert(txt){
+        $('#counter-hint span').html(txt);
+        $('#counter-hint').fadeIn('slow');
+        setTimeout(function(){
+            $('#counter-hint').fadeOut('slow');
+        },3000);
+    }
 
     function pointsForms(points){
         if(points%100==11){
@@ -286,9 +312,16 @@ function selectStorage(storageId){
             }
         }
     });
+    updateCounter();
     $('.amounter').removeClass('amounter--off');
     $('.amounter').addClass('amounter--on');
     loadComments();
+}
+
+function updateCounter(){
+    var avail = arOffers[totalOfferId]['STORAGES'][$('input[name="place"]:checked').val()];
+    if( parseInt($('.ag-shop-card__count-number').html()) > avail)
+        $('.ag-shop-card__count-number').html(avail);
 }
 
 
@@ -373,6 +406,17 @@ function productConfirm(){
     $('#confirm-cost span').html($('#ag-shop-card__total-points').html());
     $('#confirm-store').html($('.ag-shop-card__selected-place-station').html());
     $('#confirm-store-id').html(totalStoreId);
+    if(parseInt($('#confirm-amount').html())>1){
+        $('#confirm-total-row').css('display','block');
+        $('#confirm-total').html(
+            $('.ag-shop-card__submit-button strong').html()
+            + ' ' 
+            + $('.ag-shop-card__submit-button span').html()
+        );
+    }
+    else{
+        $('#confirm-total-row').css('display','none');
+    }
 }
 
 function productConfirmNext(){

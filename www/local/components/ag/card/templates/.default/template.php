@@ -536,6 +536,11 @@ if(
                       ):?>
                       <div class="grid grid--bleed amounter amounter<? if(count($arResult["OFFERS"][0]["STORAGES"])==1):
                       ?>--on<? else: ?>--off<? endif ?>">
+                        <span id="mon-limit" style="display:none"><?=
+                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"]
+                            -
+                            $arResult["MON_ORDERS"]
+                        ?></span>
 
                         <div class="grid__col-shrink" style="display:none;">
                           <div class="ag-shop-card__field ag-shop-card__field--align-right">
@@ -550,7 +555,12 @@ if(
                             <div class="ag-shop-card__count">
                               <button class="ag-shop-card__count-button ag-shop-card__count-button--sub" type="button"></button>
                               <div style="padding-top: 3px;" class="ag-shop-card__count-number">1</div>
-                              <button class="ag-shop-card__count-button ag-shop-card__count-button--add" type="button"></button>
+                              <button class="ag-shop-card__count-button ag-shop-card__count-button--add" type="button">
+                                  <div class="ag-shop-modal__alert"
+                                  id="counter-hint" class="counter-hint"
+                                  style="display: none"><i class="ag-shop-icon
+                                  ag-shop-icon--attention"></i><span></span></div>
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -715,6 +725,11 @@ if(
             <div class="ag-shop-modal__label">Количество:</div>
             <div class="ag-shop-modal__text ag-shop-modal__text--marked"
             id="confirm-amount">1</div>
+          </div>
+          <div class="ag-shop-modal__row" id="confirm-total-row" style="display:none">
+            <div class="ag-shop-modal__label">Итого:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="confirm-total">1</div>
           </div>
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__label">Получение:</div>
