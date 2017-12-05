@@ -48,6 +48,7 @@ if(
     && isset($_GET["filename"])
     && $_GET["type"]=='catalog' 
     && $_GET["mode"]=="import"
+    && !preg_match("#\.\.#", $_GET["filename"])
     && file_exists($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$_GET["filename"])
 ){
     $filename = LOGGER_INPUT_FILENAME;

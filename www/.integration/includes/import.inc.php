@@ -3,7 +3,7 @@
     // Загружаем XML
     $xmlImport = file_get_contents($uploadDir.$importFilename);
     $obImport = simplexml_load_string($xmlImport, "SimpleXMLElement" );
-    
+
     // Преобразуем объект к массиву
     $arImport = json_decode(json_encode((array)$obImport), TRUE);        
     

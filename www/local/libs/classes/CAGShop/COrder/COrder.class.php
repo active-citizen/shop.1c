@@ -430,6 +430,7 @@ class COrder extends \AGShop\CAGShop{
     function setZNI($sStatusId,$sOldStatusId){
         
         $this->saveProperty("CHANGE_REQUEST", $sStatusId);
+        $nOrderId = $this->getParam("Id");
     
         // Сохраняем запись в истории
         \CSaleOrderChange::AddRecord($nOrderId,
@@ -764,7 +765,7 @@ class COrder extends \AGShop\CAGShop{
         Вернуть все позиции что зарезервировали на склад
     */
     function returnToStore(){
-        return false;
+//        return false;
         $objCCatalogStore = new \Catalog\CCatalogStore;
         $arSKUs = $this->getSKUs();
         foreach($arSKUs as $arSKU)
