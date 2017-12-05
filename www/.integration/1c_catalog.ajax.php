@@ -29,6 +29,10 @@
         echo "failure\nAccess Denied\n";
         die;
     }
+    if(preg_match("#^offers.*\.xml$#")){
+        echo "success";
+        die;
+    }
    
     
     $uploadDir = $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/";
