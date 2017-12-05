@@ -258,7 +258,7 @@
                 !$arAnswer["result"]
             )return $this->riseError(
                 "Не получен результат запроса метода "
-                .$this->getMethod
+                .$this->getMethod()
             );
 
             return $arAnswer["result"];            
