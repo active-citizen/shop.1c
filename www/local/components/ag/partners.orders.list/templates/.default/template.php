@@ -92,6 +92,9 @@ onchange="document.getElementById('form_filter').submit();"
             <input name="sort_product" type="submit" value="&#9660;" 
             class="partners-sort-down">
         </th>
+        <th rowspan="2">
+            Кол-во
+        </th>
         <!--
         <th width="120px">
             Номер Тройки
@@ -294,6 +297,9 @@ onchange="document.getElementById('form_filter').submit();"
         <td class="td-product">
             <?= $arOrder["PRODUCT_NAME"]?>
         </td>
+        <td class="td-amount">
+            <?= $arOrder["QUANTITY"]?$arOrder["QUANTITY"]:1 ?>
+        </td>
         <!--
         <td>
             <?= $arOrder["PROPERTIES"]["TROIKA"]["VALUE"]?>
@@ -372,6 +378,10 @@ function getPagination($arResult, $arParams){
 </div>
 <style>
 div.pages{
+}
+.td-amount{
+    color: red;
+    text-align: center;
 }
 </style>
 <?

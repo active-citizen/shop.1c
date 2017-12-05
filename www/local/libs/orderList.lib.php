@@ -341,6 +341,7 @@ function getDownloadOrders(
     $sQuery = "
         SELECT
             `order`.`ID` as `ID`,
+            `order`.`QUANTITY` as `QUANTITY`,
             `order`.`ADDITIONAL_INFO` as `ADDITIONAL_INFO`,
             CONCAT(`user`.`LAST_NAME`,' ',`user`.`NAME`) as `FIO`,
             `user`.`EMAIL` as `USER_EMAIL`,

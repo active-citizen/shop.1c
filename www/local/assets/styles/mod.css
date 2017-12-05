@@ -729,3 +729,16 @@ div.amounter--on{
 div.amounter--off{
     display: none;
 }
+
+#counter-hint{
+    margin-left: 15px;
+    margin-top: 5px;
+    max-width: 200px;
+    min-width: 200px;
+    min-height: 50px;
+    position: absolute;
+    color: #b80d0d;
+    z-index: 9999;
+    font-size: 13px;
+    padding-right: 50px;
+}

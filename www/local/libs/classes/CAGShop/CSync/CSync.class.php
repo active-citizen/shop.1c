@@ -108,7 +108,8 @@
         // Находим ID прозукта
         $sQuery = "
             SELECT
-               `prod_link`.`VALUE_NUM` as `ID`
+               `prod_link`.`VALUE_NUM` as `ID`,
+               `basket`.`QUANTITY` as `QUANTITY`
             FROM
                 `b_sale_basket` as `basket`
                     LEFT JOIN
@@ -173,7 +174,8 @@
                     `MAN_NAME`='".$DB->ForSql($arProps["MANUFACTURER_NAME"])."',
                     `PRODUCT_NAME`='".$DB->ForSql($arProps["PRODUCT_NAME"])."',
                     `PRODUCT_ID`='".$DB->ForSql($arProduct["ID"])."',
-                    `PROMOCODES`='".$DB->ForSql($arProps["PROMOCODES"])."'
+                    `PROMOCODES`='".$DB->ForSql($arProps["PROMOCODES"])."',
+                    `QUANTITY`='".($arProduct["QUANTITY"])."'
 
                 WHERE
                     `ID`='".$arOrder["ID"]."'
@@ -202,6 +204,7 @@
                     ,`SECTION_NAME`
                     ,`MAN_NAME`
                     ,`PROMOCODES`
+                    ,`QUANTITY`
                 )
                 VALUES(
                     '".$DB->ForSql($arOrder["ID"])."'
@@ -223,6 +226,7 @@
                     ,'".$DB->ForSql($arProps["SECTION_NAME"])."'
                     ,'".$DB->ForSql($arProps["MANUFACTURER_NAME"])."'
                     ,'".$DB->ForSql($arProps["PROMOCODES"])."'
+                    ,'".$DB->ForSql($arProduct["QUANTITY"])."'
                 )
             ";
         }

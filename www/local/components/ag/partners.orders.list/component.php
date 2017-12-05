@@ -444,6 +444,7 @@ $arOrders = getDownloadOrders(
     $arFilter,$arOrder,false
     ,$arParams["ON_PAGE"],($arParams["PAGE"]-1)*$arParams["ON_PAGE"]
 );
+
 $arResult["ORDERS"] = $arOrders;
 $arResult["TOTAL"] = getDownloadOrders($arFilter,$arOrder,true);
 $arResult["PAGES"] = get_pages_list(
