@@ -19,6 +19,9 @@
         elseif($points%10==1){
             return 'балл';
         }
+        elseif($points%10==2){
+            return 'балла';
+        }
         elseif($points%10==3){
             return 'балла';
         }

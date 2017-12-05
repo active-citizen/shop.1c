@@ -129,7 +129,40 @@ $(document).ready(function() {
         $('.ag-shop-card__count-number').html(count);
         $('#ag-shop-card__total-points').html(count*price);
         $('.ag-shop-card__submit-button strong').html(count*price);
+        $('.ag-shop-card__submit-button span').html(pointsForms(count*price));
     });
+
+    function pointsForms(points){
+        if(points%100==11){
+            return 'баллов';
+        }
+        else if(points%100==12){
+            return 'баллов';
+        }
+        else if(points%100==13){
+            return 'баллов';
+        }
+        else if(points%100==14){
+            return 'баллов';
+        }
+        else if(points%10==1){
+            return 'балл';
+        }
+        else if(points%10==2){
+            return 'балла';
+        }
+        else if(points%10==3){
+            return 'балла';
+        }
+        else if(points%10==4){
+            return 'балла';
+        }
+        else{
+            return 'баллов';
+        }
+    }
+
+
     
     /**
      * Выбор конкретного предложения

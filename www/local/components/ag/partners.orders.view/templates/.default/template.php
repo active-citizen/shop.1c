@@ -184,10 +184,10 @@ table.mails td{
         </tr>
         <? endif ?>
         <tr>
-            <td style="width:200px;">
+            <td style="width:200px; color: red;">
                 Количество
             </td>
-            <td>
+            <td style="color: red;">
                 <?= $arResult["ORDER"]["BASKET"][0]["BASKET_ITEM"]["QUANTITY"]?>
             </td>
         </tr>
@@ -467,10 +467,10 @@ href="/partners/orders/print.php?print=cancel&order=<?=
             </td>
         </tr>
         <tr>
-            <td style="width:200px;">
+            <td style="width:200px; color: red;">
                 Количество
             </td>
-            <td>
+            <td style="color: red;">
                 <?= $arBasket["BASKET_ITEM"]["QUANTITY"]?> &times; 
                 <?= $arBasket["PRODUCT"]["PROPERTY_QUANT_VALUE"]?> 
             </td>
