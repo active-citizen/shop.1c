@@ -10,6 +10,7 @@ h4{
     color: rgba(0,122,108,1);
     overflow: hidden;
     display: inline-flex; 
+    padding-left: 4px;
 }
 
 /*

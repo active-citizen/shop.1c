@@ -1145,6 +1145,11 @@ body {
   padding-right: 29px;
   padding-left: 10px;
 }
+
+.ag-shop-profile-order--{
+  border:1px solid #ddd;
+}
+
 .ag-shop-profile-order--active .ag-shop-profile-order__status {
   color: rgba(0,122,108,1);
 }

@@ -1379,6 +1379,16 @@ input:checked + .ag-shop-card__places-item:before {
   font-weight: 500;
   color: #b80d0d;
   margin-bottom: 30px;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  -o-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .ag-shop-card__requirements a {
   display: inline;
@@ -2196,7 +2206,7 @@ input:checked + .ag-shop-card__places-item:before {
 
   .ag-shop-card__container {
     margin: 0;
-    max-width: initial;
+    max-width: 100%;
   }
 
   .ag-shop-card__image-container {
