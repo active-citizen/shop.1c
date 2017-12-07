@@ -13,6 +13,9 @@
             \CModule::IncludeModule('iblock');
         }
         
+        /**
+            Получить свойства элемента каталога по его ID
+        */
         function getProperties($nProductId){
             $nProductId = intval($nProductId);
             $CDB = new \DB\CDB;
