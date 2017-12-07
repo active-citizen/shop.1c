@@ -2,7 +2,16 @@
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CUser/CUser.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogWishes.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/COrder/COrder.class.php");
+
 use AGShop\Integration as Integration;
+use AGShop\User as User;
+use AGShop\Order as Order;
+use AGShop\Catalog as Catalog;
 
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
@@ -17,75 +26,42 @@ use AGShop\Integration as Integration;
 
 
     //Определяем сумму на счету пользователя
-    CModule::IncludeModule("sale");
-    CModule::IncludeModule("forum");
-    $res = CSaleUserAccount::GetList(
-        ["TIMESTAMP_X"=>"DESC"],
-        ["USER_ID"=>$arParams["USER_ID"]]
+    $objCUser = new \User\CUser;
+    $arResult["ACCOUNT"] = [];
+    $arPointsInfo = $objCUser->getPoints($arParams["USER_ID"]);
+    $arResult["ACCOUNT"] =["CURRENT_BUDGET"=>$arPointsInfo["current_points"]];
+
+
+    $objCProduct = new \Catalog\CCatalogProduct;
+    $arResult["CATALOG_ITEM"] = $objCProduct->getByCode(
+        $arParams["PRODUCT_CODE"]
     );
-
-    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
-    $objPoints = new bxPoint;
-    $arPoints = $objPoints->fetchAccountFromAPI();
-    $arResult["ACCOUNT"] =
-       ["CURRENT_BUDGET"=>$arPoints["status"]["current_points"]];
-
-
-    CModule::IncludeModule('iblock');
-    // Информация об элементе каталога
-    $resCatalog = CIBlockElement::GetList(
-        array(),array(
-            "IBLOCK_ID" =>  $arParams["CATALOG_IBLOCK_ID"],
-            "CODE"      =>   $arParams["PRODUCT_CODE"]
-        ),
-        false,
-        array("nTopCount"=>1)
-    );
-    $arResult["CATALOG_ITEM"] = $resCatalog->GetNext();
 
     // Информацация о разделе
-    $arResult["CATALOG_ITEM"]["SECTION_INFO"] = CIBlockSection::GetList(
-        array(),array(
-            "IBLOCK_ID" =>  $arParams["CATALOG_IBLOCK_ID"],
-            "ID"      =>    $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
-        ),
-        false,
-        array("nTopCount"=>1)
-    )->GetNext();
+    $objCSection = new \Catalog\CCatalogSection;
+    $arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCSection->getById(
+        $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
+    );
 
     // Сколько у товара всего желающих
-    $arFilter = array(
-        "IBLOCK_CODE"=>"whishes", 
-        "PROPERTY_WISH_PRODUCT"=>$arResult["CATALOG_ITEM"]["ID"]
+    $objCWishes = new \Catalog\CCatalogWishes;
+    $arResult["WISHES"] = $objCWishes->getCountByCatalogId(
+        $arResult["CATALOG_ITEM"]["ID"]
     );
-    $res1 = CIBlockElement::GetList(array(),$arFilter,false, array());
-    $arResult["WISHES"] = $res1->SelectedRowsCount();
 
     // Входит ли товар с писок моих желаний
-    $arFilter = array(
-        "IBLOCK_CODE"=>"whishes", 
-        "PROPERTY_WISH_USER"=>$arParams["USER_ID"],
-        "PROPERTY_WISH_PRODUCT"=>$arResult["CATALOG_ITEM"]["ID"]);
-    $res1 = CIBlockElement::GetList(array(),$arFilter,false, array("nTopCount"=>1));
-    $arResult["MYWISH"] = $res1->SelectedRowsCount();
+    $arResult["MYWISH"] = $objCWishes->isWished(
+        $arResult["CATALOG_ITEM"]["ID"], $arParams["USER_ID"]
+    );
 
     // Свойства элемента каталога
-    $arResult["CATALOG_ITEM"]["PROPERTIES"] = array();
-    $resProps = CIBlockElement::GetProperty(
-        $arParams["CATALOG_IBLOCK_ID"],$arResult["CATALOG_ITEM"]["ID"]
-    );
-    while($arProp = $resProps->GetNext()){
-        if(!isset($arResult["CATALOG_ITEM"]["PROPERTIES"]))
-            $arResult["CATALOG_ITEM"]["PROPERTIES"][$arProp["CODE"]] = array();
-        if($arProp["PROPERTY_TYPE"]=='F')
-            $arProp["FILE_PATH"] = CFile::GetPath($arProp["VALUE"]);
-        $arResult["CATALOG_ITEM"]["PROPERTIES"][$arProp["CODE"]][] = $arProp;
-    }
+    $arResult["CATALOG_ITEM"]["PROPERTIES"] = 
+        $objCProduct->getPropertiesForCard($arResult["CATALOG_ITEM"]["ID"]);
 
     // Вычисляем количество заказанного в этом месяце товара пользователем
-    $arLimitInfo = getMounthProductCount(
-        CUser::GetId(),
-        $arResult["CATALOG_ITEM"]["ID"]
+    $objCOrder = new \Order\COrder;
+    $arLimitInfo = $objCOrder->getMounthProductCount(
+        CUser::GetId(), $arResult["CATALOG_ITEM"]["ID"]
     );
     $arResult["MON_ORDERS"] = $arLimitInfo["count"];
     $arResult["NEXT_ORDER"] = $arLimitInfo["next"];

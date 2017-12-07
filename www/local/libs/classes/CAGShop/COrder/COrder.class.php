@@ -49,7 +49,77 @@ class COrder extends \AGShop\CAGShop{
         \CModule::IncludeModule("sale");
     }
 
+    /**
+        Определение сколько в этом месяце пользователь заказал товара
+    */
+    function getMounthProductCount(
+        $nUserId,
+        $nProductId
+    ){
+        global $DB;
+        $nUserId = intval($nUserId);
+        $nPropuctId = intval($nProductId);
     
+        // Вычисляем ID свойства привязки к элементу каталога
+        
+        $sQuery = "
+            SELECT
+                `ID` as `id`
+            FROM
+                `b_iblock_property` as `a`
+            WHERE
+                `a`.`IBLOCK_ID`=".OFFER_IB_ID."
+                AND `a`.`CODE`='CML2_LINK'
+            LIMIT 
+                1
+        ";
+    
+        $arProp = $DB->Query($sQuery)->Fetch();
+        $nPropId = isset($arProp["id"])?$arProp["id"]:0;
+        $sStartDate = date("Y-m-d H:i:s",mktime(
+            date("H"),date("i"),date("s"),
+            date("m")-1,date("d"),date("Y")
+        ));
+    
+        $sQuery = "
+            SELECT
+                count(`b`.`ID`) as `count`,
+                DATE_FORMAT(DATE_ADD(`a`.`DATE_INSERT`, INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
+                -- ,`a`.`DATE_INSERT` as `order_date`
+                -- ,`c`.`VALUE_NUM` as `product_id`
+                -- ,`a`.`ID` as `order_id`
+                -- ,`b`.`PRODUCT_ID` as `offer_id`
+            FROM 
+                `b_iblock_element_property` as `c`
+                    LEFT JOIN
+                `b_sale_basket` as `b`
+                    ON `b`.`PRODUCT_ID`=`c`.`IBLOCK_ELEMENT_ID`
+                    LEFT JOIN
+                `b_sale_order` as `a`
+                    on `b`.`ORDER_ID`=`a`.`ID`
+    
+            WHERE
+                1
+                AND `c`.`IBLOCK_PROPERTY_ID`=$nPropId
+                AND `c`.`VALUE_NUM`=$nProductId
+                AND `a`.`USER_ID`=$nUserId
+                AND `a`.`STATUS_ID` IN ('F','AA','N')
+                AND `a`.`DATE_INSERT`>'$sStartDate'
+            LIMIT
+                1
+        ";
+        $arQuery = $DB->Query($sQuery)->Fetch();
+        return [
+            "next"  =>  isset($arQuery["next"])?$arQuery["next"]:date("d.m.Y H:i:s"),
+            "count" =>  isset($arQuery["count"])?$arQuery["count"]:0
+        ]; 
+    }
+
+
+
+    /**
+        Добавление к заказу торгового предложения
+    */
     function addSKU($nSKUId, $nStoreId, $nCount){
         $nSKUId = intval($nSKUId);
         $nStoreId = intval($nStoreId);
