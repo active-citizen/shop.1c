@@ -1432,7 +1432,7 @@
   position: relative;
   top: 20%;
   box-sizing: border-box;
-  width:17.75%;
+  min-width:17.75%;
   max-width: 700px;
   background: #fff;
   padding: 10px;
@@ -1457,11 +1457,8 @@
   border-radius: 0;
   text-decoration: none;
   color: inherit;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
   cursor: pointer;
-  display: block;
+  display: inline-block;
   width: 100%;
   border: 1px solid #ececec;
   border-radius: 3px;
@@ -1471,6 +1468,10 @@
   color: #263146;
   line-height: 13px;
   padding: 8px 11px;
+  position: relative;
+}
+@media (max-width: 992px) {
+  .ag-shop-modal__select{display: block;}
 }
 .ag-shop-modal__select::moz-focus-inner {
   border: 0;
@@ -1884,3 +1885,4 @@
     display: none;
   }
 }
+
