@@ -81,6 +81,7 @@ if(
                 &&
                 CUser::IsAuthorized()
             ): ?>
+            </pre>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
                     Для заказа данного поощрения необходимо набрать 

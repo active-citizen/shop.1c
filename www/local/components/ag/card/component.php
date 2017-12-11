@@ -29,7 +29,7 @@ use AGShop\Catalog as Catalog;
     $objCUser = new \User\CUser;
     $arResult["ACCOUNT"] = [];
     $arPointsInfo = $objCUser->getPoints($arParams["USER_ID"]);
-    $arResult["ACCOUNT"] =["CURRENT_BUDGET"=>$arPointsInfo["current_points"]];
+    $arResult["ACCOUNT"] =["CURRENT_BUDGET"=>$arPointsInfo["status"]["current_points"]];
 
 
     $objCProduct = new \Catalog\CCatalogProduct;
