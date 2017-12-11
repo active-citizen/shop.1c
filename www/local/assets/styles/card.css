@@ -1407,8 +1407,8 @@ input:checked + .ag-shop-card__places-item:before {
   display: inline-block;
   vertical-align: middle;
   box-sizing: border-box;
-  width: 180px;
-  padding: 12px 20px;
+  width: 100px;
+  padding: 5px 10px;
   border: 1px solid rgba(0,122,108,1);
   border-radius: 3px;
   color: #2f9adc;
@@ -1488,6 +1488,7 @@ input:checked + .ag-shop-card__places-item:before {
   display: block;
   position: absolute;
   box-sizing: border-box;
+  width: 177px;
   max-width: 190px;
   background: #fff;
   border-radius: 3px;

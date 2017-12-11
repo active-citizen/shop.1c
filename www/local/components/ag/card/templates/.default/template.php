@@ -314,7 +314,8 @@ if(
                         <div class="ag-shop-card__fieldname">Введите номер карты Тройка:</div>
                         <div class="ag-shop-card__card-number">
                           <select class="ag-shop-modal__select" id="troyka-card-number">
-                            <option value="">Добавить карту</option>
+                            <option value="">Добавить карту...</option>
+                            <p class="ag-shop-modal__select_arrow"></p>
                           </select>
                           <input class="ag-shop-card__card-number-input"
                           type="tel" placeholder="0000000000" value=""
@@ -323,7 +324,7 @@ if(
                           <div class="ag-shop-card__card-number-tooltip">
                             <div
                             class="ag-shop-card__card-number-tooltip-content"><img
-                            src="/local/assets/images/troyka.png">
+                            src="/local/assets/images/troyka_last_v.png">
                               <p>Пример: <br>0004456789 (10цифр)</p>
                             </div>
                           </div>
@@ -397,7 +398,7 @@ if(
                         </div>
                       </div>
                       <? endforeach ?>
-                      <div class="ag-shop-card__field ag-shop-card__field--error">
+                      <div class="ag-shop-card__field ">
                         <div class="ag-shop-card__fieldname">Где получить?</div>
                         <!-- 
                         <div class="ag-shop-card__places-tabs">
@@ -422,7 +423,7 @@ if(
                         <div class="ag-shop-card__selected-place">
                           <div class="ag-shop-card__selected-place-header">
                             <div class="grid grid--bleed grid--justify-space-between">
-                              <div class="grid__col-xs-12 grid__col-sm-shrink">
+                              <div class="grid__col-xs-12 grid__col-sm-shrink mobile_none">
                                 <div class="ag-shop-card__selected-place-station">
                                     <i class="ag-shop-icon ag-shop-icon--metro"></i>
                                     <span>

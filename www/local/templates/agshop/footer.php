@@ -149,7 +149,7 @@
 
 
     <div class="ag-shop-modal-wrap" id="rise-error" style="display:none">
-      <div class="ag-shop-modal">
+      <div class="ag-shop-modal pop_width_auto">
         <div class="ag-shop-modal__container">
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__alert">
