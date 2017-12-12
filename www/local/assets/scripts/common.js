@@ -94,6 +94,13 @@ $(document).ready(function() {
         $('#ag-sorting').val($(this).attr('rel'));
         ag_filter();
         return false;
+    })
+    /*событие для кнопки фильтр js-filters-toggle*/    
+    $('.js-filters-toggle').click(function(){
+        $(this).toggleClass('ag-shop-menu__link--active');
+        $('#ag-sorting').val($(this).attr('rel'));
+        ag_filter();
+        return false;
     });
 
     /**
