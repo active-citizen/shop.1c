@@ -21,7 +21,7 @@
           <div class="ag-shop-footer__links">
             <a class="ag-shop-footer__link" href="/rules/hiw/">О проекте</a>
             <a class="ag-shop-footer__link" href="/rules/faq/">Часто задаваемые вопросы</a>
-            <!-- 
+            <!--
             <a class="ag-shop-footer__link" href="#" onclick="return showCommonFeedbackForm();">Обратная связь</a>
             -->
           </div>
@@ -63,7 +63,7 @@
                 $arUser = CUser::GetById(CUSER::GEtID())->GetNext();
                 echo ($arUser["NAME"] || $arUser["LAST_NAME"]?$arUser["NAME"]." ".$arUser["LAST_NAME"]:$arUser["LOGIN"]);
             ?></div>
-            
+
           </div>
           <div class="ag-shop-modal__row">
             <label>
@@ -123,7 +123,7 @@
                     //$_COOKIE["EMPSESSION"]
                 )
             ):?>
-               <!-- Забираем сессию из мобильного приложения --> 
+               <!-- Забираем сессию из мобильного приложения -->
                 <script>
                 $.post(
                 '/.integration/auth.ajax.php?backurl='+document.location.href,
@@ -136,7 +136,7 @@
                     catch(e){
                         answer.errors = new Array(e.message);
                     }
-                    
+
                     // Формируем блок ошибок
                     for(i in answer.errors){
                         //alert(answer.errors[i]);
@@ -149,7 +149,7 @@
 
 
     <div class="ag-shop-modal-wrap" id="rise-error" style="display:none">
-      <div class="ag-shop-modal pop_width_auto">
+      <div class="ag-shop-modal pop_width_auto popup_center">
         <div class="ag-shop-modal__container">
           <div class="ag-shop-modal__row">
             <div class="ag-shop-modal__alert">
