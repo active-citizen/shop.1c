@@ -599,9 +599,23 @@
 .ag-shop-item-card--dark .ag-shop-item-card__info-layer {
   background-color: rgba(23,51,59,0.2);
 }
-.ag-shop-item-card:not(.ag-shop-item-card--app):hover .ag-shop-item-card__info-layer {
-  background-color: rgba(23,51,59,0.8);
+
+@media screen and (min-width: 768px) {
+  
+  .ag-shop-item-card:not(.ag-shop-item-card--app):hover .ag-shop-item-card__info-layer {
+    background-color: rgba(23,51,59,0.8);
+  }
 }
+@media screen and (max-width: 768px) {
+  .ag-shop-item-card:not(.ag-shop-item-card--app):hover .ag-shop-item-card__info-layer {
+    background-color:transparent;
+  }
+  .ag-shop-item-card:not(.ag-shop-item-card--app):focus .ag-shop-item-card__info-layer,
+  .ag-shop-item-card:not(.ag-shop-item-card--app):active .ag-shop-item-card__info-layer {
+    background-color: rgba(23,51,59,0.8);
+  }
+}
+
 .ag-shop-item-card__points {
   position: absolute;
   top: 20px;

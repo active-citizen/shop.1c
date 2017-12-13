@@ -399,7 +399,7 @@ if(
                         </div>
                       </div>
                       <? endforeach ?>
-                      <div class="ag-shop-card__field ">
+                      <div class="ag-shop-card__field js-choose__place">
                         <div class="ag-shop-card__fieldname">Где получить?</div>
                         <!-- 
                         <div class="ag-shop-card__places-tabs">
