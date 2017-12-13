@@ -289,6 +289,9 @@ function input_variant_click(obj){
 
 
 function selectStorage(storageId){
+    //Если мы выбрали место, удаляем класс ошибки
+    $('.js-choose__place').removeClass('ag-shop-card__field--error');
+
     totalStoreId = storageId;
     $('.ag-shop-card__selected-place-table').html('');
     var value= '';
@@ -401,6 +404,7 @@ function productConfirm(){
     // Не выбран склад
     if(!totalStoreId){
         riseError('Выберите склад получения');
+        $('.js-choose__place').addClass('ag-shop-card__field--error');
         return false;
     }
     $('#card-order-confirm').fadeIn();
