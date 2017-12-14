@@ -105,7 +105,7 @@
                     $arResult[$arProp["CODE"]] = [];
                 if($arProp["PROPERTY_TYPE"]=='F')
                     $arProp["FILE_PATH"] = \CFile::GetPath($arProp["VALUE"]);
-                $arResult[$arProp["CODE"]] = $arProp;
+                $arResult[$arProp["CODE"]][] = $arProp;
             }
             return $arResult;
         }
