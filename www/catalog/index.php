@@ -7,6 +7,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     
 ?>
 <? if(0 && !$USER->IsAuthorized()):?>
+<? elseif(IS_MOBILE):?>
+
 <? else: ?>
 
         <div class="ag-shop-content">
@@ -25,4 +27,5 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
           </div>
         </div>
 <? endif ?>
+
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

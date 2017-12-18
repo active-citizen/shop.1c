@@ -1,0 +1,60 @@
+<?php
+
+    if(file_exists("../common.php"))
+        require_once("../common.php");
+
+    /**
+     * Добавление шаблона к основному сайту
+     */
+    class add_ag_template extends Migration{
+        /**
+         * Выполнение миграции
+        */
+        function Run(){
+            // Имя шаблона для сайта 
+            $template_name = "agshop_mobile";
+            
+            // Получаем список сайтов
+            $rsSites = CSite::GetList($by="sort", $order="desc", Array());
+            // Берём первый
+            $this->data["site"] = $arSite = $rsSites->Fetch();
+            if(!$this->data["site"])return 0;
+            // Получаем его шаблоны
+            $rsTemplates = CSite::GetTemplateList($this->data["site"]["ID"]);
+
+            $this->data["templates"] = array();
+            $max_id = 0;
+            // Для каждого шаблона основного сайта
+            while($template = $rsTemplates->Fetch()){
+                // Запоминаем параметры шаблона
+                $this->data["templates"][$template["TEMPLATE"]] = $template;
+                if($template["ID"]>$max_id)$max_id = $template["ID"];
+            }
+
+            // Добавляем к списку имеющихся шаблонов шаблон высочайшего приоритета с условием
+            // IS_MOBILE === true
+            $this->data["templates"][$template_name] = array(
+                "ID"        =>  $max_id+1,
+                "SITE_ID"   =>  $this->data["site"]["ID"],
+                "CONDITION" =>  "IS_MOBILE===true",
+                // Сортировка - ставим первым
+                "SORT"      =>  -1,
+                // Имя нового шаблона
+                "TEMPLATE"  =>$template_name
+            );
+            $obSite = new CSite();
+            // Обновляем список шаблонов для сайта
+            $obSite->Update($this->data["site"]["ID"], array(
+                'ACTIVE' => "Y",
+                'TEMPLATE'=>$this->data["templates"]
+            ));                
+            
+            return true;
+
+        }
+    }
+    
+// Запускаем миграцию    
+$migration = new add_ag_template();
+// Откатываем, если неудачно
+if(!$migration->Run())$migration->RollBack();
