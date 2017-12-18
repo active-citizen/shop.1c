@@ -16,7 +16,7 @@
             $this->sKey = $sKey;
             $this->nExpires = $nExpires;
             $this->sFullKey = "$sGroup:$sKey";
-            $this->sBasePath = $_SERVER["DOCUMENT_ROOT"]."/../tmp/CCache"
+            $this->sBasePath = $_SERVER["DOCUMENT_ROOT"]."/../tmp/CCache";
         }
         
         function get(){
@@ -26,7 +26,7 @@
                 unlink($this->getKeyFilename());
                 return false;
             }
-            return file_get_contents($this->getKeyFilename());
+            return unserialize(file_get_contents($this->getKeyFilename()));
         }
         
         function set($sValue){
@@ -38,7 +38,7 @@
         }
         
         private function createPath(){
-            mkdir($this->getKeyPath(),0600,true);
+            mkdir($this->getKeyPath(),0700,true);
         }
         
         private function getKeyPath(){

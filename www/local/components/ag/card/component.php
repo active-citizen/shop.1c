@@ -7,11 +7,13 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCa
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogWishes.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/COrder/COrder.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
 
 use AGShop\Integration as Integration;
 use AGShop\User as User;
 use AGShop\Order as Order;
 use AGShop\Catalog as Catalog;
+use AGShop\Cache as Cache;
 
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
@@ -36,21 +38,45 @@ use AGShop\Catalog as Catalog;
 
     ////////////////////// Общая информация о продукте ////////////////////////
     $objCProduct = new \Catalog\CCatalogProduct;
-    $arResult["CATALOG_ITEM"] = $objCProduct->getByCode(
-        $arParams["PRODUCT_CODE"]
+    $objCache = new \Cache\CCache(
+        "card_product_common_info",
+        $arParams["PRODUCT_CODE"],
+        300
     );
+    if(!$arResult["CATALOG_ITEM"] = $objCache->get()){
+        $arResult["CATALOG_ITEM"] = $objCProduct->getByCode(
+            $arParams["PRODUCT_CODE"]
+        );
+        $objCache->set($arResult["CATALOG_ITEM"]);
+    }
 
     ///////////////////// Информацация о разделе /////////////////////////////
     $objCSection = new \Catalog\CCatalogSection;
-    $arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCSection->getById(
-        $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
+    $objCache = new \Cache\CCache(
+        "card_section_common_info",
+        $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"],
+        300
     );
+    if(!$arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCache->get()){
+        $arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCSection->getById(
+            $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
+        );
+        $objCache->set($arResult["CATALOG_ITEM"]["SECTION_INFO"]);
+    }
 
     /////////////////// Сколько у товара всего желающих //////////////////////
     $objCWishes = new \Catalog\CCatalogWishes;
-    $arResult["WISHES"] = $objCWishes->getCountByCatalogId(
-        $arResult["CATALOG_ITEM"]["ID"]
+    $objCache = new \Cache\CCache(
+        "card_wishes",
+        $arResult["CATALOG_ITEM"]["ID"],
+        150
     );
+    if(!$arResult["WISHES"]= $objCache->get()){
+        $arResult["WISHES"] = $objCWishes->getCountByCatalogId(
+            $arResult["CATALOG_ITEM"]["ID"]
+        );
+        $objCache->set($arResult["WISHES"]);
+    }
 
     //////////////////// Входит ли товар с писок моих желаний /////////////////
     $arResult["MYWISH"] = $objCWishes->isWished(
@@ -58,8 +84,18 @@ use AGShop\Catalog as Catalog;
     );
 
     //////////////////// Свойства элемента каталога //////////////////////////
+    $objCache = new \Cache\CCache(
+        "card_product_properties",
+        $arResult["CATALOG_ITEM"]["ID"],
+        300
+    );
+    if(!$arResult["CATALOG_ITEM"]["PROPERTIES"] = $objCache->get()){
     $arResult["CATALOG_ITEM"]["PROPERTIES"] = 
-        $objCProduct->getPropertiesForCard($arResult["CATALOG_ITEM"]["ID"]);
+        $arResult["CATALOG_ITEM"]["PROPERTIES"] = 
+            $objCProduct->getPropertiesForCard($arResult["CATALOG_ITEM"]["ID"]);
+        $objCache->set($arResult["CATALOG_ITEM"]["PROPERTIES"]);
+    }
+
 
     ///// Вычисляем количество заказанного в этом месяце товара пользователем //
     $objCOffer = new \Catalog\CCatalogOffer;
@@ -79,9 +115,6 @@ use AGShop\Catalog as Catalog;
         $arResult["CATALOG_ITEM"]["ID"],$arResult["CATALOG_ITEM"]
     );
     foreach($arOffers as $sKey=>$sValue)$arResult[$sKey] = $sValue;
-    
-
-
 
     $arIBlock = CIBlock::GetList(array(),array("CODE"=>"marks"))->GetNext();
     $iblockId = $arIBlock["ID"];
