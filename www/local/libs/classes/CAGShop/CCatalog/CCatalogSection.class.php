@@ -24,10 +24,21 @@
             ]);
             
             $arResult = [];
-            while($arSection = $resSections->Fetch())
+            while($arSection = $resSections->GetNext())
                 $arResult[$arSection["ID"]] = $arSection;
             
             return $arResult;
+        }
+        
+        function getById($nId){
+            return \CIBlockSection::GetList(
+                [],[
+                    "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
+                    "ID"=>$nId
+                ],false,[],[
+                    "nTopCount"=>1
+                ]
+            )->GetNext();
         }
         
     }

@@ -49,7 +49,9 @@ class COrder extends \AGShop\CAGShop{
         \CModule::IncludeModule("sale");
     }
 
-    
+    /**
+        Добавление к заказу торгового предложения
+    */
     function addSKU($nSKUId, $nStoreId, $nCount){
         $nSKUId = intval($nSKUId);
         $nStoreId = intval($nStoreId);

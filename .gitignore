@@ -25,6 +25,7 @@ www/local/php_interface/settings.inc.php
 tmp/sessions/*
 # Да и не сессии тоже
 tmp/*
+tmp/CCache/*
 
 # Игнорировать логи
 sql/*.log

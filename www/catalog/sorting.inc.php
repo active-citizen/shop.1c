@@ -20,7 +20,7 @@
               <div class="ag-shop-catalog__filter-instance">
                 <div class="ag-shop-catalog__filter-item">
                     <a rel="filters" 
-                    class="ag-shop-menu__link ag-shop-menu__link_sorting" 
+                    class="ag-shop-menu__link js-filters-toggle" 
                     href="#">Выбрано фильтров: <span
                     class="desktop-filters-count">0</span></a>
                 </div>

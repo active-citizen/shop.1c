@@ -220,6 +220,14 @@ $(document).ready(function(){
                 $('#ag-sorting').val($(this).attr("rel"));
             }
         });
+
+            /*событие для кнопки фильтр js-filters-toggle*/     
+        $('.js-filters-toggle').each(function(){
+            if($(this).attr("rel")==parameters.sorting){
+                $(this).addClass('ag-shop-menu__link--active');
+                $('#ag-sorting').val($(this).attr("rel"));
+            }
+        });
         
         if(!parameters.flag){
             $('a[rel="all"]').addClass('ag-shop-menu__link--active');

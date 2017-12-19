@@ -13,6 +13,9 @@
             \CModule::IncludeModule('iblock');
         }
         
+        /**
+            Получить свойства элемента каталога по его ID
+        */
         function getProperties($nProductId){
             $nProductId = intval($nProductId);
             $CDB = new \DB\CDB;
@@ -40,19 +43,71 @@
             return $arProperties;
         }
         
+        /**
+        
+            Получение основных параметров товара по ID элемента каталога
+        
+        */
         function get($nId){
-            $arFilter = [
-                "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
-                "ID"=>$nId
-            ];
-            $arProduct = \CIBlockElement::GetList(
-                [],$arFilter,false,[
+            return \CIBlockElement::GetList(
+                [],[
+                    "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
+                    "ID"=>$nId
+                ],false,[
                     "nTopCount"=>1
                 ],[
-                    "ID","CODE","NAME","XML_ID"
                 ]
-            )->Fetch();
-            return $arProduct;
+            )->GetNext();
+        }
+        
+        /**
+            Получение основных параметров товара по его коду
+        */
+        function getByCode($sCode){
+            return \CIBlockElement::GetList(
+                [],[
+                    "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
+                    "CODE"=>$sCode
+                ],false,[
+                    "nTopCount"=>1
+                ],[
+                ]
+            )->GetNext();
+        }
+        
+        /**
+            Получение информации по любому активному продукту
+        */
+        function getAnyExists(){
+            return \CIblockElement::GetList([
+                "ID"=>"DESC"
+            ],[
+                "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
+                "ACTIVE"=>"Y"
+            ],false,[
+                "nTopCount"=>1
+            ],[
+                "ID","CODE","NAME","XML_ID"
+            ])->Fetch();
+        }
+        
+        /**
+            Свойства товара для формирования картоуи товара
+            @param $nId - ID элемента каталога
+        */
+        function getPropertiesForCard($nId){
+            $arResult = [];
+            $resProps = \CIBlockElement::GetProperty(
+                $this->IBLOCKS["CATALOG"],$nId
+            );
+            while($arProp = $resProps->GetNext()){
+                if(!isset($arResult[$arProp["CODE"]]))
+                    $arResult[$arProp["CODE"]] = [];
+                if($arProp["PROPERTY_TYPE"]=='F')
+                    $arProp["FILE_PATH"] = \CFile::GetPath($arProp["VALUE"]);
+                $arResult[$arProp["CODE"]][] = $arProp;
+            }
+            return $arResult;
         }
         
     }

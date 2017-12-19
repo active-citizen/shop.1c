@@ -22,7 +22,7 @@
               <div class="ag-shop-rules__address js-spoiler__content">
                 <div class="ag-shop-content__limited-container">
                   <div class="grid grid--bleed">
-                    <div class="grid__col-shrink">
+                    <div class="grid__col-shrink pl_img">
                       <div class="ag-shop-rules__address-container"
                       id="YMapsID<?= $arStore["ID"] ?>" style="width:300px;height:150px"></div>
                       <script>
@@ -100,9 +100,9 @@
                         </table>
                       </div>
                     </div>
-                    <div class="grid__col-shrink">
+                    <div class="grid__col-shrink ">
                       <div class="ag-shop-rules__address-container">
-                        <div class="ag-shop-rules__address-description">
+                        <div class="ag-shop-rules__address-description w100_adr">
                           <div class="ag-shop-rules__address-text"><?= $arStore["DESCRIPTION"]?></div>
                         </div>
                       </div>

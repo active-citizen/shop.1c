@@ -742,3 +742,20 @@ div.amounter--off{
     font-size: 13px;
     padding-right: 50px;
 }
+.grid__col-shrink.pl_img{padding-left: 20px;}
+
+
+@media (max-width: 480px) {
+  .mobile_none {display: none;}
+}
+.pop_width_auto{
+    width: 320px;
+    min-width: 320px;
+}
+
+@media (max-width: 460px) {
+    .ag-shop-content {
+        padding-top: 60px;
+    }
+
+}

@@ -2,11 +2,14 @@
 namespace Catalog;
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationTroyka.class.php");
+require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
 require_once(realpath(__DIR__)."/CCatalogProduct.class.php");
 
 use AGShop;
 use AGShop\DB as DB;
 use AGShop\Catalog as Catalog;
+use AGShop\Integration as Integration;
 
 class CCatalogOffer extends \AGShop\CAGShop{
     
@@ -51,6 +54,9 @@ class CCatalogOffer extends \AGShop\CAGShop{
         ]);
     }
     
+    /**
+        Получение свойств конкретного торгового предложения
+    */
     function getProperties($nOfferId){
         $nOfferId = intval($nOfferId);
         $CDB = new \DB\CDB;
@@ -127,6 +133,8 @@ class CCatalogOffer extends \AGShop\CAGShop{
 
     /**
         Определение сколько в этом месяце пользователь заказал товара
+        @param $nUserId - ID пользователя
+        @ID продукта (Элемента каталога, не предложения)
     */
     function getMounthProductCount(
         $nUserId,
@@ -189,6 +197,166 @@ class CCatalogOffer extends \AGShop\CAGShop{
             "next"  =>  isset($arQuery["next"])?$arQuery["next"]:date("d.m.Y H:i:s"),
             "count" =>  isset($arQuery["count"])?$arQuery["count"]:0
         ]; 
+    }
+    
+    /**
+        Определение сколько в этом месяце пользователь заказал товара
+        @param $nUserId - ID пользователя
+        @param $nProductId ID продукта (Элемента каталога, не предложения)
+        @param $arProperties - свойства об элементе каталога, 
+           получаемый из \CAGShop\Catalog\CCatalogProduct::getPropertiesForCard()
+    */
+    function getOffersForCard($nProductId, $arProperties){
+        global $USER;
+        
+        $arResult = [];
+        // Торговые предложения
+        $resOffers = \CIBlockElement::GetList([],$arFilter = [
+            "IBLOCK_ID"         =>  OFFER_IB_ID,
+            "PROPERTY_CML2_LINK"=>  $nProductId
+        ],false);
+        $arResult["OFFERS"] = array();
+        $arResult["OFFERS_JSON"] = array();
+        $arResult["PROP1C"] = array();
+        $arResult["STORAGES"] = array();
+
+        $arUser = $USER->GetById($USER->GetId())->Fetch();
+        
+        while($arOffer = $resOffers->Fetch()){
+            $arOfferJson= ["PICS"=>[],"1C_PROPS"=>[],"STORAGES"=>[]];
+            
+            // Свойства предложения
+            $arOffer["PROPERTIES"] = [];
+            $resProps=\CIBlockElement::GetProperty(OFFER_IB_ID,$arOffer["ID"]);
+            
+            while($arProp = $resProps->GetNext()){
+                if(!isset($arOffer["PROPERTIES"][$arProp["CODE"]]))
+                    $arOffer["PROPERTIES"][$arProp["CODE"]] = [];
+                if($arProp["PROPERTY_TYPE"]=='F'){
+                    $arProp["FILE_PATH"] = \CFile::GetPath($arProp["VALUE"]);
+                }
+                if($arProp["PROPERTY_TYPE"]=='F' && !$arProp["FILE_PATH"])
+                    continue;
+                elseif(
+                    $arProp["PROPERTY_TYPE"]=='F' 
+                    && $arProp["FILE_PATH"] && $arProp["CODE"]=='MORE_PHOTO'
+                ) $arOfferJson["PICS"][] = $arProp["FILE_PATH"];
+                
+                if(preg_match("#PROP1C_(.*?)#",$arProp["CODE"])){
+                    $arOfferJson["1C_PROPS"][$arProp["CODE"]] = [
+                        "ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"]
+                    ];
+                    if(!isset($arResult["PROP1C"][$arProp["CODE"]]))
+                        $arResult["PROP1C"][$arProp["CODE"]] = [
+                            "NAME"=>$arProp["NAME"],"VALUES"=>[]
+                        ];
+                    if($arProp["VALUE"])
+                        $arResult["PROP1C"][$arProp["CODE"]]["VALUES"]
+                            [$arProp["VALUE"]]  = $arProp["VALUE_ENUM"];
+                }
+                
+                $arOffer["PROPERTIES"][$arProp["CODE"]][] = $arProp;
+            }
+            // Склады предложения
+            $arOffer["STORAGES"] = [];
+            $resStorage = \CCatalogStoreProduct::GetList([],
+                ["PRODUCT_ID"=>$arOffer["ID"]]
+            );
+    
+    
+            // !!!Отменяем невыбираемый остаток!!!
+            // Будет независимо от того, что пришло из 1С браться умолчальный
+            // А умолчальный сделаем нулём
+            $arProperties["STORE_LIMIT"][0]["VALUE"] = 0;
+    
+            // Если это парковка и дневной лимит вышел - показываем фигу
+            if(
+                isset($arProperties["ARTNUMBER"][0]["VALUE"])
+                &&
+                $arProperties["ARTNUMBER"][0]["VALUE"]=='parking'
+            ){
+                $objParking = new \Integration\CIntegrationParking(
+                    str_replace("u","",$arUser["LOGIN"])
+                );
+                $objParking->clearLocks();
+                
+                // Определяем вышел ли дневной лимит парковок 
+                $bIsLimited = $objParking->isLimited();
+                $arResult["PARKING_TODAY"] = $objParking->transactsToday;
+            }
+            // Если это тройка и дневной лимит вышел - показываем фигу
+            if(
+                isset($arProperties["ARTNUMBER"][0]["VALUE"])
+                &&
+                $arProperties["ARTNUMBER"][0]["VALUE"] =='troyka'
+            ){
+                $objTroya = new \Integration\CIntegrationTroyka(
+                   str_replace("u","",$arUser["LOGIN"])
+                );
+                $objTroya->clearLocks();
+                
+                // Определяем вышел ли дневной лимит парковок 
+                $bIsLimited = $objTroya->isLimited();
+                $arResult["PARKING_TODAY"] = $objTroya->transactsToday;
+            }
+    
+            // Если дневной лимит не вышел - получаем остатки по складам
+            if(!$bIsLimited)while($arStorage = $resStorage->GetNext()){
+                if(!$arStorage["AMOUNT"])continue;
+                $arOffer["STORAGES"][$arStorage["STORE_ID"]] =
+                    $arStorage["AMOUNT"]-(
+                        intval($arProperties["STORE_LIMIT"][0]["VALUE"])
+                        ?
+                        $arProperties["STORE_LIMIT"][0]["VALUE"]
+                        :
+                        DEFAULT_STORE_LIMIT
+                    );
+                $arOfferJson["STORAGES"][$arStorage["STORE_ID"]] = 
+                    $arStorage["AMOUNT"]-(
+                        intval($arProperties["STORE_LIMIT"][0]["VALUE"])
+                        ?
+                        $arProperties["STORE_LIMIT"][0]["VALUE"]
+                        :
+                        DEFAULT_STORE_LIMIT
+                    );
+    
+                // Пополняем справочник складов
+                if(!isset($arResult["STORAGES"][$arStorage["STORE_ID"]])){
+                    $arStoreItem = \CCatalogStore::GetList([],
+                        ["ID"=>$arStorage["STORE_ID"]],false,["nTopCount"=>1]
+                    )->Fetch();
+    
+                    $arStoreItem["EMAIL_SHORT"] = linkTruncate($arStoreItem["EMAIL"]);
+                    $arResult["STORAGES"][$arStorage["STORE_ID"]] = $arStoreItem;
+                }
+                foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)
+                    $arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
+                
+            }
+    
+            // Обнуляем отрицательные остатки и считаем общие
+            $arResult["TotalAmount"] = 0;
+            foreach($arOfferJson["STORAGES"] as $key=>$value){
+                if($value<=0){
+                    unset($arOfferJson["STORAGES"][$key]);
+                    unset($arOffer["STORAGES"][$key]);
+                }
+                $arResult["TotalAmount"] += $arOffer["STORAGES"][$key];
+            }
+            
+            $arOffer["RRICE_INFO"] = \CPrice::GetList([],[
+                "PRODUCT_ID"=>$arOffer["ID"]
+            ],false,["nTopCount"=>1])->Fetch();
+            $arOfferJson["PRICE"] = str_replace(
+                ",","",$arOffer["RRICE_INFO"]["PRICE"]
+            );
+            $arOfferJson["NAME"] = $arOffer["NAME"];
+            
+            $arResult["OFFERS"][] = $arOffer;
+            $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
+        };
+        
+        return $arResult;
     }
 
     

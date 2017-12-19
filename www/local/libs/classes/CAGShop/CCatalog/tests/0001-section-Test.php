@@ -22,6 +22,15 @@
                 $this->assertTrue(boolval($arSection["ACTIVE"]=='Y'));
             }
             
+            $this->assertTrue(boolval($arSectionById = $objCSection->getById($arSection["ID"])));
+            $this->assertArrayHasKey("ID",$arSectionById);
+            $this->assertArrayHasKey("CODE",$arSectionById);
+            $this->assertArrayHasKey("NAME",$arSectionById);
+            $this->assertArrayHasKey("ACTIVE",$arSectionById);
+            
+            
+            
+            
         }
 
     }
