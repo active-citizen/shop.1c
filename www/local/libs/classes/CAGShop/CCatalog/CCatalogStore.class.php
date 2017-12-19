@@ -15,6 +15,11 @@
             \CModule::IncludeModule('sale');
         }
         
+        function getAllActive(){
+            $CDB = new \DB\CDB;
+            return $CDB->searchAll(\AGShop\CAGShop::t_catalog_store);
+        }
+        
         function getAnyExists(){
             $CDB = new \DB\CDB;
             

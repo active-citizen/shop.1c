@@ -8,7 +8,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 ?>
 <? if(0 && !$USER->IsAuthorized()):?>
 <? elseif(IS_MOBILE):?>
-
+<? require("index.mobile.php")?>
 <? else: ?>
 
         <div class="ag-shop-content">

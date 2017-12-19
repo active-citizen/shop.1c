@@ -1,6 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 CUtil::InitJSCore(['ajax']);
 
+/*
 if(preg_match("#^/partners#",$_SERVER["REQUEST_URI"])){
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/partners.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap.min.css");
@@ -32,22 +33,49 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/faq.js");
 
 setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
+*/
 
 ?>
 <!DOCTYPE html>
+<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="HandheldFriendly" content="True"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="format-detection" content="address=no"/>
-    <meta name="msapplication-tap-highlight" content="no"/>
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
-    <? $APPLICATION->ShowHead(); ?>                                                                                                                                                           
-    <title><?$APPLICATION->ShowTitle()?></title>
 
-  </head>
-  <body>
+<head>
+
+	<meta charset="utf-8">
+
+	<title>Index - Page</title>
+	<meta name="description" content="">
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<meta property="og:image" content="<?php echo SITE_TEMPLATE_PATH ?>/path/to/image.jpg">
+	<link rel="shortcut icon" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon-114x114.png">
+
+	<link rel="stylesheet" href="<?php echo SITE_TEMPLATE_PATH ?>/css/main.css">
+
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#000">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#000">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#000">
+</head>
+<body class="container-relative">
+
+<?$APPLICATION->IncludeComponent("ag:mobile.header", "", array(
+        "CACHE_TIME"      =>  COMMON_CACHE_TIME        
+    ),
+    false
+);?>
+<?$APPLICATION->IncludeComponent("ag:mobile.filter", "", array(
+        "CACHE_TIME"      =>  COMMON_CACHE_TIME        
+    ),
+    false
+);?>
+
