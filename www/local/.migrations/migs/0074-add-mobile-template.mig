@@ -36,7 +36,7 @@
             $this->data["templates"][$template_name] = array(
                 "ID"        =>  $max_id+1,
                 "SITE_ID"   =>  $this->data["site"]["ID"],
-                "CONDITION" =>  "IS_MOBILE===true",
+                "CONDITION" =>  "IS_MOBILE || IS_PHONE",
                 // Сортировка - ставим первым
                 "SORT"      =>  -1,
                 // Имя нового шаблона

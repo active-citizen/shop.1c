@@ -18,12 +18,13 @@
     define("IS_MOBILE",
         //true
         isset($_COOKIE["EMPSESSION"])
-        ||
+    );
+    
+    define("IS_PHONE",
         preg_match("#(phone|mobile)#i", $_SERVER["HTTP_USER_AGENT"])
     );
-//    echo IS_MOBILE; 
-//    die;
-
+    
+    
     define("CONFIG_STATIC",true);
     define("COMMON_CACHE_TIME",3600);
     // Значение невыбираемого остатка по умолчанию
