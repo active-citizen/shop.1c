@@ -6,13 +6,10 @@ if(
     &&
     !preg_match("#/catalog/(.*?)/$#",$_SERVER["REQUEST_URI"])
 
-){
-    LocalRedirect("/catalog/".$m[1]."/");
-    die;
-}
+){LocalRedirect("/catalog/".$m[1]."/");die;}
 
 // Определяемся с именами свойст для предложений 1С
-$res = CIBlockProperty::GetList(array(),array("IBLOCK_ID"=>3));
+$res = CIBlockProperty::GetList([],["IBLOCK_ID"=>OFFER_IB_ID]);
 
 $offerProps = array();
 while($arrProp = $res->GetNext())
@@ -21,46 +18,32 @@ while($arrProp = $res->GetNext())
     
 $product_code = '';
 $catalog_code = '';
-if(preg_match("#^/catalog/(.*?)/(.*?)/.*#i", $_SERVER["REQUEST_URI"], $matches)){
+if(preg_match("#^/catalog/(.*?)/([^\?].*?)/.*#i", $_SERVER["REQUEST_URI"], $matches)){
     $catalog_code = $matches[1];
     $product_code = $matches[2];
 }elseif(preg_match("#^/catalog/(.*?)/.*#i", $_SERVER["REQUEST_URI"], $matches)){
     $catalog_code = $matches[1];
 }
 
-$arIBlock = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
-$catalogIblockId = $arIBlock["ID"];
-
-$arIBlockOffer = CIBlock::GetList(array(),array("CODE"=>"clothes_offers"))->GetNext();
-$offerIblockId = $arIBlockOffer["ID"];
+$catalogIblockId = CATALOG_IB_ID;
+$offerIblockId = OFFER_IB_ID;
 
 // 404-я ошибка
 if(
     (
-    !CIBlockElement::GetList(
-        array(),
-        array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$product_code),
-        false,
-        array(),
-        array("ID")
-    )->GetNext()
-    ||
-    (
-        $catalog_code!='root'
-        &&
-        !CIBlockSection::GetList(
-            array(),
-            array("IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code),
-            false,
-            array(),
-            array("ID")
-        )->GetNext()
+        !CIBlockElement::GetList([],[
+            "IBLOCK_ID"=>$catalogIblockId, "CODE"=>$product_code
+        ],false,["nTopCount"=>1],["ID"])->Fetch()
+        ||
+        (
+            $catalog_code!='root'
+            &&
+            !CIBlockSection::GetList([],[
+                "IBLOCK_ID"=>$catalogIblockId, "CODE"=>$catalog_code
+            ],false,["nTopCount"=>1],["ID"])->Fetch()
+        )
     )
-    )
-){
-    include($_SERVER["DOCUMENT_ROOT"]."/404.php");
-    die;
-}
+){include($_SERVER["DOCUMENT_ROOT"]."/404.php");die;}
 
 
 
@@ -75,28 +58,20 @@ if(
         $sProductTitle = '';
         if($product_code){
             $arProductMeta = CIBlockElement::GetList(
-                array(),
-                array(
+                [],[
                     "IBLOCK_ID" =>  CATALOG_IB_ID,
                     "CODE"      =>  $product_code
-                ),
-                false,
-                array("nTopCount"=>1)
+                ],false,["nTopCount"=>1],["NAME"]
             )->GetNext();
             if(isset($arProductMeta["NAME"]) && trim($arProductMeta["NAME"]))
                $sProductTitle = $arProductMeta["NAME"]; 
         }
 
         if($catalog_code){
-            $arCatalogMeta = CIBlockSection::GetList(
-                array(),
-                array(
+            $arCatalogMeta = CIBlockSection::GetList([],[
                     "IBLOCK_ID" =>  CATALOG_IB_ID,
                     "CODE"      =>  $catalog_code
-                ),
-                false,
-                array("NAME"),
-                array("nTopCount"=>1)
+                ],false,["NAME"],["nTopCount"=>1]
             )->GetNext();
             if(isset($arCatalogMeta["NAME"]) && trim($arCatalogMeta["NAME"]))
                $sCatalogTitle = $arCatalogMeta["NAME"]; 
@@ -119,7 +94,7 @@ if(
         $APPLICATION->SetTitle($sTitle);
     ?>
 
-    <? if(!$product_code && $catalog_code){?>
+    <? if(!$product_code && $catalog_code && !IS_MOBILE){?>
         <div class="ag-shop-content">
             <? include("filter.inc.php")?>
             <? include("sorting.inc.php")?>
@@ -128,6 +103,16 @@ if(
             <? include("container.inc.php")?>
             </div>
         </div>
+    <? }elseif(!$product_code && $catalog_code){ ?>
+    <?
+    require("mobile.filter.params.php");
+    $APPLICATION->IncludeComponent(
+        "ag:mobile.teasers", 
+        "", 
+        $arParams,
+        false
+    );
+    ?>
     <? }elseif($product_code){ ?>
         <div class="ag-shop-content">
             <div class="ag-shop-content__limited-container">

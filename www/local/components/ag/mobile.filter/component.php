@@ -27,6 +27,7 @@
             "CODE"=>"PriceLow",
             "CLASSNAME"=>"icon-aside-filter--price"
         ],
+        /*
         [
             "NAME"=>"Рейтинг",
             "VALUE"=>"rating_desc",
@@ -39,6 +40,13 @@
             "CODE"=>"PriceFavourite",
             "CLASSNAME"=>"icon-aside-filter--favourites"
         ],
+        */
+        [
+            "NAME"=>"Хит",
+            "VALUE"=>"pop_desc",
+            "CODE"=>"SortPriceHit",
+            "CLASSNAME"=>"icon-aside-filter--hit"
+        ],
         [
             "NAME"=>"Новинки",
             "VALUE"=>"new_desc",
@@ -46,10 +54,10 @@
             "CLASSNAME"=>"icon-aside-filter--new"
         ],
         [
-            "NAME"=>"Популярное",
-            "VALUE"=>"pop_desc",
-            "CODE"=>"SortPriceHit",
-            "CLASSNAME"=>"icon-aside-filter--hit"
+            "NAME"=>"Акции",
+            "VALUE"=>"new_desc",
+            "CODE"=>"SortPriceSale",
+            "CLASSNAME"=>"icon-aside-filter--sale"
         ],
     ];
     foreach($arResult["SORTING"] as $nKey=>$arSort)

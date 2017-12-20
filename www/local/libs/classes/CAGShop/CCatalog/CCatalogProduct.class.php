@@ -3,13 +3,16 @@
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
-        ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
+        ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
         
     use AGShop\Integration as Integration;
+    use AGShop\Catalog as Catalog;
     use AGShop;
     use AGShop\DB as DB;
     
@@ -197,11 +200,11 @@
             
             if(isset($arOptions["filter"]["section_code"]))
                 $arFilter["section_code"] = trim($CDB->ForSql($arOptions["filter"]["section_code"]));
-            
+                
             $nSectionId = 0;
             if(isset($arFilter["section_code"])){
-                $arCatalogSection = CIBlockSection::GetList([],[
-                    "CODE"=>$_REQUEST['catalog_name']],false,[
+                $arCatalogSection = \CIBlockSection::GetList([],[
+                    "CODE"=>$arFilter["section_code"]],false,[
                     "nTopCount"=>1
                     ],["ID"]
                 )->GetNext();
@@ -217,6 +220,7 @@
                     `".\AGShop\CAGShop::t_iblock_element."`
                 WHERE
                     `IBLOCK_ID`=".CATALOG_IB_ID."
+                    AND `IBLOCK_SECTION_ID`!=0
                     ".($nSectionId?"AND `IBLOCK_SECTION_ID`=".$nSectionId:"")."
                     AND `ACTIVE`='Y'
             ";
@@ -386,6 +390,11 @@
                     if(in_array($nId, $arVal))$nCount++;
                 if($nCount>=$nIntersectSetscount)$arIds[] = $nId;
             }
+            
+            // Прогоняем получившееся пересечение чере БД для сортировки
+            
+            
+            
             $arIdsPage = array_slice(
                 $arIds, 
                 $arOptions["pagination"]["offset"],
@@ -396,11 +405,26 @@
         
         function getProductsForTeasersByIds($arProductIds){
             $CDB = new \DB\CDB;;
-            $resProduct = \CIBlockElement::
-            
-            echo "<pre>";
-            print_r($arProductIds);
-            echo "</pre>";
+            $resProduct = \CIBlockElement::GetList([],[
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "ID"=>$arProductIds
+            ],false,["nTopCount"=>count($arProductIds)],[
+                "ID","CODE","NAME","DETAIL_PICTURE","PROPERTY_MINIMUM_PRICE"
+                ,"PROPERTY_NEWPRODUCT","PROPERTY_SALELEADER"
+                ,"PROPERTY_SPECIALOFFER","IBLOCK_SECTION_ID"
+            ]);
+            $arProducts = [];
+            $objSection = new \Catalog\CCatalogSection;
+            while($arProduct = $resProduct->Fetch()){
+                $arProduct["IMAGE"] = \CFile::GetPath(
+                    $arProduct["DETAIL_PICTURE"]
+                );
+                $arProduct["SECTION"] = $objSection->getBriefById(
+                    $arProduct["IBLOCK_SECTION_ID"]
+                );
+                $arProducts[] = $arProduct;
+            }
+            return $arProducts;
         }
         
     }
