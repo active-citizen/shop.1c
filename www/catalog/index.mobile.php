@@ -1,8 +1,12 @@
-<?$APPLICATION->IncludeComponent("ag:mobile.teasers", "", array(
-        "CACHE_TIME"      =>  COMMON_CACHE_TIME        
-    ),
-    false
-);?>
+<?
+    require("mobile.filter.params.php");
+    $APPLICATION->IncludeComponent(
+        "ag:mobile.teasers", 
+        "", 
+        $arParams,
+        false
+    );
+?>
 
 
 

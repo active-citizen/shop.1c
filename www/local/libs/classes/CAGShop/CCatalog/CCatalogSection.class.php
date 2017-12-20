@@ -41,4 +41,11 @@
             )->GetNext();
         }
         
+        function getBriefById($nId){
+            return \CIblockSection::GetList([],[
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "ID"=>$nId
+            ],false,["ID","NAME","CODE","IBLOCK_SECTION_ID"])->Fetch();
+        }
+        
     }

@@ -7,116 +7,39 @@
 				</section>
 				<!-- Чтобы сделать большую плитку - добавить к этому контейнеру класс .mobile-product-grid--big -->
 				<section class="mobile-product-grid">
+                    <? foreach($arResult["PRODUCTS"] as $arProduct):?>
 					<article class="mobile-product-item">
-						<a class="mobile-product-item-wrapper" href="#">
-							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-1.png')">
+						<a class="mobile-product-item-wrapper" href="/catalog/<?= $arProduct["SECTION"]["CODE"]?>/<?= $arProduct["CODE"]?>/">
+							<div class="mobile-product-item-preview" style="background-image: url('<?= $arProduct["IMAGE"]?>')">
 								<span class="mobile-product-item-badge">
+                                    
+                                    <? if($arProduct["PROPERTY_SALELEADER_VALUE"]):?>
 									<img class="mobile-product-item-badge__img" src="img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
+                                    <? endif ?>
+                                    
+                                    <? if($arProduct["PROPERTY_NEWPRODUCT_VALUE"]):?>
+									<img class="mobile-product-item-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
+                                    <? endif ?>
+                                    
+                                    <? if($arProduct["PROPERTY_SPECIALOFFER_VALUE"]):?>
+                                    <img class="mobile-product-item-badge__img" src="img/icon__product-label--sale.png" alt="" srcset="img/icon__product-label--sale@2x.png 2x">
+                                    <? endif ?>
+                                    
 								</span>
 								<button class="mobile-product-item-favourite" type="button">
 									<span class="mobile-product-item-favourite__icon"></span>
 									<span class="mobile-product-item-favourite__count">233</span>
 								</button>
 							</div>
-							<h3 class="mobile-product-item-title">Парковочное пространство</h3>
+							<h3 class="mobile-product-item-title"><?= $arProduct["NAME"]?></h3>
 							<span class="mobile-product-item-price">
-								<b class="mobile-product-item-price__number">600</b>
-								<i class="mobile-product-item-price__currency">баллов</i>
+								<b class="mobile-product-item-price__number"><?= $arProduct["PROPERTY_MINIMUM_PRICE_VALUE"]?></b>
+								<i class="mobile-product-item-price__currency"><?= get_points($arProduct["PROPERTY_MINIMUM_PRICE_VALUE"])?></i>
 							</span>
 						</a>
 					</article>
-					<article class="mobile-product-item">
-						<a class="mobile-product-item-wrapper" href="#">
-							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-2.png')">
-								<span class="mobile-product-item-badge">
-									<img class="mobile-product-item-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
-								</span>
-								<button class="mobile-product-item-favourite" type="button">
-									<span class="mobile-product-item-favourite__icon"></span>
-									<span class="mobile-product-item-favourite__count">322</span>
-								</button>
-							</div>
-							<h3 class="mobile-product-item-title">Рюкзак зеленый</h3>
-							<span class="mobile-product-item-price">
-								<b class="mobile-product-item-price__number">600</b>
-								<i class="mobile-product-item-price__currency">баллов</i>
-							</span>
-							<span class="mobile-product-item-status">Временно нет в наличии</span>
-						</a>
-					</article>
-					<article class="mobile-product-item">
-						<a class="mobile-product-item-wrapper" href="#">
-							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-2.png')">
-								<span class="mobile-product-item-badge">
-									<img class="mobile-product-item-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
-									<img class="mobile-product-item-badge__img" src="img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
-								</span>
-								<button class="mobile-product-item-favourite" type="button">
-									<span class="mobile-product-item-favourite__icon active"></span>
-									<span class="mobile-product-item-favourite__count">24444</span>
-								</button>
-							</div>
-							<h3 class="mobile-product-item-title">Монопод для смартфона</h3>
-							<span class="mobile-product-item-price">
-								<b class="mobile-product-item-price__number">600</b>
-								<i class="mobile-product-item-price__currency">баллов</i>
-							</span>
-						</a>
-					</article>
-					<article class="mobile-product-item">
-						<a class="mobile-product-item-wrapper" href="#">
-							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-4.png')">
-								<span class="mobile-product-item-badge">
-									<img class="mobile-product-item-badge__img" src="" alt="">
-								</span>
-								<button class="mobile-product-item-favourite" type="button">
-									<span class="mobile-product-item-favourite__icon"></span>
-									<span class="mobile-product-item-favourite__count">555</span>
-								</button>
-							</div>
-							<h3 class="mobile-product-item-title">Холщовая сумка с символикой проекта</h3>
-							<span class="mobile-product-item-price">
-								<b class="mobile-product-item-price__number">600</b>
-								<i class="mobile-product-item-price__currency">баллов</i>
-							</span>
-						</a>
-					</article>
-					<article class="mobile-product-item">
-						<a class="mobile-product-item-wrapper" href="#">
-							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-4.png')">
-								<span class="mobile-product-item-badge">
-									<img class="mobile-product-item-badge__img" src="" alt="">
-								</span>
-								<button class="mobile-product-item-favourite" type="button">
-									<span class="mobile-product-item-favourite__icon"></span>
-									<span class="mobile-product-item-favourite__count">555</span>
-								</button>
-							</div>
-							<h3 class="mobile-product-item-title">Холщовая сумка с символикой проекта</h3>
-							<span class="mobile-product-item-price">
-								<b class="mobile-product-item-price__number">600</b>
-								<i class="mobile-product-item-price__currency">баллов</i>
-							</span>
-						</a>
-					</article>
-					<article class="mobile-product-item">
-						<a class="mobile-product-item-wrapper" href="#">
-							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-4.png')">
-								<span class="mobile-product-item-badge">
-									<img class="mobile-product-item-badge__img" src="" alt="">
-								</span>
-								<button class="mobile-product-item-favourite" type="button">
-									<span class="mobile-product-item-favourite__icon"></span>
-									<span class="mobile-product-item-favourite__count">555</span>
-								</button>
-							</div>
-							<h3 class="mobile-product-item-title">Холщовая сумка с символикой проекта</h3>
-							<span class="mobile-product-item-price">
-								<b class="mobile-product-item-price__number">600</b>
-								<i class="mobile-product-item-price__currency">баллов</i>
-							</span>
-						</a>
-					</article>
+                    <? endforeach ?>
+                    
 				</section>
 			</div>
 		</div>
