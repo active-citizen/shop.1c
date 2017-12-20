@@ -104,7 +104,11 @@
                 && (
                     1
                     &&
-                    !IS_MOBILE
+                    (
+                        !IS_MOBILE
+                        ||
+                        IS_PHONE
+                    )
                     //!isset($_COOKIE["EMPSESSION"])
                     //||
                     //!$_COOKIE["EMPSESSION"]
