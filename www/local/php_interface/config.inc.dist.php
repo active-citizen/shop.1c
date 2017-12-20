@@ -40,4 +40,16 @@
 
         // ID свойства "дата отключения
         define("HIDE_DATE_PROPERTY_ID", 85);
+        
+        //ID свойства ХИТ
+        define("SALELEADER_PROPERTY_ID", 7);
+        
+        // ID свойства новинка
+        define("NEWPRODUCT_PROPERTY_ID", 6);
+
+        // ID свойства Акция
+        define("SPECIALOFFER_PROPERTY_ID", 8);
+
+
+
 
