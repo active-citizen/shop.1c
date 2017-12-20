@@ -94,7 +94,7 @@ if(
         $APPLICATION->SetTitle($sTitle);
     ?>
 
-    <? if(!$product_code && $catalog_code && !IS_MOBILE){?>
+    <? if(!$product_code && $catalog_code && !(IS_MOBILE || IS_PHONE)){?>
         <div class="ag-shop-content">
             <? include("filter.inc.php")?>
             <? include("sorting.inc.php")?>
