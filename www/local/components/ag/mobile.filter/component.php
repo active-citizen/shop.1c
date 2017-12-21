@@ -43,7 +43,7 @@
         */
         [
             "NAME"=>"Хит",
-            "VALUE"=>"pop_desc",
+            "VALUE"=>"hit_desc",
             "CODE"=>"SortPriceHit",
             "CLASSNAME"=>"icon-aside-filter--hit"
         ],
@@ -55,7 +55,7 @@
         ],
         [
             "NAME"=>"Акции",
-            "VALUE"=>"new_desc",
+            "VALUE"=>"sale_desc",
             "CODE"=>"SortPriceSale",
             "CLASSNAME"=>"icon-aside-filter--sale"
         ],

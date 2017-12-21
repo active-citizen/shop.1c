@@ -7,7 +7,6 @@
     !$USER->IsAuthorized()
 ):?>
 <? else: ?>
-
     <? if(
         !IS_MOBILE
         &&

@@ -9,10 +9,11 @@
     $objProduct = new \Catalog\CCatalogProduct;
     
     // Получаем IDs продуктов, подходящих под условия
-    $arProductIds = $objProduct->getTeasers($arParams);
-    $arResult["PRODUCTS"] = $objProduct->getProductsForTeasersByIds(
-        $arProductIds["items"]
-    );
+    $arProducts = $objProduct->getTeasers($arParams);$arResult["PRODUCTS"];
+    $arResult["PRODUCTS"] = $arProducts["items"];
+    $arResult["TOTAL"] = $arProducts["total"];
+    
+    if(isset($_REQUEST["productGridCheckbox"]))$arResult["SMALL_TEASERS"] = 1;
 
     $this->IncludeComponentTemplate();
 //}
