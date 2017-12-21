@@ -690,6 +690,7 @@
                     );
                 }
 
+                require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
                 if($orderId){
                     syncOrder($orderId);
                 }
