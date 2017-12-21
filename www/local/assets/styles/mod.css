@@ -759,3 +759,26 @@ div.amounter--off{
     }
 
 }
+
+.main-info-message{
+    margin-top: 0px;
+}
+.close-pic{
+    float: right;
+    width: 16px;
+    height: 16px;
+    background-image: url(../images/icons.svg);
+    background-size: 102px auto;
+    background-position: 0px -458px;
+    cursor: pointer;
+}
+.close-pic:hover{
+    background-position: 0px -474px;
+}
+
+@media (max-width: 460px) {
+    .main-info-message{
+        margin-top: 46px;
+    }
+}
+
