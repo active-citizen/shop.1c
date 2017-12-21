@@ -5,6 +5,8 @@
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
@@ -136,17 +138,40 @@
                         //  (asc,desc)
                 ],
                 "pagination"=>[
-                    "offset"=>0,
+                    "page"=>1,
                     "onpage"=>10
                 ]
             ]
         */
         function getTeasers($arOptions = []){
             $CDB = new \DB\CDB;;
-
+            
             $arFilter = [];
-            $arSorting = [];
+            if(!isset($arOptions["sorting"]))$arOptions["sorting"] = [];
+            if(!isset($arOptions["sorting"]["param"]))$arOptions["sorting"]["param"] = 'price';
+            if(!isset($arOptions["sorting"]["direction"]))$arOptions["direction"]["param"] = 'desc';
+            $arOptions["sorting"]["direction"] = strtoupper($arOptions["sorting"]["direction"]);
+            
+            if($arOptions["sorting"]["param"]=='price')
+                $arSorting = ["PROPERTY_MINIMUM_PRICE"=>$arOptions["sorting"]["direction"]];
+            elseif($arOptions["sorting"]["param"]=='hit')
+                $arSorting = ["PROPERTY_SALELEADER"=>$arOptions["sorting"]["direction"]];
+            elseif($arOptions["sorting"]["param"]=='new')
+                $arSorting = ["PROPERTY_NEWPRODUCT"=>$arOptions["sorting"]["direction"]];
+            elseif($arOptions["sorting"]["param"]=='sale')
+                $arSorting = ["PROPERTY_SPECIALOFFER"=>$arOptions["sorting"]["direction"]];
 
+            $arSortingTypes = ["price","rating","favorites","new","hit"];
+            foreach($arSortinTypes as $sSortingType)
+                if(
+                    in_array($arOptions["sorting"]["param"])
+                    && $arOptions["sorting"]["direction"]=='asc'
+                    && $arOptions["sorting"]["direction"]=='desc'
+                )$arSorting[$arOptions["sorting"]["param"]] 
+                    = $arOptions["sorting"]["direction"];
+            if(!$arSorting)$arSorting = ["price"=>"desc"];
+
+            
             $ON_PAGE = 12;
             $PAGE = isset($_REQUEST["PAGE"])?intval($_REQUEST["PAGE"]):1;
 
@@ -163,16 +188,6 @@
             $res = \CIBlockSection::GetList(array(),array("ACTIVE"=>"Y"),false,array("ID"));
             $arSectionsIds = array();
             while($arSection = $res->Fetch())$arSectionsIds[] = $arSection["ID"];
-            
-            $arSortingTypes = ["price","rating","favorites","new","hit"];
-            foreach($arSortinTypes as $sSortingType)
-                if(
-                    in_array($arOptions["sorting"]["param"])
-                    && $arOptions["sorting"]["direction"]=='asc'
-                    && $arOptions["sorting"]["direction"]=='desc'
-                )$arSorting[$arOptions["sorting"]["param"]] 
-                    = $arOptions["sorting"]["direction"];
-            if(!$arSorting)$arSorting = ["price"=>"desc"];
             
             if(isset($arOptions["filter"]["interest"]))
                 $arFilter["interest"] = intval($arOptions["filter"]["interest"]);
@@ -391,40 +406,34 @@
                 if($nCount>=$nIntersectSetscount)$arIds[] = $nId;
             }
             
-            // Прогоняем получившееся пересечение чере БД для сортировки
-            
-            
-            
-            $arIdsPage = array_slice(
-                $arIds, 
-                $arOptions["pagination"]["offset"],
-                $arOptions["pagination"]["onpage"]
-            );
-            return ["items"=>$arIdsPage,"total"=>count($arIds)];
-        }
-        
-        function getProductsForTeasersByIds($arProductIds){
-            $CDB = new \DB\CDB;;
-            $resProduct = \CIBlockElement::GetList([],[
+            // Прогоняем получившееся пересечение чере БД для сортировки, попутно
+            // Делая пагинацию
+
+            $arIdsPage = [];
+            $res = \CIBlockElement::GetList($arSorting,[
                 "IBLOCK_ID"=>CATALOG_IB_ID,
-                "ID"=>$arProductIds
-            ],false,["nTopCount"=>count($arProductIds)],[
+                "ID"=>$arIds
+            ],false,[
+                "iNumPage"  =>  $arOptions["pagination"]["page"],
+                "nPageSize" =>  $arOptions["pagination"]["onpage"]
+            ],[
                 "ID","CODE","NAME","DETAIL_PICTURE","PROPERTY_MINIMUM_PRICE"
                 ,"PROPERTY_NEWPRODUCT","PROPERTY_SALELEADER"
-                ,"PROPERTY_SPECIALOFFER","IBLOCK_SECTION_ID"
+                ,"PROPERTY_SPECIALOFFER"
             ]);
-            $arProducts = [];
+            $arItems = [];
             $objSection = new \Catalog\CCatalogSection;
-            while($arProduct = $resProduct->Fetch()){
+            while($arProduct = $res->Fetch()){
                 $arProduct["IMAGE"] = \CFile::GetPath(
                     $arProduct["DETAIL_PICTURE"]
                 );
                 $arProduct["SECTION"] = $objSection->getBriefById(
                     $arProduct["IBLOCK_SECTION_ID"]
                 );
-                $arProducts[] = $arProduct;
+                $arItems[] = $arProduct;
             }
-            return $arProducts;
+            return ["items"=>$arItems,"total"=>count($arIds)];
         }
+        
         
     }

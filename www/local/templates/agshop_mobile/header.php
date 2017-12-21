@@ -15,7 +15,6 @@ if(
         $APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap-theme.min.css");
     }
     
-    
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/fonts.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/components.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/profile.css");
@@ -28,7 +27,6 @@ if(
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/faq.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/styles/semantic.css");
-    
     
     $APPLICATION->AddHeadScript("/local/assets/libs/jquery.min.js");
     $APPLICATION->AddHeadScript("/local/assets/libs/jquery-ui.js");
@@ -43,6 +41,7 @@ if(
 }
 
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/main.css");
+$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
 
 
@@ -79,6 +78,31 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
     ),
     false
 );?>
+
+    <? 
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+       $objSettings = new \Integration\CIntegrationSettings;
+       $objSettings->code = 'INFO';
+       $arSettings = $objSettings->get();
+       $sCookieName = "HIDE_INFO".crc32($arSettings["INFO_MESSAGE"]["VALUE"]);
+       $sHideDate = date("r",time()+14*24*60*60);
+    ?>
+    <? if(
+        $arSettings["INFO_MESSAGE"]["VALUE"]
+        &&
+        // Не показывать в АРМ
+        !preg_match("#^/partner#", $_SERVER["REQUEST_URI"])
+        &&
+        !$_COOKIE[$sCookieName]
+    ):?>
+    <div class="ag-shop-card__warning main-info-message" style="margin-top:72px;<?= $arSettings["INFO_STYLE"]["VALUE"]?>">
+        <div class="close-pic" onclick="$(this).parent().fadeOut();document.cookie='<?= $sCookieName?>=1;expires=<?= $sHideDate ?>;path=/;';"></div>
+        <i class="ag-shop-icon ag-shop-icon--attention"></i>
+        <span><?= $arSettings["INFO_MESSAGE"]["VALUE"]?></span>
+    </div>    
+    <? endif ?>
+
+
 <?$APPLICATION->IncludeComponent("ag:mobile.filter", "", array(
         "CACHE_TIME"      =>  COMMON_CACHE_TIME        
     ),

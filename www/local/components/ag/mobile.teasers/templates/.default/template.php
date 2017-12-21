@@ -6,23 +6,24 @@
 					<!-- dont remove him -->
 				</section>
 				<!-- Чтобы сделать большую плитку - добавить к этому контейнеру класс .mobile-product-grid--big -->
-				<section class="mobile-product-grid">
+				<section class="mobile-product-grid<? if(!$arResult["SMALL_TEASERS"]):?> mobile-product-grid--big<? endif ?>">
                     <? foreach($arResult["PRODUCTS"] as $arProduct):?>
 					<article class="mobile-product-item">
 						<a class="mobile-product-item-wrapper" href="/catalog/<?= $arProduct["SECTION"]["CODE"]?>/<?= $arProduct["CODE"]?>/">
 							<div class="mobile-product-item-preview" style="background-image: url('<?= $arProduct["IMAGE"]?>')">
 								<span class="mobile-product-item-badge">
-                                    
+                                    <pre>
+                                    </pre>
                                     <? if($arProduct["PROPERTY_SALELEADER_VALUE"]):?>
-									<img class="mobile-product-item-badge__img" src="img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
+									<img class="mobile-product-item-badge__img" src="<?php echo SITE_TEMPLATE_PATH ?>/img/icon__product-label--hit.png" alt="" srcset="<?php echo SITE_TEMPLATE_PATH ?>/img/icon__product-label--hit@2x.png 2x">
                                     <? endif ?>
                                     
                                     <? if($arProduct["PROPERTY_NEWPRODUCT_VALUE"]):?>
-									<img class="mobile-product-item-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
+									<img class="mobile-product-item-badge__img" src="<?php echo SITE_TEMPLATE_PATH ?>/img/icon__product-label--new.png" alt="" srcset="<?php echo SITE_TEMPLATE_PATH ?>/img/icon__product-label--new@2x.png 2x">
                                     <? endif ?>
                                     
                                     <? if($arProduct["PROPERTY_SPECIALOFFER_VALUE"]):?>
-                                    <img class="mobile-product-item-badge__img" src="img/icon__product-label--sale.png" alt="" srcset="img/icon__product-label--sale@2x.png 2x">
+                                    <img class="mobile-product-item-badge__img" src="<?php echo SITE_TEMPLATE_PATH ?>/img/icon__product-label--sale.png" alt="" srcset="<?php echo SITE_TEMPLATE_PATH ?>/img/icon__product-label--sale@2x.png 2x">
                                     <? endif ?>
                                     
 								</span>
@@ -39,7 +40,6 @@
 						</a>
 					</article>
                     <? endforeach ?>
-                    
 				</section>
 			</div>
 		</div>
