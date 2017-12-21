@@ -793,6 +793,7 @@
                         || $statusId=='F' 
                         || $statusId=='AI'
                         || $statusId=='AG'
+                        || $statusId=='AF'
                     )
                 ){
                     /*

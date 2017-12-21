@@ -256,7 +256,7 @@ class COrderExportCML extends \AGShop\CAGShop{
             else{
                 unset($arArray[$sKey]);
                 $arArray[mb_convert_encoding($sKey,"cp1251","utf-8")] = 
-                    mb_convert_encoding(strip_tags($sValue),"cp1251","utf-8");
+                    mb_convert_encoding(str_replace("&","",strip_tags($sValue)),"cp1251","utf-8");
             }
         }
         return $arArray;
