@@ -380,8 +380,15 @@ function getPagination($arResult, $arParams){
 div.pages{
 }
 .td-amount{
-    color: red;
+    color: blue;
+    font-size: 16px;
+    font-weight: bold;
     text-align: center;
+}
+.td-num{
+    color: blue !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
 }
 </style>
 <?
