@@ -145,15 +145,15 @@ if(
                             </div>
                             
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["NEWPRODUCT"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
+                            <div class="ag-shop-card__image-badges first_image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
                             <? endif ?>
 
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["SALELEADER"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png"></div>
+                            <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png"></div>
                             <? endif ?>
 
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["SPECIALOFFER"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png"></div>
+                            <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png"></div>
                             <? endif ?>
                             
                             
