@@ -4,7 +4,6 @@
     */
     
     require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-    require("mobile.filter.params.php");
 
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php"
@@ -19,7 +18,9 @@
     
     $arResult = [];
     foreach($arProducts["items"] as $arProduct)$arResult[] = [
-        "item"=>$arProduct["NAME"]
+        "item"=>$arProduct["NAME"],
+        "url"=>'/catalog/'.$arProduct["SECTION"]["CODE"]."/".$arProduct["CODE"]
+            ."/"
     ];
     
     echo json_encode($arResult);

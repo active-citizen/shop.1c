@@ -105,7 +105,6 @@ if(
         </div>
     <? }elseif(!$product_code && $catalog_code){ ?>
     <?
-    require("mobile.filter.params.php");
     $APPLICATION->IncludeComponent(
         "ag:mobile.teasers", 
         "", 

@@ -412,11 +412,12 @@ $(document).ready(function(){
 
 
     //$('.fimage').fancybox();
+    if(typeof $('#ag-basket-amount').spinner === 'function'){
+        $('#ag-basket-amount').spinner({culture: "ru",min: "1",step: "1"});
     
-    $('#ag-basket-amount').spinner({culture: "ru",min: "1",step: "1"});
-
-    $('#ag-basket-amount').spinner("enable");
-    $('#ag-basket-amount').spinner("value",1);
+        $('#ag-basket-amount').spinner("enable");
+        $('#ag-basket-amount').spinner("value",1);
+    }
 
     // Пересчитываем число выбранных фильтров
     calcFilterCount();
@@ -659,7 +660,7 @@ function wishes_load_catalog(){
             var obj;
             var i;
             for(i in answer){
-                obj = $('div[productid="'+answer[i]+'"]');
+                obj = $('[productid="'+answer[i]+'"]');
                 if(!obj.hasClass('wish-on')){
                     obj.removeClass('wish-off');
                     obj.addClass('wish-on');

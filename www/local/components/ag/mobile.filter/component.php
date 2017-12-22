@@ -10,8 +10,25 @@
 
     $arResult["GRID"] = isset($_REQUEST["productGridCheckbox"])?true:false;
     $arResult["HIT"] = isset($_REQUEST["productHitCheckbox"])?true:false;
+    $arResult["HIT"] = 
+        isset($arParams["filter"]['hit'])
+        &&
+        $arParams["filter"]['hit']
+        ?true:$arResult["HIT"];
+
     $arResult["NEW"] = isset($_REQUEST["productNewCheckbox"])?true:false;
+    $arResult["NEW"] = 
+        isset($arParams["filter"]['new'])
+        &&
+        $arParams["filter"]['new']
+        ?true:$arResult["NEW"];
+
     $arResult["SALE"] = isset($_REQUEST["productSaleCheckbox"])?true:false;
+    $arResult["SALE"] = 
+        isset($arParams["filter"]['sale'])
+        &&
+        $arParams["filter"]['sale']
+        ?true:$arResult["SALE"];
         
 
     $arResult["SORTING"] = [
@@ -60,12 +77,26 @@
             "CLASSNAME"=>"icon-aside-filter--sale"
         ],
     ];
-    foreach($arResult["SORTING"] as $nKey=>$arSort)
+    foreach($arResult["SORTING"] as $nKey=>$arSort){
+        $tmp = explode("_",$arSort["VALUE"]);
+        if(
+            isset($tmp[0]) && isset($tmp[1])
+            &&
+            isset($arParams["sorting"]["param"])
+            &&
+            isset($arParams["sorting"]["direction"])
+            &&
+            $arParams["sorting"]["param"] = $tmp[0]
+            &&
+            $arParams["sorting"]["direction"] = $tmp[1]
+        )
+        $arResult["SORTING"][$nKey]["CHECKED"] = true;
         if(
             isset($_REQUEST["productSortPrice"]) 
             && $_REQUEST["productSortPrice"]==$arSort["VALUE"]
         )
         $arResult["SORTING"][$nKey]["CHECKED"] = true;
+    }
 
     
     /*******************************************
@@ -83,9 +114,13 @@
         ]);
         $arStores[$nKey]["CODE"] = $arStore["CODE"];
         if(
-            isset($_REQUEST["productDelivery".$arStore["CODE"]])
-            &&
-            $_REQUEST["productDelivery".$arStore["CODE"]]==$arStore["ID"]
+            in_array($arStore["ID"], $arParams['filter']['store'])
+            ||
+            (
+                isset($_REQUEST["productDelivery".$arStore["CODE"]])
+                &&
+                $_REQUEST["productDelivery".$arStore["CODE"]]==$arStore["ID"]
+            )
         )
         $arResult["STORE_CHECKED"] = $arStores[$nKey]["CHECKED"] = true;
     }
@@ -114,24 +149,46 @@
         ]);
         $arInterests[$nKey]["CODE"] = $arInterest["CODE"];
         if(
-            isset($_REQUEST["productInterest".$arInterest["CODE"]])
-            &&
-            $_REQUEST["productInterest".$arInterest["CODE"]]==$arInterest["ID"]
+            (
+                isset($arParams['filter']['interest'])
+                &&
+                $arParams['filter']['interest']==$arInterest["ID"]
+            )
+            ||
+            (
+                isset($_REQUEST["productInterest".$arInterest["CODE"]])
+                &&
+                $_REQUEST["productInterest".$arInterest["CODE"]]==$arInterest["ID"]
+            )
         )
         $arResult["INTERESTS_CHECKED"] = $arInterests[$nKey]["CHECKED"] = true;
     }
     $arResult["INTERESTS"] = $arInterests;
     
+    
     if(isset($_REQUEST["productPriceMin"]) && intval($_REQUEST["productPriceMin"]))
         $arResult["MIN_PRICE"] = $_REQUEST["productPriceMin"];
     else
         $arResult["MIN_PRICE"] = '';
+        
+    $arResult["MIN_PRICE"] = 
+        isset($arParams["filter"]['price_min'])
+        &&
+        $arParams["filter"]['price_min']
+        ?$arParams["filter"]['price_min']:$arResult["MIN_PRICE"];
     
 
     if(isset($_REQUEST["productPriceMax"]) && intval($_REQUEST["productPriceMax"]))
         $arResult["MAX_PRICE"] = $_REQUEST["productPriceMax"];
     else
         $arResult["MAX_PRICE"] = '';
+
+    $arResult["MAX_PRICE"] = 
+        isset($arParams["filter"]['price_max'])
+        &&
+        $arParams["filter"]['price_max']
+        ?$arParams["filter"]['price_max']:$arResult["MAX_PRICE"];
+
 
 
     $this->IncludeComponentTemplate();
