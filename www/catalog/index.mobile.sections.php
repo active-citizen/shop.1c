@@ -11,14 +11,22 @@
     );
     use AGShop\Catalog as Catalog;
 
-
     $objTag = new \Catalog\CCatalogProductTag(INTEREST_PROPERTY_ID);
     $arTags = $objTag->getAllTags();
     
     $arResult = [];
-    foreach($arTags as $arTag)$arResult[] = [
-        "category"=>$arTag["NAME"]
-    ];
+    foreach($arTags as $arTag){
+        $sKey = CUtil::translit($arTag["NAME"],"ru",[
+            "change_case"   =>  false,
+            "replace_space" =>  "",
+            "replace_other" =>  ""
+        ]);
+        
+        $arResult[] = [
+            "category"=>$arTag["NAME"],
+            "url"=>"/catalog/?productInterest$sKey=".$arTag["ID"]
+        ];
+    }
     
     echo json_encode($arResult);
 

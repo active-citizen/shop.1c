@@ -144,7 +144,7 @@
             ]
         */
         function getTeasers($arOptions = []){
-            $CDB = new \DB\CDB;;
+            $CDB = new \DB\CDB;
             
             $arFilter = [];
             if(!isset($arOptions["sorting"]))$arOptions["sorting"] = [];
@@ -170,11 +170,7 @@
                 )$arSorting[$arOptions["sorting"]["param"]] 
                     = $arOptions["sorting"]["direction"];
             if(!$arSorting)$arSorting = ["price"=>"desc"];
-
             
-            $ON_PAGE = 12;
-            $PAGE = isset($_REQUEST["PAGE"])?intval($_REQUEST["PAGE"]):1;
-
             // Составляем справочник флагов
             $ENUMS = array();
             $res = \CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>CATALOG_IB_ID));
@@ -276,7 +272,7 @@
                         `IBLOCK_ELEMENT_ID`
                 ";
                 $arIds = $CDB->sqlSelect($sQuery,1000);
-                foreach($arIds as $arId)$sInterestCond = $arId["ID"];
+                foreach($arIds as $arId)$sInterestCond[] = $arId["ID"];
             }
             
             // Выбираем ID товаров, подходящих по цене
@@ -406,10 +402,12 @@
                 if($nCount>=$nIntersectSetscount)$arIds[] = $nId;
             }
             
+            // Ничего не найдено
+            if(!$arIds)return ["items"=>$arItems,"total"=>$nTotal];
+            
             // Прогоняем получившееся пересечение чере БД для сортировки, попутно
             // Делая пагинацию
-
-            $arIdsPage = [];
+            $nTotal = count($arIds);
             $res = \CIBlockElement::GetList($arSorting,[
                 "IBLOCK_ID"=>CATALOG_IB_ID,
                 "ID"=>$arIds
@@ -423,16 +421,45 @@
             ]);
             $arItems = [];
             $objSection = new \Catalog\CCatalogSection;
+            $arIds = [];
             while($arProduct = $res->Fetch()){
+                $arIds[] = $arProduct['ID'];
                 $arProduct["IMAGE"] = \CFile::GetPath(
                     $arProduct["DETAIL_PICTURE"]
                 );
                 $arProduct["SECTION"] = $objSection->getBriefById(
                     $arProduct["IBLOCK_SECTION_ID"]
                 );
-                $arItems[] = $arProduct;
+                $arItems[$arProduct['ID']] = $arProduct;
             }
-            return ["items"=>$arItems,"total"=>count($arIds)];
+            $arIdsPage = [];
+            // Составляем справочник свойств
+            $sQuery = "
+                SELECT `ID`,`CODE` FROM 
+                WHERE  `CODE`='WISH_PRODUCT' LIMIT 1
+            ";
+            $arProp = $CDB->searchOne(\AGShop\CAGShop::t_iblock_property,[
+                "CODE"=>'WISH_PRODUCT'],["ID"]);
+                
+            // Получаем количество сердечек для каждого товара
+            $sQuery = "
+                SELECT
+                    FLOOR(`VALUE_NUM`) as `ID`,
+                    COUNT(DISTINCT `VALUE_NUM`) as `COUNT`
+                FROM
+                    `".\AGShop\CAGShop::t_iblock_element_property."`
+                WHERE
+                    `IBLOCK_PROPERTY_ID`=".$arProp["ID"]."
+                    AND `VALUE_NUM` IN(".implode(",",$arIds).")
+                GROUP BY
+                    `VALUE_NUM`
+            ";
+            $arWishes = $CDB->sqlSelect($sQuery);
+            $arWishesIndex = [];
+            foreach($arWishes as $arWish)
+                $arItems[$arWish['ID']]["WISHES"] = $arWish["COUNT"];
+                
+            return ["items"=>$arItems,"total"=>$nTotal];
         }
         
         

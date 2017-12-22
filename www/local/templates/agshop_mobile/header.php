@@ -3,6 +3,8 @@ CUtil::InitJSCore(['ajax']);
 
 
 if(
+    1
+    ||
     preg_match("#^/catalog/.*?/.+$#",$_SERVER["REQUEST_URI"])
     ||
     preg_match("#^/profile/.*$#",$_SERVER["REQUEST_URI"])
@@ -43,6 +45,7 @@ if(
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/main.css");
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
+//$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/common.js");
 
 
 ?>
@@ -102,10 +105,9 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
     </div>    
     <? endif ?>
 
+    <? require($_SERVER["DOCUMENT_ROOT"]."/catalog/mobile.filter.params.php"); ?>
 
-<?$APPLICATION->IncludeComponent("ag:mobile.filter", "", array(
-        "CACHE_TIME"      =>  COMMON_CACHE_TIME        
-    ),
-    false
-);?>
+<?
+    $APPLICATION->IncludeComponent("ag:mobile.filter", "", $arParams, false);
+?>
 

@@ -280,6 +280,11 @@ $(function() {
 
   );
 
+  $('#multiple-datasets .typeahead').on('typeahead:selected',function(eventObject, suggestionObject, suggestionDataset){
+      document.location.href = suggestionObject.url;
+  });
+
+
   // ===================
   // Clear autocomplete
   // ===================

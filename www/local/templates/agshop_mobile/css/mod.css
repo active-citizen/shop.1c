@@ -19,3 +19,39 @@
         margin-top: 46px;
     }
 }
+
+.mobile-product-item-favourite{
+    z-index: 100;
+}
+
+/********* Для работы сердечек********/
+.mobile-product-item{position:relative;}
+.wish-on{background-image: url(/local/templates/agshop_mobile/img/icon__product-favourite--pink.svg);}
+.wish-off{background-image: url(/local/templates/agshop_mobile/img/icon__product-favourite--grey.svg);}
+
+/********* Для пагинации ********/
+.more-button{
+    border: 1px #AAA solid;
+    width: 100px;
+    height: 40px;
+    font-size: 14px;
+    margin: 20px 25%;
+    padding: 10px;
+    border-radius: 10px;
+    color: #444;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/********* Об отсутствии товаров по условию ********/
+.empty-products-list{
+    margin: 70px auto 20px auto;
+    padding: 10px;
+    text-align:center;
+    color: #666;
+    background-color: #F6F6F6;
+    border: 1px #CCC solid;
+    width: 80%;
+}
+
+

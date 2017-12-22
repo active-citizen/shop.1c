@@ -3,7 +3,17 @@
 			<div class="mobile-header-wrapper">
 				<div class="mobile-header-left">
 					<button class="mobile-header-caregory-btn" type="button">
-						<span class="mobile-header-category__title">Все категории</span>
+						<span class="mobile-header-category__title">
+                            <? 
+                                $sName = 'Все категории';
+                                foreach($arResult["SECTIONS"] as $arSection)
+                                    if($arSection["CURRENT"]){
+                                        $sName = $arSection["NAME"];
+                                        break;
+                                    }
+                            ?>
+                            <?= $sName ?>
+                        </span>
 					</button>
 					<div class="mobile-header-search">
 						<form>
@@ -34,7 +44,7 @@
 					</a>
                     <? foreach($arResult["SECTIONS"] as $arSection):?>
 					<a class="mobile-header-nav__link<? if($arSection["CURRENT"]):?> current<? endif ?>" 
-                        href="/catalog/<?= $arSection["CODE"]?>/">
+                        href="/catalog/<?= $arSection["CODE"]?>/<? if(isset($_REQUEST["productGridCheckbox"])):?>?productGridCheckbox=30<? endif ?>">
 						<span class="mobile-header-nav__link-wrapper">
 							<span class="mobile-header-nav__link-icon">
 								<span class="icon-header-category <?= $arSection["CLASSNAME"]?>"></span>
