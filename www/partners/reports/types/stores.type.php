@@ -8,7 +8,6 @@ CModule::IncludeModule("catalog");
 $arFilter = array();
 //$arFilter[">AMOUNT"] = 0;
 
-
 $resStoreProduct = CCatalogStoreProduct::GetList(
     array(),
     $arFilter
@@ -19,10 +18,13 @@ $arStores = array();
 $arTable = array();
 
 while($arStoreProduct = $resStoreProduct->GetNext()){
-    if(!isset($arProducts[$arStoreProduct["PRODUCT_ID"]]))
-        $arProducts[$arStoreProduct["PRODUCT_ID"]] = getProductInfo(
+    $arProductInfo =getProductInfo(
             $arStoreProduct["PRODUCT_ID"]
-        );
+        ); 
+    if(!$arProductInfo)continue;
+    if(!isset($arProducts[$arStoreProduct["PRODUCT_ID"]]))
+        $arProducts[$arStoreProduct["PRODUCT_ID"]] = $arProductInfo;
+
     if(!isset($arStores[$arStoreProduct["STORE_ID"]]))
         $arStores[$arStoreProduct["STORE_ID"]] = array(
             "ID"    =>  $arStoreProduct["STORE_ID"],
@@ -46,6 +48,10 @@ $arResult = array(
     "COLS"=>$arStores,
     "CELLS"=>$arTable
 );
+
+//echo "<pre><!-- ";
+//print_r($arResult);
+//echo " --></pre>";
 
 // Чистим результат от неактивных товаров
 /*
@@ -95,7 +101,8 @@ function getProductInfo($nOfferId){
             false,
             array("nTopCount"=>1),
             array("NAME","ID","PROPERTY_CML2_LINK")
-        )->GetNext();    
+        )->GetNext();   
+    if(!intval($arResult["OFFER"]["PROPERTY_CML2_LINK_VALUE"]))return false;
     $arResult["PRODUCT"] = 
         $arProduct = CIBlockElement::GetList(
             array(),
