@@ -3,6 +3,14 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
+<!--
+<?
+    print_r($arResult["USER_INFO"]);
+    print_r($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                    [0]);
+?>
+-->
+
 <?
 $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 $stopMonLimit = 0;
@@ -99,14 +107,28 @@ if(
                 </div>
               </div>
             <? elseif(
-                !trim(
-                    $arResult["USER_INFO"]["UF_USER_AG_STATUS"]
+                (
+                    
+                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arParams["ALL_POINTS_LIMIT"]
+                    
+                    &&
+                    !trim(
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"]
+                    )
                 )
-                &&
-                !trim(
-                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
-                    [0]["VALUE"]
-                )
+                ||
+                (
+                    
+                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"]
+                    
+                    &&
+                    trim(
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"]
+                    )
+               )
             ):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
