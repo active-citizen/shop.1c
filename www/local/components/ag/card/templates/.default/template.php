@@ -6,6 +6,7 @@
 <?
 $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 $stopMonLimit = 0;
+$noAG = false;
 if(
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"] &&
     $arResult["MON_ORDERS"]
@@ -122,6 +123,7 @@ if(
                     )
                )
             ):?>
+                <? $noAG = true;?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
                     Обращаем Ваше внимание, что заказать данное поощрение вы
@@ -518,6 +520,8 @@ if(
                         </div>
                       </div>
                       <? if(
+                        !$noAG  // В статусе активный гражданин?
+                        &&
                         $arResult["CATALOG_ITEM"]["PROPERTIES"]["PROMOCODE"]
                             [0]["VALUE_ENUM"]!='да'
                         //&&
@@ -639,6 +643,8 @@ if(
                 <? endif ?>
 
                 <? if(
+                    !$noAG
+                    &&
                     !$stopMonLimit
                     &&
                     // Если дата мероприятия не вышла
