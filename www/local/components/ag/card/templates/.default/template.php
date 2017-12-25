@@ -3,6 +3,14 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
+<!--
+<?
+    print_r($arResult["USER_INFO"]);
+    print_r($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                    [0]);
+?>
+-->
+
 <?
 $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 $stopMonLimit = 0;
@@ -99,14 +107,28 @@ if(
                 </div>
               </div>
             <? elseif(
-                !trim(
-                    $arResult["USER_INFO"]["UF_USER_AG_STATUS"]
+                (
+                    
+                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arParams["ALL_POINTS_LIMIT"]
+                    
+                    &&
+                    !trim(
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"]
+                    )
                 )
-                &&
-                !trim(
-                    $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
-                    [0]["VALUE"]
-                )
+                ||
+                (
+                    
+                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"]
+                    
+                    &&
+                    trim(
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"]
+                    )
+               )
             ):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
@@ -145,15 +167,15 @@ if(
                             </div>
                             
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["NEWPRODUCT"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
+                            <div class="ag-shop-card__image-badges first_image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
                             <? endif ?>
 
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["SALELEADER"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png"></div>
+                            <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__hit.png"></div>
                             <? endif ?>
 
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["SPECIALOFFER"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png"></div>
+                            <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png"></div>
                             <? endif ?>
                             
                             

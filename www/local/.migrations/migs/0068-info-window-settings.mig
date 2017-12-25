@@ -6,7 +6,6 @@
     use AGShop\Integration as Integration;
 
     $objSettings = new \Integration\CIntegrationSettings('INFO');
-    $arSettings = $objSettings->get();
 
     $arSettings = [];
     $arSettings["INFO_MESSAGE"] = [
@@ -17,7 +16,7 @@
         "TITLE"=>"CSS-стиль сообщения",
         "VALUE"=>"background-color:#f49541;color:#444444;font-size:18px;text-align:center;padding:10px;"
     ];
-    if(!isset($arSettings["INFO_MESSAGE"])){
+    if(!$objSettings->get()){
         $objSettings->add($arSettings);
     }
     else{

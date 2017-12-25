@@ -220,22 +220,26 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     );?>
     <? endif ?>
     <? 
-
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
-
        $objSettings = new \Integration\CIntegrationSettings;
        $objSettings->code = 'INFO';
        $arSettings = $objSettings->get();
+       $sCookieName = "HIDE_INFO".crc32($arSettings["INFO_MESSAGE"]["VALUE"]);
+       $sHideDate = date("r",time()+14*24*60*60);
     ?>
     <? if(
         $arSettings["INFO_MESSAGE"]["VALUE"]
         &&
         // Не показывать в АРМ
         !preg_match("#^/partner#", $_SERVER["REQUEST_URI"])
+        &&
+        !$_COOKIE[$sCookieName]
     ):?>
-    <div style="<?= $arSettings["INFO_STYLE"]["VALUE"]?>">
-        <?= $arSettings["INFO_MESSAGE"]["VALUE"]?>
-    </div>
+    <div class="ag-shop-card__warning main-info-message" style="<?= $arSettings["INFO_STYLE"]["VALUE"]?>">
+        <div class="close-pic" onclick="$(this).parent().fadeOut();document.cookie='<?= $sCookieName?>=1;expires=<?= $sHideDate ?>;path=/;';"></div>
+        <i class="ag-shop-icon ag-shop-icon--attention"></i>
+        <span><?= $arSettings["INFO_MESSAGE"]["VALUE"]?></span>
+    </div>    
     <? endif ?>
 
 <? endif ?>
