@@ -34,7 +34,7 @@
 			</div>
 			<div class="mobile-header-category">
 				<nav class="mobile-header-nav">
-					<a class="mobile-header-nav__link mobile-header-nav__link--big current" href="#">
+					<a class="mobile-header-nav__link mobile-header-nav__link--big current" href="/catalog/">
 						<span class="mobile-header-nav__link-wrapper">
 							<span class="mobile-header-nav__link-icon">
 								<span class="icon-header-category icon-header-category--all"></span>
@@ -70,3 +70,14 @@
 			</div>
 		</div>
 	</header>
+		<!-- Вставил блок , для корректной работы  -->
+	<div class="mobile-container">
+			<div class="mobile-main-wrapper">
+				<section class="mobile-search-status">
+					<!-- This div is target for autocomplete -->
+					<!-- dont remove him -->
+				</section>
+			</div>	
+	</div>
+
+		

@@ -1971,11 +1971,12 @@ body:after {
   text-align: center;
 }
 
-.mobile-product-item-favourite:hover .mobile-product-item-favourite__icon,
+/*.mobile-product-item-favourite:hover .mobile-product-item-favourite__icon,
 .mobile-product-item-favourite:active .mobile-product-item-favourite__icon,
 .mobile-product-item-favourite:focus .mobile-product-item-favourite__icon {
   background-image: url("../img/icon__product-favourite--pink.svg");
-}
+}*/
+
 
 .mobile-product-item-favourite__icon {
   display: block;
@@ -1987,9 +1988,10 @@ body:after {
   -webkit-background-size: contain;
   background-size: contain;
   background-position: center;
+  transition: all .5s;
 }
 
-.mobile-product-item-favourite__icon.active {
+.mobile-product-item-favourite__icon.wish-on {
   background-image: url("../img/icon__product-favourite--pink.svg");
 }
 

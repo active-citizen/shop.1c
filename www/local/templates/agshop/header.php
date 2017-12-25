@@ -47,7 +47,9 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <meta name="msapplication-tap-highlight" content="no"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <? $APPLICATION->ShowHead(); ?>                                                                                                                                                           
+    <?
+ $APPLICATION->ShowHead();
+ ?>                                                                                                                                                           
     <title><?$APPLICATION->ShowTitle()?></title>
 
   </head>
@@ -171,6 +173,9 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
             <div class="ag-shop-sidebar__social-link"><a target="_blank"
             class="ag-shop-social-link ag-shop-social-link--inst"
             href="https://www.instagram.com/citizenmoscow/"></a></div>
+            <div class="ag-shop-sidebar__social-link"><a target="_blank"
+            class="ag-shop-social-link ag-shop-social-link--ok"
+            href="https://ok.ru/citizenmoscow/"></a></div>
           </div>
           <button class="ag-shop-sidebar__up" type="button"></button>
         </div>
