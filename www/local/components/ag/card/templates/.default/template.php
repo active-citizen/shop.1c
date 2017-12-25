@@ -3,14 +3,6 @@
     $this->createFrame()->begin("Загрузка");
 ?>
 
-<!--
-<?
-    print_r($arResult["USER_INFO"]);
-    print_r($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
-                    [0]);
-?>
--->
-
 <?
 $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 $stopMonLimit = 0;
