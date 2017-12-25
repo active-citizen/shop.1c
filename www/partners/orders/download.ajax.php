@@ -427,7 +427,7 @@ if(isset($_REQUEST["continue"])){
             ).''
             .";".'" "'//'"Уникальный штрих-код заказа"'
             .";".'" "'//'"Уникальный номер товара"' 
-            .";".'"'.str_replace("u","8",$arOrder["USER_LOGIN"]).'"' 
+            .";".'"'.str_replace("u","",$arOrder["USER_LOGIN"]).'"' 
             .";".'" "'//'"Тип товара"'  
             .";".'"'.
                 html_entity_decode($arOrder["PRODUCT_NAME"],ENT_QUOTES|ENT_HTML401)
