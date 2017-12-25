@@ -1,9 +1,7 @@
 <?php
     namespace Cache;
-    require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
-    use AGShop; 
    
-    class CCache extends \AGShop\CAGShop{
+    class CCache {
         
         var $sKey = '';
         var $sGroup = '';
