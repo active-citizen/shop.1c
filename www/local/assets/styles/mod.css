@@ -787,7 +787,7 @@ div.amounter--off{
     margin-top: 9px!important;
 }
 
-.first_image-badges{
+.wrap_margin_top > div:nth-child(2){
     margin-top: 85px!important;
 }
 

@@ -153,7 +153,7 @@ if(
                           ?>)">
                           <div class="ag-shop-card__map" style="display:none"></div>
                           <div class="ag-shop-card__image"></div>
-                          <div class="ag-shop-card__image-info">
+                          <div class="ag-shop-card__image-info wrap_margin_top">
                             <div class="ag-shop-card__image-points">
                               <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")?></div>
                               <div class="ag-shop-item-card__points-text"><?=
@@ -161,7 +161,7 @@ if(
                             </div>
                             
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["NEWPRODUCT"][0]["VALUE_ENUM"]=='да'):?>
-                            <div class="ag-shop-card__image-badges first_image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
+                            <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
                             <? endif ?>
 
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["SALELEADER"][0]["VALUE_ENUM"]=='да'):?>

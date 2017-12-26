@@ -57,13 +57,16 @@
         "ONLY_WITH_PRODUCTS"=>true,
         "ONLY_WITH_PRESENT_PRODUCTS"=>true
     ]);
+    $arResult["CURRENT_SECTION"] = '';
     foreach($arSections as $nKey=>$arSection){
         if(isset($arIconsClasses[$arSection["CODE"]]))
             $arSections[$nKey]["CLASSNAME"]=$arIconsClasses[$arSection["CODE"]];
         else
             $arSections[$nKey]["CLASSNAME"]=$sSectionIconDefault;
-        if(preg_match("#^/catalog/".$arSection["CODE"]."/#",$_SERVER["REQUEST_URI"]))
+        if(preg_match("#^/catalog/".$arSection["CODE"]."/#",$_SERVER["REQUEST_URI"])){
             $arSections[$nKey]["CURRENT"]=true;
+            $arResult["CURRENT_SECTION"] = $arSection["CODE"];
+        }
         
     }
     

@@ -31,17 +31,21 @@
 
 /********* Для пагинации ********/
 .more-button{
-    border: 1px #AAA solid;
-    width: 100px;
+
+    max-width: 150px;
     height: 40px;
-    font-size: 14px;
     margin: 20px auto;
-    padding: 10px;
-    border-radius: 10px;
-    color: #444;
-    text-decoration: none;
     cursor: pointer;
     display: block;
+    text-align: center;    
+    padding: 10px 0;
+    border: 1px solid rgba(0,122,108,1);
+    border-radius: 20px;
+    font-family: 'SF UI Text', Arial, sans-serif;
+    font-size: 16px;
+    font-size: 1rem;
+    color: rgba(0,122,108,1);
+    text-decoration: none;
 }
 
 /********* Об отсутствии товаров по условию ********/

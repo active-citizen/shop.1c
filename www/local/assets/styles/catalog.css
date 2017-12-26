@@ -1074,10 +1074,12 @@ input:checked + .ag-shop-filter__variants-item {
   color: rgba(0,122,108,1);
   text-decoration: none;
 }
-.ag-shop-catalog__more-button:hover {
+.ag-shop-catalog__more-button:hover,
+.more-button:hover {
   text-decoration: underline;
 }
-.ag-shop-catalog__more-button:active {
+.ag-shop-catalog__more-button:active,
+.more-button:active {
   opacity: 0.9;
 }
 @media (min-width: 480px) {
