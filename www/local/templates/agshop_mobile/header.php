@@ -100,7 +100,6 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
     ):?>
     <div class="ag-shop-card__warning main-info-message" style="margin-top:72px;<?= $arSettings["INFO_STYLE"]["VALUE"]?>">
         <div class="close-pic" onclick="$(this).parent().fadeOut();document.cookie='<?= $sCookieName?>=1;expires=<?= $sHideDate ?>;path=/;';"></div>
-        <i class="ag-shop-icon ag-shop-icon--attention"></i>
         <span><?= $arSettings["INFO_MESSAGE"]["VALUE"]?></span>
     </div>    
     <? endif ?>
