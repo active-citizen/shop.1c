@@ -231,13 +231,10 @@
             // либо с флагом, но и остатками
             $arSectionCond = [];
             $sNow = date("Y-m-d");
-            $nUserId = $USER->GetID();
-            if(!$nUserId)$nUserId = 1;
             $sQuery = "
                 SELECT
-                    `product`.`ID` as `ID`,
-                    COUNT(DISTINCT `order`.`ID`) as `BUYED`, -- Количество купленного товара пользователем в этом месяце
-                    `mon_limit`.`VALUE` as `MON_LIMIT`
+                    `product`.`NAME` as `NAME`,
+                    `product`.`ID` as `ID`
                 FROM
                     `".\AGShop\CAGShop::t_iblock_element."` as `product`
                         LEFT JOIN
@@ -262,18 +259,6 @@
                         `hide_date`.`IBLOCK_PROPERTY_ID`=".HIDE_DATE_PROPERTY_ID."
                         AND
                         `hide_date`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
-                        LEFT JOIN
-                    `".\AGShop\CAGShop::t_iblock_element_property."` as `mon_limit`
-                        ON
-                        `mon_limit`.`IBLOCK_PROPERTY_ID`=".MON_LIMIT_PROPERTY_ID."
-                        AND
-                        `mon_limit`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
-                        LEFT JOIN
-                    `".\AGShop\CAGShop::t_sale_order."` as `order`
-                        ON
-                        `order`.`USER_ID`=".$nUserId."
-                        AND
-                        `offerlink`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
                 WHERE
                     `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     AND `product`.`IBLOCK_SECTION_ID`!=0
@@ -301,13 +286,25 @@
                             `hide_date`.`VALUE`>='".$sNow."'
                         )
                     )
-                GROUP BY `product`.`ID`
             ";
             $arIds = $CDB->sqlSelect($sQuery,10000);
             foreach($arIds as $arId){
-                // Не выводим товары, на которые сработал месячный лимит
-                if($arIds["MON_LIMIT"] && $arIds["BUYED"]>=$arIds["MON_LIMIT"])
-                    continue;
+                // Не выводим троесно-порковочные лимиты
+                $arId["NAME"] = mb_strtolower($arId["NAME"]);
+                if(strpos($arId["NAME"],"тройка")!==false){
+                    $objTroya = new \Integration\CIntegrationTroyka($USER->GetLogin());
+                    $objTroya->clearLocks();
+                    // Определяем вышел ли дневной лимит парковок 
+                    $bIsLimited = $objTroya->isLimited();
+                    if($bIsLimited)continue;
+                }
+                elseif(strpos($arId["NAME"],"парков")!==false){
+                    $objParking = new \Integration\CIntegrationParking($USER->GetLogin());
+                    $objParking->clearLocks();
+                    // Определяем вышел ли дневной лимит парковок 
+                    $bIsLimited = $objParking->isLimited();
+                    if($bIsLimited)continue;
+                }
                 $arSectionCond[] = $arId["ID"];
             }
             
@@ -531,7 +528,7 @@
             $arWishesIndex = [];
             foreach($arWishes as $arWish)
                 $arItems[$arWish['ID']]["WISHES"] = $arWish["COUNT"];
-                
+            
             return ["items"=>$arItems,"total"=>$nTotal];
         }
         
