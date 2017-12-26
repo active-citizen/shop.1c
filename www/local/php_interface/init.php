@@ -121,6 +121,16 @@
             )
         )->Fetch();
         define("HIDE_DATE_PROPERTY_ID",$arr["ID"]);
+
+        // Определяем ID свойства МЕСЯЧНЫЙ ЛИМИТ
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"MON_LIMIT"
+            )
+        )->Fetch();
+        define("MON_LIMIT_PROPERTY_ID",$arr["ID"]);
+
         // Определяем ID свойства ХИТ
         $arr = CIBlockProperty::GetList(
             array(), array(

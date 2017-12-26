@@ -144,6 +144,7 @@
             ]
         */
         function getTeasers($arOptions = []){
+            global $USER;
             $CDB = new \DB\CDB;
             
             $arFilter = [];
@@ -194,8 +195,10 @@
             if(isset($arOptions["filter"]["price_max"]))
                 $arFilter["price_max"] = intval($arOptions["filter"]["price_max"]);
             
-            if(isset($arOptions["filter"]["store"]))
-                $arFilter["store"] = intval($arOptions["filter"]["store"]);
+            if(isset($arOptions["filter"]["store"]) && is_array($arOptions["filter"]["store"]))
+                $arFilter["store"] = $CDB->ForSql(implode(",",$arOptions["filter"]["store"]));
+            elseif(isset($arOptions["filter"]["store"]))
+                $arFilter["store"] = $CDB->ForSql($arOptions["filter"]["store"]);
             
             if(isset($arOptions["filter"]["hit"]) && $arOptions["filter"]["hit"])
                 $arFilter["hit"] = intval($arOptions["filter"]["hit"]);
@@ -223,20 +226,90 @@
             }
             
             // Выбираем по разделу и по доступности
+            // Выбираем ID Товаров, подходящих по складу
+            // При этом либо тех, у которых не стоит флаг "прятать без остатка"
+            // либо с флагом, но и остатками
             $arSectionCond = [];
+            $sNow = date("Y-m-d");
+            $nUserId = $USER->GetID();
+            if(!$nUserId)$nUserId = 1;
             $sQuery = "
                 SELECT
-                    `ID` as `ID`
+                    `product`.`ID` as `ID`,
+                    COUNT(DISTINCT `order`.`ID`) as `BUYED`, -- Количество купленного товара пользователем в этом месяце
+                    `mon_limit`.`VALUE` as `MON_LIMIT`
                 FROM
-                    `".\AGShop\CAGShop::t_iblock_element."`
+                    `".\AGShop\CAGShop::t_iblock_element."` as `product`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `offerlink`
+                        ON
+                        `offerlink`.`IBLOCK_PROPERTY_ID`=".CML2_LINK_PROPERTY_ID."
+                        AND
+                        `offerlink`.`VALUE_NUM`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
+                        ON
+                        `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `hide_prop`
+                        ON
+                        `hide_prop`.`IBLOCK_PROPERTY_ID`=".HIDE_IF_ABSENT_PROPERTY_ID."
+                        AND
+                        `hide_prop`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `hide_date`
+                        ON
+                        `hide_date`.`IBLOCK_PROPERTY_ID`=".HIDE_DATE_PROPERTY_ID."
+                        AND
+                        `hide_date`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `mon_limit`
+                        ON
+                        `mon_limit`.`IBLOCK_PROPERTY_ID`=".MON_LIMIT_PROPERTY_ID."
+                        AND
+                        `mon_limit`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_sale_order."` as `order`
+                        ON
+                        `order`.`USER_ID`=".$nUserId."
+                        AND
+                        `offerlink`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
                 WHERE
-                    `IBLOCK_ID`=".CATALOG_IB_ID."
-                    AND `IBLOCK_SECTION_ID`!=0
-                    ".($nSectionId?"AND `IBLOCK_SECTION_ID`=".$nSectionId:"")."
-                    AND `ACTIVE`='Y'
+                    `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
+                    AND `product`.`IBLOCK_SECTION_ID`!=0
+                    ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
+                    AND `product`.`ACTIVE`='Y'
+                    AND 
+                    (
+                        (
+                            `hide_prop`.`VALUE` IS NULL
+                        )
+                        OR
+                        (
+                            `hide_prop`.`VALUE` IS NOT NULL
+                            AND
+                            `store_product`.`AMOUNT`>0
+                        )
+                    )
+                    AND 
+                    (
+                        (
+                            `hide_date`.`VALUE` IS NULL
+                        )
+                        OR
+                        (
+                            `hide_date`.`VALUE`>='".$sNow."'
+                        )
+                    )
+                GROUP BY `product`.`ID`
             ";
-            $arIds = $CDB->sqlSelect($sQuery,1000);
-            foreach($arIds as $arId)$arSectionCond[] = $arId["ID"];
+            $arIds = $CDB->sqlSelect($sQuery,10000);
+            foreach($arIds as $arId){
+                // Не выводим товары, на которые сработал месячный лимит
+                if($arIds["MON_LIMIT"] && $arIds["BUYED"]>=$arIds["MON_LIMIT"])
+                    continue;
+                $arSectionCond[] = $arId["ID"];
+            }
             
             // Выбираем по поисковому запросу
             $arQueryCond = [];
@@ -296,7 +369,7 @@
             }
 
             // Выбираем ID Товаров, подходящих по складу
-            $sStoreCond = [];
+            $arStoreCond = [];
             $sQuery = "
                 SELECT
                     `product`.`ID` as `ID`
@@ -318,12 +391,12 @@
                     `product`.`ACTIVE` = 'Y'
                     ".($SectionCond?" AND `product`.`ID` IN(".implode($SectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
-                    ".($arFilter["store"]?"AND `store_product`.`STORE_ID`=".$arFilter["store"]:"")."
+                    ".($arFilter["store"]?"AND `store_product`.`STORE_ID` IN (".$arFilter["store"]:"").")
                 GROUP BY
                     `product`.`ID`
             ";
             $arIds = $CDB->sqlSelect($sQuery,1000);
-            foreach($arIds as $arId)$sStoreCond[] =$arId["ID"];
+            foreach($arIds as $arId)$arStoreCond[] =$arId["ID"];
 
             // Выбираем ID товаров, подходящих по ХИТ
             $sHitCond = [];
@@ -372,11 +445,11 @@
                 $arIds = $CDB->sqlSelect($sQuery,1000);
                 foreach($arIds as $arId)$sSaleCond[] =$arId["ID"];
             }
-
+            
             // Вычисляем пересечения
             $arIntersect = [
-                $arSectionCond, $arQueryCond,
-                $sSaleCond,$sNewCond,$sHitCond,$sStoreCond,
+                $arSectionCond, $arQueryCond, $arStoreCond, 
+                $sSaleCond,$sNewCond,$sHitCond,
                 $sPriceCond,$sInterestCond
             ];
             // Выкидываем нулевые и опеределяем с минимальным числом элементов

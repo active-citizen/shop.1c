@@ -49,6 +49,9 @@
 
         // ID свойства Акция
         define("SPECIALOFFER_PROPERTY_ID", 8);
+        
+        // ID свойства месячный лимит
+        define("MON_LIMIT_PROPERTY_ID", 77);        
 
 
 

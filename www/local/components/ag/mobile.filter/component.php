@@ -86,16 +86,15 @@
             &&
             isset($arParams["sorting"]["direction"])
             &&
-            $arParams["sorting"]["param"] = $tmp[0]
+            $arParams["sorting"]["param"] == $tmp[0]
             &&
-            $arParams["sorting"]["direction"] = $tmp[1]
-        )
-        $arResult["SORTING"][$nKey]["CHECKED"] = true;
+            $arParams["sorting"]["direction"] == $tmp[1]
+        )$arResult["SORTING"][$nKey]["CHECKED"] = true;
+        
         if(
             isset($_REQUEST["productSortPrice"]) 
             && $_REQUEST["productSortPrice"]==$arSort["VALUE"]
-        )
-        $arResult["SORTING"][$nKey]["CHECKED"] = true;
+        )$arResult["SORTING"][$nKey]["CHECKED"] = true;
     }
 
     
