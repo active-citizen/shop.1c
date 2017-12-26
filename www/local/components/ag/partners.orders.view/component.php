@@ -131,7 +131,7 @@ while($arBasket = $resBasket->Fetch()){
         array(
             "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE","DETAIL_TEXT"
             ,"PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
-            ,"PROPERTY_RECEIVE_RULES","PROPERTY_CANCEL_RULES"
+            ,"PROPERTY_RECEIVE_RULES","PROPERTY_CANCEL_RULES","TIMESTAMP_X"
 
         )
     //  array()

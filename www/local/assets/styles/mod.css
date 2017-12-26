@@ -790,3 +790,8 @@ div.amounter--off{
 .first_image-badges{
     margin-top: 85px!important;
 }
+
+.product-current-desc{
+    font-style: italic;
+    text-align: center;
+}
