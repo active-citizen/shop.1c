@@ -12,11 +12,13 @@
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
+    require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
         
     use AGShop\Integration as Integration;
     use AGShop\Catalog as Catalog;
     use AGShop;
     use AGShop\DB as DB;
+    use AGShop\CCache as CCache;
     
     class CCatalogProduct extends \AGShop\CAGShop{
         
@@ -145,6 +147,12 @@
         */
         function getTeasers($arOptions = []){
             global $USER;
+
+            $objCache = new \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)),$nCacheExpires);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+            
             $CDB = new \DB\CDB;
             
             $arFilter = [];
@@ -225,6 +233,17 @@
                 $nSectionId = $arCatalogSection["ID"];
             }
             
+
+            $objTroya = new \Integration\CIntegrationTroyka($USER->GetLogin());
+            $objTroya->clearLocks();
+            // Определяем вышел ли дневной лимит парковок 
+            $bTroykaLimited = $objTroya->isLimited();
+
+            $objParking = new \Integration\CIntegrationParking($USER->GetLogin());
+            $objParking->clearLocks();
+            // Определяем вышел ли дневной лимит парковок 
+            $bParkingLimited = $objParking->isLimited();
+
             // Выбираем по разделу и по доступности
             // Выбираем ID Товаров, подходящих по складу
             // При этом либо тех, у которых не стоит флаг "прятать без остатка"
@@ -259,6 +278,12 @@
                         `hide_date`.`IBLOCK_PROPERTY_ID`=".HIDE_DATE_PROPERTY_ID."
                         AND
                         `hide_date`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `artnum`
+                        ON
+                        `artnum`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
+                        AND
+                        `artnum`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
                 WHERE
                     `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     AND `product`.`IBLOCK_SECTION_ID`!=0
@@ -286,25 +311,29 @@
                             `hide_date`.`VALUE`>='".$sNow."'
                         )
                     )
+                    AND 
+                    (
+                        `artnum`.`ID` IS NULL
+                        OR
+                        `artnum`.`VALUE`!='troyka'
+                        OR
+                        `artnum`.`VALUE`!='parking'
+                        OR
+                        (
+                            `artnum`.`VALUE`='troyka'
+                            AND
+                            ".($bTroykaLimited?0:1)."
+                        )
+                        OR
+                        (
+                            `artnum`.`VALUE`='parking'
+                            AND
+                            ".($bParkingLimited?0:1)."
+                        )
+                    )
             ";
             $arIds = $CDB->sqlSelect($sQuery,10000);
             foreach($arIds as $arId){
-                // Не выводим троесно-порковочные лимиты
-                $arId["NAME"] = mb_strtolower($arId["NAME"]);
-                if(strpos($arId["NAME"],"тройка")!==false){
-                    $objTroya = new \Integration\CIntegrationTroyka($USER->GetLogin());
-                    $objTroya->clearLocks();
-                    // Определяем вышел ли дневной лимит парковок 
-                    $bIsLimited = $objTroya->isLimited();
-                    if($bIsLimited)continue;
-                }
-                elseif(strpos($arId["NAME"],"парков")!==false){
-                    $objParking = new \Integration\CIntegrationParking($USER->GetLogin());
-                    $objParking->clearLocks();
-                    // Определяем вышел ли дневной лимит парковок 
-                    $bIsLimited = $objParking->isLimited();
-                    if($bIsLimited)continue;
-                }
                 $arSectionCond[] = $arId["ID"];
             }
             
@@ -528,8 +557,11 @@
             $arWishesIndex = [];
             foreach($arWishes as $arWish)
                 $arItems[$arWish['ID']]["WISHES"] = $arWish["COUNT"];
+
+            $arResult = ["items"=>$arItems,"total"=>$nTotal];
+            $objCache->set($arResult);
             
-            return ["items"=>$arItems,"total"=>$nTotal];
+            return $arResult;
         }
         
         

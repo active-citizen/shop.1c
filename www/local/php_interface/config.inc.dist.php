@@ -52,6 +52,10 @@
         
         // ID свойства месячный лимит
         define("MON_LIMIT_PROPERTY_ID", 77);        
+        
+        //ID свойства Артикул
+        define("ARTNUMBER_PROPERTY_ID", 9);
+
 
 
 

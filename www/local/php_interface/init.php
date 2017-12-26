@@ -131,6 +131,15 @@
         )->Fetch();
         define("MON_LIMIT_PROPERTY_ID",$arr["ID"]);
 
+        // Определяем ID свойства Артикул
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"ARTNUMBER"
+            )
+        )->Fetch();
+        define("ARTNUMBER_PROPERTY_ID",$arr["ID"]);
+
         // Определяем ID свойства ХИТ
         $arr = CIBlockProperty::GetList(
             array(), array(
