@@ -90,7 +90,8 @@
                         AND
                         `artnum`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
                 WHERE
-                    `section`.`ACTIVE`='Y'
+                    `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
+                    AND `section`.`ACTIVE`='Y'
                     AND `product`.`ACTIVE`='Y'
                     AND 
                     (
