@@ -792,3 +792,12 @@ div.amounter--off{
 }
 
 
+@media (max-width: 992px) {
+    .ag-shop-card__warning{
+        margin-right:0!important;
+        margin-left:0!important;
+        padding-right:10px!important;
+        padding-left:40px!important;
+        line-height: 20px;
+    }
+}
