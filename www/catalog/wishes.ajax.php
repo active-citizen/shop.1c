@@ -4,12 +4,12 @@ use Cache;
 
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-$objCache = new \Cache\CCache("wishes",md5($_SERVER["REQUEST_URI"]).$USER->GetID(),300);
+$objCache = new
+    Cache\CCache("wishes",md5($_SERVER["REQUEST_URI"]).$USER->GetID(),300);
 if($sData = $objCache->get()){
 echo json_encode($sData);
 die;
 }
-
 
     $arProducts = [];
     if(isset($_POST["products"])){
@@ -18,7 +18,7 @@ die;
             $arProducts[$nKey] = intval($sVal);
     }
 
-    $nUserId = $USER->IsAuthorized()?$USER->GetId():0;
+    $nUserId = $USER->IsAuthorized()?$USER->GetID():0;
 
     // Составляем справочник свойств
     $sQuery = "
