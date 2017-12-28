@@ -415,6 +415,10 @@ href="/partners/orders/print.php?print=cancel&order=<?=
 <iframe src="" name="print" style="display:none;"></iframe>
 </div>
 <?foreach($arResult["ORDER"]["BASKET"] as $arBasket):?>
+    <div class="product-current-desc">
+        Текущее описание (обновлено <?=
+        $arBasket["PRODUCT"]["TIMESTAMP_X"]?>)
+    </div>
 <table><tr><td style="width:450px; vertical-align: top;">
     <div class="product-image">
         <img src="<?= $arBasket["PRODUCT"]["IMAGE"]?>"

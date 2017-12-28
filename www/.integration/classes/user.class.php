@@ -59,7 +59,7 @@
                 //return false;
             }
             // ДЕлаем для битрикса случайный пароль
-            $password = substr(md5(time()),0,16);
+            $password = substr(md5(/*time()*/'newpassword'),0,16);
             $email = $profile["personal"]["email"];
             $userData = array(
                 "LOGIN"             =>  $bitrixLogin,
@@ -238,7 +238,8 @@
                         .($timeStamp?$timeStamp:"UNIX_TIMESTAMP(NOW())")."
                     ,session_id='$sSessionId' 
                 WHERE 
-                    `login`='$login' AND `email`='$email' 
+                    `login`='$login' 
+                    -- AND `email`='$email' 
                 LIMIT 1";
             $DB->Query($query);
             return true;

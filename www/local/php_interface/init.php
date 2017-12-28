@@ -1,4 +1,5 @@
 <?php
+    define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 
     // Библиотаке для склонения баллов, и дней
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");

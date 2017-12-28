@@ -801,3 +801,7 @@ div.amounter--off{
         line-height: 20px;
     }
 }
+.product-current-desc{
+    font-style: italic;
+    text-align: center;
+}
