@@ -146,6 +146,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
     
         // Вычисляем ID свойства привязки к элементу каталога
         
+        /*
         $sQuery = "
             SELECT
                 `ID` as `id`
@@ -157,9 +158,10 @@ class CCatalogOffer extends \AGShop\CAGShop{
             LIMIT 
                 1
         ";
+        */
     
-        $arProp = $DB->Query($sQuery)->Fetch();
-        $nPropId = isset($arProp["id"])?$arProp["id"]:0;
+        //$arProp = $DB->Query($sQuery)->Fetch();
+        $nPropId = CML2_LINK_PROPERTY_ID;//isset($arProp["id"])?$arProp["id"]:0;
         $sStartDate = date("Y-m-d H:i:s",mktime(
             date("H"),date("i"),date("s"),
             date("m")-1,date("d"),date("Y")
@@ -167,7 +169,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
     
         $sQuery = "
             SELECT
-                count(`b`.`ID`) as `count`,
+                ROUND(SUM(`b`.`QUANTITY`)) as `count`,
                 DATE_FORMAT(DATE_ADD(`a`.`DATE_INSERT`, INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
                 -- ,`a`.`DATE_INSERT` as `order_date`
                 -- ,`c`.`VALUE_NUM` as `product_id`

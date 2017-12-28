@@ -3,6 +3,19 @@
 $RU = $_SERVER["REQUEST_URI"];
 // Значения по умолчанию
 if($USER->IsAuthorized()):
+
+/*
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
+use Cache;
+
+$objCache = new \Cache\CCache("points",md5($_SERVER["REQUEST_URI"]).$USER->GetID(),300);
+if($sData = $objCache->get()){
+echo json_encode($sData);
+die;
+}
+*/
+
+
     if(!isset($arParams["ALL_TITLE"]))$arParams["ALL_TITLE"] = "Все начисления и списания";
     if(!isset($arParams["DEBIT_TITLE"]))$arParams["DEBIT_TITLE"] = "Все начисления";
     if(!isset($arParams["CREDIT_TITLE"]))$arParams["CREDIT_TITLE"] = "Все списания";

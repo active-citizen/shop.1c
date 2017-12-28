@@ -1,6 +1,15 @@
 <?
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
+use Cache;
+
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+$objCache = new \Cache\CCache("wishes",md5($_SERVER["REQUEST_URI"]).$USER->GetID(),300);
+if($sData = $objCache->get()){
+echo json_encode($sData);
+die;
+}
+
 
     $arProducts = [];
     if(isset($_POST["products"])){
@@ -25,54 +34,6 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     $arPropList = [];
     while($arProp = $res->Fetch())
         $arPropList[$arProp["CODE"]] = $arProp["ID"];
-
-
-    /*
-    $sQuery = "
-        SELECT  
-            `user`.`IBLOCK_ELEMENT_ID` as `ELEMENT_ID`
-        FROM    
-            `b_iblock_element_property` as `user`
-        WHERE   
-            `user`.`IBLOCK_PROPERTY_ID`=".$arPropList["WISH_USER"]."
-            AND
-            `user`.`VALUE_NUM`=".$nUserId."
-
-    ";
-    $res = $DB->Query($sQuery);
-    $arItems = [];
-    while($arItem = $res->Fetch())
-        $arItems[] = $arItem["ELEMENT_ID"];
-
-    $sQuery = "
-        SELECT  
-            `product`.`VALUE_NUM` as `ID`
-        FROM    
-            `b_iblock_element_property` as `product`
-        WHERE   
-            `product`.`IBLOCK_ELEMENT_ID` IN (".(
-                $arItems
-                ?
-                implode(",",$arItems)
-                :
-                0
-            ).")
-            AND
-            `product`.`VALUE_NUM` IN (".(
-                $arProducts
-                ?
-                implode(",",$arProducts)
-                :
-                0
-            ).")
-    ";
-    $res = $DB->Query($sQuery);
-    $arProducts = [];
-    while($arProduct = $res->Fetch())
-        $arProducts[] = intval($arProduct["ID"]);
-    */
-
-
 
 $sQuery = "
     SELECT
@@ -107,7 +68,7 @@ $res = $DB->Query($sQuery);
 while($arProduct = $res->Fetch())$arProducts[] = $arProduct["ID"];
 
 
-
+$objCache->set($arProducts);
 echo json_encode($arProducts);
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");

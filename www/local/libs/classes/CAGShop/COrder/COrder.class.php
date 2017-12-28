@@ -115,7 +115,7 @@ class COrder extends \AGShop\CAGShop{
     }
 
     function createFromSite($sCustomNum = ''){
-        
+        $CDB = new \DB\CDB;
         // Получаем выбранные торговые предложения
         $arSKUs = $this->getSKUs();
         
@@ -359,6 +359,13 @@ class COrder extends \AGShop\CAGShop{
             ))$this->addError($obOrder->error);
 
             ///////////
+            if($bPointsSuccess)
+        	$CDB->update("b_sale_user_account",[
+        	    "USER_ID"=>$this->getParam("UserId"),
+        	    "CURRENCY"=>'BAL'
+        	],[
+        	    "CURRENT_BUDGET"=>$arAccount["CURRENT_BUDGET"]-$nTotalSum
+        	]);
         }
         
         // Если тойка провалилась - остатки возвращаем
