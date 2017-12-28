@@ -60,12 +60,24 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
             </a>
         </div>
         <? endif ?>
+        <?/*
         <?php foreach($arResult["SECTIONS"] as $section):?>
         <? if(!$section["products"])continue;?>
         <div class="ag-shop-menu__item">
             <a class="ag-shop-menu__link<? if(preg_match("#^".$section["SECTION_PAGE_URL"]."#",
                 $_SERVER["REQUEST_URI"])):?> ag-shop-menu__link--active<? endif?>" 
                 href="<?= $section["SECTION_PAGE_URL"];?>"
+            >
+                <?= $section["NAME"];?>
+            </a>
+        </div>
+        <?endforeach?>
+        */?>
+        <?php foreach($arResult["SECTIONS"] as $section):?>
+        <div class="ag-shop-menu__item">
+            <a class="ag-shop-menu__link<? if($section["CURRENT"]):
+            ?> ag-shop-menu__link--active<? endif?>" 
+                href="/catalog/<?= $section["CODE"];?>/"
             >
                 <?= $section["NAME"];?>
             </a>

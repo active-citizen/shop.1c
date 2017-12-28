@@ -1,7 +1,35 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 
+
 //if ($this->StartResultCache(false)) {
+
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php"
+    );
+    use AGShop\Catalog as Catalog;
+    
+    $objSection = new \Catalog\CCatalogSection;
+    $arSections = $objSection->get([
+        "ACTIVE"=>"Y",
+        "ONLY_WITH_PRODUCTS"=>true,
+        "ONLY_WITH_PRESENT_PRODUCTS"=>true
+    ]);
+    $arResult["CURRENT_SECTION"] = '';
+    foreach($arSections as $nKey=>$arSection){
+        if(isset($arIconsClasses[$arSection["CODE"]]))
+            $arSections[$nKey]["CLASSNAME"]=$arIconsClasses[$arSection["CODE"]];
+        else
+            $arSections[$nKey]["CLASSNAME"]=$sSectionIconDefault;
+        if(preg_match("#^/catalog/".$arSection["CODE"]."/#",$_SERVER["REQUEST_URI"])){
+            $arSections[$nKey]["CURRENT"]=true;
+            $arResult["CURRENT_SECTION"] = $arSection["CODE"];
+        }
+        
+    }
+    $arResult["SECTIONS"] = $arSections;
+ 
+    /****** Зарефакторено **********
     // Получаем корневых разделов
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/catalog.lib.php");
     // Получаем теги для отображения в каталоге мобильного приложения
@@ -117,6 +145,7 @@
         );
         $arResult["SECTIONS"][$section["ID"]]["products"]=$res1->SelectedRowsCount();
     }
+    ****** Зарефакторено **********/
  
     $this->IncludeComponentTemplate();
 //}
