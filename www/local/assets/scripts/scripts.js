@@ -422,7 +422,7 @@ $(document).ready(function(){
     calcFilterCount();
 
     // Подгружем в фоне баллы пользователя
-    loadUserPoints();
+    //loadUserPoints();
 });
 
 
@@ -688,12 +688,31 @@ function agauth(encsession){
             answer.errors = new Array(e.message);
 	    }
 	   
-        console.log(answer);
+        //console.log(answer);
 	    // Ошибок нет - возвращаемся на страницу откуда авторизовались
 	    if(!answer.errors.length && answer.redirect){
             document.location.href = answer.redirect;
             return true;
 	    }
+
+	    else if(!answer.errors.length){
+            if(!$('#profie-win .ag-shop-nav__profile-points').html())
+            $("#profie-win").html('<a class="ag-shop-nav__link" href="/profile/">'
+              +'<div class="ag-shop-nav__profile-container">'
+                +'<i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--profile"></i>'
+                +'<div class="ag-shop-nav__link-caption">'
+                  +'<span class="hide-on-desktop">Профиль</span>'
+                  +'<span class="show-on-desktop">'+
+                  answer.profile.personal.firstname
+                  +' '+
+                  answer.profile.personal.middlename
+                  +'<br>'+answer.profile.personal.surname+'</span>'
+                +'</div>'
+                +'<div class="ag-shop-nav__profile-points"></div>'
+              +'</div>'
+          +'</a>');
+          loadUserPoints();
+        }
 
 	    // Формируем блок ошибок
 	    for(i in answer.errors){
