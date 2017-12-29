@@ -164,7 +164,9 @@ class COrder extends \AGShop\CAGShop{
         $objCCatalogOffer = new \Catalog\CCatalogOffer;
         foreach($arSKUs as $nSkuNum=>$arSKU){
             if(!$sCustomNum && $failedLimit = $objCCatalogOffer->failedMonLimit(
-                $this->getParam("UserId"), $arSKU["SKU"]["OFFER"]["ID"]
+                $this->getParam("UserId"),
+                $arSKU["SKU"]["OFFER"]["ID"],
+                $arSKU["AMOUNT"]
             )){
                 // Возвращаем всё что взяли на склад
                 $this->returnToStore();

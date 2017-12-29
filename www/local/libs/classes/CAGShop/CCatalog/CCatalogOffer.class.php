@@ -89,7 +89,8 @@ class CCatalogOffer extends \AGShop\CAGShop{
     */
     function failedMonLimit(
         $nUserId,
-        $nOfferId
+        $nOfferId,
+        $nAmount = 1 //!< Сколько собираемся купить
     ){
         $nOfferId = intval($nOfferId);
         $arOffer = \CIBlockElement::GetList(
@@ -125,7 +126,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         if(
             $arProduct["PROPERTY_MON_LIMIT_VALUE"]
             &&
-            $failedLimit >= $arProduct["PROPERTY_MON_LIMIT_VALUE"]
+            $failedLimit+$nAmount-1 >= $arProduct["PROPERTY_MON_LIMIT_VALUE"]
     
         )
         return $arProduct["PROPERTY_MON_LIMIT_VALUE"];
@@ -194,6 +195,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
             LIMIT
                 1
         ";
+
         $arQuery = $DB->Query($sQuery)->Fetch();
         return [
             "next"  =>  isset($arQuery["next"])?$arQuery["next"]:date("d.m.Y H:i:s"),

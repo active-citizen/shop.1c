@@ -91,7 +91,7 @@ foreach($arProducts as $product){
                         <div class="ag-shop-item-card__info">
                           <h3 class="ag-shop-item-card__name"><?= $product["NAME"];?></h3>
                           <p class="ag-shop-item-card__category"><?=
-                          $product["SECTION_NAME"];?></p>
+                          $product["SECTION"]["NAME"];?></p>
                           <div class="ag-shop-item-card__rating">
                             <? /*  Пока убираем рейтинг */?>
                             <? if(0)for($i=0;$i<round($product["RATING"]);$i++):?>

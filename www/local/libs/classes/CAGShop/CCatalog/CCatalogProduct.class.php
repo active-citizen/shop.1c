@@ -520,7 +520,7 @@
                 "nPageSize" =>  $arOptions["pagination"]["onpage"]
             ],[
                 "ID","CODE","NAME","DETAIL_PICTURE","PROPERTY_MINIMUM_PRICE"
-                ,"PROPERTY_NEWPRODUCT","PROPERTY_SALELEADER"
+                ,"PROPERTY_NEWPRODUCT","PROPERTY_SALELEADER","IBLOCK_SECTION_ID"
                 ,"PROPERTY_SPECIALOFFER","PREVIEW_TEXT"//,"PROPERTY_WANTS.NAME"
             ]);
             $arItems = [];
@@ -531,6 +531,7 @@
                 $arProduct["IMAGE"] = \CFile::GetPath(
                     $arProduct["DETAIL_PICTURE"]
                 );
+
                 $arProduct["SECTION"] = $objSection->getBriefById(
                     $arProduct["IBLOCK_SECTION_ID"]
                 );
