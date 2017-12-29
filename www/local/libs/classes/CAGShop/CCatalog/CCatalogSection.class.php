@@ -155,6 +155,17 @@
             )->GetNext();
         }
         
+        function getByCode($sCode){
+            return \CIBlockSection::GetList(
+                [],[
+                    "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
+                    "CODE"=>$sCode
+                ],false,[],[
+                    "nTopCount"=>1
+                ]
+            )->GetNext();
+        }
+
         function getBriefById($nId){
             return \CIblockSection::GetList([],[
                 "IBLOCK_ID"=>CATALOG_IB_ID,

@@ -124,14 +124,14 @@
         $arResult["STORE_CHECKED"] = $arStores[$nKey]["CHECKED"] = true;
     }
     $arResult["STORES"] = $arStores;
-    
+   
     $objTag = new \Catalog\CCatalogProductTag(INTEREST_PROPERTY_ID);
     $arInterests = array_merge([[
             "NAME"  =>  "Все",
             "CODE"  =>  "All",
             "ID"    =>  0
         ]],
-        $objTag->getAllTags()
+        $objTag->getAllTags($arParams["filter"]["section_code"])
     );
     
     

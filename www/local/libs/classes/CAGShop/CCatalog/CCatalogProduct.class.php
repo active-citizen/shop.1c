@@ -148,7 +148,8 @@
         function getTeasers($arOptions = []){
             global $USER;
 
-            $objCache = new \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)),$nCacheExpires);
+            $objCache = new
+            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)),300);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
