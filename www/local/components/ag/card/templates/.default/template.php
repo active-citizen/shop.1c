@@ -279,7 +279,8 @@ if(
                             && 
                             $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
                         ):
-                        $date = date("d.m.Y",time()+$arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]*24*60*60)
+                        $date =
+                        date("d.m.Y",time()+($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]-1)*24*60*60)
                         ?>
                         <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
                             $date
