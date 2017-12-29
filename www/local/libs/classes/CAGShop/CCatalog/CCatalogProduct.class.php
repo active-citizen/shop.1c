@@ -366,7 +366,7 @@
                         `".\AGShop\CAGShop::t_iblock_element_property."`
                     WHERE
                         `IBLOCK_PROPERTY_ID`=".INTEREST_PROPERTY_ID."
-                        ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
+                        -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                         ".($arFilter["interest"]?"AND `VALUE_NUM` IN(".$arFilter["interest"].")":"")."
                     GROUP BY
                         `IBLOCK_ELEMENT_ID`
@@ -385,7 +385,7 @@
                         `".\AGShop\CAGShop::t_iblock_element_property."`
                     WHERE
                         `IBLOCK_PROPERTY_ID`=".PRICE_PROPERTY_ID."
-                        ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
+                        -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                         ".($arFilter["price_min"]?"AND `VALUE_NUM`>=".$arFilter["price_min"]:"")."
                         ".($arFilter["price_max"]?"AND `VALUE_NUM`<=".$arFilter["price_max"]:"")."
                     GROUP BY
@@ -416,7 +416,7 @@
                         `store_product`.`AMOUNT`>0
                 WHERE
                     `product`.`ACTIVE` = 'Y'
-                    ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
+                    -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     ".($arFilter["store"]?"AND `store_product`.`STORE_ID` IN (".$arFilter["store"]:"").")
                 GROUP BY
@@ -435,8 +435,7 @@
                         `".\AGShop\CAGShop::t_iblock_element_property."`
                     WHERE
                         `IBLOCK_PROPERTY_ID`=".SALELEADER_PROPERTY_ID."
-                        ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID`
-                        IN(".implode(",",$arSectionCond).")":"")."
+                        -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ";
                 $arIds = $CDB->sqlSelect($sQuery,1000);
                 foreach($arIds as $arId)$sHitCond[] =$arId["ID"];
@@ -452,8 +451,7 @@
                         `".\AGShop\CAGShop::t_iblock_element_property."`
                     WHERE
                         `IBLOCK_PROPERTY_ID`=".NEWPRODUCT_PROPERTY_ID."
-                        ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID`
-                        IN(".implode(",",$arSectionCond).")":"")."
+                        -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ";
                 $arIds = $CDB->sqlSelect($sQuery,1000);
                 foreach($arIds as $arId)$sNewCond[] =$arId["ID"];
@@ -469,8 +467,7 @@
                         `".\AGShop\CAGShop::t_iblock_element_property."`
                     WHERE
                         `IBLOCK_PROPERTY_ID`=".SPECIALOFFER_PROPERTY_ID."
-                        ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID`
-                        IN(".implode(",",$arSectionCond).")":"")."
+                        -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ";
                 $arIds = $CDB->sqlSelect($sQuery,1000);
                 foreach($arIds as $arId)$sSaleCond[] =$arId["ID"];
