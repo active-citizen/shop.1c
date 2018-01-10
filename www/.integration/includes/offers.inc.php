@@ -366,9 +366,35 @@
     $objComponent->initComponent("ag:filter");
     $objComponent->clearResultCache();
 
-    // Чистим кэш плитки тизеров
+    // Чистим файловый кэш плитки тизеров
     customCacheClear();
 
+    // Чистим группы memcache
+    require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
+    use AGShop\Cache as Cache;
     
+    $objCache = new \Cache\CCache("card_product_common_info","0");
+    $objCache->clearAll();
+    unset($objCache);
+    
+    $objCache = new \Cache\CCache("card_product_properties","0");
+    $objCache->clearAll();
+    unset($objCache);
+ 
+    $objCache = new \Cache\CCache("card_section_common_info","0");
+    $objCache->clearAll();
+    unset($objCache);
+
+    $objCache = new \Cache\CCache("mobile_interests","0");
+    $objCache->clearAll();
+    unset($objCache);
+
+    $objCache = new \Cache\CCache("mobile_teasers","0");
+    $objCache->clearAll();
+    unset($objCache);
+
+    $objCache = new \Cache\CCache("sections_list","0");
+    $objCache->clearAll();
+    unset($objCache);
 
 

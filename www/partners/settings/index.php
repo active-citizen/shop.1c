@@ -2,9 +2,11 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Настройки::Кабинет партнёра");
 require("../group_access.php");
-
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+
 use AGShop\Integration as Integration;
+use AGShop\Cache as Cache;
 
 
 ?>
@@ -46,6 +48,11 @@ use AGShop\Integration as Integration;
     <? 
         require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/customcache.lib.php"); 
         customCacheClear();
+        // Чистим группы memcache
+        $objCache = new \Cache\CCache("mobile_teasers","0");
+        $objCache->clearAll();
+        unset($objCache);
+
     ?>
     <pre>Кэш плитки очищен</pre>
     <? endif ?>

@@ -73,6 +73,20 @@
             fwrite($fd, $sData);
             fclose($fd);
         }
+
+        /**
+            Очистка текущей группы ключей
+        */
+        function clearAll(){
+            if(!$this->objMemcached)return false;
+            $arKeys = $this->objMemcached->getAllKeys();
+            $arDeleteKeys = [];
+            foreach($arKeys as $sKey){
+                $tmp = explode(":", $sKey);
+                if($tmp[0]==$this->sGroup)$arDeleteKeys[] = $sKey;
+            }
+            return $this->objMemcached->deleteMulti($arDeleteKeys);
+        }
         
         private function createPath(){
             mkdir($this->getKeyPath(),0700,true);
