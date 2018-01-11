@@ -6,8 +6,8 @@ require_once(
 );
 use AGShop\Catalog as Catalog; 
 
-//if ($this->StartResultCache(false)) {
+if ($this->StartResultCache(false)) {
     $objStore = new \Catalog\CCatalogStore;
     $arResult = $objStore->getForSite();
     $this->IncludeComponentTemplate();
-//}
+}
