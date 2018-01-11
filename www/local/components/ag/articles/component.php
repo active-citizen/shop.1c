@@ -1,19 +1,16 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+require(
+    $_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CContent/CContent.class.php"
+);
+use AGShop\Content as Content;
+
 
 if ($this->StartResultCache(false)) {
-    $RU = $_SERVER["REQUEST_URI"];
-    // Значения по умолчанию
 
-    CModule::IncludeModule('iblock');
+    if(!trim($arParams["CODE"]))$arParams["CODE"] = 'hiw';
 
-    $arResult = CIBlockElement::GetList(
-        array("SORT"=>"ASC"),
-        array(
-            "IBLOCK_CODE"   =>  "content_articles",
-            "ACTIVE"        =>  "Y",
-            "CODE"            =>  $arParams["CODE"]
-        )
-    )->GetNext();
-
+    $objContent = new \Content\CContent;
+    $arResult = $objContent->getArticleForSite($arParams["CODE"]);
     $this->IncludeComponentTemplate();
 }

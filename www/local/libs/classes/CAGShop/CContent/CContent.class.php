@@ -39,6 +39,21 @@
             }
             return $arResult;
         }
+
+        function getArticleForSite($sCode){
+            \CModule::IncludeModule('iblock');
+
+            $arResult = \CIBlockElement::GetList(
+                array("SORT"=>"ASC"),
+                array(
+                    "IBLOCK_CODE"   =>  "content_articles",
+                    "ACTIVE"        =>  "Y",
+                    "CODE"            =>  $sCode
+                )
+            )->GetNext();
+            return $arResult;
+
+        }
         
     }
     
