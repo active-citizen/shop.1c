@@ -439,7 +439,7 @@ function loadUserPoints(){
                 answer = JSON.parse(data);   
             }
             catch(err){
-                return fasle;
+                return false;
             }
             if(typeof answer.title !== undefined){
                 $('.ag-shop-nav__profile-points').html(answer.title);
