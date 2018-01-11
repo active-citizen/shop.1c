@@ -134,5 +134,33 @@
             
             return $arStores;
         }
+
+        /**
+            Получение списка сладов для отображения на сайте
+        */
+        function getForSite(){
+            \CModule::IncludeModule('catalog');
+
+            $resStores = \CCatalogStore::GetList(
+                array("TITLE"=>"asc"),
+                array(
+                    "!ADDRESS"=>''
+                ),
+                false,
+                false,
+                array("TITLE","ADDRESS","ID","PHONE","SCHEDULE","EMAIL","DESCRIPTION")
+            );
+
+            $arResult["stores"] = array();
+            while($arStore = $resStores->GetNext()){
+            // Вычисляем остатки на складе
+            //    $res = CCatalogStoreProduct::GetList(array(),array("STORE_ID"=>$arStore["ID"]));
+            //    if(!$res->result->num_rows)continue;
+                $arResult["stores"][] = $arStore;
+            }
+
+            return $arResult;
+            
+        }
         
     }
