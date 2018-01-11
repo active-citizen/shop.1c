@@ -805,3 +805,13 @@ div.amounter--off{
     font-style: italic;
     text-align: center;
 }
+
+.ag-shop-card__troika_margin_center{
+    margin: 0 auto!important;
+}
+
+.ag-shop-card__card-number-tooltip-content.pos_center{
+    padding: 26px 22px 20px!important;
+    width: 222px!important;
+    max-width: 222px!important;
+}

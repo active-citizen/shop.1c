@@ -341,9 +341,9 @@ if(
                           >
                           <div class="ag-shop-card__card-number-tooltip">
                             <div
-                            class="ag-shop-card__card-number-tooltip-content"><img
-                            src="/local/assets/images/troyka_last_v.png">
-                              <p>Пример: <br>0004456789 (10цифр)</p>
+                            class="ag-shop-card__card-number-tooltip-content pos_center"><img
+                            src="/local/assets/images/troyka_last_v.png" class="ag-shop-card__troika_margin_center">
+                              <p>Пример: 0004456789 (10цифр)</p>
                             </div>
                           </div>
                         </div>
