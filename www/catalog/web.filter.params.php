@@ -2,7 +2,7 @@
 
     $arParams = ["CACHE_TIME"      =>  COMMON_CACHE_TIME];
     $arParams["filter"] = [];
-    $arParams["sorting"] = [];
+    $arParams["sorting"] = ["param" => 'wishes',"direction"=>"desc"];
     $arParams["pagination"] = ["page"=>1,"onpage"=>12];
 
     $tmp = explode("/",$_SERVER["REQUEST_URI"]);
@@ -42,7 +42,7 @@
         $arParams["filter"]["hit"] = true;
 
     if(isset($_REQUEST["sorting"]) && ($_REQUEST["sorting"]=='rating-desc')){
-        $arParams["sorting"]["param"] = 'hit';
+        $arParams["sorting"]["param"] = 'wishes';
         $arParams["sorting"]["direction"] = 'desc';
     }
 

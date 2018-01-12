@@ -113,6 +113,7 @@
             else{
                 $this->arErrors[] = $error;
             }
+            return false;
         }
 
         function getErrors(){

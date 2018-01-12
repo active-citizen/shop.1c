@@ -2,6 +2,7 @@
 
     $arParams = ["CACHE_TIME"      =>  COMMON_CACHE_TIME];
     $arParams["filter"] = [];
+    $arParams["sorting"] = ["param" => 'wishes',"direction"=>"desc"];
     $arParams["pagination"] = ["page"=>1,"onpage"=>12];
 
     $tmp = explode("/",$_SERVER["REQUEST_URI"]);
@@ -40,8 +41,6 @@
             $arParams["filter"]["store"][] = $sValue;
         }
     
-    $arParams["sorting"]["param"] = "price";
-    $arParams["sorting"]["direction"] = "desc";
     if(isset($_REQUEST["productSortPrice"]) && $_REQUEST["productSortPrice"]=='price_desc'){
         $arParams["sorting"]["param"] = "price";
         $arParams["sorting"]["direction"] = "desc";
@@ -74,4 +73,4 @@
 
     if(!isset($_SESSION["TEASER_SORTING"]))$_SESSION["TEASER_SORTING"] = [];
     $_SESSION["TEASER_SORTING"][$sCode] = $arParams["sorting"];
-
+    

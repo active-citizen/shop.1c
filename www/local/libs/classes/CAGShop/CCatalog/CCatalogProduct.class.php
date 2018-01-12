@@ -149,7 +149,7 @@
             global $USER;
 
             $objCache = new
-            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)),300);
+            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -170,8 +170,10 @@
                 $arSorting = ["PROPERTY_NEWPRODUCT"=>$arOptions["sorting"]["direction"]];
             elseif($arOptions["sorting"]["param"]=='sale')
                 $arSorting = ["PROPERTY_SPECIALOFFER"=>$arOptions["sorting"]["direction"]];
+            elseif($arOptions["sorting"]["param"]=='wishes')
+                $arSorting = ["PROPERTY_WISHES_QUANTITY"=>$arOptions["sorting"]["direction"]];
 
-            $arSortingTypes = ["price","rating","favorites","new","hit"];
+            $arSortingTypes = ["price","rating","favorites","new","hit","wishes"];
             foreach($arSortinTypes as $sSortingType)
                 if(
                     in_array($arOptions["sorting"]["param"])
@@ -517,7 +519,8 @@
                 "nPageSize" =>  $arOptions["pagination"]["onpage"]
             ],[
                 "ID","CODE","NAME","DETAIL_PICTURE","PROPERTY_MINIMUM_PRICE"
-                ,"PROPERTY_NEWPRODUCT","PROPERTY_SALELEADER","IBLOCK_SECTION_ID"
+                ,"PROPERTY_WISHES_QUANTITY","PROPERTY_NEWPRODUCT"
+                ,"PROPERTY_SALELEADER","IBLOCK_SECTION_ID"
                 ,"PROPERTY_SPECIALOFFER","PREVIEW_TEXT"//,"PROPERTY_WANTS.NAME"
             ]);
             $arItems = [];
@@ -532,39 +535,112 @@
                 $arProduct["SECTION"] = $objSection->getBriefById(
                     $arProduct["IBLOCK_SECTION_ID"]
                 );
+                $arProduct["WISHES"] = $arProduct["PROPERTY_WISHES_QUANTITY_VALUE"];
                 $arItems[$arProduct['ID']] = $arProduct;
             }
-            $arIdsPage = [];
-            // Составляем справочник свойств
-            $sQuery = "
-                SELECT `ID`,`CODE` FROM 
-                WHERE  `CODE`='WISH_PRODUCT' LIMIT 1
-            ";
-            $arProp = $CDB->searchOne(\AGShop\CAGShop::t_iblock_property,[
-                "CODE"=>'WISH_PRODUCT'],["ID"]);
-                
-            // Получаем количество сердечек для каждого товара
-            $sQuery = "
-                SELECT
-                    FLOOR(`VALUE_NUM`) as `ID`,
-                    COUNT(`VALUE_NUM`) as `COUNT`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element_property."`
-                WHERE
-                    `IBLOCK_PROPERTY_ID`=".$arProp["ID"]."
-                    AND `VALUE_NUM` IN(".implode(",",$arIds).")
-                GROUP BY
-                    `VALUE_NUM`
-            ";
-            $arWishes = $CDB->sqlSelect($sQuery);
-            $arWishesIndex = [];
-            foreach($arWishes as $arWish)
-                $arItems[$arWish['ID']]["WISHES"] = $arWish["COUNT"];
+            
 
             $arResult = ["items"=>$arItems,"total"=>$nTotal];
             $objCache->set($arResult);
             
             return $arResult;
+        }
+        
+        
+        /**
+         * Пожелание продукта
+         * 
+         @param $nProductId - ID продукта
+         @param $sAct - действие (on|off)
+         @param $nUserId - ID пользователя, пожелавшего
+        */
+        function wish($nProductId, $sAct, $nUserId){
+            \CModule::IncludeModule('iblock');
+        
+            
+            if(!$nProductId)return $this->addError("Не указан ID товара");
+                
+            if(!$nUserId)return $this->addError("Не указан ID пользователя");
+            
+            if(!\CIBlockElement::GetList(
+                ["ID"=>$nProductId,"IBLOCK_ID"=>$this->IBLOCKS["CATALOG"]]
+                ,false,["nTopCount"=>1],["ID"]
+            )->Fetch())
+                return $this->addError("Товар с ID=$productId не существует");
+            
+            // Ишем желание с этими условиями
+            $arElement = \CIBlockElement::GetList(
+                [],$arFields = [
+                    "IBLOCK_ID" =>  $this->IBLOCKS["WISHES"],
+                    "NAME"      =>  $nProductId."_".$nUserId
+                ],false,["nTopCount"=>1],["ID"]
+            )->Fetch();
+            
+            
+            // Если надо добавить, но уже есть
+            if($sAct=='on' && $arElement)
+                return $this->addError("Желание этого товара этим пользователем уже добавлено");
+            // Если надо удалить, но нечего
+            elseif($sAct=='off' && !$arElement)
+                return $this->addError("Желание этого товара этим пользователем не добавлено");
+                
+            $iblockObj = new \CIBlockElement;
+            // Добавление
+            if($sAct=='on' && $elementId = $iblockObj->Add($arFields)){
+                // Устанавливаем свойства
+                \CIBlockElement::SetPropertyValues(
+                    $elementId,$this->IBLOCKS["WISHES"],
+                    ["WISH_USER"=>$nUserId,"WISH_PRODUCT"=>$nProductId]
+                );
+            }
+            // Удалить
+            elseif($sAct=='off'){$iblockObj->Delete($arElement["ID"]);}
+            // Сообщить об ошибке
+            else{return $this->addError($iblock->LAST_ERROR);}
+
+            return $this->wishRecalcForProduct($nProductId);
+        }
+        
+        /**
+         * Пересчёт количество желающих у продукта и заполнение им 
+         * соответствующего свойства
+        */
+        function wishRecalcForProduct($nProductId){
+
+            // Получаем актуальное число вишей, если нет ошибок
+            $res = \CIBlockElement::GetList([],[
+                "IBLOCK_ID"=>$this->IBLOCKS["WISHES"],
+                "PROPERTY_WISH_PRODUCT"=>$nProductId
+            ],false,false,["ID"]);
+            
+            $nWishes = $res->SelectedRowsCount();
+            
+            // Прописываем число вишей в свойстве товара
+            \CIBlockElement::SetPropertyValues(
+                $nProductId, $this->IBLOCKS["CATALOG"],
+                ["WISHES_QUANTITY"=>$nWishes]
+            );
+            
+            return $nWishes;
+        }
+        
+        /**
+            Пересчёт желаний для всех повишеных товаров
+        */
+        function wishRecalcForAllProducts(){
+            // Получаем полный список продуктов, которые пожелали
+            $resWishes = \CIBlockElement::GetList([],[
+                "IBLOCK_ID"=>$this->IBLOCKS["WISHES"],
+                "PROPERTY_WISH_PRODUCT"=>$nProductId
+            ],false,false,["PROPERTY_WISH_PRODUCT"]);
+            $arProducts = [];
+            while($arProduct = $resWishes->Fetch()){
+                $arProducts[] = $arProduct["PROPERTY_WISH_PRODUCT_VALUE"];
+            }
+            foreach($arProducts as $nProductId)
+                $this->wishRecalcForProduct($nProductId);
+
+            return true;
         }
         
         

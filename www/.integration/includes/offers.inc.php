@@ -366,6 +366,10 @@
     $objComponent->initComponent("ag:filter");
     $objComponent->clearResultCache();
 
+    // Пересчитываем желания товаров
+    // $this->wishRecalcForAllProducts();
+
+
     // Чистим файловый кэш плитки тизеров
     customCacheClear();
 
@@ -396,5 +400,6 @@
     $objCache = new \Cache\CCache("sections_list","0");
     $objCache->clearAll();
     unset($objCache);
+
 
 

@@ -139,7 +139,6 @@ foreach($arProducts as $product){
     <? endif ?>
 
 <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
-|<?= $nLastItem  ?>|<?= $arResult["TOTAL"]?>
 <? if($arResult["TOTAL"]>$nLastItem):?>
     <input type="hidden" class="catalog-page-input" value="<?= $request."page=".($arResult["PAGE"]+1);?>"/>
 <?else:?>

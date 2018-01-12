@@ -8,7 +8,7 @@
         
         var $sKey = '';
         var $sGroup = '';
-        var $nExpires = 300;
+        var $nExpires = 1;
         var $sFullKey = '';
 
         private $objMemcached = null;
