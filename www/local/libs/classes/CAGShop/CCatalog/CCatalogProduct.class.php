@@ -172,6 +172,10 @@
                 $arSorting = ["PROPERTY_SPECIALOFFER"=>$arOptions["sorting"]["direction"]];
             elseif($arOptions["sorting"]["param"]=='wishes')
                 $arSorting = ["PROPERTY_WISHES_QUANTITY"=>$arOptions["sorting"]["direction"]];
+            elseif($arOptions["sorting"]["param"]=='rating')
+                $arSorting = ["PROPERTY_RATING"=>$arOptions["sorting"]["direction"]];
+            elseif($arOptions["sorting"]["param"]=='fresh')
+                $arSorting = ["TIMESTAMP_X"=>$arOptions["sorting"]["direction"]];
 
             $arSortingTypes = ["price","rating","favorites","new","hit","wishes"];
             foreach($arSortinTypes as $sSortingType)
@@ -519,7 +523,7 @@
                 "nPageSize" =>  $arOptions["pagination"]["onpage"]
             ],[
                 "ID","CODE","NAME","DETAIL_PICTURE","PROPERTY_MINIMUM_PRICE"
-                ,"PROPERTY_WISHES_QUANTITY","PROPERTY_NEWPRODUCT"
+                ,"PROPERTY_WISHES_QUANTITY","PROPERTY_NEWPRODUCT","PROPERTY_RATING"
                 ,"PROPERTY_SALELEADER","IBLOCK_SECTION_ID"
                 ,"PROPERTY_SPECIALOFFER","PREVIEW_TEXT"//,"PROPERTY_WANTS.NAME"
             ]);

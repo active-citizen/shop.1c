@@ -45,9 +45,21 @@
         $arParams["sorting"]["param"] = "price";
         $arParams["sorting"]["direction"] = "desc";
     }
+    elseif(isset($_REQUEST["productSortPrice"]) && $_REQUEST["productSortPrice"]=='rating_desc'){
+        $arParams["sorting"]["param"] = "rating";
+        $arParams["sorting"]["direction"] = "desc";
+    }
+    elseif(isset($_REQUEST["productSortPrice"]) && $_REQUEST["productSortPrice"]=='fresh_desc'){
+        $arParams["sorting"]["param"] = "fresh";
+        $arParams["sorting"]["direction"] = "desc";
+    }
     elseif(isset($_REQUEST["productSortPrice"]) && $_REQUEST["productSortPrice"]=='price_asc'){
         $arParams["sorting"]["param"] = "price";
         $arParams["sorting"]["direction"] = "asc";
+    }
+    elseif(isset($_REQUEST["productSortPrice"]) && $_REQUEST["productSortPrice"]=='wants_desc'){
+        $arParams["sorting"]["param"] = "wishes";
+        $arParams["sorting"]["direction"] = "desc";
     }
     elseif(isset($_REQUEST["productSortPrice"]) && $_REQUEST["productSortPrice"]=='hit_desc'){
         $arParams["sorting"]["param"] = "hit";

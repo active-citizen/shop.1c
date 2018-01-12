@@ -44,7 +44,6 @@
             "CODE"=>"PriceLow",
             "CLASSNAME"=>"icon-aside-filter--price"
         ],
-        /*
         [
             "NAME"=>"Рейтинг",
             "VALUE"=>"rating_desc",
@@ -57,7 +56,12 @@
             "CODE"=>"PriceFavourite",
             "CLASSNAME"=>"icon-aside-filter--favourites"
         ],
-        */
+        [
+            "NAME"=>"Свежее",
+            "VALUE"=>"fresh_desc",
+            "CODE"=>"SortPriceFresh",
+            "CLASSNAME"=>"icon-aside-filter--fresh"
+        ],
         [
             "NAME"=>"Хит",
             "VALUE"=>"hit_desc",
