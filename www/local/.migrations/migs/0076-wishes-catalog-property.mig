@@ -3,6 +3,9 @@
     if(file_exists("../common.php"))
             require_once("../common.php");
 
+    require( $_SERVER["DOCUMENT_ROOT"].
+    "/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
+    use AGShop\Catalog as Catalog;
 
     /**
      * Добавление доаолнительного свойства инфоблоку товаров - количество 
@@ -48,6 +51,9 @@
                 $this->FatalError($ibp->LAST_ERROR);
                 return false;
             }            
+            $objCatalog = new \Catalog\CCatalogProduct;
+            // Пересчитываем желания товаров
+            $objCatalog->wishRecalcForAllProducts();
             
             return true;
         }

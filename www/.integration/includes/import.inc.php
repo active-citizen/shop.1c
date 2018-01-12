@@ -1,8 +1,4 @@
 <?php
-    require( $_SERVER["DOCUMENT_ROOT"].
-    "/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
-    use AGShop\Catalog as Catalog;
-    $objCatalog = new \Catalog\CCatalogProduct;
     
     // Загружаем XML
     $xmlImport = file_get_contents($uploadDir.$importFilename);
@@ -550,6 +546,4 @@
         
 
     }
-    // Пересчитываем желания товаров
-    $objCatalog->wishRecalcForAllProducts();
     
