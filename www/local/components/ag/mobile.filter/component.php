@@ -57,10 +57,10 @@
             "CLASSNAME"=>"icon-aside-filter--favourites"
         ],
         [
-            "NAME"=>"Свежее",
+            "NAME"=>"Дата добавления",
             "VALUE"=>"fresh_desc",
             "CODE"=>"SortPriceFresh",
-            "CLASSNAME"=>"icon-aside-filter--fresh"
+            "CLASSNAME"=>"icon-aside-filter--new"
         ],
         [
             "NAME"=>"Хит",

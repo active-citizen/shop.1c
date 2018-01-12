@@ -175,7 +175,7 @@
             elseif($arOptions["sorting"]["param"]=='rating')
                 $arSorting = ["PROPERTY_RATING"=>$arOptions["sorting"]["direction"]];
             elseif($arOptions["sorting"]["param"]=='fresh')
-                $arSorting = ["TIMESTAMP_X"=>$arOptions["sorting"]["direction"]];
+                $arSorting = ["DATE_CREATE"=>$arOptions["sorting"]["direction"]];
 
             $arSortingTypes = ["price","rating","favorites","new","hit","wishes"];
             foreach($arSortinTypes as $sSortingType)
@@ -620,9 +620,8 @@
             $nWishes = $res->SelectedRowsCount();
             
             // Прописываем число вишей в свойстве товара
-            \CIBlockElement::SetPropertyValues(
-                $nProductId, $this->IBLOCKS["CATALOG"],
-                ["WISHES_QUANTITY"=>$nWishes]
+            \CIBlockElement::SetPropertyValueCode(
+                $nProductId, "WISHES_QUANTITY", $nWishes
             );
             
             return $nWishes;

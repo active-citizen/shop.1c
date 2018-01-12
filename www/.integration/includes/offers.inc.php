@@ -351,6 +351,7 @@
 
     unset($ibp);
     unset($ibpenum);
+
     // Чистим кэш компонента складов после обновления
     $objComponent = new CBitrixComponent();
     $objComponent->initComponent("ag:stores");
@@ -365,10 +366,6 @@
     $objComponent = new CBitrixComponent();
     $objComponent->initComponent("ag:filter");
     $objComponent->clearResultCache();
-
-    // Пересчитываем желания товаров
-    // $this->wishRecalcForAllProducts();
-
 
     // Чистим файловый кэш плитки тизеров
     customCacheClear();
