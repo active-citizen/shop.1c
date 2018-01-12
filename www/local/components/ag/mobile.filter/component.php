@@ -62,6 +62,7 @@
             "CODE"=>"SortPriceFresh",
             "CLASSNAME"=>"icon-aside-filter--new"
         ],
+        /*
         [
             "NAME"=>"Хит",
             "VALUE"=>"hit_desc",
@@ -80,6 +81,7 @@
             "CODE"=>"SortPriceSale",
             "CLASSNAME"=>"icon-aside-filter--sale"
         ],
+        */
     ];
     foreach($arResult["SORTING"] as $nKey=>$arSort){
         $tmp = explode("_",$arSort["VALUE"]);

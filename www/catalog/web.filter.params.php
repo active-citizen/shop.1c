@@ -61,4 +61,4 @@
 
     if(!isset($_SESSION["WEB_TEASER_SORTING"]))$_SESSION["TEASER_SORTING"] = [];
     $_SESSION["WEB_TEASER_SORTING"][$sCode] = $arParams["sorting"];
-    
+   

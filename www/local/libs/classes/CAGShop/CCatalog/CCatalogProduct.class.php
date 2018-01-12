@@ -240,6 +240,9 @@
                 $nSectionId = $arCatalogSection["ID"];
             }
 
+            if(isset($arFilter["store"]) && $arFilter["store"]==333)
+                unset($arFilter["store"]);
+
             $objTroya = new \Integration\CIntegrationTroyka($USER->GetLogin());
             $objTroya->clearLocks();
             // Определяем вышел ли дневной лимит парковок 
@@ -422,7 +425,8 @@
                         AND
                         `store_product`.`AMOUNT`>0
                 WHERE
-                    `product`.`ACTIVE` = 'Y'
+                    1
+                    -- AND `product`.`ACTIVE` = 'Y'
                     -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     ".($arFilter["store"]?"AND `store_product`.`STORE_ID` IN (".$arFilter["store"]:"").")
@@ -479,11 +483,15 @@
                 $arIds = $CDB->sqlSelect($sQuery,1000);
                 foreach($arIds as $arId)$sSaleCond[] =$arId["ID"];
             }
-            
+
+            $arFlags = array_unique(array_merge(
+                $sHitCond, $sSaleCond, $sNewCond
+            ));
             // Вычисляем пересечения
             $arIntersect = [
                 $arSectionCond, $arQueryCond, $arStoreCond, 
-                $sSaleCond,$sNewCond,$sHitCond,
+                //$sSaleCond,$sNewCond,$sHitCond,
+                $arFlags,
                 $sPriceCond,$sInterestCond
             ];
             // Выкидываем нулевые и опеределяем с минимальным числом элементов
