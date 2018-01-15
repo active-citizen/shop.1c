@@ -143,10 +143,10 @@
 								<div class="mobile-aside-form-item__option">
 									<div class="mobile-aside-form-item__inputs">
 										<div class="mobile-aside-price mobile-aside-price--min">
-											<input class="aside-default-input" type="number" name="productPriceMin" value="" placeholder="Мин." min="0">
+											<input class="aside-default-input" type="number" name="productPriceMin" value="<?= $arResult["MIN_PRICE"]?>"  placeholder="Мин." min="0">
 										</div>
 										<div class="mobile-aside-price mobile-aside-price--max">
-											<input class="aside-default-input" type="number" name="productPriceMax" value="" placeholder="Макс." min="0">
+											<input class="aside-default-input" type="number" name="productPriceMax"   value="<?= $arResult["MAX_PRICE"]?>" placeholder="Макс." min="0">
 										</div>
 									</div>
 								</div>

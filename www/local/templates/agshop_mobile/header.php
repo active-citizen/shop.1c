@@ -1,6 +1,21 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 CUtil::InitJSCore(['ajax']);
 
+/*
+21. находясь в карточке товара или других разделах магазина (FAQ, правила и тп)
+и вызовая по кнопке ГОТОВО перестроение каталога по только что выбранным в меню
+фильтрам мы должны оказываться в каталоге с примененными фильтрами, а не в там
+где были (карточка товара или раздел магазина). 
+*/
+if(
+    isset($_REQUEST["mobileFiltersSubmit"]) 
+    && 
+    !preg_match("#^/catalog/.*#",$_SERVER["REQUEST_URI"])
+){
+    LocalRedirect("/catalog/?".$_SERVER["QUERY_STRING"]);
+    die;
+}
+
 
 if(
     1
