@@ -594,6 +594,18 @@ body:after {
   padding-top: 59px;
 }
 
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
 .mobile-header {
   position: fixed;
   top: 0;
@@ -2693,7 +2705,8 @@ body:after {
   left: 50%;
   min-width: 320px;
   width: 768px;
-  min-height: 80px;
+  /*min-height: 80px;*/
+  overflow-y: auto;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);

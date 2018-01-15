@@ -16,9 +16,9 @@
                         </span>
 					</button>
 					<div class="mobile-header-search">
-						<form>
+						<form id="mobileHeaderSearchForm">
 							<div id="multiple-datasets" class="mobile-header-search__input">
-								<input class="typeahead" type="text" name="mobileHeaderSearchInput" placeholder="Что вы ищете?">
+								<input class="typeahead" type="text" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
 								<button class="mobile-header-search__clear" type="button" name="clearTypeahead"></button>
 							</div>
 						</form>

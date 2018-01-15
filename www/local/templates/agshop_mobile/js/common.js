@@ -23,6 +23,7 @@ $(function() {
     $(".mobile-aside-form-inner").css("min-height", ((innerHeight) - (33)));
     $(".mobile-aside-dropdown-outer").css("min-height", innerHeight);
     $(".mobile-search-notfind").css("height", ((innerHeight) - (59)));
+    $(".mobile-search-status").css("max-height", ((innerHeight) - (59)));
   }
   setWrappersHeight();
 
@@ -84,6 +85,10 @@ $(function() {
 
   $('.mobile-header-caregory-btn').on('click',function () {
     $('body').toggleClass("noscroll white-background");
+    // Clear search input
+    $('.typeahead').typeahead('val', '');
+    $(".mobile-header-search__clear").removeClass("show-clear");
+    // -------
     $(this).toggleClass("active");
     $('.mobile-header-category').toggleClass("show-category");
   });
@@ -97,6 +102,10 @@ $(function() {
     $('body').removeClass("white-background");
     $('.mobile-header-category').removeClass("show-category");
     $('.mobile-header-caregory-btn').removeClass("active");
+    // Clear search input
+    $('.typeahead').typeahead('val', '');
+    $(".mobile-header-search__clear").removeClass("show-clear");
+    // -------
     $('.mobile-aside-filter').addClass("show-filters");
   });
 
@@ -291,17 +300,39 @@ $(function() {
 
   $("#multiple-datasets .tt-input").focus(function() {
       $(".mobile-header-search__clear").addClass("show-clear");
+      $(".mobile-search-status").addClass("show-results");
   });
 
   $('#multiple-datasets .tt-input').blur(function(){
     if( !$(this).val() ) {
       $(".mobile-header-search__clear").removeClass("show-clear");
+      $(".mobile-search-status").removeClass("show-results");
     }
   });
 
   $('.mobile-header-search__clear').on('click',function () {
     $('.typeahead').typeahead('val', '');
     $(".mobile-header-search__clear").removeClass("show-clear");
+    if ($('body').hasClass("noscroll white-background") != true) {
+      $('body').removeClass("noscroll");
+    }
+  });
+
+  // Adding submit event for search form
+  // after selecting search option
+
+  $('#multiple-datasets .tt-input').bind('typeahead:select', function(ev, suggestion) {
+    $("#mobileHeaderSearchForm")[0].submit();
+  });
+
+  $('#multiple-datasets .tt-input').bind('typeahead:autocomplete', function(ev, suggestion) {
+    $("#mobileHeaderSearchForm")[0].submit();
+  });
+
+  $('#multiple-datasets .tt-input').bind('typeahead:render', function(ev, suggestion) {
+    if ($('body').hasClass("noscroll") != true) {
+      $('body').addClass("noscroll");
+    }
   });
 
 
