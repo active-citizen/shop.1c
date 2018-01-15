@@ -36,7 +36,12 @@
 				<nav class="mobile-header-nav">
 					<a class="mobile-header-nav__link
                     mobile-header-nav__link--big <?
-                    if(!$arResult["CURRENT_SECTION"]):?>current<? endif ?>" href="/catalog/">
+                    if(
+                        !$arResult["CURRENT_SECTION"]
+                        &&
+                        preg_match("#^/catalog/.*#", $_SERVER["REQUEST_URI"])
+
+                    ):?>current<? endif ?>" href="/catalog/">
 						<span class="mobile-header-nav__link-wrapper">
 							<span class="mobile-header-nav__link-icon">
 								<span class="icon-header-category icon-header-category--all"></span>
