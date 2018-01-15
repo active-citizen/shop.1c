@@ -201,7 +201,8 @@ die;
                     <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
                     <? if($arResult["TOTAL"]>$nLastItem):?>
                     <a href="#" onclick="return teasers_next_page('<?=
-                    $arResult["NEXT_PAGE_URL"]?>');" class="more-button">Ещё <?= $arResult["TOTAL"]- $nLastItem?></a>
+                    $arResult["NEXT_PAGE_URL"]?>');" class="more-button">Ещё<?/*
+                    <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
                     <? endif ?>
     <? if(!$arParams["AJAX"]):?>
 				</section>
