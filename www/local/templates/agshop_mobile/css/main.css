@@ -2406,7 +2406,7 @@ body:after {
 .mobile-aside-dropdown-btn {
   position: relative;
   display: block;
-  padding: 14px 9px 0 9px;
+  padding: 14px 8px 0 9px;
   min-width: 100px;
   color: #aaaaaa;
   text-align: right;
@@ -2710,6 +2710,8 @@ body:after {
   -webkit-transition: top 400ms;
   -o-transition: top 400ms;
   transition: top 400ms;
+  overflow-y: scroll;
+  height: 100%;
 }
 
 .mobile-search-status.tt-empty {
