@@ -76,15 +76,15 @@
 							</div>
 						</div>
 						<div class="mobile-aside-form-block">
-                            <!-- 
 							<header class="mobile-aside-form-block__header">
 								<span class="mobile-aside-form-block__header-title">Фильтр</span>
+                                <!--
 								<span class="mobile-aside-form-block__header-count">
 									<i>210</i>
 									<b>товаров</b>
 								</span>
+                                -->
 							</header>
-                            -->
 							<div class="mobile-aside-form-item">
 								<div class="mobile-aside-dropdown">
 									<div class="mobile-aside-form-item__info">
