@@ -75,12 +75,8 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
     <? $APPLICATION->ShowHead(); ?>                                                                                                                                                           
 </head>
 <body class="container-relative">
-
-<?$APPLICATION->IncludeComponent("ag:mobile.header", "", array(
-        "CACHE_TIME"      =>  COMMON_CACHE_TIME        
-    ),
-    false
-);?>
+<? require($_SERVER["DOCUMENT_ROOT"]."/catalog/mobile.filter.params.php"); ?>
+<?$APPLICATION->IncludeComponent("ag:mobile.header", "", $arParams, false);?>
 
     <? 
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
@@ -104,7 +100,6 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
     </div>    
     <? endif ?>
 
-    <? require($_SERVER["DOCUMENT_ROOT"]."/catalog/mobile.filter.params.php"); ?>
 
 <?
     $APPLICATION->IncludeComponent("ag:mobile.filter", "", $arParams, false);

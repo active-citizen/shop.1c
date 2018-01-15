@@ -24,9 +24,36 @@
 						</form>
 					</div>
 				</div>
+                <?
+                /*
+                    Определяем выбран ли какой-то фильтр
+                */
+                $bIsSorted = false;
+                if(
+                    isset($arParams["filter"]["interest"]) 
+                    && 
+                    $arParams["filter"]["interest"]!=0)$bIsSorded=true;
+                if(
+                    !$bIsSorted
+                    &&
+                    isset($arParams["filter"]["store"][0])
+                    &&
+                    $arParams["filter"]["store"][0]!=333
+                )$bIsSorted = true;
+                if(
+                    !$bIsSorted
+                    &&
+                    isset($arParams["filter"]["store"][0])
+                    &&
+                    isset($arParams["filter"]["interest"])
+                    &&
+                    count($arParams["filter"])>2
+
+                )$bIsSorted = true;
+                ?>
 				<div class="mobile-header-right">
 					<!--  Когда добавлены какие-то фильтры к странице, добавить для кнопки класс .sorted-->
-					<button class="mobile-header-filter-btn" type="button">
+					<button class="mobile-header-filter-btn<? if($bIsSorted):?> sorted<? endif?>" type="button">
 						<span class="mobile-header-filter-btn__icon-active"></span>
 						<span class="mobile-header-filter-btn__icon-default"></span>
 					</button>
@@ -86,5 +113,4 @@
 				</section>
 			</div>	
 	</div>
-
 		
