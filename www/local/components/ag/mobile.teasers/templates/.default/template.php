@@ -1,5 +1,20 @@
     <? if(!$arResult["PRODUCTS"]):?>
-    <div class="empty-products-list">Нет товаров по выбранным Вами условиям</div>
+    <div class="mobile-container">
+            <div class="mobile-main-wrapper">
+                <section class="mobile-search-status">
+                    <!-- This div is target for autocomplete -->
+                    <!-- dont remove him -->
+                </section>
+                <section class="mobile-search-notfind">
+                    <div class="mobile-search-notfind-wrapper">
+                        <span class="icon-search-notfind"></span>
+                        <p class="default-paragraph mobile-search-result__info">
+                            <span>Нет товаров по выбранным Вами условиям</span> 
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
     <? endif ?>
     <? if(!$arParams["AJAX"]):?>
 	<main class="mobile-main paddingTop64">
