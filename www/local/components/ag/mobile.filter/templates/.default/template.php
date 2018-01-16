@@ -107,7 +107,7 @@
                                         <? foreach($arResult["INTERESTS"] as $arInterest):?>
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class="dropdown-checkbox-all custom-checkbox-square__input"  
+												<input class=" custom-checkbox-square__input"  
                                                 id="productInterest<?= $arInterest["CODE"]?>" type="checkbox" 
                                                 name="productInterest<?= $arInterest["CODE"]?>" 
                                                 value="<?= $arInterest["ID"]?>" 

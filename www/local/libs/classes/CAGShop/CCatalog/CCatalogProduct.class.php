@@ -377,7 +377,8 @@
                     WHERE
                         `IBLOCK_PROPERTY_ID`=".INTEREST_PROPERTY_ID."
                         -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
-                        ".($arFilter["interest"]?"AND `VALUE_NUM` IN(".$arFilter["interest"].")":"")."
+                        ".($arFilter["interest"]?"AND `VALUE_NUM`
+                        IN(".implode(",",$arFilter["interest"]).")":"")."
                     GROUP BY
                         `IBLOCK_ELEMENT_ID`
                 ";

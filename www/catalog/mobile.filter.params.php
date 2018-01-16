@@ -29,10 +29,11 @@
     if(isset($_REQUEST["productPriceMax"]) && $_REQUEST["productPriceMax"])
         $arParams["filter"]["price_max"] = $_REQUEST["productPriceMax"];
         
-        
+    
+    $arParams["filter"]["interest"] = [];
     foreach($_REQUEST as $sKey=>$sValue)
         if(preg_match("#^productInterest#",$sKey))
-            $arParams["filter"]["interest"] = $sValue;
+            $arParams["filter"]["interest"][] = $sValue;
             
     foreach($_REQUEST as $sKey=>$sValue)
         if(preg_match("#^productDelivery#",$sKey)){
