@@ -132,16 +132,17 @@
     $arResult["STORES"] = $arStores;
    
     $objTag = new \Catalog\CCatalogProductTag(INTEREST_PROPERTY_ID);
+    $arObjInterests = $objTag->getAllTags($arParams["filter"]["section_code"]);
     $arInterests = array_merge([[
             "NAME"  =>  "Все",
             "CODE"  =>  "All",
-            "ID"    =>  0
+            "ID"    =>  0,
+            "CLASS" => "dropdown-checkbox-all",
+            "CHECKED"=> count($arParams["filter"]["interest"])?false:true
         ]],
-        $objTag->getAllTags($arParams["filter"]["section_code"])
+        $arObjInterests
     );
-    
-    
-    
+   
     /*******************************************
      * Интересы
     ********************************************/

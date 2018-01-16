@@ -34,12 +34,12 @@
         function getAllTags($sSectionCode){
             global $USER;
             $objCache = new \Cache\CCache(
-                "mobile_interests",$sSectionCode,300
+                "mobile_interests",$sSectionCode
             );
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
-             $CDB = new \DB\CDB;
+            $CDB = new \DB\CDB;
             // Получаем ID раздела
             if($sSectionCode){
                 $objCatalog = new \Catalog\CCatalogSection;
@@ -161,7 +161,13 @@
                     `tag`.`ID`
             ";
 
-            $arResult = $CDB->sqlSelect($sQuery);
+            $arTags = $CDB->sqlSelect($sQuery);
+            $arResult = [];
+            foreach($arTags as $arTag){
+                if(!$arTag["ID"])continue;
+                $arResult[] = $arTag;
+            }
+
             $objCache->set($arResult);
 
             // Получаем все элементы инфоблока справочника

@@ -107,14 +107,15 @@
                                         <? foreach($arResult["INTERESTS"] as $arInterest):?>
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class=" custom-checkbox-square__input"  
+												<input class="<? if($arInterest["CLASS"]):?><?= $arInterest["CLASS"]?><? endif ?> custom-checkbox-square__input"  
                                                 id="productInterest<?= $arInterest["CODE"]?>" type="checkbox" 
                                                 name="productInterest<?= $arInterest["CODE"]?>" 
                                                 value="<?= $arInterest["ID"]?>" 
                                                 <? if($arInterest["CHECKED"]):?>checked<? endif?>>
 												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" 
                                                 for="productInterest<?= $arInterest["CODE"]?>">
-													<span class="custom-checkbox-default__info">
+													<span
+                                                    class="custom-checkbox-default__info">
 														<span class="custom-checkbox-default__info-title"><?= $arInterest["NAME"]?></span>
 													</span>
 												</label>
