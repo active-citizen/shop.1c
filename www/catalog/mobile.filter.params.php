@@ -38,7 +38,9 @@
         $arParams["filter"]["price_min"] = $arParams["filter"]["price_max"];
         $arParams["filter"]["price_max"] = $nMinPrice;
     }
-        
+
+    if($arParams["filter"]["price_min"]<0)unset($arParams["filter"]["price_min"]);
+    if($arParams["filter"]["price_max"]<0)unset($arParams["filter"]["price_max"]);
     
     $arParams["filter"]["interest"] = [];
     foreach($_REQUEST as $sKey=>$sValue)
