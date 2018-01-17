@@ -34,10 +34,6 @@ class CCurlLogger extends \AGShop\CAGShop{
             $this->addError("Не указан номер заказа");
             return false;
         }
-        if(!preg_match("#^(Б\-\d+|\d+)$#", $arParams["ORDER_NUM"])){
-            $this->addError("Некорректный номер заказа");
-            return false;
-        }
         if(!isset($arParams["URL"])){
             $this->addError("Не указан URL");
             return false;
@@ -127,13 +123,10 @@ class CCurlLogger extends \AGShop\CAGShop{
         $sSort = 'DESC'
     ){
         global $DB;
-        if(!preg_match("#^(Б\-\d+|\d+)$#", $nOrderNum)){
-            $this->addError("Некорректный номер заказа");
-            return false;
-        }
 
         $sQuery = "SELECT * FROM `int_curl_logger` WHERE";
-        $sQuery .="`order_num`='".$nOrderNum."' ORDER BY `id` $sSort";
+        $sQuery .="`order_num`='".$DB->ForSql($nOrderNum)."' ORDER BY `id` "
+            .$DB->ForSql($sSort);
 
         $arResult = array();
         $res = $DB->Query($sQuery);

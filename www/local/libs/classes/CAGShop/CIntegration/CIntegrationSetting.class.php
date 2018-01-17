@@ -3,8 +3,10 @@ namespace Integration;
 
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+require_once(realpath(__DIR__."/..")."/COrder/COrder.class.php");
 use AGShop;
 use AGShop\DB as DB;
+use AGShop\Order as Order;
 
 class CIntegrationSettings extends \AGShop\CAGShop{
     

@@ -9,9 +9,29 @@
     );
     require("includes/datafilter.lib.php");
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+    
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CAGShop.class.php"
+    );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php"
+    );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php"
+    );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php"
+    );
+
+    use AGShop\Integration as Integration;
 
     // Если блокировку поставили и она не протухла - отваливаемся
     // Иначе ставим свою и выдаём обмен
+    /*
     if($nWaitTime = orderOrderIsLocked()){
         echo "Failed : query is locked. Wait for $nWaitTime seconds";
         die;
@@ -19,6 +39,7 @@
     else{
         orderOrderSetLock();
     }
+    */
 
 
     if(!$USER->IsAdmin()){
@@ -570,7 +591,7 @@
                 $bSendEmail = false;
             }
 
-            $login = "u".$arDocument["Телефон"];
+            $sArtNumber = $arDocument["Товары"]["Товар"][0]["Артикул"];
             if(!$existsOrder 
                 && (
                     $sPrefix=="О"
@@ -599,6 +620,11 @@
                 foreach($basketProducts as $productId=>$item){
                     // 
                     if($sPrefix=="М")$item["price"] = 0;
+                    if($sPrefix=="М" && (
+                        $sArtNumber=='parking'
+                        ||
+                        $sArtNumber=='troyka'
+                    ))$item["price"] = 1;
                     // 
             	    $strSql = "
                         INSERT INTO b_sale_basket(
@@ -636,10 +662,44 @@
                 CSaleBasket::OrderBasket($orderId, $userBasketId);
                 orderPropertiesUpdate($orderId,IMPORT_DEBUG);
 
+                // Статус парковки
+                // 0 - не заказывалась
+                // 1 - Успешно
+                // 2 - неудачно
+                $sParkingStatus = 0;
+                if($sArtNumber=='parking'){
+                    $objParking = new \Integration\CIntegrationParking(
+                        str_replace("u","",$userData["LOGIN"])
+                    );
+
+                    $objParking->payment($arOrder["ADDITIONAL_INFO"]);
+                    // Производим транзакцию в парковку
+                    if($objParking->getErrors()){
+                        // Сохраняем неуспешный статус
+                        $sParkingStatus = 2;
+                    }
+                    else{
+                        // Сохраняем успешный статус
+                        $sParkingStatus = 1;
+                    }
+                    // Запоминаем номер транзакции 
+                    $objParking->linkOrderTransact($arOrder["ADDITIONAL_INFO"]);
+                }
+
+               
+
                 // Уменьшаем запасы на складе 
                 $objCCatalogStoreProduct = new CCatalogStoreProduct;
                 $objCCatalogProduct = new CCatalogProduct;
-                if($sPrefix!='Б')
+                if(
+                    $sPrefix!='Б' 
+                    // Если не парковка или успешная парковка
+                    && (
+                        $sParkingStatus == 0
+                        ||
+                        $sParkingStatus == 1
+                    )
+                )
                 foreach($basketProducts as $productId=>$item){
                     orderStorageChange( $productId, $arStore["ID"], -1);
                 }
@@ -689,6 +749,16 @@
                         'PROMOCODES',$sPromos
                     );
                 }
+
+                // Ставим статус заказ и отправляем соответствующее ЗНИ
+                ///// Ставим в очередь на ЗНИ
+                // Если парковка успешно заказалась - Выполнен
+                if($sParkingStatus == 1)
+                    orderSetZNI($orderId,'F','AA');
+                // Если парковка провалилась - Аннулирован
+                elseif($sParkingStatus == 2)
+                    orderSetZNI($orderId,'AF','AA');
+
 
                 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/indexes.lib.php");
                 if($orderId){
