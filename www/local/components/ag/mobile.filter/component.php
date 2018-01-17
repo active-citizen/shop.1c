@@ -83,6 +83,8 @@
         ],
         */
     ];
+
+    $bIsSorting = false;
     foreach($arResult["SORTING"] as $nKey=>$arSort){
         $tmp = explode("_",$arSort["VALUE"]);
         if(
@@ -95,13 +97,20 @@
             $arParams["sorting"]["param"] == $tmp[0]
             &&
             $arParams["sorting"]["direction"] == $tmp[1]
-        )$arResult["SORTING"][$nKey]["CHECKED"] = true;
+        ){
+            $bIsSorting = true;
+            $arResult["SORTING"][$nKey]["CHECKED"] = true;
+        }
         
         if(
             isset($_REQUEST["productSortPrice"]) 
             && $_REQUEST["productSortPrice"]==$arSort["VALUE"]
         )$arResult["SORTING"][$nKey]["CHECKED"] = true;
     }
+    // Если сортировка не выбрана - ставим умолчальную
+    if(!$bIsSorting)foreach($arResult["SORTING"] as $nKey=>$arVal)
+        if($arVal["VALUE"]=='wants_desc')
+            $arResult["SORTING"][$nKey]["CHECKED"] = true;
 
     
     /*******************************************
