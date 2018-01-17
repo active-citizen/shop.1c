@@ -28,6 +28,16 @@
         $arParams["filter"]["price_min"] = $_REQUEST["productPriceMin"];
     if(isset($_REQUEST["productPriceMax"]) && $_REQUEST["productPriceMax"])
         $arParams["filter"]["price_max"] = $_REQUEST["productPriceMax"];
+
+    if(
+        $arParams["filter"]["price_max"] && $arParams["filter"]["price_min"]
+        &&
+        $arParams["filter"]["price_max"] < $arParams["filter"]["price_min"]
+    ){
+        $nMinPrice = $arParams["filter"]["price_min"];
+        $arParams["filter"]["price_min"] = $arParams["filter"]["price_max"];
+        $arParams["filter"]["price_max"] = $nMinPrice;
+    }
         
     
     $arParams["filter"]["interest"] = [];
