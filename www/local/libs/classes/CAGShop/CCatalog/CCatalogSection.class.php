@@ -119,9 +119,11 @@
                     (
                         `artnum`.`ID` IS NULL
                         OR
-                        `artnum`.`VALUE`!='troyka'
-                        OR
-                        `artnum`.`VALUE`!='parking'
+                        (
+                            `artnum`.`VALUE`!='troyka'
+                            AND
+                            `artnum`.`VALUE`!='parking'
+                        )
                         OR
                         (
                             `artnum`.`VALUE`='troyka'

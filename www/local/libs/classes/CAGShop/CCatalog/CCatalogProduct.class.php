@@ -149,7 +149,7 @@
             global $USER;
 
             $objCache = new
-            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
+            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)),300);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -324,9 +324,11 @@
                     (
                         `artnum`.`ID` IS NULL
                         OR
-                        `artnum`.`VALUE`!='troyka'
-                        OR
-                        `artnum`.`VALUE`!='parking'
+                        (
+                            `artnum`.`VALUE`!='troyka'
+                            AND
+                            `artnum`.`VALUE`!='parking'
+                        )
                         OR
                         (
                             `artnum`.`VALUE`='troyka'
@@ -343,6 +345,9 @@
                 GROUP BY
                     `product`.`ID`
             ";
+//            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/1.sql","a");
+//            fwrite($fd,$sQuery);
+//            fclose($fd);
             $arIds = $CDB->sqlSelect($sQuery,10000);
             foreach($arIds as $arId){
                 $arSectionCond[] = $arId["ID"];

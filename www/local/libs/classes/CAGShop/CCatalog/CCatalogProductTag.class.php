@@ -34,7 +34,7 @@
         function getAllTags($sSectionCode){
             global $USER;
             $objCache = new \Cache\CCache(
-                "mobile_interests",$sSectionCode
+                "mobile_interests",$sSectionCode,300
             );
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
@@ -141,9 +141,11 @@
                     (
                         `artnum`.`ID` IS NULL
                         OR
-                        `artnum`.`VALUE`!='troyka'
-                        OR
-                        `artnum`.`VALUE`!='parking'
+                        (
+                            `artnum`.`VALUE`!='troyka'
+                            AND
+                            `artnum`.`VALUE`!='parking'
+                        )
                         OR
                         (
                             `artnum`.`VALUE`='troyka'
