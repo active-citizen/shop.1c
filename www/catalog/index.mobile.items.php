@@ -17,11 +17,17 @@
     $arProducts = $objProduct->getTeasers($arParams);
     
     $arResult = [];
-    foreach($arProducts["items"] as $arProduct)$arResult[] = [
-        "item"=>$arProduct["NAME"],
-        "url"=>'/catalog/'.$arProduct["SECTION"]["CODE"]."/".$arProduct["CODE"]
-            ."/"
-    ];
+    foreach($arProducts["items"] as $arProduct){
+        $arProduct["NAME"] = str_replace("«","",$arProduct["NAME"]);
+        $arProduct["NAME"] = str_replace("»","",$arProduct["NAME"]);
+        $arProduct["NAME"] = str_replace("\"","",$arProduct["NAME"]);
+        $arProduct["NAME"] = str_replace("'","",$arProduct["NAME"]);
+        $arResult[] = [
+            "item"=>$arProduct["NAME"],
+            "url"=>'/catalog/'.$arProduct["SECTION"]["CODE"]."/".$arProduct["CODE"]
+                ."/"
+        ];
+    }
     
     echo json_encode($arResult);
 
