@@ -50,7 +50,7 @@ use AGShop\Cache as Cache;
         customCacheClear();
         // Чистим группы memcache
         $objCache = new \Cache\CCache("mobile_teasers","0");
-        $objCache->clearAll();
+        $objCache->clearAll(false);
         unset($objCache);
 
     ?>

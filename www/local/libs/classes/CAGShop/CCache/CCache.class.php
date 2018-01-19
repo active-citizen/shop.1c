@@ -77,13 +77,19 @@
         /**
             Очистка текущей группы ключей
         */
-        function clearAll(){
+        function clearAll(
+            $bOnlyGroup = true // Очищать толко заданную в конструкторе группу
+        ){
             if(!$this->objMemcached)return false;
             $arKeys = $this->objMemcached->getAllKeys();
             $arDeleteKeys = [];
             foreach($arKeys as $sKey){
                 $tmp = explode(":", $sKey);
-                if($tmp[0]==$this->sGroup)$arDeleteKeys[] = $sKey;
+                if($bOnlyGroup && $tmp[0]==$this->sGroup)
+                    $arDeleteKeys[] = $sKey;
+                elseif(!$bOnlyGroup)
+                    $arDeleteKeys[] = $sKey;
+                
             }
             return $this->objMemcached->deleteMulti($arDeleteKeys);
         }
