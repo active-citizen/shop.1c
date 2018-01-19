@@ -5,7 +5,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCach
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 $objCache = new
-    Cache\CCache("wishes",md5($_SERVER["REQUEST_URI"]).$USER->GetID());
+    Cache\CCache("wishes",md5($_SERVER["REQUEST_URI"]).$USER->GetID(),300);
 if($sData = $objCache->get()){
 echo json_encode($sData);
 die;
