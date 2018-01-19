@@ -11,9 +11,6 @@
             
         */
         function testAGHistory(){
-
-            $sSessionId = "35e725eb58af883e669ab9b92a267a59";
-
             $objSSAGHistory = new \SSAG\CSSAGHistory($sSessionId);
             $arHistory = $objSSAGHistory->get(); 
         }
