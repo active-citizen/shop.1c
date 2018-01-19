@@ -106,7 +106,7 @@
                     &&
                     (
                         !IS_MOBILE
-                        ||
+                        &&
                         IS_PHONE
                     )
                     //!isset($_COOKIE["EMPSESSION"])
