@@ -52,5 +52,6 @@ for($i=0;$i<$nCount;$i++){
     `$command01`;
     `$command02`;
     print "\n$sRow\n";
+    sleep(rand(3));
 }
 
