@@ -35,6 +35,12 @@ if($USER->IsAuthorized()):
     if(preg_match("#^".$arParams["SELF_FOLDER"].".*?/(\d+)/#",$RU,$m))
         $arParams["PAGE"] = $m[1];
 
+
+    require_once(
+       $_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php"
+    );
+    $objUser = new bxUser();
+    $sSessionId = $objUser->getEMPSessionId($USER->GetLogin());
     $objSSAGHistory = new \SSAG\CSSAGHistory($sSessionId);
     $bDebit = $arResult["DEBIT"]==''?null:true;
     if(!is_null($bDebit) && $arResult["DEBIT"]=='Y')$bDebit=true;
