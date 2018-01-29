@@ -815,3 +815,7 @@ div.amounter--off{
     width: 222px!important;
     max-width: 222px!important;
 }
+
+.order_visible{
+    display: block;
+}

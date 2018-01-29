@@ -88,6 +88,10 @@ $(function() {
     // Clear search input
     $('.typeahead').typeahead('val', '');
     $(".mobile-header-search__clear").removeClass("show-clear");
+    // Close notfind
+    if ($('.mobile-search-notfind').hasClass("disabled") != true) {
+      $('.mobile-search-notfind').addClass("disabled");
+    }
     // -------
     $(this).toggleClass("active");
     $('.mobile-header-category').toggleClass("show-category");
@@ -105,6 +109,10 @@ $(function() {
     // Clear search input
     $('.typeahead').typeahead('val', '');
     $(".mobile-header-search__clear").removeClass("show-clear");
+    // Close notfind
+    if ($('.mobile-search-notfind').hasClass("disabled") != true) {
+      $('.mobile-search-notfind').addClass("disabled");
+    }
     // -------
     $('.mobile-aside-filter').addClass("show-filters");
   });
@@ -263,10 +271,12 @@ $(function() {
   {
     name: 'product-items',
     display: 'item',
+    limit: 5, //если нужно показывать больше результатов - изменить эту цифру
     source: productItems,
     templates: {
       // Если нужно будет выводить "отсутствие" результатов для автодополнения,
       // то нужно раскоментировать этот блок
+      // -- это встроенная функция, использовать или ее, или кастомную
       // empty: function (data) {
       //   return '<h3 class="mobile-header-search__title">По наименованию</h3><p class="tt-dataset">По вашему запросу<b class="tt-highlight"> ' + data.query + ' </b>ничего не найдено</p>';
       // },
@@ -276,10 +286,12 @@ $(function() {
   {
     name: 'category',
     display: 'category',
+    limit: 5, //если нужно показывать больше результатов - изменить эту цифру
     source: productCategories,
     templates: {
       // Если нужно будет выводить "отсутствие" результатов для автодополнения,
       // то нужно раскоментировать этот блок
+      // -- это встроенная функция, использовать или ее, или кастомную
       // empty: function (data) {
       //   return '<h3 class="mobile-header-search__title">По фильтрам</h3><p class="tt-dataset">По вашему запросу<b class="tt-highlight"> ' + data.query + ' </b>ничего не найдено</p>';
       // },
@@ -307,16 +319,33 @@ $(function() {
     if( !$(this).val() ) {
       $(".mobile-header-search__clear").removeClass("show-clear");
       $(".mobile-search-status").removeClass("show-results");
+
+      clearSearchInput();
     }
   });
 
-  $('.mobile-header-search__clear').on('click',function () {
+// Очистка поисковой строки, и удаление всех классов хелперов
+  function clearSearchInput() {
     $('.typeahead').typeahead('val', '');
     $(".mobile-header-search__clear").removeClass("show-clear");
     if ($('body').hasClass("noscroll white-background") != true) {
       $('body').removeClass("noscroll");
     }
+
+    if ($('.mobile-search-notfind').hasClass("disabled") != true) {
+      $('.mobile-search-notfind').addClass("disabled");
+    }
+  };
+
+  $('.mobile-header-search__clear').on('click',function () {
+    clearSearchInput();
   });
+
+  // Дублирование
+  $('.mobile-search-notfind__reset').on('click',function () {
+    clearSearchInput();
+  });
+
 
   // Adding submit event for search form
   // after selecting search option
@@ -330,9 +359,23 @@ $(function() {
   });
 
   $('#multiple-datasets .tt-input').bind('typeahead:render', function(ev, suggestion) {
+     // Запрещаем скролл, если открыты подсказки
     if ($('body').hasClass("noscroll") != true) {
       $('body').addClass("noscroll");
     }
+    // По умолчанию скрываем "без результатов"
+    $(".mobile-search-notfind").addClass("disabled");
+
+    // Когда поисковая строка активна, и результатов нет
+    if ( ($(".mobile-search-status").hasClass("tt-open")) && ($(".mobile-search-status").hasClass("tt-empty"))) {
+      // Показываем блок "без результатов"
+      $(".mobile-search-notfind").removeClass("disabled");
+      // Берем строку из поискового ипута
+      var searchedQuery = $('#multiple-datasets .tt-input').typeahead('val');
+      // Записываем поисковый запрос в блок
+      var notFindContainer = $("#mobileSearchQuery").text(searchedQuery);
+    }
+
   });
 
 

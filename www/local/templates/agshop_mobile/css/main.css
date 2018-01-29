@@ -1753,6 +1753,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .mobile-main-wrapper {
   overflow: hidden;
+  position: relative;
 }
 
 .mobile-product-grid {
@@ -2776,24 +2777,57 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .mobile-search-notfind {
-  position: relative;
+  position: fixed;
+  top: 59px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1000;
+  background-color: #fff;
+  opacity: 1;
+  -webkit-transition: top 400ms, opacity 500ms;
+  -o-transition: top 400ms, opacity 500ms;
+  transition: top 400ms, opacity 500ms;
+
 }
+
 
 .mobile-search-notfind .mobile-search-result__info {
   margin-top: 10px;
 }
+
+.mobile-search-notfind.disabled {
+  top: -100%;
+  opacity: 0;
+  -webkit-transition: top 400ms, opacity 500ms;
+  -o-transition: top 400ms, opacity 500ms;
+  transition: top 400ms, opacity 500ms;
+}
+
 
 .mobile-search-notfind-wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
   display: block;
-  width: 220px;
+  width: 300px;
+  height: auto;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   text-align: center;
 }
+
+.mobile-search-notfind-wrapper .mobile-search-result__info {
+  margin: 0;
+}
+
+.mobile-search-query {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
 
 .icon-search-notfind {
   display: block;
@@ -2806,7 +2840,31 @@ input[type=number]::-webkit-outer-spin-button {
   background-image: url("../img/icon__search-notfind.svg");
 }
 
+.mobile-search-notfind__reset {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 7px 12px;
+  margin: 8px 0;
+  color: #343434;
+  background-color: #f2f2f2;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+
 @media screen and (min-width: 768px) {
+  
+  .paddingTop64 {
+    padding-top: 15px;
+  }
+
+  .mobile-header {
+    display: none;
+  }
+
+
   .mobile-header {
     left: 50%;
     margin-left: -384px;
