@@ -197,7 +197,7 @@
                 </div>
               </div>
               <div class="grid__col-shrink">
-                <div class="ag-shop-profile-order__count"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
+                <div class="ag-shop-profile-order__count order_visible"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
               </div>
             </div>
           </div>

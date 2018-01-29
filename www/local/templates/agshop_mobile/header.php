@@ -1,4 +1,5 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+require(__DIR__."/../auth.php");
 CUtil::InitJSCore(['ajax']);
 
 /*
@@ -76,10 +77,10 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
     <title><?$APPLICATION->ShowTitle()?></title>
 
 	<meta property="og:image" content="<?php echo SITE_TEMPLATE_PATH ?>/path/to/image.jpg">
-	<link rel="shortcut icon" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/favicon.ico" type="image/x-icon">
+	<!-- <link rel="shortcut icon" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/favicon.ico" type="image/x-icon">
 	<link rel="apple-touch-icon" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo SITE_TEMPLATE_PATH ?>/img/favicon/apple-touch-icon-114x114.png"> -->
 
 	<!-- Chrome, Firefox OS and Opera -->
 	<meta name="theme-color" content="#000">

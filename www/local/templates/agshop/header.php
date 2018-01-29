@@ -1,5 +1,5 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-
+require(__DIR__."/../auth.php");
 CUtil::InitJSCore(['ajax']);
 
 if(preg_match("#^/partners#",$_SERVER["REQUEST_URI"])){

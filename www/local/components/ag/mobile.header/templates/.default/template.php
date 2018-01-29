@@ -18,7 +18,7 @@
 					<div class="mobile-header-search">
 						<form id="mobileHeaderSearchForm">
 							<div id="multiple-datasets" class="mobile-header-search__input">
-								<input class="typeahead" type="text" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
+								<input class="typeahead" type="text" id="mobileHeaderSearchInput" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
 								<button class="mobile-header-search__clear" type="button" name="clearTypeahead"></button>
 							</div>
 						</form>
@@ -111,6 +111,20 @@
 					<!-- This div is target for autocomplete -->
 					<!-- dont remove him -->
 				</section>
+				
+				<section class="mobile-search-notfind disabled">
+					<div class="mobile-search-notfind-wrapper">
+						<span class="icon-search-notfind"></span>
+						<p class="default-paragraph mobile-search-result__info">
+							По запросу <span id="mobileSearchQuery" class="mobile-search-query"></span> ничего не найдено.
+						</p>
+						<p class="default-paragraph mobile-search-result__info">
+							Создайте новый поисковый запрос.
+						</p>
+						<span class="mobile-search-notfind__reset">Очистить поиск</span>
+					</div>
+				</section>
+				<!-- Чтобы сделать большую плитку - добавить к этому контейнеру класс .mobile-product-grid--big -->
 			</div>	
 	</div>
 		
