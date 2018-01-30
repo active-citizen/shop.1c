@@ -11,6 +11,14 @@
                                         $sName = $arSection["NAME"];
                                         break;
                                     }
+                                if(!trim($arResult["CURRENT"])){
+                                    foreach($arResult["PAGES"] as $arPage)
+                                        if(preg_match(
+                                            "#^".$arPage["URL"]."#",
+                                            $_SERVER["REQUEST_URI"]
+                                        ))$sName = $arPage["TITLE"];
+                                    
+                                }
                             ?>
                             <?= $sName ?>
                         </span>
