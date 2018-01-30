@@ -655,7 +655,8 @@ function wishes_load_catalog(){
                 var answer = JSON.parse(data);
             }
             catch(err){
-                riseError('Ошибка получения желаний пользователя:' + data);
+                //riseError('Ошибка получения желаний пользователя:' + data);
+                return false;
             }
             var obj;
             var i;

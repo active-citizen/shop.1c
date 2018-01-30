@@ -404,7 +404,9 @@
         $tmp = date_parse($arOrderProperties['CLOSE_DATE']['VALUE']);
 
         $arCatalog['EXPIRES'] = 
-            $tmp['day'].".".$tmp['month'].".".$tmp['year'];
+            sprintf("%02d", $tmp['day'])
+            .".".sprintf("%02d", $tmp['month'])
+            .".".sprintf("%04d", $tmp['year']);
        
         $send_cert = (
                 (
