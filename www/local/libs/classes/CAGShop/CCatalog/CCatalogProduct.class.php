@@ -293,10 +293,14 @@
                         `artnum`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
                         AND
                         `artnum`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_section."` as `section`
+                        ON `product`.`IBLOCK_SECTION_ID`=`section`.`ID`
                 WHERE
                     `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     AND `product`.`IBLOCK_SECTION_ID`!=0
                     ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
+                    AND `section`.`ACTIVE`='Y'
                     AND `product`.`ACTIVE`='Y'
                     AND 
                     (
