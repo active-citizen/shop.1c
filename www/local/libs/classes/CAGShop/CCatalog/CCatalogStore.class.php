@@ -137,15 +137,17 @@
 
         /**
             Получение списка сладов для отображения на сайте
+
+            @param $bWithoutAddress - выводить без складов с пустым адресом
         */
-        function getForSite(){
+        function getForSite($bWithoutAddress = true){
             \CModule::IncludeModule('catalog');
+            $arFilter = [];
+            if($bWithoutAddress)$arFilter["!ADDRESS"] = '';
 
             $resStores = \CCatalogStore::GetList(
                 array("TITLE"=>"asc"),
-                array(
-                    "!ADDRESS"=>''
-                ),
+                $arFilter,
                 false,
                 false,
                 array("TITLE","ADDRESS","ID","PHONE","SCHEDULE","EMAIL","DESCRIPTION")

@@ -35,7 +35,7 @@
 
     // Фильтр по складам
     $objStore = new \Catalog\CCatalogStore;
-    $arStores = $objStore->getForSite();
+    $arStores = $objStore->getForSite(false);
     foreach($arStores['stores'] as $arStore){
         $sKey = CUtil::translit($arStore["TITLE"],"ru",[
             "change_case"   =>  false,
