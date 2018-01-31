@@ -2860,10 +2860,10 @@ input[type=number]::-webkit-outer-spin-button {
     padding-top: 15px;
   }
 
-  .mobile-header {
+/*  .mobile-header {
     display: none;
   }
-
+*/
 
   .mobile-header {
     left: 50%;
@@ -2996,3 +2996,11 @@ input[type=number]::-webkit-outer-spin-button {
     min-height: 146px;
   }
 }
+
+@media screen and (max-width: 440px) {
+  .ag-shop-profile-order__count {
+    text-align: left;
+  }
+}
+
+ 
