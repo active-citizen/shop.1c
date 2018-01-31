@@ -476,6 +476,32 @@
         else{
             $arProperties["USE_BEFORE_DATE"] = '';
         }
+        // Аукцион
+        $arProperties["AUCTION_IS"] = 
+            $arProduct["Аукцион"]=='Да'?$ENUM["AUCTION_IS"]["да"]:0;
+        // Дата начала аукциона
+        if(trim($arProduct["АукционДатаНачала"])){
+            $tmp2 = date_parse($arProduct["АукционДатаНачала"]);
+            $arProduct["АукционДатаНачала"] = date(
+                "d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"])
+            );
+            $arProperties["AUCTION_START_DATE"] = $arProduct["АукционДатаНачала"];
+        }
+        else{
+            $arProperties["AUCTION_START_DATE"] = '';
+        }
+        // Дата завершения аукциона
+        if(trim($arProduct["АукционДатаЗавершения"])){
+            $tmp2 = date_parse($arProduct["АукционДатаЗавершения"]);
+            $arProduct["АукционДатаНачала"] = date(
+                "d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"])
+            );
+            $arProperties["AUCTION_STOP_DATE"] =
+               $arProduct["АукционДатаЗавершения"];
+        }
+        else{
+            $arProperties["AUCTION_STOP_DATE"] = '';
+        }
         
 
         // Ещё одно название нужное только для того, чтобы иметь возможность в
