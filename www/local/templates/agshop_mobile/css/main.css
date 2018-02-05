@@ -2859,8 +2859,10 @@ input[type=number]::-webkit-outer-spin-button {
   .paddingTop64 {
     padding-top: 15px;
   }
-
-/*  .mobile-header {
+.ag-shop-menu {
+    display: none;
+  }
+  /*.mobile-header {
     display: none;
   }
 */
@@ -3002,5 +3004,21 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: left;
   }
 }
-
  
+ @media (max-width: 768px) {
+ .mobile-header {
+    display: block;
+  }
+  .ag-shop-menu {
+    display: none;
+  }
+  .ag-shop-content {
+    padding-top: 60px;
+}
+}
+
+@media screen and (min-width: 992px) {
+  .ag-shop-content {
+    padding: 70px 30px 50px;
+  }
+}
