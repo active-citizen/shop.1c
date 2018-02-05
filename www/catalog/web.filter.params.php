@@ -30,7 +30,7 @@
         $arParams["filter"]["price_max"] = $_REQUEST["productPriceMax"];
 
     if(isset($_REQUEST["filter_interest"]))
-        $arParams["filter"]["interest"] = $_REQUEST["filter_interest"];
+        $arParams["filter"]["interest"] = explode(",",$_REQUEST["filter_interest"]);
 
     if(isset($_REQUEST["flag"]) && ($_REQUEST["flag"]=='actions'))
         $arParams["filter"]["sale"] = true;
