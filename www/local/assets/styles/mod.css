@@ -815,3 +815,21 @@ div.amounter--off{
     width: 222px!important;
     max-width: 222px!important;
 }
+
+.ag-shop-card__field--no-gaps table{
+    border: 1px #888 solid;
+    border-collapse: collapse;
+}
+
+.ag-shop-card__field--no-gaps td,th{
+    border: 1px #888 solid;
+    padding: 5px;
+    text-align: center;
+}
+
+/*
+.ag-shop-card__field--no-gaps tr:first-of-type td, th{
+    background-color: rgba(0,122,108,1);
+    color: white;
+}
+*/
