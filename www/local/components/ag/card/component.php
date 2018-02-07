@@ -104,6 +104,9 @@ use AGShop\Cache as Cache;
     );
     $arResult["MON_ORDERS"] = $arLimitInfo["count"];
     $arResult["NEXT_ORDER"] = $arLimitInfo["next"];
+    
+    $arLimitInfo = $objCOffer->getDailyProductCount($arResult["CATALOG_ITEM"]["ID"]);
+    $arResult["DAILY_ORDERS"] = $arLimitInfo["count"];
 
     ///////////////////////////// Вычисляем рейтинг  //////////////////////////
     $arResult["CATALOG_ITEM"]["RATING"] = round(

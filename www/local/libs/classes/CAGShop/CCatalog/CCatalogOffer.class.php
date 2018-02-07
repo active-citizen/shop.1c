@@ -84,6 +84,54 @@ class CCatalogOffer extends \AGShop\CAGShop{
         return $arProperties;
     }
 
+
+    /**
+        Проверка исчерпания суточного лимита на товар
+    */
+    function failedDailyLimit(
+        $nOfferId,
+        $nAmount = 1 //!< Сколько собираемся купить
+    ){
+        $nOfferId = intval($nOfferId);
+        $arOffer = \CIBlockElement::GetList(
+            array(),
+            $arFilter = array(
+                "IBLOCK_ID" => OFFER_IB_ID,
+                "ID"        =>  $nOfferId
+            ),
+            false,
+            array("nTopCount"=>1),
+            array("PROPERTY_CML2_LINK","ID")
+        )->Fetch();
+        if(!isset($arOffer["ID"]))return 1;
+    
+        $arProduct = \CIBlockElement::GetList(
+            array(),
+            array(
+                "IBLOCK_ID" =>  CATALOG_IB_ID,
+                "ID"        =>  $arOffer["PROPERTY_CML2_LINK_VALUE"]
+            ),
+            false,
+            array("nTopCount"=>1),
+            array("PROPERTY_DAILY_LIMIT","ID")
+        )->Fetch();
+    
+        $arFailedLimit = 
+        $this->getDailyProductCount(
+            $arProduct["ID"]
+        );
+        $failedLimit = $arFailedLimit["count"];
+    
+        if(
+            $arProduct["PROPERTY_DAILY_LIMIT_VALUE"]
+            &&
+            $failedLimit+$nAmount-1 >= $arProduct["PROPERTY_DAILY_LIMIT_VALUE"]
+    
+        )
+        return $arProduct["PROPERTY_DAILY_LIMIT_VALUE"];
+    }
+
+
     /**
         Проверка исчерпания месячного лимита на товар для пользователя
     */
@@ -122,7 +170,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
             $arProduct["ID"]
         );
         $failedLimit = $arFailedLimit["count"];
-    
+
         if(
             $arProduct["PROPERTY_MON_LIMIT_VALUE"]
             &&
@@ -133,9 +181,61 @@ class CCatalogOffer extends \AGShop\CAGShop{
     }
 
     /**
+        Определение скольок сегодня заказали товара
+
+        @param $nProductId ID продукта (Элемента каталога, не предложения)
+    */
+    function getDailyProductCount($nProductId){
+        global $DB;
+        $nPropuctId = intval($nProductId);
+
+        $nPropId = CML2_LINK_PROPERTY_ID;//isset($arProp["id"])?$arProp["id"]:0;
+        $sStartDate = date("Y-m-d H:i:s",mktime(
+            0,0,0,
+            date("m"),date("d"),date("Y")
+        ));
+
+        $sQuery = "
+            SELECT
+                ROUND(SUM(`b`.`QUANTITY`)) as `count`
+                -- ,`a`.`DATE_INSERT` as `order_date`
+                -- ,`c`.`VALUE_NUM` as `product_id`
+                -- ,`a`.`ID` as `order_id`
+                -- ,`b`.`PRODUCT_ID` as `offer_id`
+            FROM 
+                `b_iblock_element_property` as `c`
+                    LEFT JOIN
+                `b_sale_basket` as `b`
+                    ON `b`.`PRODUCT_ID`=`c`.`IBLOCK_ELEMENT_ID`
+                    LEFT JOIN
+                `b_sale_order` as `a`
+                    on `b`.`ORDER_ID`=`a`.`ID`
+    
+            WHERE
+                1
+                AND `c`.`IBLOCK_PROPERTY_ID`=$nPropId
+                AND `c`.`VALUE_NUM`=$nProductId
+                AND `a`.`STATUS_ID` IN ('F','AA','N','AG')
+                AND `a`.`DATE_INSERT`>'$sStartDate'
+            LIMIT
+                1
+        ";
+        /*
+        echo "<pre>";
+        echo $sQuery;
+        die;
+        */
+
+        $arQuery = $DB->Query($sQuery)->Fetch();
+        return [
+            "count" =>  isset($arQuery["count"])?$arQuery["count"]:0
+        ]; 
+     }
+
+    /**
         Определение сколько в этом месяце пользователь заказал товара
         @param $nUserId - ID пользователя
-        @ID продукта (Элемента каталога, не предложения)
+        @param $nProductId ID продукта (Элемента каталога, не предложения)
     */
     function getMounthProductCount(
         $nUserId,

@@ -72,7 +72,9 @@
             $fd = fopen(
                 $_SERVER["DOCUMENT_ROOT"]."/../logs/store".date("Y-m-d").".txt","a"
             );
-            fwrite($fd,"get  ".date("Y-m-d H:i:s")."\t$nProductId\t$nStoreId\t".$arResult["AMOUNT"]."\n");
+            global $USER;
+            $nUserId = $USER->GetID();
+            fwrite($fd,"get  ".date("Y-m-d H:i:s")."\t$nUserId\t$nProductId\t$nStoreId\t".$arResult["AMOUNT"]."\n");
             fclose($fd);
             return $arResult["AMOUNT"];
         }
@@ -85,7 +87,7 @@
             $nStoreId = intval($nStoreId);
             $nAmount = intval($nAmount);
             // Запрет на возврат товара
-            if($nAmount>=0)return false;
+            //if($nAmount>=0)return false;
             
             if(!$nAmount){
                 $this->addError("Не указано число изымаемого товара");
@@ -114,7 +116,9 @@
             $fd = fopen(
                 $_SERVER["DOCUMENT_ROOT"]."/../logs/store".date("Y-m-d").".txt","a"
             );
-            fwrite($fd,"move ".date("Y-m-d H:i:s")."\t$nProductId\t$nStoreId\t$nAmount\n");
+            global $USER;
+            $nUserId = $USER->GetID();
+            fwrite($fd,"move ".date("Y-m-d H:i:s")."\t$nUserId\t$nProductId\t$nStoreId\t$nAmount\n");
             fclose($fd);
             $CDB->sqlQuery($sQuery);
             return true;

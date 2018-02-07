@@ -175,6 +175,20 @@ class COrder extends \AGShop\CAGShop{
             }
         }
 
+        // Проверяем суточные лимиты
+        foreach($arSKUs as $nSkuNum=>$arSKU){
+            if(!$sCustomNum && $failedLimit = $objCCatalogOffer->failedDailyLimit(
+                $arSKU["SKU"]["OFFER"]["ID"],
+                $arSKU["AMOUNT"]
+            )){
+                // Возвращаем всё что взяли на склад
+                $this->returnToStore();
+                $this->addError("Сегодня нельзя заказать такое количество
+                товара. Уменьшите число заказываемых единиц или приходите завтра.");
+                return false;
+            }
+        }
+
         // Проверяем дневные лимиты по тройкам и парковкам, посылаем в сад, если 
         // вышел хотя бы один
         foreach($arSKUs as $nSkuNum=>$arSKU){

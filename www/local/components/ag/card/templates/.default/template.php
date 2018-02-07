@@ -6,14 +6,25 @@
 <?
 $arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 $stopMonLimit = 0;
+$stopDailyLimit = 0;
 $noAG = false;
 if(
-    $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"] &&
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"] && (
     $arResult["MON_ORDERS"]
         >=
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"]
-)$stopMonLimit =
+))$stopMonLimit =
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"];
+
+if(
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"] && (
+    $arResult["DAILY_ORDERS"]
+        >=
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"]
+))$stopDailyLimit =
+    $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"];
+
+
 ?>
         <? if(
             $arResult["CATALOG_ITEM"]["ACTIVE"]=='N' 
@@ -67,7 +78,13 @@ if(
             </script>
         
             <div class="ag-shop-card">
-            <? if($stopMonLimit):?>
+            <? if($stopDailyLimit):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    На сегодня приём заказов данного поощрения временно остановлен. Приходите завтра.
+                </div>
+              </div>
+            <? elseif($stopMonLimit):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
                     Ваш месячный лимит заказов данного поощрения исчерпан.
@@ -425,7 +442,9 @@ if(
                         </div>
                         -->
                         <div class="ag-shop-card__places">
-                          <? $count=0;foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount): $count++;?>
+                          <? $count=0;
+                          if(!$stopDailyLimit)
+                          foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount): $count++;?>
                           <label>
                             <input  onclick="return selectStorage('<?= $id;?>');"type="radio" name="place" value="<?= $id ?>" <? 
                                 if(count($arResult["OFFERS"][0]["STORAGES"])==1)echo " checked ";
@@ -533,6 +552,8 @@ if(
                         $arResult['CATALOG_ITEM']["PROPERTIES"]['ARTNUMBER'][0]["VALUE"]!='parking'
                         &&
                         !$stopMonLimit
+                        &&
+                        !$stopDailyLimit
                         &&
                         // Если дата мероприятия ещё не вышла
                         (
@@ -647,6 +668,8 @@ if(
                     !$noAG
                     &&
                     !$stopMonLimit
+                    &&
+                    !$stopDailyLimit
                     &&
                     // Если дата мероприятия не вышла
                     (
