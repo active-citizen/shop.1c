@@ -81,7 +81,8 @@ if(
             <? if($stopDailyLimit):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
-                    На сегодня приём заказов данного поощрения временно остановлен. Приходите завтра.
+                    Дневной лимит заказа данного поощрения исчерпан. Попробуйте
+                    повторить попытку заказа завтра.
                 </div>
               </div>
             <? elseif($stopMonLimit):?>
