@@ -61,6 +61,7 @@ if(
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/main.css");
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/add.js");
 //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/common.js");
 
 

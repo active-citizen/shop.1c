@@ -1,6 +1,9 @@
 	<header class="mobile-header">
 		<div class="mobile-container">
 			<div class="mobile-header-wrapper">
+				<div class="wrap_back_btn">
+					<a href="#" class="back_btn"></a>
+				</div>
 				<div class="mobile-header-left">
 					<button class="mobile-header-caregory-btn" type="button">
 						<span class="mobile-header-category__title">

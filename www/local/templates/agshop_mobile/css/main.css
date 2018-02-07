@@ -642,8 +642,8 @@ input[type=number]::-webkit-outer-spin-button {
   height: 35px;
   padding: 0;
   width: 90%;
-  width: -webkit-calc(100% - 35px - 10px);
-  width: calc(100% - 35px - 10px);
+  width: -webkit-calc(100% - 70px - 20px);
+  width: calc(100% - 70px - 20px);
   border: 1px solid #dddddd;
   background-color: #f3f3f3;
 }
@@ -2962,9 +2962,10 @@ input[type=number]::-webkit-outer-spin-button {
 @media screen and (max-width: 374px) {
   .mobile-header-left {
     width: 260px;
-    width: -webkit-calc(100% - 35px - 10px);
-    width: calc(100% - 35px - 10px);
+    width: -webkit-calc(100% - 70px - 10px);
+    width: calc(100% - 70px - 10px);
   }
+  .wrap_back_btn{margin-right: 5px!important;}
 
   .mobile-product-item-preview {
     min-height: 180px;
@@ -3021,4 +3022,30 @@ input[type=number]::-webkit-outer-spin-button {
   .ag-shop-content {
     padding: 70px 30px 50px;
   }
+}
+
+/*STYLE FOR BTN_BACK*/
+
+.wrap_back_btn {
+    width: 35px;
+    background: #f3f3f3;
+    height: 35px;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.back_btn{
+    background-image: url(../img/ic_arrow_back.svg);
+    width: 6px;
+    height: 10px;
+    display: block;
+    margin: 13px auto
+}
+
+
+@media screen and (max-width: 340px) {
+	.mobile-header-search__input{
+		padding-right: 7px!important;
+	}
 }
