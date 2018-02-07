@@ -30,7 +30,8 @@ tmp/CCache/*
 # Игнорировать логи
 sql/*.log
 logs/*.log
-# Игнорировать логи SMTP
+logs/*.txt
+#Игнорировать логи SMTP
 logs/maildir/[0-9]*
 logs/smtplog/[0-9]*
 logs/agapi/*
