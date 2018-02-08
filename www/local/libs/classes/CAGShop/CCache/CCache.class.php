@@ -24,7 +24,7 @@
         function __construct($sGroup, $sKey, $nExpires=''){
             $this->sGroup = $sGroup;
             $this->sKey = $sKey;
-            $this->nExpires = $nExpires;
+            if($nExpires!='')$this->nExpires = $nExpires;
             $this->sFullKey = "$sGroup:$sKey";
             $this->sBasePath = $_SERVER["DOCUMENT_ROOT"]."/../tmp/CCache";
 

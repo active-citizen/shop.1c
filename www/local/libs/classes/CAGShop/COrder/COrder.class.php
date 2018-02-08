@@ -122,10 +122,13 @@ class COrder extends \AGShop\CAGShop{
         // Проверяем количество на складе каждого предложения и блокируем, 
         // если надо (снимаем единицу)
         $objCCatalogStore = new \Catalog\CCatalogStore;
+        $objCCatalogOffer = new \Catalog\CCatalogOffer;
         // Массив для запоминания того, что наблокировали и сколько
         $arStoreLocked = [];
         $nTotalSum = 0;
         foreach($arSKUs as $nSkuNum=>$arSKU){
+            if(!$objCCatalogOffer->isActive($arSKU["SKU"]["OFFER"]["ID"]))
+                return $this->addError('Поощрения снято с реализации');
             // Получаем количество товара на нужном складе
             $nAmount = $objCCatalogStore->getProductAmount(
                 $arSKU["SKU"]["OFFER"]["ID"],

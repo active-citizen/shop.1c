@@ -28,10 +28,56 @@
         }
         
         /**
+            Проверка активности товара по ID торгового предложения
+        */
+        function isActive($nProductId){
+
+            $objCache = new \Cache\CCache("isActiveProduct",$nProductId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
+            $bResult = true;
+            if(!intval($nProductId))return $this->addError('Не указан ID продукта');
+            $arProduct = \CIBlockElement::GetList([],[
+                "IBLOCK_ID"=>$this->IBLOCKS["CATALOG"],
+                "ID"=>$nProductId
+            ],false,[
+                "nTopCount"=>1
+            ],[
+                "ACTIVE",
+                "IBLOCK_SECTION_ID",
+                ""
+            ])->Fetch();
+            if($arProduct["ACTIVE"]!='Y')$bResult = false;
+            if(!intval($arProduct["IBLOCK_SECTION_ID"]))
+                $bResult = false;
+
+            if($bResult){
+                $arSection = \CIBlockSection::GetList([],[
+                    "IBLOCK_ID"=>$this->IBLOCKS["CATALOG"],
+                    "ID"=>$arProduct["IBLOCK_SECTION_ID"]
+                ],false,[
+                    "ACTIVE",
+                ])->Fetch();
+                if($arSection["ACTIVE"]!='Y')$bResult = false;
+            }
+            $objCache->set($bResult);
+            return $bResult;
+        }
+
+
+        /**
             Получить свойства элемента каталога по его ID
         */
         function getProperties($nProductId){
             $nProductId = intval($nProductId);
+
+            $objCache = new \Cache\CCache("ProductProperties",$nProductId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
             $CDB = new \DB\CDB;
             $sQuery = "
                 SELECT
@@ -54,6 +100,7 @@
             }
             foreach($arProperties as $sCode=>$sValue)
                 if(count($sValue)==1)$arProperties[$sCode] = $sValue[0];
+            $objCache->set($arProperties);
             return $arProperties;
         }
         
@@ -63,7 +110,13 @@
         
         */
         function get($nId){
-            return \CIBlockElement::GetList(
+
+            $objCache = new \Cache\CCache("ProductMainInfoById",$nId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
+            $arResult =  \CIBlockElement::GetList(
                 [],[
                     "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
                     "ID"=>$nId
@@ -72,13 +125,22 @@
                 ],[
                 ]
             )->GetNext();
+
+            $objCache->set($arResult);
+            return $arResult;
         }
         
         /**
             Получение основных параметров товара по его коду
         */
         function getByCode($sCode){
-            return \CIBlockElement::GetList(
+
+            $objCache = new \Cache\CCache("ProductMainInfoByCode",$sCode);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
+            $arResult =  \CIBlockElement::GetList(
                 [],[
                     "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
                     "CODE"=>$sCode
@@ -87,6 +149,8 @@
                 ],[
                 ]
             )->GetNext();
+            $objCache->set($arResult);
+            return $arResult;
         }
         
         /**
@@ -149,7 +213,7 @@
             global $USER;
 
             $objCache = new
-            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)),300);
+            \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }

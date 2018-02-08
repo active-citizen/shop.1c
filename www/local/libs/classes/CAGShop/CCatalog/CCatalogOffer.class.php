@@ -5,11 +5,13 @@ require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationTroyka.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
 require_once(realpath(__DIR__)."/CCatalogProduct.class.php");
+require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
 
 use AGShop;
 use AGShop\DB as DB;
 use AGShop\Catalog as Catalog;
 use AGShop\Integration as Integration;
+use AGShop\CCache as CCache;
 
 class CCatalogOffer extends \AGShop\CAGShop{
     
@@ -17,7 +19,46 @@ class CCatalogOffer extends \AGShop\CAGShop{
         parent::__construct();
         \CModule::IncludeModule('iblock');
     }
-    
+   
+    /**
+        Проверка активности товара по ID торгового предложения
+    */
+    function isActive($nOfferId){
+
+        $objCache = new \Cache\CCache("isActiveOffer",$nOfferId);
+        if($sCacheData = $objCache->get()){
+            return $sCacheData;
+        }
+
+        $bResult = true;
+        if(!intval($nOfferId))return $this->addError('Не указан ID предложения');
+        $arProduct = \CIBlockElement::GetList([],[
+            "IBLOCK_ID"=>$this->IBLOCKS["OFFER"],
+            "ID"=>$nOfferId
+        ],false,[
+            "nTopCount"=>1
+        ],[
+            "PROPERTY_CML2_LINK.ACTIVE",
+            "PROPERTY_CML2_LINK.IBLOCK_SECTION_ID",
+            ""
+        ])->Fetch();
+        if($arProduct["PROPERTY_CML2_LINK_ACTIVE"]!='Y')$bResult = false;
+        if(!intval($arProduct["PROPERTY_CML2_LINK_IBLOCK_SECTION_ID"]))
+            $bResult = false;
+
+        if($bResult){
+            $arSection = \CIBlockSection::GetList([],[
+                "IBLOCK_ID"=>$this->IBLOCKS["CATALOG"],
+                "ID"=>$arProduct["PROPERTY_CML2_LINK_IBLOCK_SECTION_ID"]
+            ],false,[
+                "ACTIVE",
+            ])->Fetch();
+            if($arSection["ACTIVE"]!='Y')$bResult = false;
+        }
+        $objCache->set($bResult);
+        return $bResult;
+    }
+
     /**
         Получение информации о товарной позиции по её ID
     */
@@ -45,13 +86,21 @@ class CCatalogOffer extends \AGShop\CAGShop{
     */
     function getMain($nOfferId){
         $nOfferId = intval($nOfferId);
+
+        $objCache = new \Cache\CCache("offerMainInfo",$nOfferId);
+        if($sCacheData = $objCache->get()){
+            return $sCacheData;
+        }
+
         $CDB = new \DB\CDB;
-        return $CDB->searchOne(\AGShop\CAGShop::t_iblock_element,[
+        $arResult =  $CDB->searchOne(\AGShop\CAGShop::t_iblock_element,[
             "IBLOCK_ID" =>  $this->IBLOCKS["OFFER"],
             "ID"        =>  $nOfferId
         ],[
             "ID","NAME","XML_ID"
         ]);
+        $objCache->set($arResult);
+        return $arResult;
     }
     
     /**
@@ -59,6 +108,12 @@ class CCatalogOffer extends \AGShop\CAGShop{
     */
     function getProperties($nOfferId){
         $nOfferId = intval($nOfferId);
+
+        $objCache = new \Cache\CCache("offerProperties",$nOfferId);
+        if($sCacheData = $objCache->get()){
+            return $sCacheData;
+        }
+
         $CDB = new \DB\CDB;
         $sQuery = "
             SELECT
@@ -81,6 +136,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         }
         foreach($arProperties as $sCode=>$sValue)
             if(count($sValue)==1)$arProperties[$sCode] = $sValue[0];
+        $objCache->set($arProperties);
         return $arProperties;
     }
 
