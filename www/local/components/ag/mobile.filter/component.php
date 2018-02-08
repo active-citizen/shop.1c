@@ -8,7 +8,16 @@
         ."/local/libs/classes/CAGShop/CCatalog/CCatalogProductTag.class.php"
     );
 
-    $arResult["GRID"] = isset($_REQUEST["productGridCheckbox"])?true:false;
+    $arResult["GRID"] = 
+        isset($_REQUEST["productGridCheckbox"]) || (
+            isset($_COOKIE["smallicons"])
+            &&
+            $_COOKIE["smallicons"]
+        )
+        ?
+        true
+        :
+        false;
     $arResult["HIT"] = isset($_REQUEST["productHitCheckbox"])?true:false;
     $arResult["HIT"] = 
         isset($arParams["filter"]['hit'])

@@ -27,7 +27,9 @@
 				<!-- Чтобы сделать большую плитку - добавить к этому контейнеру класс .mobile-product-grid--big -->
 				<section class="mobile-product-grid<? if(!$arResult["SMALL_TEASERS"]):?> mobile-product-grid--big<? endif ?>">
     <? endif ?>
+                    <? $nKey = 0;?>
                     <? foreach($arResult["PRODUCTS"] as $arProduct):?>
+                    <? $nKey++;?>
 					<article class="mobile-product-item">
 								<button class="mobile-product-item-favourite" type="button">
 									<span class="mobile-product-item-favourite__icon" productid="<?= $arProduct["ID"]?>" onclick="return mywish(this);"></span>
@@ -57,12 +59,20 @@
 							</span>
 						</a>
 					</article>
+                    <? if(
+                        $nKey 
+                        && ($nKey % $arParams["pagination"]["onpage"]==0)
+                    ):?>
+                        <a name="PAGE-<?=
+                        floor($nKey/$arParams["pagination"]["onpage"])+1
+                        ?>"></a>
+                    <? endif ?>
                     <? endforeach ?>
                     <input type="hidden" name="products" value="<?= implode(",",$arResult["PRODUCT_IDS"])?>">
                     <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
                     <? if($arResult["TOTAL"]>$nLastItem):?>
                     <a href="#" onclick="return teasers_next_page('<?=
-                    $arResult["NEXT_PAGE_URL"]?>');" class="more-button">Ещё<?/*
+                    $arResult["NEXT_PAGE_URL"]?>',<?= $arResult["PAGE"]+1?>);" class="more-button">Ещё<?/*
                     <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
                     <? endif ?>
     <? if(!$arParams["AJAX"]):?>
@@ -75,9 +85,38 @@
     
     
 <script>
-function teasers_next_page(sUrl){
+
+<? if(!$arParams["AJAX"]):?>
+teasersRewind();
+<? endif ?>
+
+$(document).ready(function(){
+});
+
+function teasersRewind(){
+    var hash = document.location.hash;
+    hash = hash.replace('#','');
+    var descriptor = 'a[name="'+hash+'"]';
+    if($('a[name="'+hash+'"]').length){
+        var destination = $('a[name="'+hash+'"]').offset().top+300;
+        $('body').animate({ scrollTop: destination }, 110);
+    }
+}
+
+function teasers_next_page(sUrl,nPageNum){
     $('.more-button').html('Загрузка...');
     $.get("/catalog/index.mobile.ajax.php?"+sUrl,function(data){
+        var search = document.location.search;
+        var re=/^(.*)\/$/
+        search = search.replace(/[&\?]page=\d+/,'');
+        search = search.replace(re,"$1");
+        console.log(search);
+        if(search=='') 
+            newsearch = search+'?page='+nPageNum+'/'
+        else
+            newsearch = search+'&page='+nPageNum+'/';
+        window.history.replaceState({}, search, newsearch);
+        document.location.hash = "PAGE-"+nPageNum;
         $('.more-button').remove();
         $('.mobile-product-grid').append(data);
         wishes_load();

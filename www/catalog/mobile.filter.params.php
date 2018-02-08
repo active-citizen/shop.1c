@@ -18,6 +18,18 @@
         $sCode = $arParams["filter"]["section_code"];
     if($sCode && (!$_GET || count($_GET)==1) && isset($_SESSION["TEASER_FILTER"][$sCode]))
         $arParams["filter"] = $_SESSION["TEASER_FILTER"][$sCode];
+
+    if($sCode && (!$_GET || count($_GET)==1) && isset($_SESSION["TEASER_SORTING"][$sCode]))
+        $arParams["sorting"] = $_SESSION["TEASER_SORTING"][$sCode];
+
+    /*
+    if($sCode && (!$_GET || count($_GET)==1) &&
+    isset($_SESSION["TEASER_PAGINATION"][$sCode]))
+        $arParams["pagination"] = $_SESSION["TEASER_PAGINATION"][$sCode];
+    */
+
+    //print_r($_SESSION["TEASER_FILTER"]);
+    // print_r($arParams);
     
     if(isset($_REQUEST['page']) && intval($_REQUEST['page']))
         $arParams["pagination"]["page"] = intval($_REQUEST['page']);
@@ -42,7 +54,7 @@
     if($arParams["filter"]["price_min"]<0)unset($arParams["filter"]["price_min"]);
     if($arParams["filter"]["price_max"]<0)unset($arParams["filter"]["price_max"]);
     
-    $arParams["filter"]["interest"] = [];
+//    $arParams["filter"]["interest"] = [];
     foreach($_REQUEST as $sKey=>$sValue)
         if(preg_match("#^productInterest#",$sKey))
             $arParams["filter"]["interest"][] = $sValue;
@@ -86,15 +98,22 @@
         $arParams["sorting"]["param"] = "sale";
         $arParams["sorting"]["direction"] = "desc";
     }
-    if($sCode && (!$_GET || count($_GET)==1) && isset($_SESSION["TEASER_SORTING"][$sCode]))
-        $arParams["sorting"] = $_SESSION["TEASER_SORTING"][$sCode];
     
+    if(isset($_REQUEST["productGridCheckbox"]))setcookie("smallicons",1);
+    else setcookie("smallicons",0);
+
     if(isset($_REQUEST["productHitCheckbox"]))$arParams["filter"]["hit"] = 1;
     if(isset($_REQUEST["productNewCheckbox"]))$arParams["filter"]["new"] = 1;
     if(isset($_REQUEST["productSaleCheckbox"]))$arParams["filter"]["sale"] = 1;
-    
+//    print_r($arParams);
+
     if(!isset($_SESSION["TEASER_FILTER"]))$_SESSION["TEASER_FILTER"] = [];
     $_SESSION["TEASER_FILTER"][$sCode] = $arParams["filter"];
 
     if(!isset($_SESSION["TEASER_SORTING"]))$_SESSION["TEASER_SORTING"] = [];
     $_SESSION["TEASER_SORTING"][$sCode] = $arParams["sorting"];
+
+    /*
+    if(!isset($_SESSION["TEASER_PAGINATION"]))$_SESSION["TEASER_PAGINATION"] = [];
+    $_SESSION["TEASER_PAGINATION"][$sCode] = $arParams["pagination"];    
+    */

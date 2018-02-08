@@ -16,9 +16,12 @@
     $sCode = '';
     if(isset($arParams["filter"]["section_code"]))
         $sCode = $arParams["filter"]["section_code"];
-    if($sCode && (!$_GET || count($_GET)==1) && isset($_SESSION["TEASER_FILTER"][$sCode]))
+    if($sCode && (!$_GET || count($_GET)==1) && isset($_SESSION["WEB_TEASER_FILTER"][$sCode]))
         $arParams["filter"] = $_SESSION["WEB_TEASER_FILTER"][$sCode];
-   
+    if($sCode && (!$_GET || count($_GET)==1) &&
+    isset($_SESSION["WEB_TEASER_SORTING"][$sCode]))
+        $arParams["sorting"] = $_SESSION["WEB_TEASER_SORTING"][$sCode];
+    
     if(isset($_REQUEST['page']) && intval($_REQUEST['page']))
         $arParams["pagination"]["page"] = intval($_REQUEST['page']);
     if(isset($_REQUEST['onpage']) && intval($_REQUEST['onpage']))
@@ -59,6 +62,6 @@
     if(!isset($_SESSION["WEB_TEASER_FILTER"]))$_SESSION["WEB_TEASER_FILTER"] = [];
     $_SESSION["WEB_TEASER_FILTER"][$sCode] = $arParams["filter"];
 
-    if(!isset($_SESSION["WEB_TEASER_SORTING"]))$_SESSION["TEASER_SORTING"] = [];
+    if(!isset($_SESSION["WEB_TEASER_SORTING"]))$_SESSION["WEB_TEASER_SORTING"] = [];
     $_SESSION["WEB_TEASER_SORTING"][$sCode] = $arParams["sorting"];
    

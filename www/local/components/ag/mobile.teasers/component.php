@@ -1,6 +1,34 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 //if ($this->StartResultCache(false,CUser::GetID())) {
 
+    $bIsBack = false;
+    if(
+        isset($arParams["pagination"]["page"])
+        && intval($arParams["pagination"]["page"])>1
+        && isset($arParams["pagination"]["onpage"])
+        && intval($arParams["pagination"]["onpage"])
+        && (
+            !isset($arParams["AJAX"])
+            ||
+            !$arParams["AJAX"]
+        )
+    ){
+        $bIsBack = true;
+    }
+
+    
+
+    if($bIsBack){
+        $arParams["pagination"]["original_page"] = 
+            $arParams["pagination"]["page"];
+        $arParams["pagination"]["original_onpage"] = 
+            $arParams["pagination"]["onpage"];
+
+        $arParams["pagination"]["onpage"] = 
+            $arParams["pagination"]["page"]*$arParams["pagination"]["onpage"];
+        $arParams["pagination"]["page"]=1;
+    }
+
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php"
     );
@@ -12,6 +40,15 @@
     $arProducts = $objProduct->getTeasers($arParams);$arResult["PRODUCTS"];
     $arResult["PRODUCTS"] = $arProducts["items"];
     
+    if($bIsBack){
+
+        $arParams["pagination"]["page"] = 
+             $arParams["pagination"]["original_page"];
+        $arParams["pagination"]["onpage"] = 
+             $arParams["pagination"]["original_onpage"];
+
+    }
+
     $arResult["PRODUCT_IDS"] = [];
     foreach($arResult["PRODUCTS"] as $arProduct)$arResult["PRODUCT_IDS"][] = 
         $arProduct["ID"];
@@ -30,6 +67,7 @@
     $sUrl.='&page='.($arParams["pagination"]["page"]+1);
     $sUrl.="&section_code=".$arParams["filter"]["section_code"];
     $arResult["NEXT_PAGE_URL"] = $sUrl;
+
 
     $this->IncludeComponentTemplate();
 //}
