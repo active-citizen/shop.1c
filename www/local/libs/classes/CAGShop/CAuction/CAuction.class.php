@@ -38,6 +38,8 @@ class CAuction extends \AGShop\CAGShop{
         \endcode
     */
     function getActiveBet($nOfferId, $nUserId){
+        if(!$nUserId)return $this->addError("Не указан пользователь");
+        if(!$nOfferId)return $this->addError("Не указан ID предложения");
         $CDB = new \DB\CDB;
         $arResult = $CDB->SearchOne("int_bets",[
             "USER_ID"=>intval($nUserId),

@@ -738,6 +738,31 @@ if(
                     ?></strong> <span><?=
                     get_points($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"])?></span></button>
                 <? elseif(
+                    !$noAG
+                    &&
+                    !$stopMonLimit
+                    &&
+                    !$stopDailyLimit
+                    &&
+                    // Если дата мероприятия не вышла
+                    (
+                        !$ts1    // НЕ определена дата мероприятия
+                        ||
+                        $ts1+24*60*60>time()    // Дата мероприятия не вышла
+                    )
+                    &&
+                    // Если есть на складе
+                    count($arResult["OFFERS"][0]["STORAGES"]) 
+                    &&  
+                    // Если достаточно средств
+                    $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
+                    &&  
+                    (
+                        trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
+                        ||
+                        trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
+                    )
+                    &&
                     $arResult["AUCTION"]
                     &&
                     $arResult["AUCTION"]["IS_CURRENT"]
