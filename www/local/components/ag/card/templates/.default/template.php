@@ -753,8 +753,23 @@ if(
                     &&
                     $arResult["BET"]
                 ):?>
-                Вы сделали ставку
-                <? print_r($arResult["BET"])?> ожидайте окончания торгов
+                  <div class="ag-shop-card__container">
+                    <div class="ag-shop-card__requirements">
+                    Вы сделали ставку.<br/>
+                    Дата ставки: <?= $arResult["BET"]["CTIME"]?><br/>
+                    Предложенная цена: <?= $arResult["BET"]["PRICE"]?> <?=
+                    get_points($arResult["BET"]["PRICE"])?><br/>
+                    Заявленное количество: <?= $arResult["BET"]["AMOUNT"]?><br/>
+                    Общая сумма ставки: <?=
+                    $arResult["BET"]["PRICE"]*$arResult["BET"]["AMOUNT"] ?> <?=
+                    get_points($arResult["BET"]["PRICE"]*$arResult["BET"]["AMOUNT"])
+                    ?><br/>
+                    Заявленное получение: <?= $arResult["BET"]["STORE"]["TITLE"]?><br/>
+                    <br/>
+                    <? /*print_r($arResult["BET"])*/?> 
+                    Ожидайте окончания торгов
+                    </div>
+                  </div>
                 <? elseif(
                     $arResult["AUCTION"]
                     &&
