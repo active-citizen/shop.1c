@@ -25,6 +25,11 @@ if(
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"];
 
 
+//echo "<pre>";
+//print_r($arResult["AUCTION"]);
+//echo "</pre>";
+
+
 ?>
         <? if(
             $arResult["CATALOG_ITEM"]["ACTIVE"]=='N' 
@@ -157,6 +162,34 @@ if(
                 <div class="ag-shop-card__requirements">
                     Для заказа данного поощрения необходимо 
                     <a href="http://ag.mos.ru/">авторизоваться</a>
+                </div>
+              </div>
+            <? elseif($arResult["AUCTION"] && $arResult["AUCTION"]["IS_FINISHED"]):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements auction">
+                    Заказ данного поощрения происходил по 
+                    <a href="/rules/auction/">правилам аукциона</a>
+                    c  <span class="date"><?= $arResult["AUCTION"]["START_DATE"] ?></span>,
+                    по
+                    <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
+                </div>
+              </div>
+            <? elseif($arResult["AUCTION"] && !$arResult["AUCTION"]["IS_CURRENT"]):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements auction">
+                    Заказ данного поощрения будет происходить по 
+                    <a href="/rules/auction/">правилам аукциона</a>. Начало
+                    торгов  <span class="date"><?= $arResult["AUCTION"]["START_DATE"] ?></span>,
+                    завершение торгов
+                    <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
+                </div>
+              </div>
+            <? elseif($arResult["AUCTION"] && $arResult["AUCTION"]["IS_CURRENT"]):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements auction">
+                    Заказ данного поощрения происходит по 
+                    <a href="/rules/auction/">правилам аукциона</a>. Завершение торгов
+                    <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
                 </div>
               </div>
             <? endif ?>
@@ -576,6 +609,9 @@ if(
                             ||
                             trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
                         )
+                        && (
+                            !$arResult["AUCTION"]
+                        )
                       ):?>
                       <div class="grid grid--bleed amounter amounter<? if(count($arResult["OFFERS"][0]["STORAGES"])==1):
                       ?>--on<? else: ?>--off<? endif ?>">
@@ -690,13 +726,45 @@ if(
                         ||
                         trim($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"][0]["VALUE"])
                     )
+                    && 
+                    (
+                        !$arResult["AUCTION"]
+                    )
                 ):?>
                 <button class="ag-shop-card__submit-button" onclick="return productConfirm();" 
                     type="button">Заказать за <strong><?= 
                         number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")
                     ?></strong> <span><?=
                     get_points($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"])?></span></button>
-                <? endif ?>
+                <? elseif(
+                    $arResult["AUCTION"]
+                    &&
+                    $arResult["AUCTION"]["IS_CURRENT"]
+                    &&
+                    !$arResult["BET"]
+                ):?>
+                <button class="ag-shop-card__submit-button" onclick="return setBet();" 
+                    type="button">Сделать ставку</button>
+                <? elseif(
+                    $arResult["AUCTION"]
+                    &&
+                    $arResult["AUCTION"]["IS_CURRENT"]
+                    &&
+                    $arResult["BET"]
+                ):?>
+                Вы сделали ставку
+                <? print_r($arResult["BET"])?> ожидайте окончания торгов
+                <? elseif(
+                    $arResult["AUCTION"]
+                    &&
+                    $arResult["AUCTION"]["IS_CURRENT"]
+                    &&
+                    $arResult["BET"]
+                ):?>
+                Вы сделали ставку
+                <? print_r($arResult["BET"])?>. Торги окончены. Ожидайте
+                подведения итогов
+                 <? endif ?>
                 <div class="ag-shop-card__additional-info">
                 <? /*
                   <div class="ag-shop-card__tabs">
@@ -807,6 +875,87 @@ if(
         </div>
       </div>
     </div>
+
+
+
+
+
+
+
+    <? if($arResult["AUCTION"]):?>
+    <div class="ag-shop-modal-wrap" style="display:none"
+    id="card-order-confirm-auction">
+      <div class="ag-shop-modal">
+        <div class="ag-shop-modal__container">
+           <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Заказ:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-name">Сумка городская</div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Цена:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-price">
+                <input id="bet-price" class="bet-confirm-num" value=""
+                change="return checkBetPriceInput()">
+            </div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Количество:</div>
+
+                <div class="ag-shop-card__count" id="bet-amount">
+                  <button class="ag-shop-card__count-button ag-shop-card__count-button--sub" 
+                    type="button"></button>
+                  <div style="padding-top: 3px;" class="ag-shop-card__count-number">1</div>
+                  <button class="ag-shop-card__count-button ag-shop-card__count-button--add" 
+                    type="button">
+                      <div class="ag-shop-modal__alert"
+                      id="counter-hint" class="counter-hint"
+                      style="display: none"><i class="ag-shop-icon
+                      ag-shop-icon--attention"></i><span></span></div>
+                  </button>
+                </div>
+
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Стоимость:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="confirm-cost">
+                <input id="bet-cost" class="bet-confirm-num" value="">
+            </div>
+          </div>
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__label">Получение:</div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="troyka-confirm-store">
+                <span></span>
+            </div>
+            <div class="ag-shop-modal__text ag-shop-modal__text--marked"
+            id="troyka-confirm-store-id" style="display:none;"></div>
+          </div>
+
+          <div class="ag-shop-modal__row">
+            <div class="ag-shop-modal__buttons-wrap">
+              <button class="ag-shop-modal__button"
+              id="card-order-confirm-button-bet" type="button"
+              onclick="return betSet();">Сделать ставку</button>
+              <button class="ag-shop-modal__button ag-shop-modal__button--cancel" type="button" onclick="$('.ag-shop-modal-wrap').fadeOut();">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <? endif ?>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <div class="ag-shop-modal-wrap" style="display:none"

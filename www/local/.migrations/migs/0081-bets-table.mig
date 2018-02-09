@@ -1,0 +1,54 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы со ставками
+     */
+    class index_lock extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("
+                DROP TABLE IF EXISTS `int_bets`
+            ");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_bets`(
+                    `ID` INT(11) NOT NULL AUTO_INCREMENT,
+                    `CTIME` DATETIME COMMENT 'Дата добавления ставки',
+                    `OFF_TIME` DATETIME 
+                        COMMENT 'Дата подведения итогов по ставке',
+                    `USER_ID` INT(11) UNSIGNED,
+                    `ORDER_ID` INT(11) UNSIGNED
+                        COMMENT 'ID заказа, сформированного по итогам ставки',
+                    `OFFER_ID` INT(11) UNSIGNED
+                        COMMENT 'ID предложения, на который делалась ставка',
+                    `STATUS` ENUM('new','lose','win') DEFAULT 'new' 
+                        COMMENT 'статус ставки',
+                    `AMOUNT` SMALLINT(5) UNSIGNED,
+                    `PRICE` INT(11),
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `USER_ID`(`USER_ID`),
+                    KEY `ORDER_ID`(`ORDER_ID`),
+                    KEY `OFFER_ID`(`OFFER_ID`),
+                    KEY `STATUS`(`STATUS`),
+                    KEY `OFF_TIME`(`OFF_TIME`),
+                    KEY `CTIME`(`CTIME`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
+                COMMENT 'Ставки аукциона';
+            ";
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$index_lock = new index_lock();
+// Откатываем, если неудачно
+if(!$index_lock->Run())$index_lock->RollBack();

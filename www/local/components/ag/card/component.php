@@ -1,19 +1,41 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CUser/CUser.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogWishes.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/COrder/COrder.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CUser/CUser.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogWishes.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/COrder/COrder.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCache/CCache.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CAuction/CAuction.class.php"
+);
 
 use AGShop\Integration as Integration;
 use AGShop\User as User;
 use AGShop\Order as Order;
 use AGShop\Catalog as Catalog;
 use AGShop\Cache as Cache;
+use AGShop\CAuction as Auction;
 
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
@@ -52,33 +74,31 @@ use AGShop\Cache as Cache;
 
     if($objCProduct->isActive($arResult["CATALOG_ITEM"]["ID"])):
 
+        // Является ли товар аукционом
+        $objAuction = new \Auction\CAuction;
+        $arResult["AUCTION"] = $objAuction->isAuction(
+            $arResult["CATALOG_ITEM"]["ID"]
+        );
+        $arResult["BET"] = [];
+        if($arResult["AUCTION"]){
+            $arResult["BET"] = $objAuction->getActiveBet(
+                $arResult["CATALOG_ITEM"]["ID"],
+                $USER->GetID()
+            );
+        }
+
+
         ///////////////////// Информацация о разделе /////////////////////////////
         $objCSection = new \Catalog\CCatalogSection;
-        $objCache = new \Cache\CCache(
-            "card_section_common_info",
-            $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"],
-            300
+        $arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCSection->getById(
+            $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
         );
-        if(!$arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCache->get()){
-            $arResult["CATALOG_ITEM"]["SECTION_INFO"] = $objCSection->getById(
-                $arResult["CATALOG_ITEM"]["IBLOCK_SECTION_ID"]
-            );
-            $objCache->set($arResult["CATALOG_ITEM"]["SECTION_INFO"]);
-        }
 
         /////////////////// Сколько у товара всего желающих //////////////////////
         $objCWishes = new \Catalog\CCatalogWishes;
-        $objCache = new \Cache\CCache(
-            "card_wishes",
-            $arResult["CATALOG_ITEM"]["ID"],
-            150
+        $arResult["WISHES"] = $objCWishes->getCountByCatalogId(
+            $arResult["CATALOG_ITEM"]["ID"]
         );
-        if(!$arResult["WISHES"]= $objCache->get()){
-            $arResult["WISHES"] = $objCWishes->getCountByCatalogId(
-                $arResult["CATALOG_ITEM"]["ID"]
-            );
-            $objCache->set($arResult["WISHES"]);
-        }
 
         //////////////////// Входит ли товар с писок моих желаний /////////////////
         $arResult["MYWISH"] = $objCWishes->isWished(
@@ -86,17 +106,8 @@ use AGShop\Cache as Cache;
         );
 
         //////////////////// Свойства элемента каталога //////////////////////////
-        $objCache = new \Cache\CCache(
-            "card_product_properties",
-            $arResult["CATALOG_ITEM"]["ID"],
-            300
-        );
-        if(!$arResult["CATALOG_ITEM"]["PROPERTIES"] = $objCache->get()){
         $arResult["CATALOG_ITEM"]["PROPERTIES"] = 
-            $arResult["CATALOG_ITEM"]["PROPERTIES"] = 
-                $objCProduct->getPropertiesForCard($arResult["CATALOG_ITEM"]["ID"]);
-            $objCache->set($arResult["CATALOG_ITEM"]["PROPERTIES"]);
-        }
+            $objCProduct->getPropertiesForCard($arResult["CATALOG_ITEM"]["ID"]);
 
 
         ///// Вычисляем количество заказанного в этом месяце товара пользователем //

@@ -73,7 +73,7 @@
         function getProperties($nProductId){
             $nProductId = intval($nProductId);
 
-            $objCache = new \Cache\CCache("ProductProperties",$nProductId);
+            $objCache = new \Cache\CCache("ProductProperties",$nProductId,1);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -174,6 +174,12 @@
             @param $nId - ID элемента каталога
         */
         function getPropertiesForCard($nId){
+
+            $objCache = new \Cache\CCache("card_product_properties",$nId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
             $arResult = [];
             $resProps = \CIBlockElement::GetProperty(
                 $this->IBLOCKS["CATALOG"],$nId
@@ -185,6 +191,7 @@
                     $arProp["FILE_PATH"] = \CFile::GetPath($arProp["VALUE"]);
                 $arResult[$arProp["CODE"]][] = $arProp;
             }
+            $objCache->set($arResult);
             return $arResult;
         }
         
