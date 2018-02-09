@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 function setBet(){
 
-    if(0 && !$('.ag-shop-card__places input:checked').length){
+    if(!$('.ag-shop-card__places input:checked').length){
         riseError('Выберите склад получения');
         return false;
     }
@@ -43,6 +43,7 @@ function betCalc(){
     if(cost)$('#bet-cost').val(cost);
 }
 
+
 function betSet(){
     $('#card-order-confirm-button-bet').html('Обработка...');
     $.post(
@@ -50,7 +51,9 @@ function betSet(){
         {
            "offer_id":totalOfferId,
            "price":parseInt($('#bet-price').val()),
-           "amount":parseInt($('#bet-amount .ag-shop-card__count-number').html())
+           "amount":parseInt($('#bet-amount .ag-shop-card__count-number').html()),
+           "store_id":$('.ag-shop-card__places input:checked').val(),
+           "redirecturl": '/profile/points/'
         },
         function(data){
             var answer = {};
@@ -62,7 +65,7 @@ function betSet(){
                 $('#card-order-confirm-button-bet').html('Сделать ставку');
                 return false;
             }
-            if(typeof(answer.errors)!='undefined'){
+            if(typeof(answer.errors)!='undefined' && answer.errors.length){
                 var errorMsg = '';
                 for(i in answer.errors){
                     errorMsg+=answer.errors[i];
@@ -72,7 +75,11 @@ function betSet(){
                 return false;
             }
             if(typeof(answer.redirecturl)=='string'){
-                document.location.href=answer.redirecturl;
+                $('#card-order-confirm-auction .ag-shop-modal__container')
+                    .html('<div class="setbet">Ставка сделана</div>');
+                setTimeout(function(){
+                    document.location.href=answer.redirecturl;
+                },1500);
             }
             
         }

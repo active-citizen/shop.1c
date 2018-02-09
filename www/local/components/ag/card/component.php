@@ -74,18 +74,6 @@ use AGShop\CAuction as Auction;
 
     if($objCProduct->isActive($arResult["CATALOG_ITEM"]["ID"])):
 
-        // Является ли товар аукционом
-        $objAuction = new \Auction\CAuction;
-        $arResult["AUCTION"] = $objAuction->isAuction(
-            $arResult["CATALOG_ITEM"]["ID"]
-        );
-        $arResult["BET"] = [];
-        if($arResult["AUCTION"]){
-            $arResult["BET"] = $objAuction->getActiveBet(
-                $arResult["CATALOG_ITEM"]["ID"],
-                $USER->GetID()
-            );
-        }
 
 
         ///////////////////// Информацация о разделе /////////////////////////////
@@ -130,7 +118,21 @@ use AGShop\CAuction as Auction;
         $arOffers = $objCOffer->getOffersForCard(
             $arResult["CATALOG_ITEM"]["ID"],$arResult["CATALOG_ITEM"]
         );
-        foreach($arOffers as $sKey=>$sValue)$arResult[$sKey] = $sValue;
+        foreach($arOffers as $sKey=>$sValue){
+            $arResult[$sKey] = $sValue;
+        }
+        // Является ли товар аукционом
+        $objAuction = new \Auction\CAuction;
+        $arResult["AUCTION"] = $objAuction->isAuction(
+            $arResult["CATALOG_ITEM"]["ID"]
+        );
+        $arResult["BET"] = [];
+        if($arResult["AUCTION"]){
+            $arResult["BET"] = $objAuction->getActiveBet(
+                $arOffers["OFFERS"][0]["ID"],
+                $USER->GetID()
+            );
+        }
 
         $arIBlock = CIBlock::GetList(array(),array("CODE"=>"marks"))->GetNext();
         $iblockId = $arIBlock["ID"];

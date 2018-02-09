@@ -699,6 +699,7 @@ if(
                         get_days($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]);
                         ?> с момента оформления.</span>
                 </div>
+                <a name="setbet"></a>
                 <? endif ?>
 
                 <? if(

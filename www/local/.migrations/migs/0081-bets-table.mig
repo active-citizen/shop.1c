@@ -22,15 +22,18 @@
                     `USER_ID` INT(11) UNSIGNED,
                     `ORDER_ID` INT(11) UNSIGNED
                         COMMENT 'ID заказа, сформированного по итогам ставки',
+                    `STORE_ID` INT(11) UNSIGNED 
+                        COMMENT 'Склад заказа',
                     `OFFER_ID` INT(11) UNSIGNED
                         COMMENT 'ID предложения, на который делалась ставка',
-                    `STATUS` ENUM('new','lose','win') DEFAULT 'new' 
+                    `STATUS` ENUM('new','lose','win','error') DEFAULT 'new' 
                         COMMENT 'статус ставки',
                     `AMOUNT` SMALLINT(5) UNSIGNED,
                     `PRICE` INT(11),
                     PRIMARY KEY `ID`(`ID`),
                     KEY `USER_ID`(`USER_ID`),
                     KEY `ORDER_ID`(`ORDER_ID`),
+                    KEY `STORE_ID`(`STORE_ID`),
                     KEY `OFFER_ID`(`OFFER_ID`),
                     KEY `STATUS`(`STATUS`),
                     KEY `OFF_TIME`(`OFF_TIME`),
