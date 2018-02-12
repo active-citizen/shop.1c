@@ -196,6 +196,7 @@
                 echo $sQuery;
             }
             if(!$resQuery = $DB->Query($sQuery, true)){
+                $this->addError($DB->db_Conn->error);
                 $this->addError("SQL query error: $sQuery");
                 return false;
             }

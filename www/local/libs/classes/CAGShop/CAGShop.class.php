@@ -22,6 +22,7 @@
         const t_sale_basket = 'b_sale_basket';
         const t_sale_order = 'b_sale_order';
         const t_index_order = 'index_order';
+        const t_bets = 'int_bets';
 
         function __construct(){
             if(defined("CATALOG_IB_ID"))
@@ -41,6 +42,14 @@
             
             if(defined("HIDE_DATE_PROPERTY_ID"))
                 $this->PROPERTIES["HIDE_DATE"] = HIDE_DATE_PROPERTY_ID;
+                
+            if(defined("AUCTION_START_DATE_PROPERTY_ID"))
+                $this->PROPERTIES["AUCTION_START_DATE_PROPERTY_ID"] =
+                    AUCTION_START_DATE_PROPERTY_ID;
+
+            if(defined("AUCTION_END_DATE_PROPERTY_ID"))
+                $this->PROPERTIES["AUCTION_END_DATE_PROPERTY_ID"] =
+                    AUCTION_END_DATE_PROPERTY_ID;
         }
 
 

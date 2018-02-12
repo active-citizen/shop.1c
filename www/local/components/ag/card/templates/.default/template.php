@@ -164,7 +164,8 @@ if(
                     <a href="http://ag.mos.ru/">авторизоваться</a>
                 </div>
               </div>
-            <? elseif($arResult["AUCTION"] && $arResult["AUCTION"]["IS_FINISHED"]):?>
+            <? elseif($arResult["AUCTION"] 
+            && $arResult["AUCTION"]["IS_FINISHED"]):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements auction">
                     Заказ данного поощрения происходил по 
@@ -174,7 +175,9 @@ if(
                     <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
                 </div>
               </div>
-            <? elseif($arResult["AUCTION"] && !$arResult["AUCTION"]["IS_CURRENT"]):?>
+            <? elseif($arResult["AUCTION"] &&
+            !$arResult["AUCTION"]["IS_CURRENT"] &&
+            !$arResult["AUCTION"]["IS_FINISHED"]):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements auction">
                     Заказ данного поощрения будет происходить по 

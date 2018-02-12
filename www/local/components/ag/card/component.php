@@ -126,6 +126,7 @@ use AGShop\CAuction as Auction;
         $arResult["AUCTION"] = $objAuction->isAuction(
             $arResult["CATALOG_ITEM"]["ID"]
         );
+
         $arResult["BET"] = [];
         if($arResult["AUCTION"]){
             $arResult["BET"] = $objAuction->getActiveBet(

@@ -6,10 +6,12 @@ require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogOffer.class.php");
 require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
 require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+require_once(realpath(__DIR__."/..")."/CUtils/CPagination.class.php");
 
 use AGShop;
 use AGShop\Catalog as Catalog;
 use AGShop\DB as DB;
+use AGShop\Utils as Utils;
 use AGShop\CCache as CCache;
 
 class CAuction extends \AGShop\CAGShop{
@@ -18,7 +20,245 @@ class CAuction extends \AGShop\CAGShop{
         parent::__construct();
     }
 
-    
+    /**
+        Возвращает список ставок по ID предложения и дате закрытия
+
+        @param $nOfferId - ID торгового предложения
+        @param $sOffDate - дата закрытия аукциона
+    */
+    function getAuctionBets($nOfferId, $sOffDate){
+
+        $nOfferId = intval($nOfferId);
+
+        $sQuery = "
+            SELECT
+                `bet`.`ID` as `BET_ID`,
+                DATE_FORMAT(`bet`.`CTIME`,'%d.%m.%Y %H:%i:%s') as `CTIME`,
+                REPLACE(`user`.`LOGIN`,'u','') as `PHONE`,
+                CONCAT(`user`.`LAST_NAME`,' ',`user`.`NAME`) as `FIO`,
+                `bet`.`PRICE` as `PRICE`,
+                `bet`.`AMOUNT` as `AMOUNT`,
+                `bet`.`STORE_ID` as `STORE_ID`,
+                `store`.`TITLE` as `STORE_TITLE`,
+                `bet`.`STATUS` as `STATUS`,
+                `store_product`.`AMOUNT` as `STORE_AMOUNT`,
+                `product`.`NAME` as `PRODUCT_NAME`,
+                `product`.`ID` as `PRODUCT_ID`
+            FROM
+                `".parent::t_bets."` as `bet`
+                    LEFT JOIN
+                `b_user` as `user`
+                    ON
+                    `bet`.`USER_ID`=`user`.`ID`
+                    LEFT JOIN
+                `".parent::t_catalog_store."` as `store`
+                    ON
+                    `store`.`ID`=`bet`.`STORE_ID`
+                    LEFT JOIN
+                `".parent::t_catalog_store_product."` as `store_product`
+                    ON
+                    `store`.`ID`=`store_product`.`STORE_ID`
+                    AND
+                    `store_product`.`PRODUCT_ID`=$nOfferId
+                    LEFT JOIN
+                `".parent::t_iblock_element."` as `product`
+                    ON
+                    `bet`.`OFFER_ID`=`product`.`ID`
+            WHERE
+                `OFFER_ID` = $nOfferId
+            ORDER BY
+                `bet`.`PRICE` DESC,
+                `bet`.`CTIME` ASC
+            
+        ";
+
+        $CDB = new \DB\CDB;
+        $arRows = $CDB->sqlSelect($sQuery);
+
+        $arResult = [];
+        foreach($arRows as $arRow){
+            if(!isset($arResult[$arRow["STORE_ID"]]))
+                $arResult[$arRow["STORE_ID"]] = [
+                    "PRODUCT"=>[
+                        "NAME"=>$arRow["PRODUCT_NAME"],
+                        "ID"=>$arRow["PRODUCT_ID"]
+                    ],
+                    "STORE"=>[
+                        "TITLE" =>$arRow["STORE_TITLE"],
+                        "AMOUNT"=>$arRow["STORE_AMOUNT"]
+                    ],
+                    "BETS" => []
+                ];
+            if(!isset($arResult[$arRow["STORE_ID"]]["BETS"][$arRow["BET_ID"]]))
+                $arResult[$arRow["STORE_ID"]]["BETS"][$arRow["BET_ID"]] =
+                $arRow;
+        }
+
+        // Вычисляем победителей
+        foreach($arResult as $nStoreId=>$arStoreBets){
+            $nStoreAmount = $arStoreBets["STORE"]["AMOUNT"];
+            foreach($arStoreBets["BETS"] as $nBetId=>$arBet){
+                $arResult[$nStoreId]["BETS"][$nBetId]["ODD"] = $nStoreAmount;
+                if($arBet["AMOUNT"]<=$nStoreAmount){
+
+                    $arResult[$nStoreId]["BETS"][$nBetId]["TRADE_STATUS"] =
+                       'win';
+                    $nStoreAmount-=$arBet["AMOUNT"];
+                }
+                else{
+                    $arResult[$nStoreId]["BETS"][$nBetId]["TRADE_STATUS"] =
+                    'lose';
+                }
+            }
+        }
+
+        return $arResult;
+    }
+   
+    /**
+        Возвращает список товаров, по которым делались аукционные ставки
+
+        @param $arParams = 
+        \code
+        [
+            "OFF_DATE"  =>  "Дата закрытия аукциона",
+            "PRODUCT_ID"=>  "ID товарного предложения по котором аукцион",
+            "STORE_ID   =>  "ID склада по которому проводился аукцион",
+            "OFFSET"    =>  "Смещение страницы(default 1)",
+            "ONPAGE"    =>  "Количество записей на страницу(default 30)",
+        ]
+        \endcode
+        @return массив вида
+        \code
+        [
+            "result"=>[
+                "OFF_DATE"  =>  "Дата закрытия аукциона",
+                "START_DATE"=>  "Дата начала торгов",
+                "END_DATE"  =>  "Дата завершения торгов",
+                "CURRENT"   =>  "Аукцион идёт(Y/N)",
+                "FINISHED"  =>  "Аукцион завершен(Y/N)"
+                "OFFER_ID"=>  "ID товарного предложения по котором аукцион",
+                "PRODUCT_NAME"=>  "Название продукта
+            ],
+            "pages"=>[
+                // Смещение => титл страницы
+                "0"=>"1",
+                "30"=>"2"
+            ]
+        ]
+        \endcode
+    */
+    function getAuctionProducts($arParams = []){
+        if(!intval($arParams["OFFSET"]))
+            $arParams["OFFSET"] = 0;
+        else 
+            $arParams["OFFSET"] = intval($arParams["OFFSET"]);
+
+        if(!intval($arParams["ONPAGE"]))
+            $arParams["ONPAGE"] = 30;
+        else
+            $arParams["ONPAGE"] = intval($arParams["ONPAGE"]);
+
+        if(isset($arParams["STORE_ID"]) && intval($arParams["STORE_ID"]))
+            $arParams["STORE_ID"] = intval($arParams["STORE_ID"]);
+        elseif(isset($arParams["STORE_ID"]) && !intval($arParams["STORE_ID"]))
+            unset($arParams["STORE_ID"]);
+
+        if(isset($arParams["PRODUCT_ID"]) && intval($arParams["PRODUCT_ID"]))
+            $arParams["PRODUCT_ID"] = intval($arParams["PRODUCT_ID"]);
+        elseif(isset($arParams["PRODUCT_ID"]) && !intval($arParams["PRODUCT_ID"]))
+            unset($arParams["PRODUCT_ID"]);
+
+        $sNowDate = date("Y-m-d H:i:s");
+        $sSelectPart = "
+            `offer_link`.`IBLOCK_ELEMENT_ID` as `OFFER_ID`,
+            `product`.`NAME` as `PRODUCT_NAME`,
+            DATE_FORMAT(`start_date`.`VALUE`,'%d.%m.%Y %H:%i') as `START_DATE`,
+            DATE_FORMAT(`end_date`.`VALUE`,'%d.%m.%Y %H:%i')  as `END_DATE`,
+            DATE_FORMAT(`bet`.`OFF_TIME`,'%d.%m.%Y %H:%i') as `OFF_DATE`,
+            IF(`start_date`.`VALUE`<='$sNowDate' AND
+            `end_date`.`VALUE`>='$sNowDate','Y','N') as `CURRENT`,
+            IF(`end_date`.`VALUE`<='$sNowDate','Y','N') as `FINESHED`
+        ";
+
+        $sFromPart = "
+            `".parent::t_bets."` as `bet`
+                LEFT JOIN
+            `".parent::t_iblock_element_property."` as `offer_link`
+                ON
+                `offer_link`.`IBLOCK_PROPERTY_ID`=".$this->PROPERTIES["CML2_LINK"]."
+                AND `offer_link`.`IBLOCK_ELEMENT_ID`=`bet`.`OFFER_ID`
+                LEFT JOIN
+            `".parent::t_iblock_element."` as `product`
+                ON
+                `product`.`IBLOCK_ID`=".$this->IBLOCKS["CATALOG"]."
+                AND `offer_link`.`VALUE_NUM`=`product`.`ID`
+                LEFT JOIN
+            `".parent::t_iblock_element_property."` as `start_date`
+                ON
+                `start_date`.`IBLOCK_PROPERTY_ID`=".
+                    $this->PROPERTIES["AUCTION_START_DATE_PROPERTY_ID"]
+                    ."
+                AND `start_date`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                LEFT JOIN
+            `".parent::t_iblock_element_property."` as `end_date`
+                ON
+                `end_date`.`IBLOCK_PROPERTY_ID`=".
+                    $this->PROPERTIES["AUCTION_END_DATE_PROPERTY_ID"]
+                    ."
+                AND `end_date`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+        ";
+
+        $sWherePart = "1";
+
+        $nOffset = ($arParams["PAGE"]-1)*$arParams["ONPAGE"];
+        $sLimitPart = $arParams["OFFSET"].",".$arParams["ONPAGE"];
+
+        $sQuery = "
+            SELECT
+                $sSelectPart
+            FROM
+                $sFromPart
+            WHERE
+                $sWherePart
+            GROUP BY
+                `product`.`ID`,
+                `bet`.`OFF_TIME`
+            LIMIT
+                $sLimitPart
+        ";
+
+        $CDB = new \DB\CDB;
+
+        $arRows = $CDB->sqlSelect($sQuery);
+
+        $sQuery = "
+            SELECT
+                COUNT(*) as `count`
+            FROM
+                $sFromPart
+            WHERE
+                $sWherePart
+            GROUP BY
+                `product`.`ID`,
+                `bet`.`OFF_TIME`
+        ";
+        
+        $arTotals = $CDB->sqlSelect($sQuery);
+
+        $nTotal = $arTotals['count'];
+        $arPages = \Utils\CPagination::getPages(
+            $nTotal,
+            $arParams["OFFSET"],
+            $arParams["ONPAGE"]
+        );
+       
+        return [
+            "result"=>$arRows,
+            "pages"=>$arPages
+        ];
+    }
+
     /**
         Получение последней активной ставки
 
@@ -229,7 +469,7 @@ class CAuction extends \AGShop\CAGShop{
                     true
                     :
                     false,
-                "IS_FINISHES"=>
+                "IS_FINISHED"=>
                     $nStopTimestamp <= $nNowTimestamp
                     ?
                     true

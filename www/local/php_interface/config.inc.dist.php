@@ -56,6 +56,12 @@
         //ID свойства Артикул
         define("ARTNUMBER_PROPERTY_ID", 9);
 
+        //ID свойста "дата начала аукциона"
+        define("AUCTION_START_DATE_PROPERTY_ID",89);
+
+        //ID свойста "дата конца аукциона"
+        define("AUCTION_END_DATE_PROPERTY_ID",90);
+
 
 
 
