@@ -74,7 +74,16 @@ if(CUser::isAuthorized()):
             array()
         )->GetNext();
         $arOrder["PROPERTIES"] = orderGetProperties($arOrder["ID"]);
+        // Читаем дату истечения бронирования из свойств
+        $arCloseProperty =
+        CSaleOrderPropsValue::GetList([],$arFilter = [
+            "ORDER_ID"  =>  $arOrder["ID"],
+            "CODE"      =>  "CLOSE_DATE"
+        ],false,["nTopCount"=>1],["VALUE"])->Fetch();
+        $arOrder["PROPERTIES"]["CLOSE_TIMESTAMP"] = 
+            MakeTimeStamp($arCloseProperty["VALUE"],"YYYY-MM-DD");
         
+
         $order = array();
         $order = $arOrder;
         $order["DATE_SHORT"] = date_parse($arOrder["DATE_INSERT"]);
@@ -142,7 +151,11 @@ if(CUser::isAuthorized()):
         $order["USE_BEFORE_TS"] = mktime($tmp_1["hour"],$tmp_1["minute"],$tmp_1["second"],$tmp_1["month"],$tmp_1["day"],$tmp_1["year"]);
 
         $order["IN_WORK"] = 0;
-        if($order["EXPIRES"] && $order["USE_BEFORE"] && $order["EXPIRES_TS"] < $order["USE_BEFORE_TS"]){
+        if($arOrder["PROPERTIES"]["CLOSE_TIMESTAMP"]){
+            $order["IN_WORK"] = ($arOrder["PROPERTIES"]["CLOSE_TIMESTAMP"] - time())/(24*60*60)+1;
+            $order["IN_WORK"] = $order["IN_WORK"]>0?$order["IN_WORK"]:0;
+        }
+        elseif($order["EXPIRES"] && $order["USE_BEFORE"] && $order["EXPIRES_TS"] < $order["USE_BEFORE_TS"]){
             $order["IN_WORK"] = ($order["EXPIRES_TS"] - time())/(24*60*60);
         }
         elseif($order["EXPIRES"] && $order["USE_BEFORE"] && $order["EXPIRES_TS"] > $order["USE_BEFORE_TS"]){

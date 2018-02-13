@@ -124,6 +124,7 @@
                     && $arOrder["PROPERTIES"]["CHANGE_REQUEST"]["VALUE"]==''
                     // Отменять только свои заказы
                     && preg_match("#^Б\-\d+$#",$arOrder["ADDITIONAL_INFO"])
+                    && $arOrder["IN_WORK"]>0
                   ):
                   ?><a 
                         class="ag-shop-profile-order__control" 
