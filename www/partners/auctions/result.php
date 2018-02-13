@@ -25,6 +25,7 @@ $arBets = $objAuction->getAuctionBets(
     $arParams["OFFER_ID"],
     $arParams["OFF_DATE"]
 );
+$arStatuses = $objAuction->getStatuses();
 
 ?>
 <div class="auction">
@@ -36,6 +37,9 @@ $arBets = $objAuction->getAuctionBets(
 
         <h3><?= $arStoreBets["STORE"]["TITLE"]?> (<?=
         $arStoreBets["STORE"]["AMOUNT"]?>шт.)</h3>
+        <form method="post">
+        <input type="hidden" name="store_id" value="<?=
+        $arStoreBets["STORE"]["ID"]?>"/>
         <table class="table">
             <tr>
                 <th>Место в очереди</th>
@@ -55,7 +59,8 @@ $arBets = $objAuction->getAuctionBets(
         <? $nNum++?>
             <tr class="<? 
             if($arBet["AMOUNT"]>$arBet["ODD"] && $arBet["ODD"]):?>greed<? 
-            elseif($arBet["AMOUNT"]<=$arBet["ODD"]):?>win<? endif ?>">
+            elseif($arBet["AMOUNT"]<=$arBet["ODD"]):?>win<? endif ?><?
+            if($arBet["STATUS"]=='error'): ?> error<? endif?>">
                 <td><?= $nNum?></td>
                 <td><?= $arBet["PHONE"]?></td>
                 <td><?= $arBet["FIO"]?></td>
@@ -63,12 +68,33 @@ $arBets = $objAuction->getAuctionBets(
                 <td><?= $arBet["AMOUNT"]?></td>
                 <td><?= $arBet["CTIME"]?></td>
                 <td><?= $arBet["ODD"]?></td>
-                <td><?= $arBet["STATUS"]?></td>
-                <td><?= $arBet["TRADE_STATUS"]?></td>
+                <td><?= $arStatuses[$arBet["STATUS"]]?></td>
+                <td>
+                    <? if(!$arBet["OFF_DATE"]):?>
+                    <select name="TRADE_STATUS">
+                        <?foreach($arStatuses as $sStatusCode=>$sStatusTitle):?>
+                        <option value="<?= $sStatusCode?>"<?
+                        if($sStatusCode==$arBet["TRADE_STATUS"]):?> selected<?
+                        endif?>>
+                            <?= $sStatusTitle?>
+                        </option>
+                        <? endforeach ?>
+                    </select>
+                    <? endif ?>
+                </td>
                 <td><?= $arBet["ORDER_ID"]?></td>
             </tr>
         <? endforeach ?>
         </table>
+        <? foreach($arBets["BETS"] as $arBet)break;?>
+        <? if(
+            array_key_exists("OFF_DATE",$arBet)
+            && !$arBet["OFF_DATE"]
+        ):?>
+        <input type="submit" name="commit" 
+        value="Наказать невиновных, наградить непричастных"/>
+        <? endif ?>
+        </form>
 
     <? endforeach?>
 </div>
@@ -79,6 +105,12 @@ $arBets = $objAuction->getAuctionBets(
 }
 .win{
     background-color: #DDFFDD;
+}
+.error{
+    color: red;
+}
+.status-win{
+    color: green;
 }
 </style>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

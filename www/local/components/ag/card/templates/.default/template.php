@@ -170,7 +170,7 @@ if(
                 <div class="ag-shop-card__requirements auction">
                     Заказ данного поощрения происходил по 
                     <a href="/rules/auction/">правилам аукциона</a>
-                    c  <span class="date"><?= $arResult["AUCTION"]["START_DATE"] ?></span>,
+                    &#160;c  <span class="date"><?= $arResult["AUCTION"]["START_DATE"] ?></span>,
                     по
                     <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
                 </div>

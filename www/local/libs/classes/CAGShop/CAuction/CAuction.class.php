@@ -21,6 +21,27 @@ class CAuction extends \AGShop\CAGShop{
     }
 
     /**
+        Возвращает список статусов ставки
+
+        @return 
+        \code
+        [
+            "new"=>"Ставка сделана",
+            "win"=>"Победитель",
+            "lose"=>"Проигравший"
+        ]
+        \endcode
+    */
+    function getStatuses(){
+        return [
+            "new"   =>  "Ставка сделана",
+            "error" =>  "Ошибка оплаты",
+            "win"   =>  "Победитель",
+            "lose"  =>  "Проигравший"
+        ];
+    }
+
+    /**
         Возвращает список ставок по ID предложения и дате закрытия
 
         @param $nOfferId - ID торгового предложения
@@ -34,6 +55,7 @@ class CAuction extends \AGShop\CAGShop{
             SELECT
                 `bet`.`ID` as `BET_ID`,
                 DATE_FORMAT(`bet`.`CTIME`,'%d.%m.%Y %H:%i:%s') as `CTIME`,
+                DATE_FORMAT(`bet`.`OFF_TIME`,'%d.%m.%Y %H:%i:%s') as `OFF_DATE`,
                 REPLACE(`user`.`LOGIN`,'u','') as `PHONE`,
                 CONCAT(`user`.`LAST_NAME`,' ',`user`.`NAME`) as `FIO`,
                 `bet`.`PRICE` as `PRICE`,
