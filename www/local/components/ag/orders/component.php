@@ -75,11 +75,19 @@ if(CUser::isAuthorized()):
         )->GetNext();
         $arOrder["PROPERTIES"] = orderGetProperties($arOrder["ID"]);
         // Читаем дату истечения бронирования из свойств
+        /*
+        Почему-то сей стандартный метод сжирает всю память на проде, хотя на dev
+        работает нормально
         $arCloseProperty =
         CSaleOrderPropsValue::GetList([],$arFilter = [
             "ORDER_ID"  =>  $arOrder["ID"],
             "CODE"      =>  "CLOSE_DATE"
         ],false,["nTopCount"=>1],["VALUE"])->Fetch();
+        */
+        $arCloseProperty = $DB->Query(
+            "SELECT `CLOSE_DATE` AS `VALUE` FROM `index_order` WHERE ID="
+            .$arOrder["ID"]." LIMIT 1"
+        )->Fetch();
         $arOrder["PROPERTIES"]["CLOSE_TIMESTAMP"] = 
             MakeTimeStamp($arCloseProperty["VALUE"],"YYYY-MM-DD");
         
