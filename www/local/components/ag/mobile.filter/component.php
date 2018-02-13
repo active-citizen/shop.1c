@@ -66,7 +66,7 @@
             "CLASSNAME"=>"icon-aside-filter--favourites"
         ],
         [
-            "NAME"=>"Дата добавления",
+            "NAME"=>"Дата обновления",
             "VALUE"=>"fresh_desc",
             "CODE"=>"SortPriceFresh",
             "CLASSNAME"=>"icon-aside-filter--new"

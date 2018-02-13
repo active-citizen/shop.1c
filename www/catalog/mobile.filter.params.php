@@ -2,7 +2,7 @@
 
     $arParams = ["CACHE_TIME"      =>  COMMON_CACHE_TIME];
     $arParams["filter"] = [];
-    $arParams["sorting"] = ["param" => 'wishes',"direction"=>"desc"];
+    $arParams["sorting"] = ["param" => 'fresh',"direction"=>"desc"];
     $arParams["pagination"] = ["page"=>1,"onpage"=>12];
 
     $tmp = explode("/",$_SERVER["REQUEST_URI"]);
