@@ -94,6 +94,7 @@ $(document).ready(function(){
 });
 
 function teasersRewind(){
+    /*
     var hash = document.location.hash;
     hash = hash.replace('#','');
     var descriptor = 'a[name="'+hash+'"]';
@@ -101,6 +102,7 @@ function teasersRewind(){
         var destination = $('a[name="'+hash+'"]').offset().top+300;
         $('body').animate({ scrollTop: destination }, 110);
     }
+    */
 }
 
 function teasers_next_page(sUrl,nPageNum){
@@ -116,7 +118,7 @@ function teasers_next_page(sUrl,nPageNum){
         else
             newsearch = search+'&page='+nPageNum+'/';
         window.history.replaceState({}, search, newsearch);
-        document.location.hash = "PAGE-"+nPageNum;
+        //document.location.hash = "PAGE-"+nPageNum;
         $('.more-button').remove();
         $('.mobile-product-grid').append(data);
         wishes_load();
