@@ -6,7 +6,9 @@ define("NO_KEEP_STATISTIC", true); // Не собираем стату по де
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/COrder/COrder.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
 use AGShop\Order as Order;
+use AGShop\SSAG as SSAG;
 use AGShop\Catalog as Catalog;
 
 $answer = ["error"=>""];
@@ -281,7 +283,8 @@ else{
         
         $answer["product"] = $product;
         $answer["price"] = CCatalogProduct::GetOptimalPrice($offer_id);
-        $answer["account"] = CSaleUserAccount::GetByUserID(CUser::GetID(),"RUB");
+        $objSSAGAccount = new \SSAG\CSSAGAccount('',CUser::GetID());
+        $answer["account"] = $objSSAGAccount->balance();
     }
 }
 

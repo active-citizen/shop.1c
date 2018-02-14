@@ -5,7 +5,6 @@ $(document).ready(function(){
  $('.wrap_back_btn').on('click', function(){
 
   window.history.back();
-  return false;
  });
 })
 

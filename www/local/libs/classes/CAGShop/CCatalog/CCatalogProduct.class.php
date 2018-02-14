@@ -246,7 +246,7 @@
             elseif($arOptions["sorting"]["param"]=='rating')
                 $arSorting = ["PROPERTY_RATING"=>$arOptions["sorting"]["direction"]];
             elseif($arOptions["sorting"]["param"]=='fresh')
-                $arSorting = ["DATE_CREATE"=>$arOptions["sorting"]["direction"]];
+                $arSorting = ["TIMESTAMP_X"=>$arOptions["sorting"]["direction"]];
 
             $arSortingTypes = ["price","rating","favorites","new","hit","wishes"];
             foreach($arSortinTypes as $sSortingType)

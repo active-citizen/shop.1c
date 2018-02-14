@@ -303,7 +303,7 @@ function selectStorage(storageId){
         arStorages[storageId].EMAIL_SHORT
         +'</a>'));
     $('.ag-shop-card__selected-place-station').html(arStorages[storageId].TITLE);
-    $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').css('display','none');
+    //$('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').css('display','none');
     $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').each(function(){
         if(
             arOffers[totalOfferId]['STORAGES'][storageId]>=parseInt($(this).attr('fromAmmount'))  
