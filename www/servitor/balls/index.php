@@ -1,7 +1,12 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+
+use AGShop\SSAG as SSAG;
+
 echo $USER->GetID();
-if($USER->GetID()!=5)die;
+if($USER->GetID()!=2)die;
 
 if(
     isset($_POST["add_balls"]) 
@@ -14,9 +19,9 @@ if(
         $_SERVER["DOCUMENT_ROOT"]
             ."/.integration/classes/order.class.php"
     );
- 
-    $obOrder = new bxOrder();
-    $resOrder = $obOrder->addEMPPoints(
+
+    $objSSAGAccount = new \SSAG\CSSAGAccount('',$USER->GetID());
+    $objSSAGAccount->transaction(
         intval($_POST["balls"]),
         htmlspecialchars($_POST["reason"])
     );

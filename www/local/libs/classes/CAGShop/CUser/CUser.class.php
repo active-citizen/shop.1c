@@ -3,9 +3,12 @@ namespace User;
     
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
-
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+     
 use AGShop;
 use AGShop\DB as DB;
+use AGShop\SSAG as SSAG;
 
 class CUser extends \AGShop\CAGShop{
     
@@ -66,8 +69,8 @@ class CUser extends \AGShop\CAGShop{
         @param $nUserId - ID пользователя
     */
     function getPoints($nUserId){
-        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
-        $objPoints = new \bxPoint;
-        return $objPoints->fetchAccountFromAPI();
+        $objSSAGAccount = new \SSAG\CSSAGAccount('',$nUserId);
+
+        return $objSSAGAccount->balance();
     }
 }

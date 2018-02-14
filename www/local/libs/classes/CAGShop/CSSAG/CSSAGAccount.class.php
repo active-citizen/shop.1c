@@ -18,6 +18,7 @@
     class CSSAGAccount extends CSSAG{
         
         private $sSummaryMethod = '/mvag/billing/getSummary';
+        private $sPointsMethod = '/mvag/billing/add';
         
         function __construct($sSessionId = '',$nUserId = 0){
             parent::__construct($sSessionId,$nUserId);
@@ -74,6 +75,11 @@
             return $arAnswer["result"];
         }
 
+        /**
+            Получение баланса пользователя
+
+            @return количество баллов на счету пользователя
+        */
         function balance(){
             $objUser = new \CUser;
             $arUser = $objUser->GetList(
@@ -86,6 +92,55 @@
             )->Fetch();
             return $arUser["UF_USER_ALL_POINTS"];
         }
+
+        /**
+            Транзакция на счёт пользователя
+
+            @param $nSum - сумма(- снятие, + начисление)
+            @param $sComment - кооментарий к транзакции
+
+            @return итоговое количество баллов
+        */
+        function transaction($nSum, $sComment){
+
+            $nSum = intval($nSum);
+            if(!$nSum)return $this->addError(
+                'Нельзя начислять/списывать 0 баллов'
+            );
+            if(!$sComment)return $this->addError(
+                'Нельзя начислять/списывать баллы без комментария'
+            );
+            $sAction = $nSum>0?'debit':'credit';
+            $nSum = abs($nSum);
+
+            $sSignString = 
+                $sAction
+                ."&".$this->nAGID
+                ."&".$nSum
+                ."&".$sComment;
+
+            $arSign = $this->getSignature($sSignString);
+
+            $sUrl = $this->sDomain.":".$this->sPort.$this->sPointsMethod;
+            $arRequest = [
+                "ag_id"     =>  $this->nAGID,
+                "title"     =>  $sComment,
+                "points"    =>  $nSum,
+                "action"    =>  $sAction,
+                "nonce"     =>  $arSign["nonce"],
+                "signature" =>  $arSign["signature"]
+            ];
+            $sRequest = json_encode($arRequest);
+            
+            $objCurl = new \Curl\CCurlSimple;
+            $sResult = $objCurl->post($sUrl, $sRequest);
+
+            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);            
+            if(!$arAnswer = $this->checkAnswer($sResult))
+                return false;
+            return $arAnswer["result"]["current_points"]; 
+        }
+
         
     }
    

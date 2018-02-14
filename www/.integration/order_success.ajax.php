@@ -9,6 +9,10 @@
         die;
     }
     require($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+     
+    use AGShop\SSAG as SSAG;
 
     header("Content-type: text/plain; charset=utf-8;");
 //    header("Content-type: text/plain; charset=windows-1251;");
@@ -84,12 +88,13 @@
                     isset($arSum["TOTAL_SUM"])?floatval($arSum["TOTAL_SUM"]):0;
                 
 
-                $obOrder = new bxOrder();
-                $resOrder = $obOrder->addEMPPoints(
+
+                $objSSAGAccount = new \SSAG\CSSAGAccount('',$arrOrder["USER_ID"]);
+                $objSSAGAccount->transaction(
                     $arrOrder["SUM_PAID"],
                     "Отмена заказа ".$arrOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",
-                    $arrOrder["USER_LOGIN"]
                 );
+                
                 $moneyBack = true;
                 CSaleOrder::PayOrder($arrOrder["ID"],"N",true,false);
                 $DB->Query("
