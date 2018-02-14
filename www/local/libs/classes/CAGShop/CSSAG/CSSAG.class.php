@@ -17,6 +17,7 @@
         var $arProfile = [];
 
         var $nAGID = 0;
+        var $nBitrixUserId = 0;
         var $sDomain = '';
         var $sPort = '';
        
@@ -46,6 +47,7 @@
         
         private function __getAGIDFromBitrixUser($nUserId = 0){
             if(!$nUserId)$nUserId = \CUser::GetID();
+            $this->nBitrixUserId = $nUserId;
             $arUser = \CUser::GetList(
                 ($by="personal_country"), ($order="desc"),
                 ["ID"=>$nUserId],

@@ -29,8 +29,12 @@
         
         /**
          * Обновление в битриксе транзакций личного счёта из занных EМП
+         *  DEPRICATED
          */
         function updatePoints($history, $userId){
+            // 
+            return true;
+            /*
           
             $arPointsStatus = $history["status"];
             $history = $history["history"];
@@ -115,6 +119,7 @@
             }
             
             $this->updateAccount($arPointsStatus, $userId);
+            */
        }
 
         /*

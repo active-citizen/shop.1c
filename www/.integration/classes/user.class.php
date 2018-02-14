@@ -143,6 +143,8 @@
                 }
                 
                 // Если у пользователя нет счёта = создаём
+                /*
+                Depricated
                 if(!CSaleUserAccount::GetByUserID($arUser["ID"], "BAL")){
                     // Добавляем счёт
                     if(!$accountId = $objAccount->Add(array(
@@ -155,6 +157,7 @@
                         return false;
                     }
                 }
+                */
                 
             }
             $res = CUser::GetByLogin($bitrixLogin);
