@@ -7,12 +7,14 @@ require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
 require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 require_once(realpath(__DIR__."/..")."/CUtils/CPagination.class.php");
+require_once(realpath(__DIR__."/..")."/CSSAG/CSSAGAccount.class.php");
 
 use AGShop;
 use AGShop\Catalog as Catalog;
 use AGShop\DB as DB;
 use AGShop\Utils as Utils;
 use AGShop\CCache as CCache;
+use AGShop\SSAG as SSAG;
 
 class CAuction extends \AGShop\CAGShop{
     
@@ -353,6 +355,7 @@ class CAuction extends \AGShop\CAGShop{
 
         // Проверяем сумму на счёте
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        !!! Переписать
         $arAccount = \CSaleUserAccount::GetByUserID($nUserId, 'BAL');
         if($arAccount["CURRENT_BUDGET"]<$nTotalSum)
             return $this->addError("Недостаточно баллов на счёте");
@@ -390,6 +393,7 @@ class CAuction extends \AGShop\CAGShop{
             $_SERVER["DOCUMENT_ROOT"]
                 ."/.integration/classes/order.class.php"
         );
+        !!!! переписать
         $obOrder = new \bxOrder();
         if(!$bPointsSuccess = $obOrder->addEMPPoints(
             -$nTotalSum,
