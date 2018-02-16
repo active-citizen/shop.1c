@@ -18,6 +18,8 @@
         private $sHistoryMethod = '/mvag/billing/getHistory';
         
         function __construct($sSessionId = '',$nUserId = 0){
+            global $USER;
+            if($nUserId)$nUSerId = $USER->GetID();
             parent::__construct($sSessionId);
         }
 

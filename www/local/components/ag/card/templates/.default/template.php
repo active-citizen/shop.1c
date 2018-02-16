@@ -120,8 +120,7 @@ if(
             <? elseif(
                 (
                     
-                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arParams["ALL_POINTS_LIMIT"]
-                    
+                    !$arResult["USER_INFO"]["UF_USER_AG_STATUS"]
                     &&
                     !trim(
                         $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
@@ -130,15 +129,20 @@ if(
                 )
                 ||
                 (
-                    
-                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
-                        [0]["VALUE"]
-                    
+                    !$arResult["USER_INFO"]["UF_USER_AG_STATUS"]
                     &&
                     trim(
                         $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
                         [0]["VALUE"]
                     )
+                    &&
+                    (
+                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]
+                        <
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                            [0]["VALUE"]
+                    )
+                    
                )
             ):?>
                 <? $noAG = true;?>

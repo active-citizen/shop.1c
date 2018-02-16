@@ -453,7 +453,7 @@
                     return $answer;
                 }
             }
-            $objSSAGAccount = new \SSAG\CSSAGAccount('',$USER->GetID());
+            $objSSAGAccount = new \SSAG\CSSAGAccount($profile["session_id"]);
             $objSSAGAccount->update();
            
             if(CUser::isAuthorized()){

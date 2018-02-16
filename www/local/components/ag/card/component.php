@@ -138,7 +138,7 @@ use AGShop\Cache as Cache;
         $resComments = CForumMessage::GetList(array("POST_DATE"=>"DESC"),array("TOPIC_ID"=>$arResult["CATALOG_ITEM"]["PROPERTIES"]["FORUM_TOPIC_ID"][0]["VALUE"]));
         $arResult["MESSAGES"] = $resComments->SelectedRowsCount();
 
-        // Узнаём число заработанных баллов
+        // Узнаём статус активного гражданина 
         $arResult["USER_INFO"] = CUser::GetList(
             ($by="personal_country"), ($order="desc"),
             array("ID"=>CUser::GetId()),
@@ -147,6 +147,8 @@ use AGShop\Cache as Cache;
                 "NAV_PARAMS"=>array("nTopCount"=>1)
             )
         )->GetNext();
+        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"] = $arResult["ACCOUNT"]
+            ["CURRENT_BUDGET"];
 
 
         // Очистка описания товара от говна
