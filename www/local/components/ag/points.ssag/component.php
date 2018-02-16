@@ -40,7 +40,8 @@ if($USER->IsAuthorized()):
        $_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php"
     );
     $objUser = new bxUser();
-    $sSessionId = $objUser->getEMPSessionId($USER->GetLogin());
+    //$sSessionId = $objUser->getEMPSessionId($USER->GetLogin());
+    $sSessionId = '';
     $objSSAGHistory = new \SSAG\CSSAGHistory($sSessionId);
     $bDebit = $arResult["DEBIT"]==''?null:true;
     if(!is_null($bDebit) && $arResult["DEBIT"]=='Y')$bDebit=true;

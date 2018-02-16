@@ -19,7 +19,9 @@ class CSSAGLog extends \AGShop\CAGShop{
         $sFilename = realpath($_SERVER["DOCUMENT_ROOT"]."/..")."/logs/agapi/"
             .date("Y-m-d").".log";
         $fd = fopen($sFilename,"a");
-        fwrite($fd, "\n".date("Y-m-d H:i:s")." $sUrl $sInput $sOutput");
+        $nUserId = \CUser::GetID();
+        $nUserId = $nUserId?$nUserId:0;
+        fwrite($fd, "\n".date("Y-m-d H:i:s")." $nUserId $sUrl $sInput $sOutput");
         fclose($fd);
     }
 

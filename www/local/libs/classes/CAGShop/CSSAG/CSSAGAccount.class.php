@@ -30,6 +30,7 @@
             Обновление информации о счёте пользователя из CC АГ
         */
         function update(){
+            if(!$this->nAGID)return false;
             $arSign = $this->getSignature($this->nAGID);
             $sUrl = $this->sDomain.":".$this->sPort.$this->sSummaryMethod;
             $arRequest = [

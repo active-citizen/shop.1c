@@ -20,7 +20,7 @@
         function __construct($sSessionId = '',$nUserId = 0){
             global $USER;
             if($nUserId)$nUSerId = $USER->GetID();
-            parent::__construct($sSessionId);
+            parent::__construct($sSessionId,$nUserId);
         }
 
         /**
@@ -37,6 +37,7 @@
             $bDebit = null,
             $nOnPage = 30
         ){
+            if(!$this->nAGID)return false;
             $arSign = $this->getSignature($this->nAGID);
             $sUrl = $this->sDomain.":".$this->sPort.$this->sHistoryMethod;
             $arRequest = [
