@@ -3,23 +3,25 @@
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
     require_once($_SERVER["DOCUMENT_ROOT"]
-        ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+        ."/local/libs/classes/CAGShop/CUser/CUser.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CUtil/CLang.class.php");
 
     use AGShop\Util as Util;
-    use AGShop\SSAG as SSAG;
+    use AGShop\User as User;
         
-    $objSSAGAccount = new \SSAG\CSSAGAccount('',$USER->GetID());
-    $nBalance = $objSSAGAccount->balance();
+    $nUserId = $USER->GetID();
+    $objUser = new \User\CUser;
+    $nBalance = $objUser->getPoints($nUserId);
 
 
     $arResult['myBalls'] = number_format($nBalance,0 ,',',' ')
         ." ".\Util\CLang::getPoints($nBalance);
 
-    $arResult['arUserInfo'] = $USER->GetById($USER->GetId())->GetNext();
+    $arResult['arUserInfo'] = $objUser->getById($nUserId);
     $arResult['FIO'] =
-    $arResult['arUserInfo']["NAME"]."<br/>".$arResult['arUserInfo']["LAST_NAME"];
+        $arResult['arUserInfo']["NAME"]
+            ."<br/>".$arResult['arUserInfo']["LAST_NAME"];
 
 
     $this->IncludeComponentTemplate();
