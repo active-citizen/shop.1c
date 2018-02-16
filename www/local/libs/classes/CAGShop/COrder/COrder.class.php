@@ -377,12 +377,7 @@ class COrder extends \AGShop\CAGShop{
 
             ///////////
             if($bPointsSuccess)
-        	$CDB->update("b_sale_user_account",[
-        	    "USER_ID"=>$this->getParam("UserId"),
-        	    "CURRENCY"=>'BAL'
-        	],[
-        	    "CURRENT_BUDGET"=>$arAccount["CURRENT_BUDGET"]-$nTotalSum
-        	]);
+                $objSSAGAccount->update();
         }
         
         // Если тойка провалилась - остатки возвращаем

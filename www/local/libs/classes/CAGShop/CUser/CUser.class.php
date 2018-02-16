@@ -70,7 +70,6 @@ class CUser extends \AGShop\CAGShop{
     */
     function getPoints($nUserId){
         $objSSAGAccount = new \SSAG\CSSAGAccount('',$nUserId);
-
         return $objSSAGAccount->balance();
     }
 }

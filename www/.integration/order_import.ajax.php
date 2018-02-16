@@ -777,7 +777,7 @@
                 // Снимаем баллы
                 if($sPrefix=="О"){
                     $objSSAGAccount = new \SSAG\CSSAGAccount('',$userId);
-                    if($objSSAGAccount->transaction(
+                    if(!$objSSAGAccount->transaction(
                        - $arOrder["SUM_PAID"],
                         "Заказ ".$arOrder["ADDITIONAL_INFO"]
                             ." в магазине поощрений АГ"
@@ -897,7 +897,7 @@
                         && $sPrefix!='М'
                     ){
                         $objSSAGAccount = new \SSAG\CSSAGAccount('',$userId);
-                        if($objSSAGAccount->transaction(
+                        if(!$objSSAGAccount->transaction(
                             $orderSum,
                             "Отмена заказа ".$existsOrder["ADDITIONAL_INFO"]
                                 ." в магазине поощрений АГ"

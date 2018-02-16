@@ -273,7 +273,7 @@
             fwrite(
                 $fd,
                 date("Y-m-d H:i:s")
-                ."\t".$sUrl
+                ."\t!!!".$sUrl
                 ."\t".$sRequest
                 ."\t".$sData
                 ."\n"

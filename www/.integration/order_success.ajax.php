@@ -92,7 +92,7 @@
                 $objSSAGAccount = new \SSAG\CSSAGAccount('',$arrOrder["USER_ID"]);
                 $objSSAGAccount->transaction(
                     $arrOrder["SUM_PAID"],
-                    "Отмена заказа ".$arrOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",
+                    "Отмена заказа ".$arrOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ"
                 );
                 
                 $moneyBack = true;
