@@ -22,6 +22,9 @@
  * 
  */
 
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+    use AGShop\SSAG as SSAG;
 
 
     class bxUser{
@@ -401,6 +404,7 @@
             $sCurrentSessionId =
                 $this->getEMPSessionId(
                 );
+
             if(
                 isset($profile["result"]) 
                 && $profile["result"] 
@@ -449,7 +453,8 @@
                     return $answer;
                 }
             }
-
+            $objSSAGAccount = new \SSAG\CSSAGAccount('',$USER->GetID());
+            $objSSAGAccount->update();
            
             if(CUser::isAuthorized()){
             }
