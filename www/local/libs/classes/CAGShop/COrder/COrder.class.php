@@ -370,24 +370,14 @@ class COrder extends \AGShop\CAGShop{
         // Для админа баллы не снимаем, ибо юниттест
         elseif($this->getParam("UserId")!=1){
             //////////// Снимает баллы
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"]
-                    ."/.integration/classes/order.class.php"
-            );
-            $obOrder = new \bxOrder();
-            if(!$bPointsSuccess = $obOrder->addEMPPoints(
+            if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
-                "Заказ Б-$nOrderId в магазине поощрений АГ"
+                 "Заказ Б-$nOrderId в магазине поощрений АГ"
             ))$this->addError($obOrder->error);
 
             ///////////
             if($bPointsSuccess)
-        	$CDB->update("b_sale_user_account",[
-        	    "USER_ID"=>$this->getParam("UserId"),
-        	    "CURRENCY"=>'BAL'
-        	],[
-        	    "CURRENT_BUDGET"=>$arAccount["CURRENT_BUDGET"]-$nTotalSum
-        	]);
+                $objSSAGAccount->update();
         }
         
         // Если тойка провалилась - остатки возвращаем

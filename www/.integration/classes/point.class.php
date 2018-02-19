@@ -31,10 +31,9 @@
          * Обновление в битриксе транзакций личного счёта из занных EМП
          *  DEPRICATED
          */
+
+        /*
         function updatePoints($history, $userId){
-            // 
-            return true;
-            /*
           
             $arPointsStatus = $history["status"];
             $history = $history["history"];
@@ -119,16 +118,17 @@
             }
             
             $this->updateAccount($arPointsStatus, $userId);
-            */
        }
+       */
 
         /*
             Обновление состяния счёта
+            DEPRICATED
 
             @return число баллов на балансе пользователя
         */
+        /*
         function updateAccount($arPointsStatus, $userId){
-
             // Получаем номер счёта данного пользователя
             $objSaleUserAccount = new CSaleUserAccount;
             $res = $objSaleUserAccount->GetList(
@@ -178,17 +178,19 @@
                 ));
 
             return $arPointsStatus["current_points"];
- 
          }
+         */
 
         
         /**
             Обновление баланса текущего пользователя
+            DEPRICATED
 
             @return $answer = [
                 
             ]
         */
+        /*
         function fetchAccountFromAPI(
             $sync = false //!< Вызвать синхронизацию таблиц ККБ
         ){
@@ -290,6 +292,7 @@
 
             return $answer;
         }
+        */
 
 
     }

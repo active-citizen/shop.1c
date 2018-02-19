@@ -3,9 +3,14 @@ namespace User;
     
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
-
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
+     
 use AGShop;
 use AGShop\DB as DB;
+use AGShop\SSAG as SSAG;
+use AGShop\CCache as CCache;
 
 class CUser extends \AGShop\CAGShop{
     
@@ -24,6 +29,11 @@ class CUser extends \AGShop\CAGShop{
         @param $sUserParam - значение параметра
     */
     function fetch($sUserParamName, $sUserParam){
+        $objCache = new \Cache\CCache("userInfo".$sUserParamName,$sUserParam);
+        if($sCacheData = $objCache->get()){
+            $this->arUserInfo = $sCacheData;
+            return true;
+        }
         $arResult = [];
         switch($sUserParamName){
             case 'ID':
@@ -50,6 +60,7 @@ class CUser extends \AGShop\CAGShop{
             return false;
         }
         $this->arUserInfo = $arResult;
+        $objCache->set($arResult);
         return true;
     }
     
@@ -66,8 +77,14 @@ class CUser extends \AGShop\CAGShop{
         @param $nUserId - ID пользователя
     */
     function getPoints($nUserId){
-        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/point.class.php");
-        $objPoints = new \bxPoint;
-        return $objPoints->fetchAccountFromAPI();
+        $objSSAGAccount = new \SSAG\CSSAGAccount('',$nUserId);
+        return $objSSAGAccount->balance();
     }
+
+
+    function getById($nUserId){
+        $this->fetch("ID", $nUserId);
+        return $this->get();
+    }
+
 }

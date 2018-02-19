@@ -53,10 +53,9 @@ use AGShop\CAuction as Auction;
 
     ///////////////// Определяем сумму на счету пользователя /////////////////
     $objCUser = new \User\CUser;
-    $arResult["ACCOUNT"] = [];
-    $arPointsInfo = $objCUser->getPoints($arParams["USER_ID"]);
-    $arResult["ACCOUNT"] =["CURRENT_BUDGET"=>$arPointsInfo["status"]["current_points"]];
-
+    $arResult["ACCOUNT"] =[
+        "CURRENT_BUDGET"=>$objCUser->getPoints($arParams["USER_ID"])
+    ];
 
     ////////////////////// Общая информация о продукте ////////////////////////
     $objCProduct = new \Catalog\CCatalogProduct;
@@ -153,7 +152,7 @@ use AGShop\CAuction as Auction;
         $resComments = CForumMessage::GetList(array("POST_DATE"=>"DESC"),array("TOPIC_ID"=>$arResult["CATALOG_ITEM"]["PROPERTIES"]["FORUM_TOPIC_ID"][0]["VALUE"]));
         $arResult["MESSAGES"] = $resComments->SelectedRowsCount();
 
-        // Узнаём число заработанных баллов
+        // Узнаём статус активного гражданина 
         $arResult["USER_INFO"] = CUser::GetList(
             ($by="personal_country"), ($order="desc"),
             array("ID"=>CUser::GetId()),
@@ -162,6 +161,8 @@ use AGShop\CAuction as Auction;
                 "NAV_PARAMS"=>array("nTopCount"=>1)
             )
         )->GetNext();
+        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"] = $arResult["ACCOUNT"]
+            ["CURRENT_BUDGET"];
 
 
         // Очистка описания товара от говна

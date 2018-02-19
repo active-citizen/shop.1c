@@ -228,35 +228,6 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
             // Если у заказа уже есть ЗНИ
             OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
-
-            /*
-            if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
-                //$answer["error"] .= "Заказ не был отменён.";
-            }
-            else{
-                //CSaleOrder::StatusOrder($order["ID"],"AG");
-            }
-            */
-
-            /*
-
-            Смена статуса и манебэк перенесены в success - ответ
-
-            $obOrder = new bxOrder();
-            $resOrder = $obOrder->addEMPPoints(
-                $order["SUM_PAID"],
-                "Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ"
-            );
-            $moneyBack = true;
-            CSaleOrder::PayOrder($order["ID"],"N",true,false);
-            CSaleOrder::StatusOrder($order["ID"],"AG");
-            eventOrderStatusSendEmail(
-                $order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG")
-            );
-
-            */
-
-            //CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
        }
    }
 }

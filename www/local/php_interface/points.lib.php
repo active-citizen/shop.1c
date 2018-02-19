@@ -5,6 +5,7 @@
         if(!pointsAlreadyUpdate())return false;
     }
 
+    /*
     function pointsUpdate(){
 
         global $USER;
@@ -44,6 +45,7 @@
 
 
     }
+    */
 
     /**
         Проверка необходимости подгрузить баллы по времени

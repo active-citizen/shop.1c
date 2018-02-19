@@ -2,17 +2,26 @@
 
 
 //if ($this->StartResultCache(false,CUser::GetID())) {
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CUser/CUser.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CUtil/CLang.class.php");
 
-    CModule::IncludeModule("sale");
-    $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
-    $arResult['account'] = $res->GetNext();
-    
-    $arResult['MY_BALLS'] = number_format($arResult['account']["CURRENT_BUDGET"],0 ,',',' ');
-    $arResult['myBalls'] = $arResult['MY_BALLS']." ".get_points($arResult['account']["CURRENT_BUDGET"]);
+    use AGShop\Util as Util;
+    use AGShop\User as User;
+        
+    $nUserId = $USER->GetID();
+    $objUser = new \User\CUser;
+    $nBalance = $objUser->getPoints($nUserId);
 
-    $arResult['arUserInfo'] = $USER->GetById($USER->GetId())->GetNext();
+
+    $arResult['myBalls'] = number_format($nBalance,0 ,',',' ')
+        ." ".\Util\CLang::getPoints($nBalance);
+
+    $arResult['arUserInfo'] = $objUser->getById($nUserId);
     $arResult['FIO'] =
-    $arResult['arUserInfo']["NAME"]."<br/>".$arResult['arUserInfo']["LAST_NAME"];
+        $arResult['arUserInfo']["NAME"]
+            ."<br/>".$arResult['arUserInfo']["LAST_NAME"];
 
 
     $this->IncludeComponentTemplate();

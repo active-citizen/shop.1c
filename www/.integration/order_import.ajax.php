@@ -776,12 +776,12 @@
                 
                 // Снимаем баллы
                 if($sPrefix=="О"){
-                    require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
-                    $obOrder = new bxOrder();
-                    $orderSum = - $arOrder["SUM_PAID"];
-                    if(!$obOrder->addEMPPoints($orderSum,"Заказ ".$arOrder["ADDITIONAL_INFO"]
-                        ." в магазине поощрений АГ",$login)
-                    ){
+                    $objSSAGAccount = new \SSAG\CSSAGAccount('',$userId);
+                    if(!$objSSAGAccount->transaction(
+                       - $arOrder["SUM_PAID"],
+                        "Заказ ".$arOrder["ADDITIONAL_INFO"]
+                            ." в магазине поощрений АГ"
+                    )){
                         echo $arOrder["ADDITIONAL_INFO"]
                             .": points transaction error: ".$obOrder->error." ";
                     }
@@ -896,11 +896,14 @@
                         preg_match("#^.*\-\d+$$#", $existsOrder["ADDITIONAL_INFO"])
                         && $sPrefix!='М'
                     ){
-                        require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
-                        $obOrder = new bxOrder();
-                        if(!$obOrder->addEMPPoints($orderSum,"Отмена заказа ".
-                            $existsOrder["ADDITIONAL_INFO"]." в магазине поощрений АГ",$login)){
-                            echo "Points transaction error: ".$obOrder->error;
+                        $objSSAGAccount = new \SSAG\CSSAGAccount('',$userId);
+                        if(!$objSSAGAccount->transaction(
+                            $orderSum,
+                            "Отмена заказа ".$existsOrder["ADDITIONAL_INFO"]
+                                ." в магазине поощрений АГ"
+                        )){
+                            echo $arOrder["ADDITIONAL_INFO"]
+                                .": points transaction error: ".$obOrder->error." ";
                         }
                         $moneyBack = true;
                     }

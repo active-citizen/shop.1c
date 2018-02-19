@@ -125,25 +125,29 @@ if(
             <? elseif(
                 (
                     
-                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arParams["ALL_POINTS_LIMIT"]
-                    
+                    !trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
                     &&
-                    !trim(
-                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
-                        [0]["VALUE"]
-                    )
+                    !
+                    intval($arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                        [0]["VALUE"])
+                    
                 )
                 ||
                 (
-                    
-                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]<$arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
-                        [0]["VALUE"]
-                    
+                    !trim($arResult["USER_INFO"]["UF_USER_AG_STATUS"])
                     &&
-                    trim(
+                    intval(
                         $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
                         [0]["VALUE"]
                     )
+                    &&
+                    (
+                        $arResult["USER_INFO"]["UF_USER_ALL_POINTS"]
+                        <
+                        $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING_LIMIT"]
+                            [0]["VALUE"]
+                    )
+                    
                )
             ):?>
                 <? $noAG = true;?>
