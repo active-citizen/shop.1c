@@ -1,6 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Запросы изменения статуса");
+$APPLICATION->SetTitle("Аукционы");
 require("../group_access.php");
 require_once(
     $_SERVER["DOCUMENT_ROOT"]

@@ -5,9 +5,9 @@
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CUser/CUser.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
-        ."/local/libs/classes/CAGShop/CUtil/CLang.class.php");
+        ."/local/libs/classes/CAGShop/CUtils/CLang.class.php");
 
-    use AGShop\Util as Util;
+    use AGShop\Utils as Utils;
     use AGShop\User as User;
         
     $nUserId = $USER->GetID();
@@ -16,7 +16,7 @@
 
 
     $arResult['myBalls'] = number_format($nBalance,0 ,',',' ')
-        ." ".\Util\CLang::getPoints($nBalance);
+        ." ".\Utils\CLang::getPoints($nBalance);
 
     $arResult['arUserInfo'] = $objUser->getById($nUserId);
     $arResult['FIO'] =

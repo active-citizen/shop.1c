@@ -1,6 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Запросы изменения статуса");
+$APPLICATION->SetTitle("Ставки по аукциону");
 require("../group_access.php");
 require_once(
     $_SERVER["DOCUMENT_ROOT"]
@@ -12,7 +12,6 @@ use AGShop\Auction as Auction;
 
 $objAuction = new \Auction\CAuction;
 
-$arParams["OFF_DATE"] = '';
 if(
     !isset($_REQUEST["OFFER_ID"]) 
     || !$arParams["OFFER_ID"] = intval($_REQUEST["OFFER_ID"])
@@ -20,12 +19,29 @@ if(
     $arParams["OFFER_ID"] = 0;
 else
     $arParams["OFFER_ID"] = intval($_REQUEST["OFFER_ID"]);
+if(isset($_REQUEST["OFF_DATE"])){
+    $arParams["OFF_DATE"] = date("Y-m-d H:i:s",MakeTimeStamp(
+        $_REQUEST["OFF_DATE"],"DD.MM.YYYY HH:MI:SS"
+    ));
+}
 
 $arBets = $objAuction->getAuctionBets(
     $arParams["OFFER_ID"],
     $arParams["OFF_DATE"]
 );
 $arStatuses = $objAuction->getStatuses();
+
+if(
+    isset($_REQUEST["commit"]) 
+    && isset($_REQUEST["OFFER_ID"])
+    && $nOfferId = intval($_REQUEST["OFFER_ID"])
+){
+
+    $sDate = $objAuction->makeResult($nOfferId);
+    LocalRedirect("/partners/auctions/result.php?OFFER_ID="
+        .$nOfferId."&OFF_DATE=".$sDate);
+    die;
+}
 
 ?>
 <div class="auction">
@@ -47,7 +63,9 @@ $arStatuses = $objAuction->getStatuses();
                 <th>ФИО</th>
                 <th>Цена заявки</th>
                 <th>Количество в заявке</th>
-                <th>Дата</th>
+                <th>Дата ставки</th>
+                <th>Дата итога</th>
+                <th>Дата исполнения</th>
                 <th>Остаток к моменту подхода очереди</th>
                 <th>Статус текущий</th>
                 <th>Статус предлагаемый</th>
@@ -67,21 +85,11 @@ $arStatuses = $objAuction->getStatuses();
                 <td><?= $arBet["PRICE"]?></td>
                 <td><?= $arBet["AMOUNT"]?></td>
                 <td><?= $arBet["CTIME"]?></td>
+                <td><?= $arBet["OFF_DATE"]?></td>
+                <td><?= $arBet["CLOSE_DATE"]?></td>
                 <td><?= $arBet["ODD"]?></td>
                 <td><?= $arStatuses[$arBet["STATUS"]]?></td>
-                <td>
-                    <? if(!$arBet["OFF_DATE"]):?>
-                    <select name="TRADE_STATUS">
-                        <?foreach($arStatuses as $sStatusCode=>$sStatusTitle):?>
-                        <option value="<?= $sStatusCode?>"<?
-                        if($sStatusCode==$arBet["TRADE_STATUS"]):?> selected<?
-                        endif?>>
-                            <?= $sStatusTitle?>
-                        </option>
-                        <? endforeach ?>
-                    </select>
-                    <? endif ?>
-                </td>
+                <td><?= $arStatuses[$arBet["TRADE_STATUS"]]?></td>
                 <td><?= $arBet["ORDER_ID"]?></td>
             </tr>
         <? endforeach ?>
@@ -92,7 +100,7 @@ $arStatuses = $objAuction->getStatuses();
             && !$arBet["OFF_DATE"]
         ):?>
         <input type="submit" name="commit" 
-        value="Наказать невиновных, наградить непричастных"/>
+        value="Всё верно. Cвормировать заказы победителям и вернуть баллы проигравшим"/>
         <? endif ?>
         </form>
 

@@ -30,6 +30,7 @@
                         COMMENT 'статус ставки',
                     `AMOUNT` SMALLINT(5) UNSIGNED,
                     `PRICE` INT(11),
+                    `CLOSE_DATE` datetime COMMENT 'Дата завершения обработки ставки(создание заказа или возврат баллов)',
                     PRIMARY KEY `ID`(`ID`),
                     KEY `USER_ID`(`USER_ID`),
                     KEY `ORDER_ID`(`ORDER_ID`),
@@ -37,7 +38,8 @@
                     KEY `OFFER_ID`(`OFFER_ID`),
                     KEY `STATUS`(`STATUS`),
                     KEY `OFF_TIME`(`OFF_TIME`),
-                    KEY `CTIME`(`CTIME`)
+                    KEY `CTIME`(`CTIME`),
+                    KEY `CLOSE_DATE`(`CLOSE_DATE`)
                 )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
                 COMMENT 'Ставки аукциона';
             ";
