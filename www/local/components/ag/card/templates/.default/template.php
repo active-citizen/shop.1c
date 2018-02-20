@@ -25,9 +25,6 @@ if(
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"];
 
 
-//echo "<pre>";
-//print_r($arResult["AUCTION"]);
-//echo "</pre>";
 
 
 ?>
@@ -696,6 +693,41 @@ if(
                   ?>
                   </p>
                   <? endif ?>
+
+<? if($arResult["AUCTION_WINNERS"]):?>
+    <h4>Победители последнего аукциона</h4>
+    <? foreach($arResult["AUCTION_WINNERS"] as $nStoreId=>$arStoreInfo):?>
+    <h5><?= $arStoreInfo["STORE"]["TITLE"]?></h5>
+    <table class="auction-winners">
+        <tr>
+            <th>Пользователь</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+        </tr>
+        <? foreach($arStoreInfo["BETS"] as $nBetId=>$arBet):?>    
+        <tr <? if($arBet["USER_ID"]==$arResult["USER_INFO"]["ID"]):?>
+        class="winner"<? endif ?>>
+            <td class="auction-user">
+            <?= $arBet["USER_HASH"]?>
+            </td>
+            <td class="auction-price">
+                <?= $arBet["PRICE"]?>
+            </td>
+            <td class="auction-amount">
+                <?= $arBet["AMOUNT"]?>
+            </td>
+        </tr>
+        <? endforeach ?>
+    </table>
+    <? endforeach?>
+    <?
+        /*
+        echo "<pre>";
+        print_r($arResult["AUCTION_WINNERS"]);
+        echo "</pre>";
+        */
+    ?>
+<? endif ?>
 
                 </div>
                 <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]):?>

@@ -132,6 +132,12 @@ use AGShop\CAuction as Auction;
                 $arOffers["OFFERS"][0]["ID"],
                 $USER->GetID()
             );
+
+            if($arResult["AUCTION"]["IS_FINISHED"])
+                $arResult["AUCTION_WINNERS"] = $objAuction->getWinners( 
+                    $arOffers["OFFERS"][0]["ID"],
+                    $USER->GetID()
+                );
         }
 
         $arIBlock = CIBlock::GetList(array(),array("CODE"=>"marks"))->GetNext();

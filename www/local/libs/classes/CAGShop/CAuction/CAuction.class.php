@@ -10,9 +10,11 @@ require_once(realpath(__DIR__."/..")."/CUtils/CPagination.class.php");
 require_once(realpath(__DIR__."/..")."/CUtils/CLang.class.php");
 require_once(realpath(__DIR__."/..")."/CSSAG/CSSAGAccount.class.php");
 require_once(realpath(__DIR__."/..")."/COrder/COrder.class.php");
+require_once(realpath(__DIR__."/..")."/CUser/CUser.class.php");
 
 use AGShop;
 use AGShop\Catalog as Catalog;
+use AGShop\User as User;
 use AGShop\Order as Order;
 use AGShop\DB as DB;
 use AGShop\Utils as Utils;
@@ -23,6 +25,77 @@ class CAuction extends \AGShop\CAGShop{
     
     function __construct(){
         parent::__construct();
+    }
+
+
+    /**
+        Возвращает список победителей по последнему прошедшему аукциону
+
+        @param $nOfferId
+    */
+    function getWinners($nOfferId, $nUserId){
+
+        if(!$nUserId)$nUserId = \CUser::GetID();
+        $CDB = new \DB\CDB;
+        // Получаем дату последнего подведения итогов
+        $sQuery = "
+            SELECT
+                OFF_TIME as `OFF_TIME`,
+                COUNT(ID) as `BETS_COUNT`
+            FROM
+                `int_bets`
+            WHERE
+                `OFF_TIME` IS NOT NULL
+            ORDER BY
+                `OFF_TIME` DESC
+            LIMIT 
+                1
+        "; 
+        $arBets = $CDB->sqlSelect($sQuery);
+        $arAuction = array_pop($arBets);
+
+        if(!$arAuction)return false;
+
+        // Получаем число оформленных результатов
+        $sQuery = "
+            SELECT
+                COUNT(ID) as `CLOSE_COUNT`
+            FROM
+                `int_bets`
+            WHERE
+                `CLOSE_DATE` IS NOT NULL
+            ORDER BY
+                `OFF_TIME` DESC
+            LIMIT 
+                1
+        "; 
+        $arBets = $CDB->sqlSelect($sQuery);
+        $arCloseBets = array_pop($arBets);
+        if(!isset($arCloseBets))return false;
+
+        // Результаты ещё не оформлены
+        if($arCloseBets["CLOSE_COUNT"]<$arAuction["BETS_COUNT"])return false;
+        
+        $arResult = $this->getAuctionBets($nOfferId, $arAuction["OFF_TIME"]);
+        
+        foreach($arResult as $nStoreId=>$arStore){
+            foreach($arStore["BETS"] as $nBetId=>$arBet){
+                if($arBet["STATUS"]!='win'){
+                    unset($arResult[$nStoreId]["BETS"][$nBetId]);
+                    continue;
+                }
+                $objUser = new \User\CUser;
+                $arUser = $objUser->getById($arBet["USER_ID"]);
+                $arResult[$nStoreId]["BETS"][$nBetId]["USER_HASH"] = 
+                    0 && $arUser["UF_USER_HASH"]
+                    ?
+                    $arUser["UF_USER_HASH"]
+                    :
+                    preg_replace("#^.*(\d{4})$#","+7******$1",$arUser["LOGIN"]);
+            }
+        }
+
+        return $arResult; 
     }
 
     /**
@@ -193,6 +266,7 @@ class CAuction extends \AGShop\CAGShop{
         $sQuery = "
             SELECT
                 `bet`.`ID` as `BET_ID`,
+                `bet`.`USER_ID` as `USER_ID`,
                 DATE_FORMAT(`bet`.`CTIME`,'%d.%m.%Y %H:%i:%s') as `CTIME`,
                 DATE_FORMAT(`bet`.`OFF_TIME`,'%d.%m.%Y %H:%i:%s') as `OFF_DATE`,
                 DATE_FORMAT(`bet`.`CLOSE_DATE`,'%d.%m.%Y %H:%i:%s') as `CLOSE_DATE`,
