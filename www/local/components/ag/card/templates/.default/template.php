@@ -170,7 +170,7 @@ if(
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements auction">
                     Заказ данного поощрения происходил по 
-                    <a href="/rules/auction/">правилам аукциона</a>
+                    <a href="/rules/hiw/#auction">правилам аукциона</a>
                     &#160;c  <span class="date"><?= $arResult["AUCTION"]["START_DATE"] ?></span>,
                     по
                     <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
@@ -182,7 +182,7 @@ if(
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements auction">
                     Заказ данного поощрения будет происходить по 
-                    <a href="/rules/auction/">правилам аукциона</a>. Начало
+                    <a href="/rules/hiw/#auction">правилам аукциона</a>. Начало
                     торгов  <span class="date"><?= $arResult["AUCTION"]["START_DATE"] ?></span>,
                     завершение торгов
                     <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
@@ -192,7 +192,7 @@ if(
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements auction">
                     Заказ данного поощрения происходит по 
-                    <a href="/rules/auction/">правилам аукциона</a>. Завершение торгов
+                    <a href="/rules/hiw/#auction">правилам аукциона</a>. Завершение торгов
                     <span class="date"><?= $arResult["AUCTION"]["END_DATE"] ?></span> 
                 </div>
               </div>
@@ -999,7 +999,7 @@ if(
             <div class="ag-shop-modal__label">Стоимость:</div>
             <div class="ag-shop-modal__text ag-shop-modal__text--marked"
             id="confirm-cost">
-                <input id="bet-cost" class="bet-confirm-num" value="">
+                <input id="bet-cost" class="bet-confirm-num" value="" disabled>
             </div>
           </div>
           <div class="ag-shop-modal__row">

@@ -19,7 +19,11 @@ if(
     $arParams["OFFER_ID"] = 0;
 else
     $arParams["OFFER_ID"] = intval($_REQUEST["OFFER_ID"]);
-if(isset($_REQUEST["OFF_DATE"])){
+if(
+    isset($_REQUEST["OFF_DATE"])
+    &&
+    trim($_REQUEST["OFF_DATE"])
+){
     $arParams["OFF_DATE"] = date("Y-m-d H:i:s",MakeTimeStamp(
         $_REQUEST["OFF_DATE"],"DD.MM.YYYY HH:MI:SS"
     ));
@@ -29,6 +33,11 @@ $arBets = $objAuction->getAuctionBets(
     $arParams["OFFER_ID"],
     $arParams["OFF_DATE"]
 );
+
+$arIsAuction = $objAuction->isAuctionOffer(
+    $arParams["OFFER_ID"]
+);
+
 $arStatuses = $objAuction->getStatuses();
 
 if(
@@ -99,9 +108,11 @@ if(
             array_key_exists("OFF_DATE",$arBet)
             && !$arBet["OFF_DATE"]
         ):?>
-        <input type="submit" name="commit" 
-        value="Всё верно. Cвормировать заказы победителям и вернуть баллы проигравшим"/>
+            <? if($arIsAuction["IS_FINISHED"]):?>
+            <? endif?>
         <? endif ?>
+            <input type="submit" name="commit" 
+            value="Раздать слонов. (сформировать заказы победителям и вернуть баллы проигравшим)"/>
         </form>
 
     <? endforeach?>

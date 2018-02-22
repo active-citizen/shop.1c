@@ -87,7 +87,7 @@ class CAuction extends \AGShop\CAGShop{
                 $objUser = new \User\CUser;
                 $arUser = $objUser->getById($arBet["USER_ID"]);
                 $arResult[$nStoreId]["BETS"][$nBetId]["USER_HASH"] = 
-                    0 && $arUser["UF_USER_HASH"]
+                    $arUser["UF_USER_HASH"]
                     ?
                     $arUser["UF_USER_HASH"]
                     :
@@ -148,7 +148,10 @@ class CAuction extends \AGShop\CAGShop{
             $nPrice = $arBet["PRICE"];
             $nAmount = $arBet["AMOUNT"];
             $nSum = $nPrice*$nAmount;
-            $sComment = "Возврат баллов по результатам аукциона. Дата ставки "
+            $sComment = "Возврат баллов по результатам аукциона. "
+                ."Дата ставки ".date(
+                    "d.m.Y H:i:s",
+                    MakeTimeStamp($arBet["CTIME"],"YYYY-MM-DD HH:MI:SS")).". "
                 ."Поощрение '".$arOffer["MAIN"]["NAME"]."'. "
                 ."Количество ".$nAmount.". "
                 ."Предложенная цена ".$nPrice." "
@@ -572,6 +575,14 @@ class CAuction extends \AGShop\CAGShop{
             return $this->addError('Не указан склад');
         $nTotalSum = $nAmount*$nPrice;
 
+        // Узнаём что за товар
+        $objOffer = new \Catalog\CCatalogOffer;
+        $arOffer = $objOffer->getById($nOfferId);
+
+        // Проверяем величину ставки
+        if($nPrice<$arOffer["PRODUCT_PROPERTIES"]["MINIMUM_PRICE"])
+            return $this->addError("Ставка не может быть меньше стартовой цены");
+
         // Проверяем сумму на счёте
         $objSSAGAccount = new \SSAG\CSSAGAccount('',$nUserId);
         if($objSSAGAccount->balance()<$nTotalSum)
@@ -596,12 +607,8 @@ class CAuction extends \AGShop\CAGShop{
             return false;
         }
 
-        // Узнаём что за товар
-        $objOffer = new \Catalog\CCatalogOffer;
-        $arOffer = $objOffer->getById($nOfferId);
-
         // Пытаемся снять баллы
-        if(!$objSSAGAccount->transaction(
+        if(!$bPointsSuccess = $objSSAGAccount->transaction(
             -$nTotalSum,
             "Оплата ставки на аукционе. "
             ."Поощрение '".$arOffer["MAIN"]["NAME"]."'. "
@@ -652,6 +659,32 @@ class CAuction extends \AGShop\CAGShop{
     }
 
     /**
+        Является товар указзаного торгового предложения аукционом
+        
+        @param $nOfferId - ID торгового предложения
+        @return false если товар не является аукционом или, если это аукцион,
+        массив вида 
+        \code
+        [
+            "START_DATE"=>"Дата начала (дата)",
+            "END_DATE"=>"Дата завершения (дата)",
+            "START_PRICE"=>"Стартовая цена (число)",
+            "IS_CURRENT"=>"Проходит ли аукцион в данный момент (true/false)",
+            "IS_FINISHED"=>"Завершен ли аукцион в данный момент (true/false)",
+        ]
+        \endcode
+    */
+    function isAuctionOffer($nOfferId){
+        // Узнаём что за товар
+        $objOffer = new \Catalog\CCatalogOffer;
+        $arOffer = $objOffer->getById($nOfferId);
+        if(!$nProductId = $arOffer["PROPERTIES"]["CML2_LINK"])
+            return false;
+        return $this->isAuction($nProductId);
+    }
+
+
+    /**
         Является ли товар аукционом
 
         @param $nProductId - ID продукта
@@ -671,7 +704,7 @@ class CAuction extends \AGShop\CAGShop{
         if(!$nProductId = intval($nProductId))
             return $this->addError("Не указан ID продукта");
 
-        $objCache = new \Cache\CCache("isAuction",$nProductId,1);
+        $objCache = new \Cache\CCache("isAuction",$nProductId);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
