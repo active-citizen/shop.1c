@@ -709,6 +709,9 @@ if(
         class="winner"<? endif ?>>
             <td class="auction-user">
             <?= $arBet["USER_HASH"]?>
+            <? if($arBet["USER_ID"]==$arResult["USER_INFO"]["ID"]):?>
+                (моя ставка)
+            <? endif ?>
             </td>
             <td class="auction-price">
                 <?= $arBet["PRICE"]?>

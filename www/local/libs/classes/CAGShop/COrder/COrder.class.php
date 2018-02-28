@@ -54,7 +54,7 @@ class COrder extends \AGShop\CAGShop{
     /**
         Добавление к заказу торгового предложения
     */
-    function addSKU($nSKUId, $nStoreId, $nCount){
+    function addSKU($nSKUId, $nStoreId, $nCount, $nPrice = 0){
         $nSKUId = intval($nSKUId);
         $nStoreId = intval($nStoreId);
         $nCount = intval($nCount);
@@ -96,7 +96,8 @@ class COrder extends \AGShop\CAGShop{
         $this->arSKUs[] = [
             "SKU"       => $arSKU,
             "AMOUNT"    => $nCount,
-            "STORE_ID"  => $nStoreId
+            "STORE_ID"  => $nStoreId,
+            "PRICE"     => $nPrice
         ];
         return true;
     }
@@ -143,7 +144,7 @@ class COrder extends \AGShop\CAGShop{
         }
 
         // Добавляем к заказу торговое предложение
-        $this->addSKU($nOfferId, $nStoreId, $nAmount);
+        $this->addSKU($nOfferId, $nStoreId, $nAmount, $nPrice);
         // Добавляем заказ 
         $sInitialStatusId = 'AA';
         
@@ -801,7 +802,12 @@ class COrder extends \AGShop\CAGShop{
                     "PRODUCT_ID"    =>$arSKUs["SKU"]["OFFER"]["ID"], 
                     "QUANTITY"      =>$arSKUs["AMOUNT"], 
                     "NAME"          =>$arSKUs["SKU"]["OFFER"]["NAME"], 
-                    "PRICE"         =>$arSKUs["SKU"]["PRODUCT_PROPERTIES"]
+                    "PRICE"         =>
+                        isset($arSKUs["PRICE"]) && $arSKUs["PRICE"]
+                        ?
+                        $arSKUs["PRICE"]
+                        :
+                        $arSKUs["SKU"]["PRODUCT_PROPERTIES"]
                         ["MINIMUM_PRICE"], 
                     "DATE_UPDATE"   =>date("Y-m-d H:i:s"), 
                     "CURRENCY"      =>"BAL", 

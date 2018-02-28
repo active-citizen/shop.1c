@@ -82,11 +82,14 @@ class CAuction extends \AGShop\CAGShop{
                 `int_bets`
             WHERE
                 `OFF_TIME` IS NOT NULL
+                AND OFFER_ID=".intval($nOfferId)."
+            GROUP BY
+                `OFF_TIME`
             ORDER BY
                 `OFF_TIME` DESC
             LIMIT 
                 1
-        "; 
+        ";
         $arBets = $CDB->sqlSelect($sQuery);
         $arAuction = array_pop($arBets);
 
@@ -100,6 +103,8 @@ class CAuction extends \AGShop\CAGShop{
                 `int_bets`
             WHERE
                 `CLOSE_DATE` IS NOT NULL
+                AND OFFER_ID=".intval($nOfferId)."
+                AND OFF_TIME='".$arAuction["OFF_TIME"]."'
             ORDER BY
                 `OFF_TIME` DESC
             LIMIT 
@@ -111,6 +116,7 @@ class CAuction extends \AGShop\CAGShop{
 
         // Результаты ещё не оформлены
         if($arCloseBets["CLOSE_COUNT"]<$arAuction["BETS_COUNT"])return false;
+
         
         $arResult = $this->getAuctionBets($nOfferId, $arAuction["OFF_TIME"]);
         
