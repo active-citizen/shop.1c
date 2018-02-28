@@ -29,6 +29,42 @@ class CAuction extends \AGShop\CAGShop{
 
 
     /**
+        Получение OFFER_ID аукциона, по которому надо подвести итог
+        @return ID предложения (можно использовать в функции 
+        $this-makeResult)
+    */
+    function getFinishedOffer(){
+        // Получаем список товаров по 
+        // isAuctionOffer
+        $CDB = new \DB\CDB;
+        $sQuery = "
+            SELECT
+                `OFFER_ID`
+            FROM
+                `int_bets`
+            WHERE
+                `OFF_TIME` IS NULL
+            LIMIT 
+                1
+        ";
+        $arResult = array_pop($CDB->sqlSelect($sQuery));
+        if(!$arResult)return false;
+        $nOfferId = $arResult["OFFER_ID"];
+
+        // Определяем аукцион ли это
+        if(!$arResult = $this->isAuctionOffer($nOfferId))
+            return false;
+
+        // Определяем завершен ли он
+        if(!isset($arResult["IS_FINISHED"]) || !$arResult["IS_FINISHED"])
+            return false;
+
+        return $nOfferId;
+    }
+
+
+
+    /**
         Возвращает список победителей по последнему прошедшему аукциону
 
         @param $nOfferId
@@ -527,12 +563,28 @@ class CAuction extends \AGShop\CAGShop{
         if(!$nUserId)return $this->addError("Не указан пользователь");
         if(!$nOfferId)return $this->addError("Не указан ID предложения");
         $CDB = new \DB\CDB;
+        $sQuery - "
+            SELECT
+                ID,CTIME,AMOUNT,PRICE,STORE_ID,STATUS
+            FROM 
+                `int_bets`
+            WHERE
+                `USER_ID`=".intval($nUserId)."
+                AND `OFFER_ID` = ".intval($nOfferId)."
+                AND `OFF_TIME` IS NULL
+            LIMIT
+                1
+        ";
+        $arResult = $CDB->sqlSelect($sQuery);
+        $arResult = array_pop($arResult);
+        /*
         $arResult = $CDB->SearchOne("int_bets",[
             "USER_ID"=>intval($nUserId),
             "OFFER_ID"=>intval($nOfferId)
         ],[
             "ID","CTIME","AMOUNT","PRICE","STORE_ID","STATUS"
         ]);
+        */
         if(!$arResult)return [];
         $objStore = new \Catalog\CCatalogStore;
         

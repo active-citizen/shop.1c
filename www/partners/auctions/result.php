@@ -103,16 +103,6 @@ if(
             </tr>
         <? endforeach ?>
         </table>
-        <? foreach($arBets["BETS"] as $arBet)break;?>
-        <? if(
-            array_key_exists("OFF_DATE",$arBet)
-            && !$arBet["OFF_DATE"]
-        ):?>
-            <? if($arIsAuction["IS_FINISHED"]):?>
-            <? endif?>
-        <? endif ?>
-            <input type="submit" name="commit" 
-            value="Раздать слонов. (сформировать заказы победителям и вернуть баллы проигравшим)"/>
         </form>
 
     <? endforeach?>
