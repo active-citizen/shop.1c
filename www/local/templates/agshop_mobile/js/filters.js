@@ -148,16 +148,67 @@ $(function() {
   defaultCheckboxState();
 
   // ===================
+  // Reset Checkbox State
+  // ===================
+
+  function resetCheckboxState() {
+    // get defaultCheck
+    $('.defaultCheck').each(function(index, item){
+
+      // Check if this checkbox is DropdownAll
+      if ( $(this).hasClass("dropdown-checkbox-all") ) {
+        var dropdownContainer = $(this).parents(".mobile-aside-dropdown-content");
+        var dropdownContainerChildrens = dropdownContainer.children();
+
+        $(dropdownContainerChildrens).each(function (index, name) {
+          var childrenCheckbox = $(this).find("input");
+          childrenCheckbox.prop("checked",false);
+        });
+        $(this).prop("checked",true);
+      }
+
+      else {
+        $(this).prop("checked",true);
+      }
+    });
+
+    // get defaultReset
+    $('.defaultReset').each(function(index, item){
+      // reset all items
+      $(this).prop('checked',false);
+    });
+
+    // get defaultClear
+    $('.defaultClear').each(function(index, item){
+      // clear all items
+      $(this).val('');
+    });
+
+  }
+
+  // resetCheckboxState();
+
+  // ===================
   // Reset Form Button
   // ===================
 
   $('#mobileFiltersReset').on('click',function (e) {
     // Prevent Default Reset
     e.preventDefault();
+    document.location.hash='';
     // Reset form using JS
-    $("#mobileAsideFilterForm")[0].reset();
-    // Set checkboxes in default state
+    // $("#mobileAsideFilterForm")[0].reset();
+    // Reset form to default state
+    resetCheckboxState();
+    // Set dropdown labels
     defaultCheckboxState();
+  });
+
+  $('#mobileFiltersSubmit').on('click',function (e) {
+    // Prevent Default Submit
+    e.preventDefault();
+    $("#mobileAsideFilterForm")[0].submit();
+    window.location.href='';
   });
 
   // ===================
