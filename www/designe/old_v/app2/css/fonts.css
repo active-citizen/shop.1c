@@ -1,0 +1,80 @@
+@font-face {
+	font-family: "OpenSans-Bold";
+	src: url("../fonts/OpenSans-Bold/OpenSans-Bold.eot");
+	src: url("../fonts/OpenSans-Bold/OpenSans-Bold.woff") format("woff"),
+		 url("../fonts/OpenSans-Bold/OpenSans-Bold.woff2") format("woff2"),
+		 url("../fonts/OpenSans-Bold/OpenSans-Bold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "OpenSans-Semibold";
+	src: url("../fonts/OpenSans-Semibold/OpenSans-Semibold.eot");
+	src: url("../fonts/OpenSans-Semibold/OpenSans-Semibold.woff") format("woff"),
+		 url("../fonts/OpenSans-Semibold/OpenSans-Semibold.woff2") format("woff2"),
+		 url("../fonts/OpenSans-Semibold/OpenSans-Semibold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "OpenSansRegular";
+	src: url("../fonts/OpenSansRegular/OpenSansRegular.eot");
+	src: url("../fonts/OpenSansRegular/OpenSansRegular.woff") format("woff"),
+		 url("../fonts/OpenSansRegular/OpenSansRegular.woff2") format("woff2"),
+		 url("../fonts/OpenSansRegular/OpenSansRegular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MyriadPro-Regular";
+	src: url("../fonts/MyriadPro-Regular/MyriadPro-Regular.eot");
+	src: url("../fonts/MyriadPro-Regular/MyriadPro-Regular.woff") format("woff"),
+		 url("../fonts/MyriadPro-Regular/MyriadPro-Regular.woff2") format("woff2"),
+		 url("../fonts/MyriadPro-Regular/MyriadPro-Regular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SFUIText-Regular";
+	src: url("../fonts/SFUIText-Regular/SFUIText-Regular.eot");
+	src: url("../fonts/SFUIText-Regular/SFUIText-Regular.woff") format("woff"),
+		 url("../fonts/SFUIText-Regular/SFUIText-Regular.woff2") format("woff2"),
+		 url("../fonts/SFUIText-Regular/SFUIText-Regular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+
+@font-face {
+	font-family: "SFUIText-Heavy";
+	src: url("../fonts/SFUIText-Heavy/SFUIText-Heavy.eot");
+	src: url("../fonts/SFUIText-Heavy/SFUIText-Heavy.woff") format("woff"),
+		 url("../fonts/SFUIText-Heavy/SFUIText-Heavy.woff2") format("woff2"),
+		 url("../fonts/SFUIText-Heavy/SFUIText-Heavy.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "OpenSans-Light";
+	src: url("../fonts/OpenSans-Light/OpenSans-Light.eot");
+	src: url("../fonts/OpenSans-Light/OpenSans-Light.woff") format("woff"),
+		 url("../fonts/OpenSans-Light/OpenSans-Light.woff2") format("woff2"),
+		 url("../fonts/OpenSans-Light/OpenSans-Light.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ProximaNova-Semibold";
+	src: url("../fonts/ProximaNova-Semibold/ProximaNova-Semibold.eot");
+	src: url("../fonts/ProximaNova-Semibold/ProximaNova-Semibold.woff") format("woff"),
+		 url("../fonts/ProximaNova-Semibold/ProximaNova-Semibold.woff2") format("woff2"),
+		 url("../fonts/ProximaNova-Semibold/ProximaNova-Semibold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
