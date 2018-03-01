@@ -31,6 +31,7 @@
         $_SERVER["DOCUMENT_ROOT"]
         ."/bitrix/modules/main/include/prolog_before.php"
     );
+    /*    
     require_once("classes/point.class.php");
 
     $objPoints = new bxPoint;
@@ -41,4 +42,20 @@
         $_SERVER["DOCUMENT_ROOT"]
         ."/bitrix/modules/main/include/epilog_after.php"
     );
+    */
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CAGShop.class.php");
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+    use AGShop as AGShop;
+    use AGShop\SSAG as SSAG;
+
+    $objSSAGAccount = new \SSAG\CSSAGAccount('',$USER->GetID());
+    $answer = $objSSAGAccount->update();
+    echo json_encode($answer);
+//    require(
+//        $_SERVER["DOCUMENT_ROOT"]
+//        ."/bitrix/modules/main/include/epilog_after.php"
+//    );
+    
     

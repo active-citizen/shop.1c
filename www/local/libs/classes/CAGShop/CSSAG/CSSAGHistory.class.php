@@ -18,7 +18,9 @@
         private $sHistoryMethod = '/mvag/billing/getHistory';
         
         function __construct($sSessionId = '',$nUserId = 0){
-            parent::__construct($sSessionId);
+            global $USER;
+            if($nUserId)$nUSerId = $USER->GetID();
+            parent::__construct($sSessionId,$nUserId);
         }
 
         /**
@@ -35,6 +37,7 @@
             $bDebit = null,
             $nOnPage = 30
         ){
+            if(!$this->nAGID)return false;
             $arSign = $this->getSignature($this->nAGID);
             $sUrl = $this->sDomain.":".$this->sPort.$this->sHistoryMethod;
             $arRequest = [

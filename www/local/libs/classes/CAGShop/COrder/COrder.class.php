@@ -13,6 +13,7 @@ require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationParking.class.ph
 require_once(realpath(__DIR__."/..")."/CSync/CSync.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
+require_once(realpath(__DIR__."/..")."/CSSAG/CSSAGAccount.class.php");
 
 use AGShop;
 use AGShop\DB as DB;
@@ -21,6 +22,7 @@ use AGShop\Catalog as Catalog;
 use AGShop\Order as Order;
 use AGShop\Sync as Sync;
 use AGShop\Integration as Integration;
+use AGShop\SSAG as SSAG;
 
 /**
     Управление заказами
@@ -238,7 +240,8 @@ class COrder extends \AGShop\CAGShop{
 
         // Проверяем сумму на счёте
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        $arAccount = \CSaleUserAccount::GetByUserID($this->getParam("UserId"), 'BAL');
+        $objSSAGAccount = new \SSAG\CSSAGAccount('',\CUser::GetID());
+        $arAccount = ["CURRENT_BUDGET"=>$objSSAGAccount->balance()];
         if(!$sCustomNum && $arAccount["CURRENT_BUDGET"]<$nTotalSum){
             $this->addError("Недостаточно баллов на счёте");
             // Возвращаем всё что взяли на склад
@@ -367,24 +370,14 @@ class COrder extends \AGShop\CAGShop{
         // Для админа баллы не снимаем, ибо юниттест
         elseif($this->getParam("UserId")!=1){
             //////////// Снимает баллы
-            require_once(
-                $_SERVER["DOCUMENT_ROOT"]
-                    ."/.integration/classes/order.class.php"
-            );
-            $obOrder = new \bxOrder();
-            if(!$bPointsSuccess = $obOrder->addEMPPoints(
+            if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
-                "Заказ Б-$nOrderId в магазине поощрений АГ"
+                 "Заказ Б-$nOrderId в магазине поощрений АГ"
             ))$this->addError($obOrder->error);
 
             ///////////
             if($bPointsSuccess)
-        	$CDB->update("b_sale_user_account",[
-        	    "USER_ID"=>$this->getParam("UserId"),
-        	    "CURRENCY"=>'BAL'
-        	],[
-        	    "CURRENT_BUDGET"=>$arAccount["CURRENT_BUDGET"]-$nTotalSum
-        	]);
+                $objSSAGAccount->update();
         }
         
         // Если тойка провалилась - остатки возвращаем

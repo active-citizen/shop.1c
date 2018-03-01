@@ -463,6 +463,8 @@
             
         }
         
+        /*
+        DEPRICATED
         function addEMPPoints($points,$comment, $login=''){
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/curl.class.php");
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/user.class.php");
@@ -499,6 +501,7 @@
             $this->error = $data->errorMessage;
             return false;
         }
+        */
         
         
     }

@@ -6,7 +6,9 @@ define("NO_KEEP_STATISTIC", true); // Не собираем стату по де
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/COrder/COrder.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
 use AGShop\Order as Order;
+use AGShop\SSAG as SSAG;
 use AGShop\Catalog as Catalog;
 
 $answer = ["error"=>""];
@@ -226,35 +228,6 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
             require_once($_SERVER["DOCUMENT_ROOT"]."/.integration/classes/order.class.php");
             // Если у заказа уже есть ЗНИ
             OrderSetZNI($order["ID"],"AG",$order["STATUS_ID"]);
-
-            /*
-            if(!CSaleOrder::CancelOrder($order["ID"],"Y","Передумал")){
-                //$answer["error"] .= "Заказ не был отменён.";
-            }
-            else{
-                //CSaleOrder::StatusOrder($order["ID"],"AG");
-            }
-            */
-
-            /*
-
-            Смена статуса и манебэк перенесены в success - ответ
-
-            $obOrder = new bxOrder();
-            $resOrder = $obOrder->addEMPPoints(
-                $order["SUM_PAID"],
-                "Отмена заказа Б-".$order["ID"]." в магазине поощрений АГ"
-            );
-            $moneyBack = true;
-            CSaleOrder::PayOrder($order["ID"],"N",true,false);
-            CSaleOrder::StatusOrder($order["ID"],"AG");
-            eventOrderStatusSendEmail(
-                $order["ID"], ($ename="AG"), ($arFields = array()), ($stat= "AG")
-            );
-
-            */
-
-            //CSaleOrder::Update($order["ID"], array("DATE_UPDATE"=>'00.00.0000 00:00:00'));
        }
    }
 }
@@ -281,7 +254,8 @@ else{
         
         $answer["product"] = $product;
         $answer["price"] = CCatalogProduct::GetOptimalPrice($offer_id);
-        $answer["account"] = CSaleUserAccount::GetByUserID(CUser::GetID(),"RUB");
+        $objSSAGAccount = new \SSAG\CSSAGAccount('',CUser::GetID());
+        $answer["account"] = $objSSAGAccount->balance();
     }
 }
 

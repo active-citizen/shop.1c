@@ -22,6 +22,9 @@
  * 
  */
 
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php");
+    use AGShop\SSAG as SSAG;
 
 
     class bxUser{
@@ -143,6 +146,8 @@
                 }
                 
                 // Если у пользователя нет счёта = создаём
+                /*
+                Depricated
                 if(!CSaleUserAccount::GetByUserID($arUser["ID"], "BAL")){
                     // Добавляем счёт
                     if(!$accountId = $objAccount->Add(array(
@@ -155,6 +160,7 @@
                         return false;
                     }
                 }
+                */
                 
             }
             $res = CUser::GetByLogin($bitrixLogin);
@@ -398,6 +404,7 @@
             $sCurrentSessionId =
                 $this->getEMPSessionId(
                 );
+
             if(
                 isset($profile["result"]) 
                 && $profile["result"] 
@@ -446,7 +453,8 @@
                     return $answer;
                 }
             }
-
+            $objSSAGAccount = new \SSAG\CSSAGAccount($profile["session_id"]);
+            $objSSAGAccount->update();
            
             if(CUser::isAuthorized()){
             }
