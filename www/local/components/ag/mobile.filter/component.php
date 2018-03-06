@@ -42,13 +42,13 @@
 
     $arResult["SORTING"] = [
         [
-            "NAME"=>"Цена (дорогие сначала)",
+            "NAME"=>"Цена (по убыванию)",
             "VALUE"=>"price_desc",
             "CODE"=>"PriceHigh",
             "CLASSNAME"=>"icon-aside-filter--price"
         ],
         [
-            "NAME"=>"Цена (дешевые сначала)",
+            "NAME"=>"Цена (по возрастанию)",
             "VALUE"=>"price_asc",
             "CODE"=>"PriceLow",
             "CLASSNAME"=>"icon-aside-filter--price"
