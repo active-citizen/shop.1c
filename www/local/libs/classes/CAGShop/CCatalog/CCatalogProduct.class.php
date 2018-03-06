@@ -329,7 +329,7 @@
             // При этом либо тех, у которых не стоит флаг "прятать без остатка"
             // либо с флагом, но и остатками
             $arSectionCond = [];
-            $sNow = date("Y-m-d");
+            $sNow = date("Y-m-d")." 00:00:00";
             $sQuery = "
                 SELECT
                     `product`.`NAME` as `NAME`,
@@ -392,7 +392,7 @@
                         )
                         OR
                         (
-                            `hide_date`.`VALUE`>='".$sNow."'
+                            `hide_date`.`VALUE`>'".$sNow."'
                         )
                     )
                     AND 
