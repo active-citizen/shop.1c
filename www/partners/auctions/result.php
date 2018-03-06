@@ -67,27 +67,38 @@ if(
         $arStoreBets["STORE"]["ID"]?>"/>
         <table class="table">
             <tr>
-                <th>Место в очереди</th>
-                <th>Телефон</th>
-                <th>ФИО</th>
-                <th>Цена заявки</th>
-                <th>Количество в заявке</th>
-                <th>Дата ставки</th>
-                <th>Дата итога</th>
-                <th>Дата исполнения</th>
-                <th>Остаток к моменту подхода очереди</th>
-                <th>Статус текущий</th>
-                <th>Статус предлагаемый</th>
-                <th>Номер заказа</th>
-                <th
+                <th style="width:32px;">ID</th>
+                <th style="width:50px;">Место в очереди</th>
+                <th style="width: 120px;">Телефон</th>
+                <th style="width: 250px;">ФИО</th>
+                <th style="width: 50px;">Цена заявки</th>
+                <th style="width:50px;">Количество в заявке</th>
+                <th style="width: 100px;">Дата ставки</th>
+                <th style="width: 100px;">Дата итога</th>
+                <th style="width: 100px;">Дата исполнения</th>
+                <? if(!$arParams["OFF_DATE"]):?>
+                    <th style="width:50px;">Остаток к моменту подхода очереди</th>
+                <? endif ?>
+                <th style="width: 100px;">Статус текущий</th>
+                <? if(!$arParams["OFF_DATE"]):?>
+                    <th style="width: 100px;">Статус предлагаемый</th>
+                <? endif ?>
+                <th style="width:80px;">Номер заказа</th>
+                <th>Комментарий</th>
+                <? if(!$arParams["OFF_DATE"]):?>
+                    <th style="width:50px;"></th>
+                    <th style="width:50px;"></th>
+                <? endif ?>
             </tr>
         <? $nNum=0;?>
         <? foreach($arStoreBets["BETS"] as $arBet):?>
         <? $nNum++?>
             <tr class="<? 
             if($arBet["AMOUNT"]>$arBet["ODD"] && $arBet["ODD"]):?>greed<? 
-            elseif($arBet["AMOUNT"]<=$arBet["ODD"]):?>win<? endif ?><?
-            if($arBet["STATUS"]=='error'): ?> error<? endif?>">
+            elseif($arBet["AMOUNT"]<=$arBet["ODD"] && $arBet["TRADE_STATUS"]=='win'):?>win<? endif ?><?
+            if($arBet["STATUS"]=='error'): ?> error<? endif?><?
+            if($arBet["STATUS"]=='reject'): ?> reject<? endif?>">
+                <td><?= $arBet["BET_ID"]?></td>
                 <td><?= $nNum?></td>
                 <td><?= $arBet["PHONE"]?></td>
                 <td><?= $arBet["FIO"]?></td>
@@ -96,12 +107,38 @@ if(
                 <td><?= $arBet["CTIME"]?></td>
                 <td><?= $arBet["OFF_DATE"]?></td>
                 <td><?= $arBet["CLOSE_DATE"]?></td>
-                <td><?= $arBet["ODD"]?></td>
+                <? if(!$arParams["OFF_DATE"]):?>
+                    <td><?= $arBet["ODD"]?></td>
+                <? endif ?>
                 <td><?= $arStatuses[$arBet["STATUS"]]?></td>
-                <td><?= $arStatuses[$arBet["TRADE_STATUS"]]?></td>
-                <td><?= $arBet["ORDER_ID"]?></td>
+                <? if(!$arParams["OFF_DATE"]):?>
+                    <td><?= $arStatuses[$arBet["TRADE_STATUS"]]?><? if(
+                        $arBet["AMOUNT"]>$arBet["ODD"] && $arBet["ODD"]
+                    ):?>(жмот)<? endif ?></td>
+                <? endif ?>
+                <td>
+                    <?if($arBet["ORDER_ID"]):?>
+                    <a href="/partners/orders/<?= $arBet["ORDER_ID"]?>/"
+                    target="_blank">
+                    Ц-<?= $arBet["ORDER_ID"]?>
+                    </a>
+                    <? endif ?>
+                </td>
+                <td><?= $arBet["COMMENT"]?></td>
+                <? if(!$arParams["OFF_DATE"]):?>
+                    <td><a href="/partners/auctions/edit.php?ID=<?= $arBet["BET_ID"]
+                    ?>&BACK_URL=<?= $_SERVER["REQUEST_URI"]?>">[править]</a></td>
+                    <td><a href="/partners/auctions/delete.php?ID=<?= $arBet["BET_ID"]
+                    ?>&BACK_URL=<?= $_SERVER["REQUEST_URI"]?>" 
+                    onclick="return confirm('Точно удалить?');">[Удалить]</a></td>
+                <? endif ?>
             </tr>
         <? endforeach ?>
+            <tr>
+                <td colspan="9"><b>Осталось нераспродано</b> : <b><?=
+                $arBet["ODD"]?></b></td>
+                <td></td>
+            </tr>
         </table>
         </form>
 
@@ -117,6 +154,9 @@ if(
 }
 .error{
     color: red;
+}
+.reject{
+    color: purple;
 }
 .status-win{
     color: green;

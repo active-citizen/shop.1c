@@ -23,6 +23,8 @@ $arAuctions = $objAuction->getAuctionProducts();
 <table class="table table-striped">
     <tr>
         <th>Поощрение</th>
+        <th>Дата начала</th>
+        <th>Дата окончания</th>
         <th>Идёт</th>
         <th>Окончен</th>
         <th>Дата подведения итогов</th>
@@ -32,6 +34,12 @@ $arAuctions = $objAuction->getAuctionProducts();
     <tr>
         <td>
             <?= $arAuction["PRODUCT_NAME"]?>
+        </td>
+        <td>
+            <?= $arAuction["START_DATE"]?>
+        </td>
+        <td>
+            <?= $arAuction["END_DATE"]?>
         </td>
         <td>
             <?= $arAuction["CURRENT"]?>

@@ -5,7 +5,6 @@ $(document).ready(function(){
 });
 
 function setBet(){
-
     if(!$('.ag-shop-card__places input:checked').length){
         riseError('Выберите склад получения');
         return false;
@@ -36,6 +35,22 @@ function setBet(){
 }
 
 function betCalc(){
+    if(
+        parseInt($('.ag-shop-item-card__points-count').html())
+        >
+        parseInt($('#bet-price').val())
+    ){
+        $('#bet-amount').parent().hide();
+        $('#confirm-cost').parent().hide();
+        $('#confirm-price #price-hint').show('fast');
+        setTimeout(function(){
+            $('#confirm-price #price-hint').hide('fast');
+        },2000);
+    }
+    else if(parseInt($('#bet-price').val())){
+        $('#bet-amount').parent().show();
+        $('#confirm-cost').parent().show();
+    }
     var cost = 
         parseInt($('#bet-price').val())
         *

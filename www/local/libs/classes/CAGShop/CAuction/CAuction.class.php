@@ -69,9 +69,14 @@ class CAuction extends \AGShop\CAGShop{
 
         @param $nOfferId
     */
-    function getWinners($nOfferId, $nUserId){
+    function getWinners($nOfferId, $nUserId = 0){
 
-        if(!$nUserId)$nUserId = \CUser::GetID();
+        $objCache = new \Cache\CCache("auction_winners",$nOfferId);
+        if($sCacheData = $objCache->get()){
+            return $sCacheData;
+        }
+ 
+//        if(!$nUserId)$nUserId = \CUser::GetID();
         $CDB = new \DB\CDB;
         // Получаем дату последнего подведения итогов
         $sQuery = "
@@ -137,6 +142,7 @@ class CAuction extends \AGShop\CAGShop{
             }
         }
 
+        $objCache->set($arResult);
         return $arResult; 
     }
 
@@ -186,7 +192,7 @@ class CAuction extends \AGShop\CAGShop{
 
        
         // Возвращаем баллы
-        if($arBet["STATUS"]=='lose'){
+        if($arBet["STATUS"]=='lose' || $arBet["STATUS"]=='reject'){
             $nPrice = $arBet["PRICE"];
             $nAmount = $arBet["AMOUNT"];
             $nSum = $nPrice*$nAmount;
@@ -197,7 +203,13 @@ class CAuction extends \AGShop\CAGShop{
                 ."Поощрение '".$arOffer["MAIN"]["NAME"]."'. "
                 ."Количество ".$nAmount.". "
                 ."Предложенная цена ".$nPrice." "
-                .\Utils\CLang::getPoints($nPrice);
+                .\Utils\CLang::getPoints($nPrice).". "
+                .(
+                    $arBet["COMMENT"]?
+                    "Комментарий: ".$arBet["COMMENT"].".":
+                    ""
+                )
+                ;
             $objSSAGAccount = new \SSAG\CSSAGAccount('',$arBet["USER_ID"]);
             if($objSSAGAccount->transaction($nSum, $sComment))
                 $this->closeBet($arBet["ID"]);
@@ -258,19 +270,20 @@ class CAuction extends \AGShop\CAGShop{
         if(!$arAuction["IS_FINISHED"])
             return $this->addError(["Аукцион не окончен"]);
 
-        if(!$arBets = $this->getAuctionBets($nOfferId,''))
+        if(!$arAllBets = $this->getAuctionBets($nOfferId,''))
             return $this->addError("Аукцион не содержит незакрытых ставок");
-        $arBets = array_pop($arBets);
-
 
         $nOffDateTimestamp = time();
         $sOffDateHuman = date("d.m.Y H:i:s", $nOffDateTimestamp);
         $sOffDateISO = date("Y-m-d H:i:s", $nOffDateTimestamp);
-        foreach($arBets["BETS"] as $arBet){
-            // Не менять статус ставки по которой итог подведён
-            if($arBet["OFF_DATE"])continue;
-            $this->setBetStatus($arBet["BET_ID"],$arBet["TRADE_STATUS"],$nOffDateTimestamp);
-        }
+        foreach($arAllBets as $arBets)
+            foreach($arBets["BETS"] as $arBet){
+                // Не менять статус ставки по которой итог подведён
+                if($arBet["OFF_DATE"])continue;
+                $this->setBetStatus(
+                    $arBet["BET_ID"],$arBet["TRADE_STATUS"],$nOffDateTimestamp
+                );
+            }
 
         return $sOffDateHuman;
     }
@@ -293,7 +306,8 @@ class CAuction extends \AGShop\CAGShop{
             "new"   =>  "Ставка сделана",
             "error" =>  "Ошибка оплаты",
             "win"   =>  "Победитель",
-            "lose"  =>  "Проигравший"
+            "lose"  =>  "Проигравший",
+            "reject"=>  "Отклонена",
         ];
     }
 
@@ -312,6 +326,8 @@ class CAuction extends \AGShop\CAGShop{
             SELECT
                 `bet`.`ID` as `BET_ID`,
                 `bet`.`USER_ID` as `USER_ID`,
+                `bet`.`COMMENT` as `COMMENT`,
+                `bet`.`ORDER_ID` as `ORDER_ID`,
                 DATE_FORMAT(`bet`.`CTIME`,'%d.%m.%Y %H:%i:%s') as `CTIME`,
                 DATE_FORMAT(`bet`.`OFF_TIME`,'%d.%m.%Y %H:%i:%s') as `OFF_DATE`,
                 DATE_FORMAT(`bet`.`CLOSE_DATE`,'%d.%m.%Y %H:%i:%s') as `CLOSE_DATE`,
@@ -357,7 +373,8 @@ class CAuction extends \AGShop\CAGShop{
                     ."
             ORDER BY
                 `bet`.`PRICE` DESC,
-                `bet`.`CTIME` ASC
+                `bet`.`CTIME` ASC,
+                `bet`.`ID` ASC
             
         ";
 
@@ -387,13 +404,26 @@ class CAuction extends \AGShop\CAGShop{
             $nStoreAmount = $arStoreBets["STORE"]["AMOUNT"];
             foreach($arStoreBets["BETS"] as $nBetId=>$arBet){
                 $arResult[$nStoreId]["BETS"][$nBetId]["ODD"] = $nStoreAmount;
-                if($arBet["AMOUNT"]<=$nStoreAmount){
+                if($arBet["STATUS"]=='reject'){
+                    $arResult[$nStoreId]["BETS"][$nBetId]["TRADE_STATUS"] =
+                       'lose';
+                }
+                elseif(
+                    $arBet["AMOUNT"]<=$nStoreAmount 
+                    && (
+                        $arBet["STATUS"]=='new'
+                        || $arBet["STATUS"]=='error'
+                    )
+                ){
 
                     $arResult[$nStoreId]["BETS"][$nBetId]["TRADE_STATUS"] =
                        'win';
                     $nStoreAmount-=$arBet["AMOUNT"];
                 }
-                else{
+                elseif(
+                    $arBet["AMOUNT"]>$nStoreAmount
+                    && $arBet["STATUS"]=='new'
+                ){
                     $arResult[$nStoreId]["BETS"][$nBetId]["TRADE_STATUS"] =
                     'lose';
                 }
@@ -512,6 +542,8 @@ class CAuction extends \AGShop\CAGShop{
             GROUP BY
                 `product`.`ID`,
                 `bet`.`OFF_TIME`
+            ORDER BY
+                `bet`.`CTIME` DESC
             LIMIT
                 $sLimitPart
         ";
@@ -548,6 +580,89 @@ class CAuction extends \AGShop\CAGShop{
     }
 
     /**
+        Редактирование ставки
+
+        @param $nBetId - ID ставки
+        @param $arFields - массив полеу для редактирования
+        \code
+        [
+            "AMOUNT"=>"Количество единиц в ставке",
+            "PRICE"=>"Цена за единицу",
+            "STORE_ID"=>"ID склада",
+            "STATUS_ID"=>"ID Статуса",
+            "COMMENT"=>"Комментарий"
+        ]
+        \endcode
+
+        @return true в случае успеха
+    */
+    function editBet($nBetId,$arFields = []){
+        $CDB = new \DB\CDB;
+        $CDB->update("int_bets",["ID"=>$nBetId],$arFields);
+        return true;
+    }
+
+    /**
+        Получение ставки
+
+        @param $nId - ID ставки
+
+        @return массив параметров ставки
+        \code
+        [
+            "ID"=>"ID ставки(число)"
+            "CTIME"=>"Дата совершения ставки",
+            "AMOUNT"=>"Количество единиц в ставке",
+            "PRICE"=>"Цена за единицу",
+            "STORE"=>"Информация о складе",
+            "STATUS"=>"Статус"
+        ]
+        \endcode
+    */
+    function getBet($nId){
+        if(!$nId)return $this->addError("Не указан ID ставки");
+        $CDB = new \DB\CDB;
+        $sQuery = "
+            SELECT
+                ID,CTIME,AMOUNT,PRICE,STORE_ID,
+                STATUS,COMMENT,USER_ID,OFFER_ID
+            FROM 
+                `int_bets`
+            WHERE
+                `ID`=".intval($nId)."
+           LIMIT
+                1
+        ";
+        $arResult = $CDB->sqlSelect($sQuery);
+        $arResult = array_pop($arResult);
+        
+        if(!$arResult)return [];
+        $objStore = new \Catalog\CCatalogStore;
+
+        // Узнаём что за товар
+        $objOffer = new \Catalog\CCatalogOffer;
+        $arOffer = $objOffer->getById($arResult["OFFER_ID"]);
+        
+        $arResult = [
+            "ID"=>$arResult["ID"],
+            "USER_ID"=>$arResult["USER_ID"],
+            "OFFER_ID"=>$arResult["OFFER_ID"],
+            "OFFER"=>$arOffer,
+            "CTIME"=>date("d.m.Y H:i:s",MakeTimeStamp(
+                $arResult["CTIME"],"YYYY-MM-DD HH:MI:SS"
+            )),
+            "AMOUNT"=>$arResult["AMOUNT"],
+            "STATUS"=>$arResult["STATUS"],
+            "STORE_ID"=>$arResult["STORE_ID"],
+            "PRICE"=>round($arResult["PRICE"]),
+            "COMMENT"=>$arResult["COMMENT"],
+            "STORE"=>$objStore->getById($arResult["STORE_ID"]),
+        ];
+
+        return $arResult;
+    }
+
+     /**
         Получение последней активной ставки
 
         @param $nProductId - ID товара по которому ищем ставку
@@ -569,20 +684,26 @@ class CAuction extends \AGShop\CAGShop{
         if(!$nUserId)return $this->addError("Не указан пользователь");
         if(!$nOfferId)return $this->addError("Не указан ID предложения");
         $CDB = new \DB\CDB;
-        $sQuery - "
+        $sQuery = "
             SELECT
-                ID,CTIME,AMOUNT,PRICE,STORE_ID,STATUS
+                ID,CTIME,AMOUNT,PRICE,STORE_ID,STATUS,COMMENT
             FROM 
                 `int_bets`
             WHERE
                 `USER_ID`=".intval($nUserId)."
                 AND `OFFER_ID` = ".intval($nOfferId)."
-                AND `OFF_TIME` IS NULL
+                AND 
+                (
+                    `OFF_TIME` IS NULL
+                    OR
+                    `CLOSE_DATE` IS NULL
+                )
             LIMIT
                 1
         ";
         $arResult = $CDB->sqlSelect($sQuery);
         $arResult = array_pop($arResult);
+        
         /*
         $arResult = $CDB->SearchOne("int_bets",[
             "USER_ID"=>intval($nUserId),
@@ -603,7 +724,8 @@ class CAuction extends \AGShop\CAGShop{
             "STATUS"=>$arResult["STATUS"],
             "STORE_ID"=>$arResult["STORE_ID"],
             "PRICE"=>round($arResult["PRICE"]),
-            "STORE"=>$objStore->getById($arResult["STORE_ID"])
+            "COMMENT"=>$arResult["COMMENT"],
+            "STORE"=>$objStore->getById($arResult["STORE_ID"]),
         ];
 
         return $arResult;
@@ -698,9 +820,11 @@ class CAuction extends \AGShop\CAGShop{
         @param $sStatus - новый статус ставки
         @param $nOffTimestamp - проставить дату закрытия ставки, если указано
     */
-    function setBetStatus($nId,$sStatus,$nOffTimestamp=''){
+    function setBetStatus($nId,$sStatus,$nOffTimestamp='',$sComment=''){
         $CDB = new \DB\CDB;
         $arFields = ["STATUS"=>$sStatus];
+        if($sComment)
+            $arFields["COMMENT"] = $sComment;
         if($nOffTimestamp)$arFields["OFF_TIME"] = 
             date("Y-m-d H:i:s", $nOffTimestamp);
         $CDB->update("int_bets",["ID"=>$nId],$arFields);

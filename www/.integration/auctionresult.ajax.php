@@ -51,6 +51,7 @@
     use AGShop\Auction as Auction;
 
     $objAuction = new \Auction\CAuction();
+    for($i=0;$i<3;$i++)
     if($nOfferId = $objAuction->getFinishedOffer())
         $objAuction->makeResult($nOfferId);
     

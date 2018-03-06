@@ -700,6 +700,7 @@ if(
     <h5><?= $arStoreInfo["STORE"]["TITLE"]?></h5>
     <table class="auction-winners">
         <tr>
+            <th style="width: 100px;">Дата ставки</th>
             <th>Пользователь</th>
             <th>Цена</th>
             <th>Кол-во</th>
@@ -707,6 +708,7 @@ if(
         <? foreach($arStoreInfo["BETS"] as $nBetId=>$arBet):?>    
         <tr <? if($arBet["USER_ID"]==$arResult["USER_INFO"]["ID"]):?>
         class="winner"<? endif ?>>
+            <td><?= $arBet["CTIME"]?></td>
             <td class="auction-user">
             <?= $arBet["USER_HASH"]?>
             <? if($arBet["USER_ID"]==$arResult["USER_INFO"]["ID"]):?>
@@ -816,11 +818,23 @@ if(
                 <? elseif(
                     $arResult["AUCTION"]
                     &&
-                    $arResult["AUCTION"]["IS_CURRENT"]
+                    (
+                        $arResult["AUCTION"]["IS_CURRENT"] 
+                        ||
+                        $arResult["AUCTION"]["IS_FINISHED"] 
+                    )
                     &&
                     $arResult["BET"]
                 ):?>
                   <div class="ag-shop-card__container">
+                    <? if($arResult["BET"]["STATUS"]=='reject'):?>
+                        <h3 class="reject">
+                            Ваша ставка отклонена.
+                            <div>
+                            Причина: <?= $arResult["BET"]["COMMENT"] ?>
+                            </div>
+                        </h3>
+                    <? endif?>
                     <div class="ag-shop-card__requirements">
                     Вы сделали ставку.<br/>
                     Дата ставки: <?= $arResult["BET"]["CTIME"]?><br/>
@@ -834,7 +848,9 @@ if(
                     Заявленное получение: <?= $arResult["BET"]["STORE"]["TITLE"]?><br/>
                     <br/>
                     <? /*print_r($arResult["BET"])*/?> 
+                    <? if($arResult["BET"]["STATUS"]!='reject'):?>
                     Ожидайте окончания торгов
+                    <? endif ?>
                     </div>
                   </div>
                 <? elseif(
@@ -979,6 +995,11 @@ if(
             <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-price">
                 <input id="bet-price" class="bet-confirm-num" value=""
                 change="return checkBetPriceInput()">
+                <div class="ag-shop-modal__alert" id="price-hint" style="display: none;">
+                <i class="ag-shop-icon
+                      ag-shop-icon--attention"></i>
+                      <span>Предлагаемая цена не может быть меньше минимальной</span>
+                </div>
             </div>
           </div>
           <div class="ag-shop-modal__row">
@@ -1108,3 +1129,22 @@ if(
         <? else: ?>
             <h3>Нет доступных предложений</h3>
         <? endif ?>
+<style>
+#confirm-price{
+    position: relative;
+}
+#price-hint{
+    margin-left: 15px;
+    margin-top: 5px;
+    max-width: 200px;
+    min-width: 200px;
+    min-height: 50px;
+    position: absolute;
+    color: #b80d0d;
+    z-index: 9999;
+    font-size: 13px;
+    padding-right: 50px;
+    top: 10px;
+    left: 80px;
+}
+</style>

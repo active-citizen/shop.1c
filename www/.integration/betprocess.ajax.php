@@ -51,7 +51,8 @@
     use AGShop\Auction as Auction;
 
     $objAuction = new \Auction\CAuction();
-    $objAuction->processNextBet();
+    for($i=0;$i<10;$i++)
+        $objAuction->processNextBet();
     require(
         $_SERVER["DOCUMENT_ROOT"]
         ."/bitrix/modules/main/include/epilog_after.php"
