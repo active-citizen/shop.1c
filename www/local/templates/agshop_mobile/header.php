@@ -53,6 +53,7 @@ if(
     $APPLICATION->AddHeadScript("/local/assets/scripts/scripts.js");
     $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
     $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
+    $APPLICATION->AddHeadScript("/local/assets/scripts/auction.js");
     $APPLICATION->AddHeadScript("/local/assets/scripts/faq.js");
     
     setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");

@@ -165,6 +165,22 @@
             )
         )->Fetch();
         define("SPECIALOFFER_PROPERTY_ID",$arr["ID"]);
+        // Определяем ID свойства Дата начала аукциона
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"AUCTION_START_DATE"
+            )
+        )->Fetch();
+        define("AUCTION_START_DATE_PROPERTY_ID",$arr["ID"]);
+        // Определяем ID свойства Дата конца аукциона
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"AUCTION_END_DATE"
+            )
+        )->Fetch();
+        define("AUCTION_START_DATE_PROPERTY_ID",$arr["ID"]);
         
         // Определяем ID групп Операторы МФЦ и Партнёры
         define("PARTNERS_GROUP_ID",9);

@@ -89,6 +89,14 @@
                     Настройки
                 </a>
             </li>
+            <li class="<?
+            if(preg_match("#^/partners/auctions/#",$_SERVER["REQUEST_URI"]))echo
+            "active";?>">
+                <a href="/partners/auctions/">
+                <span class="glyphicon glyphicon-bullhorn"></span>
+                    Аукционы
+                </a>
+            </li>
             <? endif ?>
         <? endif ?>
         <li style="float:right;">

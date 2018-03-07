@@ -17,6 +17,7 @@
         var $arProfile = [];
 
         var $nAGID = 0;
+        var $sHash = '';
         var $nBitrixUserId = 0;
         var $sDomain = '';
         var $sPort = '';
@@ -39,7 +40,16 @@
                 !$this->nAGID 
                 && $sSessionId
                 && $this->nAGID = $this->__getAGIDFromAGProfile($sSessionId)
-            )$this->__setAGIDFromBitrixUser($this->nAGID, $nUserId);
+            ){
+                $this->__setAGIDFromBitrixUser($this->nAGID, $nUserId);
+            }
+            elseif(
+                !$this->sHash 
+                && $sSessionId
+                && $this->nAGID = $this->__getAGIDFromAGProfile($sSessionId)
+            ){
+                $this->__setAGHASHFromBitrixUser($this->sHash, $nUserId);
+            }
             
             return true;
         }
@@ -52,10 +62,12 @@
                 ($by="personal_country"), ($order="desc"),
                 ["ID"=>$nUserId],
                 [
-                    "SELECT"=>["UF_USER_AGID"],
+                    "SELECT"=>["UF_USER_AGID","UF_USER_HASH"],
                     "NAV_PARAMS"=>["nTopCount"=>1]
                 ]
             )->Fetch();
+            if(isset($arUser["UF_USER_HASH"]))
+                $this->sHash = $arUser["UF_USER_HASH"];
             if(isset($arUser["UF_USER_AGID"]))return $arUser["UF_USER_AGID"];
             return false;
         }
@@ -64,6 +76,12 @@
             if(!$nUserId)$nUserId = \CUser::GetID();
             $objUser = new \CUser;
             $objUser->Update($nUserId, ["UF_USER_AGID"=>$nAgId]);
+        }
+
+        private function __setAGHASHFromBitrixUser($sHash, $nUserId = 0){
+            if(!$nUserId)$nUserId = \CUser::GetID();
+            $objUser = new \CUser;
+            $objUser->Update($nUserId, ["UF_USER_HASH"=>$sHash]);
         }
 
         /**
@@ -90,6 +108,7 @@
                 ||
                 !intval($arAnswer["result"]["ag_id"])
             )return $this->addError("Не указан ag_id в ответе СС АГ");
+            $this->sHash = $arAnswer["result"]["hash"];
             
             return $arAnswer["result"]["ag_id"];
         }

@@ -485,18 +485,27 @@
         if(trim($arProduct["АукционДатаНачала"])){
             $tmp2 = date_parse($arProduct["АукционДатаНачала"]);
             $arProduct["АукционДатаНачала"] = date(
-                "d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"])
+                "d.m.Y H:i:s",
+                mktime(
+                    $tmp2["hour"],$tmp2["minute"],$tmp2["second"],
+                    $tmp2["month"],$tmp2["day"],$tmp2["year"]
+                )
             );
             $arProperties["AUCTION_START_DATE"] = $arProduct["АукционДатаНачала"];
         }
         else{
             $arProperties["AUCTION_START_DATE"] = '';
         }
+
         // Дата завершения аукциона
         if(trim($arProduct["АукционДатаЗавершения"])){
             $tmp2 = date_parse($arProduct["АукционДатаЗавершения"]);
-            $arProduct["АукционДатаНачала"] = date(
-                "d.m.Y",mktime(0,0,0,$tmp2["month"],$tmp2["day"],$tmp2["year"])
+            $arProduct["АукционДатаЗавершения"] = date(
+                "d.m.Y H:i:s",
+                mktime(
+                    $tmp2["hour"],$tmp2["minute"],$tmp2["second"],
+                    $tmp2["month"],$tmp2["day"],$tmp2["year"]
+                )
             );
             $arProperties["AUCTION_STOP_DATE"] =
                $arProduct["АукционДатаЗавершения"];

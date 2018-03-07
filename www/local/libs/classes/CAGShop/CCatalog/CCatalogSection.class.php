@@ -147,7 +147,13 @@
         }
         
         function getById($nId){
-            return \CIBlockSection::GetList(
+            $objCache = new 
+                \Cache\CCache("card_section_common_info_by_id",$nId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
+            $arResult = \CIBlockSection::GetList(
                 [],[
                     "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
                     "ID"=>$nId
@@ -155,10 +161,18 @@
                     "nTopCount"=>1
                 ]
             )->GetNext();
+            $objCache->set($arResult);
+            return $arResult;
         }
         
         function getByCode($sCode){
-            return \CIBlockSection::GetList(
+            $objCache = new
+            \Cache\CCache("card_section_common_info_by_code",$sCode);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
+            $arResult = \CIBlockSection::GetList(
                 [],[
                     "IBLOCK_ID" =>  $this->IBLOCKS["CATALOG"],
                     "CODE"=>$sCode
@@ -166,13 +180,23 @@
                     "nTopCount"=>1
                 ]
             )->GetNext();
+            $objCache->set($arResult);
+            return $arResult;
         }
 
         function getBriefById($nId){
-            return \CIblockSection::GetList([],[
+            $objCache = new
+            \Cache\CCache("card_section_brief_by_id",$nId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
+            $arResult = \CIblockSection::GetList([],[
                 "IBLOCK_ID"=>CATALOG_IB_ID,
                 "ID"=>$nId
             ],false,["ID","NAME","CODE","IBLOCK_SECTION_ID"])->Fetch();
+            $objCache->set($arResult);
+            return $arResult;
         }
         
     }

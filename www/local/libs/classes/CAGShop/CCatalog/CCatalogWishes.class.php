@@ -1,7 +1,9 @@
 <?php
     namespace Catalog;
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
+    require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
     use AGPhop as AGPhop;
+    use AGShop\CCache as CCache;
     
     class CCatalogWishes extends \AGShop\CAGShop{
         
@@ -15,11 +17,19 @@
             @param $nId - ID элемента каталога
         */
         function getCountByCatalogId($nId){
+            $objCache = new \Cache\CCache("card_wishes",$nId);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
             $res1 = \CIBlockElement::GetList([],$arFilter = [
                 "IBLOCK_ID"=>$this->IBLOCKS["WISHES"], 
                 "PROPERTY_WISH_PRODUCT"=>$nId
             ],false, false);
-            return $res1->SelectedRowsCount();
+            $arResult = $res1->SelectedRowsCount();
+            $objCache->set($arResult);
+            
+            return $arResult;
         }
         
         /**

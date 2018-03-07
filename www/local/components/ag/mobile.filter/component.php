@@ -8,16 +8,7 @@
         ."/local/libs/classes/CAGShop/CCatalog/CCatalogProductTag.class.php"
     );
 
-    $arResult["GRID"] = 
-        isset($_REQUEST["productGridCheckbox"]) || (
-            isset($_COOKIE["smallicons"])
-            &&
-            $_COOKIE["smallicons"]
-        )
-        ?
-        true
-        :
-        false;
+    $arResult["GRID"] = $arParams["smallicons"];
     $arResult["HIT"] = isset($_REQUEST["productHitCheckbox"])?true:false;
     $arResult["HIT"] = 
         isset($arParams["filter"]['hit'])
@@ -38,17 +29,16 @@
         &&
         $arParams["filter"]['sale']
         ?true:$arResult["SALE"];
-        
-
+    
     $arResult["SORTING"] = [
         [
-            "NAME"=>"Цена (дорогие сначала)",
+            "NAME"=>"Цена (по убыванию)",
             "VALUE"=>"price_desc",
             "CODE"=>"PriceHigh",
             "CLASSNAME"=>"icon-aside-filter--price"
         ],
         [
-            "NAME"=>"Цена (дешевые сначала)",
+            "NAME"=>"Цена (по возрастанию)",
             "VALUE"=>"price_asc",
             "CODE"=>"PriceLow",
             "CLASSNAME"=>"icon-aside-filter--price"
