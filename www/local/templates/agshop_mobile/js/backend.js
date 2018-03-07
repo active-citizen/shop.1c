@@ -7,14 +7,14 @@ $(document).ready(function(){
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('category'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     // prefetch: '../json/category.json'
-    prefetch: '/catalog/index.mobile.sections.php?'
+    prefetch: '/catalog/index.mobile.sections.php'
   });
 
   var productItems = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('item'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     // prefetch: '../json/product-items.json'
-    prefetch: '/catalog/index.mobile.items.php?'
+    prefetch: '/catalog/index.mobile.items.php'
   });
 
   $('#multiple-datasets .typeahead').typeahead({

@@ -29,6 +29,7 @@
         $arResult[] = [
             "category"=>$arTag["NAME"],
             "url"=>"/catalog/?productInterest$sKey=".$arTag["ID"]
+                ."&mobileFiltersSubmit="
         ];
     }
 
@@ -43,21 +44,30 @@
             "replace_other" =>  ""
         ]);
         
+        $arStore["TITLE"] = str_replace("«","",$arStore["TITLE"]);
+        $arStore["TITLE"] = str_replace("»","",$arStore["TITLE"]);
+        $arStore["TITLE"] = str_replace("\"","",$arStore["TITLE"]);
+        $arStore["TITLE"] = str_replace("'","",$arStore["TITLE"]);
+        $arStore["TITLE"] = str_replace("-"," ",$arStore["TITLE"]);
         $arResult[] = [
             "category"=>$arStore["TITLE"],
             "url"=>"/catalog/?productDelivery$sKey=".$arStore["ID"]
+                ."&mobileFiltersSubmit="
         ];
     }
 
     // Фильтр по флагам
     $arResult[] = [
-        "category"=>"Хит", "url"=>"/catalog/?productHitCheckbox=1"
+        "category"=>"Хит",
+        "url"=>"/catalog/?productHitCheckbox=1&mobileFiltersSubmit="
     ];
     $arResult[] = [
-        "category"=>"Новинки", "url"=>"/catalog/?productNewCheckbox=2"
+        "category"=>"Новинки",
+        "url"=>"/catalog/?productNewCheckbox=2&mobileFiltersSubmit="
     ];
     $arResult[] = [
-        "category"=>"Акции", "url"=>"/catalog/?productSaleCheckbox=3"
+        "category"=>"Акции",
+        "url"=>"/catalog/?productSaleCheckbox=3&mobileFiltersSubmit="
     ];
     
 
