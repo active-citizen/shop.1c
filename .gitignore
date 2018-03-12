@@ -38,6 +38,7 @@ logs/agapi/*
 
 
 # Игнорировать временные файл документации
+www/local/libs/classes/doc/
 docs/*.toc
 docs/*.htoc
 docs/*.log

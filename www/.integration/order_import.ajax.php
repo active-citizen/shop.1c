@@ -701,7 +701,8 @@
                     )
                 )
                 foreach($basketProducts as $productId=>$item){
-                    orderStorageChange( $productId, $arStore["ID"], -1);
+                    orderStorageChange( $productId, $arStore["ID"],
+                    -$item['count']);
                 }
                
                 // Прописываем дату истечения бронирования

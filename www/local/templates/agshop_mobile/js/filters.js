@@ -140,7 +140,7 @@ $(function() {
         defaultCheckboxDestination.empty();
         // Set checkboxes/radio titles to destination
         for (var i=0; i<defaultCheckboxTitleArray.length; i++) {
-          defaultCheckboxDestination.append("<span class='mobile-aside-dropdown__item'>"+defaultCheckboxTitleArray[i]+"</span>")
+            defaultCheckboxDestination.append("<span class='mobile-aside-dropdown__item'>"+defaultCheckboxTitleArray[i]+"</span>")
         }
     });
   }
@@ -197,11 +197,44 @@ $(function() {
     e.preventDefault();
     document.location.hash='';
     // Reset form using JS
-    // $("#mobileAsideFilterForm")[0].reset();
-    // Reset form to default state
-    resetCheckboxState();
-    // Set dropdown labels
-    defaultCheckboxState();
+    $("#mobileAsideFilterForm")[0].reset();
+    // Set checkboxes in default state
+        // Обнуляем фильтр интересов
+        $('span[data-dropdown="filter-interests"]')
+            .find('.mobile-aside-dropdown__item').remove();
+        $('span[data-dropdown="filter-interests"]')
+            .html('<span class="mobile-aside-dropdown__item">Все</span>');
+        $('[data-dropdown="filter-interests"] input').prop('checked',false);
+        $('[data-dropdown="filter-interests"] .dropdown-checkbox-all').click();
+        $('[data-dropdown="filter-interests"] input#productInterestVse').prop('checked',true);
+
+        // Обнуляем фильтр складов
+        $('span[data-dropdown="filter-delivery"]')
+            .find('.mobile-aside-dropdown__item').remove();
+        $('span[data-dropdown="filter-delivery"]')
+            .html('<span class="mobile-aside-dropdown__item">Все</span>');
+        $('[data-dropdown="filter-delivery"] input').prop('checked',false);
+        $('[data-dropdown="filter-delivery"] inout#productDeliveryAll').prop('checked',true);
+        $('[data-dropdown="filter-delivery"] .dropdown-checkbox-all').click();
+
+        // Обнуляем фильтр по цене
+        $('.mobile-aside-price input').val('');
+
+        // Обнуляем флаги хит, новинка, акция
+        $('.mobile-aside-form-block--last input').prop('checked',false);
+
+        // Сброс сортировок
+        
+        $('.mobile-aside-dropdown-content input[type="radio"]').prop('checked',false);
+        $('.mobile-aside-dropdown-content input[id="productSortSortPriceFresh"]').prop('checked',true);
+        $('span[data-dropdown="filter-sort"]')
+            .html('<span class="mobile-aside-dropdown__item">Дата обновления</span>');
+
+
+        // Сброс вида плиток
+        /*
+        $('input[id="productGridCheckbox"]').prop('checked',false);
+        */
   });
 
   $('#mobileFiltersSubmit').on('click',function (e) {

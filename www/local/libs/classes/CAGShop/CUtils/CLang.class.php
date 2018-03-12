@@ -1,5 +1,5 @@
 <?php
-    namespace Util;
+    namespace Utils;
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 
     use AGShop as AGShop;

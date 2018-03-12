@@ -56,7 +56,10 @@
     $arResult["PAGE"] = $arParams["pagination"]["page"];
     $arResult["ONPAGE"] = $arParams["pagination"]["onpage"];
     
-    if(isset($_REQUEST["productGridCheckbox"]))$arResult["SMALL_TEASERS"] = 1;
+    if(
+        isset($arParams["smallicons"])
+        && intval($arParams["smallicons"])
+    )$arResult["SMALL_TEASERS"] = 1;
     
     
     $sUrl = $_SERVER["QUERY_STRING"];

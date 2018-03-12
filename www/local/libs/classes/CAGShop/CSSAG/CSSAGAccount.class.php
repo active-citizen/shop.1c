@@ -2,11 +2,11 @@
     namespace SSAG;
     require_once(realpath(__DIR__)."/CSSAG.class.php");
     require_once(realpath(__DIR__."/..")."/CCurl/CCurlSimple.class.php");
-    require_once(realpath(__DIR__."/..")."/CUtil/CLang.class.php");
+    require_once(realpath(__DIR__."/..")."/CUtils/CLang.class.php");
     require_once(realpath(__DIR__."/..")."/CLog/CSSAGLog.class.php");
     
     use AGShop as AGShop;
-    use AGShop\Util as Util;
+    use AGShop\Utils as Utils;
     use AGShop\SSAG as SSAG;
     use AGShop\Curl as Curl;
     use AGShop\Log as Log; 
@@ -72,7 +72,7 @@
             );
 
             $arAnswer["result"]["title"] = number_format(
-                $nBalance,'0',',',' ')." ".\Util\CLang::getPoints($nBalance);
+                $nBalance,'0',',',' ')." ".\Utils\CLang::getPoints($nBalance);
 
             
             return $arAnswer["result"];

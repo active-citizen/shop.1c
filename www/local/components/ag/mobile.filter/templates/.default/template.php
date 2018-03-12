@@ -1,4 +1,4 @@
-	<aside class="mobile-aside-filter">
+<aside class="mobile-aside-filter">
 		<div class="mobile-aside-filter-wrapper">
 			<form id="mobileAsideFilterForm">
 				<div class="mobile-aside-form">

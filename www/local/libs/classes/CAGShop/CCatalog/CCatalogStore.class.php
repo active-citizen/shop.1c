@@ -2,9 +2,11 @@
     namespace Catalog;
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
+    require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
 
     use AGShop;
     use AGShop\DB as DB;
+    use AGShop\CCache as CCache;
     
     class CCatalogStore extends \AGShop\CAGShop{
         
@@ -41,16 +43,29 @@
         
         function fetch($nId){
             $nId = intval($nId);
+
+            $objCache = new \Cache\CCache("storeInfo",$nId);
+            if($sCacheData = $objCache->get()){
+                $this->arStoreInfo = $sCacheData;
+                return true;
+            }
+
             $CDB = new \DB\CDB;
             $arResult = $CDB->searchOne(\AGShop\CAGShop::t_catalog_store,[
                 "ID"=>$nId
             ]);
             if(!$arResult)return false;
             $this->arStoreInfo = $arResult;
+            $objCache->set($arResult);
             return true;
         }
         
         function get(){
+            return $this->arStoreInfo;
+        }
+
+        function getById($nId){
+            $this->fetch($nId);
             return $this->arStoreInfo;
         }
         
@@ -157,6 +172,11 @@
             @param $bWithoutAddress - выводить без складов с пустым адресом
         */
         function getForSite($bWithoutAddress = true){
+            $objCache = new \Cache\CCache("Allstores",0);
+            if($sCacheData = $objCache->get()){
+                return $sCacheData;
+            }
+
             \CModule::IncludeModule('catalog');
             $arFilter = [];
             if($bWithoutAddress)$arFilter["!ADDRESS"] = '';
@@ -176,7 +196,7 @@
             //    if(!$res->result->num_rows)continue;
                 $arResult["stores"][] = $arStore;
             }
-
+            $objCache->set($arResult);
             return $arResult;
             
         }

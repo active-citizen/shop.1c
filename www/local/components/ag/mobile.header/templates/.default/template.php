@@ -43,8 +43,10 @@
                 $bIsSorted = false;
                 if(
                     isset($arParams["filter"]["interest"]) 
+                    &&
+                    isset($arParams["filter"]["interest"][0])
                     && 
-                    $arParams["filter"]["interest"]!=0)$bIsSorded=true;
+                    $arParams["filter"]["interest"][0]!=0)$bIsSorded=true;
                 if(
                     !$bIsSorted
                     &&
@@ -52,16 +54,23 @@
                     &&
                     $arParams["filter"]["store"][0]!=333
                 )$bIsSorted = true;
-                if(
-                    !$bIsSorted
-                    &&
-                    isset($arParams["filter"]["store"][0])
-                    &&
-                    isset($arParams["filter"]["interest"])
-                    &&
-                    count($arParams["filter"])>2
+                
 
-                )$bIsSorted = true;
+                if(!$bIsSorted)foreach($arParams["filter"] as $k=>$v){
+                    if($k=='section_code')continue;
+                    if($k=='store' && count($v) && (count($v)>1 || $v[0]!=333)){
+                        $bIsSorted = true;
+                        break;
+                    }
+                    if($k=='interest' && count($v) && (count($v)>1 || $v[0]!=0)){
+                        $bIsSorted = true;
+                        break;
+                    }
+                    if(trim($v)){
+                        $bIsSorted = true;
+                        break;
+                    }
+                }
                 ?>
 				<div class="mobile-header-right">
 					<!--  Когда добавлены какие-то фильтры к странице, добавить для кнопки класс .sorted-->

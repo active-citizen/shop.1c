@@ -837,3 +837,45 @@ div.amounter--off{
     color: white;
 }
 */
+
+.auction .date{
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.bet-confirm-num{
+    color: rgba(0,122,108,1);
+    height: 32px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    width: 110px;
+}
+
+.setbet{
+    text-align: center;
+}
+
+table.auction-winners{
+    width: 100%;
+}
+
+table.auction-winners th{
+    background-color: rgba(0,122,108,1);
+    color: white;
+}
+
+
+table.auction-winners td.auction-amount{
+    width: 70px;
+    text-align: center;
+}
+
+table.auction-winners td.auction-price{
+    width: 70px;
+    text-align: center;
+}
+
+table.auction-winners .winner{
+    background-color: rgba(255,194,14,1);
+}

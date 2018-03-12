@@ -75,6 +75,14 @@
         }
 
         /**
+            Очистка ключа
+
+        */
+        function clear(){
+            return $this->objMemcached->delete($this->sFullKey);
+        }
+
+        /**
             Очистка текущей группы ключей
         */
         function clearAll(

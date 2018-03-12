@@ -1,0 +1,63 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы со ставками
+     */
+    class int_filter_settings extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("DROP TABLE IF EXISTS `int_filter_settings_filter`");
+            $DB->Query("DROP TABLE IF EXISTS `int_filter_settings_sorting`");
+            $DB->Query("DROP TABLE IF EXISTS `int_filter_settings_smallicon`");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_filter_settings_filter`(
+                    `ID` INT(11) NOT NULL AUTO_INCREMENT,
+                    `USER_ID` INT(11) NOT NULL,
+                    `SECTION_CODE` VARCHAR(32), 
+                    `FILTER` TEXT,
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `USER_ID`(`USER_ID`),
+                    KEY `SECTION_CODE`(`SECTION_CODE`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
+                COMMENT '';
+            ";
+            $DB->Query($sQuery);
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_filter_settings_sorting`(
+                    `ID` INT(11) NOT NULL AUTO_INCREMENT,
+                    `USER_ID` INT(11) NOT NULL,
+                    `SORTING` TEXT, 
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `USER_ID`(`USER_ID`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
+                COMMENT '';
+            ";
+            $DB->Query($sQuery);
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_filter_settings_smallicon`(
+                    `ID` INT(11) NOT NULL AUTO_INCREMENT,
+                    `USER_ID` INT(11) NOT NULL,
+                    `SMALL_ICONS` TINYINT(1) DEFAULT '0',
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `USER_ID`(`USER_ID`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
+                COMMENT '';
+            ";
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$int_filter_settings = new int_filter_settings();
+// Откатываем, если неудачно
+if(!$int_filter_settings->Run())$int_filter_settings->RollBack();

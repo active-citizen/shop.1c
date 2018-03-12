@@ -54,7 +54,7 @@ class COrder extends \AGShop\CAGShop{
     /**
         Добавление к заказу торгового предложения
     */
-    function addSKU($nSKUId, $nStoreId, $nCount){
+    function addSKU($nSKUId, $nStoreId, $nCount, $nPrice = 0){
         $nSKUId = intval($nSKUId);
         $nStoreId = intval($nStoreId);
         $nCount = intval($nCount);
@@ -96,7 +96,8 @@ class COrder extends \AGShop\CAGShop{
         $this->arSKUs[] = [
             "SKU"       => $arSKU,
             "AMOUNT"    => $nCount,
-            "STORE_ID"  => $nStoreId
+            "STORE_ID"  => $nStoreId,
+            "PRICE"     => $nPrice
         ];
         return true;
     }
@@ -114,6 +115,85 @@ class COrder extends \AGShop\CAGShop{
         $CDB->delete(\AGShop\CAGShop::t_sale_basket,["ORDER_ID"=>$nOrderId]);
         $CDB->delete(\AGShop\CAGShop::t_sale_order_props_value,["ORDER_ID"=>$nOrderId]);
         return true;
+    }
+
+
+    /**
+        Создание аукционного заказа
+
+        @param $nUserId - пользователь, на ккотого заводим заказ
+        @param $nOfferId - ID предложения
+        @param $nStoreId - ID склада
+        @param $nPrice - цена за единицу
+        @param $nAmount - количество
+    */
+    function createFromAuction($nUserId, $nOfferId, $nStoreId, $nPrice, $nAmount){
+
+        $nTotalSum = $nPrice * $nAmount;
+        $CDB = new \DB\CDB;
+        $objCCatalogStore = new \Catalog\CCatalogStore;
+        $objCCatalogOffer = new \Catalog\CCatalogOffer;
+
+        // Снимаем нужное количество со склада
+        $objCCatalogStore->move( $nOfferId, $nStoreId, -$nAmount);
+        
+        $res = \CSaleDelivery::GetList(array(),array("ACTIVE"=>"Y"));
+        if(!$delivery = $res->GetNext()){
+            $this->addError("Нет активных служб доставки");
+            return false;
+        }
+
+        // Добавляем к заказу торговое предложение
+        $this->addSKU($nOfferId, $nStoreId, $nAmount, $nPrice);
+        // Добавляем заказ 
+        $sInitialStatusId = 'AA';
+        
+        $arFields = [];
+        $arFields["LID"] = SITE_ID;
+        $arFields["PERSON_TYPE_ID"] = 1;
+        $arFields["STORE_ID"] = $nStoreId;
+        $arFields["PAYED"] = 'N';
+        $arFields["CANCELED"] = "N";
+        $arFields["STATUS_ID"] = $sInitialStatusId;
+        $arFields["PRICE"] = $nTotalSum;
+        $arFields["CURRENCY"] = "BAL";
+        $arFields["USER_ID"] = $nUserId;
+        //$arFields["PAY_SYSTEM_ID"] = $paySystem["ID"];
+        $arFields["PRICE_DELIVERY"] = 0;
+        $arFields["DELIVERY_ID"] = $delivery["ID"];
+        $arFields["DISCOUNT_VALUE"] = 0;
+        $arFields["TAX_VALUE"] = 0;
+        $arFields["USER_DESCRIPTION"] = "";
+        $objCSaleOrder = new \CSaleOrder;
+        if(!$nOrderId = $objCSaleOrder->Add($arFields)){
+            $this->addError("Не удалось добавить заказ: "
+                .$resCSaleOrder->LAST_ERROR);
+            // Возвращаем всё что взяли на склад
+            $this->returnToStore();
+            return false;
+        }
+        
+        $this->setParam("Id",$nOrderId);
+        $this->setParam("Num","Ц-".$nOrderId);
+        $sOrderNum = $this->getParam("Num");
+        $this->setParam("StatusId",$sInitialStatusId);
+        // Сохраняем параметры заказа
+        $this->saveParams();
+        $this->linkBasket($arSKUs);
+        
+        // Обновляем свойства заказа из свойств товара (для поиска)
+        $this->orderPropertiesUpdate();
+        
+        // Обновляем индексную таблицу
+        $objCSync = new \Sync\CSync;
+        $objCSync->syncUser($nUserId);
+        $nOrderId = $this->getParam("Id");
+        if($nOrderId)$objCSync->syncOrder($nOrderId);
+
+        $this->setZNI('N','AA');
+        
+        if(!$this->getErrors())return $nOrderId;
+        return true; 
     }
 
     function createFromSite($sCustomNum = ''){
@@ -722,7 +802,12 @@ class COrder extends \AGShop\CAGShop{
                     "PRODUCT_ID"    =>$arSKUs["SKU"]["OFFER"]["ID"], 
                     "QUANTITY"      =>$arSKUs["AMOUNT"], 
                     "NAME"          =>$arSKUs["SKU"]["OFFER"]["NAME"], 
-                    "PRICE"         =>$arSKUs["SKU"]["PRODUCT_PROPERTIES"]
+                    "PRICE"         =>
+                        isset($arSKUs["PRICE"]) && $arSKUs["PRICE"]
+                        ?
+                        $arSKUs["PRICE"]
+                        :
+                        $arSKUs["SKU"]["PRODUCT_PROPERTIES"]
                         ["MINIMUM_PRICE"], 
                     "DATE_UPDATE"   =>date("Y-m-d H:i:s"), 
                     "CURRENCY"      =>"BAL", 
