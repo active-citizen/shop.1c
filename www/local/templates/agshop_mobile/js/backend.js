@@ -6,15 +6,15 @@ $(document).ready(function(){
   var productCategories = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('category'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: '../json/category.json'
-    // prefetch: '/catalog/index.mobile.sections.php?'
+   // prefetch: '../json/category.json'
+    prefetch: '/catalog/index.mobile.sections.php?'
   });
 
   var productItems = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('item'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: '../json/product-items.json'
-    // prefetch: '/catalog/index.mobile.items.php?'
+    //prefetch: '../json/product-items.json'
+    prefetch: '/catalog/index.mobile.items.php?'
   });
 
   $('#multiple-datasets .typeahead').typeahead({
@@ -52,7 +52,11 @@ $(document).ready(function(){
     }
   }
 
-  );
+  ).bind("typeahead:selected", function(obj, datum, name) {
+      // Обработка выбора пункта поиска
+      if(datum.url)document.location.href = datum.url;
+  });
+
 
 
   // write here backend scripts
