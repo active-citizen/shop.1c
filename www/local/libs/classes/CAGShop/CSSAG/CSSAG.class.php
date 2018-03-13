@@ -138,16 +138,20 @@
         function checkAnswer($sAnswer){
             $objAnswer = json_decode($sAnswer);
             if(!$objAnswer)return $this->addError(
-                'Ошибка парсинга JSON ответа CCАГ'
+                'Ошибка парсинга JSON ответа'
             );
             $arAnswer = json_decode(json_encode((array)$objAnswer), TRUE);        
 
             if(!isset($arAnswer["errorCode"]))return $this->addError(
-                "Не указан код ошибки в ответе СС АГ"
+                "Не указан код ошибки в ответе"
             );
             
-            if(isset($arAnswer["errorCode"])&&$arAnswer["errorCode"]!=0
-            )return $this->addError("Ошибка [".$arAnswer["errorCode"]."] СС АГ ");
+            if(
+                isset($arAnswer["errorCode"])
+                &&
+                $arAnswer["errorCode"]!=0
+            )return $this->addError("Ошибка [".$arAnswer["errorCode"]
+                ."] ".$arAnswer["errorMessage"]);
             
             return $arAnswer;
         }
