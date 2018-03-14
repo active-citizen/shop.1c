@@ -141,7 +141,7 @@
             \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);            
             if(!$arAnswer = $this->checkAnswer($sResult))
                 return false;
-            return $arAnswer["result"]["current_points"]; 
+            return true; 
         }
 
         

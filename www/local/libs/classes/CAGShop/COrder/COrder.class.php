@@ -450,13 +450,13 @@ class COrder extends \AGShop\CAGShop{
         // Для админа баллы не снимаем, ибо юниттест
         elseif($this->getParam("UserId")!=1){
             //////////// Снимает баллы
-            if($bPointsSuccess = $objSSAGAccount->transaction(
+            if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
                  "Заказ Б-$nOrderId в магазине поощрений АГ"
-            )===false)$this->addError($objSSAGAccount->error);
+            ))$this->addError($objSSAGAccount->error);
 
             ///////////
-            if($bPointsSuccess!==false)
+            if($bPointsSuccess)
                 $objSSAGAccount->update();
         }
         
@@ -479,7 +479,7 @@ class COrder extends \AGShop\CAGShop{
             $this->returnToStore();
         }
         // Если снялись баллы - остатки оставляем снятыми
-        elseif($bPointsSuccess!==false){
+        elseif($bPointsSuccess){
             // Отмечаем интеграции как выполненные
             if( $sArtNumber=='troyka' ||  $sArtNumber=='parking'){
                 $objIntegration->doneLock($nLockId, $nOrderId) ;
@@ -487,7 +487,7 @@ class COrder extends \AGShop\CAGShop{
             }
             
         }
-        elseif($bPointsSuccess===false){
+        elseif(!$bPointsSuccess){
             // Возврат остатков на склад если с оплатой вышла беда
             $this->returnToStore();
         }
@@ -513,7 +513,7 @@ class COrder extends \AGShop\CAGShop{
         elseif($sParkingStatus == 2)
             $this->setZNI('AF','AA');
         // Если не удалось снять баллы - аннулирован
-        elseif($bPointsSuccess===false)
+        elseif(!$bPointsSuccess)
             $this->setZNI('AF','AA');
         // Во всех остальных случаях - В работее
         else
