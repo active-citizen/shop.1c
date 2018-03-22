@@ -729,6 +729,12 @@
                         'CLOSE_DATE',$sDateClose
                     );
                 }
+                    // Ставим дату выполнения
+                    //if($statusId=='F')
+                    //    orderPropertiesUpdate($orderId,IMPORT_DEBUG,
+                    //        "SHIPDATE",date("Y-m-d H:i:s")
+                    //    );
+
                 // Прописываем промокоды, если есть 
                 if(isset($GLOBALS["promocodes"])){
                     $sPromos = '';
@@ -848,6 +854,11 @@
                     CSaleOrder::Update($orderId, $arOrder);
                     // Меняем статус
                     CSaleOrder::StatusOrder($orderId, $statusId);
+                    // Ставим дату выполнения
+                    //if($statusId=='F')
+                    //    orderPropertiesUpdate($orderId,IMPORT_DEBUG,
+                    //        "SHIPDATE",date("Y-m-d H:i:s")
+                    //    );
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
                     if($bSendEmail)eventOrderStatusSendEmail(
