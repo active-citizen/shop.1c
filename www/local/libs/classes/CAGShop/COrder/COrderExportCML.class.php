@@ -144,6 +144,12 @@ class COrderExportCML extends \AGShop\CAGShop{
                 $arOrderZNI["ORDER_PROPERTIES"]["CLOSE_DATE"]
             )$arOrder["ДатаИстеченияБронирования"] = $arOrderZNI["ORDER_PROPERTIES"]["CLOSE_DATE"];
 
+            if(
+                isset($arOrderZNI["ORDER_PROPERTIES"]["SHIPDATE"]) && 
+                $arOrderZNI["ORDER_PROPERTIES"]["SHIPDATE"]
+            )$arOrder["ДатаВыполнения"] =
+                $arOrderZNI["ORDER_PROPERTIES"]["SHIPDATE"];
+
             $arOrder["ЭлектроннаяПочта"] = $arOrderZNI["USER"]["EMAIL"];
             $arOrder["Клиент"] = $arOrderZNI["USER"]["LAST_NAME"]." ".$arOrderZNI["USER"]["NAME"];
             $arOrder["Фамилия"] = $arOrderZNI["USER"]["LAST_NAME"];

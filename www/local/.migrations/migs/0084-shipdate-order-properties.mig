@@ -1,0 +1,63 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    $objPropGroup = new CSaleOrderPropsGroup;
+
+    $arPropGroup = $objPropGroup->GetList(
+        array(),
+        $arPropGroupFilter = array("NAME"=>"Индексы для фильтров"),
+        false,
+        array("nTopCount"=>1)
+    )->GetNext();
+
+    if(isset($arPropGroup["ID"])){
+        $nPropGroupId = $arPropGroup["ID"];
+    }
+    else{
+        if(
+            !$nPropGroupId =
+            $objPropGroup->Add(array(
+                "PERSON_TYPE_ID"=>1,
+                "NAME"=>$arPropGroupFilter["NAME"]
+            ))
+        ){
+            echo "Error: ".$objPropGroup->LAST_ERROR;
+            die;
+        }
+    }
+
+    $arProperties = array(
+        "SHIPDATE"    =>  "Дата отгрузки",
+    );
+
+    foreach($arProperties as $sCode=>$sName){
+        $arFilter = array(
+            "CODE"=>$sCode,
+            "PROPS_GROUP_ID"=>$nPropGroupId,
+            "PERSON_TYPE_ID"=>1,
+        );
+        if(!$arProp = CSaleOrderProps::GetList(
+            array(),
+            $arFilter,
+            false,array("nTopCount"=>1),
+            array("ID")
+        )->GetNext()){
+            $arFields           = $arFilter;
+            $arFields["NAME"]   = $sName;
+            $arFields["TYPE"]   = "DATE";
+            CSaleOrderProps::Add($arFields);
+        }
+        else{
+            $arFields           = $arFilter;
+            $arFields["NAME"]   = $sName;
+            $arFields["TYPE"]   = "DATE";
+            CSaleOrderProps::Update(
+                $arProp["ID"],
+                $arFields
+            );
+        }
+    }
+

@@ -230,7 +230,13 @@ table.mails td{
             <td class="field-name">
                  Дата выполнения:
             </td><td>
-                <?= $arResult["ORDER"]["DATE_UPDATE"]?>
+                <?= date(
+                    "d.m.Y H:i:s", 
+                    MakeTimeStamp(
+                        $arResult["ORDER"]["PROPERTIES"]["SHIPDATE"]["VALUE"],
+                        "YYYY-MM-DD HH:MI:SS"
+                    )
+                );?>
             </td>
         </tr>
         <? endif ?>
