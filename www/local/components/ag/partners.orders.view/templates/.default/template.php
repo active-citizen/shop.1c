@@ -230,7 +230,7 @@ table.mails td{
             <td class="field-name">
                  Дата выполнения:
             </td><td>
-                <?= $arResult["ORDER"]["DATE_STATUS"]?>
+                <?= $arResult["ORDER"]["DATE_UPDATE"]?>
             </td>
         </tr>
         <? endif ?>
