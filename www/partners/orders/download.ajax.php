@@ -419,9 +419,9 @@ if(isset($_REQUEST["continue"])){
             .";".$arOrder["DATE_INSERT"]
             .";".$arOrder["DATE_UPDATE"]
             .";".''.(
-                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_STATUS"])
+                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_UPDATE"])
                 ?
-                $arOrder["DATE_STATUS"]
+                $arOrder["DATE_UPDATE"]
                 :
                 ""
             ).''
