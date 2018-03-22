@@ -532,6 +532,11 @@ class COrder extends \AGShop\CAGShop{
         
         $this->saveProperty("CHANGE_REQUEST", $sStatusId);
         $nOrderId = $this->getParam("Id");
+
+        if($sStatusId=='F'){
+            $this->saveProperty("SHIPDATE", date("Y-m-d H:i:s"));
+        }
+
     
         // Сохраняем запись в истории
         \CSaleOrderChange::AddRecord($nOrderId,
