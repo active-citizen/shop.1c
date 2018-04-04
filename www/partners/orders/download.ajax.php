@@ -426,7 +426,7 @@ if(isset($_REQUEST["continue"])){
                     MakeTimeStamp($arOrder["SHIPDATE"],"YYYY-MM-DD HH:MI:SS")
                 )
                 :
-                ""
+                ($arOrder["STATUS_ID"]=='F'?$arOrder["DATE_UPDATE"]:"")
             ).''
             .";".'" "'//'"Уникальный штрих-код заказа"'
             .";".'" "'//'"Уникальный номер товара"' 

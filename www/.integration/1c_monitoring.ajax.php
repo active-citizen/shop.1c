@@ -17,6 +17,12 @@
  * 
  */
 
+//if(
+//$_SERVER["REMOTE_ADDR"]!='46.20.69.113' ||
+//!preg_match("#zabbix#i",$_SERVER["HTTP_USER_AGENT"])){
+//    echo "Access denied";
+//    die;
+//}
 
     require_once($_SERVER["DOCUMENT_ROOT"].
         "/bitrix/modules/main/include/prolog_before.php");

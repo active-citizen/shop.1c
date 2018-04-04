@@ -671,3 +671,5 @@ OPTIMIZE TABLE `shop_ag_mos_ru`.`index_order`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`index_mail`;
 OPTIMIZE TABLE `shop_ag_mos_ru`.`index_lock`;
 
+OPTIMIZE TABLE `shop_ag_mos_ru`.`int_1c_monitoring`;
+OPTIMIZE TABLE `shop_ag_mos_ru`.`int_bets`;
