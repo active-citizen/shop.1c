@@ -6,26 +6,20 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     );
     
 ?>
+
 <? if(0 && !$USER->IsAuthorized()):?>
 <? elseif(IS_MOBILE || IS_PHONE):?>
 <? require("index.mobile.php")?>
 <? else: ?>
-
-        <div class="ag-shop-content">
-
-          <? include_once("banners.inc.php");?>
-          <? include_once("filter.inc.php");?>
-
-          
+    <? include_once("banners.inc.php");?>
+    <? include_once("filter.inc.php");?>
+        
           <!-- Catalog {{{-->
-          <div class="ag-shop-catalog">
-            <!-- Для сортировки/фильтра-->
-            <? include_once("sorting.inc.php");?>
-            
-            <? include_once("container.inc.php");?>
+  <div class="ag-shop-catalog">
     
-          </div>
-        </div>
+    <? include_once("container.inc.php");?>
+
+  </div>
 <? endif ?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

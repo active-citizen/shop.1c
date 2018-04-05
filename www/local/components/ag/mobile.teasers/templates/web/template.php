@@ -8,7 +8,6 @@ print_r($arResult);
 echo "</pre>";
 */
 
-
 foreach($arProducts as $product){
         $product["DETAIL_PAGE_URL"] = "/catalog/"
             .$product["SECTION"]["CODE"]."/"

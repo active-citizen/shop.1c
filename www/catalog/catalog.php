@@ -97,7 +97,6 @@ if(
     <? if(!$product_code && $catalog_code && !(IS_MOBILE || IS_PHONE)){?>
         <div class="ag-shop-content">
             <? include("filter.inc.php")?>
-            <? include("sorting.inc.php")?>
             
             <div class="ag-shop-catalog">
             <? include("container.inc.php")?>

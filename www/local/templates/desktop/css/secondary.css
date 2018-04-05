@@ -1,0 +1,15 @@
+.ag-shop-menu {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .ag-shop-content {
+    padding: 70px 30px 50px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .ag-shop-profile-order__count {
+    text-align: left;
+  }
+}

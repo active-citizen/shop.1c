@@ -21,7 +21,7 @@
 
 <?
 
-    $APPLICATION->IncludeComponent("ag:filter","",array(
+    $APPLICATION->IncludeComponent("ag:sorting",".default",array(
     "SECTION_ID"=>$arSection["ID"],
     "CACHE_TIME"=>1//COMMON_CACHE_TIME
 ),false);?> 
