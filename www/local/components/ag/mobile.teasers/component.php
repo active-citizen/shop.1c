@@ -16,8 +16,6 @@
         $bIsBack = true;
     }
 
-    
-
     if($bIsBack){
         $arParams["pagination"]["original_page"] = 
             $arParams["pagination"]["page"];
@@ -32,7 +30,11 @@
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php"
     );
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CUtils/CLang.class.php"
+    );
     use AGShop\Catalog as Catalog;
+    use AGShop\Utils as Utils;
     
     $objProduct = new \Catalog\CCatalogProduct;
     

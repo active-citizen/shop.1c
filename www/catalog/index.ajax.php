@@ -15,7 +15,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
     $arParams["AJAX"] = true;
     $APPLICATION->IncludeComponent(
         "ag:mobile.teasers", 
-        "web", 
+        "desktop", 
         $arParams,
         false
     );

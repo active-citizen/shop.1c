@@ -24,6 +24,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/styles/semantic.css");
 
 //////////////////// CSS второй редакции ////////////////////////
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/desktop.min.css");
+$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
 
 ///////////////// Скрипт второй десктопной версии ////////////////
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/desktop.min.js");

@@ -1,6 +1,6 @@
 <?
-    $APPLICATION->IncludeComponent("ag:mobile.teasers","desktop",array(
-    "SECTION_ID"=>$arSection["ID"],
-    "CACHE_TIME"=>1//COMMON_CACHE_TIME
-),false);?> 
+    require("desktop.filter.params.php");
+    // Вычисляем ID раздела
+    $arParams["SECTION_ID"] = $arCatalogMeta["ID"];
+    $APPLICATION->IncludeComponent("ag:mobile.teasers","desktop",$arParams,false);?> 
 

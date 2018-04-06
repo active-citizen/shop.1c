@@ -71,7 +71,7 @@ if(
             $arCatalogMeta = CIBlockSection::GetList([],[
                     "IBLOCK_ID" =>  CATALOG_IB_ID,
                     "CODE"      =>  $catalog_code
-                ],false,["NAME"],["nTopCount"=>1]
+                ],false,["NAME","ID"],["nTopCount"=>1]
             )->GetNext();
             if(isset($arCatalogMeta["NAME"]) && trim($arCatalogMeta["NAME"]))
                $sCatalogTitle = $arCatalogMeta["NAME"]; 
@@ -95,13 +95,11 @@ if(
     ?>
 
     <? if(!$product_code && $catalog_code && !(IS_MOBILE || IS_PHONE)){?>
-        <div class="ag-shop-content">
             <? include("filter.inc.php")?>
             
             <div class="ag-shop-catalog">
             <? include("container.inc.php")?>
             </div>
-        </div>
     <? }elseif(!$product_code && $catalog_code){ ?>
     <?
     $APPLICATION->IncludeComponent(

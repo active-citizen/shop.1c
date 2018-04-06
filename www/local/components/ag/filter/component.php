@@ -1,4 +1,8 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+    require_once($_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CCatalog/CCatalogStore.class.php"
+    );
+    use AGShop\Catalog as Catalog;
 
 if ($this->StartResultCache(
     false
@@ -6,29 +10,15 @@ if ($this->StartResultCache(
 )) {
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/catalog.lib.php");
 
+
+
     CModule::IncludeModule("sale");
-    $res = CSaleUserAccount::GetList(array("TIMESTAMP_X"=>"DESC"),array("USER_ID"=>CUser::GetID()));
+    $res = CSaleUserAccount::GetList(
+        ["TIMESTAMP_X"=>"DESC"],
+        ["USER_ID"=>CUser::GetID()]
+    );
     $arResult['account'] = $res->GetNext();
     
-
-    /*
-    $arResult['MY_BALLS'] = number_format(
-        $arResult['account']["CURRENT_BUDGET"],0 ,',',' '
-    );    
-    $arResult['myBalls'] = 
-        $arResult['MY_BALLS'] 
-        ." ".get_points($arResult['account']["CURRENT_BUDGET"]);
-
-
-    ////////////////////////////////////////////////////
-    /////  Составляем справочник хотелок
-    ////////////////////////////////////////////////////
-    $arResult["IWANTS"] = filterGetTags(
-        IWANT_IBLOCK_ID,IWANT_PROPERTY_ID,
-        $arParams["SECTION_ID"]
-    );
-    */
-
 
     ////////////////////////////////////////////////////
     /////  Составляем справочник интересов
@@ -39,13 +29,23 @@ if ($this->StartResultCache(
         $arParams["SECTION_ID"]
     );
 
-
-
-
     $res = CIBlockPropertyEnum::GetList(array(),array("CODE"=>"TYPES"));
     $TYPES = array();
     while($type = $res->getNext())$TYPES[$type["ID"]]=$type;
 
+    /*******************************************
+     * МФЦ
+    ********************************************/
+    $objStore = new \Catalog\CCatalogStore;
+    $arResult["STORES"] = $objStore->getAllActive();
+    foreach($arResult["STORES"] as $nKey=>$arStore)
+        if(!$arStore["CODE"])
+            $arResult["STORES"][$nKey]["CODE"] = CUtil::translit($arStore["TITLE"],"ru",[
+                "change_case"   =>  false,
+                "replace_space" =>  "",
+                "replace_other" =>  ""
+            ]);
+        
     $this->IncludeComponentTemplate();
 }
 

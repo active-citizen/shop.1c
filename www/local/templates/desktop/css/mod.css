@@ -1,0 +1,14 @@
+.more-button{
+    font-size: 14px;
+    color: white;
+    background-color: rgba(0,122,108,1);
+    padding: 10px;
+    border-radius: 10px;
+    width: 100px;
+    display: block;
+    margin: 0px auto;
+    text-decoration: none;
+}
+.more-button:hover{
+    text-decoration: none;
+}

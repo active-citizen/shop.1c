@@ -1,6 +1,11 @@
 <?php
     define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 
+    // Класс для отладочного вывода
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+            ."/local/libs/classes/CAGShop/xprint.class.php"
+    );
     // Библиотаке для склонения баллов, и дней
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
     // Подключение библиотеки почтового SMTP-клиента (закомментарить, если
