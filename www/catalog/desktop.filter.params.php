@@ -5,7 +5,7 @@
     */
 
     $arParams = ["CACHE_TIME"      =>  COMMON_CACHE_TIME];
-    $arParams["filter"] = [];
+    $arParams["filter"] = ["only_exists"=>false];
     $arParams["sorting"] = ["param" => 'wishes',"direction"=>"desc"];
     $arParams["pagination"] = ["page"=>1,"onpage"=>12];
 

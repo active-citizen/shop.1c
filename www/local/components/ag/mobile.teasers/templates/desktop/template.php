@@ -11,7 +11,7 @@
 <? endif ?>
             <? foreach($arResult["PRODUCTS"] as $arProduct):?>
             <!-- Product Item -->
-            <article class="desktop-product">
+            <article class="desktop-product<? if(!$arProduct["EXISTS"]):?> notInStock<? endif?>">
                 <button class="desktop-product-favourites wish-on" type="button">
                     <span class="desktop-product-favourites__icon"></span>
                     <span class="desktop-product-favourites__count"><?=
@@ -81,8 +81,8 @@
                             </div>
                         </div>
                         <!-- ============= -->
+                        <? if(!$arProduct["EXISTS"]):?>
                         <!-- Product Status -->
-                        <?/*
                         <div class="desktop-product-status">
                             <div class="desktop-product-status-wrapper">
                                 <span class="desktop-product-status__icon"></span>
@@ -92,8 +92,8 @@
                                 </span>
                             </div>
                         </div>
-                        */?>
                         <!-- ============= -->
+                        <? endif ?>
                     </div>
                 </a>
             </article>
@@ -102,7 +102,14 @@
     <input type="hidden" name="products" value="<?= implode(",",$arResult["PRODUCT_IDS"])?>">
     <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
     <? if($arResult["TOTAL"]>$nLastItem):?>
-    <a href="#" onclick="return teasers_next_page('<?=
+    <? 
+        $arResult["NEXT_PAGE_URL"] .= $arParams["filter"]["only_exists"]
+            ?
+            "&showProductsAll=111"
+            :
+            ""
+    ?>
+    <a href="#" onclick="return desktop_teasers_next_page('<?=
     $arResult["NEXT_PAGE_URL"]?>',<?= $arResult["PAGE"]+1?>);" class="more-button">Ещё<?/*
     <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
     <? endif ?>
@@ -137,7 +144,7 @@ function teasersRewind(){
     */
 }
 
-function teasers_next_page(sUrl,nPageNum){
+function desktop_teasers_next_page(sUrl,nPageNum){
     $('.more-button').html('Загрузка...');
     $.get("/catalog/index.ajax.php?"+sUrl,function(data){
         var search = document.location.search;

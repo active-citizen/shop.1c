@@ -7,6 +7,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     
 ?>
 
+<? require("desktop.filter.params.php");?>
 <? if(0 && !$USER->IsAuthorized()):?>
 <? elseif(IS_MOBILE || IS_PHONE):?>
 <? require("index.mobile.php")?>

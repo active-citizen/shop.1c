@@ -218,6 +218,7 @@
         */
         function getTeasers($arOptions = []){
             global $USER;
+//            new \XPrint($arOptions,1);
 
             $objCache = new
             \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
@@ -333,7 +334,8 @@
             $sQuery = "
                 SELECT
                     `product`.`NAME` as `NAME`,
-                    `product`.`ID` as `ID`
+                    `product`.`ID` as `ID`,
+                    SUM(`store_product`.`AMOUNT`) as `EXISTS`
                 FROM
                     `".\AGShop\CAGShop::t_iblock_element."` as `product`
                         LEFT JOIN
@@ -373,18 +375,26 @@
                     ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
                     AND `section`.`ACTIVE`='Y'
                     AND `product`.`ACTIVE`='Y'
-                    AND 
-                    (
+                    ".(
+                        !$arOptions["filter"]["only_exists"]
+                        ?
+                        " AND 1 "
+                        :
+                        "
+                        AND 
                         (
-                            `hide_prop`.`VALUE` IS NULL
-                        )
-                        OR
-                        (
-                            `hide_prop`.`VALUE` IS NOT NULL
-                            AND
-                            `store_product`.`AMOUNT`>0
-                        )
+                            (
+                                `hide_prop`.`VALUE` IS NULL
+                            )
+                            OR
+                            (
+                                `hide_prop`.`VALUE` IS NOT NULL
+                                AND
+                                `store_product`.`AMOUNT`>0
+                            )
+                        )"
                     )
+                    ."
                     AND 
                     (
                         (
@@ -424,7 +434,9 @@
 //            fwrite($fd,$sQuery);
 //            fclose($fd);
             $arIds = $CDB->sqlSelect($sQuery,10000);
+            $arExists = [];
             foreach($arIds as $arId){
+                $arExists[$arId["ID"]] = $arId["EXISTS"];
                 $arSectionCond[] = $arId["ID"];
             }
             
@@ -490,7 +502,8 @@
             $arStoreCond = [];
             $sQuery = "
                 SELECT
-                    `product`.`ID` as `ID`
+                    `product`.`ID` as `ID`,
+                    `store_product`.`AMOUNT` as `AMOUNT`
                 FROM
                     `".\AGShop\CAGShop::t_iblock_element."` as `product`
                         LEFT JOIN
@@ -503,8 +516,8 @@
                     `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
                         ON
                         `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`
-                        AND
-                        `store_product`.`AMOUNT`>0
+--                      AND
+--                      `store_product`.`AMOUNT`>0
                 WHERE
                     1
                     -- AND `product`.`ACTIVE` = 'Y'
@@ -628,11 +641,13 @@
                 $arProduct["SECTION"] = $objSection->getBriefById(
                     $arProduct["IBLOCK_SECTION_ID"]
                 );
+
+                $arProduct["EXISTS"] = $arExists[$arProduct["ID"]];
+
                 $arProduct["WISHES"] = $arProduct["PROPERTY_WISHES_QUANTITY_VALUE"];
                 $arItems[$arProduct['ID']] = $arProduct;
             }
             
-
             $arResult = ["items"=>$arItems,"total"=>$nTotal];
             $objCache->set($arResult);
             
