@@ -86,6 +86,11 @@
         $arParams["sorting"]["direction"] = 'asc';
     }
 
+    if(isset($_REQUEST["sorting"]) && ($_REQUEST["sorting"]=='fresh-desc')){
+        $arParams["sorting"]["param"] = 'fresh';
+        $arParams["sorting"]["direction"] = 'desc';
+    }
+
     if(!isset($_SESSION["WEB_TEASER_FILTER"]))$_SESSION["WEB_TEASER_FILTER"] = [];
     $_SESSION["WEB_TEASER_FILTER"][$sCode] = $arParams["filter"];
 

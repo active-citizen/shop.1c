@@ -1,5 +1,7 @@
 <aside class="desktop-products-filter">
-    <form id="desktopCatalogFilterForm" class="desktop-products-filter-form">
+    <form id="desktopCatalogFilterForm" class="desktop-products-filter-form"
+    name="desktopCatalogFilterForm">
+        <input id="sorting" name="sorting" type="hidden" value="fresh-desc">
         <div class="desktop-products-filter-form-wrapper">
             <!-- Filter Item -->
             <div class="desktop-products-filter-item">

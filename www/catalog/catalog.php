@@ -95,6 +95,7 @@ if(
     ?>
 
     <? if(!$product_code && $catalog_code && !(IS_MOBILE || IS_PHONE)){?>
+            <? require("desktop.filter.params.php");?>
             <? include("filter.inc.php")?>
             
             <div class="ag-shop-catalog">

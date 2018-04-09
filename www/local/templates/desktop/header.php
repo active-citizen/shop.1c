@@ -28,6 +28,7 @@ $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
 
 ///////////////// Скрипт второй десктопной версии ////////////////
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/desktop.min.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/mod.js");
 
 ///////////////// Скрипты второй десктопной версии ////////////////
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery-ui.js");
