@@ -12,9 +12,11 @@
         var $nUserId = 0;
         var $sCode = '';
         var $nExpires = 300;
+        var $sTemplate = 'mobile';
 
-        function __construct($sCode, $nUserId = 0){
+        function __construct($sCode, $nUserId = 0,$sTemplate = 'mobile'){
             if(!intval($nUserId))$nUserId = \CUser::GetID();
+            $this->sTemplate = $sTemplate;
             $this->nUserId = $nUserId;
             $this->sCode = $sCode;
         }
@@ -25,6 +27,7 @@
         function getFilter(){
             $objCache = new \Cache\CCache(
                 "teaser_filter",$this->nUserId.":".$this->sCode
+                .":".$this->sTemplate
                 , $this->nExpires
             );
             if($arFilter = $objCache->get()){
@@ -40,7 +43,7 @@
         */
         function getSorting(){
             $objCache = new \Cache\CCache(
-                "teaser_sorting",$this->nUserId
+                "teaser_sorting",$this->nUserId.":".$this->sTemplate
                 , $this->nExpires
             );
             if($arSorting = $objCache->get()){
@@ -54,7 +57,7 @@
 
         function getSmallIcons(){
             $objCache = new \Cache\CCache(
-                "teaser_smallicons",$this->nUserId
+                "teaser_smallicons",$this->nUserId.":".$this->sTemplate
                 , $this->nExpires
             );
             if($bSmallIcons = $objCache->get()){
@@ -72,6 +75,7 @@
         function setFilter($arFilter = []){
             $objCache = new \Cache\CCache(
                 "teaser_filter",$this->nUserId.":".$this->sCode
+                    .":".$this->sTemplate
                 , $this->nExpires
             );
             $objCache->clear();
@@ -84,7 +88,7 @@
         */
         function setSorting($arSorting = []){
             $objCache = new \Cache\CCache(
-                "teaser_sorting",$this->nUserId
+                "teaser_sorting",$this->nUserId.":".$this->sTemplate
                 , $this->nExpires
             );
             $objCache->clear();
@@ -93,7 +97,7 @@
 
         function setSmallIcons($bSmallIcons){
             $objCache = new \Cache\CCache(
-                "teaser_smallicons",$this->nUserId
+                "teaser_smallicons",$this->nUserId.":".$this->sTemplate
                 , $this->nExpires
             );
             $objCache->clear();
@@ -147,7 +151,8 @@
                 "int_filter_settings_filter",
                 [
                     "USER_ID"=>$this->nUserId,
-                    "SECTION_CODE"=>$this->sCode
+                    "SECTION_CODE"=>$this->sCode,
+                    "TEMPLATE"=>$this->sTemplate
                 ]
             );
         }
@@ -158,7 +163,8 @@
             [
                 "USER_ID"=>$this->nUserId,
                 "SECTION_CODE"=>$this->sCode,
-                "FILTER" => serialize($arFilter)
+                "FILTER" => serialize($arFilter),
+                "TEMPLATE"=>$this->sTemplate
             ];
             $CDB->insert("int_filter_settings_filter",$arFields);
         }
@@ -171,6 +177,7 @@
             ];
             $arFilter = ["ID"=>$nId];
             $CDB->update("int_filter_settings_filter",$arFilter,$arFields);
+
         }
 
 
@@ -181,6 +188,7 @@
                 "int_filter_settings_sorting",
                 [
                     "USER_ID"=>$this->nUserId,
+                    "TEMPLATE"=>$this->sTemplate
                 ]
             );
         }
@@ -190,7 +198,8 @@
             $arFields =
             [
                 "USER_ID"=>$this->nUserId,
-                "SORTING" => serialize($arSorting)
+                "SORTING" => serialize($arSorting),
+                "TEMPLATE"=>$this->sTemplate
             ];
             $CDB->insert("int_filter_settings_sorting",$arFields);
         }
@@ -212,6 +221,7 @@
                 "int_filter_settings_smallicon",
                 [
                     "USER_ID"=>$this->nUserId,
+                    "TEMPLATE"=>$this->sTemplate
                 ]
             );
         }
@@ -221,7 +231,8 @@
             $arFields =
             [
                 "USER_ID"=>$this->nUserId,
-                "SMALL_ICONS" => intval($bSmallIcons)
+                "SMALL_ICONS" => intval($bSmallIcons),
+                "TEMPLATE"=>$this->sTemplate
             ];
             $CDB->insert("int_filter_settings_smallicon",$arFields);
         }
