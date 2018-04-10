@@ -84,6 +84,7 @@
 							</ul>
 						</div>
 					</div>
+                    <?/* 
 					<div class="dropdown-wrapper desktop-catalog-grid">
 						<button class="desktop-catalog-sort__btn" type="button" name="button">
 							<span class="desktop-catalog-sort__btn-type">Вид плиток:</span>
@@ -113,6 +114,7 @@
 							</ul>
 						</div>
 					</div>
+                    */?>
 				</div>
 			</div>
             <!--  Конец. Заголовок каталога (сортировать по и вид плиток)-->

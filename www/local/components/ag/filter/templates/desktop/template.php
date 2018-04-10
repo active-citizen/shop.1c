@@ -1,8 +1,12 @@
 <aside class="desktop-products-filter">
     <form id="desktopCatalogFilterForm" class="desktop-products-filter-form"
-    name="desktopCatalogFilterForm">
+    name="desktopCatalogFilterForm" action="#teasers">
         <input id="sorting" name="sorting" type="hidden" value="<?=
         $_REQUEST["sorting"]?htmlspecialchars($_REQUEST["sorting"]):"fresh-desc"?>">
+        <?if($arParams["filter"]["section_code"]):?>
+        <input type="hidden" name="section_code" value="<?=
+        $arParams["filter"]["section_code"]?>">
+        <? endif ?>
         <div class="desktop-products-filter-form-wrapper">
             <!-- Filter Item -->
             <div class="desktop-products-filter-item">
@@ -21,7 +25,8 @@
                     </div>
                     <? foreach($arResult["INTERESTS"] as $arInterest):?>
                     <div class="desktop-checkbox desktop-checkbox-square">
-                        <input id="interestAG-<?= $arInterest["ID"]?>" class="desktop-checkbox__input"
+                        <input id="interestAG-<?= $arInterest["ID"]?>"
+                        class="desktop-checkbox__input all-checked"
                         type="checkbox" name="interestAG-<?= $arInterest["ID"]?>" value="<?= $arInterest["ID"]?>"
                         <? if(in_array($arInterest["ID"],
                         $arParams["filter"]["interest"])):?>checked<? endif?>>
@@ -75,7 +80,7 @@
                     <? foreach($arResult["STORES"] as $arStore):?>
                     <div class="desktop-checkbox desktop-checkbox-square">
                         <input id="delivery<?= $arStore['CODE']?>"
-                        class="desktop-checkbox__input" type="checkbox"
+                        class="desktop-checkbox__input all-checked" type="checkbox"
                         name="delivery<?= $arStore['CODE']?>" value="<?=
                         $arStore['ID']?>" <? 
                         if(in_array($arStore["ID"],$arParams["filter"]["store"])):
@@ -199,13 +204,13 @@
                     <span class="desktop-products-filter-item__header-title">Показывать</span>
                 </div>
                 <div class="desktop-products-filter-item__content">
-                    <div class="desktop-checkbox desktop-checkbox-round">
+                    <div class="desktop-checkbox desktop-checkbox-square">
                         <input id="showProductsAll" class="desktop-checkbox__input defaultCheck" 
                         type="checkbox" name="showProductsAll" value="111" 
-                        <? if($arParams['filter']['only_exists']):?>checked<? endif ?>                        
+                        <? if($arParams['filter']['not_exists']):?>checked<? endif ?>                        
                         >
                         <label for="showProductsAll" class="desktop-checkbox__label">
-                            <span class="desktop-checkbox__title">Все что в наличии</span>
+                            <span class="desktop-checkbox__title">Отсутствующие</span>
                         </label>
                     </div>
                     <div class="desktop-checkbox desktop-checkbox-square">
@@ -238,7 +243,19 @@
                 </div>
             </div>
             <!-- ============== -->
-            <input type="submit" name="filter" value="Применить фильтр">
+
+            <div class="desktop-products-filter-item">
+                <div class="desktop-products-filter-form-actions">
+                    <button id="desktopProductsFilterSubmit" 
+                    class="btn-filter-form btn-filter-form--submit" 
+                    type="submit" 
+                    name="filter"
+                    onclick="return applyFilter();"
+                    >Применить</button>
+                    <button id="desktopProductsFilterReset" class="btn-filter-form btn-filter-form--reset" type="reset" name="desktopProductsFilterReset">Сбросить</button>
+                </div>
+            </div>
+
         </div>
     </form>
 </aside>

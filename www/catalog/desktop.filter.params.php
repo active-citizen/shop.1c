@@ -5,7 +5,7 @@
     */
 
     $arParams = ["CACHE_TIME"      =>  COMMON_CACHE_TIME];
-    $arParams["filter"] = ["only_exists"=>false];
+    $arParams["filter"] = ["not_exists"=>false];
     $arParams["sorting"] = ["param" => 'wishes',"direction"=>"desc"];
     $arParams["pagination"] = ["page"=>1,"onpage"=>12];
 
@@ -13,21 +13,26 @@
     $tmp = explode("/",$_SERVER["REQUEST_URI"]);
     if(isset($_REQUEST["catalog_name"]) && $_REQUEST["catalog_name"])
         $arParams["filter"]["section_code"] = trim($_REQUEST["catalog_name"]);
+    elseif(isset($_REQUEST["section_code"]) && $_REQUEST["section_code"]){
+        $arParams["filter"]["section_code"] = trim($_REQUEST["section_code"]);
+    }
     elseif(
         isset($tmp[1]) && $tmp[1]=='catalog'
         && isset($tmp[2]) && preg_match("#^[\w\d\_\-]+$#",$tmp[2])
     )$arParams["filter"]["section_code"] = trim($tmp[2]);
-    
+
     $sCode = '';
     if(isset($arParams["filter"]["section_code"]))
         $sCode = $arParams["filter"]["section_code"];
 
     // Загружаем параметры фильтрации и сортировки из сессии
+    /*
     if($sCode && (!$_GET || count($_GET)==1) && isset($_SESSION["WEB_TEASER_FILTER"][$sCode]))
         $arParams["filter"] = $_SESSION["WEB_TEASER_FILTER"][$sCode];
     if($sCode && (!$_GET || count($_GET)==1) &&
     isset($_SESSION["WEB_TEASER_SORTING"][$sCode]))
         $arParams["sorting"] = $_SESSION["WEB_TEASER_SORTING"][$sCode];
+    */
     
     // Определяем номер страницы
     if(isset($_REQUEST['page']) && intval($_REQUEST['page']))
@@ -67,9 +72,7 @@
 
     // Ставим флаг "только в наличии"
     if(isset($_REQUEST["showProductsAll"]) && $_REQUEST["showProductsAll"])
-        $arParams["filter"]["only_exists"] = true;
-    else
-        $arParams["filter"]["only_exists"] = false;
+        $arParams["filter"]["not_exists"] = true;
 
     if(isset($_REQUEST["sorting"]) && ($_REQUEST["sorting"]=='rating-desc')){
         $arParams["sorting"]["param"] = 'wishes';
@@ -96,4 +99,5 @@
 
     if(!isset($_SESSION["WEB_TEASER_SORTING"]))$_SESSION["WEB_TEASER_SORTING"] = [];
     $_SESSION["WEB_TEASER_SORTING"][$sCode] = $arParams["sorting"];
+
 

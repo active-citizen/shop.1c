@@ -1,14 +1,19 @@
-.more-button{
-    font-size: 14px;
-    color: white;
-    background-color: rgba(0,122,108,1);
-    padding: 10px;
-    border-radius: 10px;
-    width: 100px;
+.teaser-loading{
+    opacity: 0.5;
+}
+
+
+.desktop-product.notInStock .desktop-product-link {
+    cursor: pointer;
+    z-index: 1;
+}
+
+.desktop-product.notInStock .desktop-product-badge{
     display: block;
-    margin: 0px auto;
-    text-decoration: none;
 }
-.more-button:hover{
-    text-decoration: none;
-}
+
+
+    .ag-shop-footer{
+        display:none;
+    }
+

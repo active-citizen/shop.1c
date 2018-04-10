@@ -1,10 +1,13 @@
 <? if(!$arParams["AJAX"]):?>
-<div id="productsWrapper" class="desktop-products-wrapper hide-filter">
+<div id="productsWrapper" class="desktop-products-wrapper<?
+if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
+    <a name="teasers"></a>
 
+    <!-- Компонент фильтров -->
     <?
     $APPLICATION->IncludeComponent("ag:filter","desktop",$arParams,false);
-//    new XPrint($arResult["PRODUCTS"]);
     ?> 
+    <!-- Конец: Компонент фильтров -->
 
     <section class="catalog-inner">
         <div class="desktop-products-container">
@@ -12,10 +15,13 @@
             <? foreach($arResult["PRODUCTS"] as $arProduct):?>
             <!-- Product Item -->
             <article class="desktop-product<? if(!$arProduct["EXISTS"]):?> notInStock<? endif?>">
-                <button class="desktop-product-favourites wish-on" type="button">
+                <button class="desktop-product-favourites" type="button"
+                productid="<?= $arProduct["ID"]?>"
+                onclick="return mywish(this);">
                     <span class="desktop-product-favourites__icon"></span>
-                    <span class="desktop-product-favourites__count"><?=
-                    $arProduct["WISHES"]?></span>
+                    <span class="desktop-product-favourites__count"
+                    id="wishid<?= $arProduct["ID"]?>"><?=
+                    intval($arProduct["WISHES"])?></span>
                 </button>
                 <a class="desktop-product-link" href="/catalog/<?=
                     $arProduct["SECTION"]["CODE"]
@@ -39,13 +45,19 @@
                         <!-- Product Badge -->
                         <span class="desktop-product-badge">
                             <? if($arProduct["PROPERTY_SPECIALOFFER_VALUE"]):?>
-                            <img class="desktop-product-badge__img" src="img/icon__product-label--sale.png" alt="" srcset="img/icon__product-label--sale@2x.png 2x">
+                            <img class="desktop-product-badge__img" src="<?=
+                            SITE_TEMPLATE_PATH
+                            ?>/img/icon__product-label--sale.png" alt="" srcset="img/icon__product-label--sale@2x.png 2x">
                             <? endif ?>
                             <? if($arProduct["PROPERTY_NEWPRODUCT_VALUE"]):?>
-                            <img class="desktop-product-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
+                            <img class="desktop-product-badge__img" src="<?=
+                            SITE_TEMPLATE_PATH
+                            ?>/img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
                             <? endif ?>
                             <? if($arProduct["PROPERTY_SALELEADER_VALUE"]):?>
-                            <img class="desktop-product-badge__img" src="img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
+                            <img class="desktop-product-badge__img" src="<?=
+                            SITE_TEMPLATE_PATH
+                            ?>/img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
                             <? endif ?>
                         </span>
                         <!-- ============= -->
@@ -75,8 +87,8 @@
                                 <span class="desktop-product-info__category"><?=
                                 $arProduct["SECTION"]["NAME"]
                                 ?></span>
-                                <p class="desktop-product-info__description"><?= 
-                                $arProduct["PREVIEW_TEXT"]
+                                <p class="desktop-product-info__description"><? 
+                                //echo $arProduct["PREVIEW_TEXT"]
                                 ?></p>
                             </div>
                         </div>
@@ -99,20 +111,23 @@
             </article>
             <!-- ================= -->
             <? endforeach ?>
-    <input type="hidden" name="products" value="<?= implode(",",$arResult["PRODUCT_IDS"])?>">
-    <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
-    <? if($arResult["TOTAL"]>$nLastItem):?>
-    <? 
-        $arResult["NEXT_PAGE_URL"] .= $arParams["filter"]["only_exists"]
-            ?
-            "&showProductsAll=111"
-            :
-            ""
-    ?>
-    <a href="#" onclick="return desktop_teasers_next_page('<?=
-    $arResult["NEXT_PAGE_URL"]?>',<?= $arResult["PAGE"]+1?>);" class="more-button">Ещё<?/*
-    <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
-    <? endif ?>
+            <input type="hidden" name="products" value="<?= implode(",",$arResult["PRODUCT_IDS"])?>">
+            <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
+            <? if($arResult["TOTAL"]>$nLastItem):?>
+            <? 
+                $arResult["NEXT_PAGE_URL"] .= $arParams["filter"]["only_exists"]
+                    ?
+                    "&showProductsAll=111"
+                    :
+                    ""
+            ?>
+            <div class="catalog-inner-more more-button">
+            <a href="#" onclick="return desktop_teasers_next_page('<?=
+            $arResult["NEXT_PAGE_URL"]?>',<?= $arResult["PAGE"]+1?>);"
+            class="catalog-inner-more__btn">Ещё<?/*
+            <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
+            </div>
+            <? endif ?>
 <? if(!$arParams["AJAX"]):?>
         </div>
     </section>

@@ -376,7 +376,7 @@
                     AND `section`.`ACTIVE`='Y'
                     AND `product`.`ACTIVE`='Y'
                     ".(
-                        !$arOptions["filter"]["only_exists"]
+                        $arOptions["filter"]["not_exists"]
                         ?
                         " AND 1 "
                         :

@@ -480,22 +480,7 @@ function next_page(){
 }
 
 function wishes_load(){
-    
-    $.get(
-        "/profile/wishes/index.ajax.php?PAGE="+$('.catalog-page-input').val(),
-        function(data){
-            $('.catalog-page-input').remove();
-            $('.my-wishes-ajax').append(data);
-            //Удаляем кнопку прокрутки, если прокручивать нечего (отсутствует input)
-            if(!$('.catalog-page-input').last().val())$('.ag-shop-catalog__more-button').remove();
-            /*
-                $('body,html').animate({
-                    scrollTop: $('body').height()
-                }, 1600);
-            */
-            wishes_load_catalog();
-        }
-    );
+    wishes_load_catalog();
     
     return false;
 }

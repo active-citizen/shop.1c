@@ -98,9 +98,7 @@ if(
             <? require("desktop.filter.params.php");?>
             <? include("filter.inc.php")?>
             
-            <div class="ag-shop-catalog">
             <? include("container.inc.php")?>
-            </div>
     <? }elseif(!$product_code && $catalog_code){ ?>
     <?
     $APPLICATION->IncludeComponent(

@@ -84,158 +84,159 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <? if(
         !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
     ):?>
-    <? if(IS_MOBILE && $_SERVER["REQUEST_URI"]!='/catalog/'):?>
-      <div class="ag-shop-mob-nav">
-        <a class="ag-shop-mob-back ag-shop-mob-nav" href="<? 
-//            echo "/catalog/";
-            echo "#";
-            /*
-            if(
-                $arPath = explode("/",$_SERVER["REQUEST_URI"])
-            ){
-                if($arPath[1]!='catalog'){
-                    echo "/catalog/";
-                }
-                elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
-                !trim($arPath[3])){
-                    echo "/catalog/";
-                }
-                elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
-                trim($arPath[3])){
-                    echo "/catalog/".$arPath[2]."/";
-                }
-                else{
-                    echo "/catalog/";
-                }
-
-            }
-            */
-        ?>" onclick="window.history.go(-1);">
-        <?  
-            if(
-                $arPath = explode("/",$_SERVER["REQUEST_URI"])
-            ){
-                if($arPath[1]!='catalog'){
-                    //echo "Назад";
-                    echo "Главная";
-                }
-                elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
-                !trim($arPath[3])){
-                    //echo "Назад";
-                    echo "Главная";
-                }
-                elseif(
-                    $arPath[1]=='catalog' 
-                    && 
-                    trim($arPath[2]) 
-                    &&
-                    trim($arPath[3])
+        <? if(IS_MOBILE && $_SERVER["REQUEST_URI"]!='/catalog/'):?>
+          <div class="ag-shop-mob-nav">
+            <a class="ag-shop-mob-back ag-shop-mob-nav" href="<? 
+    //            echo "/catalog/";
+                echo "#";
+                /*
+                if(
+                    $arPath = explode("/",$_SERVER["REQUEST_URI"])
                 ){
-                    /*    
-                    $arCatalogMeta = CIBlockSection::GetList(
-                        array(),
-                        array(
-                            "IBLOCK_ID" =>  CATALOG_IB_ID,
-                            "CODE"      =>  $DB->ForSql($arPath[2])
-                        ),
-                        false,
-                        array("NAME"),
-                        array("nTopCount"=>1)
-                    )->GetNext();
+                    if($arPath[1]!='catalog'){
+                        echo "/catalog/";
+                    }
+                    elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
+                    !trim($arPath[3])){
+                        echo "/catalog/";
+                    }
+                    elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
+                    trim($arPath[3])){
+                        echo "/catalog/".$arPath[2]."/";
+                    }
+                    else{
+                        echo "/catalog/";
+                    }
 
-                    if(
-                        isset($arCatalogMeta["NAME"]) 
+                }
+                */
+            ?>" onclick="window.history.go(-1);">
+            <?  
+                if(
+                    $arPath = explode("/",$_SERVER["REQUEST_URI"])
+                ){
+                    if($arPath[1]!='catalog'){
+                        //echo "Назад";
+                        echo "Главная";
+                    }
+                    elseif($arPath[1]=='catalog' && trim($arPath[2]) &&
+                    !trim($arPath[3])){
+                        //echo "Назад";
+                        echo "Главная";
+                    }
+                    elseif(
+                        $arPath[1]=='catalog' 
                         && 
-                        trim($arCatalogMeta["NAME"])
-                    )
-                    echo $arCatalogMeta["NAME"];
-                    */
-                    echo "Главная";
-                    
-                    //echo "Назад";
-                }
-                else{
-                    //echo "Назад";
-                    echo "Главная";
-                }
+                        trim($arPath[2]) 
+                        &&
+                        trim($arPath[3])
+                    ){
+                        /*    
+                        $arCatalogMeta = CIBlockSection::GetList(
+                            array(),
+                            array(
+                                "IBLOCK_ID" =>  CATALOG_IB_ID,
+                                "CODE"      =>  $DB->ForSql($arPath[2])
+                            ),
+                            false,
+                            array("NAME"),
+                            array("nTopCount"=>1)
+                        )->GetNext();
 
-            }
-        ?>
-        </a>
-      </div>
-      <div class="ag-shop-mob-top-spacer">
-        &#160;
-      </div>
-    <? endif ?>
-      <div class="ag-shop__sidebar">
-        <!-- Sidebar {{{-->
-        <div class="ag-shop-sidebar">
-          <div class="ag-shop-sidebar__logo-container"><a 
-          class="ag-shop-sidebar__logo" href="http://ag.mos.ru/"></a></div>
-          <div class="ag-shop-sidebar__social-container">
-            <div class="ag-shop-sidebar__social-link"><a target="_blank"
-            class="ag-shop-social-link ag-shop-social-link--vk"
-            href="https://vk.com/citizenmoscow"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a target="_blank"
-            class="ag-shop-social-link ag-shop-social-link--fb"
-            href="https://www.facebook.com/citizenmoscow"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a target="_blank"
-            class="ag-shop-social-link ag-shop-social-link--tw"
-            href="https://twitter.com/citizenmoscow"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a target="_blank"
-            class="ag-shop-social-link ag-shop-social-link--inst"
-            href="https://www.instagram.com/citizenmoscow/"></a></div>
-            <div class="ag-shop-sidebar__social-link"><a target="_blank"
-            class="ag-shop-social-link ag-shop-social-link--ok"
-            href="https://ok.ru/citizenmoscow/"></a></div>
+                        if(
+                            isset($arCatalogMeta["NAME"]) 
+                            && 
+                            trim($arCatalogMeta["NAME"])
+                        )
+                        echo $arCatalogMeta["NAME"];
+                        */
+                        echo "Главная";
+                        
+                        //echo "Назад";
+                    }
+                    else{
+                        //echo "Назад";
+                        echo "Главная";
+                    }
+
+                }
+            ?>
+            </a>
           </div>
-          <button class="ag-shop-sidebar__up" type="button"></button>
+          <div class="ag-shop-mob-top-spacer">
+            &#160;
+          </div>
+        <? endif ?>
+        <div class="ag-shop__sidebar">
+            <!-- Sidebar {{{-->
+            <div class="ag-shop-sidebar">
+              <div class="ag-shop-sidebar__logo-container"><a 
+              class="ag-shop-sidebar__logo" href="http://ag.mos.ru/"></a></div>
+              <div class="ag-shop-sidebar__social-container">
+                <div class="ag-shop-sidebar__social-link"><a target="_blank"
+                class="ag-shop-social-link ag-shop-social-link--vk"
+                href="https://vk.com/citizenmoscow"></a></div>
+                <div class="ag-shop-sidebar__social-link"><a target="_blank"
+                class="ag-shop-social-link ag-shop-social-link--fb"
+                href="https://www.facebook.com/citizenmoscow"></a></div>
+                <div class="ag-shop-sidebar__social-link"><a target="_blank"
+                class="ag-shop-social-link ag-shop-social-link--tw"
+                href="https://twitter.com/citizenmoscow"></a></div>
+                <div class="ag-shop-sidebar__social-link"><a target="_blank"
+                class="ag-shop-social-link ag-shop-social-link--inst"
+                href="https://www.instagram.com/citizenmoscow/"></a></div>
+                <div class="ag-shop-sidebar__social-link"><a target="_blank"
+                class="ag-shop-social-link ag-shop-social-link--ok"
+                href="https://ok.ru/citizenmoscow/"></a></div>
+              </div>
+              <button class="ag-shop-sidebar__up" type="button"></button>
+            </div>
+            <!-- }}} Sidebar-->
         </div>
-        <!-- }}} Sidebar-->
-      </div>
     <? endif ?>
 
 
       <div class="ag-shop__main">
-    <? if(
-        !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
-        &&
-        !IS_MOBILE
-    ):?>
-    <?$APPLICATION->IncludeComponent("ag:menu.top", "", array(
-            "CACHE_TIME"      =>  COMMON_CACHE_TIME
-        ),
-        false
-    );?>
-    <? endif ?>
+            <? if(
+                !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+                &&
+                !IS_MOBILE
+            ):?>
+            <?$APPLICATION->IncludeComponent("ag:menu.top", "", array(
+                    "CACHE_TIME"      =>  COMMON_CACHE_TIME
+                ),
+                false
+            );?>
+            <? endif ?>
 
-    <? if(IS_MOBILE):?>
-        <?
-        
-            $APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
-                "CACHE_TIME"      =>  COMMON_CACHE_TIME
-            ),
-            false
-        );
-        
-        ?>
+            <? if(IS_MOBILE):?>
+                <?
+                
+                    $APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
+                        "CACHE_TIME"      =>  COMMON_CACHE_TIME
+                    ),
+                    false
+                );
+                
+                ?>
 
-    <? endif ?>
+            <? endif ?>
 
-    <? if(
-        !IS_MOBILE
-        && (
-            preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
-            ||
-            preg_match("#^/search/#", $_SERVER["REQUEST_URI"])
-        )
-    ):?>
-    <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
-            "CACHE_TIME"      =>  COMMON_CACHE_TIME
-        ),
-        false
-    );?>
-    <? endif ?>
+            <? if(
+                !IS_MOBILE
+                && (
+                    preg_match("#^/catalog/#", $_SERVER["REQUEST_URI"])
+                    ||
+                    preg_match("#^/search/#", $_SERVER["REQUEST_URI"])
+                )
+            ):?>
+            <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
+                    "CACHE_TIME"      =>  COMMON_CACHE_TIME
+                ),
+                false
+            );?>
+            <? endif ?>
+
     <? 
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
        $objSettings = new \Integration\CIntegrationSettings;

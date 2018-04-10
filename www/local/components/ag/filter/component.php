@@ -10,8 +10,6 @@ if ($this->StartResultCache(
 )) {
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/catalog.lib.php");
 
-
-
     CModule::IncludeModule("sale");
     $res = CSaleUserAccount::GetList(
         ["TIMESTAMP_X"=>"DESC"],
