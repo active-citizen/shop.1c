@@ -1,0 +1,38 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы с логами ошибок начисления/списания баллов СС АГ
+     */
+    class int_filter_settings extends Migration{
+        function Run(){
+	        global $DB;
+            $DB->Query("DROP TABLE IF EXISTS `int_ssag_errorlog`");
+            $sQuery = "
+                CREATE TABLE IF NOT EXISTS `int_ssag_errorlog`(
+                    `ID` INT(11) NOT NULL AUTO_INCREMENT,
+                    `CTIME` DATETIME,
+                    `ORDER_ID` INT(11) NOT NULL,
+                    `URL` CHAR(255),
+                    `ANSWER` TEXT,
+                    `REQUEST` TEXT, 
+                    PRIMARY KEY `ID`(`ID`),
+                    KEY `ORDER_ID`(`ORDER_ID`)
+                )ENGINE=MyISAM DEFAULT CHARSET=utf8  COLLATE=utf8_unicode_ci
+                COMMENT '';
+            ";
+            $DB->Query($sQuery);
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$int_filter_settings = new int_filter_settings();
+// Откатываем, если неудачно
+if(!$int_filter_settings->Run())$int_filter_settings->RollBack();

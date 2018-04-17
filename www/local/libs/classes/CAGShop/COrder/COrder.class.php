@@ -127,7 +127,16 @@ class COrder extends \AGShop\CAGShop{
         @param $nPrice - цена за единицу
         @param $nAmount - количество
     */
-    function createFromAuction($nUserId, $nOfferId, $nStoreId, $nPrice, $nAmount){
+    function createFromAuction(
+        $nUserId, 
+        $nOfferId, $nStoreId, $nPrice, $nAmount,
+        $arOptions = []
+    ){
+        if(!isset($arOptions["ZNI"]))$arOptions["ZNI"] = 'N';
+        if(!isset($arOptions["PREFIX"]))$arOptions["PREFIX"] = 'Ц-';
+        if(!isset($arOptions["DATE_ADD"]))$arOptions["DATE_ADD"] =
+             date("d.m.Y H:i:s");
+
 
         $nTotalSum = $nPrice * $nAmount;
         $CDB = new \DB\CDB;
@@ -164,6 +173,7 @@ class COrder extends \AGShop\CAGShop{
         $arFields["DISCOUNT_VALUE"] = 0;
         $arFields["TAX_VALUE"] = 0;
         $arFields["USER_DESCRIPTION"] = "";
+        $arFields["DATE_INSERT"] = $arOptions["DATE_ADD"];
         $objCSaleOrder = new \CSaleOrder;
         if(!$nOrderId = $objCSaleOrder->Add($arFields)){
             $this->addError("Не удалось добавить заказ: "
@@ -174,7 +184,7 @@ class COrder extends \AGShop\CAGShop{
         }
         
         $this->setParam("Id",$nOrderId);
-        $this->setParam("Num","Ц-".$nOrderId);
+        $this->setParam("Num",$arOptions["PREFIX"].$nOrderId);
         $sOrderNum = $this->getParam("Num");
         $this->setParam("StatusId",$sInitialStatusId);
         // Сохраняем параметры заказа
@@ -190,7 +200,7 @@ class COrder extends \AGShop\CAGShop{
         $nOrderId = $this->getParam("Id");
         if($nOrderId)$objCSync->syncOrder($nOrderId);
 
-        $this->setZNI('N','AA');
+        $this->setZNI($arOptions["ZNI"],'AA');
         
         if(!$this->getErrors())return $nOrderId;
         return true; 
