@@ -248,8 +248,10 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     <? if(
         $arSettings["INFO_MESSAGE"]["VALUE"]
         &&
-        // Не показывать в АРМ
+        // Не показывать в АРМ и профиле пользователя
         !preg_match("#^/partner#", $_SERVER["REQUEST_URI"])
+        &&
+        !preg_match("#^/profile#", $_SERVER["REQUEST_URI"])
         &&
         !$_COOKIE[$sCookieName]
     ):?>
