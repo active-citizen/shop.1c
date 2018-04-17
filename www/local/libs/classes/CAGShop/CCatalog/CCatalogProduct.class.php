@@ -219,7 +219,6 @@
         function getTeasers($arOptions = []){
             global $USER;
 //            new \XPrint($arOptions,1);
-
             $objCache = new
             \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
             if($sCacheData = $objCache->get()){
@@ -378,8 +377,6 @@
                     ".(
                         $arOptions["filter"]["not_exists"]
                         ?
-                        " AND 1 "
-                        :
                         "
                         AND 
                         (
@@ -392,7 +389,16 @@
                                 AND
                                 `store_product`.`AMOUNT`>0
                             )
-                        )"
+                        )
+                        "
+//                        "AND 1"
+                        :
+                        "
+                        AND 
+                        (
+                            `store_product`.`AMOUNT`>0
+                        )
+                        "
                     )
                     ."
                     AND 
