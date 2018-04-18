@@ -32,7 +32,7 @@
     
     
     define("CONFIG_STATIC",true);
-    define("COMMON_CACHE_TIME",3600);
+    define("COMMON_CACHE_TIME",1);
     // Значение невыбираемого остатка по умолчанию
     define("DEFAULT_STORE_LIMIT",0);
     // Определяем ID групп Операторы МФЦ и Партнёры

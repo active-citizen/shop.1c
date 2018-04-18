@@ -10,7 +10,9 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
     <!-- Конец: Компонент фильтров -->
 
     <section class="catalog-inner">
-        <div class="desktop-products-container">
+        <div class="desktop-products-container<? 
+        if($arParams["smallicons"]==1):?> desktop-products-container--gridSmall<? 
+        endif?>">
 <? endif ?>
             <? foreach($arResult["PRODUCTS"] as $arProduct):?>
             <!-- Product Item -->

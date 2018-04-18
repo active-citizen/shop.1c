@@ -17,3 +17,14 @@
         display:none;
     }
 
+.ag-shop-slider h3{
+    line-height: 1.2em;
+}
+
+.ag-shop-card__image-points{
+    line-height: 1.7em;
+}
+
+.ag-shop-catalog{
+    min-height: 100vh;
+}

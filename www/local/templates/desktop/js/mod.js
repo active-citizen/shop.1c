@@ -9,6 +9,24 @@ function teaserSorting(sortString){
 }
 
 /**
+    Рвзмер плитки
+*/
+function teaserSize(size){
+    $('#smallicons').val(size);
+    if(parseInt(size)==0){
+        $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+    }
+    else if(parseInt(size)==1){
+        $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+        $('.desktop-products-container').addClass('desktop-products-container--gridSmall');
+    }
+    applyFilter();
+    return false;
+}
+
+
+
+/**
     Применение фильтра без 
 */
 function applyFilter(){

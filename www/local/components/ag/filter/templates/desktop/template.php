@@ -3,6 +3,8 @@
     name="desktopCatalogFilterForm" action="#teasers">
         <input id="sorting" name="sorting" type="hidden" value="<?=
         $_REQUEST["sorting"]?htmlspecialchars($_REQUEST["sorting"]):"fresh-desc"?>">
+        <input id="smallicons" name="smallicons" type="hidden" value="<?=
+        $_REQUEST["smallicons"]?htmlspecialchars($_REQUEST["smallicons"]):0?>">
         <?if($arParams["filter"]["section_code"]):?>
         <input type="hidden" name="section_code" value="<?=
         $arParams["filter"]["section_code"]?>">
@@ -205,7 +207,7 @@
                 </div>
                 <div class="desktop-products-filter-item__content">
                     <div class="desktop-checkbox desktop-checkbox-square">
-                        <input id="showProductsAll" class="desktop-checkbox__input defaultCheck" 
+                        <input id="showProductsAll" class="desktop-checkbox__input defaultReset" 
                         type="checkbox" name="showProductsAll" value="111" 
                         <? if($arParams['filter']['not_exists']):?>checked<? endif ?>                        
                         >
