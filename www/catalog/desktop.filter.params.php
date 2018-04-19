@@ -21,6 +21,12 @@
         isset($tmp[1]) && $tmp[1]=='catalog'
         && isset($tmp[2]) && preg_match("#^[\w\d\_\-]+$#",$tmp[2])
     )$arParams["filter"]["section_code"] = trim($tmp[2]);
+    elseif(
+        isset($tmp[1]) && $tmp[1]=='profile'
+        && isset($tmp[2]) && preg_match("#^[\w\d\_\-]+$#",$tmp[2])
+    ){
+        $arParams["filter"]["section_code"] = $tmp[1]."_".$tmp[2];
+    }
 
     $sCode = '';
     if(isset($arParams["filter"]["section_code"]))
@@ -70,9 +76,15 @@
         $nPrice = $arParams["filter"]["price_max"];
         // Меняем максимальную и минимальную цену местами
         if(
-            intval($arParams["filter"]["price_max"])
-            <
+            intval($arParams["filter"]["price_max"]) 
+            &&
             intval($arParams["filter"]["price_min"])
+            &&
+            (
+                intval($arParams["filter"]["price_max"])
+                <
+                intval($arParams["filter"]["price_min"])
+            )
         ){
             $arParams["filter"]["price_max"] =
                 intval($arParams["filter"]["price_min"]);
@@ -139,4 +151,10 @@
         $objFilterSettings->setSmallIcons($arParams["smallicons"]);
     }
 
+    if(
+        isset($tmp[1]) && $tmp[1]=='profile'
+        && isset($tmp[2])  && $tmp[2]=='wishes'
+    ){
+        $arParams["filter"]["wishes_user"] = $USER->GetID();
+    }
 

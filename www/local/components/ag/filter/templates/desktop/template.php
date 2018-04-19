@@ -48,13 +48,13 @@
                 <div class="desktop-products-filter-item__content">
                     <div class="desktop-products-filter-price">
                         <div class="default-desktop-input-wrapper">
-                            <input class="default-desktop-input" type="number" 
+                            <input class="default-desktop-input defaultClear" type="number" 
                             name="productPriceMin" maxlength="5" pattern="[0-9]{,5}"
                             value="<?= $arParams["filter"]["price_min"]?>"
                             >
                         </div>
                         <div class="default-desktop-input-wrapper">
-                            <input class="default-desktop-input" type="number" 
+                            <input class="default-desktop-input defaultClear" type="number" 
                             name="productPriceMax" maxlength="5" pattern="[0-9]{,5}"
                             value="<?= $arParams["filter"]["price_max"]?>"
                             >
@@ -216,7 +216,8 @@
                         </label>
                     </div>
                     <div class="desktop-checkbox desktop-checkbox-square">
-                        <input id="showProductsHit" class="desktop-checkbox__input" 
+                        <input id="showProductsHit"
+                        class="desktop-checkbox__input defaultReset" 
                         type="checkbox" name="showProductsHit" value="002"
                         <? if($arParams['filter']['hit']):?>checked<? endif ?>
                         >
@@ -225,7 +226,8 @@
                         </label>
                     </div>
                     <div class="desktop-checkbox desktop-checkbox-square">
-                        <input id="showProductsSale" class="desktop-checkbox__input" 
+                        <input id="showProductsSale"
+                        class="desktop-checkbox__input defaultReset" 
                         type="checkbox" name="showProductsSale" value="003"
                         <? if($arParams['filter']['sale']):?>checked<? endif ?>                        
                         >
@@ -234,7 +236,8 @@
                         </label>
                     </div>
                     <div class="desktop-checkbox desktop-checkbox-square">
-                        <input id="showProductsNew" class="desktop-checkbox__input" 
+                        <input id="showProductsNew"
+                        class="desktop-checkbox__input defaultReset" 
                         type="checkbox" name="showProductsNew" value="004"
                         <? if($arParams['filter']['new']):?>checked<? endif ?>                        
                         >
@@ -262,3 +265,54 @@
     </form>
 </aside>
 
+<script>
+/**
+    Применение фильтра без 
+*/
+function applyFilter(){
+    // Определяем базовую строку запроса
+    var query = '<?= 
+        $arParams["filter"]["wishes_user"]
+        ?
+        '/profile/wishes/index.ajax.php?form=filter'
+        :
+        '/catalog/index.ajax.php?form=filter'
+    ?>';
+    // Добавляем поля из формы
+    $('#desktopCatalogFilterForm input').each(function(){
+        if($(this).attr("type")=='checkbox' && $(this).is(':checked'))
+            query+="&"+$(this).attr("name")+'='+$(this).val();
+        else if($(this).attr("type")=='checkbox')
+            query+="";
+        else
+            query+="&"+$(this).attr("name")+'='+$(this).val();
+    });
+
+    var nPageNum = 1;
+    $('.desktop-products-container').addClass('teaser-loading');
+    // Отправляем запрос на получение 1-й страницы
+    $.get(query,function(data){
+        var search = query;
+        var re=/^(.*)\/$/;
+        // Узнаём раздел
+
+        search = search.replace(/^.*(\?.*)$/,'$1');
+        search = search.replace(/[&\?]page=\d+/,'');
+        search = search.replace(re,"$1");
+
+        if(search=='') 
+            newsearch = search+'?page='+nPageNum+'/'
+        else
+            newsearch = search+'&page='+nPageNum+'/';
+        console.log(newsearch);
+        window.history.replaceState({}, search, newsearch);
+        //document.location.hash = "PAGE-"+nPageNum;
+        $('.more-button').remove();
+        $('.desktop-products-container').html(data);
+        $('.desktop-products-container').removeClass('teaser-loading');
+        wishes_load();
+    })
+     
+    return false;
+}
+</script>

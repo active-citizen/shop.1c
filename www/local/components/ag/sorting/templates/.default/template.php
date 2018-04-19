@@ -21,7 +21,7 @@
                             <? elseif($arParams["sorting"]["param"]=='price' && $arParams["sorting"]["direction"]=='desc'):?>
                             Цена по убыванию
                             <? elseif($arParams["sorting"]["param"]=='wishes' && $arParams["sorting"]["direction"]=='desc'):?>
-                            Рейтинг
+                            Избранное
                             <? else:?>
 							Дата добавления
                             <?endif?>

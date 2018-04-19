@@ -300,7 +300,7 @@
             
             if(isset($arOptions["filter"]["section_code"]))
                 $arFilter["section_code"] = trim($CDB->ForSql($arOptions["filter"]["section_code"]));
-                
+
             $nSectionId = 0;
             if(isset($arFilter["section_code"])){
                 $arCatalogSection = \CIBlockSection::GetList([],[
@@ -368,12 +368,51 @@
                         LEFT JOIN
                     `".\AGShop\CAGShop::t_iblock_section."` as `section`
                         ON `product`.`IBLOCK_SECTION_ID`=`section`.`ID`
+                    ".
+                    (
+                        $arOptions["filter"]["wishes_user"]
+                        ?
+                        "
+                        LEFT JOIN
+                     `".\AGShop\CAGShop::t_iblock_element_property."` as `wishes_prod`
+                        ON
+                        `wishes_prod`.`IBLOCK_PROPERTY_ID`=".WISH_PRODUCT_PROPERTY_ID."
+                        AND
+                        `wishes_prod`.`VALUE_NUM`=`product`.`ID`
+                        LEFT JOIN
+                     `".\AGShop\CAGShop::t_iblock_element_property."` as `wishes_user`
+                        ON
+                        `wishes_user`.`IBLOCK_PROPERTY_ID`=".WISH_USER_PROPERTY_ID."
+                        AND
+                        `wishes_prod`.`IBLOCK_ELEMENT_ID`=`wishes_user`.`IBLOCK_ELEMENT_ID`
+                        AND
+                        `wishes_user`.`VALUE_NUM`=".intval(
+                            $arOptions["filter"]["wishes_user"]
+                        )."
+                        "
+                        :
+                        ""
+                    )
+                    ."
                 WHERE
                     `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     AND `product`.`IBLOCK_SECTION_ID`!=0
                     ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
                     AND `section`.`ACTIVE`='Y'
                     AND `product`.`ACTIVE`='Y'
+                    ".(
+                        $arOptions["filter"]["wishes_user"]
+                        ?
+                        "
+                        AND `wishes_prod`.`ID` IS NOT NULL
+                        AND `wishes_user`.`ID` IS NOT NULL
+                        "
+                        :
+                        "
+                        AND 1
+                        "
+                    )
+                    ."
                     ".(
                         $arOptions["filter"]["not_exists"]
                         ?
