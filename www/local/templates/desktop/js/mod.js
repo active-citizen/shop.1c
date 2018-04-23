@@ -32,4 +32,8 @@ $(document).ready(function(){
             $(this).parent().parent().find("input").first().prop("checked",true);
         }
     });
+
+    $('#showProductsAll').click(function(){
+        $('#not_exists').val($(this).prop('checked')?0:1);
+    });
 });

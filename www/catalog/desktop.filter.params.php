@@ -116,7 +116,7 @@
 
 
         // Ставим флаг "только в наличии"
-        if(isset($_REQUEST["showProductsAll"]) && $_REQUEST["showProductsAll"])
+        if(isset($_REQUEST["not_exists"]) && $_REQUEST["not_exists"])
             $arParams["filter"]["not_exists"] = true;
 
         if(isset($_REQUEST["sorting"]) && ($_REQUEST["sorting"]=='rating-desc')){

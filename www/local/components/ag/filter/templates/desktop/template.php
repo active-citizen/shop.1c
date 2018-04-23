@@ -5,6 +5,8 @@
         $_REQUEST["sorting"]?htmlspecialchars($_REQUEST["sorting"]):"fresh-desc"?>">
         <input id="smallicons" name="smallicons" type="hidden" value="<?=
         $_REQUEST["smallicons"]?htmlspecialchars($_REQUEST["smallicons"]):0?>">
+        <input id="not_exists" name="not_exists" type="hidden" value="<?=
+        $_REQUEST["not_exists"]?1:0?>">
         <?if($arParams["filter"]["section_code"]):?>
         <input type="hidden" name="section_code" value="<?=
         $arParams["filter"]["section_code"]?>">
@@ -207,12 +209,13 @@
                 </div>
                 <div class="desktop-products-filter-item__content">
                     <div class="desktop-checkbox desktop-checkbox-square">
-                        <input id="showProductsAll" class="desktop-checkbox__input defaultReset" 
+                        <input id="showProductsAll"
+                        class="desktop-checkbox__input defaultCheck" 
                         type="checkbox" name="showProductsAll" value="111" 
-                        <? if($arParams['filter']['not_exists']):?>checked<? endif ?>                        
+                        <? if(!$arParams['filter']['not_exists']):?>checked<? endif ?>                        
                         >
                         <label for="showProductsAll" class="desktop-checkbox__label">
-                            <span class="desktop-checkbox__title">Отсутствующие</span>
+                            <span class="desktop-checkbox__title">В наличии</span>
                         </label>
                     </div>
                     <div class="desktop-checkbox desktop-checkbox-square">
