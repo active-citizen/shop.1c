@@ -36,4 +36,6 @@ $(document).ready(function(){
     $('#showProductsAll').click(function(){
         $('#not_exists').val($(this).prop('checked')?0:1);
     });
+
+    $('#desktopProductsFilterReset').click(function(){applyFilter();});
 });

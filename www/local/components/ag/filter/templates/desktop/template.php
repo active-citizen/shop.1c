@@ -50,13 +50,13 @@
                 <div class="desktop-products-filter-item__content">
                     <div class="desktop-products-filter-price">
                         <div class="default-desktop-input-wrapper">
-                            <input class="default-desktop-input defaultClear" type="number" 
+                            <input class="default-desktop-input defaultClear default-desktop-input--price" type="number" 
                             name="productPriceMin" maxlength="5" pattern="[0-9]{,5}"
                             value="<?= $arParams["filter"]["price_min"]?>"
                             >
                         </div>
                         <div class="default-desktop-input-wrapper">
-                            <input class="default-desktop-input defaultClear" type="number" 
+                            <input class="default-desktop-input defaultClear default-desktop-input--price" type="number" 
                             name="productPriceMax" maxlength="5" pattern="[0-9]{,5}"
                             value="<?= $arParams["filter"]["price_max"]?>"
                             >
@@ -251,7 +251,59 @@
                 </div>
             </div>
             <!-- ============== -->
+            <?
+                $bButtonDisabled = true;
+                if(
+                    (
+                        isset($arParams["filter"]["not_exists"]) 
+                        && 
+                        $arParams["filter"]["not_exists"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["sale"]) 
+                        && 
+                        $arParams["filter"]["sale"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["new"]) 
+                        && 
+                        $arParams["filter"]["new"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["hit"]) 
+                        && 
+                        $arParams["filter"]["hit"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["store"]) 
+                        && 
+                        $arParams["filter"]["store"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["price_min"]) 
+                        && 
+                        $arParams["filter"]["price_min"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["price_max"]) 
+                        && 
+                        $arParams["filter"]["price_max"]
+                    )
+                    ||
+                    (
+                        isset($arParams["filter"]["interest"]) 
+                        && 
+                        $arParams["filter"]["interest"]
+                    )
 
+                ) $bButtonDisabled = false;
+            ?>
             <div class="desktop-products-filter-item">
                 <div class="desktop-products-filter-form-actions">
                     <button id="desktopProductsFilterSubmit" 
@@ -259,8 +311,14 @@
                     type="submit" 
                     name="filter"
                     onclick="return applyFilter();"
+                    <? if($bButtonDisabled):?>disabled<? endif?>
                     >Применить</button>
-                    <button id="desktopProductsFilterReset" class="btn-filter-form btn-filter-form--reset" type="reset" name="desktopProductsFilterReset">Сбросить</button>
+                    <button id="desktopProductsFilterReset" 
+                    class="btn-filter-form btn-filter-form--reset" 
+                    type="reset" 
+                    name="desktopProductsFilterReset"
+                    <? if($bButtonDisabled):?>disabled<? endif?>
+                    >Сбросить</button>
                 </div>
             </div>
 
