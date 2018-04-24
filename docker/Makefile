@@ -1,9 +1,7 @@
 prepare-project:
-	chmod 777 ../www
-	chmod 777 ../www/bitrix
-	chmod 777 ../www/bitrix/modules
 	chmod 777 ../tmp
 	chmod 777 ../tmp/sessions
+	chown www-data:www-data -R ../www/bitrix
 	chown www-data:www-data ../www/index.php
 
 build:

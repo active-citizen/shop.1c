@@ -1,5 +1,7 @@
 # Игнорировать ядро битрикса 
 www/bitrix/
+# тесты
+www/bxtest/
 # кроме файла обмена с 1С
 !www/bitrix/admin/1c_exchange.php
 # Кроме файла доп. настроек
