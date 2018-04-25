@@ -940,6 +940,7 @@ class COrder extends \AGShop\CAGShop{
         
         $arQuery = $CDB->sqlSelect($sQuery);
         $arResult = [];
+        $this->arProps = [];
         foreach($arQuery as $arItem)
             $this->arProps[$arItem["CODE"]] = $arItem["VALUE"];
         return $arResult;
