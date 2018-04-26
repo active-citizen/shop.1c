@@ -331,6 +331,7 @@ class COrder extends \AGShop\CAGShop{
         // Проверяем сумму на счёте
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         $objSSAGAccount = new \SSAG\CSSAGAccount('',\CUser::GetID());
+        $objSSAGAccount->update();
         $arAccount = ["CURRENT_BUDGET"=>$objSSAGAccount->balance()];
         if(!$sCustomNum && $arAccount["CURRENT_BUDGET"]<$nTotalSum){
             $this->addError("Недостаточно баллов на счёте");
