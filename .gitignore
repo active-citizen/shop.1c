@@ -1,21 +1,10 @@
 # Игнорировать ядро битрикса 
 www/bitrix/
-# тесты
-www/bxtest/
 # кроме файла обмена с 1С
 !www/bitrix/admin/1c_exchange.php
 # Кроме файла доп. настроек
 !www/bitrix/.settings_extra.php
 
-# игнорировать файлы битрикса в корне сайта
-www/.access.php
-www/index.php
-www/install.config
-www/license.html
-www/license.php
-www/readme.html
-www/readme.php
-www/web.config
 
 # Игнорировать загруженные файлы
 www/upload/*

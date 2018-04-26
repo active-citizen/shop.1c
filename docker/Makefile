@@ -16,8 +16,6 @@ chown-www-user:
 	chown ${name}:${name} -R ../www
 
 replace-files:
-	cat ../www/index.php.replace > ../www/index.php
-	cat ../www/.access.php.replace > ../www/.access.php
 	cat ../www/.integration/secret.inc.sample.php > ../www/.integration/secret.inc.php
 	cat ../www/local/php_interface/settings.inc.sample.php > ../www/local/php_interface/settings.inc.php
 	cat ../www/api/include/config.tmpl.php > ../www/api/include/config.php
