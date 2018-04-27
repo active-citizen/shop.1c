@@ -118,6 +118,15 @@ body {
   transition: background-color 300ms;
 }
 
+.desktop-checkbox-round .desktop-checkbox__label:hover:before,
+.desktop-checkbox-round .desktop-checkbox__label:active:before,
+.desktop-checkbox-round .desktop-checkbox__label:focus:before {
+  border-color: #ef4d94;
+  -webkit-transition: border-color 300ms, background-color 300ms;
+  -o-transition: border-color 300ms, background-color 300ms;
+  transition: border-color 300ms, background-color 300ms;
+}
+
 .desktop-checkbox-round .desktop-checkbox__input:checked + .desktop-checkbox__label:after {
   content: "";
   background-color: #ef4d94;
@@ -166,6 +175,15 @@ body {
   -webkit-transition: opacity 300ms, visibility 300ms;
   -o-transition: opacity 300ms, visibility 300ms;
   transition: opacity 300ms, visibility 300ms;
+}
+
+.desktop-checkbox-square .desktop-checkbox__label:hover:before,
+.desktop-checkbox-square .desktop-checkbox__label:active:before,
+.desktop-checkbox-square .desktop-checkbox__label:focus:before {
+  border-color: #ef4d94;
+  -webkit-transition: border-color 300ms, background-color 300ms;
+  -o-transition: border-color 300ms, background-color 300ms;
+  transition: border-color 300ms, background-color 300ms;
 }
 
 .desktop-checkbox-square .desktop-checkbox__input:checked + .desktop-checkbox__label:before {
@@ -1386,7 +1404,7 @@ body {
 }
 
 .desktop-products-container--gridSmall .desktop-product-badge {
-  width: 30px;
+  width: 45px;
 }
 
 .desktop-products-container--gridSmall .desktop-product-title {

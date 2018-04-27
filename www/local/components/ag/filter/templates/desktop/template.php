@@ -56,7 +56,7 @@
                             >
                         </div>
                         <div class="default-desktop-input-wrapper">
-                            <input class="default-desktop-input defaultClear default-desktop-input--price" type="number" 
+                            <input class="default-desktop-input defaultClear default-desktop-input--priceMax" type="number" 
                             name="productPriceMax" maxlength="5" pattern="[0-9]{,5}"
                             value="<?= $arParams["filter"]["price_max"]?>"
                             >
