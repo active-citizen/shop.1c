@@ -21,6 +21,12 @@
         isset($tmp[1]) && $tmp[1]=='catalog'
         && isset($tmp[2]) && preg_match("#^[\w\d\_\-]+$#",$tmp[2])
     )$arParams["filter"]["section_code"] = trim($tmp[2]);
+    elseif(
+        isset($tmp[1]) && $tmp[1]=='profile'
+        && isset($tmp[2]) && preg_match("#^[\w\d\_\-]+$#",$tmp[2])
+    ){
+        $arParams["filter"]["section_code"] = $tmp[1]."_".$tmp[2];
+    }
 
     $sCode = '';
     if(isset($arParams["filter"]["section_code"]))
@@ -52,12 +58,13 @@
     if($arSortingCache) $arParams["sorting"] = $arSortingCache;
 
     $arSmalliconsCache = $objFilterSettings->getSmallIcons();
-    if($arSmalliconsCache) $arParams["smallicons"] = $arSmalliconsCache;
+    if($arSmalliconsCache) $arParams["smallicons"] = intval($arSmalliconsCache);
 
     if(isset($_REQUEST["form"]) && $_REQUEST["form"]=='filter'){
 
         $arParams["filter"] = ["not_exists"=>false];
         $arParams["sorting"] = ["param" => 'wishes',"direction"=>"desc"];
+        $arParams["smallicons"] = 0;
         
         if($sCode)$arParams["filter"]["section_code"] = $sCode;
 
@@ -66,6 +73,23 @@
             $arParams["filter"]["price_min"] = $_REQUEST["productPriceMin"];
         if(isset($_REQUEST["productPriceMax"]) && $_REQUEST["productPriceMax"])
             $arParams["filter"]["price_max"] = $_REQUEST["productPriceMax"];
+        $nPrice = $arParams["filter"]["price_max"];
+        // Меняем максимальную и минимальную цену местами
+        if(
+            intval($arParams["filter"]["price_max"]) 
+            &&
+            intval($arParams["filter"]["price_min"])
+            &&
+            (
+                intval($arParams["filter"]["price_max"])
+                <
+                intval($arParams["filter"]["price_min"])
+            )
+        ){
+            $arParams["filter"]["price_max"] =
+                intval($arParams["filter"]["price_min"]);
+            $arParams["filter"]["price_min"] = intval($nPrice );
+        }
 
         // Определяем список интересов
         $arParams['filter']['interest'] = [];
@@ -92,7 +116,7 @@
 
 
         // Ставим флаг "только в наличии"
-        if(isset($_REQUEST["showProductsAll"]) && $_REQUEST["showProductsAll"])
+        if(isset($_REQUEST["not_exists"]) && $_REQUEST["not_exists"])
             $arParams["filter"]["not_exists"] = true;
 
         if(isset($_REQUEST["sorting"]) && ($_REQUEST["sorting"]=='rating-desc')){
@@ -115,9 +139,22 @@
             $arParams["sorting"]["direction"] = 'desc';
         }
 
+        if(isset($_REQUEST["smallicons"]) && intval($_REQUEST["smallicons"])){
+            $arParams["smallicons"] = intval($_REQUEST["smallicons"]);
+        }
+        else{
+            $arParams["smallicons"] = 0;
+        }
+
         $objFilterSettings->setFilter($arParams["filter"]);
         $objFilterSettings->setSorting($arParams["sorting"]);
         $objFilterSettings->setSmallIcons($arParams["smallicons"]);
     }
 
+    if(
+        isset($tmp[1]) && $tmp[1]=='profile'
+        && isset($tmp[2])  && $tmp[2]=='wishes'
+    ){
+        $arParams["filter"]["wishes_user"] = $USER->GetID();
+    }
 

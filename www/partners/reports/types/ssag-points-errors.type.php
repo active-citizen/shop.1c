@@ -10,11 +10,13 @@ use AGShop\DB as DB;
 $CDB = new \DB\CDB;
 $sQuery = "
     SELECT
-        `CTIME` as `CTIME`,
+        DATE_FORMAT(`CTIME`,'%d.%m.%Y %H:%i:%s') as `CTIME`,
         `REQUEST` as `REQUEST`,
         `ANSWER` as `ANSWER`
     FROM
         `int_ssag_errorlog`
+    ORDER BY
+        `CTIME` DESC
     LIMIT
         30;
 ";
@@ -27,6 +29,7 @@ $arCols = [
     "2"=>["VALUE"=>"Код ошибки"],
     "3"=>["VALUE"=>"Текст ошибки"],
     "4"=>["VALUE"=>"AGID"],
+    "5"=>["VALUE"=>"Подробности"]
 ];
 
 $arLogs = [];
@@ -52,6 +55,7 @@ while($arLog = $resResult->Fetch()){
         "2"=>$arAnswer["errorCode"],
         "3"=>$arAnswer["errorMessage"],
         "4"=>$arRequest["ag_id"],
+        "5"=>"<pre>".print_r($arRequest,1).print_r($arAnswer,1)."</pre>"
     ];
     
     $nNum++;

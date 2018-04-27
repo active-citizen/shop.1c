@@ -21,7 +21,7 @@
                             <? elseif($arParams["sorting"]["param"]=='price' && $arParams["sorting"]["direction"]=='desc'):?>
                             Цена по убыванию
                             <? elseif($arParams["sorting"]["param"]=='wishes' && $arParams["sorting"]["direction"]=='desc'):?>
-                            Рейтинг
+                            Избранное
                             <? else:?>
 							Дата добавления
                             <?endif?>
@@ -84,37 +84,63 @@
 							</ul>
 						</div>
 					</div>
-                    <?/* 
+                     
 					<div class="dropdown-wrapper desktop-catalog-grid">
 						<button class="desktop-catalog-sort__btn" type="button" name="button">
+
 							<span class="desktop-catalog-sort__btn-type">Вид плиток:</span>
-							<span class="desktop-catalog-sort__btn-current">Крупный</span>
+							<span class="desktop-catalog-sort__btn-current">
+                            <? if($arParams["smallicons"]==0):?>
+                            Крупный
+                            <? elseif($arParams["smallicons"]==1):?>
+                            Мелкий
+                            <? elseif($arParams["smallicons"]==2):?>
+                            Список
+                            <? endif?>
+                            </span>
 							<span class="desktop-catalog-sort__btn-icon"></span>
 						</button>
 						<div class="desktop-catalog-sort__dropdown">
 							<ul class="list-default list-dropdown">
-								<li class="list-dropdown__item selected">
-									<a class="list-dropdown__link" href="#" data-dropdownName="Крупный">
+								<li class="list-dropdown__item<?if($arParams["smallicons"]==0
+                                ):?> selected<?
+                                endif
+                                ?>">
+									<a class="list-dropdown__link" href="#" data-dropdownName="Крупный"
+                                    onclick="return teaserSize(0);"
+                                    >
 										<span class="list-dropdown__icon list-dropdown__icon--gridBig"></span>
 										<span class="list-dropdown__link-title">Крупный</span>
 									</a>
 								</li>
-								<li class="list-dropdown__item">
-									<a class="list-dropdown__link" href="#" data-dropdownName="Мелкий">
+								<li class="list-dropdown__item<?if($arParams["smallicons"]==1
+                                ):?> selected<?
+                                endif
+                                ?>">
+									<a class="list-dropdown__link" href="#" data-dropdownName="Мелкий"
+                                    onclick="return teaserSize(1);"
+                                    >
 										<span class="list-dropdown__icon list-dropdown__icon--gridSmall"></span>
 										<span class="list-dropdown__link-title">Мелкий</span>
 									</a>
 								</li>
-								<li class="list-dropdown__item">
-									<a class="list-dropdown__link" href="#" data-dropdownName="Список">
+                                <?/*
+								<li class="list-dropdown__item<?if($arParams["smallicon"]==2
+                                ):?> selected<?
+                                endif
+                                ?>">
+									<a class="list-dropdown__link" href="#" data-dropdownName="Список"
+                                    onclick="return teaserSize(2);"
+                                    >
 										<span class="list-dropdown__icon list-dropdown__icon--gridList"></span>
 										<span class="list-dropdown__link-title">Список</span>
 									</a>
 								</li>
+                                */?>
 							</ul>
 						</div>
 					</div>
-                    */?>
+                    
 				</div>
 			</div>
             <!--  Конец. Заголовок каталога (сортировать по и вид плиток)-->

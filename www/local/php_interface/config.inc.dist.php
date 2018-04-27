@@ -62,6 +62,12 @@
         //ID свойста "дата конца аукциона"
         define("AUCTION_END_DATE_PROPERTY_ID",90);
 
+        //ID свойста "ID желающиго пользователя"
+        define("WISH_USER_PROPERTY_ID",55);
+
+        //ID свойста "ID желаемого товара"
+        define("WISH_PRODUCT_PROPERTY_ID",56);
+
 
 
 

@@ -4,7 +4,7 @@
 ?>
 
 <?
-$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
+//$arResult["USER_INFO"]["UF_USER_AG_STATUS"] = 'Активный гражданин';
 $stopMonLimit = 0;
 $stopDailyLimit = 0;
 $noAG = false;

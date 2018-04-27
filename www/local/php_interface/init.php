@@ -32,7 +32,7 @@
     
     
     define("CONFIG_STATIC",true);
-    define("COMMON_CACHE_TIME",3600);
+    define("COMMON_CACHE_TIME",1);
     // Значение невыбираемого остатка по умолчанию
     define("DEFAULT_STORE_LIMIT",0);
     // Определяем ID групп Операторы МФЦ и Партнёры
@@ -187,6 +187,26 @@
         )->Fetch();
         define("AUCTION_START_DATE_PROPERTY_ID",$arr["ID"]);
         
+        // Определяем ID свойства пожелавшию пользователь
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>WISHES_IB_ID,
+                "CODE"=>"WISH_USER"
+            )
+        )->Fetch();
+        define("WISH_USER_PROPERTY_ID",$arr["ID"]);
+
+        // Определяем ID свойства желаемый товар
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>WISHES_IB_ID,
+                "CODE"=>"WISH_PRODUCT"
+            )
+        )->Fetch();
+        define("WISH_PRODUCT_PROPERTY_ID",$arr["ID"]);
+
+
+
         // Определяем ID групп Операторы МФЦ и Партнёры
         define("PARTNERS_GROUP_ID",9);
         define("OPERATORS_GROUP_ID",10);

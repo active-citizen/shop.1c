@@ -9,48 +9,22 @@ function teaserSorting(sortString){
 }
 
 /**
-    Применение фильтра без 
+    Рвзмер плитки
 */
-function applyFilter(){
-    // Определяем базовую строку запроса
-    var query = '/catalog/index.ajax.php?form=filter';
-    // Добавляем поля из формы
-    $('#desktopCatalogFilterForm input').each(function(){
-        if($(this).attr("type")=='checkbox' && $(this).is(':checked'))
-            query+="&"+$(this).attr("name")+'='+$(this).val();
-        else if($(this).attr("type")=='checkbox')
-            query+="";
-        else
-            query+="&"+$(this).attr("name")+'='+$(this).val();
-    });
-
-    var nPageNum = 1;
-    $('.desktop-products-container').addClass('teaser-loading');
-    // Отправляем запрос на получение 1-й страницы
-    $.get(query,function(data){
-        var search = query;
-        var re=/^(.*)\/$/;
-        // Узнаём раздел
-
-        search = search.replace(/^.*(\?.*)$/,'$1');
-        search = search.replace(/[&\?]page=\d+/,'');
-        search = search.replace(re,"$1");
-
-        if(search=='') 
-            newsearch = search+'?page='+nPageNum+'/'
-        else
-            newsearch = search+'&page='+nPageNum+'/';
-        console.log(newsearch);
-        window.history.replaceState({}, search, newsearch);
-        //document.location.hash = "PAGE-"+nPageNum;
-        $('.more-button').remove();
-        $('.desktop-products-container').html(data);
-        $('.desktop-products-container').removeClass('teaser-loading');
-        wishes_load();
-    })
-     
+function teaserSize(size){
+    $('#smallicons').val(size);
+    if(parseInt(size)==0){
+        $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+    }
+    else if(parseInt(size)==1){
+        $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+        $('.desktop-products-container').addClass('desktop-products-container--gridSmall');
+    }
+    applyFilter();
     return false;
 }
+
+
 
 $(document).ready(function(){
     $('.all-checked').click(function(){
@@ -58,4 +32,10 @@ $(document).ready(function(){
             $(this).parent().parent().find("input").first().prop("checked",true);
         }
     });
+
+    $('#showProductsAll').click(function(){
+        $('#not_exists').val($(this).prop('checked')?0:1);
+    });
+
+    $('#desktopProductsFilterReset').click(function(){applyFilter();});
 });

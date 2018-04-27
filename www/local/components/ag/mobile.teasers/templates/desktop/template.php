@@ -10,8 +10,11 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
     <!-- Конец: Компонент фильтров -->
 
     <section class="catalog-inner">
-        <div class="desktop-products-container">
+        <div class="desktop-products-container<? 
+        if($arParams["smallicons"]==1):?> desktop-products-container--gridSmall<? 
+        endif?>">
 <? endif ?>
+        <? if(count($arResult["PRODUCTS"])):?>
             <? foreach($arResult["PRODUCTS"] as $arProduct):?>
             <!-- Product Item -->
             <article class="desktop-product<? if(!$arProduct["EXISTS"]):?> notInStock<? endif?>">
@@ -128,6 +131,12 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
             <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
             </div>
             <? endif ?>
+        <? else:?>
+            <div class="filter-empty-alert">
+                Не найдено поощрений, удовлетворяющих условиям фильтра.
+                Попробуйте изменить его условия.
+            </div>
+        <? endif?>
 <? if(!$arParams["AJAX"]):?>
         </div>
     </section>
@@ -160,8 +169,17 @@ function teasersRewind(){
 }
 
 function desktop_teasers_next_page(sUrl,nPageNum){
+
+    var startUrl = '<?= 
+        $arParams["filter"]["wishes_user"]
+        ?
+        "/profile/wishes/index.ajax.php?"
+        :
+        "/catalog/index.ajax.php?"
+    ?>';
+
     $('.more-button').html('Загрузка...');
-    $.get("/catalog/index.ajax.php?"+sUrl,function(data){
+    $.get(startUrl+sUrl,function(data){
         var search = document.location.search;
         var re=/^(.*)\/$/
         search = search.replace(/[&\?]page=\d+/,'');

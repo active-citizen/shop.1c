@@ -16,11 +16,11 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     <? include_once("filter.inc.php");?>
         
           <!-- Catalog {{{-->
-  <div class="ag-shop-catalog">
+<!--  <div class="ag-shop-catalog"> -->
     
     <? include_once("container.inc.php");?>
 
-  </div>
+<!--  </div> -->
 <? endif ?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
