@@ -25,6 +25,9 @@ require("../group_access.php");
             case "limit-locks":
                 $type = 'limit-locks';
             break;
+            case "ssag-points-errors":
+                $type = 'ssag-points-errors';
+            break;
              default:
                 $type = '';
             break;
