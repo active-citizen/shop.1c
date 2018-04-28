@@ -142,3 +142,11 @@
     if(!isset($_SESSION["TEASER_PAGINATION"]))$_SESSION["TEASER_PAGINATION"] = [];
     $_SESSION["TEASER_PAGINATION"][$sCode] = $arParams["pagination"];    
     */
+
+
+    if(
+        isset($tmp[1]) && $tmp[1]=='profile'
+        && isset($tmp[2])  && $tmp[2]=='wishes'
+    ){
+        $arParams["filter"]["wishes_user"] = $USER->GetID();
+    }

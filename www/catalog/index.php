@@ -7,11 +7,12 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
     
 ?>
 
-<? require("desktop.filter.params.php");?>
+
 <? if(0 && !$USER->IsAuthorized()):?>
 <? elseif(IS_MOBILE || IS_PHONE):?>
-<? require("index.mobile.php")?>
+    <? require("index.mobile.php")?>
 <? else: ?>
+    <? require("desktop.filter.params.php");?>
     <? include_once("banners.inc.php");?>
     <? include_once("filter.inc.php");?>
         

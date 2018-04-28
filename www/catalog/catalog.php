@@ -100,13 +100,18 @@ if(
             
             <? include("container.inc.php")?>
     <? }elseif(!$product_code && $catalog_code){ ?>
+            <? require("mobile.filter.params.php");?>
+            
+            <? include("container.inc.php")?>
     <?
+    /*
     $APPLICATION->IncludeComponent(
         "ag:mobile.teasers", 
         "", 
         $arParams,
         false
     );
+    */
     ?>
     <? }elseif($product_code){ ?>
         <div class="ag-shop-content">

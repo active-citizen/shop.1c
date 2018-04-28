@@ -37,5 +37,8 @@ $(document).ready(function(){
         $('#not_exists').val($(this).prop('checked')?0:1);
     });
 
-    $('#desktopProductsFilterReset').click(function(){applyFilter();});
+    $('#desktopProductsFilterReset').click(function(){
+        $('#not_exists').val($('#showProductsAll').prop('checked')?0:1);
+        applyFilter();
+    });
 });

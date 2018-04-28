@@ -10,11 +10,16 @@ customCache();
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
-require($_SERVER["DOCUMENT_ROOT"]."/catalog/desktop.filter.params.php");
+if(IS_MOBILE || IS_PHONE)
+    require($_SERVER["DOCUMENT_ROOT"]."/catalog/mobile.filter.params.php");
+else
+    require($_SERVER["DOCUMENT_ROOT"]."/catalog/desktop.filter.params.php");
+    
+
 $arParams["AJAX"] = true;
 $APPLICATION->IncludeComponent(
     "ag:mobile.teasers", 
-    "desktop", 
+    IS_MOBILE || IS_PHONE?".default":"desktop", 
     $arParams,
     false
 );

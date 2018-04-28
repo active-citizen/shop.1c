@@ -26,6 +26,8 @@
             $arSettings["INFO_MESSAGE"]["VALUE"]
             &&
             !$_COOKIE[$sCookieName]
+            &&
+            !(IS_MOBILE || IS_PHONE)
         ):?>
         <div class="ag-shop-card__warning main-info-message
         ag-shop-card__warning_margin_0" style="<?=
