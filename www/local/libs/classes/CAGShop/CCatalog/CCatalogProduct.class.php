@@ -560,15 +560,26 @@
                         LEFT JOIN
                     `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
                         ON
-                        `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`
---                      AND
---                      `store_product`.`AMOUNT`>0
+                        `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`"
+                        .(
+                            !$arOptions["filter"]["not_exists"]
+                            ?
+                            " AND `store_product`.`AMOUNT`>0 "
+                            :
+                            ""
+                        )."
                 WHERE
                     1
                     -- AND `product`.`ACTIVE` = 'Y'
                     -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
-                    ".($arFilter["store"]?"AND `store_product`.`STORE_ID` IN (".$arFilter["store"]:"").")
+                    ".(
+                        $arFilter["store"]
+                        ?
+                        "AND `store_product`.`STORE_ID` IN (".$arFilter["store"].")"
+                        :
+                        ""
+                    )."
                 GROUP BY
                     `product`.`ID`
             ";
