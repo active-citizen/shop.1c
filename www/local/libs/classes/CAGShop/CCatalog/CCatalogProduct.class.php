@@ -571,7 +571,7 @@
                 WHERE
                     1
                     -- AND `product`.`ACTIVE` = 'Y'
-                    -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
+                    ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     ".(
                         $arFilter["store"]
