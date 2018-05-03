@@ -156,6 +156,56 @@ elseif(isset($_GET["cancel"]) && $order_id=intval($_GET["cancel"])){
         die;
     }
 
+
+    $objCOrder = new \Order\COrder;
+    // Получаем информацию о заказе
+    $arOrder = $objCOrder->getById($order_id);
+    // Не позволяем отменять заказ в любом статусе, кроме "в работе(готово)"
+    if(
+        $arOrder["STATUS_ID"]!='N'
+    ){
+        $answer = array(
+            "order"=>array(
+                "ERROR"=>array(
+                    "Заказ в данном статусе отменить нельзя"
+                )
+            )
+        );
+        echo json_encode($answer);
+        die;
+    }
+
+    // Получаем историю изменения заказа
+    $resHistory = CSaleOrderChange::GetList([],[
+        "TYPE"=>"ORDER_ZNI",
+        "ORDER_ID"=>$order_id
+    ]);
+  
+    // Не позволяем пользователю отменять заказ, прошедший через ЗНИ
+    while($arHistory = $resHistory->Fetch()){
+        $arData = unserialize($arHistory["DATA"]);
+        if(
+            isset($arData["OLD_STATUS_ID"])
+            &&
+            isset($arData["STATUS_ID"])
+            &&
+            $arData["OLD_STATUS_ID"]=='N'
+            &&
+            $arData["STATUS_ID"]!='N'
+        ){
+            $answer = array(
+                "order"=>array(
+                    "ERROR"=>array(
+                    "Запрос на изменение статуса отправлен в учётную систему. Отмена невозможна"
+                    )
+                )
+            );
+            echo json_encode($answer);
+            die;
+        }
+    }
+
+
     $arProperties =  orderGetProperties($order_id,["CHANGE_REQUEST"]);
     if(
         !isset($arProperties["CHANGE_REQUEST"]["VALUE"])
