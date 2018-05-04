@@ -292,6 +292,8 @@ function selectStorage(storageId){
     //Если мы выбрали место, удаляем класс ошибки
     $('.js-choose__place').removeClass('ag-shop-card__field--error');
 
+    $('.ag-shop-card__selected-place').removeClass('hidden');
+
     totalStoreId = storageId;
     $('.ag-shop-card__selected-place-table').html('');
     var value= '';
