@@ -261,6 +261,10 @@ while($arProp = $resProp->Fetch())$arOrderPropIndex[$arProp["CODE"]] =
 if($arParams["FILTER"]["NUM"])
     $arFilter["%ADDITIONAL_INFO"] = $arParams["FILTER"]["NUM"];
 
+if($arParams["FILTER"]["SECTION"])
+    $arFilter["PROPERTY_VAL_BY_CODE_SECTION_ID"] = 
+       $arParams["FILTER"]["SECTION"];
+
 /*
 if($arParams["FILTER"]["LAST_NAME"])
     $arFilter["%PROPERTY_VAL_BY_CODE_NAME_LAST_NAME"] = 
@@ -269,10 +273,6 @@ if($arParams["FILTER"]["LAST_NAME"])
 if($arParams["FILTER"]["PRODUCT"])
     $arFilter["%PROPERTY_VAL_BY_CODE_PRODUCT_NAME"] = 
        $arParams["FILTER"]["PRODUCT"];
-
-if($arParams["FILTER"]["SECTION"])
-    $arFilter["PROPERTY_VAL_BY_CODE_SECTION_ID"] = 
-       $arParams["FILTER"]["SECTION"];
 
 if($arParams["FILTER"]["CLOSE_DATE"]){
     $tmp = explode(".",$arParams["FILTER"]["CLOSE_DATE"]);

@@ -780,16 +780,20 @@
                 */
                 
                 // Снимаем баллы
-                if($sPrefix=="О"){
+                if($sPrefix=="О" && $arOrder["SUM_PAID"]>0){
                     $objSSAGAccount = new \SSAG\CSSAGAccount('',$userId);
                     if(!$objSSAGAccount->transaction(
                        - $arOrder["SUM_PAID"],
                         "Заказ ".$arOrder["ADDITIONAL_INFO"]
                             ." в магазине поощрений АГ"
                     )){
-                        echo $arOrder["ADDITIONAL_INFO"]
-                            .": points transaction error: ".$obOrder->error." ";
+                        orderSetZNI($orderId,'AF','AA');
+//                        $bSendEmail = false;
                     }
+                    $bSendEmail = false;
+                }
+                elseif($sPrefix=="О"){
+                    $bSendEmail = false;
                 }
 
                 if($bSendEmail)eventOrderStatusSendEmail(
@@ -858,7 +862,7 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    if($bSendEmail)eventOrderStatusSendEmail(
+                    if($bSendEmail && $statusId!='AF')eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId
@@ -889,7 +893,7 @@
                     толчков из 1С
                     */
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    if($bSendEmail)eventOrderStatusSendEmail(
+                    if($bSendEmail && $statusId!='AF')eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId

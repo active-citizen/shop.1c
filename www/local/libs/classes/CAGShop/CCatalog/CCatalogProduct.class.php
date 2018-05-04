@@ -638,12 +638,27 @@
                 $sHitCond, $sSaleCond, $sNewCond
             ));
             // Вычисляем пересечения
+            
+            $arIntersect = [];
+            if($arSectionCond)$arIntersect[] = $arSectionCond;
+
+            if($arQueryCond)$arIntersect[] = $arQueryCond;
+            if($arStoreCond)$arIntersect[] = $arStoreCond;
+            if($arFlags)$arIntersect[] = $arFlags;
+            if($sPriceCond)$arIntersect[] = $sPriceCond;
+            if($sInterestCond)$arIntersect[] = $sInterestCond;
+            
+
+              
+            /*
             $arIntersect = [
                 $arSectionCond, $arQueryCond, $arStoreCond, 
                 //$sSaleCond,$sNewCond,$sHitCond,
                 $arFlags,
                 $sPriceCond,$sInterestCond
             ];
+            */
+            
             // Выкидываем нулевые и опеределяем с минимальным числом элементов
             $nMin = 10000000000;
             $nMinIndex = -1;
