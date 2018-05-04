@@ -256,6 +256,44 @@ if(
                             $arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
                         ?></strong></div>
                         <? endif */ ?>
+
+                          <?
+                          $useBeforeDate = $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"];
+                          $daysToExpire = $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"];
+
+                          $useBefore = null;
+                          $finished = false;
+                          if (!$useBeforeDate && $daysToExpire) {
+                              $useBefore = date("d.m.Y", time() + ($daysToExpire - 1) * 24 * 60 * 60);
+                          }
+
+                          if ($useBeforeDate && !$daysToExpire ) {
+                              $useBefore = $useBeforeDate;
+                          }
+
+                          if ($useBeforeDate && $daysToExpire) {
+                              $tmp = date_parse($useBeforeDate);
+                              $ts1 = mktime(0, 0, 0, $tmp["month"], $tmp["day"], $tmp["year"]);
+                              $ts2 = time() + $daysToExpire * 24 * 60 * 60;
+                              $useBefore = date("d.m.Y", $ts1 < $ts2 ? $ts1 : $ts2);
+
+                              if ($ts1 + 24 * 60 * 60 < time()) {
+                                  $finished = true;
+                              }
+                          }
+
+                          $useBeforeHtml = '';
+                          if ($useBefore) {
+                              $useBeforeHtml = "<div class=\"ag-shop-card__header-code\">Использовать до: <strong>$useBefore</strong></div>";
+                          }
+
+                          if ($finished) {
+                              $useBeforeHtml .= "<div class=\"ag-shop-card__requirements\" style=\"margin-left: -12px;\">
+                                  Мероприятие завершено. Поощрение недоступно для заказа.
+                              </div>";
+                          } ?>
+
+                          <?= $useBeforeHtml; ?>
                       </div>
                       <div class="grid grid--bleed grid--justify-space-between grid--align-center">
                         <div class="grid__col-12 grid__col-md-shrink">
@@ -328,53 +366,8 @@ if(
                             $arResult["CATALOG_ITEM"]["PROPERTIES"]["PERFOMANCE_DATE"][0]["VALUE"]
                         ?></strong></div>
                         <? endif ?>
-                        
-                        <? if(
-                            !$arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
-                            && 
-                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
-                        ):
-                        $date =
-                        date("d.m.Y",time()+($arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]-1)*24*60*60)
-                        ?>
-                        <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
-                            $date
-                        ?></strong></div>
-                        <? endif ?>
 
-                        <? if(
-                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
-                            && 
-                            !$arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
-                        ):?>
-                        <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
-                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
-                        ?></strong></div>
-                        <? endif ?>
-
-                        <? if(
-                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]
-                            && 
-                            $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]
-                        ):
-                        $tmp = date_parse($arResult["CATALOG_ITEM"]["PROPERTIES"]["USE_BEFORE_DATE"][0]["VALUE"]);
-                        $date1 = date("d.m.Y",$ts1 = mktime(0,0,0,$tmp["month"],$tmp["day"],$tmp["year"]));
-                        $ts2 = time()+$arResult["CATALOG_ITEM"]["PROPERTIES"]["DAYS_TO_EXPIRE"][0]["VALUE"]*24*60*60;
-                        $date2 = date("d.m.Y",$ts2)
-                        ?>
-                        <div class="ag-shop-card__header-code">Использовать до: <strong><?= 
-                            $ts1<$ts2?$date1:$date2
-                        ?></strong></div>
-                        <? if($ts1+24*60*60<time()):?>
-                            <div class="ag-shop-card__requirements"
-                            style="margin-left: -12px;">
-                                Мероприятие завершено. Поощрение недоступно для
-                                заказа.
-                            </div>
-                        <? endif ?>
-                        <? endif ?>
-
-
+                          <?= $useBeforeHtml; ?>
                         
                       </div>
                       <?
