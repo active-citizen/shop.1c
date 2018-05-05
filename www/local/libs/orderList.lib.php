@@ -282,6 +282,13 @@ function getDownloadOrders(
             ."'";
     }
 
+    if(isset($arFilter["PROPERTY_VAL_BY_CODE_SECTION_ID"])){
+        $sWhere .= "
+            AND `order`.`SECTION_ID`= '"
+                .intval($arFilter["PROPERTY_VAL_BY_CODE_SECTION_ID"])
+            ."'";
+    }
+
     if(isset($arFilter["EXTRA"])){
         $sWhere .= "
             AND (

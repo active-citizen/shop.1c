@@ -60,18 +60,20 @@ if(
 }
 
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/crossbrowser.min.js");
-$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/main.css");
+$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/secondary.css");
+$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/main.min.css");
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
+$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/changes.css");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
-//$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/common.min.js");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/backend.js");
-//$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/common.js");
-//$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/crossbrowser.js");
-$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/customHeight.js");
-$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/customSearch.js");
-$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/filters.js");
-$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/helpers.js");
-$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/add.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/common.min.js");
+// $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/common.js");
+// //$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/crossbrowser.js");
+// $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/customHeight.js");
+// $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/customSearch.js");
+//  $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/filters.js");
+//  $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/helpers.js");
+ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/add.js");
 
 
 

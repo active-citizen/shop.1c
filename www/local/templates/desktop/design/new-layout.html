@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+	<meta charset="utf-8">
+
+	<title>Index NEW - Page</title>
+	<meta name="description" content="">
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<meta property="og:image" content="path/to/image.jpg">
+	<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png">
+	<!-- Этот скрипт нужно подключить в начале страницы, до скриптов -->
+	<!-- чтобы можно было править стили, на основе пользовательского смартфона -->
+	<script src="js/crossbrowser.min.js"></script>
+	<!-- ТОЛЬКО, после скрипта - подключить стили -->
+	<link rel="stylesheet" href="css/main.min.css">
+	<link rel="stylesheet" href="css/secondary.css">
+
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#000">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#000">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#000">
+</head>
+<body class="container-relative">
+	<header class="mobile-header">
+		<div class="mobile-container">
+			<div class="mobile-header-wrapper">
+				<div class="mobile-header-back">
+					<a class="mobile-header-back__link" href="#"></a>
+					<span class="mobile-header-back__icon"></span>
+				</div>
+				<div class="mobile-header-left">
+					<button class="mobile-header-caregory-btn" type="button">
+						<span class="mobile-header-category__title">Все категории</span>
+					</button>
+					<div class="mobile-header-search">
+						<form id="mobileHeaderSearchForm">
+							<div id="multiple-datasets" class="mobile-header-search__input">
+								<input class="typeahead" type="text" id="mobileHeaderSearchInput" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
+								<button class="mobile-header-search__clear" type="button" name="clearTypeahead"></button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="mobile-header-right">
+					<!--  Когда добавлены какие-то фильтры к странице, добавить для кнопки класс .sorted-->
+					<button class="mobile-header-filter-btn" type="button">
+						<span class="mobile-header-filter-btn__icon-active"></span>
+						<span class="mobile-header-filter-btn__icon-default"></span>
+					</button>
+				</div>
+			</div>
+			<div class="mobile-header-category">
+				<nav class="mobile-header-nav">
+					<a class="mobile-header-nav__link mobile-header-nav__link--big current" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--all"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Все категории</span>
+						</span>
+					</a>
+					<a class="mobile-header-nav__link" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--museum"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Музеи</span>
+						</span>
+					</a>
+					<a class="mobile-header-nav__link" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--souvenirs"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Сувениры</span>
+						</span>
+					</a>
+					<a class="mobile-header-nav__link" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--events"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Мероприятия</span>
+						</span>
+					</a>
+					<a class="mobile-header-nav__link disabled" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--web"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Электронный контент</span>
+						</span>
+					</a>
+					<a class="mobile-header-nav__link" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--transport"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Транспорт</span>
+						</span>
+					</a>
+					<a class="mobile-header-nav__link" href="#">
+						<span class="mobile-header-nav__link-wrapper">
+							<span class="mobile-header-nav__link-icon">
+								<span class="icon-header-category icon-header-category--else"></span>
+							</span>
+							<span class="mobile-header-nav__link-title">Другое</span>
+						</span>
+					</a>
+				</nav>
+				<div class="mobile-header-other">
+					<a class="mobile-header-other__link" href="#">
+						<span class="mobile-header-other__link-icon">
+							<span class="icon-header-other icon-header-other--orders"></span>
+						</span>
+						<span class="mobile-header-other__link-title">Мои заказы</span>
+					</a>
+					<a class="mobile-header-other__link" href="#">
+						<span class="mobile-header-other__link-icon">
+							<span class="icon-header-other icon-header-other--favourite"></span>
+						</span>
+						<span class="mobile-header-other__link-title">Избранное</span>
+					</a>
+					<!-- Если нужно будет делать отображение "текущей" страницы -->
+					<!-- то нужно добавить класс .current  -->
+					<a class="mobile-header-other__link current" href="#">
+						<span class="mobile-header-other__link-icon">
+							<span class="icon-header-other icon-header-other--rules"></span>
+						</span>
+						<span class="mobile-header-other__link-title">Правила</span>
+					</a>
+					<a class="mobile-header-other__link" href="#">
+						<span class="mobile-header-other__link-icon">
+							<span class="icon-header-other icon-header-other--adreses"></span>
+						</span>
+						<span class="mobile-header-other__link-title">Адреса</span>
+					</a>
+					<a class="mobile-header-other__link" href="#">
+						<span class="mobile-header-other__link-icon">
+							<span class="icon-header-other icon-header-other--faq"></span>
+						</span>
+						<span class="mobile-header-other__link-title">FAQ</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main class="mobile-main paddingTop64">
+		<div class="mobile-container">
+			<div class="mobile-main-wrapper">
+				<section class="mobile-search-status">
+					<!-- This div is target for autocomplete -->
+					<!-- dont remove him -->
+				</section>
+				<section class="mobile-search-notfind disabled">
+					<div class="mobile-search-notfind-wrapper">
+						<span class="icon-search-notfind"></span>
+						<p class="default-paragraph mobile-search-result__info">
+							По запросу <span id="mobileSearchQuery" class="mobile-search-query"></span> ничего не найдено.
+						</p>
+						<p class="default-paragraph mobile-search-result__info">
+							Создайте новый поисковый запрос.
+						</p>
+						<span class="mobile-search-notfind__reset">Очистить поиск</span>
+					</div>
+				</section>
+				<!-- Большая плитка == mobile-product-grid--big -->
+				<!-- Список == mobile-product-grid--list -->
+        <!-- Маленькая плитка == без модификаторов -->
+				<section class="mobile-product-grid mobile-product-grid--big">
+					<!-- Product Item -->
+					<article class="mobile-product-item">
+            <button class="mobile-product-item-favourite" type="button">
+              <span class="mobile-product-item-favourite__icon"></span>
+              <span class="mobile-product-item-favourite__count">1674</span>
+            </button>
+						<a class="mobile-product-item-wrapper" href="#">
+							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-1.png')">
+								<span class="mobile-product-item-badge">
+									<img class="mobile-product-item-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
+								</span>
+							</div>
+              <div class="mobile-product-item-info">
+                <!-- Заголовок -->
+                <h3 class="mobile-product-item-title">Рюкзак зеленый</h3>
+                <!-- ============ -->
+                <!-- Описание -->
+                <div class="mobile-produst-item-description">
+                  Рюкзак с двумя мягкими лямками и
+                  двумя отделами на молнии (основной
+                  и накладной карман).
+                </div>
+                <!-- ============== -->
+                <!-- Характеристики -->
+                <ul class="list-default list-product-details">
+                  <li class="list-product-details__item">
+                    <b>Цвет</b>
+                    <i>Зеленый</i>
+                  </li>
+                  <li class="list-product-details__item">
+                    <b>Материал</b>
+                    <i>полиэстер</i>
+                  </li>
+                  <li class="list-product-details__item">
+                    <b>Размер</b>
+                    <i>270х370х80мм</i>
+                  </li>
+                </ul>
+                <!-- ============ -->
+                <!-- Стоимость -->
+                <div class="mobile-product-item-price">
+                  <div class="mobile-product-item-price-wrapper">
+                    <b class="mobile-product-item-price__number">600</b>
+    								<i class="mobile-product-item-price__currency">баллов</i>
+                  </div>
+  							</div>
+                <!-- ========== -->
+              </div>
+						</a>
+					</article>
+					<!-- ============ -->
+					<!-- Product Item -->
+					<article class="mobile-product-item">
+            <button class="mobile-product-item-favourite" type="button">
+              <span class="mobile-product-item-favourite__icon"></span>
+              <span class="mobile-product-item-favourite__count">1674</span>
+            </button>
+						<a class="mobile-product-item-wrapper" href="#">
+							<div class="mobile-product-item-preview" style="background-image: url('img/product-preview-1.png')">
+								<span class="mobile-product-item-badge">
+									<img class="mobile-product-item-badge__img" src="img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
+								</span>
+							</div>
+              <div class="mobile-product-item-info">
+                <!-- Заголовок -->
+                <h3 class="mobile-product-item-title">Рюкзак фиолетовенький</h3>
+                <!-- ============ -->
+                <!-- Описание -->
+                <div class="mobile-produst-item-description">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+									sed do eiusmod tempor incididunt ut labore et dolore magna
+									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+									ullamco laboris nisi ut aliquip ex ea commodo consequat.
+									Duis aute irure dolor in reprehenderit in voluptate velit
+									esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+									occaecat cupidatat non proident, sunt in culpa qui officia
+									deserunt mollit anim id est laborum.
+                </div>
+                <!-- ============== -->
+                <!-- Характеристики -->
+                <ul class="list-default list-product-details">
+                  <li class="list-product-details__item">
+                    <b>Цвет</b>
+                    <i>Зеленый</i>
+                  </li>
+                  <li class="list-product-details__item">
+                    <b>Материал</b>
+                    <i>полиэстер</i>
+                  </li>
+                  <li class="list-product-details__item">
+                    <b>Размер</b>
+                    <i>270х370х80мм</i>
+                  </li>
+                </ul>
+                <!-- ============ -->
+                <!-- Стоимость -->
+                <div class="mobile-product-item-price">
+                  <div class="mobile-product-item-price-wrapper">
+                    <b class="mobile-product-item-price__number">600</b>
+    								<i class="mobile-product-item-price__currency">баллов</i>
+                  </div>
+  							</div>
+                <!-- ========== -->
+              </div>
+						</a>
+					</article>
+					<!-- ============ -->
+
+
+				</section>
+			</div>
+		</div>
+	</main>
+	<aside class="mobile-aside-filter">
+		<div class="mobile-aside-filter-wrapper">
+			<form id="mobileAsideFilterForm">
+				<div class="mobile-aside-form">
+					<header class="mobile-aside-form-block__header">
+						<span class="mobile-aside-form-block__header-title">Настройка каталога</span>
+					</header>
+					<div class="mobile-aside-form-inner">
+						<div class="mobile-aside-form-block">
+							<div class="mobile-aside-form-item">
+								<div class="mobile-aside-dropdown">
+									<div class="mobile-aside-form-item__info">
+										<span class="mobile-aside-form-item__info-icon">
+											<span class="icon-aside-filter icon-aside-filter--grid-small"></span>
+										</span>
+										<span class="mobile-aside-form-item__info-title">Вид плиток:</span>
+									</div>
+									<div class="mobile-aside-form-item__option">
+										<!-- Чтобы второй дропдаун-чекбоксов работал - нужно чтобы совпадали -->
+										<!-- data-dropdown у кнопки, блока и кнопки "Применить" -->
+										<span class="mobile-aside-dropdown-btn" data-dropdown="filter-grid">
+											<span class="mobile-aside-dropdown__item">Мелкий</span>
+										</span>
+									</div>
+								</div>
+								<!-- Внешний контейнер для дропдауна-чекбоксов -->
+								<div class="mobile-aside-dropdown-outer">
+									<header class="mobile-aside-form-block__header">
+										<span class="mobile-aside-form-block__header-title">Вид плиток</span>
+									</header>
+									<div class="mobile-aside-dropdown-content" data-dropdown="filter-grid">
+										<div class="mobile-aside-form-item">
+											<!-- У radio = должен совпадать атрибут name -->
+											<div class="custom-checkbox-default">
+												<!-- Для сброса фильтра в начальное положение -->
+												<!-- defaultCheck - ставит чек -->
+												<!-- defaultReset - убирает чек -->
+												<!-- defaultClear - очищает инпут -->
+												<input class="custom-checkbox-round__input defaultCheck" id="productSortGridBig" type="radio" name="productSortGrid" value="888" checked>
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortGridBig">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--grid-big"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Крупный</span>
+													</span>
+												</label>
+											</div>
+											<!-- ========== -->
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortGridDefault" type="radio" name="productSortGrid" value="8888">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortGridDefault">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--grid-small"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Мелкий</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortGridList" type="radio" name="productSortGrid" value="88888">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortGridList">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--grid-list"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Списком</span>
+													</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<footer class="mobile-aside-form-footer">
+										<div class="mobile-aside-form-footer__left">
+											<button class="mobile-form-btn mobile-form-btn--grey dropdown-close" type="button">Назад</button>
+										</div>
+										<div class="mobile-aside-form-footer__right">
+											<button class="mobile-form-btn mobile-form-btn--green dropdown-save" type="button" data-dropdown="filter-grid">Применить</button>
+										</div>
+									</footer>
+								</div>
+								<!-- =============== -->
+							</div>
+							<div class="mobile-aside-form-item">
+								<div class="mobile-aside-dropdown">
+									<div class="mobile-aside-form-item__info">
+										<span class="mobile-aside-form-item__info-icon">
+											<span class="icon-aside-filter icon-aside-filter--sortby"></span>
+										</span>
+										<span class="mobile-aside-form-item__info-title">Сортировать по:</span>
+									</div>
+									<div class="mobile-aside-form-item__option">
+										<span class="mobile-aside-dropdown-btn" data-dropdown="filter-sort">
+											<span class="mobile-aside-dropdown__item">Цена (дешевые сначала)</span>
+										</span>
+									</div>
+								</div>
+								<div class="mobile-aside-dropdown-outer">
+									<header class="mobile-aside-form-block__header">
+										<span class="mobile-aside-form-block__header-title">Сортировать по</span>
+									</header>
+									<div class="mobile-aside-dropdown-content" data-dropdown="filter-sort">
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortPriceHigh" type="radio" name="productSortPrice" value="99">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortPriceHigh">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--price"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Цена (дорогие сначала)</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortPriceLow" type="radio" name="productSortPrice" value="101">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortPriceLow">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--price"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Цена (дешевые сначала)</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortPriceRating" type="radio" name="productSortPrice" value="102">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortPriceRating">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--rating"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Рейтинг</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input defaultCheck" id="productSortPriceFavourite" type="radio" name="productSortPrice" value="103" checked>
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortPriceFavourite">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--favourites"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Избранное</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortPriceNew" type="radio" name="productSortPrice" value="104">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortPriceNew">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--new"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Новинки</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-round__input" id="productSortPriceHit" type="radio" name="productSortPrice" value="105">
+												<label class="custom-checkbox-round__label custom-checkbox-round__label--pink" for="productSortPriceHit">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-icon">
+															<span class="icon-aside-filter icon-aside-filter--hit"></span>
+														</span>
+														<span class="custom-checkbox-default__info-title">Популярное</span>
+													</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<footer class="mobile-aside-form-footer">
+										<div class="mobile-aside-form-footer__left">
+											<button class="mobile-form-btn mobile-form-btn--grey dropdown-close" type="button">Назад</button>
+										</div>
+										<div class="mobile-aside-form-footer__right">
+											<button class="mobile-form-btn mobile-form-btn--green dropdown-save" type="button" data-dropdown="filter-sort">Применить</button>
+										</div>
+									</footer>
+								</div>
+							</div>
+						</div>
+						<div class="mobile-aside-form-block">
+							<header class="mobile-aside-form-block__header">
+								<span class="mobile-aside-form-block__header-title">Фильтр</span>
+								<span class="mobile-aside-form-block__header-count">
+									<i>210</i>
+									<b>товаров</b>
+								</span>
+							</header>
+							<div class="mobile-aside-form-item">
+								<div class="mobile-aside-dropdown">
+									<div class="mobile-aside-form-item__info">
+										<span class="mobile-aside-form-item__info-icon">
+											<span class="icon-aside-filter icon-aside-filter--interests"></span>
+										</span>
+										<span class="mobile-aside-form-item__info-title">Интересы:</span>
+									</div>
+									<div class="mobile-aside-form-item__option">
+										<span class="mobile-aside-dropdown-btn" data-dropdown="filter-interests">
+											<span class="mobile-aside-dropdown__item">Все</span>
+										</span>
+									</div>
+								</div>
+								<div class="mobile-aside-dropdown-outer">
+									<header class="mobile-aside-form-block__header">
+										<span class="mobile-aside-form-block__header-title">Интересы</span>
+									</header>
+									<div class="mobile-aside-dropdown-content" data-dropdown="filter-interests">
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck"  id="productInterestAll" type="checkbox" name="productInterestAll" value="001" checked>
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestAll">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Все</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestAg" type="checkbox" name="productInterestAg" value="002">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestAg">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Активный Гражданин</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestHistory" type="checkbox" name="productInterestHistory" value="003">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestHistory">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">История</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestBiography" type="checkbox" name="productInterestBiography" value="004">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestBiography">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Биография</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestPaints" type="checkbox" name="productInterestPaints" value="005">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestPaints">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Живопись</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestArt" type="checkbox" name="productInterestArt" value="006">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestArt">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Исскуство</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestMusic" type="checkbox" name="productInterestMusic" value="007">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestMusic">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Музыка</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productInterestScience" type="checkbox" name="productInterestScience" value="007">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productInterestScience">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Наука</span>
+													</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<footer class="mobile-aside-form-footer">
+										<div class="mobile-aside-form-footer__left">
+											<button class="mobile-form-btn mobile-form-btn--grey dropdown-close" type="button">Назад</button>
+										</div>
+										<div class="mobile-aside-form-footer__right">
+											<button class="mobile-form-btn mobile-form-btn--green dropdown-save" type="button" data-dropdown="filter-interests">Применить</button>
+										</div>
+									</footer>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item">
+								<div class="mobile-aside-form-item__info">
+									<span class="mobile-aside-form-item__info-icon">
+										<span class="icon-aside-filter icon-aside-filter--price"></span>
+									</span>
+									<span class="mobile-aside-form-item__info-title">Цена</span>
+								</div>
+								<div class="mobile-aside-form-item__option">
+									<div class="mobile-aside-form-item__inputs">
+										<!-- Для сброса фильтра в начальное положение -->
+										<!-- defaultCheck - ставит чек -->
+										<!-- defaultReset - убирает чек -->
+										<!-- defaultClear - очищает инпут -->
+										<div class="mobile-aside-price mobile-aside-price--min">
+											<input class="aside-default-input defaultClear" type="number" name="productPriceMin" value="" maxlength="5" placeholder="Мин." min="0">
+										</div>
+										<div class="mobile-aside-price mobile-aside-price--max">
+											<input class="aside-default-input defaultClear" type="number" name="productPriceMax" value="" maxlength="5" placeholder="Макс." min="0">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item">
+								<div class="mobile-aside-dropdown">
+									<div class="mobile-aside-form-item__info">
+										<span class="mobile-aside-form-item__info-icon">
+											<span class="icon-aside-filter icon-aside-filter--delivery"></span>
+										</span>
+										<span class="mobile-aside-form-item__info-title">Где получать</span>
+									</div>
+									<div class="mobile-aside-form-item__option">
+										<span class="mobile-aside-dropdown-btn" data-dropdown="filter-delivery">
+											<span class="mobile-aside-dropdown__item">Все</span>
+										</span>
+									</div>
+								</div>
+								<div class="mobile-aside-dropdown-outer">
+									<header class="mobile-aside-form-block__header">
+										<span class="mobile-aside-form-block__header-title">Где получать</span>
+									</header>
+									<div class="mobile-aside-dropdown-content" data-dropdown="filter-delivery">
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck"  id="productDeliveryAll" type="checkbox" name="productDeliveryAll" value="333" checked>
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryAll">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Все</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCAcademic" type="checkbox" name="productDeliveryMFCAcademic" value="334">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCAcademic">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Академический</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCArbat" type="checkbox" name="productDeliveryMFCArbat" value="335">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCArbat">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Арбат</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCBogorod" type="checkbox" name="productDeliveryMFCBogorod" value="336">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCBogorod">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Богодорское и Метрогородок</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCKrasnoselye" type="checkbox" name="productDeliveryMFCKrasnoselye" value="337">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCKrasnoselye">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Красносельский</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCLianozovo" type="checkbox" name="productDeliveryMFCLianozovo" value="338">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCLianozovo">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Лианозово</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCMoskvorechieSaburovo" type="checkbox" name="productDeliveryMFCMoskvorechieSaburovo" value="339">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCMoskvorechieSaburovo">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Москворечье-Сабурово</span>
+													</span>
+												</label>
+											</div>
+										</div>
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="custom-checkbox-square__input" id="productDeliveryMFCTushino" type="checkbox" name="productDeliveryMFCTushino" value="340">
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryMFCTushino">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">МФЦ Северное Тушино и Южное Тушино</span>
+													</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<footer class="mobile-aside-form-footer">
+										<div class="mobile-aside-form-footer__left">
+											<button class="mobile-form-btn mobile-form-btn--grey dropdown-close" type="button">Назад</button>
+										</div>
+										<div class="mobile-aside-form-footer__right">
+											<button class="mobile-form-btn mobile-form-btn--green dropdown-save" type="button" data-dropdown="filter-delivery">Применить</button>
+										</div>
+									</footer>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item">
+								<div class="custom-checkbox-default">
+									<input class="custom-checkbox-square__input defaultReset" id="productRatingCheckbox" type="checkbox" name="productRatingCheckbox" value="992">
+									<label class="custom-checkbox-square__label custom-checkbox-square__label--green" for="productRatingCheckbox">
+										<span class="mobile-aside-form-item__info mobile-aside-form-item__info--stars">
+											<span class="mobile-aside-form-item__info-icon">
+												<span class="icon-aside-filter icon-aside-filter--stars"></span>
+											</span>
+											<span class="mobile-aside-form-item__info-title">и более</span>
+										</span>
+									</label>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item disabled">
+								<div class="mobile-aside-dropdown">
+									<div class="mobile-aside-form-item__info">
+										<span class="mobile-aside-form-item__info-icon">
+											<span class="icon-aside-filter icon-aside-filter--size"></span>
+										</span>
+										<span class="mobile-aside-form-item__info-title">Размер</span>
+									</div>
+									<div class="mobile-aside-form-item__option">
+										<span class="mobile-aside-dropdown-btn disabled" data-dropdown="filter-size">
+											<span class="mobile-aside-dropdown__item">Все</span>
+										</span>
+									</div>
+								</div>
+								<div class="mobile-aside-dropdown-outer">
+									<header class="mobile-aside-form-block__header">
+										<span class="mobile-aside-form-block__header-title">Размеры</span>
+									</header>
+									<div class="mobile-aside-dropdown-content" data-dropdown="filter-size">
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck"  id="productSizeAll" type="checkbox" name="productSizeAll" value="777" checked>
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productSizeAll">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Все</span>
+													</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<footer class="mobile-aside-form-footer">
+										<div class="mobile-aside-form-footer__left">
+											<button class="mobile-form-btn mobile-form-btn--grey dropdown-close" type="button">Назад</button>
+										</div>
+										<div class="mobile-aside-form-footer__right">
+											<button class="mobile-form-btn mobile-form-btn--green dropdown-save" type="button" data-dropdown="filter-size">Применить</button>
+										</div>
+									</footer>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item disabled">
+								<div class="mobile-aside-dropdown">
+									<div class="mobile-aside-form-item__info">
+										<span class="mobile-aside-form-item__info-icon">
+											<span class="icon-aside-filter icon-aside-filter--color"></span>
+										</span>
+										<span class="mobile-aside-form-item__info-title">Цвет</span>
+									</div>
+									<div class="mobile-aside-form-item__option">
+										<span class="mobile-aside-dropdown-btn disabled" data-dropdown="filter-color">
+											<span class="mobile-aside-dropdown__item">Все</span>
+										</span>
+									</div>
+								</div>
+								<div class="mobile-aside-dropdown-outer">
+									<header class="mobile-aside-form-block__header">
+										<span class="mobile-aside-form-block__header-title">Цвет</span>
+									</header>
+									<div class="mobile-aside-dropdown-content" data-dropdown="filter-color">
+										<div class="mobile-aside-form-item">
+											<div class="custom-checkbox-default">
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck" id="productColorAll" type="checkbox" name="productColorAll" value="555" checked>
+												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productColorAll">
+													<span class="custom-checkbox-default__info">
+														<span class="custom-checkbox-default__info-title">Все</span>
+													</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<footer class="mobile-aside-form-footer">
+										<div class="mobile-aside-form-footer__left">
+											<button class="mobile-form-btn mobile-form-btn--grey dropdown-close" type="button">Назад</button>
+										</div>
+										<div class="mobile-aside-form-footer__right">
+											<button class="mobile-form-btn mobile-form-btn--green dropdown-save" type="button" data-dropdown="filter-color">Применить</button>
+										</div>
+									</footer>
+								</div>
+							</div>
+						</div>
+						<div class="mobile-aside-form-block mobile-aside-form-block--last">
+							<div class="mobile-aside-form-item">
+								<div class="custom-checkbox-default">
+									<!-- Для сброса фильтра в начальное положение -->
+									<!-- defaultCheck - ставит чек -->
+									<!-- defaultReset - убирает чек -->
+									<!-- defaultClear - очищает инпут -->
+									<input class="custom-checkbox-square__input defaultReset" id="productHitCheckbox" type="checkbox" name="productHitCheckbox" value="1">
+									<label class="custom-checkbox-square__label custom-checkbox-square__label--orange" for="productHitCheckbox">
+										<span class="custom-checkbox-default__info">
+											<span class="custom-checkbox-default__info-icon">
+												<span class="icon-aside-filter icon-aside-filter--hit"></span>
+											</span>
+											<span class="custom-checkbox-default__info-title">Хит</span>
+										</span>
+									</label>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item">
+								<div class="custom-checkbox-default">
+									<input class="custom-checkbox-square__input defaultReset" id="productNewCheckbox" type="checkbox" name="productNewCheckbox" value="2">
+									<label class="custom-checkbox-square__label custom-checkbox-square__label--blue" for="productNewCheckbox">
+										<span class="custom-checkbox-default__info">
+											<span class="custom-checkbox-default__info-icon">
+												<span class="icon-aside-filter icon-aside-filter--new"></span>
+											</span>
+											<span class="custom-checkbox-default__info-title">Новинки</span>
+										</span>
+									</label>
+								</div>
+							</div>
+							<div class="mobile-aside-form-item">
+								<div class="custom-checkbox-default">
+									<input class="custom-checkbox-square__input defaultReset" id="productSaleCheckbox" type="checkbox" name="productSaleCheckbox" value="3">
+									<label class="custom-checkbox-square__label custom-checkbox-square__label--pink" for="productSaleCheckbox">
+										<span class="custom-checkbox-default__info">
+											<span class="custom-checkbox-default__info-icon">
+												<span class="icon-aside-filter icon-aside-filter--sale"></span>
+											</span>
+											<span class="custom-checkbox-default__info-title">Акции</span>
+										</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<footer class="mobile-aside-form-footer">
+						<div class="mobile-aside-form-footer__left">
+							<button id="mobileFiltersReset" class="mobile-form-btn mobile-form-btn--grey" type="reset" name="mobileFiltersReset">Сброс</button>
+						</div>
+						<div class="mobile-aside-form-footer__right">
+							<button id="mobileFiltersSubmit" class="mobile-form-btn mobile-form-btn--green" type="submit" name="mobileFiltersSubmit">Готово</button>
+						</div>
+					</footer>
+				</div>
+			</form>
+		</div>
+		<div class="mobile-aside-filter-outer">
+
+		</div>
+	</aside>
+	<script src="js/scripts.min.js"></script>
+	<script src="js/backend.js"></script>
+	<script src="js/common.min.js"></script>
+</body>
+</html>

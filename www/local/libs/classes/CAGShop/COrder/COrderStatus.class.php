@@ -40,4 +40,16 @@ class COrderStatus extends \AGShop\CAGShop{
     function get(){
         return $this->arStatusInfo;
     }
+
+    static function getAll($sLang = 'ru',$arSort = ["SORT"=>"ASC"]){
+        $resStatus = \CSaleStatus::GetList(
+            $arSort,
+            ["LID"=>$sLang]
+        );
+        $arStatuses = [];
+        while($arStatus = $resStatus->Fetch()){
+            $arStatuses[] = $arStatus;
+        }
+        return $arStatuses;
+    }
 }

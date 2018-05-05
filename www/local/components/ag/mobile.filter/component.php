@@ -43,12 +43,14 @@
             "CODE"=>"PriceLow",
             "CLASSNAME"=>"icon-aside-filter--price"
         ],
+        /*
         [
             "NAME"=>"Рейтинг",
             "VALUE"=>"rating_desc",
             "CODE"=>"PriceRating",
             "CLASSNAME"=>"icon-aside-filter--rating"
         ],
+        */
         [
             "NAME"=>"Избранное",
             "VALUE"=>"wants_desc",

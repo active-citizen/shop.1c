@@ -52,7 +52,7 @@
       <div class="ag-shop__main">
         <footer class="ag-shop-footer">
           <div class="ag-shop-footer__copy"><small
-          class="ag-shop-footer__copy-text">&copy; 2017, Активный
+          class="ag-shop-footer__copy-text">&copy; 2018, Активный
           Гражданин. <br class="hide-on-desktop">Все права защищены. <a
           target="_blank" href="https://ag.mos.ru/site/offer#content">Публичная оферта</a></small></div>
         </footer>

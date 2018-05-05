@@ -67,7 +67,8 @@
                 $this->url,
                 array(
                     'trace'=>1,
-                    'local_cert'=>$this->pemPath
+                    'local_cert'=>$this->pemPath,
+                    'connection_timeout'=>60
                 )
             );
 
@@ -128,7 +129,8 @@
                 $this->url,
                 array(
                     'trace'=>1,
-                    'local_cert'=>$this->pemPath
+                    'local_cert'=>$this->pemPath,
+                    'connection_timeout'=>60
                 )
             );
 
@@ -177,7 +179,8 @@
                 $this->url,
                 array(
                     'trace'=>1,
-                    'local_cert'=>$this->pemPath
+                    'local_cert'=>$this->pemPath,
+                    'connection_timeout'=>60
                 )
             );
             $arSoapRequest =  array(
@@ -222,7 +225,8 @@
                 $this->url,
                 array(
                     'trace'=>1,
-                    'local_cert'=>$this->pemPath
+                    'local_cert'=>$this->pemPath,
+                    'connection_timeout'=>60
                 )
             );
 
@@ -298,7 +302,8 @@
                 $this->url,
                 array(
                     'trace'=>1,
-                    'local_cert'=>$this->pemPath
+                    'local_cert'=>$this->pemPath,
+                    'connection_timeout'=>60
                 )
             );
 

@@ -4,7 +4,7 @@
     use AGShop; 
    
     class CCurlSimple extends \AGShop\CAGShop{
-        var $timeout = 10;
+        var $timeout = 20;
         
         function get($url){
             $ch = curl_init();

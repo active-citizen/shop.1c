@@ -71,7 +71,7 @@ if(
             $arCatalogMeta = CIBlockSection::GetList([],[
                     "IBLOCK_ID" =>  CATALOG_IB_ID,
                     "CODE"      =>  $catalog_code
-                ],false,["NAME"],["nTopCount"=>1]
+                ],false,["NAME","ID"],["nTopCount"=>1]
             )->GetNext();
             if(isset($arCatalogMeta["NAME"]) && trim($arCatalogMeta["NAME"]))
                $sCatalogTitle = $arCatalogMeta["NAME"]; 
@@ -95,22 +95,23 @@ if(
     ?>
 
     <? if(!$product_code && $catalog_code && !(IS_MOBILE || IS_PHONE)){?>
-        <div class="ag-shop-content">
+            <? require("desktop.filter.params.php");?>
             <? include("filter.inc.php")?>
-            <? include("sorting.inc.php")?>
             
-            <div class="ag-shop-catalog">
             <? include("container.inc.php")?>
-            </div>
-        </div>
     <? }elseif(!$product_code && $catalog_code){ ?>
+            <? require("mobile.filter.params.php");?>
+            
+            <? include("container.inc.php")?>
     <?
+    /*
     $APPLICATION->IncludeComponent(
         "ag:mobile.teasers", 
         "", 
         $arParams,
         false
     );
+    */
     ?>
     <? }elseif($product_code){ ?>
         <div class="ag-shop-content">

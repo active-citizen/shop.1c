@@ -536,16 +536,19 @@
                 "TAX_VALUE"         =>  0,
                 "STORE_ID"          =>  $arStore["ID"]
                 ,
+                /*
                 "DATE_INSERT"       =>  $DB->FormatDate(
                     $arDocument["Дата"]." ".$arDocument["Время"],
                     "YYYY-MM-DD HH:MI:SS",
                     "DD.MM.YYYY HH:MI:SS"
                 ),
+                
                 "DATE_UPDATE"       =>  $DB->FormatDate(
                     trim($arDocument["Дата"])." ".trim($arDocument["Время"]),
                     "YYYY-MM-DD HH:MI:SS",
                     "DD.MM.YYYY HH:MI:SS"
                 )
+                */
             );
 
             if($sum){
@@ -729,6 +732,7 @@
                         'CLOSE_DATE',$sDateClose
                     );
                 }
+
                 // Прописываем промокоды, если есть 
                 if(isset($GLOBALS["promocodes"])){
                     $sPromos = '';
@@ -776,22 +780,30 @@
                 */
                 
                 // Снимаем баллы
-                if($sPrefix=="О"){
+                if($sPrefix=="О" && $arOrder["SUM_PAID"]>0){
                     $objSSAGAccount = new \SSAG\CSSAGAccount('',$userId);
                     if(!$objSSAGAccount->transaction(
                        - $arOrder["SUM_PAID"],
                         "Заказ ".$arOrder["ADDITIONAL_INFO"]
                             ." в магазине поощрений АГ"
                     )){
-                        echo $arOrder["ADDITIONAL_INFO"]
-                            .": points transaction error: ".$obOrder->error." ";
+                        orderSetZNI($orderId,'AF','AA');
+//                        $bSendEmail = false;
                     }
+                    $bSendEmail = false;
+                }
+                elseif($sPrefix=="О"){
+                    $bSendEmail = false;
                 }
 
                 if($bSendEmail)eventOrderStatusSendEmail(
                     $orderId, $statusId, ($arFields = array(
                         "SUPPORT_COMMENT"=>$sSupportComment
                     )), $statusId
+                );
+                // Ставим дату выполнения
+                if($statusId=='F')orderPropertiesUpdate($orderId,IMPORT_DEBUG,
+                    "SHIPDATE",date("Y-m-d H:i:s")
                 );
             }
             elseif($existsOrder){
@@ -850,11 +862,18 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    if($bSendEmail)eventOrderStatusSendEmail(
+                    if($bSendEmail && $statusId!='AF')eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId
                     );
+                    // Ставим дату выполнения
+                    // для заказа в статусе "В работе"(готово) - не нужно
+                    // для него уже в АРМ поставили
+                    if($statusId=='F' && $existsOrder["STATUS_ID"]!='N')
+                        orderPropertiesUpdate($orderId,IMPORT_DEBUG,
+                            "SHIPDATE",date("Y-m-d H:i:s")
+                        );
                 }
                 // При пришедшем статусе "В работе" и "Выполнен" письма
                 // отправляем в любом случае при обратном толчке
@@ -874,7 +893,7 @@
                     толчков из 1С
                     */
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
-                    if($bSendEmail)eventOrderStatusSendEmail(
+                    if($bSendEmail && $statusId!='AF')eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId

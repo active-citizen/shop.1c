@@ -1,4 +1,4 @@
-    <? if(!$arResult["PRODUCTS"]):?>
+<? if(!$arResult["PRODUCTS"]):?>
     <div class="mobile-container">
             <div class="mobile-main-wrapper">
                 <section class="mobile-search-status">
@@ -106,8 +106,16 @@ function teasersRewind(){
 }
 
 function teasers_next_page(sUrl,nPageNum){
+    var startUrl = '<?= 
+        $arParams["filter"]["wishes_user"]
+        ?
+        "/profile/wishes/index.ajax.php?"
+        :
+        (IS_MOBILE || IS_PHONE?"/catalog/index.mobile.ajax.php?":"/catalog/index.ajax.php?")
+    ?>';
+
     $('.more-button').html('Загрузка...');
-    $.get("/catalog/index.mobile.ajax.php?"+sUrl,function(data){
+    $.get(startUrl+sUrl,function(data){
         var search = document.location.search;
         var re=/^(.*)\/$/
         search = search.replace(/[&\?]page=\d+/,'');

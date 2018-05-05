@@ -419,11 +419,14 @@ if(isset($_REQUEST["continue"])){
             .";".$arOrder["DATE_INSERT"]
             .";".$arOrder["DATE_UPDATE"]
             .";".''.(
-                $arOrder["STATUS_ID"]=='F' && isset($arOrder["DATE_STATUS"])
+                $arOrder["STATUS_ID"]=='F' && isset($arOrder["SHIPDATE"])
                 ?
-                $arOrder["DATE_STATUS"]
+                date(
+                    "d.m.Y H:i:s",
+                    MakeTimeStamp($arOrder["SHIPDATE"],"YYYY-MM-DD HH:MI:SS")
+                )
                 :
-                ""
+                ($arOrder["STATUS_ID"]=='F'?$arOrder["DATE_UPDATE"]:"")
             ).''
             .";".'" "'//'"Уникальный штрих-код заказа"'
             .";".'" "'//'"Уникальный номер товара"' 

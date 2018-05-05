@@ -1,0 +1,43 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     * Добавление таблицы со ставками
+     */
+    class int_filter_settings extends Migration{
+        function Run(){
+	        global $DB;
+            $sQuery = "
+                ALTER TABLE `int_filter_settings_filter`
+                ADD COLUMN `TEMPLATE` ENUM('desktop','mobile') 
+                DEFAULT 'mobile',ADD KEY `TEMPLATE`(`TEMPLATE`);
+            ";
+            $DB->Query($sQuery);
+            $sQuery = "
+                ALTER TABLE `int_filter_settings_sorting`
+                ADD COLUMN `TEMPLATE` ENUM('desktop','mobile') 
+                DEFAULT 'mobile',ADD KEY `TEMPLATE`(`TEMPLATE`);
+            ";
+            $DB->Query($sQuery);
+            $sQuery = "
+                ALTER TABLE `int_filter_settings_smallicon`
+                ADD COLUMN `TEMPLATE` ENUM('desktop','mobile') 
+                DEFAULT 'mobile',ADD KEY `TEMPLATE`(`TEMPLATE`);
+            ";
+            $DB->Query($sQuery);
+
+
+            return true;
+        }
+
+        
+    }
+    
+    
+// Запускаем миграцию    
+$int_filter_settings = new int_filter_settings();
+// Откатываем, если неудачно
+if(!$int_filter_settings->Run())$int_filter_settings->RollBack();

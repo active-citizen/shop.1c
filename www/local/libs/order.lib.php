@@ -349,7 +349,8 @@ function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
         "NAME"          =>  $PROPERTIES["CHANGE_REQUEST"]["NAME"],
     );
 
-   
+
+    // Меняем свойство заказа ЗНИ
     if(
         $arExistPropValue = 
         CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
@@ -376,6 +377,45 @@ function orderSetZNI($nOrderId,$sStatusId,$sOldStatusId){
             die;
         }
     }
+
+
+    if($sStatusId=='F'){
+        $arFilter = array(
+            "ORDER_ID"      =>  $nOrderId,
+            "ORDER_PROPS_ID"=>  $PROPERTIES["SHIPDATE"]["ID"],
+            "CODE"          =>  "SHIPDATE",
+            "NAME"          =>  $PROPERTIES["SHIPDATE"]["NAME"],
+        );
+
+        // Меняем свойство заказа "дата выполнения"
+        if(
+            $arExistPropValue = 
+            CSaleOrderPropsValue::GetList(Array(), $arFilter)->GetNext()
+        ){
+            $arFilter["VALUE"] = date("Y-m-d H:i:s");
+            if(!CSaleOrderPropsValue::Update(
+                $arExistPropValue["ID"],
+                $arFilter 
+            ) && $bDebug){
+                ShowMessage(array(
+                    "TYPE"=>"ERROR",
+                    "MESSAGE"=>"Ошибка добавления свойства дата выполнения"
+                ));
+                die;
+            }
+        }
+        elseif($sStatusId){
+            $arFilter["VALUE"] = date("Y-m-d H:i:s");
+            if(!$objCSaleOrderPropsValue->Add($arFilter) && $bDebug){
+                ShowMessage(array(
+                    "TYPE"=>"ERROR",
+                    "MESSAGE"=>"Ошибка изменения свойства дата выполнения"
+                ));
+                die;
+            }
+        }
+    }
+
     if(!CSaleOrderChange::AddRecord(
         $nOrderId,
         $sStatusId?"ORDER_ZNI":"ORDER_ZNI_CHECK",
@@ -901,6 +941,7 @@ function getDownloadOrders(
             `user`.`LAST_NAME` as `USER_LAST_NAME`,
             `user`.`EMAIL` as `USER_EMAIL`,
             `order`.`STATUS_ID` as `STATUS_ID`,
+            `order`.`SHIPDATE` as `SHIPDATE`,
             DATE_FORMAT(`order`.`DATE_INSERT`,'%d.%m.%Y %H:%i:%s') as `DATE_INSERT`,
             DATE_FORMAT(`order`.`DATE_UPDATE`,'%d.%m.%Y %H:%i:%s') as `DATE_UPDATE`,
             DATE_FORMAT(`order`.`DATE_STATUS`,'%d.%m.%Y %H:%i:%s') as `DATE_STATUS`,

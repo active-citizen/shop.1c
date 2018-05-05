@@ -139,9 +139,11 @@
             $sResult = $objCurl->post($sUrl, $sRequest);
 
             \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);            
-            if(!$arAnswer = $this->checkAnswer($sResult))
+            if(!$arAnswer = $this->checkAnswer($sResult)){
+                \Log\CSSAGLog::addFailedPointsLog($sUrl, $sRequest, $sResult);
                 return false;
-            return $arAnswer["result"]["current_points"]; 
+            }
+            return true; 
         }
 
         

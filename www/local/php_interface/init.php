@@ -1,6 +1,11 @@
 <?php
     define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
 
+    // Класс для отладочного вывода
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+            ."/local/libs/classes/CAGShop/xprint.class.php"
+    );
     // Библиотаке для склонения баллов, и дней
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/rus.lib.php");
     // Подключение библиотеки почтового SMTP-клиента (закомментарить, если
@@ -27,7 +32,7 @@
     
     
     define("CONFIG_STATIC",true);
-    define("COMMON_CACHE_TIME",3600);
+    define("COMMON_CACHE_TIME",300);
     // Значение невыбираемого остатка по умолчанию
     define("DEFAULT_STORE_LIMIT",0);
     // Определяем ID групп Операторы МФЦ и Партнёры
@@ -182,6 +187,26 @@
         )->Fetch();
         define("AUCTION_START_DATE_PROPERTY_ID",$arr["ID"]);
         
+        // Определяем ID свойства пожелавшию пользователь
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>WISHES_IB_ID,
+                "CODE"=>"WISH_USER"
+            )
+        )->Fetch();
+        define("WISH_USER_PROPERTY_ID",$arr["ID"]);
+
+        // Определяем ID свойства желаемый товар
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>WISHES_IB_ID,
+                "CODE"=>"WISH_PRODUCT"
+            )
+        )->Fetch();
+        define("WISH_PRODUCT_PROPERTY_ID",$arr["ID"]);
+
+
+
         // Определяем ID групп Операторы МФЦ и Партнёры
         define("PARTNERS_GROUP_ID",9);
         define("OPERATORS_GROUP_ID",10);

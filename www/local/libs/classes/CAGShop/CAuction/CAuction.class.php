@@ -211,7 +211,7 @@ class CAuction extends \AGShop\CAGShop{
                 )
                 ;
             $objSSAGAccount = new \SSAG\CSSAGAccount('',$arBet["USER_ID"]);
-            if($objSSAGAccount->transaction($nSum, $sComment))
+            if($objSSAGAccount->transaction($nSum, $sComment)!==false)
                 $this->closeBet($arBet["ID"]);
         }
         // Создаём заказ
@@ -788,13 +788,13 @@ class CAuction extends \AGShop\CAGShop{
         }
 
         // Пытаемся снять баллы
-        if(!$bPointsSuccess = $objSSAGAccount->transaction(
+        if($bPointsSuccess = $objSSAGAccount->transaction(
             -$nTotalSum,
             "Оплата ставки на аукционе. "
             ."Поощрение '".$arOffer["MAIN"]["NAME"]."'. "
             ."Количество ".$nAmount.". "
             ."Предложенная цена ".$nPrice." ".\Utils\CLang::getPoints($nPrice)
-        ))$this->addError($obOrder->error);
+        )===false)$this->addError($obOrder->error);
 
         ///////////
         if($bPointsSuccess){

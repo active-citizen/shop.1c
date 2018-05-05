@@ -9,6 +9,7 @@
             <div class="ag-shop-rules__container">
                 
             <? foreach($arResult["stores"] as $arStore):?>
+            <? if(mb_strpos($arStore["TITLE"],"почту")!==false)continue;?>
               <div class="ag-shop-content__limited-container js-spoiler__link" id="store-click-<?= $arStore["ID"];?>">
                 <a 
                     class="ag-shop-rules__spoiler-link hash-navigation" 

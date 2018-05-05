@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+  app:
+    build: ./php-xdebug
+    container_name: ag-shop-app
+    working_dir: /home/bitrix
+    env_file:
+      - ./config.env
+    environment:
+      - XDEBUG_CONFIG="idekey=PHPSTORM remote_connect_back=1 remote_port=9900 remote_enable=1"
+    volumes:
+      - './etc/php.ini:/usr/local/etc/php/php.ini'
+      - './etc/php-fpm.conf:/usr/local/etc/php/php-fpm.conf'
+      - '../:/home/bitrix'
+    depends_on:
+      - db
+      - memcached
+    networks:
+      back_network:
+        ipv4_address: 172.16.237.2
+        aliases:
+          - app_host
+
+  http:
+    image: nginx
+    container_name: ag-shop-http
+    volumes:
+      - './etc/nginx:/etc/nginx'
+      - '..:/home/bitrix'
+    depends_on:
+      - app
+    links:
+      - app:ag-shop-app
+    ports: ['80:80']
+    networks:
+      back_network:
+        ipv4_address: 172.16.237.3
+        aliases:
+          - http_host
+
+  db:
+    image: mysql
+    container_name: ag-shop-db
+    environment:
+      - MYSQL_PORT=3306
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=database
+    networks:
+      back_network:
+        ipv4_address: 172.16.237.4
+        aliases:
+          - db_host
+    volumes:
+        - './etc/my.cnf:/etc/mysql/my.cnf'
+        - './db/data:/var/lib/mysql'
+
+  memcached:
+    container_name: ag-shop-memcached-container
+    image: memcached:alpine
+    entrypoint:
+      - memcached
+      - -m
+      - "64"
+    networks:
+      back_network:
+        ipv4_address: 172.16.237.5
+        aliases:
+          - memcached_host
+
+networks:
+  back_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.237.0/24 # Поменять подсеть при необходимости

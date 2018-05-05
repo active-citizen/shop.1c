@@ -127,7 +127,16 @@ class COrder extends \AGShop\CAGShop{
         @param $nPrice - цена за единицу
         @param $nAmount - количество
     */
-    function createFromAuction($nUserId, $nOfferId, $nStoreId, $nPrice, $nAmount){
+    function createFromAuction(
+        $nUserId, 
+        $nOfferId, $nStoreId, $nPrice, $nAmount,
+        $arOptions = []
+    ){
+        if(!isset($arOptions["ZNI"]))$arOptions["ZNI"] = 'N';
+        if(!isset($arOptions["PREFIX"]))$arOptions["PREFIX"] = 'Ц-';
+        if(!isset($arOptions["DATE_ADD"]))$arOptions["DATE_ADD"] =
+             date("d.m.Y H:i:s");
+
 
         $nTotalSum = $nPrice * $nAmount;
         $CDB = new \DB\CDB;
@@ -164,6 +173,7 @@ class COrder extends \AGShop\CAGShop{
         $arFields["DISCOUNT_VALUE"] = 0;
         $arFields["TAX_VALUE"] = 0;
         $arFields["USER_DESCRIPTION"] = "";
+        $arFields["DATE_INSERT"] = $arOptions["DATE_ADD"];
         $objCSaleOrder = new \CSaleOrder;
         if(!$nOrderId = $objCSaleOrder->Add($arFields)){
             $this->addError("Не удалось добавить заказ: "
@@ -174,7 +184,7 @@ class COrder extends \AGShop\CAGShop{
         }
         
         $this->setParam("Id",$nOrderId);
-        $this->setParam("Num","Ц-".$nOrderId);
+        $this->setParam("Num",$arOptions["PREFIX"].$nOrderId);
         $sOrderNum = $this->getParam("Num");
         $this->setParam("StatusId",$sInitialStatusId);
         // Сохраняем параметры заказа
@@ -190,7 +200,7 @@ class COrder extends \AGShop\CAGShop{
         $nOrderId = $this->getParam("Id");
         if($nOrderId)$objCSync->syncOrder($nOrderId);
 
-        $this->setZNI('N','AA');
+        $this->setZNI($arOptions["ZNI"],'AA');
         
         if(!$this->getErrors())return $nOrderId;
         return true; 
@@ -321,6 +331,7 @@ class COrder extends \AGShop\CAGShop{
         // Проверяем сумму на счёте
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         $objSSAGAccount = new \SSAG\CSSAGAccount('',\CUser::GetID());
+        $objSSAGAccount->update();
         $arAccount = ["CURRENT_BUDGET"=>$objSSAGAccount->balance()];
         if(!$sCustomNum && $arAccount["CURRENT_BUDGET"]<$nTotalSum){
             $this->addError("Недостаточно баллов на счёте");
@@ -453,7 +464,7 @@ class COrder extends \AGShop\CAGShop{
             if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
                  "Заказ Б-$nOrderId в магазине поощрений АГ"
-            ))$this->addError($obOrder->error);
+            ))$this->addError($objSSAGAccount->error);
 
             ///////////
             if($bPointsSuccess)
@@ -532,6 +543,11 @@ class COrder extends \AGShop\CAGShop{
         
         $this->saveProperty("CHANGE_REQUEST", $sStatusId);
         $nOrderId = $this->getParam("Id");
+
+        if($sStatusId=='F'){
+            $this->saveProperty("SHIPDATE", date("Y-m-d H:i:s"));
+        }
+
     
         // Сохраняем запись в истории
         \CSaleOrderChange::AddRecord($nOrderId,
@@ -925,6 +941,7 @@ class COrder extends \AGShop\CAGShop{
         
         $arQuery = $CDB->sqlSelect($sQuery);
         $arResult = [];
+        $this->arProps = [];
         foreach($arQuery as $arItem)
             $this->arProps[$arItem["CODE"]] = $arItem["VALUE"];
         return $arResult;

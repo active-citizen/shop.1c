@@ -2808,7 +2808,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .mobile-search-notfind-wrapper {
   position: absolute;
-  top: 50%;
+  top: 37%;
   left: 50%;
   display: block;
   width: 300px;

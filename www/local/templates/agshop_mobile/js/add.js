@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
 
- $('.wrap_back_btn').on('click', function(){
+ $('.mobile-header-back__link').on('click', function(){
 
   window.history.back();
   return false;

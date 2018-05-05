@@ -218,7 +218,7 @@
         */
         function getTeasers($arOptions = []){
             global $USER;
-
+//            new \XPrint($arOptions,1);
             $objCache = new
             \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
             if($sCacheData = $objCache->get()){
@@ -300,7 +300,7 @@
             
             if(isset($arOptions["filter"]["section_code"]))
                 $arFilter["section_code"] = trim($CDB->ForSql($arOptions["filter"]["section_code"]));
-                
+
             $nSectionId = 0;
             if(isset($arFilter["section_code"])){
                 $arCatalogSection = \CIBlockSection::GetList([],[
@@ -333,7 +333,8 @@
             $sQuery = "
                 SELECT
                     `product`.`NAME` as `NAME`,
-                    `product`.`ID` as `ID`
+                    `product`.`ID` as `ID`,
+                    SUM(`store_product`.`AMOUNT`) as `EXISTS`
                 FROM
                     `".\AGShop\CAGShop::t_iblock_element."` as `product`
                         LEFT JOIN
@@ -367,24 +368,78 @@
                         LEFT JOIN
                     `".\AGShop\CAGShop::t_iblock_section."` as `section`
                         ON `product`.`IBLOCK_SECTION_ID`=`section`.`ID`
+                    ".
+                    (
+                        $arOptions["filter"]["wishes_user"]
+                        ?
+                        "
+                        LEFT JOIN
+                     `".\AGShop\CAGShop::t_iblock_element_property."` as `wishes_prod`
+                        ON
+                        `wishes_prod`.`IBLOCK_PROPERTY_ID`=".WISH_PRODUCT_PROPERTY_ID."
+                        AND
+                        `wishes_prod`.`VALUE_NUM`=`product`.`ID`
+                        LEFT JOIN
+                     `".\AGShop\CAGShop::t_iblock_element_property."` as `wishes_user`
+                        ON
+                        `wishes_user`.`IBLOCK_PROPERTY_ID`=".WISH_USER_PROPERTY_ID."
+                        AND
+                        `wishes_prod`.`IBLOCK_ELEMENT_ID`=`wishes_user`.`IBLOCK_ELEMENT_ID`
+                        AND
+                        `wishes_user`.`VALUE_NUM`=".intval(
+                            $arOptions["filter"]["wishes_user"]
+                        )."
+                        "
+                        :
+                        ""
+                    )
+                    ."
                 WHERE
                     `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     AND `product`.`IBLOCK_SECTION_ID`!=0
                     ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
                     AND `section`.`ACTIVE`='Y'
                     AND `product`.`ACTIVE`='Y'
-                    AND 
-                    (
+                    ".(
+                        $arOptions["filter"]["wishes_user"]
+                        ?
+                        "
+                        AND `wishes_prod`.`ID` IS NOT NULL
+                        AND `wishes_user`.`ID` IS NOT NULL
+                        "
+                        :
+                        "
+                        AND 1
+                        "
+                    )
+                    ."
+                    ".(
+                        $arOptions["filter"]["not_exists"]
+                        ?
+                        "
+                        AND 
                         (
-                            `hide_prop`.`VALUE` IS NULL
+                            (
+                                `hide_prop`.`VALUE` IS NULL
+                            )
+                            OR
+                            (
+                                `hide_prop`.`VALUE` IS NOT NULL
+                                AND
+                                `store_product`.`AMOUNT`>0
+                            )
                         )
-                        OR
+                        "
+//                        "AND 1"
+                        :
+                        "
+                        AND 
                         (
-                            `hide_prop`.`VALUE` IS NOT NULL
-                            AND
                             `store_product`.`AMOUNT`>0
                         )
+                        "
                     )
+                    ."
                     AND 
                     (
                         (
@@ -424,7 +479,9 @@
 //            fwrite($fd,$sQuery);
 //            fclose($fd);
             $arIds = $CDB->sqlSelect($sQuery,10000);
+            $arExists = [];
             foreach($arIds as $arId){
+                $arExists[$arId["ID"]] = $arId["EXISTS"];
                 $arSectionCond[] = $arId["ID"];
             }
             
@@ -490,7 +547,8 @@
             $arStoreCond = [];
             $sQuery = "
                 SELECT
-                    `product`.`ID` as `ID`
+                    `product`.`ID` as `ID`,
+                    `store_product`.`AMOUNT` as `AMOUNT`
                 FROM
                     `".\AGShop\CAGShop::t_iblock_element."` as `product`
                         LEFT JOIN
@@ -502,15 +560,26 @@
                         LEFT JOIN
                     `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
                         ON
-                        `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`
-                        AND
-                        `store_product`.`AMOUNT`>0
+                        `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`"
+                        .(
+                            !$arOptions["filter"]["not_exists"]
+                            ?
+                            " AND `store_product`.`AMOUNT`>0 "
+                            :
+                            ""
+                        )."
                 WHERE
                     1
                     -- AND `product`.`ACTIVE` = 'Y'
                     -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
-                    ".($arFilter["store"]?"AND `store_product`.`STORE_ID` IN (".$arFilter["store"]:"").")
+                    ".(
+                        $arFilter["store"]
+                        ?
+                        "AND `store_product`.`STORE_ID` IN (".$arFilter["store"].")"
+                        :
+                        ""
+                    )."
                 GROUP BY
                     `product`.`ID`
             ";
@@ -569,12 +638,27 @@
                 $sHitCond, $sSaleCond, $sNewCond
             ));
             // Вычисляем пересечения
+            
+            $arIntersect = [];
+            if($arSectionCond)$arIntersect[] = $arSectionCond;
+
+            if($arQueryCond)$arIntersect[] = $arQueryCond;
+            if($arStoreCond)$arIntersect[] = $arStoreCond;
+            if($arFlags)$arIntersect[] = $arFlags;
+            if($sPriceCond)$arIntersect[] = $sPriceCond;
+            if($sInterestCond)$arIntersect[] = $sInterestCond;
+            
+
+              
+            /*
             $arIntersect = [
                 $arSectionCond, $arQueryCond, $arStoreCond, 
                 //$sSaleCond,$sNewCond,$sHitCond,
                 $arFlags,
                 $sPriceCond,$sInterestCond
             ];
+            */
+            
             // Выкидываем нулевые и опеределяем с минимальным числом элементов
             $nMin = 10000000000;
             $nMinIndex = -1;
@@ -628,11 +712,13 @@
                 $arProduct["SECTION"] = $objSection->getBriefById(
                     $arProduct["IBLOCK_SECTION_ID"]
                 );
+
+                $arProduct["EXISTS"] = $arExists[$arProduct["ID"]];
+
                 $arProduct["WISHES"] = $arProduct["PROPERTY_WISHES_QUANTITY_VALUE"];
                 $arItems[$arProduct['ID']] = $arProduct;
             }
             
-
             $arResult = ["items"=>$arItems,"total"=>$nTotal];
             $objCache->set($arResult);
             

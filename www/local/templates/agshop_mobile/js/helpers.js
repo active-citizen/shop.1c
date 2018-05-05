@@ -9,6 +9,16 @@ $(function() {
     "tolerance": 5
   });
 
+
+  // Cross Browser MaxLength
+  $("input[type=number]").on('blur',function(){ 
+      var $that = $(this),
+      maxlength = $that.attr('maxlength')
+      if($.isNumeric(maxlength)){
+          $that.val($that.val().substr(0, maxlength));
+      };
+  });
+
   // ===================
   // Cross Browser Width Calc
   // ===================

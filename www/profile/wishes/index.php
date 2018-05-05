@@ -1,7 +1,11 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Мои желания");
-include("../menu.php");
+    CModule::IncludeModule("iblock");
+    $APPLICATION->SetTitle(
+        "Мои желания"
+    );
+    include("../menu.php");
+
 ?>
 
 
@@ -18,22 +22,13 @@ include("../menu.php");
     </div>
   </div>
 <? else: ?>
-    <div class="ag-shop-content">
-        <!-- Catalog {{{-->
-        <div class="ag-shop-catalog">
-            <div class="ag-shop-catalog__items-container">
-                <div class="grid grid--bleed grid--justify-center my-wishes-ajax">
-                </div>
-            <a class="ag-shop-catalog__more-button" href="#" onclick="return wishes_load();">Ещё</a>
-            </div>
-        </div>
-        <!-- }}} Catalog-->
-    </div>
-
-    <script>
-    $(document).ready(function(){wishes_load();});
-    </script>
-<? endif;?>
-
+    <? if(IS_MOBILE || IS_PHONE):?>
+        <? require($_SERVER["DOCUMENT_ROOT"]."/catalog/mobile.filter.params.php");?>
+    <? else:?>
+        <? require($_SERVER["DOCUMENT_ROOT"]."/catalog/desktop.filter.params.php");?>
+        <? include_once($_SERVER["DOCUMENT_ROOT"]."/catalog/filter.inc.php");?>
+    <? endif?>
+    <? include_once($_SERVER["DOCUMENT_ROOT"]."/catalog/container.inc.php");?>
+<? endif?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

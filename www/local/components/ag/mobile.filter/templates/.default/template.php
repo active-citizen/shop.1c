@@ -9,14 +9,14 @@
 						<div class="mobile-aside-form-block">
 							<div class="mobile-aside-form-item">
 								<div class="custom-checkbox-default">
-									<input class="custom-checkbox-square__input" 
+									<input class="custom-checkbox-square__input defaultReset" 
                                     id="productGridCheckbox" type="checkbox" 
                                     name="productGridCheckbox" value="30" 
                                     <? if($arResult["GRID"]):?>checked<? endif ?>>
 									<label class="custom-checkbox-square__label custom-checkbox-square__label--green" for="productGridCheckbox">
 										<span class="custom-checkbox-default__info">
 											<span class="custom-checkbox-default__info-icon">
-												<span class="icon-aside-filter icon-aside-filter--grid"></span>
+												<span class="icon-aside-filter  icon-aside-filter--grid-small"></span>
 											</span>
 											<span class="custom-checkbox-default__info-title">Мелкий вид плиток</span>
 										</span>
@@ -107,7 +107,7 @@
                                         <? foreach($arResult["INTERESTS"] as $arInterest):?>
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class="<? if($arInterest["CLASS"]):?><?= $arInterest["CLASS"]?><? endif ?> custom-checkbox-square__input"  
+												<input class="<? if($arInterest["CLASS"]):?><?= $arInterest["CLASS"]?><? endif ?> custom-checkbox-square__input defaultReset"  
                                                 id="productInterest<?= $arInterest["CODE"]?>" type="checkbox" 
                                                 name="productInterest<?= $arInterest["CODE"]?>" 
                                                 value="<?= $arInterest["ID"]?>" 
@@ -144,10 +144,10 @@
 								<div class="mobile-aside-form-item__option">
 									<div class="mobile-aside-form-item__inputs">
 										<div class="mobile-aside-price mobile-aside-price--min">
-											<input class="aside-default-input" type="number" name="productPriceMin" value="<?= $arResult["MIN_PRICE"]?>"  placeholder="Мин." min="0">
+											<input class="aside-default-input defaultClear" type="number" name="productPriceMin" value="<?= $arResult["MIN_PRICE"]?>"  placeholder="Мин." min="0">
 										</div>
 										<div class="mobile-aside-price mobile-aside-price--max">
-											<input class="aside-default-input" type="number" name="productPriceMax"   value="<?= $arResult["MAX_PRICE"]?>" placeholder="Макс." min="0">
+											<input class="aside-default-input defaultClear" type="number" name="productPriceMax"   value="<?= $arResult["MAX_PRICE"]?>" placeholder="Макс." min="0">
 										</div>
 									</div>
 								</div>
@@ -162,7 +162,7 @@
 									</div>
 									<div class="mobile-aside-form-item__option">
 										<span class="mobile-aside-dropdown-btn" data-dropdown="filter-delivery">
-											<span class="mobile-aside-dropdown__item">Все</span>
+											<span class="mobile-aside-dropdown__item ">Все</span>
 										</span>
 									</div>
 								</div>
@@ -173,7 +173,7 @@
 									<div class="mobile-aside-dropdown-content" data-dropdown="filter-delivery">
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class="dropdown-checkbox-all custom-checkbox-square__input"  id="productDeliveryAll" type="checkbox" name="productDeliveryAll" value="333" <? if(!$arResult["STORE_CHECKED"]):?>checked<? endif ?>>
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck"  id="productDeliveryAll" type="checkbox" name="productDeliveryAll" value="333" <? if(!$arResult["STORE_CHECKED"]):?>checked<? endif ?>>
 												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productDeliveryAll">
 													<span class="custom-checkbox-default__info">
 														<span class="custom-checkbox-default__info-title">Все</span>
@@ -242,7 +242,7 @@
 									<div class="mobile-aside-dropdown-content" data-dropdown="filter-size">
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class="dropdown-checkbox-all custom-checkbox-square__input"  id="productSizeAll" type="checkbox" name="productSizeAll" value="777" checked>
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck"  id="productSizeAll" type="checkbox" name="productSizeAll" value="777" checked>
 												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productSizeAll">
 													<span class="custom-checkbox-default__info">
 														<span class="custom-checkbox-default__info-title">Все</span>
@@ -282,7 +282,7 @@
 									<div class="mobile-aside-dropdown-content" data-dropdown="filter-color">
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class="dropdown-checkbox-all custom-checkbox-square__input" id="productColorAll" type="checkbox" name="productColorAll" value="555" checked>
+												<input class="dropdown-checkbox-all custom-checkbox-square__input defaultCheck" id="productColorAll" type="checkbox" name="productColorAll" value="555" checked>
 												<label class="default-dropdown-label custom-checkbox-square__label custom-checkbox-square__label--pink" for="productColorAll">
 													<span class="custom-checkbox-default__info">
 														<span class="custom-checkbox-default__info-title">Все</span>
@@ -306,7 +306,7 @@
 						<div class="mobile-aside-form-block mobile-aside-form-block--last">
 							<div class="mobile-aside-form-item">
 								<div class="custom-checkbox-default">
-									<input class="custom-checkbox-square__input" 
+									<input class="custom-checkbox-square__input defaultReset" 
                                     id="productHitCheckbox" type="checkbox" 
                                     name="productHitCheckbox" value="1" 
                                     <? if($arResult["HIT"]):?>checked<? endif ?>>
@@ -322,7 +322,7 @@
 							</div>
 							<div class="mobile-aside-form-item">
 								<div class="custom-checkbox-default">
-									<input class="custom-checkbox-square__input" 
+									<input class="custom-checkbox-square__input defaultReset" 
                                     id="productNewCheckbox" type="checkbox" 
                                     name="productNewCheckbox" value="2"
                                     <? if($arResult["NEW"]):?>checked<? endif ?>>
@@ -338,7 +338,7 @@
 							</div>
 							<div class="mobile-aside-form-item">
 								<div class="custom-checkbox-default">
-									<input class="custom-checkbox-square__input" 
+									<input class="custom-checkbox-square__input defaultReset" 
                                     id="productSaleCheckbox" type="checkbox" 
                                     name="productSaleCheckbox" value="3"
                                     <? if($arResult["SALE"]):?>checked<? endif ?>>

@@ -8,7 +8,7 @@
         
         var $sKey = '';
         var $sGroup = '';
-        var $nExpires = 300;
+        var $nExpires = COMMON_CACHE_TIME;
         var $sFullKey = '';
 
         private $objMemcached = null;
@@ -82,6 +82,10 @@
             return $this->objMemcached->delete($this->sFullKey);
         }
 
+        function getAll(){
+            return $this->objMemcached->getAllKeys();
+        }
+
         /**
             Очистка текущей группы ключей
         */
@@ -89,7 +93,7 @@
             $bOnlyGroup = true // Очищать толко заданную в конструкторе группу
         ){
             if(!$this->objMemcached)return false;
-            $arKeys = $this->objMemcached->getAllKeys();
+            $arKeys = $this->getAll();
             $arDeleteKeys = [];
             foreach($arKeys as $sKey){
                 $tmp = explode(":", $sKey);
