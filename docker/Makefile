@@ -21,11 +21,11 @@ replace-files:
 	cat ../www/api/include/config.tmpl.php > ../www/api/include/config.php
 
 copy-catalog:
-	cp -rf ../data/catalog ../www/upload/1c_catalog
+	cp -rf ../data/catalog/* ../www/upload/1c_catalog
 
 configure-route:
-	route del -net 172.17.0.0 netmask 255.255.0.0
-	route add -net 172.17.0.0 netmask 255.255.0.0 gateway 172.29.58.254
+	sudo route del -net 172.17.0.0 netmask 255.255.0.0
+	sudo route add -net 172.17.0.0 netmask 255.255.0.0 gateway 172.29.58.254
 
 build:
 	docker-compose -p ag-shop build

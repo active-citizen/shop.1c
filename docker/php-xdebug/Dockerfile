@@ -25,7 +25,8 @@ RUN docker-php-ext-configure gd \
 RUN docker-php-ext-install mcrypt \
 opcache \
 mysqli \
-gd
+gd \
+zip
 
 RUN wget https://github.com/websupport-sk/pecl-memcache/archive/NON_BLOCKING_IO_php7.tar.gz \
 && tar -zxvf NON_BLOCKING_IO_php7.tar.gz \

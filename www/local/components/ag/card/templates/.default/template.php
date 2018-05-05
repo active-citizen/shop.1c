@@ -474,11 +474,15 @@ if(
                         -->
                         <div class="ag-shop-card__places">
                           <? $count=0;
+                          $storageSelected = false;
                           if(!$stopDailyLimit)
                           foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount): $count++;?>
                           <label>
-                            <input  onclick="return selectStorage('<?= $id;?>');"type="radio" name="place" value="<?= $id ?>" <? 
-                                if(count($arResult["OFFERS"][0]["STORAGES"])==1)echo " checked ";
+                            <input  onclick="return selectStorage('<?= $id;?>');"type="radio" name="place" value="<?= $id ?>" <?
+                            if (count($arResult["OFFERS"][0]["STORAGES"]) == 1) {
+                                $storageSelected = true;
+                                echo " checked ";
+                            }
                                 /*
                                 if($count==count($arResult["OFFERS"][0]["STORAGES"]))echo
                                     " checked ";
@@ -488,7 +492,7 @@ if(
                           </label>
                           <? endforeach ?>
                         </div>
-                        <div class="ag-shop-card__selected-place">
+                        <div class="ag-shop-card__selected-place<?= $storageSelected ? '' : ' hidden'; ?>">
                           <div class="ag-shop-card__selected-place-header">
                             <div class="grid grid--bleed grid--justify-space-between">
                               <div class="grid__col-xs-12 grid__col-sm-shrink mobile_none">

@@ -52,6 +52,14 @@ $arContours = [
         "bcc_url" => "",
         "name" => "test"
     ],
+    [
+        "domain" => "localhost",
+        "int_ip" => "127.0.0.1",
+        "ext_ip" => "127.0.0.1",
+        "auth_url" => "https://testing.ag.mos.ru/mvag/auth?callback=agauth",
+        "bcc_url" => "http://localhost/api/",
+        "name" => "local"
+    ],
 ];
 
 

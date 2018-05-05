@@ -880,3 +880,7 @@ table.auction-winners td.auction-price{
 table.auction-winners .winner{
     background-color: rgba(255,194,14,1);
 }
+
+.hidden {
+    display: none;
+}

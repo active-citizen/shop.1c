@@ -11,8 +11,10 @@ services:
       - XDEBUG_CONFIG="idekey=PHPSTORM remote_connect_back=1 remote_port=9900 remote_enable=1"
     volumes:
       - './etc/php.ini:/usr/local/etc/php/php.ini'
-      - './etc/php-fpm.conf:/usr/local/etc/php/php-fpm.conf'
+      #- './etc/php-fpm.conf:/usr/local/etc/php/php-fpm.conf'
       - '../:/home/bitrix'
+      - './replace-files/www/bitrix/.settings_extra.php:/home/bitrix/www/bitrix/.settings_extra.php'
+      - './replace-files/www/bitrix/.reset-password.php:/home/bitrix/www/bitrix/.reset-password.php'
     depends_on:
       - db
       - memcached
@@ -63,7 +65,7 @@ services:
     entrypoint:
       - memcached
       - -m
-      - "64"
+      - "256"
     networks:
       back_network:
         ipv4_address: 172.16.237.5
