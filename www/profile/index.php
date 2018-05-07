@@ -1,7 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 if($_SERVER["REQUEST_URI"]=='/profile/'){
-    LocalRedirect("/profile/points/");
+    LocalRedirect("/profile/order/");
     die;
 }
 $APPLICATION->SetTitle("Часто задаваемые вопросы");
