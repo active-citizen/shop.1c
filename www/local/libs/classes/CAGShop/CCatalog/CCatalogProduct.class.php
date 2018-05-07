@@ -570,6 +570,7 @@
                         )."
                 WHERE
                     1
+                    AND `store_product`.`ID` IS NOT NULL
                     -- AND `product`.`ACTIVE` = 'Y'
                     -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
@@ -647,9 +648,7 @@
             if($arFlags)$arIntersect[] = $arFlags;
             if($sPriceCond)$arIntersect[] = $sPriceCond;
             if($sInterestCond)$arIntersect[] = $sInterestCond;
-            
-
-              
+             
             /*
             $arIntersect = [
                 $arSectionCond, $arQueryCond, $arStoreCond, 
@@ -673,6 +672,7 @@
             
             // Вычисляем элементы, входящие во все множества
             $arMinArray = $arIntersect[$nMinIndex];
+
             $nIntersectSetscount = count($arIntersect);
             $arIds = [];
             foreach($arMinArray as $nId){
