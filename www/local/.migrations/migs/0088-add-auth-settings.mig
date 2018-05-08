@@ -1,0 +1,28 @@
+<?php
+require_once($_SERVER["DOCUMENT_ROOT"] . "/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+$settings = new \Integration\CIntegrationSettings('AUTH');
+
+$params = [
+    'AUTH_TYPE' => [
+        "TITLE" => "Тип заглушки:<br>
+        0 - Нет заглушки.<br>
+        1 - Безусловно закрыть фронт и АРМ.<br>
+        2 - Безусловно закрыть фронт (АРМ открыто).<br>
+        3 - Закрыть фронт паролем (АРМ открыто).",
+        "VALUE" => "0"
+    ],
+    'AUTH_LOGIN' => [
+        "TITLE" => "Имя пользователя для входа",
+        "VALUE" => "admin"
+    ],
+    'AUTH_PASSWORD' => [
+        "TITLE" => "Пароль для входа",
+        "VALUE" => "Shop_ag_2!"
+    ],
+];
+
+if (!$settings->get()) {
+    $settings->add($params);
+} else {
+    $settings->set($params);
+}

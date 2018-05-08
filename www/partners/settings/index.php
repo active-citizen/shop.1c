@@ -73,7 +73,13 @@ use AGShop\Cache as Cache;
     <?$APPLICATION->IncludeComponent("ag:settings","",array(
         "CODE"  =>  "INFO",
         "CACHE_TIME"=>COMMON_CACHE_TIME
-    ),false);?> 
+    ), false); ?>
+
+    <h2>Авторизация</h2>
+    <? $APPLICATION->IncludeComponent("ag:settings", "", [
+        "CODE" => "AUTH",
+        "CACHE_TIME" => COMMON_CACHE_TIME
+    ], false); ?>
 
 </div>
 
