@@ -84,11 +84,11 @@ foreach($arResult["CELLS"] as $nRowId=>$arRow){
         continue;
     }
     if($arProducts[$nRowId]["PRODUCT"]["PROPERTY_HIDE_DATE_VALUE"]){
-        $nTimestamp = MakeTimeStamp(
+        $nTimeStamp = MakeTimeStamp(
             $arProducts[$nRowId]["PRODUCT"]["PROPERTY_HIDE_DATE_VALUE"],
             "DD.MM.YYYY"
         );
-        if($nTimeStaml<=time()){
+        if($nTimeStamp<=time()){
             unset($arResult["ROWS"][$nRowId]);
             unset($arResult["CELLS"][$nRowId]);
             continue;
