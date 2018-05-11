@@ -37,3 +37,8 @@
 .desktop-product-title__name{
     font-size: 14px;
 }
+
+div.desktop-products-container--gridList{
+   padding-left: 10px;
+   padding-right: 10px;
+}

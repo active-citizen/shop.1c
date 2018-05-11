@@ -15,10 +15,16 @@ function teaserSize(size){
     $('#smallicons').val(size);
     if(parseInt(size)==0){
         $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+        $('.desktop-products-container').removeClass('desktop-products-container--gridList');
     }
     else if(parseInt(size)==1){
         $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+        $('.desktop-products-container').removeClass('desktop-products-container--gridList');
         $('.desktop-products-container').addClass('desktop-products-container--gridSmall');
+    }
+    else if(parseInt(size)==2){
+        $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
+        $('.desktop-products-container').addClass('desktop-products-container--gridList');
     }
     applyFilter();
     return false;

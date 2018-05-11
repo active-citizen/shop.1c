@@ -124,7 +124,6 @@
 										<span class="list-dropdown__link-title">Мелкий</span>
 									</a>
 								</li>
-                                <?/*
 								<li class="list-dropdown__item<?if($arParams["smallicon"]==2
                                 ):?> selected<?
                                 endif
@@ -136,7 +135,6 @@
 										<span class="list-dropdown__link-title">Список</span>
 									</a>
 								</li>
-                                */?>
 							</ul>
 						</div>
 					</div>

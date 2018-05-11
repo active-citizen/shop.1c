@@ -12,6 +12,8 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
     <section class="catalog-inner">
         <div class="desktop-products-container<? 
         if($arParams["smallicons"]==1):?> desktop-products-container--gridSmall<? 
+        endif?><? 
+        if($arParams["smallicons"]==2):?> desktop-products-container--gridList<? 
         endif?>">
 <? endif ?>
         <? if(count($arResult["PRODUCTS"])):?>
@@ -34,6 +36,24 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                     <div class="desktop-product-inner" style="background-image: url('<?= 
                     $arProduct["IMAGE"]
                     ?>')">
+                        <!-- ============= -->
+                        <!-- Product Price -->
+                        <div class="desktop-product-price">
+                            <div class="desktop-product-price-wrapper">
+                                <div class="middle-aligned">
+                                    <b class="desktop-product-price__summ"><?=
+                                        $arProduct["PROPERTY_MINIMUM_PRICE_VALUE"]
+                                    ?></b>
+                                    <span
+                                    class="desktop-product-price__currency"><?=
+                                        \Utils\CLang::getPoints(
+                                            $arProduct["PROPERTY_MINIMUM_PRICE_VALUE"]
+                                        )
+                                    ?></span>
+                                </div>
+
+                            </div>
+                        </div>
                         <!-- Product Title -->
                         <div class="desktop-product-title">
                             <div class="desktop-product-title-wrapper">
@@ -44,6 +64,13 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                                 </div>
                             </div>
                         </div>
+                        <!-- Product Details -->
+                        <div class="desktop-product-details">
+                            <div class="desktop-product-details-description">
+                            <?= cardTextClear($arProduct["PREVIEW_TEXT"]); ?>
+                            </div>
+                        </div>
+
                         <!-- ============= -->
                         <!-- Product Badge -->
                         <span class="desktop-product-badge">
@@ -63,25 +90,7 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                             ?>/img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
                             <? endif ?>
                         </span>
-                        <!-- ============= -->
-                        <!-- Product Price -->
-                        <div class="desktop-product-price">
-                            <div class="desktop-product-price-wrapper">
-                                <div class="middle-aligned">
-                                    <b class="desktop-product-price__summ"><?=
-                                        $arProduct["PROPERTY_MINIMUM_PRICE_VALUE"]
-                                    ?></b>
-                                    <span
-                                    class="desktop-product-price__currency"><?=
-                                        \Utils\CLang::getPoints(
-                                            $arProduct["PROPERTY_MINIMUM_PRICE_VALUE"]
-                                        )
-                                    ?></span>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- ============= -->
+                                <!-- ============= -->
                         <!-- Product Info -->
                         <div class="desktop-product-info">
                             <div class="desktop-product-info-wrapper">
@@ -91,7 +100,7 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                                 $arProduct["SECTION"]["NAME"]
                                 ?></span>
                                 <p class="desktop-product-info__description"><? 
-                                //echo $arProduct["PREVIEW_TEXT"]
+                                echo cardTextClear($arProduct["PREVIEW_TEXT"])
                                 ?></p>
                             </div>
                         </div>
@@ -199,3 +208,66 @@ function desktop_teasers_next_page(sUrl,nPageNum){
     return false;
 }
 </script>
+
+<?
+
+
+    /**
+        Очиска текста товара от лишних cстилей для достижения единообразия
+        вёрстки 
+    */
+    function cardTextClear($text){
+        
+
+        $text =  str_replace(
+            "\n","",
+            $text 
+        );
+       
+        $text =   preg_replace(
+            "#\s+#"," ",
+            $text
+        );
+
+        $text =   preg_replace(
+            "#>\s+<#","><",
+            $text 
+        );
+          
+        $text =   preg_replace(
+            "/style=\".*?\"/i", "",
+            $text 
+        );
+        
+       
+        $text =   preg_replace(
+            "/<br.*?>/i", "",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#<p>\s+&nbsp;</p>#", "",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#>\s+#", ">",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#>\(#", "> (",
+            $text 
+        );
+
+        $text =   preg_replace(
+            "#<div> &nbsp;</div>#", "",
+            $text 
+        );
+
+        $text = preg_replace(
+            "#<a.*?>.*?</a>#", "", $text
+        );
+ 
+        return $text;
+    }
