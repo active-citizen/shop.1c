@@ -13,6 +13,9 @@ require("../group_access.php");
             case "stores":
                 $type = 'stores';
             break;
+            case "shown":
+                $type = 'shown';
+            break;
             case "tags":
                 $type='tags';
             break;
