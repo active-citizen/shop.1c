@@ -86,6 +86,7 @@ etc/nginx/auth/*.conf
 etc/nginx/auth/*.passwd
 
 # Каталог со сторонними библиотеками
+vendor/
 www/local/libs/vendor/*
 
 #Игнорировать конфиг ККБ
@@ -120,6 +121,7 @@ www/local/assets/libs/images/
 *.backup
 *.pem
 *.lock
+!composer.lock
 
 # связи троек с номерами телефонов 
 www/local/.migrations/migs/data/troika.csv

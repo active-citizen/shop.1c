@@ -51,7 +51,10 @@ show-ips:
 	$$(docker-compose -p ag-shop ps -q) | grep -Eo '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\s\/.+$$' | sed 's/\///g'
 
 composer-install:
-	docker-compose -p ag-shop exec app bash -c "cd www/local/libs; composer install;";
+	docker-compose -p ag-shop exec app bash -c "composer install; cd www/local/libs; composer install;";
+
+composer-update:
+	docker-compose -p ag-shop exec app composer update;
 
 bash:
 	docker-compose -p ag-shop exec --user=www-data app bash
