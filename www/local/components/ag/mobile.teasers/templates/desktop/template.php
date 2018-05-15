@@ -203,6 +203,7 @@ function desktop_teasers_next_page(sUrl,nPageNum){
         $('.more-button').remove();
         $('.desktop-products-container').append(data);
         wishes_load();
+        truncTitle();
     })
     
     return false;

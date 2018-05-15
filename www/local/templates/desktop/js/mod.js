@@ -48,3 +48,56 @@ $(document).ready(function(){
         applyFilter();
     });
 });
+
+
+if(typeof(getdocWidth)!=='function'){
+  function getdocWidth(){
+    /* Получаем строку из юзерагента браузера */
+    var ua = navigator.userAgent.toLowerCase();
+
+    /* Проверяем, если в строке есть "safari",
+       то скорее всего это webkit, поэтому заходим в этот if
+    */
+    if (ua.indexOf('safari') != -1) {
+
+      /* Если это браузер на основе Chrome, то записываем в
+         переменную docWidth значение window.innerWidth */
+      if (ua.indexOf('chrome') > -1) {
+        docWidth = window.innerWidth;
+
+      /* Если это не Chrome, то значит это Safari,
+         поэтому в переменной docWidth уже сохраняем значение document.documentElement.clientWidth*/
+      } else {
+        docWidth = document.documentElement.clientWidth;
+      }
+    /* Если в строке юзерагента нет "Safari", значит это какой-то иной браузер,
+       поэтому отдаём ему window.innerWidth
+       */
+    }else{
+     docWidth = window.innerWidth;
+    }
+    /* Ну и возвращаем переменную */
+  return docWidth;
+  };
+}
+  // Truncate - Shave
+
+if(typeof(truncTitle)!==false){
+   function truncTitle() {
+
+    var getCurrentWindowWidth = getdocWidth();
+    var getCurrentGridStatus = document.querySelector('.desktop-products-container');
+    if ( getCurrentWindowWidth < 1024 && $(getCurrentGridStatus).hasClass("desktop-products-container--gridList")) {
+      $('.desktop-product-title__name').shave(80);
+    }
+    else {
+      $('.desktop-product-title__name').shave(40);
+    }
+
+    $('.desktop-product-details-description').shave(18);
+    $('.desktop-product-details-warning').shave(18);
+  };
+}
+
+
+
