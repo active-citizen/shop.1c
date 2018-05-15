@@ -19,6 +19,10 @@ class Auth
         'partners',
     ];
 
+    protected static $exeptions = [
+        'partners/settings',
+    ];
+
     /** @var int|null */
     protected $type;
 
@@ -77,8 +81,18 @@ class Auth
         return in_array($this->getBaseRequestPart(), self::$armUrls);
     }
 
+    protected function isExept()
+    {
+        foreach(self::$exeptions as $sPattern)
+            if(preg_match("#/$sPattern.*#", $_SERVER["REQUEST_URI"]))
+                return true;
+        return false;
+    }
+
     public function performAuth()
     {
+        if($this->isExept())return;
+
         $isFront = $this->isFront();
         $isArm = $this->isArm();
 
