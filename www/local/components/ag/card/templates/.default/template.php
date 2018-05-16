@@ -250,7 +250,7 @@ if(
                     </div>
                     <div class="ag-shop-card__container">
                       <div class="ag-shop-card__header ag-shop-card__header--mobile">
-                        <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
+                        <h2 class="ag-shop-card__header-title"><?= $arResult["CATALOG_ITEM"]["NAME"]?></h2>
                         <? /* if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
                         <div class="ag-shop-card__header-code">Артикул: <strong><?= 
                             $arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]
@@ -349,7 +349,7 @@ if(
                   <div class="ag-shop-card__right-column">
                     <div class="ag-shop-card__container">
                       <div class="ag-shop-card__header">
-                        <h2 class="ag-shop-card__header-title"><?= $arResult["OFFERS"][0]["NAME"]?></h2>
+                        <h2 class="ag-shop-card__header-title"><?= $arResult["CATALOG_ITEM"]["NAME"]?></h2>
                         
                         <? /* if($arResult["OFFERS"][0]["PROPERTIES"]["ARTNUMBER"][0]["VALUE"]):?>
                         <div class="ag-shop-card__header-code">Артикул: <strong><?= 
