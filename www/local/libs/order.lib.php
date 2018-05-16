@@ -706,10 +706,10 @@ function getDownloadOrders(
         $sFrom .= "
         LEFT JOIN
     `b_sale_order_change` as `changes`
-        ON 
-        `changes`.`USER_ID`=".intval($arFilter["AUTHOR_ID"])."
+        ON
+        `changes`.`ORDER_ID`=`order`.`ID`
         AND
-        `changes`.`USER_ID`=`order`.`USER_ID`
+        `changes`.`USER_ID`=".intval($arFilter["AUTHOR_ID"])."
         ";
 
     $sWhere = "
@@ -921,7 +921,6 @@ function getDownloadOrders(
             $sFrom
         WHERE
             $sWhere
-        $sGroupBy
     ";
     $resOrder = $DB->Query($sQuery);
     if($bOnlyCount){
