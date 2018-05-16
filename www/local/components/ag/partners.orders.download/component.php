@@ -79,7 +79,11 @@ while($arStore = $resStores->GetNext()){
     $arResult["STORES"][$arStore["ID"]] = $arStore;
 }
 
-
+$arResult["AUTHORS"] = [];
+$arFilter = ["GROUPS_ID"=>[1, PARTNERS_GROUP_ID,OPERATORS_GROUP_ID,SHOP_ADMIN]];
+$resAuthors = CUser::GetList(($by="last_name"), ($order="asc"), $arFilter);
+while($arAuthor = $resAuthors->Fetch())
+    $arResult["AUTHORS"][] = $arAuthor;
 
 $this->IncludeComponentTemplate();
 

@@ -219,6 +219,22 @@
         </tr>
         <tr>
             <td>
+                Автор изменения статуса заказа (из операторов и партнёров
+            </td>
+            <td>
+                <select name="filter_author" id="filter-author" class="form-control">
+                    <option value="0">-не выбрано-</option>
+                <? foreach($arResult["AUTHORS"] as $arAuthor):?>
+                    <option value="<?= $arAuthor["ID"]?>">
+                    <?= $arAuthor["LAST_NAME"]?> <?= $arAuthor["NAME"]?> (<?=
+                    $arAuthor["LOGIN"]?>)
+                    </option>
+                <? endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Сортировка
             </td>
             <td>

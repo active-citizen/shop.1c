@@ -271,6 +271,12 @@ if(isset($_REQUEST["download"])){
         $arFilter["STATUS_ID"] = 'F';
     }
 
+    if(
+        isset($_REQUEST["filter_author"])
+        &&
+        $nAuthor = intval($_REQUEST["filter_author"])
+    )$arFilter["AUTHOR_ID"] = $nAuthor;
+
 
 
     if($_REQUEST["filter_sort"]=='order_id')
