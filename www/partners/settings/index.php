@@ -81,6 +81,12 @@ use AGShop\Cache as Cache;
         "CACHE_TIME" => COMMON_CACHE_TIME
     ], false); ?>
 
+    <h2>Инфотех</h2>
+    <?$APPLICATION->IncludeComponent("ag:settings","",array(
+        "CODE"  =>  "INFOTECH",
+        "CACHE_TIME"=>COMMON_CACHE_TIME
+    ), false); ?>
+
 </div>
 
 

@@ -1,0 +1,24 @@
+<?php
+require_once($_SERVER["DOCUMENT_ROOT"] . "/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
+$settings = new \Integration\CIntegrationSettings('INFOTECH');
+
+$params = [
+    'INFOTECH_URL' => [
+        "TITLE" => "URL для доступа к шлюзу",
+        "VALUE" => "https://api.bil24.ru:1240/json"
+    ],
+    'INFOTECH_FID' => [
+        "TITLE" => "Frontend ID(FID)",
+        "VALUE" => "1077"
+    ],
+    'INFOTECH_TOKEN' => [
+        "TITLE" => "Token",
+        "VALUE" => ""
+    ],
+];
+
+if (!$settings->get()) {
+    $settings->add($params);
+} else {
+    $settings->set($params);
+}
