@@ -103,7 +103,7 @@
             if(preg_match("#^/partners/infotech/#",$_SERVER["REQUEST_URI"]))echo
             "active";?>">
                 <a href="/partners/infotech/">
-                <span class="glyphicon glyphicon-bullhorn"></span>
+                <span class="glyphicon glyphicon-th"></span>
                     Инфотех
                 </a>
             </li>
