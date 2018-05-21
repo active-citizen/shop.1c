@@ -19,8 +19,10 @@ use AGShop\Cache as Cache;
                 <iframe src="/partners/infotech/cities.frame.php"></iframe>
             </td>
             <td>
+                <iframe name="actions" src="/partners/infotech/actions.frame.php"></iframe>
             </td>
             <td>
+                <iframe name="seats" src="/partners/infotech/seats.frame.php"></iframe>
             </td>
         </tr>
     </table>
@@ -28,11 +30,10 @@ use AGShop\Cache as Cache;
 
 <style>
     table.cities td{
-        height: 400px;
+        height: 450px;
     }
 
     table.cities{
-        border: 1px #AAA solid;
         width: 100%;
     }
 

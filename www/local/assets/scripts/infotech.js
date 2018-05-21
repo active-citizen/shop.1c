@@ -1,0 +1,19 @@
+$(document).ready(function(){
+    $('.info-block-picker').click(function(){
+        if($(this).hasClass("glyphicon-chevron-down")){
+            $(this).removeClass("glyphicon-chevron-down"); 
+            $(this).addClass("glyphicon-chevron-up");
+            $(this).parent().find('.info-block').fadeIn();
+        }
+        else{
+            $(this).removeClass("glyphicon-chevron-up");
+            $(this).addClass("glyphicon-chevron-down");
+            $(this).parent().find('.info-block').fadeOut();
+        }
+    });
+    
+    $('.info-picker').click(function(){
+        $('.info-picker').removeClass('picked');
+        $(this).addClass('picked');
+    });
+});

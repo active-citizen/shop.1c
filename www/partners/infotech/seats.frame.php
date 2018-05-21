@@ -1,5 +1,4 @@
 <?
-
 require_once($_SERVER["DOCUMENT_ROOT"].
             "/bitrix/modules/main/include/prolog_before.php");
 
@@ -9,11 +8,16 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration
 use AGShop\Integration as Integration;
 
 $objInfotech = new \Integration\CIntegrationInfotech;
-$arCities = $objInfotech->getCities();
-if(!$arCities){
+
+if($nEventId = intval($_REQUEST["event_id"]))
+    $arSeats = $objInfotech->getSeats($nEventId);
+
+if(!$arSeats){
     new XPrint($objInfotech->getErrors());
     die;
 }
+
+
 ?><!DOCTYPE html>
 <html lang="ru">
   <head>
@@ -27,27 +31,25 @@ if(!$arCities){
   </head>
 
 <body>
-    <div class="partners-main">
-        <h1>Города</h1>
-        <ol class="cities">
-            <? foreach($arCities as $arCity):?>
-            <li class="city">
-                <a target="actions" href="/partners/infotech/actions.frame.php?city_id=<?= 
-                    $arCity["cityId"]
-                ?>" class="info-picker"><?= $arCity["cityName"]?>
-                </a><i class="info-block-picker glyphicon glyphicon-chevron-down"></i>
-                <div class="info-block">
-                <?
-                    new XPrint($arCity);
-                ?>
-                </div>
-            </li>
-            <? endforeach?>
-        </ol>
-    </div>
     
+<div class="partners-main">
+    <h1>Места</h1>
+    <ol class="actions">
+        <? foreach($arSeats as $arSeat):?>
+        <li class="action">
+            <a href="#" onclick="return false;" class="info-picker"><?= $arSeat["seatId"]?>
+            </a><i class="info-block-picker glyphicon glyphicon-chevron-down"></i>
+            <div class="info-block"><? 
+            new XPrint($arSeat);
+            ?></div>
+        </li>
+        <? endforeach?>
+    </ol>
+</div>
+
     <script type="text/javascript"  src="/local/assets/libs/jquery.min.js"></script>
     <script type="text/javascript"  src="/local/assets/scripts/infotech.js"></script>
 </body>
 </html>
+
 
