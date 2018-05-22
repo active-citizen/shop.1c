@@ -11,6 +11,7 @@
         private $sSessionId = '';
         private $nOrderId = 0;
         private $sOrderNum = '';
+        private $nTimeout = 15;
 
         /**
             Доступно только после вызова isLimited 
@@ -250,6 +251,7 @@
             $arParams["token"] = $this->settings["INFOTECH_TOKEN"]["VALUE"];
 
             $curl = curl_init();
+            curl_setopt ($ch, CURLOPT_TIMEOUT, $this->nTimeout);
             curl_setopt($curl, CURLOPT_URL,
                 $this->settings["INFOTECH_URL"]["VALUE"]
             );
