@@ -10,6 +10,7 @@ require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationTroyka.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationParking.class.php");
+require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationInfotech.class.php");
 require_once(realpath(__DIR__."/..")."/CSync/CSync.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
@@ -210,7 +211,7 @@ class COrder extends \AGShop\CAGShop{
         $CDB = new \DB\CDB;
         // Получаем выбранные торговые предложения
         $arSKUs = $this->getSKUs();
-        
+
         // Проверяем количество на складе каждого предложения и блокируем, 
         // если надо (снимаем единицу)
         $objCCatalogStore = new \Catalog\CCatalogStore;
@@ -269,7 +270,7 @@ class COrder extends \AGShop\CAGShop{
                 return false;
             }
         }
-
+        
         // Проверяем суточные лимиты
         foreach($arSKUs as $nSkuNum=>$arSKU){
             if(!$sCustomNum && $failedLimit = $objCCatalogOffer->failedDailyLimit(
@@ -451,12 +452,46 @@ class COrder extends \AGShop\CAGShop{
             $objParking->linkOrderTransact($sOrderNum);
         }
 
+
+        ////////////////// Статус интеграции с инфотехом
+        // 0 - не заказывалась
+        // 1 - Успешно
+        // 2 - неудачно
+        $sInfotechStatus = 0;
+        if($nPriceCategory = intval(
+            $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"]
+        )){
+            foreach($arSKUs as $arSKU)break;
+            
+            $objCUser = new \User\CUser;
+            $objCUser->fetch("ID", $this->getParam("UserId"));
+            $arUser = $objCUser->get();
+            $objInfotech = new \Integration\CIntegrationInfotech(
+                str_replace("u","",$arUser["LOGIN"]),
+                $this->getParam("Num")
+            );
+            
+            if($objInfotech->paymentWithoutSeat(
+                $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"],
+                $arSKU["AMOUNT"]
+            )){
+                $sInfotechStatus = 1;
+            }
+            else{
+                $this->addError($objInfotech->getErrors());
+                $sInfotechStatus = 2;
+            }
+        }
+        
         
         // Если тройка провалилась - баллы не снимаем
         if($stoykaStatus == 2){
         }
         // Если парковка провалилась - баллы не снимаем
         elseif($sParkingStatus == 2){
+        }
+        // Если инитеграция с инфотехом провалилась
+        elseif($sInfotechStatus == 2){
         }
         // Для админа баллы не снимаем, ибо юниттест
         elseif($this->getParam("UserId")!=1){
@@ -486,6 +521,11 @@ class COrder extends \AGShop\CAGShop{
             $objIntegration->resetLock($nLockId);
             // Чистим зависшие блогировки
             $objIntegration->clearLocks();
+            // Возврат остатков на склад
+            $this->returnToStore();
+        }
+        // Если инфотех провалился - остатки возвращаем
+        elseif($sInfotechStatus == 2){
             // Возврат остатков на склад
             $this->returnToStore();
         }
@@ -522,6 +562,12 @@ class COrder extends \AGShop\CAGShop{
             $this->setZNI('F','AA');
         // Если парковка провалилась - Аннулирован
         elseif($sParkingStatus == 2)
+            $this->setZNI('AF','AA');
+        // Если инфотех успешно заказалась - Выполнен
+        elseif($sInfotechStatus == 1)
+            $this->setZNI('F','AA');
+        // Если инфотех провалилась - Аннулирован
+        elseif($sInfotechStatus == 2)
             $this->setZNI('AF','AA');
         // Если не удалось снять баллы - аннулирован
         elseif(!$bPointsSuccess)

@@ -35,7 +35,6 @@
             $arProperties = [];
             if(isset($arOffer["ID"]))
                 $arProperties = $objCCatalogOffer->getProperties($arOffer["ID"]);
-            
 
             $arStores = [];
             if(isset($arOffer["ID"]))
