@@ -55,7 +55,7 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                             </div>
                         </div>
                         <!-- Product Title -->
-                        <div class="desktop-product-title">
+                        <div class="desktop-product-title" title="<?= $arProduct["NAME"]; ?>">
                             <div class="desktop-product-title-wrapper">
                                 <div class="middle-aligned">
                                     <h3 class="desktop-product-title__name"><?=
