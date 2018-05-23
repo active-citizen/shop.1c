@@ -51,8 +51,10 @@
             }
             
             // Оплачиваем
-            if(!$this->payOrderWithoutSeats())
+            if(!$this->payOrderWithoutSeats()){
+                $this->cancelOrderWithoutSeats();
                 return false;
+            }
             
             return $this->nOrderId;
         }
@@ -115,7 +117,7 @@
         */
         function payOrderWithoutSeats(){
             
-            if(!$arAnswer = $this->request("CREATE_ORDER_EXT",[
+            if(!$arAnswer = $this->request("PAY_ORDER",[
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId,
                 "orderId"   =>  $this->nOrderId
@@ -131,13 +133,34 @@
 
 
         /**
+            Отмена заказа
+            
+            @return true в случае успеха
+        */
+        function cancelOrderWithoutSeats(){
+            if(!$arAnswer = $this->request("CANCEL_ORDER",[
+                "userId"    =>  $this->nInfotechUser,
+                "sessionId" =>  $this->sSessionId,
+                "orderId"   =>  $this->nOrderId
+            ]))return false;
+            if(
+                !isset($arAnswer["statusExtStr"]) 
+                || !$arAnswer["statusExtStr"]
+                || $arAnswer["statusExtStr"]!='CANCELLED'
+            )
+                return $this->addError("Не удалось отменить заказ "
+                    .$this->nOrderId.":".$arAnswer["statusExtStr"]);
+            return $arAnswer["statusExtStr"];
+        }
+
+        /**
             Создание заказа без размещения
              
             @return ID заказа
         */
         function createOrderWithoutSeats(){
             global $USER;
-            $arUser = $USER->GetByID($USER->GetID());
+            $arUser = $USER->GetByID($USER->GetID())->Fetch();
             
             if(!$arAnswer = $this->request("CREATE_ORDER_EXT",[
                 "userId"    =>  $this->nInfotechUser,
@@ -234,13 +257,16 @@
         }
 
 
-        function getSeats($nEventId){
-            if(!$arAnswer = $this->request("GET_SEAT_LIST",[
-                "actionEventId"=>$nEventId
+        function getAction($nActionId, $nCityid){
+            if(!$arAnswer = $this->request("GET_ACTION_EXT",[
+                "actionId"  =>  $nActionId,
+                "cityId"    =>  $nCityid
             ]))return false;
-            if(!isset($arAnswer["seatList"]) || !$arAnswer["seatList"])
-                return $this->addError("Пустой список мест");
-            return $arAnswer["seatList"];
+            if(
+                !isset($arAnswer['action']["venueList"]) 
+                || !$arAnswer['action']["venueList"]
+            )return $this->addError("Пустое мероприятие");
+            return $arAnswer['action']["venueList"];
         }
 
 

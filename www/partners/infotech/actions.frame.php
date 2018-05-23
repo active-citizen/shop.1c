@@ -36,9 +36,9 @@ if(!$arActions){
     <ol class="actions">
         <? foreach($arActions as $arAction):?>
         <li class="action">
-            <a target="seats" href="/partners/infotech/seats.frame.php?event_id=<?= 
+            <a target="seats" href="/partners/infotech/seats.frame.php?action_id=<?= 
                 $arAction["actionId"]
-            ?>&" class="info-picker"><?= $arAction["actionName"]?>
+            ?>&city_id=<?= $nCityId?>" class="info-picker"><?= $arAction["actionName"]?>
             </a><i class="info-block-picker glyphicon glyphicon-chevron-down"></i>
             <div class="info-block"><? new XPrint($arAction);?></div>
         </li>

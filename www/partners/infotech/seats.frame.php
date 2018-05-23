@@ -9,8 +9,16 @@ use AGShop\Integration as Integration;
 
 $objInfotech = new \Integration\CIntegrationInfotech;
 
-if($nEventId = intval($_REQUEST["event_id"]))
-    $arSeats = $objInfotech->getSeats($nEventId);
+if(
+    intval($_REQUEST["action_id"])
+    && 
+    intval($_REQUEST["city_id"])
+){
+    $arSeats = $objInfotech->getAction(
+        intval($_REQUEST["action_id"]), 
+        intval($_REQUEST["city_id"])
+    );
+}
 
 if(!$arSeats){
     new XPrint($objInfotech->getErrors());
@@ -37,10 +45,11 @@ if(!$arSeats){
     <ol class="actions">
         <? foreach($arSeats as $arSeat):?>
         <li class="action">
-            <a href="#" onclick="return false;" class="info-picker"><?= $arSeat["seatId"]?>
+            <a href="#" onclick="return false;" class="info-picker"><?= 
+            $arSeat["venueName"]?>
             </a><i class="info-block-picker glyphicon glyphicon-chevron-down"></i>
             <div class="info-block"><? 
-            new XPrint($arSeat);
+            new XPrint($arSeat["actionEventList"]);
             ?></div>
         </li>
         <? endforeach?>
