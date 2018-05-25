@@ -471,7 +471,7 @@ class COrder extends \AGShop\CAGShop{
                 $this->getParam("Num")
             );
             
-            if($objInfotech->paymentWithoutSeat(
+            if($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
                 $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"],
                 $arSKU["AMOUNT"]
             )){
@@ -499,7 +499,7 @@ class COrder extends \AGShop\CAGShop{
             if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
                  "Заказ Б-$nOrderId в магазине поощрений АГ"
-            ))$this->addError($objSSAGAccount->error);
+            ))$this->addError($objSSAGAccount->getErrors());
 
             ///////////
             if($bPointsSuccess)
@@ -536,7 +536,6 @@ class COrder extends \AGShop\CAGShop{
                 $objIntegration->doneLock($nLockId, $nOrderId) ;
                 $objIntegration->clearLocks();
             }
-            
         }
         elseif(!$bPointsSuccess){
             // Возврат остатков на склад если с оплатой вышла беда

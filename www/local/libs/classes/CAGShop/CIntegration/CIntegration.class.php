@@ -4,6 +4,7 @@
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     require_once(realpath(__DIR__."/..")."/CLog/CCurlLogger.class.php");
     require_once(realpath(__DIR__)."/CIntegrationSetting.class.php");
+    require_once(realpath(__DIR__."/..")."/COrder/COrder.class.php");
 
     use AGShop;
     use AGShop\Log as Log;

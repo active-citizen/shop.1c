@@ -6,12 +6,14 @@
     class CIntegrationInfotech extends \Integration\CIntegration{
 
         private $sProtoVersionCode = '1.0';
-        private $sPhone = '';
         private $nInfotechUser = 0;
         private $sSessionId = '';
         private $nOrderId = 0;
         private $sOrderNum = '';
         private $nTimeout = 15;
+        private $arTicketsIds = [];
+        private $arTickets = [];
+        private $arBitrixUser = [];
 
         /**
             Доступно только после вызова isLimited 
@@ -21,8 +23,15 @@
         */
         function __construct($sPhone='', $sOrderNum = ''){
             parent::__construct();
-            $this->sPhone = $sPhone;
+            $this->phone = $sPhone;
             $this->sOrderNum = $sOrderNum;
+
+            // Проверяем зарегистрирован ли этот пользователь в Инфотехе
+            // Если нет, то регистрируем
+            if(!$this->__isUserRegister())if(!$this->__userRegister())
+                return false;
+                
+            return true;
         }
 
         /**
@@ -34,50 +43,71 @@
         */
         function paymentWithoutSeat($nPriceCategory, $nAmount = 1){
             
-            // Проверяем зарегистрирован ли этот пользователь в Инфотехе
-            // Если нет, то регистрируем
-            if(!$this->isUserRegister())if(!$this->userRegister())return false;
-            
-            // Резервируем место
-            if(!$arSeatList = $this->reservationWithoutSeats(
+                    // Резервируем место
+            if(!$arSeatList = $this->__reservationWithoutSeats(
                 $nPriceCategory, $nAmount
             ))return false;
             
             // Создаём заказ
-            if(!$this->createOrderWithoutSeats()){
-                // Разрезервируем
+            if(!$this->__createOrderWithoutSeats()){
+                // Разрезервируем если не удалось создать заказ
                 $this->unreserveAll();
                 return false;
             }
-            
+            // Привязываем Id заказа в инфотехе к заказу в магазине
+            $this->setPropertyByOrderNum(
+                $this->sOrderNum,
+                $this->mnemonic."_ORDER_ID",
+                $this->nOrderId
+            );
+           
             // Оплачиваем
-            if(!$this->payOrderWithoutSeats()){
-                $this->cancelOrderWithoutSeats();
+            if(!$this->__payOrderWithoutSeats()){
+                // Отменяем заказ, если не удалось оплатить
+                $this->__cancelOrderWithoutSeats();
                 return false;
             }
+
             
             return $this->nOrderId;
         }
-        
+      
+        private function __linkOrderId(){
+        }
+
+        /**
+            Отправка билетов пользователю
+
+            @param $nOrderId - Id заказа в инфотехе
+        */
+        public function sendTickets($nOrderId){
+
+            $this->nOrderId = $nOrderId;
+
+            // Получаем список заказанных билетов для заказа
+            if(!$this->__getTicketsIds())return false;
+            
+            
+            // Отправляем письмо с билетами
+            if(!$this->__sendTickets())return false;
+        }
+
         
         /**
             Регистрация текущего пользователя в Инфотех
-            
-            @return Инфотех ID пользователя
         */
-        function userRegister(){
+        private function __userRegister(){
             global $USER;
-            if(!$arUser = $USER->GetByLogin("u".$this->sPhone)->Fetch())
-                return $this->addError(
-                    "Нет пользователя с телефоном ".$this->sPhone
+            if(!$this->arBitrixUser = $USER->GetByLogin(
+                "u".$this->phone
+            )->Fetch())return $this->addError(
+                    "Нет пользователя с телефоном ".$this->phone
                 );
+
+            if(!$this->__createUser())return false;
             
-            if(!$this->createUser())
-                return false;
-            
-            
-            $USER->Update($USER->GetID(), [
-                "UF_INFOTECH_USER_ID"       =>  $this->nInfotechUser,
+            $USER->Update($this->arBitrixUser["ID"], [
+                "UF_INFOTECH_USER_ID"    =>  $this->nInfotechUser,
                 "UF_INFOTECH_SESS_ID"    =>  $this->sSessionId
             ]);
             
@@ -87,37 +117,86 @@
         
         /**
             Зарегистрирован ли текущий пользователь в Инфотех
-            
-            @param $sPhone - телефон
         */
-        function isUserRegister($sPhone){
+        private function __isUserRegister(){
             global $USER;
-            $arUser = $USER->GetList(
+            $this->arBitrixUser = $USER->GetList(
                 ($by = "LOGIN"), ($order = "desc"),[
-                    "LOGIN"=>"u".$sPhone
+                    "LOGIN"=>"u".$this->phone
                 ],[
                     "SELECT"=>["UF_INFOTECH_USER_ID","UF_INFOTECH_SESS_ID"],
                     "NAV_PARAMS"=>["nTopCount"=>1]
                 ]
             )->Fetch();
             
-            if($arUser["UF_INFOTECH_USER_ID"]){
-                $this->sSessionId = $arUser["UF_INFOTECH_SESS_ID"];
-                return $this->nInfotechUser = $arUser["UF_INFOTECH_USER_ID"];
+            if($this->arBitrixUser){
+                $this->sSessionId = $this->arBitrixUser["UF_INFOTECH_SESS_ID"];
+                return $this->nInfotechUser = $this->arBitrixUser["UF_INFOTECH_USER_ID"];
             }
             return false;
         }
 
+        /**
+            Отправка письма с билетом
 
+            @return true в случае успеха
+        */
+        private function __sendTickets(){
+            $arUser = $this->arBitrixUser;
+
+            if(!$arAnswer = $this->__request("SEND_TICKETS_TO_EMAIL",[
+                "userId"        =>  $this->nInfotechUser,
+                "sessionId"     =>  $this->sSessionId,
+                "orderId"       =>  $this->nOrderId,
+                "email"         =>  $arUser["EMAIL"],
+                "ticketIdList"  =>  $this->arTicketsIds
+            ]))return false;
+            return true;
+        }
+
+
+        /**
+            Получение списка билетов
+
+            @return массив с информацией о билетах заказа
+        */
+        private function __getTickets(){
+            if(!$arAnswer = $this->__request("GET_TICKETS_BY_ORDER",[
+                "userId"        =>  $this->nInfotechUser,
+                "sessionId"     =>  $this->sSessionId,
+                "orderId"       =>  $this->nOrderId,
+            ]))return false;
+            if(!isset($arAnswer["ticketList"]) || !$arAnswer["ticketList"])
+                return $this->addError(
+                    "Не удалось получить список билетов дла заказа "
+                    .$this->nOrderId
+                );
+            $this->arTickets = $arAnswer["ticketList"];
+            return $arAnswer["ticketList"];
+        }
+
+        /**
+            Получение массива Id билетов заказа
+
+            @return массив Id заказанных билетов
+        */
+        private function __getTicketsIds(){
+            $arTickets = $this->__getTickets();
+            if(!$arTickets)return false;
+            $this->arTicketsIds = [];
+            foreach($this->arTickets as $arTicket)
+                $this->arTicketsIds[] = $arTicket["ticketId"];
+            return $this->arTicketsIds;
+        }
 
         /**
             Оплата заказа без размещения
              
             @return статус оплаты (PAID в случае успеха)
         */
-        function payOrderWithoutSeats(){
+        private function __payOrderWithoutSeats(){
             
-            if(!$arAnswer = $this->request("PAY_ORDER",[
+            if(!$arAnswer = $this->__request("PAY_ORDER",[
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId,
                 "orderId"   =>  $this->nOrderId
@@ -137,8 +216,8 @@
             
             @return true в случае успеха
         */
-        function cancelOrderWithoutSeats(){
-            if(!$arAnswer = $this->request("CANCEL_ORDER",[
+        private function __cancelOrderWithoutSeats(){
+            if(!$arAnswer = $this->__request("CANCEL_ORDER",[
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId,
                 "orderId"   =>  $this->nOrderId
@@ -158,17 +237,16 @@
              
             @return ID заказа
         */
-        function createOrderWithoutSeats(){
-            global $USER;
-            $arUser = $USER->GetByID($USER->GetID())->Fetch();
+        private function __createOrderWithoutSeats(){
+            $arUser = $this->arBitrixUser;
             
-            if(!$arAnswer = $this->request("CREATE_ORDER_EXT",[
+            if(!$arAnswer = $this->__request("CREATE_ORDER_EXT",[
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId,
-                "email"     =>  $arUser["EMAIL"],
-                "phone"     =>  $this->sPhone,
-                "fullName"  =>  $arUser["LAST_NAME"]." ".$arUser["NAME"]." ".
-                    $arUser["SECOND_NAME"]
+//                "email"     =>  $arUser["EMAIL"],
+//                "phone"     =>  $this->phone,
+//                "fullName"  =>  $arUser["LAST_NAME"]." ".$arUser["NAME"]." ".
+//                    $arUser["SECOND_NAME"]
             ]))return false;
             if(!isset($arAnswer["orderId"]) || !intval($arAnswer["orderId"]))
                 return $this->addError("Не удалось создать заказ");
@@ -184,8 +262,8 @@
              
             @return true в случае успеха
         */
-        function reservationWithoutSeats($nPriceCategory, $nAmount = 1){
-            if(!$arAnswer = $this->request("RESERVATION",[
+        private function __reservationWithoutSeats($nPriceCategory, $nAmount = 1){
+            if(!$arAnswer = $this->__request("RESERVATION",[
                 "type"      =>  "RESERVE",
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId,
@@ -204,8 +282,8 @@
             @params $arSeatList - список зарезервированных мест
         
         */
-        function unreserveAll(){
-            if(!$arAnswer = $this->request("RESERVATION",[
+        private function __unreserveAll(){
+            if(!$arAnswer = $this->__request("RESERVATION",[
                 "type"      =>  "UN_RESERVE_ALL",
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId
@@ -222,8 +300,8 @@
          
             @return ID созданного пользователя
         */
-        function createUser(){
-            if(!$arAnswer = $this->request("CREATE_USER"))return false;;
+        private function __createUser(){
+            if(!$arAnswer = $this->__request("CREATE_USER"))return false;;
             if(!isset($arAnswer["userId"]) || !intval($arAnswer["userId"]))
                 return $this->addError("Не удалось получить ID пользователя");
             if(!isset($arAnswer["sessionId"]) || !$arAnswer["sessionId"])
@@ -240,15 +318,15 @@
          
             @return список городов
         */
-        function getCities(){
-            if(!$arAnswer = $this->request("GET_CITIES"))return false;;
+        public function getCities(){
+            if(!$arAnswer = $this->__request("GET_CITIES"))return false;;
             if(!isset($arAnswer["cityList"]) || !$arAnswer["cityList"])
                 return $this->addError("Пустой список городов");
             return $arAnswer["cityList"];
         }
 
-        function getActions($nCityId){
-            if(!$arAnswer = $this->request("GET_ACTIONS_V2",[
+        public function getActions($nCityId){
+            if(!$arAnswer = $this->__request("GET_ACTIONS_V2",[
                 "cityId"=>$nCityId
             ]))return false;;
             if(!isset($arAnswer["actionList"]) || !$arAnswer["actionList"])
@@ -257,8 +335,8 @@
         }
 
 
-        function getAction($nActionId, $nCityid){
-            if(!$arAnswer = $this->request("GET_ACTION_EXT",[
+        public function getAction($nActionId, $nCityid){
+            if(!$arAnswer = $this->__request("GET_ACTION_EXT",[
                 "actionId"  =>  $nActionId,
                 "cityId"    =>  $nCityid
             ]))return false;
@@ -270,7 +348,7 @@
         }
 
 
-        private function request($sCommand, $arParams = []){
+        private function __request($sCommand, $arParams = []){
             $arParams["versionCode"] = $this->sProtoVersionCode;
             $arParams["command"] = $sCommand;
             $arParams["fid"] = $this->settings["INFOTECH_FID"]["VALUE"];
