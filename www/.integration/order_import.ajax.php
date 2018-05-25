@@ -16,6 +16,10 @@
     );
     require_once(
         $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CCatalog/CCatalogOffer.class.php"
+    );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php"
     );
     require_once(
@@ -26,8 +30,13 @@
         $_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php"
     );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CIntegration/CIntegrationInfotech.class.php"
+    );
 
     use AGShop\Integration as Integration;
+    use AGShop\Catalog as Catalog;
 
     // Если блокировку поставили и она не протухла - отваливаемся
     // Иначе ставим свою и выдаём обмен
@@ -689,11 +698,33 @@
                     $objParking->linkOrderTransact($arOrder["ADDITIONAL_INFO"]);
                 }
 
-               
+                $objOffer = new \Catalog\CCatalogOffer;
+                $arOffer = $objOffer->getById($productId);
+                ////////////////// Статус интеграции с инфотехом
+                // 0 - не заказывалась
+                // 1 - Успешно
+                // 2 - неудачно
+                $sInfotechStatus = 0;
+                if($nPriceCategory = intval(
+                    $arOffer["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"]
+                )){
+                    $objInfotech = new \Integration\CIntegrationInfotech(
+                        str_replace("u","",$userData["LOGIN"]),
+                        $arOrder["ADDITIONAL_INFO"]
+                    );
+                    
+                    if($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
+                        $nPriceCategory, $item["count"]
+                    )){
+                        $sInfotechStatus = 1;
+                    }
+                    else{
+                        $sInfotechStatus = 2;
+                    }
+                }
+                
 
                 // Уменьшаем запасы на складе 
-                $objCCatalogStoreProduct = new CCatalogStoreProduct;
-                $objCCatalogProduct = new CCatalogProduct;
                 if(
                     $sPrefix!='Б' 
                     // Если не парковка или успешная парковка
@@ -701,6 +732,10 @@
                         $sParkingStatus == 0
                         ||
                         $sParkingStatus == 1
+                        ||
+                        $sInfotechStatus == 0
+                        ||
+                        $sInfotechStatus == 1
                     )
                 )
                 foreach($basketProducts as $productId=>$item){
@@ -762,6 +797,13 @@
                     orderSetZNI($orderId,'F','AA');
                 // Если парковка провалилась - Аннулирован
                 elseif($sParkingStatus == 2)
+                    orderSetZNI($orderId,'AF','AA');
+
+                // Если инфотех успешно заказалась - Выполнен
+                if($sInfotechStatus == 1)
+                    orderSetZNI($orderId,'F','AA');
+                // Если инфотех провалилась - Аннулирован
+                elseif($sInfotechStatus == 2)
                     orderSetZNI($orderId,'AF','AA');
 
 
@@ -862,11 +904,33 @@
                     CSaleOrder::StatusOrder($orderId, $statusId);
                     orderSetZNI($orderId,'',$existsOrder["STATUS_ID"]);
                     orderPropertiesUpdate($orderId,IMPORT_DEBUG);
+                   
+                    
+                    // Если заказ с интеграцией в Инфотех - отправляем билеты
+                    $arOrderProperties = orderGetProperties($orderId);
+                    $nInfotechOrderId =
+                        isset($arOrderProperties["INFOTECH_ORDER_ID"]["VALUE"])
+                        ?
+                        intval($arOrderProperties["INFOTECH_ORDER_ID"]["VALUE"])
+                        :
+                        0
+                        ;
+                    if($nInfotechOrderId){
+                        $objInfotech = new \Integration\CIntegrationInfotech(
+                            str_replace("u","",$userData["LOGIN"]),
+                            $arOrder["ADDITIONAL_INFO"]    
+                        );
+                        $objInfotech->sendTickets($nInfotechOrderId);
+                    }
+
                     if($bSendEmail && $statusId!='AF')eventOrderStatusSendEmail(
                         $orderId, $statusId, ($arFields = array(
                             "SUPPORT_COMMENT"=>$sSupportComment
                         )), $statusId
                     );
+
+
+
                     // Ставим дату выполнения
                     // для заказа в статусе "В работе"(готово) - не нужно
                     // для него уже в АРМ поставили

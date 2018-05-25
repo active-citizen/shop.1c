@@ -175,6 +175,7 @@
                     `PRODUCT_NAME`='".$DB->ForSql($arProps["PRODUCT_NAME"])."',
                     `PRODUCT_ID`='".$DB->ForSql($arProduct["ID"])."',
                     `PROMOCODES`='".$DB->ForSql($arProps["PROMOCODES"])."',
+                    `INFOTECH_ORDER_ID`='".$DB->ForSql($arProps["INFOTECH_ORDER_ID"])."',
                     `QUANTITY`='".($arProduct["QUANTITY"])."'
 
                 WHERE
@@ -204,6 +205,7 @@
                     ,`SECTION_NAME`
                     ,`MAN_NAME`
                     ,`PROMOCODES`
+                    ,`INFOTECH_ORDER_ID`
                     ,`QUANTITY`
                 )
                 VALUES(
@@ -226,6 +228,7 @@
                     ,'".$DB->ForSql($arProps["SECTION_NAME"])."'
                     ,'".$DB->ForSql($arProps["MANUFACTURER_NAME"])."'
                     ,'".$DB->ForSql($arProps["PROMOCODES"])."'
+                    ,'".$DB->ForSql($arProps["INFOTECH_ORDER_ID"])."'
                     ,'".$DB->ForSql($arProduct["QUANTITY"])."'
                 )
             ";

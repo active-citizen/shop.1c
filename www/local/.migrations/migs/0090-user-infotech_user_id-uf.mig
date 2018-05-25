@@ -6,7 +6,7 @@
 
     /**
      */
-    class ag_status_uf extends Migration{
+    class infotech_user_uf extends Migration{
         function Run(){
             // Если нет - добавляем
             $arFilter = array(
@@ -17,7 +17,7 @@
             $arEditFormLabel = array(
                 "EDIT_FORM_LABEL"=>array(
                     "ru"=>"Инфотех userId пользователя",
-                    "en"=>"User hash"
+                    "en"=>"Infotech userId"
                 )
             );
             if(!$arUserField =  CUserTypeEntity::GetList(array(),$arFilter)->GetNext()){
@@ -28,6 +28,29 @@
                     die($obUserField->LAST_ERROR);
                 }
             }
+            
+            
+            // Если нет - добавляем
+            $arFilter = array(
+                "ENTITY_ID"     =>  "USER",
+                "FIELD_NAME"    =>  "UF_INFOTECH_SESS_ID",
+                "USER_TYPE_ID"  =>  "string"
+            );
+            $arEditFormLabel = array(
+                "EDIT_FORM_LABEL"=>array(
+                    "ru"=>"Инфотех sessionId пользователя",
+                    "en"=>"Infotech sessionId"
+                )
+            );
+            if(!$arUserField =  CUserTypeEntity::GetList(array(),$arFilter)->GetNext()){
+                $arFields = array_merge($arFilter,$arEditFormLabel);
+                $obUserField  = new CUserTypeEntity;
+                if(!$obUserField->Add($arFields)){
+                    echo "error in ".__LINE__;
+                    die($obUserField->LAST_ERROR);
+                }
+            }
+            
             return true;
         }
         
@@ -35,6 +58,6 @@
     
     
 // Запускаем миграцию    
-$ag_status_uf = new ag_status_uf();
+$infotech_user_uf = new infotech_user_uf();
 // Откатываем, если неудачно
-if(!$ag_status_uf->Run())$ag_status_uf->RollBack();
+if(!$infotech_user_uf->Run())$infotech_user_uf->RollBack();

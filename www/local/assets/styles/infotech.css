@@ -1,0 +1,11 @@
+.info-block{
+    display:none;
+}
+
+.info-block-picker{
+    cursor:pointer;
+}
+
+.picked{
+    background-color: #DDD;
+}
