@@ -270,5 +270,8 @@ function desktop_teasers_next_page(sUrl,nPageNum){
             "#<a.*?>.*?</a>#", "", $text
         );
  
-        return $text;
+        $text = preg_replace(
+            "#<img.*?>#i", "", $text
+        );
+         return $text;
     }
