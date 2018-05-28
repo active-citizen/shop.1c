@@ -265,6 +265,24 @@
                 </select>
             </td>
         </tr>
+        <? if(
+            !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
+            &&
+            !in_array(OPERATORS_GROUP_ID, $USER->GetUserGroupArray())
+
+        ):?>
+        <tr>
+            <td>
+                Выводить историю изменения заказов (существенно замедлит
+                выгрузку, а может и сайт завалит)
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" name="show_history"/>
+                </label>
+            </td>
+        </tr>
+        <? endif ?>
         <tr>
             <td colspan="2" style="text-align: right;">
                 <input type="submit" name="download" id="download_submit" class="btn btn-primary"

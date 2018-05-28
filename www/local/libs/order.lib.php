@@ -983,6 +983,10 @@ function getDownloadOrders(
 
     $arOrders = [];
     while($arOrder = $res->Fetch()){
+        if($arFilter["SHOW_HISTORY"])
+            $arOrder["HISTORY"] = getOrderHistory($arOrder["ORDER_ID"]);
+        else
+            $arOrder["HISTORY"] = [];
         $arOrder["STORE_NAME"] = $arStores[$arOrder["STORE_ID"]]["TITLE"];
         $arOrder["STATUS_NAME"] = $arStatuses[$arOrder["STATUS_ID"]]["NAME"];
         $arOrders[] = $arOrder;
@@ -1141,3 +1145,64 @@ function getOrderPrefixById($nOrerId){
     if(isset($arOrder["NUM"]))return $arOrder["NUM"];
     return false;
 }
+
+function getOrderHistory($nOrderId){
+    $arResult = ["ORDER"=>[]];
+
+    $arStatuses = [
+        "AA"=>"В обработке",
+        "AF"=>"Отклонён",
+        "AG"=>"Отменен",
+        "F"=>"Выполнен",
+        "N"=>"Готово",
+        "AI"=>"Аннулирован",
+    ];
+
+    $arResult["HISTORY_TYPES"] = array(
+        "ORDER_STATUS_CHANGED"  =>  "Изменение статуса заказа",
+    //    "ORDER_UPDATED"         =>  "Изменение заказа",
+        "ORDER_ADDED"           =>  "Добавление заказа",
+        "ORDER_ZNI"             =>  "Запрос на изменение статуса",
+        "ORDER_ZNI_CHECK"       =>  "Заказ выгружен в 1С",
+        "ORDER_CANCELED"        =>  "Заказ отменён"
+    );
+    $arResult["ORDER"]["HISTORY"] = array();
+    $resHistory = CSaleOrderChange::GetList(
+        array("ID"=>"ASC"),
+        array(
+            "ORDER_ID"=>$nOrderId
+        ),
+        false,
+        false//array("nTopCount"=>10)
+
+    );
+    $arHistory = [];
+    while($arHistoryItem = $resHistory->Fetch()){
+        if(
+            $arHistoryItem["ENTITY"] != "ORDER"
+        )continue;
+        $arHistoryItem["DATA"] = unserialize($arHistoryItem["DATA"]);
+        if(!isset($arResult["HISTORY_TYPES"][$arHistoryItem["TYPE"]]))continue;
+        // Имя пользователя
+        $arHistoryItem["USER_INFO"] =
+        CUser::GetById($arHistoryItem["USER_ID"])->Fetch();
+        $arResult["ORDER"]["HISTORY"][
+            $arHistoryItem["TYPE"].mb_substr($arHistoryItem["DATE_CREATE"],0,16)
+        ] = $arHistoryItem;
+        $arHistory[] = [
+            "DATE"          =>  $arHistoryItem["DATE_CREATE"],
+            "TYPE"          =>
+                $arResult["HISTORY_TYPES"][$arHistoryItem["TYPE"]],
+            "USER_LOGIN"    =>  $arHistoryItem["USER_INFO"]["LOGIN"],
+            "ZNI"           =>  isset($arHistoryItem["DATA"]["STATUS_ID"])
+                ?
+                $arStatuses[$arHistoryItem["DATA"]["STATUS_ID"]]
+                :
+                ""
+        ];
+    }
+
+    return $arHistory;
+}
+
+

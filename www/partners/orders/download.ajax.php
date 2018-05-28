@@ -299,10 +299,15 @@ if(isset($_REQUEST["download"])){
         $arOrder["PROPERTY_VAL_BY_CODE_CLOSE_DATE"] = $_REQUEST["filter_order"];
     if($_REQUEST["filter_sort"]=='category_name')
         $arOrder["PROPERTY_VAL_BY_CODE_SECTION_NAME"] = $_REQUEST["filter_order"];
-    if($_request["filter_sort"]=='manufacturer_name')
-        $arOrder["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $_request["filter_order"];
-    if($_request["filter_sort"]=='price')
-        $arOrder["PRICE"] = $_request["filter_order"];
+    if($_REQUEST["filter_sort"]=='manufacturer_name')
+        $arOrder["PROPERTY_VAL_BY_CODE_MANUFACTURER_ID"] = $_REQUEST["filter_order"];
+    if($_REQUEST["filter_sort"]=='price')
+        $arOrder["PRICE"] = $_REQUEST["filter_order"];
+
+    if(isset($_REQUEST["show_history"]) && $_REQUEST["show_history"])
+        $arFilter["SHOW_HISTORY"] = true;
+    else
+        $arFilter["SHOW_HISTORY"] = false;
 
 
     //echo "<pre>";
@@ -421,7 +426,7 @@ if(isset($_REQUEST["continue"])){
                 ""
             )
             .";".'"'.$arOrder["STATUS_NAME"].'"'  
-            .";".''/*.'"История статусов"'*/
+            .";".'"'.formatOrdersHistory($arOrder["HISTORY"]).'"'/*.'"История статусов"'*/
             .";".$arOrder["DATE_INSERT"]
             .";".$arOrder["DATE_UPDATE"]
             .";".''.(
@@ -513,6 +518,19 @@ document.location.href="<?= $_SERVER["SCRIPT_NAME"]."?getfile=1"?>";
 </script>
 </body>
 
+<?
+    function formatOrdersHistory($arHistory){
+        $sData = '';
+        foreach($arHistory as $arHistoryItem){
+            $sData .= $arHistoryItem["DATE"];
+            $sData .= " [".$arHistoryItem["USER_LOGIN"]."]";
+            $sData .= " ".$arHistoryItem["TYPE"];
+            if(trim($arHistoryItem["ZNI"]))
+                $sData .= " (ЗНИ:".$arHistoryItem["ZNI"].")";
+            $sData .= ",\\r\\n ";
+        }
 
+        return $sData;
+    }
 
 
