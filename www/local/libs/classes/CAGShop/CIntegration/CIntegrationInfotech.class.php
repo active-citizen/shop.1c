@@ -1,7 +1,7 @@
 <?
     namespace Integration;
     require_once(realpath(dirname(__FILE__))."/CIntegration.class.php");
-    //use AGShop\Integration as Integration;
+    use AGShop\Integration as Integration;
 
     class CIntegrationInfotech extends \Integration\CIntegration{
 
