@@ -328,7 +328,7 @@
         public function getActions($nCityId){
             if(!$arAnswer = $this->__request("GET_ACTIONS_V2",[
                 "cityId"=>$nCityId
-            ]))return false;;
+            ]))return false;
             if(!isset($arAnswer["actionList"]) || !$arAnswer["actionList"])
                 return $this->addError("Пустой список мероприятий");
             return $arAnswer["actionList"];
@@ -336,7 +336,7 @@
 
 
         public function getAction($nActionId, $nCityid){
-            if(!$arAnswer = $this->__request("GET_ACTION_EXT",[
+            if(!$arAnswer = $this->__request("GET_ACTION_EXT",$arRequest = [
                 "actionId"  =>  $nActionId,
                 "cityId"    =>  $nCityid
             ]))return false;

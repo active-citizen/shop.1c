@@ -34,9 +34,15 @@
         $_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationInfotech.class.php"
     );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php"
+    );
 
     use AGShop\Integration as Integration;
     use AGShop\Catalog as Catalog;
+    use AGShop\SSAG as SSAG;
+
 
     // Если блокировку поставили и она не протухла - отваливаемся
     // Иначе ставим свою и выдаём обмен
