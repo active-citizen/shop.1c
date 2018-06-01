@@ -220,6 +220,7 @@
             global $USER;
             
             // Получаем список категорий для пользователя
+            $res = 0;
             if(
                 isset($arOptions["user_id"]) 
                 && $nUserId = intval($arOptions["user_id"])
@@ -227,7 +228,7 @@
                 "IBLOCK_ID"=>USERSCATS_IB_ID, "PROPERTY_USERS"=>$nUserId
             ],false,false,["ID","NAME"]);
             $arUsersCats = [];
-            while($arUserCat=$res->Fetch())$arUsersCats[] = $arUserCat["ID"];
+            if($res)while($arUserCat=$res->Fetch())$arUsersCats[] = $arUserCat["ID"];
 
 //            new \XPrint($arUsersCats);
 //            new \XPrint($arFilter);
