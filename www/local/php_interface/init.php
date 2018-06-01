@@ -52,21 +52,23 @@
     else{
         //
         // Определяем ID инфоблока каталога
-        $arr = CIBlock::GetList(array(),array("CODE"=>"clothes"))->GetNext();
+        $arr = CIBlock::GetList([],["CODE"=>"clothes"])->Fetch();
         define("CATALOG_IB_ID",$arr["ID"]);
 
         // Определяем ID инфоблока предложений
-        $arr = CIBlock::GetList(
-            array(), array("CODE"=>"clothes_offers")
-        )->GetNext();
+        $arr = CIBlock::GetList([], ["CODE"=>"clothes_offers"])->Fetch();
         define("OFFER_IB_ID",$arr["ID"]);
 
         // Определяем ID инфоблока производителей
-        $arr = CIBlock::GetList(array(),array("CODE"=>"manuacturers"))->GetNext();
+        $arr = CIBlock::GetList([],["CODE"=>"manuacturers"])->Fetch();
         define("MANUFACTURER_IB_ID",$arr["ID"]);
 
+        // Определяем ID инфоблока производителей
+        $arr = CIBlock::GetList([],["CODE"=>"userscat"])->Fetch();
+        define("USERSCATS_IB_ID",$arr["ID"]);
+
         // Определяем ID инфоблока желаний
-        $arr = CIBlock::GetList(array(),array("CODE"=>"whishes"))->GetNext();
+        $arr = CIBlock::GetList([],["CODE"=>"whishes"])->Fetch();
         define("WISHES_IB_ID",$arr["ID"]);
         // Определяем ID свойства ХОЧУ
         $arr = CIBlockProperty::GetList(

@@ -68,6 +68,9 @@
         //ID свойста "ID желаемого товара"
         define("WISH_PRODUCT_PROPERTY_ID",56);
 
+        //ID инфоблока категорий пользователей
+        define("USERSCATS_IB_ID", 13);
+
 
 
 
