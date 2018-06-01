@@ -661,7 +661,7 @@ if(
                 <div class="ag-shop-card__field ag-shop-card__field--no-gaps">
                 <? if(trim($arResult["CATALOG_ITEM"]["DETAIL_TEXT"])):?>
                   <h4>Описание:</h4>
-                  <p class="ag-shop-card__description"><?= 
+                  <p class=""><?= 
                     $arResult["CATALOG_ITEM"]["DETAIL_TEXT"]
                   ?></p>
                 <? endif ?>
