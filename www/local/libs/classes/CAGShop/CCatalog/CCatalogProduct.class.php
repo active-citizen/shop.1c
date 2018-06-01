@@ -229,8 +229,9 @@
             
             $arFilter = [];
             if(!isset($arOptions["sorting"]))$arOptions["sorting"] = [];
-            if(!isset($arOptions["sorting"]["param"]))$arOptions["sorting"]["param"] = 'price';
-            if(!isset($arOptions["sorting"]["direction"]))$arOptions["direction"]["param"] = 'desc';
+            if(!isset($arOptions["sorting"]["param"]))$arOptions["sorting"]["param"]
+                = 'fresh';
+            if(!isset($arOptions["sorting"]["direction"]))$arOptions["sorting"]["direction"] = 'desc';
             $arOptions["sorting"]["direction"] = strtoupper($arOptions["sorting"]["direction"]);
             
             if($arOptions["sorting"]["param"]=='price')
@@ -256,7 +257,7 @@
                     && $arOptions["sorting"]["direction"]=='desc'
                 )$arSorting[$arOptions["sorting"]["param"]] 
                     = $arOptions["sorting"]["direction"];
-            if(!$arSorting)$arSorting = ["price"=>"desc"];
+            if(!$arSorting)$arSorting = ["TIMESTAMP_X"=>"desc"];
             
             // Составляем справочник флагов
             $ENUMS = array();
@@ -498,7 +499,7 @@
                         ".($SectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode($SectionCond).")":"")."
                         ".($arFilter["query"]?"AND `NAME` LIKE '%".$arFilter["query"]."%'":"")."
                 ";
-                $arIds = $CDB->sqlSelect($sQuery,1000);
+                $arIds = $CDB->sqlSelect($sQuery,10000);
                 foreach($arIds as $arId)$arQueryCond[] = $arId["ID"];
             }
             
@@ -519,7 +520,7 @@
                     GROUP BY
                         `IBLOCK_ELEMENT_ID`
                 ";
-                $arIds = $CDB->sqlSelect($sQuery,1000);
+                $arIds = $CDB->sqlSelect($sQuery,10000);
                 foreach($arIds as $arId)$sInterestCond[] = $arId["ID"];
             }
             
@@ -539,7 +540,7 @@
                     GROUP BY
                         `IBLOCK_ELEMENT_ID`
                 ";
-                $arIds = $CDB->sqlSelect($sQuery,1000);
+                $arIds = $CDB->sqlSelect($sQuery,10000);
                 foreach($arIds as $arId)$sPriceCond[] =$arId["ID"];
             }
 
@@ -584,7 +585,7 @@
                 GROUP BY
                     `product`.`ID`
             ";
-            $arIds = $CDB->sqlSelect($sQuery,1000);
+            $arIds = $CDB->sqlSelect($sQuery,10000);
             foreach($arIds as $arId)$arStoreCond[] =$arId["ID"];
 
             // Выбираем ID товаров, подходящих по ХИТ
@@ -599,7 +600,7 @@
                         `IBLOCK_PROPERTY_ID`=".SALELEADER_PROPERTY_ID."
                         -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ";
-                $arIds = $CDB->sqlSelect($sQuery,1000);
+                $arIds = $CDB->sqlSelect($sQuery,10000);
                 foreach($arIds as $arId)$sHitCond[] =$arId["ID"];
             }
 
@@ -615,7 +616,7 @@
                         `IBLOCK_PROPERTY_ID`=".NEWPRODUCT_PROPERTY_ID."
                         -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ";
-                $arIds = $CDB->sqlSelect($sQuery,1000);
+                $arIds = $CDB->sqlSelect($sQuery,10000);
                 foreach($arIds as $arId)$sNewCond[] =$arId["ID"];
             }
 
@@ -631,7 +632,7 @@
                         `IBLOCK_PROPERTY_ID`=".SPECIALOFFER_PROPERTY_ID."
                         -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ";
-                $arIds = $CDB->sqlSelect($sQuery,1000);
+                $arIds = $CDB->sqlSelect($sQuery,10000);
                 foreach($arIds as $arId)$sSaleCond[] =$arId["ID"];
             }
 
@@ -648,6 +649,9 @@
             if($arFlags)$arIntersect[] = $arFlags;
             if($sPriceCond)$arIntersect[] = $sPriceCond;
             if($sInterestCond)$arIntersect[] = $sInterestCond;
+            echo "<!-- ";
+            print_r($arIntersect);
+            echo " -->";
              
             /*
             $arIntersect = [
