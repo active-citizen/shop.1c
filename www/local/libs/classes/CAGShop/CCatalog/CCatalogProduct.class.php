@@ -228,7 +228,10 @@
                 "IBLOCK_ID"=>USERSCATS_IB_ID, "PROPERTY_USERS"=>$nUserId
             ],false,false,["ID","NAME"]);
             $arUsersCats = [];
-            if($res)while($arUserCat=$res->Fetch())$arUsersCats[] = $arUserCat["ID"];
+            if($res){
+                while($arUserCat=$res->Fetch())$arUsersCats[] = $arUserCat["ID"];
+                $arOptions["user_id"] = $arUsersCats;
+            }
 
 //            new \XPrint($arUsersCats);
 //            new \XPrint($arFilter);
@@ -461,7 +464,7 @@
                     )
                     ."
                     ".(
-                        $arUsersCats
+                        $arOptions["user_id"]
                         ?
                         "
                         AND 
@@ -469,7 +472,7 @@
                                 `product_userscats`.`VALUE_NUM` IS NULL
                             OR
                                 `product_userscats`.`VALUE_NUM` IN
-                                (".implode(",",$arUsersCats).")
+                                (".implode(",",$arOptions["user_id"]).")
                         )
                         "
 //                        "AND 1"
