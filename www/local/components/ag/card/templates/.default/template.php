@@ -29,6 +29,18 @@ if(
 
 ?>
         <? if(
+            isset($arResult["CATALOG_ITEM"]["USERCATS"])
+            &&
+            count($arResult["CATALOG_ITEM"]["USERCATS"])
+            &&
+            !array_intersect($arResult["CATALOG_ITEM"]["USERCATS"],$arResult["USERCATS_IDS"])
+        ):?>
+            <div class="ag-shop-modal__alert">
+                <i class="ag-shop-icon ag-shop-icon--attention"></i>
+                <span>Поощрение недоступно (ошибка доступа)
+                </span>
+            </div>
+        <? elseif(
             $arResult["CATALOG_ITEM"]["ACTIVE"]=='N' 
             ||
             $arResult["HIDE_ON_DATE"]

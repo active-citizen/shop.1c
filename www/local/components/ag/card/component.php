@@ -57,6 +57,9 @@ use AGShop\CAuction as Auction;
         "CURRENT_BUDGET"=>$objCUser->getPoints($arParams["USER_ID"])
     ];
 
+    // Определяем категории пользователей
+    $arResult["USERCATS_IDS"] = \User\CUser::getCategories($arParams["USER_ID"]);
+
     ////////////////////// Общая информация о продукте ////////////////////////
     $objCProduct = new \Catalog\CCatalogProduct;
     $objCache = new \Cache\CCache(
@@ -96,7 +99,6 @@ use AGShop\CAuction as Auction;
         $arResult["CATALOG_ITEM"]["PROPERTIES"] = 
             $objCProduct->getPropertiesForCard($arResult["CATALOG_ITEM"]["ID"]);
 
-
         ///// Вычисляем количество заказанного в этом месяце товара пользователем //
         $objCOffer = new \Catalog\CCatalogOffer;
         $arLimitInfo = $objCOffer->getMounthProductCount(CUser::GetId(), 
@@ -112,6 +114,12 @@ use AGShop\CAuction as Auction;
         $arResult["CATALOG_ITEM"]["RATING"] = round(
             $arResult["CATALOG_ITEM"]["PROPERTIES"]["RATING"][0]["VALUE"]*5,2
         );
+
+        // Вычисляем допустимые категории граждан
+        $arResult["CATALOG_ITEM"]["USERCATS"] = [];
+        if(isset($arResult["CATALOG_ITEM"]["PROPERTIES"]["USERSCATS"]))
+            foreach($arResult["CATALOG_ITEM"]["PROPERTIES"]["USERSCATS"] as $arProperty)
+                $arResult["CATALOG_ITEM"]["USERCATS"][] = $arProperty["VALUE"];
 
         ///////////////////// Получаем торговые предложения ///////////////////////
         $arOffers = $objCOffer->getOffersForCard(

@@ -87,4 +87,14 @@ class CUser extends \AGShop\CAGShop{
         return $this->get();
     }
 
+    static function getCategories($nUserId){
+        $arCats = [];
+        $resCats = \CIBlockElement::GetList([],$arFilter = [
+            "IBLOCK_ID"=>USERSCATS_IB_ID,
+            "PROPERTY_USERS"=>$nUserId
+        ],false,false,["ID"]);
+        while($arCat = $resCats->Fetch())$arCats[] = $arCat["ID"];
+        return $arCats;
+    }
+
 }

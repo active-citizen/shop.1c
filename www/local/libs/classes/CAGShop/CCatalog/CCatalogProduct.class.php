@@ -220,18 +220,13 @@
             global $USER;
             
             // Получаем список категорий для пользователя
-            $res = 0;
-            if(
-                isset($arOptions["user_id"]) 
-                && $nUserId = intval($arOptions["user_id"])
-            )$res = \CIBlockElement::GetList([],$arFilter = [
-                "IBLOCK_ID"=>USERSCATS_IB_ID, "PROPERTY_USERS"=>$nUserId
-            ],false,false,["ID","NAME"]);
-            $arUsersCats = [];
-            if($res){
-                while($arUserCat=$res->Fetch())$arUsersCats[] = $arUserCat["ID"];
-                $arOptions["user_id"] = $arUsersCats;
-            }
+            $arOptions["user_id"] = \User\CUser::getCategories(
+                isset($arOptions["user_id"]) && intval($arOptions["user_id"])
+                ?
+                intval($arOptions["user_id"])
+                :
+                0
+            );
 
 //            new \XPrint($arUsersCats);
 //            new \XPrint($arFilter);
