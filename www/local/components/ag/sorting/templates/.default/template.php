@@ -1,9 +1,67 @@
+<?
+    $bButtonDisabled = true;
+    if(
+        (
+            isset($arParams["filter"]["not_exists"]) 
+            && 
+            $arParams["filter"]["not_exists"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["sale"]) 
+            && 
+            $arParams["filter"]["sale"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["new"]) 
+            && 
+            $arParams["filter"]["new"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["hit"]) 
+            && 
+            $arParams["filter"]["hit"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["store"]) 
+            && 
+            $arParams["filter"]["store"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["price_min"]) 
+            && 
+            $arParams["filter"]["price_min"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["price_max"]) 
+            && 
+            $arParams["filter"]["price_max"]
+        )
+        ||
+        (
+            isset($arParams["filter"]["interest"]) 
+            && 
+            $arParams["filter"]["interest"]
+        )
+
+    ) $bButtonDisabled = false;
+?>
+
         <div class="desktop-catalog">
             <!--  Заголовок каталога (сортировать по и вид плиток)-->
 			<div class="desktop-catalog-header">
 				<div class="desktop-catalog-header__left">
 					<button id="catalogHeaderFilter" class="btn-catalog-header" type="button">
-						<span class="btn-catalog-header__icon btn-catalog-header__icon--filter"></span>
+						<span class="btn-catalog-header__icon btn-catalog-header__icon--filter">
+                            <? if(!$bButtonDisabled):?>
+                            <span class="mobile-header-filter-btn__icon-active"></span>
+                            <? endif ?>
+                        </span>
 						<span class="btn-catalog-header__title">Фильтр</span>
 					</button>
 					<button id="catalogHeaderReset" class="btn-catalog-header disabled" type="button">
@@ -23,7 +81,7 @@
                             <? elseif($arParams["sorting"]["param"]=='wishes' && $arParams["sorting"]["direction"]=='desc'):?>
                             Избранное
                             <? else:?>
-							Дата добавления
+							Дата обновления
                             <?endif?>
                             </span>
 							<span class="desktop-catalog-sort__btn-icon"></span>

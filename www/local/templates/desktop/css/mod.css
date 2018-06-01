@@ -42,3 +42,21 @@ div.desktop-products-container--gridList{
    padding-left: 10px;
    padding-right: 10px;
 }
+
+
+
+.mobile-header-filter-btn__icon-active {
+    position: absolute;
+    top: 12px;
+    left: 22px;
+    width: 6px;
+    height: 6px;
+    -webkit-transform: translateX(12px);
+    -ms-transform: translateX(12px);
+    transform: translateX(12px);
+    background-repeat: no-repeat;
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-position: center;
+    background-image: url(/local/templates/agshop_mobile/css/../img/icon__filter-ok.png);
+}

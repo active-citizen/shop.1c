@@ -45,7 +45,13 @@ $(document).ready(function(){
 
     $('#desktopProductsFilterReset').click(function(){
         $('#not_exists').val($('#showProductsAll').prop('checked')?0:1);
+        $('.btn-catalog-header__icon--filter .mobile-header-filter-btn__icon-active').remove();
         applyFilter();
+    });
+
+    $('#desktopProductsFilterSubmit').click(function(){
+        if(!$('.btn-catalog-header__icon--filter .mobile-header-filter-btn__icon-active').length)
+            $('.btn-catalog-header__icon--filter').append('<span class="mobile-header-filter-btn__icon-active"></span>');
     });
 });
 
