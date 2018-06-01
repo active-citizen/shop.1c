@@ -38,6 +38,8 @@
     
     $objProduct = new \Catalog\CCatalogProduct;
     
+    $arParams["user_id"] = $USER->GetID();
+
     // Получаем IDs продуктов, подходящих под условия
     $arProducts = $objProduct->getTeasers($arParams);$arResult["PRODUCTS"];
     $arResult["PRODUCTS"] = $arProducts["items"];

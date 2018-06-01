@@ -218,7 +218,19 @@
         */
         function getTeasers($arOptions = []){
             global $USER;
-//            new \XPrint($arOptions,1);
+            
+            // Получаем список категорий для пользователя
+            if(
+                isset($arOptions["user_id"]) 
+                && $nUserId = intval($arOptions["user_id"])
+            )$res = \CIBlockElement::GetList([],$arFilter = [
+                "IBLOCK_ID"=>USERSCATS_IB_ID, "PROPERTY_USERS"=>$nUserId
+            ],false,false,["ID","NAME"]);
+            $arUsersCats = [];
+            while($arUserCat=$res->Fetch())$arUsersCats[] = $arUserCat["ID"];
+
+//            new \XPrint($arUsersCats);
+//            new \XPrint($arFilter);
             $objCache = new
             \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
             if($sCacheData = $objCache->get()){
@@ -369,6 +381,12 @@
                         LEFT JOIN
                     `".\AGShop\CAGShop::t_iblock_section."` as `section`
                         ON `product`.`IBLOCK_SECTION_ID`=`section`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `product_userscats`
+                        ON
+                        `product_userscats`.`IBLOCK_PROPERTY_ID`=".USERSCATS_PROPERTY_ID."
+                        AND
+                        `product_userscats`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
                     ".
                     (
                         $arOptions["filter"]["wishes_user"]
@@ -421,11 +439,11 @@
                         AND 
                         (
                             (
-                                `hide_prop`.`VALUE` IS NULL
+                                `hide_prop`.`VALUE_NUM` IS NULL
                             )
                             OR
                             (
-                                `hide_prop`.`VALUE` IS NOT NULL
+                                `hide_prop`.`VALUE_NUM` IS NOT NULL
                                 AND
                                 `store_product`.`AMOUNT`>0
                             )
@@ -437,6 +455,28 @@
                         AND 
                         (
                             `store_product`.`AMOUNT`>0
+                        )
+                        "
+                    )
+                    ."
+                    ".(
+                        $arUsersCats
+                        ?
+                        "
+                        AND 
+                        (
+                                `product_userscats`.`VALUE_NUM` IS NULL
+                            OR
+                                `product_userscats`.`VALUE_NUM` IN
+                                (".implode(",",$arUsersCats).")
+                        )
+                        "
+//                        "AND 1"
+                        :
+                        "
+                        AND 
+                        (
+                            `product_userscats`.`VALUE_NUM` IS NULL
                         )
                         "
                     )

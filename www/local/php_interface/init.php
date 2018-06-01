@@ -148,6 +148,15 @@
         )->Fetch();
         define("ARTNUMBER_PROPERTY_ID",$arr["ID"]);
 
+        // Определяем ID свойства дозволяемые группы пользователей
+        $arr = CIBlockProperty::GetList(
+            array(), array(
+                "IBLOCK_ID"=>CATALOG_IB_ID,
+                "CODE"=>"USERSCATS"
+            )
+        )->Fetch();
+        define("USERSCATS_PROPERTY_ID",$arr["ID"]);
+
         // Определяем ID свойства ХИТ
         $arr = CIBlockProperty::GetList(
             array(), array(
