@@ -36,9 +36,11 @@
                                 class="ag-shop-rules__spoiler-link js-spoiler__link hash-navigation" 
                                 name="<?= $faq["CODE"]?>" 
                                 href="#<?= $arSection["ID"]?>.<?= $faq["ID"]?>"
-                                id="faq-click-<?= $faq["CODE"]?>"
+                                id="faq-click-<?= $faq["ID"]?>"
                               >- <?= $faq["NAME"] ?></a>
-                              <div class="ag-shop-rules__content ag-shop-rules__content--gaps js-spoiler__content">
+                              <div class="ag-shop-rules__content
+                              ag-shop-rules__content--gaps js-spoiler__content"
+                              id="faq-question-<?= $faq["ID"]?>">
                                 <p><?= str_replace("\n","<br>",$faq["~DETAIL_TEXT"]);?></p>
                               </div>                
                             <? endforeach?>
@@ -53,5 +55,3 @@
     </div>
 </div>
 
-
-            
