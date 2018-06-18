@@ -25,8 +25,8 @@ if(
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"];
 
 
-
-
+foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
+    if(!trim($v))unset($arResult["CATALOG_ITEM"]["USERCATS"][$k]);
 ?>
         <? if(
             isset($arResult["CATALOG_ITEM"]["USERCATS"])

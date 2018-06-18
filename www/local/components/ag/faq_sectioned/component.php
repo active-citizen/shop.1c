@@ -5,7 +5,7 @@ require(
 );
 use AGShop\Content as Content;
 
-if ($this->StartResultCache(false)) {
+if (1 || $this->StartResultCache(false)) {
     // Фильтр для разделов и элементов
     $nSectionId = intval($arParams["SECTION_ID"]);
    

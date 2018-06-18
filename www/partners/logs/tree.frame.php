@@ -37,7 +37,11 @@
                 $sRequestName= $m[1];
                 $arRequests[$sRequestName] = array(); 
 
-                if(preg_match("#\.([\d\w\-\_]+?\.xml)$#", $filename,$m1)){
+                if(
+                    preg_match("#\.([\d\w\-\_]+?\.xml)$#", $filename,$m1)
+                    ||
+                    preg_match("#\.([\d\w\-\_]+?\.xmlusers)$#", $filename,$m1)
+                ){
                     if(!isset($arFiles[$sRequestName]))
                         $arFiles[$sRequestName] = array();
                     $arFiles[$sRequestName][] = $m1[1];

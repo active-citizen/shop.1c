@@ -56,6 +56,18 @@
             {$offersFilename = $filename;break;}
     closedir($dd);
 
+    // Получаем имя файла контрагентов
+    $dd = opendir($uploadDir);
+    $usersFilename = '';
+    while($filename = readdir($dd))
+        if(
+            preg_match("#^users.*\.xml$#",$filename)
+            ||
+            preg_match("#^users.*\.xmlusers$#",$filename)
+        )
+            {$usersFilename = $filename;break;}
+    closedir($dd);
+
     // Проверяем давно ли была последняя загрузка файлов, если менее минуты назад - не парсим
     if(!$fd = fopen($LOCK_FILENAME, "w")){
         echo "Cant create lock file $lock_filename";
@@ -80,6 +92,10 @@
 
     if($importFilename){
         include("includes/import.inc.php");
+    }
+
+    if($usersFilename){
+        include("includes/users.inc.php");
     }
 
     if($offersFilename){

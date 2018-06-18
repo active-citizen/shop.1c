@@ -19,7 +19,11 @@
     // Получаем из XML массив интересов
     $arInterests = $arImport["Классификатор"]["Интересы"]["Интересуюсь"];
     if(!isset($arInterests[0]))$arInterests = array($arInterests);
-     
+    // Получаем из XML массив категорий пользователей
+    $arUsercats =
+       $arImport["Классификатор"]["КатегорииКлиентов"]["КатегорияКлиента"];
+    if(!isset($arUsercats[0]))$arUsercats = array($arUsercats);
+      
     // Получаем из XML массив товаров
     $arProducts = $arImport["Каталог"]["Товары"]["Товар"];
     if(!isset($arProducts[0]))$arProducts = array($arProducts);
@@ -113,29 +117,46 @@
         }
     }
     $arInterestIndex = $arAlreadyBxInterestIndex;
-    // Чистим от предыдущих значений 
-    /*
-    $resPropertiesEnum = CIBlockPropertyEnum::GetList(
-        array(), array( "IBLOCK_ID"=>CATALOG_IB_ID,
-        "PROPERTY_ID"=>INTEREST_PROPERTY_ID)
-    );
-    while($arPropertyEnum = $resPropertiesEnum->getNext())
-        CIBlockPropertyEnum::Delete($arPropertyEnum["ID"]);
-    // Добавляем значения флагов из XML
-    $arInterestIndex = array();
-    foreach($arInterests as $arInt){
-        $nIntID = CIBlockPropertyEnum::Add(array(
-            "PROPERTY_ID"   =>  INTEREST_PROPERTY_ID,
-            "VALUE"         =>  $arInt["Наименование"],
-            "XML_ID"        =>  $arInt["Ид"]
-        ));
-        $arInterestIndex[$arInt["Ид"]] = array(
-            "NAME"  =>  $arInt["Наименование"],
-            "ID"    =>  $nIntID
-        );
-    }
-    */
 
+    // Составляем индекс уже существующих в битриксе категорий пользователей
+    $resPropertiesEnum = CIBlockElement::GetList(
+        array(), array( "IBLOCK_ID"=>USERSCATS_IB_ID)
+    );
+    $arAlreadyBxUsercatIndex = array();
+    while($arUsercat = $resPropertiesEnum->getNext())
+        $arAlreadyBxUsercatIndex[$arUsercat["XML_ID"]] = $arUsercat;
+    // Составляем индекс пришедших в XML интересов 
+    $arXMLUsercatIndex = array();
+    foreach($arUsercats as $index)$arXMLUsercatIndex[$index["Ид"]] = $index;
+
+    // Находим среди битриксовых интересов те, которых нет в XML и удаляем их
+    foreach($arAlreadyBxUsercatIndex as $XML_ID=>$arUsercatItem)
+        if(!isset($arXMLUsercatIndex[$XML_ID]))
+            CIBlockElement::Delete($arUsercatItem["ID"]);
+
+    // Находим среди XML категории польз, которых нет среди битриксовых и добавляем
+    // И вносим в индекс
+    // Те, которые есть - обновляем
+    foreach($arXMLUsercatIndex as $XML_ID=>$arUsercat){
+        $arFields = array(
+            "IBLOCK_ID"     =>  USERSCATS_IB_ID,
+            "NAME"          =>  $arUsercat["Наименование"],
+            "XML_ID"        =>  $arUsercat["Ид"],
+            "ACTIVE"        =>  "Y"
+        );
+        if(!isset($arAlreadyBxUsercatIndex[$XML_ID])){
+            $nUsercatID = $CIBlockElement->Add($arFields);
+            $arAlreadyBxUsercatIndex[$arUsercat["Ид"]] = array(
+                "NAME"  =>  $arUsercat["Наименование"],
+                "ID"    =>  $nUsercatID
+            );
+        }
+        else{
+            $CIBlockElement->Update($arAlreadyBxUsercatIndex[$XML_ID]["ID"],$arFields);            
+        }
+    }
+    $arUsercatIndex = $arAlreadyBxUsercatIndex;
+ 
     ///////////////////////////////////////////////////////////////////////
     ///                  Импортируем производителей
     ///////////////////////////////////////////////////////////////////////
@@ -415,10 +436,28 @@
                 )
                 $arInterestsIds[] = $arInterestIndex[$t["@attributes"]["Ид"]]["ID"];
         }
+        // Вычисляем массив категорий пользователей
+        $arUsercatIds = array();
+        if($arProduct["КатегорииКлиентов"]["КатегорияКлиента"]){
+            if(!isset($arProduct["КатегорииКлиентов"]["КатегорияКлиента"][0]))
+                $arProduct["КатегорииКлиентов"]["КатегорияКлиента"] =
+                    array($arProduct["КатегорииКлиентов"]["КатегорияКлиента"]);
+            $tmp = $arProduct["КатегорииКлиентов"]["КатегорияКлиента"];
+            foreach($tmp as $t) 
+                if(
+                    isset($t["@attributes"]["Ид"]) 
+                    &&
+                    $arUsercatIndex[$t["@attributes"]["Ид"]]["ID"]
+                )
+                $arUsercatIds[] = $arUsercatIndex[$t["@attributes"]["Ид"]]["ID"];
+        }
         // Хочу
         $arProperties["WANTS"] = $arIwantIds;
         // Интересуюсь
         $arProperties["INTERESTS"] = $arInterestsIds; 
+        // Категории пользователей
+        $arProperties["USERSCATS"] = $arUsercatIds; 
+
         // Тип поощрений
         $arProperties["TYPES"] = $ENUM["TYPES"][$arProduct["ТипПоощрения"]];
         // Правила получения
