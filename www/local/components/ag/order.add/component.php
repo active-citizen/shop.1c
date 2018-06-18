@@ -3,6 +3,12 @@ require_once(
     $_SERVER["DOCUMENT_ROOT"]
     ."/local/libs/classes/CAGShop/COrder/COrderStatus.class.php"
 );
+
+require_once(
+    $_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/COrder/COrder.class.php"
+);
+
 require_once(
     $_SERVER["DOCUMENT_ROOT"]
     ."/local/libs/classes/CAGShop/CCatalog/CCatalogStore.class.php"
@@ -114,7 +120,8 @@ if($_POST && !$arResult["ERROR"] && !$arResult["ORDER"]["OFFER_NAME"]){
 elseif($_POST && !$arResult["ERROR"]){
     $arOffer =\CIBlockElement::GetList([],[
         "IBLOCK_ID" =>  OFFER_IB_ID,
-        "NAME"     =>  $arResult["ORDER"]["OFFER_NAME"]
+        "NAME"     =>  $arResult["ORDER"]["OFFER_NAME"],
+        "ACTIVE"    => "Y"
     ],false,["nTopCount"=>1],["ID"]
     )->Fetch();
 }
@@ -259,7 +266,7 @@ if($_POST && !$arResult["ERROR"]){
 // Данные формы
 $arResult["FORM"]["OFFERS"] = [];
 $resOffer = \CIBlockElement::GetList(
-    [],["IBLOCK_ID"=>OFFER_IB_ID],false,false,["NAME"]
+    [],["IBLOCK_ID"=>OFFER_IB_ID,"ACTIVE"=>"Y"],false,false,["NAME"]
 );
 while($arOffer = $resOffer->Fetch()){
     $arResult["FORM"]["OFFERS"][] = $arOffer["NAME"];
