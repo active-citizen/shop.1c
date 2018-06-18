@@ -212,6 +212,28 @@ class COrder extends \AGShop\CAGShop{
         // Получаем выбранные торговые предложения
         $arSKUs = $this->getSKUs();
 
+        // Проверяем возможность заказать исходя из группы товара и пользователя
+        $objCCatalogProduct = new \Catalog\CCatalogProduct;
+        $arProduct = $objCCatalogProduct->getPropertiesForCard(
+            $arSKUs[0]["SKU"]["PRODUCT"]["ID"]
+        );
+        $arUserCats = \User\CUser::getCategories($this->getParam("UserId"));
+        $arProductUsercats = [];
+        if(isset($arProduct["USERSCATS"]))
+            foreach($arProduct["USERSCATS"] as $arProperty)
+                $arProductUsercats[] = $arProperty["VALUE"];
+        foreach($arProductUsercats as $k=>$v)
+            if(!trim($v))unset($arProductUsercats[$k]);
+        foreach($arUserCats as $k=>$v)
+            if(!trim($v))unset($arUserCats[$k]);
+       
+        if($arProductUsercats && !array_intersect(
+            $arUserCats, $arProductUsercats
+        )){
+            $this->addError("Ошибка доступа");
+            return false;
+        }
+
         // Проверяем количество на складе каждого предложения и блокируем, 
         // если надо (снимаем единицу)
         $objCCatalogStore = new \Catalog\CCatalogStore;
