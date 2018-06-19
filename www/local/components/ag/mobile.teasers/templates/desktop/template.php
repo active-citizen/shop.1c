@@ -273,5 +273,8 @@ function desktop_teasers_next_page(sUrl,nPageNum){
         $text = preg_replace(
             "#<img.*?>#i", "", $text
         );
+
+        $text = str_replace('&nbsp;', ' ', $text);
+
          return $text;
     }
