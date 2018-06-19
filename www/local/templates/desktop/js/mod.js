@@ -12,6 +12,7 @@ function teaserSorting(sortString){
     Рвзмер плитки
 */
 function teaserSize(size){
+    location.reload();
     $('#smallicons').val(size);
     if(parseInt(size)==0){
         $('.desktop-products-container').removeClass('desktop-products-container--gridSmall');
