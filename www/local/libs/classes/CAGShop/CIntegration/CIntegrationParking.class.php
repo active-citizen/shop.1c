@@ -61,18 +61,18 @@
                 && 
                 intval($arAnswer["@attributes"]["errors"])
             ){
-                $this->addError("Некорректный ответ сервиса пополнения порковочных баллов");
+                $this->addError("Некорректный ответ сервиса пополнения парковочных баллов");
                 return false;
             }
             elseif(!$arAnswer){
-                $this->addError("Пустой ответ сервиса пополнения порковочных баллов");
+                $this->addError("Пустой ответ сервиса пополнения парковочных баллов");
                 return false;
             }
             elseif(isset($arAnswer[0]) && !trim($arAnswer[0])){
                 $this->addError("Пустой ответ шлюза парковок");
                 return false;
             } elseif (!isset($arAnswer['@attributes']['errors']) || $arAnswer['@attributes']['errors'] != 0) {
-                $this->addError("Некорректный ответ сервиса пополнения порковочных баллов");
+                $this->addError("Некорректный ответ сервиса пополнения парковочных баллов");
                 return false;
             }
             return true;
