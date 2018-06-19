@@ -275,6 +275,8 @@ function desktop_teasers_next_page(sUrl,nPageNum){
         );
 
         $text = str_replace('&nbsp;', ' ', $text);
+        $text = preg_replace("#&\w+?;#i"," ",$text);
+        $text = preg_replace("/&#\d+?;/i"," ",$text);
 
          return $text;
     }
