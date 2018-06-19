@@ -71,6 +71,11 @@
             elseif(isset($arAnswer[0]) && !trim($arAnswer[0])){
                 $this->addError("Пустой ответ шлюза парковок");
                 return false;
+            } elseif (isset($arAnswer['head']['title']) &&
+                $arAnswer['head']['title'] == '503 Service Temporarily Unavailable'
+            ) {
+                $this->addError("Сервис временно недоступен");
+                return false;
             }
             return true;
         }

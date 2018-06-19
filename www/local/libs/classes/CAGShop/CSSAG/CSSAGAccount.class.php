@@ -94,7 +94,9 @@
                 ]
             )->Fetch();
             // Достаточное число баллов для админов
-            if(\CUser::IsAdmin())return 10000;
+            if ($objUser->IsAdmin()) {
+                return 10000;
+            }
             return $arUser["UF_USER_ALL_POINTS"];
         }
 
