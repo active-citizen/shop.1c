@@ -13,12 +13,14 @@
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegration.class.php");
     require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
+    require_once(realpath(__DIR__."/..")."/CUser/CUser.class.php");
         
     use AGShop\Integration as Integration;
     use AGShop\Catalog as Catalog;
     use AGShop;
     use AGShop\DB as DB;
     use AGShop\CCache as CCache;
+    use AGShop\User as User;
     
     class CCatalogProduct extends \AGShop\CAGShop{
         
