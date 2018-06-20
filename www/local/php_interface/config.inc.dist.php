@@ -57,7 +57,7 @@
         define("ARTNUMBER_PROPERTY_ID", 9);
 
         //ID свойства Допускаемые категории пользователей
-        define("USERSCATS_PROPERTY_ID", 98);
+        define("USERSCATS_PROPERTY_ID", 94);
 
         //ID свойста "дата начала аукциона"
         define("AUCTION_START_DATE_PROPERTY_ID",89);

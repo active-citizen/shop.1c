@@ -520,6 +520,9 @@
 //            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/1.sql","a");
 //            fwrite($fd,$sQuery);
 //            fclose($fd);
+//            echo "<!-- ";
+//            print_r($sQuery);
+//            echo " -->";
             $arIds = $CDB->sqlSelect($sQuery,10000);
             $arExists = [];
             foreach($arIds as $arId){
@@ -690,9 +693,6 @@
             if($arFlags)$arIntersect[] = $arFlags;
             if($sPriceCond)$arIntersect[] = $sPriceCond;
             if($sInterestCond)$arIntersect[] = $sInterestCond;
-            echo "<!-- ";
-            print_r($arIntersect);
-            echo " -->";
              
             /*
             $arIntersect = [
