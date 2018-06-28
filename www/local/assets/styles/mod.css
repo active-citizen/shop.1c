@@ -884,3 +884,79 @@ table.auction-winners .winner{
 .hidden {
     display: none;
 }
+
+
+
+.desktop-product-price {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  display: inline-block;
+  vertical-align: top;
+  z-index: 120;
+}
+
+.desktop-product-price-wrapper {
+  position: relative;
+  background-color: #fec71c;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 23px;
+  padding-right: 18px;
+  height: 52px;
+}
+
+.desktop-product-price-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -15px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 52px 15px 0 0;
+  border-color: #fec71c transparent transparent transparent;
+}
+
+.desktop-product-price-wrapper .middle-aligned {
+  display: table-cell;
+  height: 52px;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.desktop-product-price__summ {
+  display: block;
+  font-size: 24px;
+  line-height: 1;
+  color: #343434;
+  font-family: "SFUIText-Bold",sans-serif;
+  font-weight: 700;
+  margin-bottom: -3px;
+}
+
+.desktop-product-price__currency {
+  font-size: 10px;
+  line-height: 12px;
+  color: #343434;
+}
+
+.desktop-product.notInStock .desktop-product-price {
+  z-index: 501;
+}
+
+.desktop-products-container--gridSmall .desktop-product-price {
+  top: -52px;
+}
+
+.desktop-products-container--gridSmall .desktop-product-price-wrapper {
+  height: auto;
+}
+
+.desktop-products-container--gridList .desktop-product-price {
+  position: static;
+  margin-right: 15px;
+}
+
+
+

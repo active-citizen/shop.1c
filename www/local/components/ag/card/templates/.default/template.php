@@ -216,6 +216,7 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                   <div class="ag-shop-card__left-column">
                     <div class="ag-shop-card__image-block">
                       <div class="ag-shop-card__image-wrap">
+
                         <div class="desktop-product-price">
                             <div class="desktop-product-price-wrapper">
                                 <div class="middle-aligned">
@@ -240,7 +241,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
                           <div class="ag-shop-card__map" style="display:none"></div>
                           <div class="ag-shop-card__image"></div>
                           <div class="ag-shop-card__image-info wrap_margin_top">
-                           
+                            <div style="margin-top: 50px;">  
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["NEWPRODUCT"][0]["VALUE_ENUM"]=='да'):?>
                             <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
                             <? endif ?>
@@ -252,6 +253,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["SPECIALOFFER"][0]["VALUE_ENUM"]=='да'):?>
                             <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__sale.png"></div>
                             <? endif ?>
+                            </div>
                             
                             
                           </div>
