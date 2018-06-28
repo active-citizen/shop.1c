@@ -220,11 +220,11 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                         <div class="desktop-product-price">
                             <div class="desktop-product-price-wrapper">
                                 <div class="middle-aligned">
-                                    <b class="desktop-product-price__summ"><?=
+                                    <b class="desktop-product-price__summ ag-shop-item-card__points-count"><?=
 number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,",","")                                    
                                     ?></b>
                                     <span
-                                    class="desktop-product-price__currency"><?=
+                                    class="desktop-product-price__currency ag-shop-item-card__points-text"><?=
                                         \Utils\CLang::getPoints(
 $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]                                        
                                         )
