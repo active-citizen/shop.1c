@@ -221,7 +221,7 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                             <div class="desktop-product-price-wrapper">
                                 <div class="middle-aligned">
                                     <b class="desktop-product-price__summ"><?=
-number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")                                    
+number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,",","")                                    
                                     ?></b>
                                     <span
                                     class="desktop-product-price__currency"><?=
