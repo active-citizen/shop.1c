@@ -209,11 +209,30 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                 </div>
               </div>
             <? endif ?>
+
+           
               <div class="grid grid--bleed">
                 <div class="grid__col-12 grid__col-md-shrink">
                   <div class="ag-shop-card__left-column">
                     <div class="ag-shop-card__image-block">
                       <div class="ag-shop-card__image-wrap">
+                        <div class="desktop-product-price">
+                            <div class="desktop-product-price-wrapper">
+                                <div class="middle-aligned">
+                                    <b class="desktop-product-price__summ"><?=
+number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")                                    
+                                    ?></b>
+                                    <span
+                                    class="desktop-product-price__currency"><?=
+                                        \Utils\CLang::getPoints(
+$arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]                                        
+                                        )
+                                    ?></span>
+                                </div>
+
+                            </div>
+                        </div>
+                      
                         <!-- для темного фона добавить: ag-shop-item-card--dark -->
                         <div class="ag-shop-card__image-container" style="background-image: url(<?= 
                             $arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"][0]["FILE_PATH"]
@@ -221,12 +240,7 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                           <div class="ag-shop-card__map" style="display:none"></div>
                           <div class="ag-shop-card__image"></div>
                           <div class="ag-shop-card__image-info wrap_margin_top">
-                            <div class="ag-shop-card__image-points">
-                              <div class="ag-shop-item-card__points-count"><?= number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," ")?></div>
-                              <div class="ag-shop-item-card__points-text"><?=
-                              get_points(number_format($arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"],0,","," "))?></div>
-                            </div>
-                            
+                           
                             <? if($arResult["CATALOG_ITEM"]["PROPERTIES"]["NEWPRODUCT"][0]["VALUE_ENUM"]=='да'):?>
                             <div class="ag-shop-card__image-badges image-badges_margin-0"><img class="ag-shop-item-card__badge" src="/local/assets/images/badge__new.png"></div>
                             <? endif ?>
