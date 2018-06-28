@@ -958,5 +958,7 @@ table.auction-winners .winner{
   margin-right: 15px;
 }
 
-
+.ag-shop-card__image-wrap{
+    position: relative;
+}
 
