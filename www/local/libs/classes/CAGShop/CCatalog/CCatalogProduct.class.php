@@ -547,7 +547,7 @@
                 foreach($arIds as $arId)$arQueryCond[] = $arId["ID"];
             }
             
-            
+
             // Выбираем ID товаров, подходящих по интересу
             $sInterestCond = [];
             if($arFilter["interest"]){
@@ -616,6 +616,9 @@
                 WHERE
                     1
                     AND `store_product`.`ID` IS NOT NULL
+                    AND `product`.`ID` IN(".($arSectionCond?implode(",",$arSectionCond):0).")
+                    AND `product`.`IBLOCK_SECTION_ID`!=0
+                    ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
                     -- AND `product`.`ACTIVE` = 'Y'
                     -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                     AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
