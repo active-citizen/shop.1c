@@ -16,7 +16,7 @@ $sQuery = "
     FROM
         `int_ssag_errorlog`
     ORDER BY
-        `CTIME` DESC
+        `ID` DESC
     LIMIT
         30;
 ";

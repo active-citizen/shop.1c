@@ -121,13 +121,15 @@
         private function __isUserRegister(){
             global $USER;
             $this->arBitrixUser = $USER->GetList(
-                ($by = "LOGIN"), ($order = "desc"),[
-                    "LOGIN"=>"u".$this->phone
+                ($by = "login"), ($order = "desc"),$arFilter = [
+                    "LOGIN"=>"u".$this->phone,
+                    "ACTIVE"=>"Y"
                 ],[
                     "SELECT"=>["UF_INFOTECH_USER_ID","UF_INFOTECH_SESS_ID"],
                     "NAV_PARAMS"=>["nTopCount"=>1]
                 ]
             )->Fetch();
+            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/1.txt","w");
             
             if($this->arBitrixUser){
                 $this->sSessionId = $this->arBitrixUser["UF_INFOTECH_SESS_ID"];

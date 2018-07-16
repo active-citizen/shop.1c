@@ -212,7 +212,7 @@ if($_POST && !$arResult["ERROR"]
 if($_POST && !$arResult["ERROR"] 
     && $arResult["ORDER"]["OFFER_NAME"] 
     && mb_strpos($arResult["ORDER"]["OFFER_NAME"],"Парков")!==false
-    && !preg_match("#^\d+$#",$arResult["ORDER"]["PARKING_TRANSACT"])
+    && !preg_match("#^[\d\w]+$#",$arResult["ORDER"]["PARKING_TRANSACT"])
 ){
     $arResult["ERROR"] = "Некорректный номер транзакции парковки "
         ."&laquo;".$arResult["ORDER"]["PARKING_TRANSACT"]."&raquo;";
