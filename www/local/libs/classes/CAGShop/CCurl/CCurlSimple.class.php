@@ -1,6 +1,7 @@
 <?php
     namespace Curl;
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
+    require_once("CCurlHeaders.class.php");
     use AGShop; 
    
     class CCurlSimple extends \AGShop\CAGShop{
@@ -28,11 +29,7 @@
             $result = curl_exec ($ch);
             fclose($hd);
             $headers = file($tmpfilename);
-            $result = array();
-            foreach($headers as $header){
-                if(preg_match("#^(.*?):(.*)$#",$header,$m))
-                    $result[strtolower(trim($m[1]))] = trim($m[2]);
-            }
+            $result = \Curl\CCurlHeader::headers2Array($headers);
             unlink($tmpfilename);
             return $result;
         }

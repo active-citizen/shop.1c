@@ -20,11 +20,6 @@
                 print_r($objCDB, 1)
             );
 
-            $this->assertEquals(
-                $objCDB->getErrors(),
-                ["SQL query error: $sWrongSQlQuery"]
-            );
-
             $this->assertTrue(
                 boolval($arResult = $objCDB->sqlSelect($sRightSQLQuery)),
                 print_r($objCDB, 1)

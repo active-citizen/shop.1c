@@ -3,7 +3,8 @@
         "phpmailer/phpmailer":"*",
         "aferrandini/PHPQRCode": "*",
         "PHPOffice/PHPExcel":"*",
-        "vladkolodka/phpMorphy":"*"
+        "vladkolodka/phpMorphy":"*",
+	"phpmetrics/phpmetrics":"*"
     },
     "repositories":[
         {

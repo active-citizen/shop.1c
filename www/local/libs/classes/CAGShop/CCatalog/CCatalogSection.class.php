@@ -58,7 +58,8 @@
                 SELECT
                     `section`.`ID` as `ID`,
                     `section`.`NAME` as `NAME`,
-                    `section`.`CODE` as `CODE`
+                    `section`.`CODE` as `CODE`,
+                    `section`.`ACTIVE` as `ACTIVE`
                 FROM
                     `".\AGShop\CAGShop::t_iblock_element."` as `product`
                         LEFT JOIN
