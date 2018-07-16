@@ -30,8 +30,10 @@
             "ACTIVE"                        => true,
             "ONLY_WITH_PRODUCTS"            => false,
             "ONLY_WITH_PRESENT_PRODUCTS"    => false        
-        ],$nCacheExpires = 300){
+        ],$nCacheExpires = 0){
             global $USER;
+            if(!$nCacheExpires)$nCacheExpires = COMMON_CACHE_TIME; 
+
             $objCache = new \Cache\CCache("sections_list","mainmenu",$nCacheExpires);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
@@ -47,6 +49,8 @@
             // Определяем вышел ли дневной лимит парковок 
             $bParkingLimited = $objParking->isLimited();
 
+
+            $arUserCats = \User\CUser::getCategories($USER->GetId());
 
             $CDB = new \DB\CDB;
             $sNow = date("Y-m-d");
@@ -89,6 +93,12 @@
                         `artnum`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
                         AND
                         `artnum`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
+                        LEFT JOIN
+                    `".\AGShop\CAGShop::t_iblock_element_property."` as `product_userscats`
+                        ON
+                        `product_userscats`.`IBLOCK_PROPERTY_ID`=".USERSCATS_PROPERTY_ID."
+                        AND
+                        `product_userscats`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
                 WHERE
                     `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                     AND `section`.`ACTIVE`='Y'
@@ -105,6 +115,28 @@
                             `store_product`.`AMOUNT`>0
                         )
                     )
+                    ".(
+                        $arUserCats
+                        ?
+                        "
+                        AND 
+                        (
+                                `product_userscats`.`VALUE_NUM` IS NULL
+                            OR
+                                `product_userscats`.`VALUE_NUM` IN
+                                (".implode(",",$arUserCats).")
+                        )
+                        "
+//                        "AND 1"
+                        :
+                        "
+                        AND 
+                        (
+                            `product_userscats`.`VALUE_NUM` IS NULL
+                        )
+                        "
+                    )
+                    ."
                     AND 
                     (
                         (
