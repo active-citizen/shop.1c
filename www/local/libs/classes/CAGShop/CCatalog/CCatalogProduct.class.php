@@ -204,7 +204,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
         $objCatalogStore = new \Catalog\CCatalogStore;
         $arStoreCond = $objCatalogStore->getProductsByIds(
             $arFilter["store"], $arFilter["section_code"], 
-            $arOptions["filter"]["not_exists"], $SectionCond
+            $arOptions["filter"]["not_exists"]
         );
 
         $objCatalogProductProperty = new \Catalog\CCatalogProductProperty;
@@ -231,6 +231,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
         ));
         
         // Порядок добавления пересечений
+        /*
         $arIntersectOrder = [
             "arSectionCond", "arQueryCond" , "arStoreCond", "arFlags",
             "sPriceCond", "sInterestCond"
@@ -240,16 +241,21 @@ class CCatalogProduct extends \AGShop\CAGShop{
         foreach($arIntersectOrder as $sIntersectOrder){
             if($$sIntersectOrder)$arIntersect[] = $$sIntersectOrder;
         }
-        
+        */
+
         // Вычисляем пересечения
-        /*
+        
         if($arSectionCond)$arIntersect[] = $arSectionCond;
         if($arQueryCond)$arIntersect[] = $arQueryCond;
-        if($arStoreCond)$arIntersect[] = $arStoreCond;
+        if($arStoreCond)
+            $arIntersect[] = $arStoreCond;
+        elseif(!$arStoreCond && $arFilter["store"])
+            $arIntersect[] = "none";
+ 
         if($arFlags)$arIntersect[] = $arFlags;
         if($sPriceCond)$arIntersect[] = $sPriceCond;
         if($sInterestCond)$arIntersect[] = $sInterestCond;
-        */
+        
          
         /*
         $arIntersect = [

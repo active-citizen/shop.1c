@@ -209,8 +209,6 @@ class CCatalogStore extends \AGShop\CAGShop{
         $bIsExists=false,
         $SectionCond = []
     ){
-        if(!$arStores)return [];
-
         $CDB = new \DB\CDB;
 
         $objSection = new \Catalog\CCatalogSection;
