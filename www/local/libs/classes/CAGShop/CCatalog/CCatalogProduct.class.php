@@ -39,7 +39,8 @@ class CCatalogProduct extends \AGShop\CAGShop{
     }
     
     /**
-        Проверка активности товара по ID торгового предложения
+        Проверка активности товара по ID
+        @param $nProductId - ID продукта
     */
     function isActive($nProductId){
 
@@ -48,33 +49,15 @@ class CCatalogProduct extends \AGShop\CAGShop{
             return $sCacheData;
         }
 
-        $bResult = true;
-        if(!intval($nProductId))return $this->addError('Не указан ID продукта');
-        $arProduct = \CIBlockElement::GetList([],[
-            "IBLOCK_ID"=>$this->IBLOCKS["CATALOG"],
-            "ID"=>$nProductId
-        ],false,[
-            "nTopCount"=>1
-        ],[
-            "ACTIVE",
-            "IBLOCK_SECTION_ID",
-            ""
-        ])->Fetch();
-        if($arProduct["ACTIVE"]!='Y')$bResult = false;
-        if(!intval($arProduct["IBLOCK_SECTION_ID"]))
-            $bResult = false;
+        $objCatalogElement = new \Catalog\CCatalogElement;
+        $arProduct = $objCatalogElement->getById($nProductId);
 
-        if($bResult){
-            $arSection = \CIBlockSection::GetList([],[
-                "IBLOCK_ID"=>$this->IBLOCKS["CATALOG"],
-                "ID"=>$arProduct["IBLOCK_SECTION_ID"]
-            ],false,[
-                "ACTIVE",
-            ])->Fetch();
-            if($arSection["ACTIVE"]!='Y')$bResult = false;
-        }
-        $objCache->set($bResult);
-        return $bResult;
+        $objCatalogSection = new \Catalog\CCatalogSection;
+        $arSection = $objCatalogSection->getById($arProduct["IBLOCK_SECTION_ID"]);
+        
+        return $objCache->set(
+            $arSection["ACTIVE"]=="Y" && $arProduct["ACTIVE"]=="Y"
+        );
     }
 
 
@@ -130,9 +113,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
     function getPropertiesForCard($nId){
 
         $objCache = new \Cache\CCache("card_product_properties",$nId);
-        if($sCacheData = $objCache->get()){
-            return $sCacheData;
-        }
+        if($sCacheData = $objCache->get())return $sCacheData;
 
         $arResult = [];
         $resProps = \CIBlockElement::GetProperty(
@@ -145,8 +126,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
                 $arProp["FILE_PATH"] = \CFile::GetPath($arProp["VALUE"]);
             $arResult[$arProp["CODE"]][] = $arProp;
         }
-        $objCache->set($arResult);
-        return $arResult;
+        return $objCache->set($arResult);
     }
     
     
@@ -249,16 +229,27 @@ class CCatalogProduct extends \AGShop\CAGShop{
         $arFlags = array_unique(array_merge(
             $sHitCond, $sSaleCond, $sNewCond
         ));
-        // Вычисляем пересечения
+        
+        // Порядок добавления пересечений
+        $arIntersectOrder = [
+            "arSectionCond", "arQueryCond" , "arStoreCond", "arFlags",
+            "sPriceCond", "sInterestCond"
+        ];
         
         $arIntersect = [];
-        if($arSectionCond)$arIntersect[] = $arSectionCond;
+        foreach($arIntersectOrder as $sIntersectOrder){
+            if($$sIntersectOrder)$arIntersect[] = $$sIntersectOrder;
+        }
         
+        // Вычисляем пересечения
+        /*
+        if($arSectionCond)$arIntersect[] = $arSectionCond;
         if($arQueryCond)$arIntersect[] = $arQueryCond;
         if($arStoreCond)$arIntersect[] = $arStoreCond;
         if($arFlags)$arIntersect[] = $arFlags;
         if($sPriceCond)$arIntersect[] = $sPriceCond;
         if($sInterestCond)$arIntersect[] = $sInterestCond;
+        */
          
         /*
         $arIntersect = [
@@ -331,9 +322,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
         }
         
         $arResult = ["items"=>$arItems,"total"=>$nTotal];
-        $objCache->set($arResult);
-        
-        return $arResult;
+        return $objCache->set($arResult);
     }
     
     

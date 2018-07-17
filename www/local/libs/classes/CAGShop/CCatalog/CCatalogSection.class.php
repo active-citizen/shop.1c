@@ -192,6 +192,8 @@
         }
         
         function getById($nId){
+            if(!$nId)return [];
+            
             $objCache = new 
                 \Cache\CCache("card_section_common_info_by_id",$nId);
             if($sCacheData = $objCache->get()){

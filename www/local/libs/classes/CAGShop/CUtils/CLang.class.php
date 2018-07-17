@@ -17,66 +17,54 @@
             
             $points = preg_replace("#\s#","",$points);
             
-            if($points%100==11){
-                return 'баллов';
-            }
-            elseif($points%100==12){
-                return 'баллов';
-            }
-            elseif($points%100==13){
-                return 'баллов';
-            }
-            elseif($points%100==14){
-                return 'баллов';
-            }
-            elseif($points%10==1){
-                return 'балл';
-            }
-            elseif($points%10==2){
-                return 'балла';
-            }
-            elseif($points%10==3){
-                return 'балла';
-            }
-            elseif($points%10==4){
-                return 'балла';
-            }
-            else{
-                return 'баллов';
-            }
+            $arOdds = [
+                "11"=>["odd"=>100,"text"=>"баллов"],
+                "12"=>["odd"=>100,"text"=>"баллов"],
+                "13"=>["odd"=>100,"text"=>"баллов"],
+                "14"=>["odd"=>100,"text"=>"баллов"],
+                "1" =>["odd"=>10,"text"=>"балл"],
+                "2" =>["odd"=>10,"text"=>"балла"],
+                "3" =>["odd"=>10,"text"=>"балла"],
+                "4" =>["odd"=>10,"text"=>"балла"]
+            ];
+            
+            $sText = "баллов";
+            
+            foreach($arOdds as $nNum=>$arOdd)
+                if($points % $arOdd["odd"] == $nNum){
+                    $sText = $arOdd["text"];
+                    break;
+                }
+            
+            return $sText;
+            
         }
 
         static function getDays($points){
             
             $points = preg_replace("#\s#","",$points);
+
+
+            $arOdds = [
+                "11"=>["odd"=>100,"text"=>"дней"],
+                "12"=>["odd"=>100,"text"=>"дней"],
+                "13"=>["odd"=>100,"text"=>"дней"],
+                "14"=>["odd"=>100,"text"=>"дней"],
+                "1" =>["odd"=>10,"text"=>"день"],
+                "2" =>["odd"=>10,"text"=>"дня"],
+                "3" =>["odd"=>10,"text"=>"дня"],
+                "4" =>["odd"=>10,"text"=>"дня"]
+            ];
+
+            $sText = "дней";
             
-            if($points%100==11){
-                return 'дней';
-            }
-            elseif($points%100==12){
-                return 'дней';
-            }
-            elseif($points%100==13){
-                return 'дней';
-            }
-            elseif($points%100==14){
-                return 'дней';
-            }
-            elseif($points%10==1){
-                return 'день';
-            }
-            elseif($points%10==3){
-                return 'дня';
-            }
-            elseif($points%10==4){
-                return 'дня';
-            }
-            elseif($points%10==2){
-                return 'дня';
-            }
-            else{
-                return 'дней';
-            }
+            foreach($arOdds as $nNum=>$arOdd)
+                if($points % $arOdd["odd"] == $nNum){
+                    $sText = $arOdd["text"];
+                    break;
+                }
+            
+            return $sText;
         }
 
         static function getDate($date='',$rus = true){
