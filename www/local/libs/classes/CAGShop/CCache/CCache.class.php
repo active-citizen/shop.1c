@@ -58,7 +58,7 @@
         function set($sValue){
             if(
                 $this->objMemcached && $objData = $this->__memcachedSet($sValue)
-            )return true;
+            )return $sValue;
             
             $sData = serialize($sValue);
             if(!is_dir($this->getKeyPath()))$this->createPath();
