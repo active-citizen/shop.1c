@@ -169,7 +169,7 @@ class CSearchDocumentType extends \AGShop\CAGShop{
     /**
         Получение индексируемого содержимого для продукта
     */
-    function __contentProduct($nId, $sType = 'PRODUCT'){
+    private function __contentProduct($nId, $sType = 'PRODUCT'){
         $CDB = new \DB\CDB;
         
         // Получаем общую информацию о продукте

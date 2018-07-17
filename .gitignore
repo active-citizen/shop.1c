@@ -55,6 +55,9 @@ docs/manual/source/05_admin_funcs/figures/*.pdf
 docs/bcc/source/01_intro/figures/*.pdf
 docs/bcc/source/01_intro/figures/*.pdf
 
+# Игнорирование документации
+www/local/libs/classes/codequality.html
+
 renders/png/*.png
 renders/js/*.js
 docs/manual/source/*.idx

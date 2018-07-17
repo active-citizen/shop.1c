@@ -1063,7 +1063,7 @@ class COrder extends \AGShop\CAGShop{
         return $this->$sMethodName();
     }
     
-    function __setParamNum($sValue){
+    private function __setParamNum($sValue){
         if(!preg_match("#^(.*?)\-(\d+)$#", $sValue, $m)){
             $this->addError("Некорректный формат номера заказа $sValue");
             return false;
@@ -1075,69 +1075,68 @@ class COrder extends \AGShop\CAGShop{
         return true;
     }
 
-    function __setParamUserId($sValue){
+    private function __setParamUserId($sValue){
         $this->arOrderParams["UserId"] = $sValue;
         
         return true;
     }
 
-    function __setParamId($sValue){
+    private function __setParamId($sValue){
         $this->arOrderParams["Id"] = $sValue;
         
         return true;
     }
 
-    function __setParamStatusId($sValue){
+    private function __setParamStatusId($sValue){
         $this->arOrderParams["StatusId"] = $sValue;
         
         return true;
     }
 
-    function __setParamXML_ID($sValue){
+    private function __setParamXML_ID($sValue){
         $this->arOrderParams["XML_ID"] = $sValue;
         
         return true;
     }
 
-
-    function __setParamDateInsert($sValue){
+    private function __setParamDateInsert($sValue){
         if(!$sDate = $this->getDateISO($sValue))return false;
         $this->arOrderParams["DateInsert"] = $sDate;
         return true;
     }
 
-    function __setParamDateUpdate($sValue){
+    private function __setParamDateUpdate($sValue){
         if(!$sDate = $this->getDateISO($sValue))return false;
         $this->arOrderParams["DateUpdate"] = $sDate;
         return true;
     }
 
-    function __getParamNum(){
+    private function __getParamNum(){
         return $this->arOrderParams["Num"];
     }
 
-    function __getParamId(){
+    private function __getParamId(){
         return $this->arOrderParams["Id"];
     }
 
-    function __getParamUserId(){
+    private function __getParamUserId(){
         return $this->arOrderParams["UserId"];
     }
 
-    function __getParamStatusId(){
+    private function __getParamStatusId(){
         return $this->arOrderParams["StatusId"];
     }
 
-    function __getParamXML_ID(){
+    private function __getParamXML_ID(){
         return $this->arOrderParams["XML_ID"];
     }
 
 
-    function __getParamDateInsert(){
+    private function __getParamDateInsert(){
         return $this->arOrderParams["DateInsert"];
     }
 
-    function __getParamDateUpdate(){
+    private function __getParamDateUpdate(){
         return $this->arOrderParams["DateUpdate"];
     }
     

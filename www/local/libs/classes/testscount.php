@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+    
+    <link href="/local/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title></title>
+</html>
+<body>
 <?
     $sStartFolder = realpath(__DIR__)."/CAGShop";
 
@@ -10,9 +17,13 @@
 //    print_r($arFiles);
     echo "</pre>";
 
-    echo "<h1>".$arSummary["tested_percent"]."%</h1>";
+    echo "<h1>Покрытие тестами ".$arSummary["tested_percent"]."%</h1>";
     createTable($arFiles);
 
+?>
+</body>
+</html>
+<?
     function getTree($sPath){
         $arResult = [];
         $dd = opendir($sPath);
@@ -96,17 +107,18 @@
 
     function createTable($arFiles){
         echo
-        '<style>.tested{background-color: green;}</style>'
-        ."<table><tr><th>Namespace</th><th>Class</th><th>Method</th><th>Tested</th><th>access</th></tr>";
+        '<style>table{width:80% !important;margin: 10px auto 10px auto;}</style>'
+        .'<table class="table table-bordered"><tr><th>N</th><th>Namespace</th><th>Class</th><th>Method</th><th>is tested</th></tr>';
+	$n = 0;
         foreach($arFiles as $arFile){
             foreach($arFile["methods"] as $sMethod=>$arMethod){
                 if(trim($arMethod["type"])=='private')continue;
+		$n++;
                 echo 
-                    '<tr'.($arMethod["tested"]?' class="tested"':"").'><td>'.$arFile["namespace"].'</td>'
+                    '<tr'.($arMethod["tested"]?' class="success"':"").'><td>'.$n.'</td><td>'.$arFile["namespace"].'</td>'
                     .'<td>'.$arFile["className"].'</td>'
                     .'<td>'.$sMethod.'</td>'
-                    .'<td>'.$arMethod["tested"].'</td>'
-                    .'<td>'.$arMethod["type"].'</td></tr>'
+                    .'<td>'.($arMethod["tested"]?"yes":"no").'</td></tr>';
                 ;
             }
         }

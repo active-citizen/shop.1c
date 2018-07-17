@@ -113,7 +113,7 @@
             return $arAnswer["result"]["ag_id"];
         }
 
-        function __nonce(
+        private function __nonce(
             $nLength = 20,
             $arAlphabet = [
                 "0","1","2","3","4","5","6","7","8","9"
