@@ -4,18 +4,23 @@ namespace Catalog;
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 
-$sIntegrationNamespacePath = $_SERVER["DOCUMENT_ROOT"]
-    ."/local/libs/classes/CAGShop/CIntegration/";
 
 require_once("CCatalogProduct.class.php");
+require_once("CCatalogProductProperty.class.php");
 require_once("CCatalogSection.class.php");
 require_once("CCatalogProperties.class.php");
 require_once("CCatalogElement.class.php");
+require_once("CCatalogEnums.class.php");
+require_once("CCatalogSorting.class.php");
+require_once("CCatalogFilter.class.php");
+require_once("CCatalogTeasers.class.php");
+require_once("CCatalogSearch.class.php");
+require_once("CCatalogInterests.class.php");
+require_once("CCatalogPrice.class.php");
+require_once("CCatalogStore.class.php");
+require_once("CCatalogWishes.class.php");
+require_once("CCatalogWishCheck.class.php");
 
-require_once($sIntegrationNamespacePath."CIntegrationTroyka.class.php");
-require_once($sIntegrationNamespacePath."CIntegrationParking.class.php");
-require_once($sIntegrationNamespacePath."CIntegration.class.php");
-    
 require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
 require_once(realpath(__DIR__."/..")."/CUser/CUser.class.php");
     
@@ -167,468 +172,79 @@ class CCatalogProduct extends \AGShop\CAGShop{
     */
     function getTeasers($arOptions = []){
         global $USER;
-        
-        // Получаем список категорий для пользователя
-        $arOptions["user_id"] = \User\CUser::getCategories(
-            isset($arOptions["user_id"]) && intval($arOptions["user_id"])
-            ?
-            intval($arOptions["user_id"])
-            :
-            0
-        );
 
-//            new \XPrint($arUsersCats);
-//            new \XPrint($arFilter);
+        // Кеширование данных для плитки
         $objCache = new
         \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
-        if($sCacheData = $objCache->get()){
-            return $sCacheData;
-        }
+        if($sCacheData = $objCache->get())return $sCacheData;        
         
         $CDB = new \DB\CDB;
         
-        $arFilter = [];
-        if(!isset($arOptions["sorting"]))$arOptions["sorting"] = [];
-        if(!isset($arOptions["sorting"]["param"]))$arOptions["sorting"]["param"]
-            = 'fresh';
-        if(!isset($arOptions["sorting"]["direction"]))$arOptions["sorting"]["direction"] = 'desc';
-        $arOptions["sorting"]["direction"] = strtoupper($arOptions["sorting"]["direction"]);
-        
-        if($arOptions["sorting"]["param"]=='price')
-            $arSorting = ["PROPERTY_MINIMUM_PRICE"=>$arOptions["sorting"]["direction"]];
-        elseif($arOptions["sorting"]["param"]=='hit')
-            $arSorting = ["PROPERTY_SALELEADER"=>$arOptions["sorting"]["direction"]];
-        elseif($arOptions["sorting"]["param"]=='new')
-            $arSorting = ["PROPERTY_NEWPRODUCT"=>$arOptions["sorting"]["direction"]];
-        elseif($arOptions["sorting"]["param"]=='sale')
-            $arSorting = ["PROPERTY_SPECIALOFFER"=>$arOptions["sorting"]["direction"]];
-        elseif($arOptions["sorting"]["param"]=='wishes')
-            $arSorting = ["PROPERTY_WISHES_QUANTITY"=>$arOptions["sorting"]["direction"]];
-        elseif($arOptions["sorting"]["param"]=='rating')
-            $arSorting = ["PROPERTY_RATING"=>$arOptions["sorting"]["direction"]];
-        elseif($arOptions["sorting"]["param"]=='fresh')
-            $arSorting = ["TIMESTAMP_X"=>$arOptions["sorting"]["direction"]];
+        // Получаем фильтр 
+        $objCatalogFilter = new \Catalog\CCatalogFilter;
+        $arFilter = $objCatalogFilter->getIBlockFilter($arOptions["filter"]);
 
-        $arSortingTypes = ["price","rating","favorites","new","hit","wishes"];
-        foreach($arSortinTypes as $sSortingType)
-            if(
-                in_array($arOptions["sorting"]["param"])
-                && $arOptions["sorting"]["direction"]=='asc'
-                && $arOptions["sorting"]["direction"]=='desc'
-            )$arSorting[$arOptions["sorting"]["param"]] 
-                = $arOptions["sorting"]["direction"];
-        if(!$arSorting)$arSorting = ["TIMESTAMP_X"=>"desc"];
+        // Получаем сортировку 
+        $objCatalogSorting = new \Catalog\CCatalogSorting;
+        $arSorting = $objCatalogSorting->getIBlockSorting($arOptions["sorting"]);
         
-        // Составляем справочник флагов
-        $ENUMS = array();
-        $res = \CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>CATALOG_IB_ID));
-        while($data = $res->getNext()){
-            $enum = \CIBlockPropertyEnum::GetByID($data["ID"]);
-            if(!isset($ENUMS[$data["PROPERTY_CODE"]]))$ENUMS[$data["PROPERTY_CODE"]] = array();
-            $ENUMS[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
-        }
-    
-        // Составляем список разделов, из которых будем выводить
-        $res = \CIBlockSection::GetList(array(),array("ACTIVE"=>"Y"),false,array("ID"));
-        $arSectionsIds = array();
-        while($arSection = $res->Fetch())$arSectionsIds[] = $arSection["ID"];
-        
-        if(isset($arOptions["filter"]["interest"]))
-            $arFilter["interest"] = $arOptions["filter"]["interest"];
-        
-        if(isset($arOptions["filter"]["price_min"]))
-            $arFilter["price_min"] = intval($arOptions["filter"]["price_min"]);
-        
-        if(isset($arOptions["filter"]["price_max"]))
-            $arFilter["price_max"] = intval($arOptions["filter"]["price_max"]);
-        
-        if(isset($arOptions["filter"]["store"]) && is_array($arOptions["filter"]["store"]))
-            $arFilter["store"] = $CDB->ForSql(implode(",",$arOptions["filter"]["store"]));
-        elseif(isset($arOptions["filter"]["store"]))
-            $arFilter["store"] = $CDB->ForSql($arOptions["filter"]["store"]);
-        
-        if(isset($arOptions["filter"]["hit"]) && $arOptions["filter"]["hit"])
-            $arFilter["hit"] = intval($arOptions["filter"]["hit"]);
-        
-        if(isset($arOptions["filter"]["new"]) && $arOptions["filter"]["new"])
-            $arFilter["new"] = intval($arOptions["filter"]["new"]);
-        
-        if(isset($arOptions["filter"]["sale"]) && $arOptions["filter"]["sale"])
-            $arFilter["sale"] = intval($arOptions["filter"]["sale"]);
-        
-        if(isset($arOptions["filter"]["query"]) && $arOptions["filter"]["query"])
-            $arFilter["query"] = $CDB->ForSql($arOptions["filter"]["query"]);
-        
-        if(isset($arOptions["filter"]["section_code"]))
-            $arFilter["section_code"] = trim($CDB->ForSql($arOptions["filter"]["section_code"]));
-
-        $nSectionId = 0;
-        if(isset($arFilter["section_code"])){
-            $arCatalogSection = \CIBlockSection::GetList([],[
-                "CODE"=>$arFilter["section_code"]],false,[
-                "nTopCount"=>1
-                ],["ID"]
-            )->GetNext();
-            $nSectionId = $arCatalogSection["ID"];
-        }
-
-        if(isset($arFilter["store"]) && $arFilter["store"]==333)
-            unset($arFilter["store"]);
-
-        $objTroya = new \Integration\CIntegrationTroyka($USER->GetLogin());
-        $objTroya->clearLocks();
-        // Определяем вышел ли дневной лимит парковок 
-        $bTroykaLimited = $objTroya->isLimited();
-
-        $objParking = new \Integration\CIntegrationParking($USER->GetLogin());
-        $objParking->clearLocks();
-        // Определяем вышел ли дневной лимит парковок 
-        $bParkingLimited = $objParking->isLimited();
-
-        // Выбираем по разделу и по доступности
-        // Выбираем ID Товаров, подходящих по складу
-        // При этом либо тех, у которых не стоит флаг "прятать без остатка"
-        // либо с флагом, но и остатками
-        $arSectionCond = [];
-        $sNow = date("Y-m-d")." 00:00:00";
-        $sQuery = "
-            SELECT
-                `product`.`NAME` as `NAME`,
-                `product`.`ID` as `ID`,
-                SUM(`store_product`.`AMOUNT`) as `EXISTS`
-            FROM
-                `".\AGShop\CAGShop::t_iblock_element."` as `product`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `offerlink`
-                    ON
-                    `offerlink`.`IBLOCK_PROPERTY_ID`=".CML2_LINK_PROPERTY_ID."
-                    AND
-                    `offerlink`.`VALUE_NUM`=`product`.`ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
-                    ON
-                    `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `hide_prop`
-                    ON
-                    `hide_prop`.`IBLOCK_PROPERTY_ID`=".HIDE_IF_ABSENT_PROPERTY_ID."
-                    AND
-                    `hide_prop`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `hide_date`
-                    ON
-                    `hide_date`.`IBLOCK_PROPERTY_ID`=".HIDE_DATE_PROPERTY_ID."
-                    AND
-                    `hide_date`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `artnum`
-                    ON
-                    `artnum`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
-                    AND
-                    `artnum`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_section."` as `section`
-                    ON `product`.`IBLOCK_SECTION_ID`=`section`.`ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `product_userscats`
-                    ON
-                    `product_userscats`.`IBLOCK_PROPERTY_ID`=".USERSCATS_PROPERTY_ID."
-                    AND
-                    `product_userscats`.`IBLOCK_ELEMENT_ID`=`product`.`ID`
-                ".
-                (
-                    $arOptions["filter"]["wishes_user"]
-                    ?
-                    "
-                    LEFT JOIN
-                 `".\AGShop\CAGShop::t_iblock_element_property."` as `wishes_prod`
-                    ON
-                    `wishes_prod`.`IBLOCK_PROPERTY_ID`=".WISH_PRODUCT_PROPERTY_ID."
-                    AND
-                    `wishes_prod`.`VALUE_NUM`=`product`.`ID`
-                    LEFT JOIN
-                 `".\AGShop\CAGShop::t_iblock_element_property."` as `wishes_user`
-                    ON
-                    `wishes_user`.`IBLOCK_PROPERTY_ID`=".WISH_USER_PROPERTY_ID."
-                    AND
-                    `wishes_prod`.`IBLOCK_ELEMENT_ID`=`wishes_user`.`IBLOCK_ELEMENT_ID`
-                    AND
-                    `wishes_user`.`VALUE_NUM`=".intval(
-                        $arOptions["filter"]["wishes_user"]
-                    )."
-                    "
-                    :
-                    ""
-                )
-                ."
-            WHERE
-                `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
-                AND `product`.`IBLOCK_SECTION_ID`!=0
-                ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
-                AND `section`.`ACTIVE`='Y'
-                AND `product`.`ACTIVE`='Y'
-                ".(
-                    $arOptions["filter"]["wishes_user"]
-                    ?
-                    "
-                    AND `wishes_prod`.`ID` IS NOT NULL
-                    AND `wishes_user`.`ID` IS NOT NULL
-                    "
-                    :
-                    "
-                    AND 1
-                    "
-                )
-                ."
-                ".(
-                    $arOptions["filter"]["not_exists"]
-                    ?
-                    "
-                    AND 
-                    (
-                        (
-                            `hide_prop`.`VALUE_NUM` IS NULL
-                        )
-                        OR
-                        (
-                            `hide_prop`.`VALUE_NUM` IS NOT NULL
-                            AND
-                            `store_product`.`AMOUNT`>0
-                        )
-                    )
-                    "
-//                        "AND 1"
-                    :
-                    "
-                    AND 
-                    (
-                        `store_product`.`AMOUNT`>0
-                    )
-                    "
-                )
-                ."
-                ".(
-                    $arOptions["user_id"]
-                    ?
-                    "
-                    AND 
-                    (
-                            `product_userscats`.`VALUE_NUM` IS NULL
-                        OR
-                            `product_userscats`.`VALUE_NUM` IN
-                            (".implode(",",$arOptions["user_id"]).")
-                    )
-                    "
-//                        "AND 1"
-                    :
-                    "
-                    AND 
-                    (
-                        `product_userscats`.`VALUE_NUM` IS NULL
-                    )
-                    "
-                )
-                ."
-                AND 
-                (
-                    (
-                        `hide_date`.`VALUE` IS NULL
-                    )
-                    OR
-                    (
-                        `hide_date`.`VALUE`>'".$sNow."'
-                    )
-                )
-                AND 
-                (
-                    `artnum`.`ID` IS NULL
-                    OR
-                    (
-                        `artnum`.`VALUE`!='troyka'
-                        AND
-                        `artnum`.`VALUE`!='parking'
-                    )
-                    OR
-                    (
-                        `artnum`.`VALUE`='troyka'
-                        AND
-                        ".($bTroykaLimited?0:1)."
-                    )
-                    OR
-                    (
-                        `artnum`.`VALUE`='parking'
-                        AND
-                        ".($bParkingLimited?0:1)."
-                    )
-                )
-            GROUP BY
-                `product`.`ID`
-        ";
-//            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/1.sql","a");
-//            fwrite($fd,$sQuery);
-//            fclose($fd);
-//            echo "<!-- ";
-//            print_r($sQuery);
-//            echo " -->";
-        $arIds = $CDB->sqlSelect($sQuery,10000);
-        $arExists = [];
-        foreach($arIds as $arId){
-            $arExists[$arId["ID"]] = $arId["EXISTS"];
-            $arSectionCond[] = $arId["ID"];
-        }
+        // Получаем ID всех доступных пользователю для отображения товаров
+        $objCatalogTeasers = new \Catalog\CCatalogTeasers;
+        $arTeas = $objCatalogTeasers->getAllIds(
+            $arFilter["section_code"],  // Код раздела
+            $arOptions["user_id"],   // ID пользователя для которого тизеры
+            $arOptions["filter"]["not_exists"], // Включать в выдачу несуществующие товары
+            $arOptions["filter"]["wishes_user"] // Показывать желания этого пользователя
+        );
+        // ID товаров
+        $arSectionCond = $arTeas["IDS"];
+        // Массив остатков
+        $arExists = $arTeas["EXISTS"];
         
         // Выбираем по поисковому запросу
-        $arQueryCond = [];
-        if($arFilter["query"]){
-            $sQuery = "
-                SELECT
-                    `ID` as `ID`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element."`
-                WHERE
-                    `IBLOCK_ID`=".CATALOG_IB_ID."
-                    ".($SectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode($SectionCond).")":"")."
-                    ".($arFilter["query"]?"AND `NAME` LIKE '%".$arFilter["query"]."%'":"")."
-            ";
-            $arIds = $CDB->sqlSelect($sQuery,10000);
-            foreach($arIds as $arId)$arQueryCond[] = $arId["ID"];
-        }
+        $objCatalogSearch = new \Catalog\CCatalogSearch;
+        $arQueryCond = $objCatalogSearch->getIdsByProductName(
+            $arFilter["query"],$SectionCond
+        );
         
-
-        // Выбираем ID товаров, подходящих по интересу
-        $sInterestCond = [];
-        if($arFilter["interest"]){
-            $sQuery = "
-                SELECT
-                    `IBLOCK_ELEMENT_ID` as `ID`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element_property."`
-                WHERE
-                    `IBLOCK_PROPERTY_ID`=".INTEREST_PROPERTY_ID."
-                    -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
-                    ".($arFilter["interest"]?"AND `VALUE_NUM`
-                    IN(".implode(",",$arFilter["interest"]).")":"")."
-                GROUP BY
-                    `IBLOCK_ELEMENT_ID`
-            ";
-            $arIds = $CDB->sqlSelect($sQuery,10000);
-            foreach($arIds as $arId)$sInterestCond[] = $arId["ID"];
-        }
+        $objCatalogInterest = new \Catalog\CCatalogInterests;
+        $sInterestCond = $objCatalogInterest->getProductsByIds(
+            $arFilter["interest"],$SectionCond
+        );
         
+        $objCatalogPrice = new \Catalog\CCatalogPrice;
         // Выбираем ID товаров, подходящих по цене
-        $sPriceCond = [];
-        if($arFilter["price_min"] || $arFilter["price_max"]){
-            $sQuery = "
-                SELECT
-                    `IBLOCK_ELEMENT_ID` as `ID`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element_property."`
-                WHERE
-                    `IBLOCK_PROPERTY_ID`=".PRICE_PROPERTY_ID."
-                    -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
-                    ".($arFilter["price_min"]?"AND `VALUE_NUM`>=".$arFilter["price_min"]:"")."
-                    ".($arFilter["price_max"]?"AND `VALUE_NUM`<=".$arFilter["price_max"]:"")."
-                GROUP BY
-                    `IBLOCK_ELEMENT_ID`
-            ";
-            $arIds = $CDB->sqlSelect($sQuery,10000);
-            foreach($arIds as $arId)$sPriceCond[] =$arId["ID"];
-        }
+        $sPriceCond = $objCatalogPrice->getProductsByPrice(
+            $arFilter["price_min"],
+            $arFilter["price_max"],
+            $arSectionCond
+        );
 
         // Выбираем ID Товаров, подходящих по складу
-        $arStoreCond = [];
-        $sQuery = "
-            SELECT
-                `product`.`ID` as `ID`,
-                `store_product`.`AMOUNT` as `AMOUNT`
-            FROM
-                `".\AGShop\CAGShop::t_iblock_element."` as `product`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `offerlink`
-                    ON
-                    `offerlink`.`IBLOCK_PROPERTY_ID`=".CML2_LINK_PROPERTY_ID."
-                    AND
-                    `offerlink`.`VALUE_NUM`=`product`.`ID`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_catalog_store_product."` as `store_product`
-                    ON
-                    `offerlink`.`IBLOCK_ELEMENT_ID`=`store_product`.`PRODUCT_ID`"
-                    .(
-                        !$arOptions["filter"]["not_exists"]
-                        ?
-                        " AND `store_product`.`AMOUNT`>0 "
-                        :
-                        ""
-                    )."
-            WHERE
-                1
-                AND `store_product`.`ID` IS NOT NULL
-                AND `product`.`ID` IN(".($arSectionCond?implode(",",$arSectionCond):0).")
-                AND `product`.`IBLOCK_SECTION_ID`!=0
-                ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
-                -- AND `product`.`ACTIVE` = 'Y'
-                -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
-                AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
-                ".(
-                    $arFilter["store"]
-                    ?
-                    "AND `store_product`.`STORE_ID` IN (".$arFilter["store"].")"
-                    :
-                    ""
-                )."
-            GROUP BY
-                `product`.`ID`
-        ";
-        $arIds = $CDB->sqlSelect($sQuery,10000);
-        foreach($arIds as $arId)$arStoreCond[] =$arId["ID"];
+        $objCatalogStore = new \Catalog\CCatalogStore;
+        $arStoreCond = $objCatalogStore->getProductsByIds(
+            $arFilter["store"], $arFilter["section_code"], 
+            $arOptions["filter"]["not_exists"], $SectionCond
+        );
 
+        $objCatalogProductProperty = new \Catalog\CCatalogProductProperty;
         // Выбираем ID товаров, подходящих по ХИТ
-        $sHitCond = [];
-        if($arFilter["hit"]){
-            $sQuery = "
-                SELECT
-                    `IBLOCK_ELEMENT_ID` as `ID`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element_property."`
-                WHERE
-                    `IBLOCK_PROPERTY_ID`=".SALELEADER_PROPERTY_ID."
-                    -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
-            ";
-            $arIds = $CDB->sqlSelect($sQuery,10000);
-            foreach($arIds as $arId)$sHitCond[] =$arId["ID"];
-        }
-
+        $sHitCond = $objCatalogProductProperty->getFlagedProducts(
+            $arFilter["hit"]?SALELEADER_PROPERTY_ID:0,
+            $arSectionCond
+        );
+        
         // Выбираем ID товаров, подходящих по НОВИНКА
-        $sNewCond = [];
-        if($arFilter["new"]){
-            $sQuery = "
-                SELECT
-                    `IBLOCK_ELEMENT_ID` as `ID`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element_property."`
-                WHERE
-                    `IBLOCK_PROPERTY_ID`=".NEWPRODUCT_PROPERTY_ID."
-                    -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
-            ";
-            $arIds = $CDB->sqlSelect($sQuery,10000);
-            foreach($arIds as $arId)$sNewCond[] =$arId["ID"];
-        }
+        $sNewCond =  $objCatalogProductProperty->getFlagedProducts(
+            $arFilter["new"]?NEWPRODUCT_PROPERTY_ID:0,
+            $arSectionCond
+        );
 
         // Выбираем ID товаров, подходящих по Акция
-        $sSaleCond = [];
-        if($arFilter["sale"]){
-            $sQuery = "
-                SELECT
-                    `IBLOCK_ELEMENT_ID` as `ID`
-                FROM
-                    `".\AGShop\CAGShop::t_iblock_element_property."`
-                WHERE
-                    `IBLOCK_PROPERTY_ID`=".SPECIALOFFER_PROPERTY_ID."
-                    -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
-            ";
-            $arIds = $CDB->sqlSelect($sQuery,10000);
-            foreach($arIds as $arId)$sSaleCond[] =$arId["ID"];
-        }
+        $sSaleCond = $objCatalogProductProperty->getFlagedProducts(
+            $arFilter["sale"]?SPECIALOFFER_PROPERTY_ID:0,
+            $arSectionCond
+        );
 
         $arFlags = array_unique(array_merge(
             $sHitCond, $sSaleCond, $sNewCond
@@ -637,7 +253,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
         
         $arIntersect = [];
         if($arSectionCond)$arIntersect[] = $arSectionCond;
-
+        
         if($arQueryCond)$arIntersect[] = $arQueryCond;
         if($arStoreCond)$arIntersect[] = $arStoreCond;
         if($arFlags)$arIntersect[] = $arFlags;
@@ -731,89 +347,23 @@ class CCatalogProduct extends \AGShop\CAGShop{
     function wish($nProductId, $sAct, $nUserId){
         \CModule::IncludeModule('iblock');
     
+        $objWishCheck = new \Catalog\CCatalogWishCheck();
+        if(!$objWishCheck->checkBeforeWish($nProductId, $nUserId))
+            return $this->addError($objWishCheck->getErrors());
         
-        if(!$nProductId)return $this->addError("Не указан ID товара");
-            
-        if(!$nUserId)return $this->addError("Не указан ID пользователя");
+        $objWishes = new \Catalog\CCatalogWishes;
+        if(!$objWishes->set($nProductId, $nUserId, $sAct))
+            return $this->addError($objWishes->getErrors());
         
-        if(!\CIBlockElement::GetList(
-            ["ID"=>$nProductId,"IBLOCK_ID"=>$this->IBLOCKS["CATALOG"]]
-            ,false,["nTopCount"=>1],["ID"]
-        )->Fetch())
-            return $this->addError("Товар с ID=$productId не существует");
-        
-        // Ишем желание с этими условиями
-        $arElement = \CIBlockElement::GetList(
-            [],$arFields = [
-                "IBLOCK_ID" =>  $this->IBLOCKS["WISHES"],
-                "NAME"      =>  $nProductId."_".$nUserId
-            ],false,["nTopCount"=>1],["ID"]
-        )->Fetch();
-        
-        
-        // Если надо добавить, но уже есть
-        if($sAct=='on' && $arElement)
-            return $this->addError("Желание этого товара этим пользователем уже добавлено");
-        // Если надо удалить, но нечего
-        elseif($sAct=='off' && !$arElement)
-            return $this->addError("Желание этого товара этим пользователем не добавлено");
-            
-        $iblockObj = new \CIBlockElement;
-        // Добавление
-        if($sAct=='on' && $elementId = $iblockObj->Add($arFields)){
-            // Устанавливаем свойства
-            \CIBlockElement::SetPropertyValues(
-                $elementId,$this->IBLOCKS["WISHES"],
-                ["WISH_USER"=>$nUserId,"WISH_PRODUCT"=>$nProductId]
-            );
-        }
-        // Удалить
-        elseif($sAct=='off'){$iblockObj->Delete($arElement["ID"]);}
-        // Сообщить об ошибке
-        else{return $this->addError($iblock->LAST_ERROR);}
-
-        return $this->wishRecalcForProduct($nProductId);
-    }
-    
-    /**
-     * Пересчёт количество желающих у продукта и заполнение им 
-     * соответствующего свойства
-    */
-    function wishRecalcForProduct($nProductId){
-
-        // Получаем актуальное число вишей, если нет ошибок
-        $res = \CIBlockElement::GetList([],[
-            "IBLOCK_ID"=>$this->IBLOCKS["WISHES"],
-            "PROPERTY_WISH_PRODUCT"=>$nProductId
-        ],false,false,["ID"]);
-        
-        $nWishes = $res->SelectedRowsCount();
-        
-        // Прописываем число вишей в свойстве товара
-        \CIBlockElement::SetPropertyValueCode(
-            $nProductId, "WISHES_QUANTITY", $nWishes
-        );
-        
-        return $nWishes;
+        return $objWishes->wishRecalcForProduct($nProductId);
     }
     
     /**
         Пересчёт желаний для всех повишеных товаров
     */
     function wishRecalcForAllProducts(){
-        // Получаем полный список продуктов, которые пожелали
-        $resWishes = \CIBlockElement::GetList([],[
-            "IBLOCK_ID"=>$this->IBLOCKS["WISHES"],
-            "PROPERTY_WISH_PRODUCT"=>$nProductId
-        ],false,false,["PROPERTY_WISH_PRODUCT"]);
-        $arProducts = [];
-        while($arProduct = $resWishes->Fetch()){
-            $arProducts[] = $arProduct["PROPERTY_WISH_PRODUCT_VALUE"];
-        }
-        foreach($arProducts as $nProductId)
-            $this->wishRecalcForProduct($nProductId);
-
-        return true;
+        $objWishes = new \Catalog\CCatalogWishes;
+        return $objWishes->wishRecalcForAllProducts();
     }
     
     

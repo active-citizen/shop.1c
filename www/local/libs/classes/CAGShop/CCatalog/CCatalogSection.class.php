@@ -3,6 +3,8 @@
     require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
     require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
     require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
+    require_once(realpath(__DIR__."/..")."/CUser/CUser.class.php");
+    
     require_once($_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
     require_once($_SERVER["DOCUMENT_ROOT"]
@@ -179,6 +181,16 @@
             return $arResult;
         }
         
+        /**
+            Получение массива всех активных разделов
+        */
+        function getAllActiveIds(){
+            $arSectionsIds = [];
+            $res = \CIBlockSection::GetList([],["ACTIVE"=>"Y"],false,["ID"]);
+            while($arSection = $res->Fetch())$arSectionsIds[] = $arSection["ID"];
+            return $arSectionsIds;
+        }
+        
         function getById($nId){
             $objCache = new 
                 \Cache\CCache("card_section_common_info_by_id",$nId);
@@ -199,6 +211,8 @@
         }
         
         function getByCode($sCode){
+            
+            if(!$sCode)return [];
             $objCache = new
             \Cache\CCache("card_section_common_info_by_code",$sCode);
             if($sCacheData = $objCache->get()){

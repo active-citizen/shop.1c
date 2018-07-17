@@ -1,6 +1,5 @@
 <?php
     namespace Cache;
-
     /**
         Класс для кеширования
     */
@@ -8,11 +7,9 @@
         
         var $sKey = '';
         var $sGroup = '';
-        var $nExpires = COMMON_CACHE_TIME;
+        var $nExpires = 300;
         var $sFullKey = '';
-
         private $objMemcached = null;
-
         private $sBasePath = '';    //!< Киаталог для хранения кэша в файловой
         // системе
         
@@ -27,7 +24,6 @@
             if($nExpires!='')$this->nExpires = $nExpires;
             $this->sFullKey = "$sGroup:$sKey";
             $this->sBasePath = $_SERVER["DOCUMENT_ROOT"]."/../tmp/CCache";
-
             // Проверяем доступность соединения с memcached
             $arConfig = $this->__getBitrixConfig();
             if(!isset($arConfig["cache"]["value"]["memcache"]["host"]))
@@ -40,7 +36,6 @@
                 "$1",
                 $arConfig["cache"]["value"]["memcache"]["host"]
             );
-
             if(!class_exists("Memcached"))return false;
             $this->objMemcached = new \Memcached();
             if(!$this->objMemcached->addServer($sHost, $nPort))return false;
@@ -51,7 +46,6 @@
         function get(){
             if($this->objMemcached && $objData =  $this->__memcachedGet())
                 return $objData;
-
             if(!$this->getKeyFilename())return false;
             $stat = stat($this->getKeyFilename());
             if($stat['mtime']+$this->nExpires < time()){
@@ -62,7 +56,6 @@
         }
         
         function set($sValue){
-
             if(
                 $this->objMemcached && $objData = $this->__memcachedSet($sValue)
             )return true;
@@ -72,38 +65,43 @@
             $fd = fopen($this->getKeyFilename(),"w");
             fwrite($fd, $sData);
             fclose($fd);
+            return $sValue;
         }
-
         /**
             Очистка ключа
-
         */
         function clear(){
-            return $this->objMemcached->delete($this->sFullKey);
+            if(!$this->objMemcached)
+                unlink($this->getKeyFilename());
+            else
+                return $this->objMemcached->delete($this->sFullKey);
+                
         }
-
         function getAll(){
             return $this->objMemcached->getAllKeys();
         }
-
         /**
             Очистка текущей группы ключей
         */
         function clearAll(
             $bOnlyGroup = true // Очищать толко заданную в конструкторе группу
         ){
-            if(!$this->objMemcached)return false;
-            $arKeys = $this->getAll();
-            $arDeleteKeys = [];
-            foreach($arKeys as $sKey){
-                $tmp = explode(":", $sKey);
-                if($bOnlyGroup && $tmp[0]==$this->sGroup)
-                    $arDeleteKeys[] = $sKey;
-                elseif(!$bOnlyGroup)
-                    $arDeleteKeys[] = $sKey;
-                
-            }
-            return $this->objMemcached->deleteMulti($arDeleteKeys);
+            if(!$this->objMemcached):
+                rrdir($this->getKeyPath());
+                return false;
+            else:
+                $arKeys = $this->getAll();
+                $arDeleteKeys = [];
+                foreach($arKeys as $sKey){
+                    $tmp = explode(":", $sKey);
+                    if($bOnlyGroup && $tmp[0]==$this->sGroup)
+                        $arDeleteKeys[] = $sKey;
+                    elseif(!$bOnlyGroup)
+                        $arDeleteKeys[] = $sKey;
+                    
+                }
+                return $this->objMemcached->deleteMulti($arDeleteKeys);
+            endif;
         }
         
         private function createPath(){
@@ -118,14 +116,12 @@
         private function getKeyFilename(){
             return $this->getKeyPath()."/".$this->sKey.".cache";
         }
-
         /**
             Получаем значение ключа из memcached
         */
         private function __memcachedGet(){
             return unserialize($this->objMemcached->get($this->sFullKey));
         }
-
         /**
             Получаем значение ключа из memcached
         */
@@ -136,7 +132,6 @@
                 $this->nExpires
             );
         }
-
         private function __getBitrixConfig(){
             $sConfigFilename =
                $_SERVER["DOCUMENT_ROOT"]."/bitrix/.settings_extra.php";
@@ -148,4 +143,20 @@
          }
         
     }
-   
+    
+function rrmdir($src) {
+    $dir = opendir($src);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            $full = $src . '/' . $file;
+            if ( is_dir($full) ) {
+                rrmdir($full);
+            }
+            else {
+                unlink($full);
+            }
+        }
+    }
+    closedir($dir);
+    rmdir($src);
+}    
