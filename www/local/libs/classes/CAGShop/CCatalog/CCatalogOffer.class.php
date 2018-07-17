@@ -4,7 +4,11 @@ require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationTroyka.class.php");
 require_once(realpath(__DIR__."/..")."/CIntegration/CIntegration.class.php");
-require_once(realpath(__DIR__)."/CCatalogProduct.class.php");
+
+require_once("CCatalogProduct.class.php");
+require_once("CCatalogProperties.class.php");
+require_once("CCatalogElement.class.php");
+
 require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
 
 use AGShop;
@@ -22,6 +26,8 @@ class CCatalogOffer extends \AGShop\CAGShop{
    
     /**
         Проверка активности товара по ID торгового предложения
+        @param $nOfferId - ID торгового предложения
+        @return true, если торговое предложение активно
     */
     function isActive($nOfferId){
 
@@ -61,13 +67,34 @@ class CCatalogOffer extends \AGShop\CAGShop{
 
     /**
         Получение информации о товарной позиции по её ID
+        @param $nOfferId - ID торгового предложения
+        @return массив с информацие о торковом предложении вида 
+        [
+            "PRODUCT"=>[...], // Информация о продукте к которому относится торговое предложение
+            "PRODUCT_PROPERTIES"=>[
+                "PROPERTY_CODE"=>[  // Код свойства
+                    ...             
+                ]
+            ],
+            "MAIN"=>[],  // Основные свойства торгового предложения
+            "PROPERTIES"=>[ // Свойсва торгового предложения
+                "PROPERTY_CODE"=>[  // Код свойства
+                    ...             
+                ]
+            ]
+        ]
     */
     function getById($nOfferId){
         $nOfferId = intval($nOfferId);
         $CDB = new \DB\CDB;
         $objCCatalogProduct = new \Catalog\CCatalogProduct;
+        $objCCatalogProperties = new \Catalog\CCatalogProperties;
         
-        $arResult = ["PROPERTIES"=>$this->getProperties($nOfferId)];
+        $arResult = [
+            "PROPERTIES"=>$objCCatalogProperties->getById(
+                $nOfferId,"offerProperties"
+            )
+        ];
         $arResult["PRODUCT"] = $objCCatalogProduct->get(
             $arResult["PROPERTIES"]["CML2_LINK"]
         );
@@ -77,77 +104,39 @@ class CCatalogOffer extends \AGShop\CAGShop{
         
         $arResult["MAIN"]=$this->getMain($nOfferId);
         
-        
         return $arResult;
     }
     
     /**
         О торговом предложении без свойств и элемента каталога
+        @param $nOfferId - ID торгового предложения
+        @return массив с торговым предложением
     */
     function getMain($nOfferId){
-        $nOfferId = intval($nOfferId);
-
-        $objCache = new \Cache\CCache("offerMainInfo",$nOfferId);
-        if($sCacheData = $objCache->get()){
-            return $sCacheData;
-        }
-
-        $CDB = new \DB\CDB;
-        $arResult =  $CDB->searchOne(\AGShop\CAGShop::t_iblock_element,[
-            "IBLOCK_ID" =>  $this->IBLOCKS["OFFER"],
-            "ID"        =>  $nOfferId
-        ],[
-            "ID","NAME","XML_ID"
-        ]);
-        $objCache->set($arResult);
-        return $arResult;
+        $objCatalogElement = \Catalog\CCatalogElement;
+        return $objCatalogElement->getById(
+            $nOfferId, "offerMainInfo"
+        );
     }
     
     /**
         Получение свойств конкретного торгового предложения
+        @param $nOfferId - ID торгового предложения
+        @return массив свойств торгового предложения
     */
     function getProperties($nOfferId){
-        $nOfferId = intval($nOfferId);
-
-        $objCache = new \Cache\CCache("offerProperties",$nOfferId);
-        if($sCacheData = $objCache->get()){
-            return $sCacheData;
-        }
-
-        $CDB = new \DB\CDB;
-        $sQuery = "
-            SELECT
-                `element_prop`.`VALUE` as `VALUE`,
-                `prop`.`CODE` as `CODE`
-            FROM
-                `".\AGShop\CAGShop::t_iblock_element_property."` as `element_prop`
-                    LEFT JOIN
-                `".\AGShop\CAGShop::t_iblock_property."` as `prop`
-                    ON
-                    `prop`.`ID`=`element_prop`.`IBLOCK_PROPERTY_ID`
-            WHERE
-                `element_prop`.`IBLOCK_ELEMENT_ID`= ".$nOfferId."
-        ";
-        $arResult = $CDB->sqlSelect($sQuery);
-        foreach($arResult as $arItem){
-            if(!isset($arProperties[$arItem["CODE"]]))
-                $arProperties[$arItem["CODE"]] = [];
-            $arProperties[$arItem["CODE"]][] = $arItem["VALUE"];
-        }
-        foreach($arProperties as $sCode=>$sValue)
-            if(count($sValue)==1)$arProperties[$sCode] = $sValue[0];
-        $objCache->set($arProperties);
-        return $arProperties;
+        $objCCatalogProperties = new \Catalog\CCatalogProperties;
+        return $objCCatalogProperties->getById($nOfferId, "offerProperties");
     }
 
 
     /**
         Проверка исчерпания суточного лимита на товар
+        @param $nOfferId - ID торгового предложения
+        @param $nAmount - сколько собираемся купить
+        @return - false - если лимит исчерпан или число доступных в сутки единиц
     */
-    function failedDailyLimit(
-        $nOfferId,
-        $nAmount = 1 //!< Сколько собираемся купить
-    ){
+    function failedDailyLimit($nOfferId,$nAmount){
         $nOfferId = intval($nOfferId);
         $arOffer = \CIBlockElement::GetList(
             array(),
@@ -190,6 +179,10 @@ class CCatalogOffer extends \AGShop\CAGShop{
 
     /**
         Проверка исчерпания месячного лимита на товар для пользователя
+        @param $nUserId - ID пользователя для которого проверям исчерпание месячного лимита
+        @param $nOfferId - ID торгового предложения
+        @param $nAmount - сколько собираемся купить
+        @return - false - если лимит исчерпан или число доступных в месяц единиц
     */
     function failedMonLimit(
         $nUserId,
@@ -240,6 +233,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         Определение скольок сегодня заказали товара
 
         @param $nProductId ID продукта (Элемента каталога, не предложения)
+        @return количество заказанного сегодня продукта
     */
     function getDailyProductCount($nProductId){
         global $DB;
@@ -302,20 +296,6 @@ class CCatalogOffer extends \AGShop\CAGShop{
         $nPropuctId = intval($nProductId);
     
         // Вычисляем ID свойства привязки к элементу каталога
-        
-        /*
-        $sQuery = "
-            SELECT
-                `ID` as `id`
-            FROM
-                `b_iblock_property` as `a`
-            WHERE
-                `a`.`IBLOCK_ID`=".OFFER_IB_ID."
-                AND `a`.`CODE`='CML2_LINK'
-            LIMIT 
-                1
-        ";
-        */
     
         //$arProp = $DB->Query($sQuery)->Fetch();
         $nPropId = CML2_LINK_PROPERTY_ID;//isset($arProp["id"])?$arProp["id"]:0;
