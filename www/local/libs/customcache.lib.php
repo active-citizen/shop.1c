@@ -4,7 +4,7 @@
     */
     define("CUSTOM_CACHE_DIR", $_SERVER["DOCUMENT_ROOT"]."/upload/custom_cache");
 
-    function customCache($lifetime = 300,$sUserLogin = 0){
+    function customCache($lifetime = 1,$sUserLogin = 0){
         // Если пользователь кэша не указан - используем текущего из кук
         $sUserLogin = '';
         /*
