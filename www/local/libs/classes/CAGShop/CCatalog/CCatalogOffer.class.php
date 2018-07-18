@@ -113,7 +113,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         @return массив с торговым предложением
     */
     function getMain($nOfferId){
-        $objCatalogElement = \Catalog\CCatalogElement;
+        $objCatalogElement = new \Catalog\CCatalogElement;
         return $objCatalogElement->getById(
             $nOfferId, "offerMainInfo"
         );
