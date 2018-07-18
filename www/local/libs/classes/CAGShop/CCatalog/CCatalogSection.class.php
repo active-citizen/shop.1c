@@ -36,7 +36,9 @@
             global $USER;
             if(!$nCacheExpires)$nCacheExpires = COMMON_CACHE_TIME; 
 
-            $objCache = new \Cache\CCache("sections_list","mainmenu",$nCacheExpires);
+            $arUserCats = \User\CUser::getCategories($USER->GetId());
+
+            $objCache = new \Cache\CCache("mainmenu",md5(serialize($arUserCats)),$nCacheExpires);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -52,7 +54,6 @@
             $bParkingLimited = $objParking->isLimited();
 
 
-            $arUserCats = \User\CUser::getCategories($USER->GetId());
 
             $CDB = new \DB\CDB;
             $sNow = date("Y-m-d");

@@ -154,8 +154,13 @@ class CCatalogProduct extends \AGShop\CAGShop{
         global $USER;
 
         // Кеширование данных для плитки
+        $arUsersCatsForCacheKey = \User\CUser::getCategories(
+            arOptions["user_id"]
+        );
         $objCache = new
-        \Cache\CCache("mobile_teasers",md5(json_encode($arOptions)));
+        \Cache\CCache("mobile_teasers",md5(
+            json_encode($arOptions).json_encode($arUsersCatsForCacheKey)
+        ));
         if($sCacheData = $objCache->get())return $sCacheData;        
         
         $CDB = new \DB\CDB;
