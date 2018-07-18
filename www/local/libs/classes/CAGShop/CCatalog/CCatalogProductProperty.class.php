@@ -28,7 +28,7 @@ class CCatalogproductProperty extends \AGShop\CAGShop{
                 `".\AGShop\CAGShop::t_iblock_element_property."`
             WHERE
                 `IBLOCK_PROPERTY_ID`=".$nPropertyId."
-                -- ".($arSectionCond?"AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
+                ".($arSectionCond?"AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 
         ";
         $arIds = $CDB->sqlSelect($sQuery,10000);

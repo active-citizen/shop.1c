@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS `rTd6sj3Ghsl9a`;

@@ -11,7 +11,7 @@
         
         var $nUserId = 0;
         var $sCode = '';
-        var $nExpires = 300;
+        var $nExpires = COMMON_CACHE_TIME;
         var $sTemplate = 'mobile';
 
         function __construct($sCode, $nUserId = 0,$sTemplate = 'mobile'){

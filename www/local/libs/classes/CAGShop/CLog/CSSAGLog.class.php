@@ -25,6 +25,7 @@ class CSSAGLog extends \AGShop\CAGShop{
         $nUserId = $nUserId?$nUserId:0;
         fwrite($fd, "\n".date("Y-m-d H:i:s")." $nUserId $sUrl $sInput $sOutput");
         fclose($fd);
+        return true;
     }
 
     /**

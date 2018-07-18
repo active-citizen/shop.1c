@@ -9,6 +9,7 @@
     class CContent extends \AGShop\CAGShop{
         function __construct(){
             parent::__construct();
+            \CModule::IncludeModule('iblock');
         }
 
         /**
@@ -17,8 +18,7 @@
             @param $nSectionId - ID раздела. Если 0, выводится всё
         */
         function getFAQForSite($nSectionId = 0){
-            \CModule::IncludeModule('iblock');
-            $arFilter = array();
+            $arFilter = [];
             $arFilter["ACTIVE"] = "Y";
             $arFilter["IBLOCK_CODE"] = "content_sectioned_faq";
             // Сортировка для разделов и элементов
@@ -27,12 +27,12 @@
             // Получаем разделы
             $res = \CIBlockSection::GetList( $arSort, $arFilter);   
             $arResult["sections"] = array();
-            while($arSection = $res->GetNext()){
+            while($arSection = $res->Fetch()){
                 $arSection["childs"] = array();
                 // Получаем пункты
                 $arFilter["SECTION_ID"] = $arSection["ID"];
                 $resFAQ = \CIBlockElement::GetList($arSort, $arFilter);
-                while($arFAQ = $resFAQ->GetNext())
+                while($arFAQ = $resFAQ->Fetch())
                     $arSection["childs"][] = $arFAQ;
                 
                 $arResult["sections"][] = $arSection;
@@ -41,16 +41,15 @@
         }
 
         function getArticleForSite($sCode){
-            \CModule::IncludeModule('iblock');
 
             $arResult = \CIBlockElement::GetList(
-                array("SORT"=>"ASC"),
-                array(
+                ["SORT"=>"ASC"],
+                $arFilter = [
                     "IBLOCK_CODE"   =>  "content_articles",
                     "ACTIVE"        =>  "Y",
                     "CODE"            =>  $sCode
-                )
-            )->GetNext();
+                ]
+            )->Fetch();
             return $arResult;
 
         }

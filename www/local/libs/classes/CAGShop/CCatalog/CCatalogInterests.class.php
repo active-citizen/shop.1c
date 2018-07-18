@@ -24,7 +24,7 @@ class CCatalogInterests extends \AGShop\CAGShop{
         @param $arInterest - массив ID интересов
         @param $SectionCond - опциональный массив ID разделов среди которых искать
     */
-    function getProductsByIds($arInterest, $SectionCond = []){
+    function getProductsByIds($arInterest, $arSectionCond = []){
         if(!$arInterest)return [];
 
         $CDB = new \DB\CDB;
@@ -38,7 +38,7 @@ class CCatalogInterests extends \AGShop\CAGShop{
                 `".\AGShop\CAGShop::t_iblock_element_property."`
             WHERE
                 `IBLOCK_PROPERTY_ID`=".INTEREST_PROPERTY_ID."
-                -- ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
+                ".($arSectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode(",",$arSectionCond).")":"")."
                 ".($arInterest?"AND `VALUE_NUM`
                 IN(".implode(",",$arInterest).")":"")."
             GROUP BY

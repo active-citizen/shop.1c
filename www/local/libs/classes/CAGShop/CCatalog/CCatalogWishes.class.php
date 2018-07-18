@@ -17,7 +17,7 @@ class CCatalogWishes extends \AGShop\CAGShop{
         @param $nId - ID элемента каталога
     */
     function getCountByCatalogId($nId){
-        $objCache = new \Cache\CCache("card_wishes",$nId);
+        $objCache = new \Cache\CCache("card_wishes",$nId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -27,9 +27,7 @@ class CCatalogWishes extends \AGShop\CAGShop{
             "PROPERTY_WISH_PRODUCT"=>$nId
         ],false, false);
         $arResult = $res1->SelectedRowsCount();
-        $objCache->set($arResult);
-        
-        return $arResult;
+        return $objCache->set($arResult);
     }
     
     /**

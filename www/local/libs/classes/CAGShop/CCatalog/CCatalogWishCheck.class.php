@@ -16,12 +16,14 @@ class CCatalogWishCheck extends \AGShop\CAGShop{
         if(!$nProductId)return $this->addError("Не указан ID товара");
         if(!$nUserId)return $this->addError("Не указан ID пользователя");
         
-        if(!\CIBlockElement::GetList(
-            ["ID"=>$nProductId,"IBLOCK_ID"=>$this->IBLOCKS["CATALOG"]]
+        if(!$arProduct = \CIBlockElement::GetList([],[
+                "ID"=>$nProductId,
+                "IBLOCK_ID"=>$this->IBLOCKS["CATALOG"]
+            ]
             ,false,["nTopCount"=>1],["ID"]
         )->Fetch())
             return $this->addError("Товар с ID=$productId не существует");
-            
+        
         return true;
     }
 }

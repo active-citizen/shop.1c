@@ -22,7 +22,7 @@ class CCatalogEnums extends \AGShop\CAGShop{
     */
     function getAll(){
         
-        $objCache = new \Cache\CCache("CatalogEnums", 0);
+        $objCache = new \Cache\CCache("CatalogEnums", 0, COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get())return $sCacheData;
         
         $res = \CIBlockPropertyEnum::GetList([],["IBLOCK_ID"=>CATALOG_IB_ID]);

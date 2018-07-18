@@ -31,7 +31,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
     */
     function isActive($nOfferId){
 
-        $objCache = new \Cache\CCache("isActiveOffer",$nOfferId);
+        $objCache = new \Cache\CCache("isActiveOffer",$nOfferId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -61,8 +61,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
             ])->Fetch();
             if($arSection["ACTIVE"]!='Y')$bResult = false;
         }
-        $objCache->set($bResult);
-        return $bResult;
+        return $objCache->set($bResult);
     }
 
     /**

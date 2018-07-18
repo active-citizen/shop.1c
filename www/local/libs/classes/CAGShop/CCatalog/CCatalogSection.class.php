@@ -177,9 +177,7 @@
                     `product`.`IBLOCK_SECTION_ID`
             ";
             $arResult = $CDB->sqlSelect($sQuery);
-            $objCache->set($arResult);
-            
-            return $arResult;
+            return $objCache->set($arResult);
         }
         
         /**
@@ -196,7 +194,7 @@
             if(!$nId)return [];
             
             $objCache = new 
-                \Cache\CCache("card_section_common_info_by_id",$nId);
+                \Cache\CCache("card_section_common_info_by_id",$nId,COMMON_CACHE_TIME);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -209,15 +207,14 @@
                     "nTopCount"=>1
                 ]
             )->GetNext();
-            $objCache->set($arResult);
-            return $arResult;
+            return $objCache->set($arResult);
         }
         
         function getByCode($sCode){
             
             if(!$sCode)return [];
             $objCache = new
-            \Cache\CCache("card_section_common_info_by_code",$sCode);
+            \Cache\CCache("card_section_common_info_by_code",$sCode,COMMON_CACHE_TIME);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -230,13 +227,12 @@
                     "nTopCount"=>1
                 ]
             )->GetNext();
-            $objCache->set($arResult);
-            return $arResult;
+            return $objCache->set($arResult);
         }
 
         function getBriefById($nId){
             $objCache = new
-            \Cache\CCache("card_section_brief_by_id",$nId);
+            \Cache\CCache("card_section_brief_by_id",$nId,COMMON_CACHE_TIME);
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
             }
@@ -245,8 +241,7 @@
                 "IBLOCK_ID"=>CATALOG_IB_ID,
                 "ID"=>$nId
             ],false,["ID","NAME","CODE","IBLOCK_SECTION_ID"])->Fetch();
-            $objCache->set($arResult);
-            return $arResult;
+            return $objCache->set($arResult);
         }
         
     }

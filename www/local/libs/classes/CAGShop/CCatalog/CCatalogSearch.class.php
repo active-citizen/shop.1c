@@ -38,8 +38,8 @@ class CCatalogSearch extends \AGShop\CAGShop{
                 `".\AGShop\CAGShop::t_iblock_element."`
             WHERE
                 `IBLOCK_ID`=".CATALOG_IB_ID."
-                ".($SectionCond?" AND `IBLOCK_ELEMENT_ID` IN(".implode($SectionCond).")":"")."
-                ".($arFilter["query"]?"AND `NAME` LIKE '%".$sQuery."%'":"")."
+                ".($SectionCond?" AND `ID` IN(".implode($SectionCond).")":"")."
+                ".($sQuery?"AND `NAME` LIKE '%".$sQuery."%'":"")."
         ";
         $arIds = $CDB->sqlSelect($sQuery,10000);
         foreach($arIds as $arId)$arQueryCond[] = $arId["ID"];

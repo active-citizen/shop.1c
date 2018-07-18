@@ -27,7 +27,7 @@ class CCatalogProperties extends \AGShop\CAGShop{
     function getById($nId, $sCacheGroup = ""){
         $nOfferId = intval($nOfferId);
 
-        $objCache = new \Cache\CCache($sCacheGroup, $nId);
+        $objCache = new \Cache\CCache($sCacheGroup, $nId,COMMON_CACHE_TIME);
         if($sCacheGroup && $sCacheData = $objCache->get()){
             return $sCacheData;
         }

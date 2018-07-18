@@ -24,7 +24,7 @@ class CCatalogElement extends \AGShop\CAGShop{
     */
     function getById($nId, $sCacheGroup = ''){
         $nId = intval($nId);
-        $objCache = new \Cache\CCache($sCacheGroup,$nId);
+        $objCache = new \Cache\CCache($sCacheGroup,$nId,COMMON_CACHE_TIME);
         if($sCacheGroup && $sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -44,7 +44,7 @@ class CCatalogElement extends \AGShop\CAGShop{
         Получение основных параметров товара по его коду
     */
     function getByCode($sCode, $nIblockId, $sCacheGroup = ''){
-        $objCache = new \Cache\CCache($sCacheGroup,$sCode);
+        $objCache = new \Cache\CCache($sCacheGroup,$sCode,COMMON_CACHE_TIME);
         if($sCacheGroup && $sCacheData = $objCache->get()){
             return $sCacheData;
         }

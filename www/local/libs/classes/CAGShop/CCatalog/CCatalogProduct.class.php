@@ -44,7 +44,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
     */
     function isActive($nProductId){
 
-        $objCache = new \Cache\CCache("isActiveProduct",$nProductId);
+        $objCache = new \Cache\CCache("isActiveProduct",$nProductId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -91,7 +91,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
     }
     
     /**
-        Получение информации по любому активному продукту
+        Получение любого активного продукта (для автотестов)
     */
     function getAnyExists(){
         return \CIblockElement::GetList([
@@ -112,7 +112,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
     */
     function getPropertiesForCard($nId){
 
-        $objCache = new \Cache\CCache("card_product_properties",$nId);
+        $objCache = new \Cache\CCache("card_product_properties",$nId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get())return $sCacheData;
 
         $arResult = [];
@@ -160,7 +160,7 @@ class CCatalogProduct extends \AGShop\CAGShop{
         $objCache = new
         \Cache\CCache("mobile_teasers",md5(
             json_encode($arOptions).json_encode($arUsersCatsForCacheKey)
-        ));
+        ),COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get())return $sCacheData;        
         
         $CDB = new \DB\CDB;
@@ -251,15 +251,31 @@ class CCatalogProduct extends \AGShop\CAGShop{
         // Вычисляем пересечения
         
         if($arSectionCond)$arIntersect[] = $arSectionCond;
-        if($arQueryCond)$arIntersect[] = $arQueryCond;
+        if($arQueryCond)
+            $arIntersect[] = $arQueryCond;
+        elseif(!$arQueryCond && $arFilter["query"])
+            $arIntersect[] = "none";
+        
         if($arStoreCond)
             $arIntersect[] = $arStoreCond;
         elseif(!$arStoreCond && $arFilter["store"])
             $arIntersect[] = "none";
  
-        if($arFlags)$arIntersect[] = $arFlags;
-        if($sPriceCond)$arIntersect[] = $sPriceCond;
-        if($sInterestCond)$arIntersect[] = $sInterestCond;
+        if($arFlags)
+            $arIntersect[] = $arFlags;
+        elseif(!$arFlags && ($arFilter["new"] || $arFilter["sale"] || $arFilter["hit"]))
+            $arIntersect[] = "none";
+            
+        if($sPriceCond)
+            $arIntersect[] = $sPriceCond;
+        elseif(!$sInterestCond && ($arFilter["price_min"] || $arFilter["price_max"]))
+            $arIntersect[] = "none";
+        
+        if($sInterestCond)
+            $arIntersect[] = $sInterestCond;
+        elseif(!$sInterestCond && $arFilter["interest"])
+            $arIntersect[] = "none";
+        
         
          
         /*

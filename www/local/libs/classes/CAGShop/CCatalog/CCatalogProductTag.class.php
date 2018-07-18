@@ -20,6 +20,10 @@
         
         var $nProductPropertyId = '';
         
+        /**
+            @param $nProductPropertyId - ID свойства продукта, по которому 
+            составляем список тегов
+        */
         function __construct($nProductPropertyId, $sSectionCode=''){
             parent::__construct();
             $this->nProductPropertyId = $nProductPropertyId;
@@ -34,7 +38,7 @@
         function getAllTags($sSectionCode){
             global $USER;
             $objCache = new \Cache\CCache(
-                "mobile_interests",$sSectionCode,300
+                "mobile_tags",$sSectionCode,COMMON_CACHE_TIME
             );
             if($sCacheData = $objCache->get()){
                 return $sCacheData;
@@ -162,7 +166,7 @@
                 GROUP BY
                     `tag`.`ID`
             ";
-
+            
             $arTags = $CDB->sqlSelect($sQuery);
             $arResult = [];
             foreach($arTags as $arTag){
@@ -170,10 +174,7 @@
                 $arResult[] = $arTag;
             }
 
-            $objCache->set($arResult);
-
-            // Получаем все элементы инфоблока справочника
-            return $arResult;
+            return $objCache->set($arResult);
         }
         
         

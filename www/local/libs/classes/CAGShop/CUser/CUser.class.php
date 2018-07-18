@@ -29,7 +29,7 @@ class CUser extends \AGShop\CAGShop{
         @param $sUserParam - значение параметра
     */
     function fetch($sUserParamName, $sUserParam){
-        $objCache = new \Cache\CCache("userInfo".$sUserParamName,$sUserParam);
+        $objCache = new \Cache\CCache("userInfo".$sUserParamName,$sUserParam,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             $this->arUserInfo = $sCacheData;
             return true;

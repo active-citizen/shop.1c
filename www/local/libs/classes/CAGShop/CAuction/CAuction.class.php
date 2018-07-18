@@ -71,7 +71,7 @@ class CAuction extends \AGShop\CAGShop{
     */
     function getWinners($nOfferId, $nUserId = 0){
 
-        $objCache = new \Cache\CCache("auction_winners",$nOfferId);
+        $objCache = new \Cache\CCache("auction_winners",$nOfferId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -142,8 +142,7 @@ class CAuction extends \AGShop\CAGShop{
             }
         }
 
-        $objCache->set($arResult);
-        return $arResult; 
+        return $objCache->set($arResult);
     }
 
     /**
@@ -886,7 +885,7 @@ class CAuction extends \AGShop\CAGShop{
         if(!$nProductId = intval($nProductId))
             return $this->addError("Не указан ID продукта");
 
-        $objCache = new \Cache\CCache("isAuction",$nProductId);
+        $objCache = new \Cache\CCache("isAuction",$nProductId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -928,9 +927,7 @@ class CAuction extends \AGShop\CAGShop{
                     false,
             ]; 
         }
-        $objCache->set($arResult);
-        return $arResult;
-
+        return $objCache->set($arResult);
     }
     
 }

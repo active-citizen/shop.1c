@@ -12,8 +12,7 @@
         }
         
         function isCorrect($sPhoneNumber){
-            if(!preg_match("#^\d{5,11}$#",$sPhoneNumber))return false;
-            return true;
+            return boolval(preg_match("#^\d{5,11}$#",$sPhoneNumber));
         }
     }
     

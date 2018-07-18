@@ -46,7 +46,7 @@ class CCatalogStore extends \AGShop\CAGShop{
     function fetch($nId){
         $nId = intval($nId);
 
-        $objCache = new \Cache\CCache("storeInfo",$nId);
+        $objCache = new \Cache\CCache("storeInfo",$nId,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             $this->arStoreInfo = $sCacheData;
             return true;
@@ -58,8 +58,7 @@ class CCatalogStore extends \AGShop\CAGShop{
         ]);
         if(!$arResult)return false;
         $this->arStoreInfo = $arResult;
-        $objCache->set($arResult);
-        return true;
+        return $objCache->set($arResult);
     }
     
     function get(){
@@ -167,7 +166,7 @@ class CCatalogStore extends \AGShop\CAGShop{
         @param $bWithoutAddress - выводить без складов с пустым адресом
     */
     function getForSite($bWithoutAddress = true){
-        $objCache = new \Cache\CCache("Allstores",0);
+        $objCache = new \Cache\CCache("Allstores",0,COMMON_CACHE_TIME);
         if($sCacheData = $objCache->get()){
             return $sCacheData;
         }
@@ -191,9 +190,7 @@ class CCatalogStore extends \AGShop\CAGShop{
         //    if(!$res->result->num_rows)continue;
             $arResult["stores"][] = $arStore;
         }
-        $objCache->set($arResult);
-        return $arResult;
-        
+        return $objCache->set($arResult);
     }
         
     /**
@@ -251,7 +248,6 @@ class CCatalogStore extends \AGShop\CAGShop{
                 AND `product`.`IBLOCK_SECTION_ID`!=0
                 ".($nSectionId?"AND `product`.`IBLOCK_SECTION_ID`=".$nSectionId:"")."
                 -- AND `product`.`ACTIVE` = 'Y'
-                -- ".($arSectionCond?" AND `product`.`ID` IN(".implode(",",$arSectionCond).")":"")."
                 AND `product`.`IBLOCK_ID`=".CATALOG_IB_ID."
                 ".(
                     $arStores
