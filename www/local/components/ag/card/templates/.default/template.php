@@ -37,7 +37,7 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
         ):?>
             <div class="ag-shop-modal__alert">
                 <i class="ag-shop-icon ag-shop-icon--attention"></i>
-                <span>Поощрение недоступно (ошибка доступа)
+                <span>Поощрение недоступно для заказа
                 </span>
             </div>
         <? elseif(
