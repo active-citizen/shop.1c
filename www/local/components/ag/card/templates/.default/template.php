@@ -92,14 +92,7 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
             </script>
         
             <div class="ag-shop-card">
-            <? if($stopDailyLimit):?>
-              <div class="ag-shop-card__container">
-                <div class="ag-shop-card__requirements">
-                    Дневной лимит заказа данного поощрения исчерпан. Попробуйте
-                    повторить попытку заказа завтра.
-                </div>
-              </div>
-            <? elseif($stopMonLimit):?>
+            <? if($stopMonLimit):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
                     Ваш месячный лимит заказов данного поощрения исчерпан.
@@ -129,6 +122,22 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                                 0,","," ")
                             )
                         ?>.
+                </div>
+              </div>
+            <? elseif(
+                !CUser::IsAuthorized()
+            ): ?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    Для заказа данного поощрения необходимо 
+                    <a href="http://ag.mos.ru/">авторизоваться</a>
+                </div>
+              </div>
+            <? elseif($stopDailyLimit):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    Дневной лимит заказа данного поощрения исчерпан. Попробуйте
+                    повторить попытку заказа завтра.
                 </div>
               </div>
             <? elseif(
@@ -166,15 +175,6 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                     сможете только после получения статуса &laquo;Активный
                     гражданин&raquo;. Статус присваивается пользователям,
                     набравшим <?= $arParams["ALL_POINTS_LIMIT"]?> баллов
-                </div>
-              </div>
-            <? elseif(
-                !CUser::IsAuthorized()
-            ): ?>
-              <div class="ag-shop-card__container">
-                <div class="ag-shop-card__requirements">
-                    Для заказа данного поощрения необходимо 
-                    <a href="http://ag.mos.ru/">авторизоваться</a>
                 </div>
               </div>
             <? elseif($arResult["AUCTION"] 
