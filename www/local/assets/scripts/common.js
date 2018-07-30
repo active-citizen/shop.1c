@@ -202,6 +202,28 @@ $(document).ready(function() {
     */
     $('.ag-shop-card__sizes input').change(function(){
         
+        console.log(arOffers);
+        let pics = $(this).attr('pics').split('|');
+        console.log(pics);
+//        $('.ag-param-secondfield')
+
+
+        $('.ag-shop-card__previews-container .ag-shop-card__preview').remove();
+        for(i in pics){
+            $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
+            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",pics[i]);
+            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
+            
+            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
+                $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+                $(this).addClass('ag-shop-card__preview--active');
+                $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
+            });
+        }
+        $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');
+        $('.ag-shop-card__image-container').css('background-image','url('+pics[0]+')');
+ 
+        /*
         var props = {};
         var offerProps = {};
 
@@ -229,6 +251,9 @@ $(document).ready(function() {
             // Если не все свойства совпали - значит НЕ нужное нам предложение
             if(targetMatches==0)break;
         }
+
+        console.log(offerProps);
+        console.log(props);
         
         // Если выход по совпадению, значи предложение нашли
         if(!targetMatches){
@@ -264,6 +289,7 @@ $(document).ready(function() {
             selectStorage(arStorages[count].ID);
             
         }
+        */
     });
 
     loadComments();

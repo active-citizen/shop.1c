@@ -962,3 +962,40 @@ table.auction-winners .winner{
     position: relative;
 }
 
+
+#confirm-price{
+    position: relative;
+}
+#price-hint{
+    margin-left: 15px;
+    margin-top: 5px;
+    max-width: 200px;
+    min-width: 200px;
+    min-height: 50px;
+    position: absolute;
+    color: #b80d0d;
+    z-index: 9999;
+    font-size: 13px;
+    padding-right: 50px;
+    top: 10px;
+    left: 80px;
+}
+
+
+/* Характеристики */
+
+.ag-shop-card__colors-item{
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 48px;
+    height: 48px;
+    border-radius: 5px;
+    border: 2px solid #ececec;
+}
+
+
+input:checked + .ag-shop-card__colors-item {
+    border: 2px solid rgba(0,122,108,1);
+    margin: 0 -7px;
+}
+

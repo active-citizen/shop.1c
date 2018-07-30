@@ -27,7 +27,9 @@
         if(!trim($v))unset($arResult["CATALOG_ITEM"]["USERCATS"][$k]);
     ///////////////////////////////////////////////////////////////////////
 ?>
+<?
 
+?>
 <? if(
     isset($arResult["CATALOG_ITEM"]["USERCATS"])
     &&
@@ -108,52 +110,4 @@
     <h3>Нет доступных предложений</h3>
 <? endif ?>
 
-
-<script>
-    var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
-    var totalStoreId = <? 
-        foreach($arResult["OFFERS_JSON"] as $offer){
-            foreach($offer["STORAGES"] as $storeId=>$store){
-                echo $storeId;break;
-            };
-            break;
-        }?>;
-    var accountSum=<?= 
-        round($arResult["ACCOUNT"]["CURRENT_BUDGET"])
-    ?>;
-    var offerCounts = <? 
-        foreach(
-            $arResult["OFFERS"][0]["STORAGES"] 
-            as 
-            $storageId=>$storageCount
-        ){
-            $arResult["OFFERS"][0]["STORAGES"];break;
-        }
-        echo $storageCount;
-    ?>;
-    var arOffers=<?=json_encode($arResult["OFFERS_JSON"])?>;
-    var arStorages = <?= json_encode($arResult["STORAGES"])?>;
-    
-</script>
-
-
-
-<style>
-#confirm-price{
-    position: relative;
-}
-#price-hint{
-    margin-left: 15px;
-    margin-top: 5px;
-    max-width: 200px;
-    min-width: 200px;
-    min-height: 50px;
-    position: absolute;
-    color: #b80d0d;
-    z-index: 9999;
-    font-size: 13px;
-    padding-right: 50px;
-    top: 10px;
-    left: 80px;
-}
-</style>
+<? require("blocks/js.inc.php");?>
