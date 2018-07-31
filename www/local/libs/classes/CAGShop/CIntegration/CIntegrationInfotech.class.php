@@ -35,6 +35,29 @@
         }
 
         /**
+            Получение ближайшего CategoryPriceId для
+            указанного мероприятия. Для зоопарка и прочих
+            периодических мероприятий, которые генерируют кучу входных билетов
+            на все даты периода
+
+            @return ближайший по дате CategoryPriceId 
+        */
+        function getLastCategoryPriceId($nActionId,$nCityId){
+            $arSeatsList = $this->getAction($nActionId,$nCityId);
+            if(
+                !isset(
+                    $arSeatsList[0]["actionEventList"][0]
+                    ["categoryLimitList"][0]["categoryList"][0]["categoryPriceId"]
+                )
+            )return false;
+
+            $nCategoryPriceId = 
+                    $arSeatsList[0]["actionEventList"][0]
+                    ["categoryLimitList"][0]["categoryList"][0]["categoryPriceId"];
+            return $nCategoryPriceId;
+        }
+
+        /**
             Оплата заказа без размещения
              
             @param $nPriceCategory - ID ценовой категории
@@ -337,11 +360,11 @@
         }
 
 
-        public function getAction($nActionId, $nCityid){
-            if(!$arAnswer = $this->__request("GET_ACTION_EXT",$arRequest = [
-                "actionId"  =>  $nActionId,
-                "cityId"    =>  $nCityid
-            ]))return false;
+        public function getAction($nActionId, $nCityid=0){
+            $arRequest = ["actionId"=>$nActionId];
+            if($nCityid)$arRequest["cityId"] = $nCityid;
+            if(!$arAnswer = $this->__request("GET_ACTION_EXT",$arRequest))
+                return false;
             if(
                 !isset($arAnswer['action']["venueList"]) 
                 || !$arAnswer['action']["venueList"]
