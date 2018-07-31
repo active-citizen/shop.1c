@@ -1,16 +1,16 @@
-  <div class="ag-shop-card__field js-choose__place">
+  <div class="ag-shop-card__field js-choose__place" 
+    <? if($arResult["OFFER_PARAMETERS"]):?>style="display:none;"<? endif ?>
+  >
     <div class="ag-shop-card__fieldname">Где получить?</div>
-    <!-- 
-    <div class="ag-shop-card__places-tabs">
-      <div class="ag-shop-card__places-tabs-item ag-shop-card__places-tabs-item--active">списком</div>
-      <div class="ag-shop-card__places-tabs-item">на карте</div>
-    </div>
-    -->
-    <div class="ag-shop-card__places">
+
+    <? foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer):?>
+    <div class="ag-shop-card__places" offer-id="<?= $nOfferId?>"
+        style="display:none;"
+    >
       <? $count=0;
       $storageSelected = false;
       if(!$stopDailyLimit)
-      foreach($arResult["OFFERS"][0]["STORAGES"] as $id=>$ammount): $count++;?>
+      foreach($arOffer["STORAGES"] as $id=>$ammount): $count++;?>
       <label>
         <input  onclick="return selectStorage('<?= $id;?>');"type="radio" name="place" value="<?= $id ?>" <?
         if (count($arResult["OFFERS"][0]["STORAGES"]) == 1) {
@@ -26,6 +26,8 @@
       </label>
       <? endforeach ?>
     </div>
+    <? endforeach ?>
+
     <div class="ag-shop-card__selected-place<?= $storageSelected ? '' : ' hidden'; ?>">
       <div class="ag-shop-card__selected-place-header">
         <div class="grid grid--bleed grid--justify-space-between">

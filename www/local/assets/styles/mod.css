@@ -131,6 +131,7 @@ input.ag-balls[type="radio"]{
 .ag-shop-card__sizes-item{
     width: auto !important;
     padding: 0px 5px;
+    border-radius: 5px;
 }
 
 .form-success{
