@@ -1000,3 +1000,10 @@ input:checked + .ag-shop-card__colors-item {
     margin: 0 -7px;
 }
 
+
+input:disabled + .ag-shop-card__colors-item {
+    border: 2px solid #EFEFEF;
+    margin: 0 -7px;
+    opacity: 0.5;
+}
+

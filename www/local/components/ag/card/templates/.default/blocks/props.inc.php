@@ -17,19 +17,39 @@
 <? endforeach ?>
 */?>
 
-<? foreach($arResult["OFFER_PARAMETERS"] as $sPropCode0=>$arProp0): ?>
+<?
+//new XPrint($arResult["OFFERS_PROPS"]);
+?>
+
+
+
+<? foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp): ?>
   <div class="ag-shop-card__field">
-    <div class="ag-shop-card__fieldname"><?= $arProp0['info']["name"]?>:</div>
+    <div class="ag-shop-card__fieldname"><?= $arProp["name"]?>:</div>
     <div class="ag-shop-card__sizes">
-      <? foreach($arProp0['items'] as $nValId=>$arValue):?>
-      <? $arPics = $arResult["OFFERS_JSON"][$arValue["offerId"]]["PICS"]; ?>
+      <? foreach($arProp['values'] as $nValId=>$arValue):?>
+      <? $arPics = $arValue["pics"]; ?>
+      <? 
+        $arCross = [];$arOfferIds=[];$arStores = [];
+        foreach($arValue["crossed"] as $nValIdCross=>$arCrossValue){
+            $arCross[]= $nValIdCross;
+            $arOfferIds[] = $arCrossValue["offerId"];
+        }
+        foreach($arValue["stores"] as $nStoreId=>$nAmount)
+            $arStores[] = $nStoreId;
+        $arCross = array_unique($arCross);
+        $arOfferIds = array_unique($arOfferIds);
+      ?>
       <label>
-        <input type="radio" name="<?= $sPropCode0 ?>" value="<?=
-        !$arValue['childs']?$arValue["offerId"]:'' ?>"
+        <input type="radio" name="<?= $sPropCode ?>" value="<?= $nValId ?>"
             pics="<?= implode("|",$arPics)?>"
             rel="<?= $nValId?>"
+            cross-values="<?= implode(",",$arCross)?>"
+            offers="<?= implode(",",$arOfferIds)?>"
+            stores="<?= implode(",",$arStores)?>"
+            switched="off"
         >
-        <? if(mb_strtolower(trim($arProp0['info']["name"]))=='цвет'):?>
+        <? if(mb_strtolower(trim($arProp["name"]))=='цвет'):?>
             <div class="ag-shop-card__colors-item"
             style="background-image:url(<?= 
                 $arPics[0]
@@ -46,37 +66,4 @@
 <? endforeach ?>
 
 
-<? foreach($arResult["OFFER_PARAMETERS"] as $sPropCode0=>$arProp0): ?>
-    <? foreach($arProp0['items'] as $nItemId => $arItem):?>
-        <? foreach($arItem["childs"] as $sPropCode1=>$arProp1):?>
-          <div class="ag-shop-card__field ag-param-secondfield" style="display:none;" parent="<?= $nItemId ?>">
-            <div class="ag-shop-card__fieldname"><?= $arProp1['info']["name"]?>:</div>
-            <div class="ag-shop-card__sizes">
-              <? foreach($arProp1['items'] as $nValueId=>$arValue):?>
-                  <label>
-                    <?
-                        $arPics = $arResult["OFFERS_JSON"][$arValue["offerId"]]["PICS"];
-                    ?>
-                    <input type="radio" name="<?= $sPropCode1 ?>" value="<?=
-                    !$arValue['childs']?$arValue["offerId"]:'' ?>"
-                    pics="<?= implode("|",$arPics)?>"
-                    >
-                    <? if(mb_strtolower(trim($arProp1['info']["name"]))=='цвет'):?>
-                        <div class="ag-shop-card__colors-item"
-                        style="background-image:url(<?= 
-                            $arPics[0]
-                        ?>)"
-                        title="<?= $arValue['value']?>"
-                        pics="<?= implode("|",$arPics)?>"
-                        ><?= $arValue['value']?></div>
-                    <?else:?>
-                        <div class="ag-shop-card__sizes-item"><?= $arValue['value']?></div>
-                    <? endif ?>
-                  </label>
-              <? endforeach ?>
-            </div>
-          </div>
-        <? endforeach ?>
-    <? endforeach ?>
-<? endforeach ?>
 

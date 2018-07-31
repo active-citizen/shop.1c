@@ -196,14 +196,56 @@ $(document).ready(function() {
     }
 
 
-    
     /**
      * Выбор конкретного предложения
     */
-    $('.ag-shop-card__sizes input').change(function(){
-        
-        let pics = $(this).attr('pics').split('|');
+    $('.ag-shop-card__sizes input').click(function(){
 
+        let switched = $(this).attr("switched");
+        let crossValues = $(this).attr('cross-values').split(',');
+        let availStores = $(this).attr('stores').split(',');
+        let offers =  $(this).attr('offers').split(',');
+        let pics = $(this).attr('pics').split('|');
+        var propCode = $(this).attr("name");
+
+        $(this).parent().parent().find('input').attr('switched','off');
+
+        if(switched=='on'){
+            $(this).attr('switched','off');
+            $(this).prop('checked',false);
+            switched = false;
+        }
+        else{
+            $(this).attr('switched','on');
+            $(this).prop('checked',true);
+            switched = true;
+        }
+
+
+        if(switched){
+            $('.ag-shop-card__sizes input').each(function(){
+                if($(this).attr("name")==propCode)return true;
+                if(crossValues.indexOf($(this).val())>=0)
+                    $(this).prop('disabled',true);
+                else
+            });
+        }
+        else{
+            $('.ag-shop-card__sizes input').each(function(){
+                if($(this).attr("name")==propCode)return true;
+                $(this).prop('disabled',false);
+            });
+        }
+
+        console.log(propCode);
+        console.log(switched);
+        console.log(crossValues);
+        console.log(availStores);
+        console.log(offers);
+        console.log(pics);
+
+
+        /*
         $('.ag-shop-card__previews-container .ag-shop-card__preview').remove();
         for(i in pics){
             $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
@@ -241,6 +283,7 @@ $(document).ready(function() {
             $('.amounter').addClass('amounter--off');
             totalOfferId = selectedOfferId;
         }
+        */
 
  
         /*

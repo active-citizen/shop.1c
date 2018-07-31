@@ -500,55 +500,40 @@ class CCatalogOffer extends \AGShop\CAGShop{
             $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
         };
 
-        // Вычисляем индексы характеристик
-        $arResult["OFFER_PARAMETERS"] = [];
+        // Индекс свойств
+        $arResult["OFFERS_PROPS"] = [];
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
-            $nNum = 0;
-            $sParentPropCode = '';
             foreach($arOffer["1C_PROPS"] as $sPropCode=>$arProp){
-                if($nNum==0 && !isset($arResult["OFFER_PARAMETERS"][$sPropCode]))
-                    $arResult["OFFER_PARAMETERS"][$sPropCode] = [
-                        "info"=>[
-                            "name"=>$arProp["NAME"],
-                        ],
-                        "items"=>[],
+                if(!isset($arResult["OFFERS_PROPS"][$sPropCode]))
+                    $arResult["OFFERS_PROPS"][$sPropCode] = [
+                        "name"=>$arProp["NAME"],
+                        "values"=>[]
                     ];
 
-                if($nNum==0 &&
-                !isset($arResult["OFFER_PARAMETERS"][$sPropCode]["items"][$arProp["ID"]]))
-                    $arResult["OFFER_PARAMETERS"][$sPropCode]['items'][$arProp["ID"]] = [
-                        "value"=>$arProp["VALUE"],
-                        "offerId"=>$nOfferId,
-                        "childs"=>[]
-                    ];
+                if(!isset($arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]))
+                    $arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]
+                        = [
+                            "value"=>$arProp["VALUE"],
+                            "crossed"=>[],
+                            "stores"=>$arOffer["STORAGES"],
+                            "pics"=>$arOffer["PICS"]
+                        ];
 
-
-                if($nNum==1 && 
-                    !isset($arResult["OFFER_PARAMETERS"][$sParentPropCode]['items']
-                    [$nParentPropId]['childs'][$sPropCode])
-                )
-                $arResult["OFFER_PARAMETERS"][$sParentPropCode]['items'][$nParentPropId]['childs'][$sPropCode]
-                = [
-                    "info"=>[
-                        "name"=>$arProp["NAME"]
-                    ],
-                    "items"=>[]
-                ]; 
-
-                if($nNum==1 && 
-                    !isset($arResult["OFFER_PARAMETERS"][$sParentPropCode]['items']
-                    [$nParentPropId]['childs'][$sPropCode]['items'][$arProp["ID"]])
-                )
-                $arResult["OFFER_PARAMETERS"][$sParentPropCode]['items'][$nParentPropId]['childs'][$sPropCode]
-                ['items'][$arProp["ID"]]
-                = [
-                    "value"=>$arProp["VALUE"],
-                    "offerId"=>$nOfferId,
-                ]; 
-
-                $sParentPropCode = $sPropCode;
-                $nParentPropId = $arProp["ID"];
-                $nNum++;
+            }
+        }
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+            foreach($arOffer["1C_PROPS"] as $sPropCode0=>$arProp0){
+                foreach($arOffer["1C_PROPS"] as $sPropCode1=>$arProp1){
+                    if($arProp0["ID"]==$arProp1["ID"])continue;
+                    if(!isset(
+                       $arResult["OFFERS_PROPS"][$sPropCode0]["values"]
+                        [$arProp0["ID"]]["crossed"][$arProp1["ID"]]
+                    ))
+                    $arResult["OFFERS_PROPS"][$sPropCode0]["values"]
+                        [$arProp0["ID"]]["crossed"][$arProp1["ID"]] = [
+                            "offerId"=>$nOfferId,
+                        ];
+                }
             }
         }
 

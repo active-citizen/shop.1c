@@ -21,7 +21,8 @@
             if($count==count($arResult["OFFERS"][0]["STORAGES"]))echo
                 " checked ";
             */
-        ?>>
+        ?>
+        >
         <div class="ag-shop-card__places-item"><?= $arResult["STORAGES"][$id]["TITLE"] ?></div>
       </label>
       <? endforeach ?>
