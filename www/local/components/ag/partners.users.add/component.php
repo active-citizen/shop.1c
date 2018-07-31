@@ -34,7 +34,7 @@ $arResult["ERRORS"] = array();
 if(
     !$_REQUEST["LOGIN"]
     ||
-    !preg_match("#^[\d\w\.\-\_]+$#",$_REQUEST["LOGIN"])
+    !preg_match("#^[\d\w\.\-\_\@]+$#",$_REQUEST["LOGIN"])
 ){
     $arResult["ERRORS"][] = 'Некорректный формат поля Логин';
 }
