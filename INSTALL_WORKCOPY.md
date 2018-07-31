@@ -39,7 +39,6 @@ git checkout feature -f
 необходимо получить у администрации магазина и скопировать в рабочую копию
 + www/.integration/secret.inc.php
 + www/local/php_interface/settings.inc.php
-+ www/api/include/config.php
 
 # Выполнение миграций магазина
 + Авторизуемся от пользователя admin и переходим по адресу /local/.migration
