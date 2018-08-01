@@ -132,6 +132,7 @@ input.ag-balls[type="radio"]{
     width: auto !important;
     padding: 0px 5px;
     border-radius: 5px;
+    border: 1px solid #9c9c9c;
 }
 
 .form-success{
@@ -991,7 +992,7 @@ table.auction-winners .winner{
     width: 48px;
     height: 48px;
     border-radius: 5px;
-    border: 2px solid #ececec;
+    border: 1px solid #9c9c9c;
 }
 
 
@@ -1005,5 +1006,15 @@ input:disabled + .ag-shop-card__colors-item {
     border: 2px solid #EFEFEF;
     margin: 0 -7px;
     opacity: 0.5;
+}
+
+input:disabled + .ag-shop-card__sizes-item {
+    border: 2px solid #EFEFEF;
+    margin: 0 -7px;
+    opacity: 0.5;
+}
+
+input:disabled + .ag-shop-card__places-item {
+    opacity: 0.33;
 }
 

@@ -221,13 +221,20 @@ $(document).ready(function() {
             switched = true;
         }
 
-
+        // Если выбранный пункт оказывается включенным, то
+        // выключаем значения свойств, которых нет в паре с
+        // торговым предложением. И складов
         if(switched){
             $('.ag-shop-card__sizes input').each(function(){
                 if($(this).attr("name")==propCode)return true;
+                // Если это значение в паре со свойством - включем
                 if(crossValues.indexOf($(this).val())>=0)
+                    $(this).prop('disabled',false);
+                // Если не в паре - выключаем
+                else{
                     $(this).prop('disabled',true);
-                else
+                    $(this).prop('checked',false);
+                }
             });
         }
         else{
@@ -236,128 +243,49 @@ $(document).ready(function() {
                 $(this).prop('disabled',false);
             });
         }
-
-        console.log(propCode);
-        console.log(switched);
-        console.log(crossValues);
-        console.log(availStores);
-        console.log(offers);
-        console.log(pics);
-
-
-        /*
-        $('.ag-shop-card__previews-container .ag-shop-card__preview').remove();
-        for(i in pics){
-            $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",pics[i]);
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
-            
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
-                $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
-                $(this).addClass('ag-shop-card__preview--active');
-                $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
-            });
-        }
-        $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');
-        $('.ag-shop-card__image-container').css('background-image','url('+pics[0]+')');
-
-        let selectedOfferId = $(this).val();
-        // Если выбранный параметр родительский
-        if(!selectedOfferId){
-            let parentParamId =  $(this).attr('rel');
-            $('.js-choose__place').hide();
-            $('.ag-param-secondfield').hide();
-            $('.ag-shop-card__places').hide();
-            $('.ag-shop-card__selected-place').hide();
-            $('input[name="place"]').prop('checked',false);
-            $('.ag-param-secondfield input').prop('checked',false);
-            $('.ag-param-secondfield[parent="'+parentParamId+'"]').show();
-            $('.amounter').removeClass('amounter--on');
-            $('.amounter').addClass('amounter--off');
-        }
-        else{
-            $('.js-choose__place').show();
-            $('.ag-shop-card__places').hide();
-            $('.ag-shop-card__places[offer-id='+selectedOfferId+']').show();
-//            $('.amounter').removeClass('amounter--off');
-            $('.amounter').addClass('amounter--off');
-            totalOfferId = selectedOfferId;
-        }
-        */
-
- 
-        /*
-        var props = {};
-        var offerProps = {};
-
-        // Определяем набор
-        $('.ag-shop-card__sizes').each(function(){
-            props[$(this).find('input:checked').attr("name")] = $(this).find('input:checked').val();
+        let stores = availStores;
+        $('.ag-shop-card__sizes input:checked').each(function(){
+            console.log($(this).attr('stores'));
+            stores = Intersection(stores,$(this).attr('stores').split(','));
         });
-        
-        var targetMatches = Object.keys(props).length
-        // Определяем какому предложению соответствует набор
-        for(offerId in arOffers){
-            // Если число свойств предложения не совпадает с числом выбранных свойств
-            if(Object.keys(arOffers[offerId]["1C_PROPS"]).length!=Object.keys(props).length)
-                continue;
-            // Составляем набор свойств предложения
-            offerProps = {}
-            for(prop in arOffers[offerId]["1C_PROPS"])
-                offerProps[prop] = arOffers[offerId]["1C_PROPS"][prop].ID;
-            
-            // Сравниваем выбранный набор свойст с набором предложения
-            targetMatches = Object.keys(props).length
-            for(prop in props)
-                if(arOffers[offerId]["1C_PROPS"][prop].ID==props[prop])
-                    targetMatches--;
-            // Если не все свойства совпали - значит НЕ нужное нам предложение
-            if(targetMatches==0)break;
-        }
+        console.log(stores);
+        $('.ag-shop-card__places input').each(function(){
+            if(stores.indexOf($(this).val())>=0)
+                $(this).prop('disabled',false);
+            else{
+                $(this).prop('disabled',true);
+                if($(this).prop('checked')){
+                    $('.ag-shop-card__selected-place').addClass('hidden');
+                    $('.amounter').removeClass('amounter--on');
+                    $('.amounter').addClass('amounter--off');
+                    totalStoreId = 0;
+                }
+                $(this).prop('checked',false);
+            }
+        });
 
-        console.log(offerProps);
-        console.log(props);
-        
-        // Если выход по совпадению, значи предложение нашли
-        if(!targetMatches){
-            totalOfferId = offerId;
-            arOffers[offerId].PRICE;
-            $('.ag-shop-card__count-number').html(1);
-            $('#ag-shop-card__total-points').html(parseInt(arOffers[offerId].PRICE));
-            $('.ag-shop-card__submit-button strong').html(parseInt(arOffers[offerId].PRICE));
-            
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').remove();
-            for(i in arOffers[offerId].PICS){
-                $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
-                $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",arOffers[offerId].PICS[i]);
-                $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+arOffers[offerId].PICS[i]+");");
-                $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
-                    $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
-                    $(this).addClass('ag-shop-card__preview--active');
-                    $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
-                });
-            }
-            $('.ag-shop-card__image-container').css('background-image','url('+arOffers[offerId].PICS[0]+')');
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');
-            
-            $('.ag-shop-card__places').find('label').remove();
-            var count=0;
-            for(i in arOffers[offerId].STORAGES){
-                $('.ag-shop-card__places').append('<label><input onclick="return selectStorage('+arStorages[i].ID+
-                ');" type="radio" name="place" value="'+i
-                    +'" '+(count==0?'checked':'')+' ><div class="ag-shop-card__places-item">'+
-                arStorages[i].TITLE+'</div></label>');
-                if(!count)count = i;
-            }
-            selectStorage(arStorages[count].ID);
-            
+        if($('.ag-shop-card__sizes input:checked').length<=0){
+            $('.ag-shop-card__places input').prop("disabled",false);
         }
-        */
     });
 
     loadComments();
 
 });
+
+// Функция для вычисления пересечения массивов
+function Intersection(A,B){
+    var M=A.length, N=B.length, C=[];
+    for (var i=0; i<M; i++)
+     { var j=0, k=0;
+       while (B[j]!==A[i] && j<N) j++;
+       while (C[k]!==A[i] && k<C.length) k++;
+       if (j!=N && k==C.length) C[C.length]=A[i];
+     }
+   return C;
+}
+
+
 
 function input_variant_click(obj){
     var triggerTab = $('span[rel="'+obj.parent().parent().attr("id")+'"]');
@@ -377,13 +305,30 @@ function input_variant_click(obj){
 }
 
 
-function selectStorage(storageId){
+function selectStorage(obj){
+
+    let storageId = $(obj).val();
+    let switched = $(obj).attr("switched");
+    let offers =  $(obj).attr('offers').split(',');
+    var propsVals = $(obj).attr("propsvals").split(',');
+
+    $(this).parent().parent().find('input').attr('switched','off');
+
+    if(switched=='on'){
+        $(obj).attr('switched','off');
+        $(obj).prop('checked',false);
+        switched = false;
+    }
+    else{
+        $(obj).attr('switched','on');
+        $(obj).prop('checked',true);
+        switched = true;
+    }
+
     //Если мы выбрали место, удаляем класс ошибки
     $('.js-choose__place').removeClass('ag-shop-card__field--error');
 
-    $('.ag-shop-card__selected-place').removeClass('hidden');
 
-    totalStoreId = storageId;
     $('.ag-shop-card__selected-place-table').html('');
     var value= '';
     if(value = arStorages[storageId].ADDRESS)$('.ag-shop-card__selected-place-table').append(getStorageRow('Адрес',value));
@@ -414,8 +359,18 @@ function selectStorage(storageId){
         }
     });
     updateCounter();
-    $('.amounter').removeClass('amounter--off');
-    $('.amounter').addClass('amounter--on');
+    if(switched){
+        totalStoreId = storageId;
+        $('.ag-shop-card__selected-place').removeClass('hidden');
+        $('.amounter').removeClass('amounter--off');
+        $('.amounter').addClass('amounter--on');
+    }else{
+        totalStoreId = 0;
+        $('.ag-shop-card__selected-place').addClass('hidden');
+        $('.amounter').removeClass('amounter--on');
+        $('.amounter').addClass('amounter--off');
+    }
+
     loadComments();
 }
 

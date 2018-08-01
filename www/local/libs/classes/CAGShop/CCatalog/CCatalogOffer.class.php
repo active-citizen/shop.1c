@@ -518,9 +518,16 @@ class CCatalogOffer extends \AGShop\CAGShop{
                             "stores"=>$arOffer["STORAGES"],
                             "pics"=>$arOffer["PICS"]
                         ];
+                else{
+                    foreach($arOffer["STORAGES"] as $nKey=>$nAmount)
+                        $arResult["OFFERS_PROPS"][$sPropCode]["values"]
+                            [$arProp["ID"]]["stores"][$nKey] = $nAmount;
+                    
+                }
 
             }
         }
+        new \XPrint($arResult["OFFERS_JSON"]);
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
             foreach($arOffer["1C_PROPS"] as $sPropCode0=>$arProp0){
                 foreach($arOffer["1C_PROPS"] as $sPropCode1=>$arProp1){
@@ -533,6 +540,32 @@ class CCatalogOffer extends \AGShop\CAGShop{
                         [$arProp0["ID"]]["crossed"][$arProp1["ID"]] = [
                             "offerId"=>$nOfferId,
                         ];
+                }
+            }
+        }
+//        new \XPrint($arResult["OFFERS_PROPS"]);
+
+
+        // Составляем индекс складов и свойств товаров, которые на них есть
+        $arResult["OFFERS_STORAGES"] = [];
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+            foreach($arOffer["STORAGES"] as $nStoreId=>$nAmount){
+                foreach($arOffer["1C_PROPS"] as $nPropCode=>$arCode){
+                    if(!isset($arResult["OFFERS_STORAGES"][$nStoreId]))
+                        $arResult["OFFERS_STORAGES"][$nStoreId] = [
+                            "offers"=>[],
+                            "propsVals"=>[]
+                        ];
+                    if(!in_array(
+                        $nOfferId,
+                        $arResult["OFFERS_STORAGES"][$nStoreId]["offers"]
+                    ))$arResult["OFFERS_STORAGES"][$nStoreId]["offers"][] = 
+                        $nOfferId;
+                    if(!in_array(
+                        $arCode["ID"],
+                        $arResult["OFFERS_STORAGES"][$nStoreId]["propsVals"]
+                    ))$arResult["OFFERS_STORAGES"][$nStoreId]["propsVals"][] = 
+                        $arCode["ID"];
                 }
             }
         }

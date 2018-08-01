@@ -21,7 +21,9 @@
 //new XPrint($arResult["OFFERS_PROPS"]);
 ?>
 
-
+<?
+new XPrint($arResult["OFFERS_PROPS"]);
+?>
 
 <? foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp): ?>
   <div class="ag-shop-card__field">
@@ -35,6 +37,7 @@
             $arCross[]= $nValIdCross;
             $arOfferIds[] = $arCrossValue["offerId"];
         }
+        $arStores = [];
         foreach($arValue["stores"] as $nStoreId=>$nAmount)
             $arStores[] = $nStoreId;
         $arCross = array_unique($arCross);
