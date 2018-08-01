@@ -49,6 +49,9 @@ class CCatalogFilter extends \AGShop\CAGShop{
         
         if(isset($arFilter["store"]) && $arFilter["store"]==333)
             unset($arFilter["store"]);
+
+        foreach($arFilter["interest"] as $nKey=>$nVal)
+            if(!$nVal)unset($arFilter["interest"][$nKey]);
         
         return $arFilter;
     }
