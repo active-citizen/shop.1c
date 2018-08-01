@@ -41,7 +41,6 @@
         }
 
         function getArticleForSite($sCode){
-
             $arResult = \CIBlockElement::GetList(
                 ["SORT"=>"ASC"],
                 $arFilter = [
@@ -49,7 +48,7 @@
                     "ACTIVE"        =>  "Y",
                     "CODE"            =>  $sCode
                 ]
-            )->Fetch();
+            )->GetNext();
             return $arResult;
 
         }
