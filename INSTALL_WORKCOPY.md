@@ -31,7 +31,7 @@ www
 git init
 git remote add origin https://github.com/active-citizen/shop.1c.git
 git fetch
-git checkout feature -f
+git checkout develop -f
 ```
 
 # Копирование настроечных файлов
@@ -41,7 +41,7 @@ git checkout feature -f
 + www/local/php_interface/settings.inc.php
 
 # Выполнение миграций магазина
-+ Авторизуемся от пользователя admin и переходим по адресу /local/.migration
++ Авторизуемся от пользователя admin и переходим по адресу /local/.migrations
 + Выбираем все пункты и кликаем "Запустить". Дождаться окончания установки
 
 # Наполнение каталога товарами

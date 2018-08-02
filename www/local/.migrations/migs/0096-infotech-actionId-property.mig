@@ -1,0 +1,59 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     */
+    class cancel_property extends Migration{
+        function Run(){
+            
+            //Код валюты балл
+            $currency_code = "BAL";
+            
+            $sPropCode = "INFOTECH_ACTION_ID";
+
+            // Подключаем модуль инфоблоков
+            CModule::IncludeModule("iblock");
+
+            // Проверяем наличие свойства у инфоблока clothes_offers
+            $res = CIBlockProperty::GetByID($sPropCode,false,"clothes_offers");
+            // Выходим, если свойство есть
+            if($res->GetNext())return true;
+            
+            // Собираем массив для добавления свойства
+            $arFields = Array(
+                // Название свойства
+                "NAME" => "Инфотех ActionId",
+                // Активность
+                "ACTIVE" => "Y",
+                // Порядок сортировки
+                "SORT" => "3500",
+                // Кодовое обозначение
+                "CODE" => $sPropCode,
+                // Тип свойства 
+                "PROPERTY_TYPE" => "N",
+                // ID инфоблока для которого свойство
+                "IBLOCK_ID" => OFFER_IB_ID
+            );
+            
+            // Создаём объект инфоблока
+            $ibp = new CIBlockProperty;
+            // Добавляем свойство к инфоблоку
+            if(!$PropID = $ibp->Add($arFields)){
+                // Выводим текст ошибки, если добавление не удалось
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$cancel_property = new cancel_property();
+// Откатываем, если неудачно
+if(!$cancel_property->Run())$cancel_property->RollBack();

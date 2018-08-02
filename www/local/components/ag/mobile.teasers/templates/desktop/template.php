@@ -67,7 +67,7 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                         <!-- Product Details -->
                         <div class="desktop-product-details">
                             <div class="desktop-product-details-description">
-                            <?= cardTextClear($arProduct["PREVIEW_TEXT"]); ?>
+                            <?=strip_tags($arProduct["PREVIEW_TEXT"]); ?>
                             </div>
                         </div>
 
@@ -99,9 +99,7 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                                 <span class="desktop-product-info__category"><?=
                                 $arProduct["SECTION"]["NAME"]
                                 ?></span>
-                                <p class="desktop-product-info__description"><? 
-                                echo cardTextClear($arProduct["PREVIEW_TEXT"])
-                                ?></p>
+                                <p class="desktop-product-info__description"><?=cardTextClear($arProduct["PREVIEW_TEXT"]);?></p>
                             </div>
                         </div>
                         <!-- ============= -->

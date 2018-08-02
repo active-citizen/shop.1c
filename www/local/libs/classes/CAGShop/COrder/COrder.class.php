@@ -492,7 +492,21 @@ class COrder extends \AGShop\CAGShop{
                 str_replace("u","",$arUser["LOGIN"]),
                 $this->getParam("Num")
             );
-            
+
+            // По умолчанию используем categoryPriceId
+            $nCategoryPriceId =
+                $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"];
+            // Но если указаны cityId и actionId, то в качествее categoryPriceId
+            // Берём первый доступный по дате
+            $nActionId = $arSKU["SKU"]["PROPERTIES"]["INFOTECH_ACTION_ID"];
+            $nCityId = $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CITY_ID"];
+
+            if($nActionId && $nCityId){
+                $nCategoryPriceId = $objInfotech->getLastCategoryPriceId(
+                    $nActionId, $nCityId
+                );
+            }
+
             if($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
                 $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"],
                 $arSKU["AMOUNT"]
