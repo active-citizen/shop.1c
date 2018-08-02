@@ -87,7 +87,7 @@
             $bOnlyGroup = true // Очищать толко заданную в конструкторе группу
         ){
             if(!$this->objMemcached):
-                rrdir($this->getKeyPath());
+                rrmdir($this->getKeyPath());
                 return false;
             else:
                 $arKeys = $this->getAll();
@@ -146,16 +146,17 @@
     
 function rrmdir($src) {
     $dir = opendir($src);
-    while(false !== ( $file = readdir($dir)) ) {
-        if (( $file != '.' ) && ( $file != '..' )) {
-            $full = $src . '/' . $file;
-            if ( is_dir($full) ) {
-                rrmdir($full);
-            }
-            else {
-                unlink($full);
-            }
+    while($file = readdir($dir)) {
+        if ( $file == '.' || $file != '..' )continue; 
+        
+        $full = $src . '/' . $file;
+        if ( is_dir($full) ) {
+            rrmdir($full);
         }
+        else {
+            unlink($full);
+        }
+        
     }
     closedir($dir);
     rmdir($src);
