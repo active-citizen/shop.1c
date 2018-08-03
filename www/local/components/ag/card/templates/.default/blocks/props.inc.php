@@ -21,10 +21,6 @@
 //new XPrint($arResult["OFFERS_PROPS"]);
 ?>
 
-<?
-new XPrint($arResult["OFFERS_PROPS"]);
-?>
-
 <? foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp): ?>
   <div class="ag-shop-card__field">
     <div class="ag-shop-card__fieldname"><?= $arProp["name"]?>:</div>

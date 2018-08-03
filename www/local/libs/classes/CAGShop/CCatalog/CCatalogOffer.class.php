@@ -522,12 +522,21 @@ class CCatalogOffer extends \AGShop\CAGShop{
                     foreach($arOffer["STORAGES"] as $nKey=>$nAmount)
                         $arResult["OFFERS_PROPS"][$sPropCode]["values"]
                             [$arProp["ID"]]["stores"][$nKey] = $nAmount;
-                    
+
+                    foreach($arOffer["PICS"] as $sPic)
+                        if(!in_array(
+                            $sPic,
+                            $arResult["OFFERS_PROPS"][$sPropCode]["values"]
+                                [$arProp["ID"]]["pics"]
+                        ))
+                        $arResult["OFFERS_PROPS"][$sPropCode]["values"]
+                            [$arProp["ID"]]["pics"][] = $sPic;
                 }
 
             }
         }
-        new \XPrint($arResult["OFFERS_JSON"]);
+        
+        
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
             foreach($arOffer["1C_PROPS"] as $sPropCode0=>$arProp0){
                 foreach($arOffer["1C_PROPS"] as $sPropCode1=>$arProp1){
@@ -543,8 +552,6 @@ class CCatalogOffer extends \AGShop\CAGShop{
                 }
             }
         }
-//        new \XPrint($arResult["OFFERS_PROPS"]);
-
 
         // Составляем индекс складов и свойств товаров, которые на них есть
         $arResult["OFFERS_STORAGES"] = [];

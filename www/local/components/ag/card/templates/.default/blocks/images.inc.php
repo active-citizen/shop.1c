@@ -51,10 +51,18 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
       </button>
     </div>
     <div class="ag-shop-card__previews-container">
-    <? foreach($arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto):?>
+    <?
+        $arPics = [];
+        foreach($arResult["OFFERS"] as $arOffer)
+            foreach($arOffer["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto)
+                $arPics[] = $morePhoto["FILE_PATH"];
+        $arPics = array_unique($arPics);
+        print_r($arPics);
+    ?>
+    <? foreach($arPics as $key=>$morePhoto):?>
       <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?= 
-      $morePhoto["FILE_PATH"]
-      ?>);" rel="<?= $morePhoto["FILE_PATH"];?>"></div>
+      $morePhoto
+      ?>);" rel="<?= $morePhoto;?>"></div>
     <? endforeach ?>
     </div>
   </div>
