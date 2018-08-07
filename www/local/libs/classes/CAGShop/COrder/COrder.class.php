@@ -508,7 +508,7 @@ class COrder extends \AGShop\CAGShop{
             }
 
             if($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
-                $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"],
+                $nCategoryPriceId,
                 $arSKU["AMOUNT"]
             )){
                 $sInfotechStatus = 1;
