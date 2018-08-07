@@ -264,7 +264,8 @@
         */
         private function __createOrderWithoutSeats(){
             $arUser = $this->arBitrixUser;
-            
+            if(!$this->__isEmailCorrect())return false;
+           
             if(!$arAnswer = $this->__request("CREATE_ORDER_EXT",[
                 "userId"    =>  $this->nInfotechUser,
                 "sessionId" =>  $this->sSessionId,
@@ -288,6 +289,8 @@
             @return true в случае успеха
         */
         private function __reservationWithoutSeats($nPriceCategory, $nAmount = 1){
+            if(!$this->__isEmailCorrect())return false;
+
             if(!$arAnswer = $this->__request("RESERVATION",[
                 "type"      =>  "RESERVE",
                 "userId"    =>  $this->nInfotechUser,
@@ -318,6 +321,18 @@
             return $arAnswer["seatList"];
         }
         
+
+        /**
+            Проверка корректности EMAIL
+            email берётся из информации о текущем авторизованном пользователе
+        */
+        function __isEmailCorrect(){
+            $arUser = $this->arBitrixUser;
+            if(preg_match("#^u\d+\@shop\.ag\.mos\.ru$#",$arUser["EMAIL"]))return $this->addError(
+                "Не указан email. Некуда выслать билет."
+            );
+            return true;
+         }
 
 
         /**
