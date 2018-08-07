@@ -22,7 +22,7 @@
 ?>
 
 <? foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp): ?>
-  <div class="ag-shop-card__field">
+  <div class="ag-shop-card__field product-character">
     <div class="ag-shop-card__fieldname"><?= $arProp["name"]?>:</div>
     <div class="ag-shop-card__sizes">
       <? foreach($arProp['values'] as $nValId=>$arValue):?>

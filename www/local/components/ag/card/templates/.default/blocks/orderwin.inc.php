@@ -8,6 +8,7 @@
         <div class="ag-shop-modal__label">Заказ:</div>
         <div class="ag-shop-modal__text ag-shop-modal__text--marked" id="confirm-name">Сумка городская</div>
       </div>
+      <div class="properties"></div>
       <div class="ag-shop-modal__row">
         <div class="ag-shop-modal__label">Цена:</div>
         <div class="ag-shop-modal__text ag-shop-modal__text--marked"

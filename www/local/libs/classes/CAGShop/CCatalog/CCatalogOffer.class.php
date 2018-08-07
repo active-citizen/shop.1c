@@ -576,6 +576,14 @@ class CCatalogOffer extends \AGShop\CAGShop{
                 }
             }
         }
+        // Список складов для товаров без свойств
+        if(!$arResult["OFFERS_STORAGES"]){
+            foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+                foreach($arOffer["STORAGES"] as $nStoreId=>$nAmount){
+                    $arResult["OFFERS_STORAGES"][$nStoreId] = $nAmount;
+                }
+            }
+        }
 
         return $arResult;
     }

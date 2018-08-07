@@ -13,7 +13,7 @@
     )
     &&
     // Если есть на складе
-    count($arResult["OFFERS"][0]["STORAGES"]) 
+    count($arResult["OFFERS_STORAGES"]) 
     &&  
     // Если достаточно средств
     $arResult["ACCOUNT"]["CURRENT_BUDGET"] >= $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]

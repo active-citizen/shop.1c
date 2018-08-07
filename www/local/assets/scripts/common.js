@@ -256,7 +256,6 @@ $(document).ready(function() {
         // Включаем/выключаем доступные склады для набора свойств
         let stores = availStores;
         $('.ag-shop-card__sizes input:checked').each(function(){
-            console.log($(this).attr('stores'));
             stores = Intersection(stores,$(this).attr('stores').split(','));
         });
         $('.ag-shop-card__places input').each(function(){
@@ -311,7 +310,7 @@ $(document).ready(function() {
         $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');        
     });
 
-    $('input[name="place"]').click(function selectStorage(){
+    $('input[name="place"]').click(function(){
     
         let storageId = $(this).val();
         let switched = $(this).attr("switched");
@@ -509,11 +508,38 @@ function loadComments(){
 function productConfirm(){
     totalStoreId = $("input[name='place']:checked").val();
     // Не выбран склад
+
+    // Составляем массив выбранных характеристик
+    let properties = new Array();
+    $('.ag-shop-card__field .ag-shop-card__sizes input:checked').each(function(){
+        properties.push({
+            name: $(this).parent().parent().parent()
+                .find('.ag-shop-card__fieldname').last().html(),
+            value: $(this).parent().find('div').last().html(),
+            offers: $(this).attr("offers").split(',')
+        });
+    })
+    
+    if(properties.length<$('.product-character').length){
+        riseError('Все характеристики товара должны быть выбраны');
+        return false;
+    }
+
     if(!totalStoreId){
         riseError('Выберите склад получения');
         $('.js-choose__place').addClass('ag-shop-card__field--error');
         return false;
     }
+    
+    // Для выбранных характеристик вычисляем ID предложения
+    if(properties.length){
+        var crossOffers = properties[0].offers;
+        for(i in properties)
+            crossOffers = Intersection(crossOffers,properties[i].offers)
+        if(crossOffers.length)totalOfferId = crossOffers[0];
+    }
+    console.log(totalOfferId);
+        
     $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
@@ -524,6 +550,22 @@ function productConfirm(){
     $('#confirm-cost span').html($('#ag-shop-card__total-points').html());
     $('#confirm-store').html($('.ag-shop-card__selected-place-station').html());
     $('#confirm-store-id').html(totalStoreId);
+    
+    $('.ag-shop-modal__container .properties').html('');
+    for(i in properties){
+        $('.ag-shop-modal__container .properties').append(
+            '<div class="ag-shop-modal__row">'
+            +   '<div class="ag-shop-modal__label">'
+            +   properties[i].name
+            +   '</div>'
+            +   '<div class="ag-shop-modal__text ag-shop-modal__text--marked">'
+            +   properties[i].value
+            +   '</div>'
+            +'</div>'
+            
+        );
+    }
+    
     if(parseInt($('#confirm-amount').html())>1){
         $('#confirm-total-row').css('display','block');
         $('#confirm-total').html(

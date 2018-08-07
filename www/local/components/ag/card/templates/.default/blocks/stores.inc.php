@@ -6,7 +6,7 @@
       if(!$stopDailyLimit)
       foreach($arResult["OFFERS_STORAGES"] as $id=>$arStore): $count++;?>
       <label>
-        <input  onclick="return selectStorage(this);"type="radio" name="place" value="<?= $id ?>" <?
+        <input type="radio" name="place" value="<?= $id ?>" <?
         if (count($arResult["OFFERS"][0]["STORAGES"]) == 1) {
             $storageSelected = true;
             echo " checked ";
