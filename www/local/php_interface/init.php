@@ -31,7 +31,7 @@
     );
     
     
-    define("CONFIG_STATIC",true);
+    define("CONFIG_STATIC",false);
     define("COMMON_CACHE_TIME",300);
     // Значение невыбираемого остатка по умолчанию
     define("DEFAULT_STORE_LIMIT",0);
