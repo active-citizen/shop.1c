@@ -24,6 +24,8 @@ if(
 ))$stopDailyLimit =
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"];
 
+if(!$arResult["INFOTECH_ACTIVE"])$stopDailyLimit = 1;
+
 
 foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
     if(!trim($v))unset($arResult["CATALOG_ITEM"]["USERCATS"][$k]);
@@ -133,11 +135,18 @@ foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
                     <a href="http://ag.mos.ru/">авторизоваться</a>
                 </div>
               </div>
-            <? elseif($stopDailyLimit):?>
+            <? elseif($stopDailyLimit && $arResult["INFOTECH_ACTIVE"]):?>
               <div class="ag-shop-card__container">
                 <div class="ag-shop-card__requirements">
                     Дневной лимит заказа данного поощрения исчерпан. Попробуйте
                     повторить попытку заказа завтра.
+                </div>
+              </div>
+            <? elseif($stopDailyLimit && !$arResult["INFOTECH_ACTIVE"]):?>
+              <div class="ag-shop-card__container">
+                <div class="ag-shop-card__requirements">
+                    Дневной лимит билетов исчерпан. Попробуйте повторить попытку
+                    заказа после 10:00.
                 </div>
               </div>
             <? elseif(

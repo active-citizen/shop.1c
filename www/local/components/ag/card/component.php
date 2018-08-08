@@ -9,6 +9,9 @@ require_once($_SERVER["DOCUMENT_ROOT"]
     ."/local/libs/classes/CAGShop/CIntegration/CIntegrationParking.class.php"
 );
 require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CIntegration/CIntegrationInfotech.class.php"
+);
+require_once($_SERVER["DOCUMENT_ROOT"]
     ."/local/libs/classes/CAGShop/CUser/CUser.class.php"
 );
 require_once($_SERVER["DOCUMENT_ROOT"]
@@ -65,7 +68,7 @@ use AGShop\CAuction as Auction;
     $objCache = new \Cache\CCache(
         "card_product_common_info",
         $arParams["PRODUCT_CODE"],
-        300
+        COMMON_CACHE_TIME
     );
     if(!$arResult["CATALOG_ITEM"] = $objCache->get()){
         $arResult["CATALOG_ITEM"] = $objCProduct->getByCode(
@@ -73,7 +76,6 @@ use AGShop\CAuction as Auction;
         );
         $objCache->set($arResult["CATALOG_ITEM"]);
     }
-
     if($objCProduct->isActive($arResult["CATALOG_ITEM"]["ID"])):
 
 
@@ -125,6 +127,41 @@ use AGShop\CAuction as Auction;
         $arOffers = $objCOffer->getOffersForCard(
             $arResult["CATALOG_ITEM"]["ID"],$arResult["CATALOG_ITEM"]
         );
+
+        $arResult["INFOTECH_ACTIVE"] = true;
+        //////////// Получаем доступность билетов по периодическому инфотеку
+        if(
+            isset($arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_CITY_ID"][0]["VALUE"])
+            &&
+            $nCityId =
+               $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_CITY_ID"][0]["VALUE"]
+            &&
+            isset($arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"])
+            &&
+            $nActionId =
+               $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"]
+        ){
+            $objCache = new \Cache\CCache(
+                "infotech_catPriceId",
+                $nCityId."_".$nActionId,
+                COMMON_CACHE_TIME
+            );
+            $nCategoryPriceId = $objCache->get();
+            if(!$nCategoryPriceId){
+                $objInfotech = new \Integration\CIntegrationInfotech(
+                    str_replace("u","",$USER->GetLogin()),
+                    0
+                );
+
+                $nCategoryPriceId = $objInfotech->getLastCategoryPriceId(
+                    $nActionId, $nCityId
+                );
+                $objCache->set($nCategoryPriceId?$nCategoryPriceId:"none");
+            }
+
+            if(!intval($nCategoryPriceId))$arResult["INFOTECH_ACTIVE"] = false;
+        }
+
         foreach($arOffers as $sKey=>$sValue){
             $arResult[$sKey] = $sValue;
         }
