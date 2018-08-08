@@ -141,21 +141,22 @@ use AGShop\CAuction as Auction;
             $nActionId =
                $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"]
         ){
-            $objInfotech = new \Integration\CIntegrationInfotech(
-                str_replace("u","",$USER->GetLogin()),
-                0
-            );
-
             $objCache = new \Cache\CCache(
                 "infotech_catPriceId",
                 $nCityId."_".$nActionId,
                 COMMON_CACHE_TIME
             );
-            if(!$nCategoryPriceId = $objCache->get()){
+            $nCategoryPriceId = $objCache->get();
+            if(!$nCategoryPriceId){
+                $objInfotech = new \Integration\CIntegrationInfotech(
+                    str_replace("u","",$USER->GetLogin()),
+                    0
+                );
+
                 $nCategoryPriceId = $objInfotech->getLastCategoryPriceId(
                     $nActionId, $nCityId
                 );
-                $objCache->set($nCategoryPriceId);
+                $objCache->set($nCategoryPriceId?$nCategoryPriceId:"none");
             }
 
             if(!intval($nCategoryPriceId))$arResult["INFOTECH_ACTIVE"] = false;
