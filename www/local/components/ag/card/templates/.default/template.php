@@ -24,6 +24,8 @@ if(
 ))$stopDailyLimit =
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["DAILY_LIMIT"][0]["VALUE"];
 
+if(!$arResult["INFOTECH_ACTIVE"])$stopDailyLimit = 1;
+
 
 foreach($arResult["CATALOG_ITEM"]["USERCATS"] as $k=>$v)
     if(!trim($v))unset($arResult["CATALOG_ITEM"]["USERCATS"][$k]);
