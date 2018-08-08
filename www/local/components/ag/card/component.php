@@ -133,14 +133,17 @@ use AGShop\CAuction as Auction;
         if(
             isset($arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_CITY_ID"][0]["VALUE"])
             &&
-            $nCityId =
-               $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_CITY_ID"][0]["VALUE"]
+            $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_CITY_ID"][0]["VALUE"]
             &&
             isset($arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"])
             &&
-            $nActionId =
-               $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"]
+            $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"]
         ){
+            $nCityId =
+               $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_CITY_ID"][0]["VALUE"];
+            $nActionId =
+               $arOffers["OFFERS"][0]["PROPERTIES"]["INFOTECH_ACTION_ID"][0]["VALUE"];
+               
             $objCache = new \Cache\CCache(
                 "infotech_catPriceId",
                 $nCityId."_".$nActionId,
