@@ -14,7 +14,12 @@ $resStoreProduct = CCatalogStoreProduct::GetList(
 );
 
 $arProducts = array();
-$arStores = array();
+$arStores = [
+    [
+        "ID"=>0,
+        "VALUE"=>"Цена(баллы)"
+    ]
+];
 $arTable = array();
 
 while($arStoreProduct = $resStoreProduct->GetNext()){
@@ -33,7 +38,8 @@ while($arStoreProduct = $resStoreProduct->GetNext()){
             ."]"
         );
    if(!isset($arTable[$arStoreProduct["PRODUCT_ID"]]))
-        $arTable[$arStoreProduct["PRODUCT_ID"]] = array();
+        $arTable[$arStoreProduct["PRODUCT_ID"]] =
+            [0=>$arProductInfo["PRODUCT"]["PROPERTY_MINIMUM_PRICE_VALUE"]];
    if(!isset($arTable[$arStoreProduct["PRODUCT_ID"]][$arStoreProduct["STORE_ID"]]))
         $arTable[$arStoreProduct["PRODUCT_ID"]][$arStoreProduct["STORE_ID"]] = 0;
 
@@ -101,7 +107,6 @@ foreach($arResult["CELLS"] as $nRowId=>$arRow){
 
 uasort($arResult["ROWS"],"storagesSortFunc");
 
-
 function storagesSortFunc($a,$b){
     return $a["CLASS"]>$b["CLASS"];
 }
@@ -132,7 +137,11 @@ function getProductInfo($nOfferId){
             ),
             false,
             array("nTopCount"=>1),
-            array("NAME","ID","IBLOCK_SECTION_ID","CODE","ACTIVE","PROPERTY_HIDE_IF_ABSENT","PROPERTY_HIDE_DATE")
+            array(
+                "NAME","ID","IBLOCK_SECTION_ID","CODE","ACTIVE",
+                "PROPERTY_HIDE_IF_ABSENT","PROPERTY_HIDE_DATE",
+                "PROPERTY_MINIMUM_PRICE"
+            )
         )->GetNext();
     $arResult["SECTION"] = 
         $arSection = CIBlockSECTION::GetList(
