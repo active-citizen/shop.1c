@@ -1,5 +1,9 @@
 <?
-include("logger.inc.php");
+if(
+    $_SERVER["HTTP_HOST"]=='shop.ag.mos.ru'
+    ||
+    $_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru'
+)include("logger.inc.php");
 
 /*
     Custom catalog importer
@@ -87,6 +91,7 @@ if(
     die;
 }
 
+    
 /*
     Custom 1C -> Bitrix import
 */

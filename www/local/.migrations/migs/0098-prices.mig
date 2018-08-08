@@ -1,0 +1,91 @@
+<?php
+
+    if(file_exists("../common.php"))
+            require_once("../common.php");
+
+
+    /**
+     */
+    class cancel_property extends Migration{
+        function Run(){
+            // Подключаем модуль инфоблоков
+            CModule::IncludeModule("iblock");
+            
+            $sPropCode = "MAXIMUM_PRICE";
+
+
+            // Проверяем наличие свойства у инфоблока clothes
+            $res = CIBlockProperty::GetByID($sPropCode,false,"clothes");
+            // Выходим, если свойство есть
+            if($arProp = $res->GetNext())return true;
+            print_r($arProp);
+            
+            // Собираем массив для добавления свойства
+            $arFields = Array(
+                // Название свойства
+                "NAME" => "Максимальная цена",
+                // Активность
+                "ACTIVE" => "Y",
+                // Порядок сортировки
+                "SORT" => "3700",
+                // Кодовое обозначение
+                "CODE" => $sPropCode,
+                // Тип свойства (N - число)
+                "PROPERTY_TYPE" => "N",
+                "IBLOCK_ID" => CATALOG_IB_ID
+            );
+            
+            // Создаём объект инфоблока
+            $ibp = new CIBlockProperty;
+            // Добавляем свойство к инфоблоку
+            if(!$PropID = $ibp->Add($arFields)){
+                // Выводим текст ошибки, если добавление не удалось
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+
+
+
+            $sPropCode = "MINIMUM_PRICE";
+
+            // Проверяем наличие свойства у инфоблока clothes
+            $res = CIBlockProperty::GetByID($sPropCode,false,"clothes");
+            // Выходим, если свойство есть
+            if($arProp = $res->GetNext())return true;
+            print_r($arProp);
+            
+            // Собираем массив для добавления свойства
+            $arFields = Array(
+                // Название свойства
+                "NAME" => "Минимальная цена",
+                // Активность
+                "ACTIVE" => "Y",
+                // Порядок сортировки
+                "SORT" => "3700",
+                // Кодовое обозначение
+                "CODE" => $sPropCode,
+                // Тип свойства (N - число)
+                "PROPERTY_TYPE" => "N",
+                "IBLOCK_ID" => CATALOG_IB_ID
+            );
+            
+            // Создаём объект инфоблока
+            $ibp = new CIBlockProperty;
+            // Добавляем свойство к инфоблоку
+            if(!$PropID = $ibp->Add($arFields)){
+                // Выводим текст ошибки, если добавление не удалось
+                $this->FatalError($ibp->LAST_ERROR);
+                return false;
+            }            
+
+            
+            return true;
+        }
+        
+    }
+    
+    
+// Запускаем миграцию    
+$cancel_property = new cancel_property();
+// Откатываем, если неудачно
+if(!$cancel_property->Run())$cancel_property->RollBack();
