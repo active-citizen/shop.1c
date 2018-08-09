@@ -143,13 +143,17 @@
    
     $objTag = new \Catalog\CCatalogProductTag(INTEREST_PROPERTY_ID);
     $arObjInterests = $objTag->getAllTags($arParams["filter"]["section_code"]);
-    $arInterests = array_merge([[
+    $arInterests = array_merge(
+        [
+            [
             "NAME"  =>  "Все",
             "CODE"  =>  "All",
             "ID"    =>  0,
-            "CLASS" => "dropdown-checkbox-all",
+            "CLASS" => "dropdown-checkbox-all defaultCheck",
             "CHECKED"=> count($arParams["filter"]["interest"])?false:true
-        ]],
+            ]
+        ],
+        
         $arObjInterests
     );
    

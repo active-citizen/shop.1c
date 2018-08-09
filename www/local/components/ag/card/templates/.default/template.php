@@ -29,6 +29,8 @@
 ?>
 <?
 
+if(!$arResult["INFOTECH_ACTIVE"])$stopDailyLimit = 1;
+
 ?>
 <? if(
     isset($arResult["CATALOG_ITEM"]["USERCATS"])

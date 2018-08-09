@@ -507,7 +507,11 @@ class COrder extends \AGShop\CAGShop{
                 );
             }
 
-            if($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
+            if(!$nCategoryPriceId){
+                $this->addError("Нет доступных к заказу билетов");
+                $sInfotechStatus = 1;
+            }
+            elseif($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
                 $nCategoryPriceId,
                 $arSKU["AMOUNT"]
             )){
