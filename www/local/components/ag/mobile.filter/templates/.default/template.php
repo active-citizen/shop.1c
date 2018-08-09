@@ -107,7 +107,7 @@
                                         <? foreach($arResult["INTERESTS"] as $arInterest):?>
 										<div class="mobile-aside-form-item">
 											<div class="custom-checkbox-default">
-												<input class="<? if($arInterest["CLASS"]):?><?= $arInterest["CLASS"]?><? endif ?> custom-checkbox-square__input defaultReset"  
+												<input class="<? if($arInterest["CLASS"]):?><?= $arInterest["CLASS"]?><? endif ?> custom-checkbox-square__input"  
                                                 id="productInterest<?= $arInterest["CODE"]?>" type="checkbox" 
                                                 name="productInterest<?= $arInterest["CODE"]?>" 
                                                 value="<?= $arInterest["ID"]?>" 
