@@ -101,9 +101,11 @@
         /**
             Отправка билетов пользователю
 
+            @param $sEmail - email, на который надо отправить письма. Если он
+                пустой - берётся email из профиля
             @param $nOrderId - Id заказа в инфотехе
         */
-        public function sendTickets($nOrderId){
+        public function sendTickets($nOrderId, $sEmail = ''){
 
             $this->nOrderId = $nOrderId;
 
@@ -112,7 +114,7 @@
             
             
             // Отправляем письмо с билетами
-            if(!$this->__sendTickets())return false;
+            if(!$this->__sendTickets($sEmail))return false;
         }
 
         
@@ -163,17 +165,19 @@
 
         /**
             Отправка письма с билетом
-
+            
+            @param $sEmail - email, на который надо отправить письма. Если он
+                пустой - берётся email из профиля
             @return true в случае успеха
         */
-        private function __sendTickets(){
+        private function __sendTickets($sEmail = ''){
             $arUser = $this->arBitrixUser;
 
             if(!$arAnswer = $this->__request("SEND_TICKETS_TO_EMAIL",[
                 "userId"        =>  $this->nInfotechUser,
                 "sessionId"     =>  $this->sSessionId,
                 "orderId"       =>  $this->nOrderId,
-                "email"         =>  $arUser["EMAIL"],
+                "email"         =>  $sEmail?$sEmail:$arUser["EMAIL"],
                 "ticketIdList"  =>  $this->arTicketsIds
             ]))return false;
             return true;

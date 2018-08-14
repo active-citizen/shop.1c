@@ -40,7 +40,46 @@
         </a>
     </li>
     <? endif ?>
+    <? if(
+        $USER->IsAdmin()
+        ||
+        in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+    ):?>
+    <li>
+        <a href="#" rel="order-tickets">
+            Билеты
+        </a>
+    </li>
+    <? endif ?>
 </ul>
+<!-- 
+<?
+    print_r($arResult);
+?>
+-->
+
+<div class="partners-order-main" id="order-tickets" style="display:none">
+    <h2>Повторная отправка билетов на почту покупателя</h2>
+
+    <form role="form" method="post">
+      <div class="form-group">
+        <input type="hidden" name="phone" value="<?= 
+            str_replace("u","",$arResult["ORDER"]["USER_LOGIN"])
+        ?>">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" 
+        placeholder="Enter email" value="<?= 
+            $arResult["ORDER"]["USER_EMAIL"]
+        ?>" name="email">
+      </div>
+      <input type="submit" name="resend_tickets" 
+      class="btn btn-default" Value="Отправить">
+    </form>
+
+</div>
+
+
+
 <? if($arResult["MAILS"]):?>
 <div class="partners-order-main" id="order-mails" style="display:none">
     <table class="table table-striped mails">
