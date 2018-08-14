@@ -2,6 +2,7 @@
 CModule::IncludeModule('catalog');
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationInfotech.class.php");
 use AGShop\Integration as Integration;
 
 $arParams["ORDER_ID"] = 
@@ -236,6 +237,46 @@ in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
     $obMail = new CMailIndex;
       
     $arResult["MAILS"] = $obMail->getByOrderId($arParams["ORDER_ID"]);
+}
+
+// Переотправка билетов инфотеха на email
+if(
+    isset($_REQUEST["resend_tickets"]) && $_REQUEST["resend_tickets"]
+    &&
+    isset($_REQUEST["phone"]) && $_REQUEST["phone"]
+    &&
+    isset($_REQUEST["email"]) && $_REQUEST["email"]
+    &&
+    isset($_REQUEST["ID"]) && $_REQUEST["ID"]
+    &&
+    (
+        $USER->IsAdmin()
+        ||
+        in_array(SHOP_ADMIN, $USER->GetUserGroupArray())
+    )
+){
+    $objInfotech = new \Integration\CIntegrationInfotech(
+        $_REQUEST["phone"],
+        $arResult["ORDER"]["ADDITIONAL_INFO"]
+    );
+    // Находим инфотех-ID этого заказа
+    $nOrderId = 0;
+    foreach($arResult["ORDER"]["CURL_LOG"] as $arCurlLog){
+        if(!$objLog = json_decode($arCurlLog["post_data"]))continue;
+        if(!property_exists($objLog,"orderId"))continue;
+        if(!intval($objLog->orderId))continue;
+        $nOrderId = intval($objLog->orderId);
+        break;
+    }
+    $objInfotech->sendTickets($nOrderId,$_REQUEST["email"]);
+
+    if(!$objInfotech->getErrors()){
+        LocalRedirect($_SERVER["REQUEST_URI"]);
+        die;
+    }
+    echo "<pre>";
+    print_r($objInfotech->getErrors());
+    echo "</pre>";
 }
 
 // Админам доступно отвязывание номеров троек
