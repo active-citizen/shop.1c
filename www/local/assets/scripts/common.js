@@ -874,3 +874,109 @@ function riseError(message){
     $("#rise-error").fadeIn();
 }
 
+/*Маленький боковой слайдер для вывода предпросмотра картинок в карточке товара*/
+
+ var Carousel = {
+  width: 60,
+  height: 60,     // Images are forced into a width of this many pixels.
+  numVisible: 6,  // The number of images visible at once.
+  duration: 600,  // Animation duration in milliseconds.
+  padding: 2     // Vertical padding around each image, in pixels.
+};
+
+function rotateForward() {
+  var carousel = Carousel.carousel,
+      children = carousel.children,
+      firstChild = children[0],
+      lastChild = children[children.length - 1];
+  carousel.insertBefore(lastChild, firstChild);
+}
+function rotateBackward() {
+  var carousel = Carousel.carousel,
+      children = carousel.children,
+      firstChild = children[0],
+      lastChild = children[children.length - 1];
+  carousel.insertBefore(firstChild, lastChild.nextSibling);
+}
+
+function animate(begin, end, finalTask) {
+  var wrapper = Carousel.wrapper,
+      carousel = Carousel.carousel,
+      change = end - begin,
+      duration = Carousel.duration,
+      startTime = Date.now();
+  carousel.style.top = begin + 'px';
+  var animateInterval = window.setInterval(function () {
+    var t = Date.now() - startTime;
+    if (t >= duration) {
+      window.clearInterval(animateInterval);
+      finalTask();
+      return;
+    }
+    t /= (duration / 2);
+    var top = begin + (t < 1 ? change / 2 * Math.pow(t, 3) :
+                               change / 2 * (Math.pow(t - 2, 3) + 2));
+    carousel.style.top = top + 'px';
+  }, 1000 / 60);
+}
+
+window.onload = function () {
+  var carousel = Carousel.carousel = document.getElementById('carousel'),
+      images = carousel.getElementsByClassName('ag-shop-card__preview'),
+      numImages = images.length,
+      imageWidth = Carousel.width,
+      imageHeight = Carousel.height,
+     //aspectRatio = images[0].width / images[0].height,
+     //imageHeight = imageWidth / aspectRatio,
+      padding = Carousel.padding,
+      rowHeight = Carousel.rowHeight = imageHeight + 2 * padding;
+      carousel.style.width = imageWidth + 'px';
+  for (var i = 0; i < numImages; ++i) {
+    var image = images[i],
+        frame = document.createElement('div');
+    frame.className = 'pictureFrame';
+    var aspectRatio = image.offsetWidth / image.offsetHeight;
+    image.style.width = frame.style.width = imageWidth + 'px';
+    image.style.height = frame.style.height = imageHeight + 'px';
+    image.style.paddingTop = padding + 'px';
+    image.style.paddingBottom = padding + 'px';
+    image.style.paddingRight = padding + 'px';
+    image.style.paddingLeft = padding + 'px';
+    frame.style.height = rowHeight + 'px';
+    frame.style.width = rowHeight + 'px';
+    //frame.style.border = "1px solid rgba(0,122,108,1);";
+    frame.style.borderRadius = "3px";
+    frame.style.marginTop = padding + "px";
+    carousel.insertBefore(frame, image);
+    frame.appendChild(image);
+  }
+  Carousel.rowHeight = carousel.getElementsByTagName('div')[0].offsetHeight;
+  carousel.style.height = Carousel.numVisible * Carousel.rowHeight + 'px';
+  carousel.style.visibility = 'visible';
+  var wrapper = Carousel.wrapper = document.createElement('div');
+  wrapper.id = 'carouselWrapper';
+  wrapper.style.width = 10 + carousel.offsetWidth + 'px';
+  wrapper.style.height = 10 + carousel.offsetHeight + 'px';
+  carousel.parentNode.insertBefore(wrapper, carousel);
+  wrapper.appendChild(carousel);
+  var prevButton = document.getElementById('prev'),
+      nextButton = document.getElementById('next');
+  prevButton.onclick = function () {
+    prevButton.disabled = nextButton.disabled = true;
+    rotateForward();
+    animate(-Carousel.rowHeight, 0, function () {
+      carousel.style.top = '0';
+      prevButton.disabled = nextButton.disabled = false;
+    });
+  };
+  nextButton.onclick = function () {
+    prevButton.disabled = nextButton.disabled = true;
+    animate(0, -Carousel.rowHeight, function () {
+      rotateBackward();
+      carousel.style.top = '0';
+      prevButton.disabled = nextButton.disabled = false;
+    });
+  };
+};
+
+

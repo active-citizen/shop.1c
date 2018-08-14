@@ -1,3 +1,40 @@
+  <!--Подключение Fontawesome-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+<!--Стили для карусели-->
+<style type="text/css">
+  /*CSS slider*/
+
+  .buttons-carousel {
+    margin: 5px 0;
+    margin-left: 17px;
+  }
+  #next, #prev {
+    font-size: 14px;
+    display: inline;
+    padding: 3px 6px;
+    border: none;
+    background: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  #carouselWrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  #carousel {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .ag-shop-card__preview--active{
+    border: none;
+  }
+
+  </style>
+
 <div class="ag-shop-card__image-block">
   <div class="ag-shop-card__image-wrap">
 
@@ -49,22 +86,44 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
         ></div>
         <div class="ag-shop-item-card__likes-count" id="wishid<?= $arResult["CATALOG_ITEM"]["ID"]?>"><?= $arResult["WISHES"];?></div>
       </button>
+    
     </div>
+    
+    
     <div class="ag-shop-card__previews-container">
-    <?
-        $arPics = [];
+    
+        
+    <?$arPics = [];
         foreach($arResult["OFFERS"] as $arOffer)
             foreach($arOffer["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto)
                 $arPics[] = $morePhoto["FILE_PATH"];
         $arPics = array_unique($arPics);
         print_r($arPics);
     ?>
+   
+<!--Carousel-->
+   <div class="slider">
+   <div class="buttons-carousel">
+     <button id="prev"><i class="fas fa-angle-up"></i></button>
+   </div>
+    <div id="carousel">
     <? foreach($arPics as $key=>$morePhoto):?>
-      <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?= 
-      $morePhoto
-      ?>);" rel="<?= $morePhoto;?>"></div>
+     
+    
+      <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
+       
     <? endforeach ?>
     </div>
+     <div class="buttons-carousel">
+    <button id="next"><i class="fas fa-angle-down"></i></button> 
+       </div>
+    </div>
+  <!--End carousel-->
+   
+
+    </div>
+   
   </div>
 </div>
+
 
