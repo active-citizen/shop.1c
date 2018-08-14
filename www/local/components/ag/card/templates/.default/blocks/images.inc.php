@@ -1,39 +1,6 @@
   <!--Подключение Fontawesome-->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"> -->
 
-<!--Стили для карусели-->
-<style type="text/css">
-  /*CSS slider*/
-
-  .buttons-carousel {
-    margin: 5px 0;
-    margin-left: 17px;
-  }
-  #next, #prev {
-    font-size: 14px;
-    display: inline;
-    padding: 3px 6px;
-    border: none;
-    background: none;
-    border-radius: 5px;
-    outline: none;
-    cursor: pointer;
-  }
-
-  #carouselWrapper {
-    position: relative;
-    overflow: hidden;
-  }
-  #carousel {
-    position: absolute;
-    visibility: hidden;
-  }
-
-  .ag-shop-card__preview--active{
-    border: none;
-  }
-
-  </style>
 
 <div class="ag-shop-card__image-block">
   <div class="ag-shop-card__image-wrap">

@@ -875,6 +875,12 @@ function riseError(message){
 }
 
 /*Маленький боковой слайдер для вывода предпросмотра картинок в карточке товара*/
+var linkFont = document.createElement ("link");
+    linkFont.rel = "stylesheet";
+    linkFont.href = "https://use.fontawesome.com/releases/v5.2.0/css/all.css";
+var head = document.getElementsByTagName ("head")[0];
+    head.appendChild (linkFont);
+
 
  var Carousel = {
   width: 60,
