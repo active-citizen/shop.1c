@@ -77,17 +77,17 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                             <? if($arProduct["PROPERTY_SPECIALOFFER_VALUE"]):?>
                             <img class="desktop-product-badge__img" src="<?=
                             SITE_TEMPLATE_PATH
-                            ?>/img/icon__product-label--sale.png" alt="" srcset="img/icon__product-label--sale@2x.png 2x">
+                            ?>/img/icon__product-label--sale.png" alt="" srcset="<?=SITE_TEMPLATE_PATH?>/img/icon__product-label--sale@2x.png 2x">
                             <? endif ?>
                             <? if($arProduct["PROPERTY_NEWPRODUCT_VALUE"]):?>
                             <img class="desktop-product-badge__img" src="<?=
                             SITE_TEMPLATE_PATH
-                            ?>/img/icon__product-label--new.png" alt="" srcset="img/icon__product-label--new@2x.png 2x">
+                            ?>/img/icon__product-label--new.png" alt="" srcset="<?=SITE_TEMPLATE_PATH?>/img/icon__product-label--new@2x.png 2x">
                             <? endif ?>
                             <? if($arProduct["PROPERTY_SALELEADER_VALUE"]):?>
                             <img class="desktop-product-badge__img" src="<?=
                             SITE_TEMPLATE_PATH
-                            ?>/img/icon__product-label--hit.png" alt="" srcset="img/icon__product-label--hit@2x.png 2x">
+                            ?>/img/icon__product-label--hit.png" alt="" srcset="<?=SITE_TEMPLATE_PATH?>/img/icon__product-label--hit@2x.png 2x">
                             <? endif ?>
                         </span>
                                 <!-- ============= -->

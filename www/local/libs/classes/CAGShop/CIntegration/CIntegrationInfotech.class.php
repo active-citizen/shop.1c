@@ -154,7 +154,6 @@
                     "NAV_PARAMS"=>["nTopCount"=>1]
                 ]
             )->Fetch();
-            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/1.txt","w");
             
             if($this->arBitrixUser){
                 $this->sSessionId = $this->arBitrixUser["UF_INFOTECH_SESS_ID"];

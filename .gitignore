@@ -35,6 +35,7 @@ logs/*.txt
 logs/maildir/[0-9]*
 logs/smtplog/[0-9]*
 logs/agapi/*
+logs/store/*
 
 
 # Игнорировать временные файл документации
