@@ -1,6 +1,45 @@
-  <!--Подключение Fontawesome-->
-  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"> -->
+<style type="text/css">
+/*CSS slider-dowm*/
+.sliderdown{
+  margin-left: 5%;
+}
+.buttonsdown {
+  margin: 5px 10px;
+  
+}
+.buttondown {
+  font-size: 14px;
+  display: inline;
+  padding: 3px 6px;
+  border:none;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  margin: 20px 10px 0 0;
+}
 
+#carouselWrapperDown {
+  position: relative;
+  overflow: hidden;
+}
+#carouseldown {
+  position: absolute;
+  visibility: hidden;
+  display: inline-flex;
+}
+
+#nextdown, #prevdown {
+    font-size: 14px;
+    display: inline;
+    padding: 3px 0px;
+    border: none;
+    background: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  </style>
 
 <div class="ag-shop-card__image-block">
   <div class="ag-shop-card__image-wrap">
@@ -57,9 +96,8 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
     </div>
     
     
-    <div class="ag-shop-card__previews-container">
+    <div class="ag-shop-card__previews-container">    
     
-        
     <?$arPics = [];
         foreach($arResult["OFFERS"] as $arOffer)
             foreach($arOffer["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto)
@@ -68,29 +106,162 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
         print_r($arPics);
     ?>
    
-<!--Carousel-->
-   <div class="slider">
-   <div class="buttons-carousel">
-     <button id="prev"><i class="fas fa-angle-up"></i></button>
-   </div>
-    <div id="carousel">
-    <? foreach($arPics as $key=>$morePhoto):?>
-     
+<!--Carousel from the left-->
+  <div class="slider">
+  <div class="buttons-carousel">
+    <button id="prev"><i class="fas fa-angle-up"></i></button>
+  </div>
+   <div id="carousel">
+   <? foreach($arPics as $key=>$morePhoto):?>
     
-      <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
-       
-    <? endforeach ?>
-    </div>
-     <div class="buttons-carousel">
-    <button id="next"><i class="fas fa-angle-down"></i></button> 
-       </div>
-    </div>
-  <!--End carousel-->
    
+     <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
+      
+   <? endforeach ?>
+   </div>
+    <div class="buttons-carousel">
+   <button id="next"><i class="fas fa-angle-down"></i></button> 
+     </div>
+   </div>
+    <!--End carousel--> 
+     
+     </div>
 
-    </div>
-   
+  
   </div>
 </div>
 
+<!--Carousel from the down-->
+<div class="sliderdown">
+  <div class="buttonsdown">
+    <button class="buttondown" id="prevdown"><i class="fas fa-angle-left"></i></button>
+  </div>
+<div id="carouseldown">
+  <? foreach($arPics as $key=>$morePhoto):?>
+     
+    
+      <div class="ag-shop-carousel-down ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
+       
+    <? endforeach ?>
+</div>
+<div class="buttonsdown">
+  <button class="buttondown" id="nextdown"><i class="fas fa-angle-right"></i></button> 
+</div>
+</div>
+
+
+ <script>
+
+ if(window.matchMedia('(max-width: 1279px)').matches)
+{
+  var Carousel = {
+  width: 55,
+  height: 55,     // Images are forced into a width of this many pixels.
+  numVisible: 4,  // The number of images visible at once.
+  duration: 500,  // Animation duration in milliseconds.
+  padding: 2     // Vertical padding around each image, in pixels.
+};
+
+function rotateForwarddown() {
+  var carousel = Carousel.carousel,
+      children = carousel.children,
+      firstChild = children[0],
+      lastChild = children[children.length - 1];
+  carousel.insertBefore(lastChild, firstChild);
+}
+function rotateBackwarddown() {
+  var carousel = Carousel.carousel,
+      children = carousel.children,
+      firstChild = children[0],
+      lastChild = children[children.length - 1];
+  carousel.insertBefore(firstChild, lastChild.nextSibling);
+}
+
+function animatedown(begin, end, finalTask) {
+  var wrapper = Carousel.wrapper,
+      carousel = Carousel.carousel,
+      change = end - begin,
+      duration = Carousel.duration,
+      startTime = Date.now();
+  carousel.style.left = begin + 'px';
+  var animateInterval = window.setInterval(function () {
+    var t = Date.now() - startTime;
+    if (t >= duration) {
+      window.clearInterval(animateInterval);
+      finalTask();
+      return;
+    }
+    t /= (duration / 2);
+    var top = begin + (t < 1 ? change / 2 * Math.pow(t, 3) : change / 2 * (Math.pow(t - 2, 3) + 2));
+    carousel.style.left = top + 'px';
+  }, 1000 / 60);
+}
+
+window.onload = function () {
+  
+  var carousel = Carousel.carousel = document.getElementById('carouseldown'),
+      images = carousel.getElementsByClassName('ag-shop-carousel-down'),
+      numImages = images.length,
+      imageWidth = Carousel.width,
+      imageHeight = Carousel.height,
+     //aspectRatio = images[0].width / images[0].height,
+     //imageHeight = imageWidth / aspectRatio,
+      padding = Carousel.padding,
+      rowHeight = Carousel.rowHeight = imageHeight + 2 * padding;
+      carousel.style.width = imageWidth + 'px';
+  for (var i = 0; i < numImages; ++i) {
+    var image = images[i],
+        frame = document.createElement('div');
+    frame.className = 'pictureFrameDown';
+    var aspectRatio = image.offsetWidth / image.offsetHeight;
+    image.style.width = frame.style.width = imageWidth + 'px';
+    image.style.height = frame.style.height = imageHeight + 'px';
+    image.style.paddingTop = padding + 'px';
+    image.style.paddingBottom = padding + 'px';
+    image.style.paddingRight = padding + 'px';
+    image.style.paddingLeft = -5 + 'px';
+    frame.style.height = 2 + rowHeight + 'px';
+    frame.style.width = 2 + rowHeight + 'px';
+    //frame.style.border = "1px solid black";
+    frame.style.borderRadius = "3px";
+    frame.style.marginTop = padding + "px";
+    frame.style.marginLeft = padding + "px";
+    carousel.insertBefore(frame, image);
+    frame.appendChild(image);
+  }
+  Carousel.rowHeight = carousel.getElementsByTagName('div')[0].offsetHeight;
+  carousel.style.height = Carousel.numVisible * Carousel.rowHeight + 'px';
+  carousel.style.visibility = 'visible';
+  var wrapper = Carousel.wrapper = document.createElement('div');
+  wrapper.id = 'carouselWrapperDown';
+  wrapper.style.width = 260 + 'px';
+  wrapper.style.height = 65 + 'px';
+  carousel.parentNode.insertBefore(wrapper, carousel);
+  wrapper.appendChild(carousel);
+  var prevButton = document.getElementById('prevdown'),
+      nextButton = document.getElementById('nextdown');
+  prevButton.onclick = function () {
+    prevButton.disabled = nextButton.disabled = true;
+    rotateForwarddown();
+    animatedown(-Carousel.rowHeight, 1, function () {
+      carousel.style.left = '0';
+      prevButton.disabled = nextButton.disabled = false;
+    });
+  };
+  nextButton.onclick = function () {
+    prevButton.disabled = nextButton.disabled = true;
+    rotateBackwarddown();
+    animatedown(1, -Carousel.rowHeight, function () {
+      carousel.style.left = '1';
+      prevButton.disabled = nextButton.disabled = false;
+    });
+  };
+};
+
+}
+  
+      
+    </script>
+
+    
 
