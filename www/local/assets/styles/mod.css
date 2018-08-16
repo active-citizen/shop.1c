@@ -969,7 +969,6 @@ table.auction-winners .winner{
     z-index:199 !important;
 }
 
-
 #confirm-price{
     position: relative;
 }
@@ -1030,3 +1029,8 @@ input:disabled + .ag-shop-card__places-item {
 .ag-shop-modal__buttons-wrap{
     padding: 20px 0px 0px 0px;
 }
+/* AG-4902  */
+.mobile-search-notfind{
+    z-index:199 !important;
+}
+
