@@ -6,7 +6,7 @@ require_once($_SERVER["DOCUMENT_ROOT"]
 use AGShop\SSAG as SSAG;
 
 echo $USER->GetID();
-if($USER->GetID()!=2)die;
+if($USER->GetID()!=5)die;
 
 if(
     isset($_POST["add_balls"]) 

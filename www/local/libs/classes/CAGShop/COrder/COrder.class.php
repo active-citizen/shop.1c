@@ -509,7 +509,7 @@ class COrder extends \AGShop\CAGShop{
 
             if(!$nCategoryPriceId){
                 $this->addError("Нет доступных к заказу билетов");
-                $sInfotechStatus = 1;
+                $sInfotechStatus = 2;
             }
             elseif($nInfotechOrderId = $objInfotech->paymentWithoutSeat(
                 $nCategoryPriceId,
@@ -534,7 +534,13 @@ class COrder extends \AGShop\CAGShop{
         elseif($sInfotechStatus == 2){
         }
         // Для админа баллы не снимаем, ибо юниттест
-        elseif($this->getParam("UserId")!=1){
+        elseif($this->getParam("UserId")!=1
+            /*
+            // !!!!!!!!!!!!!!!!!!!!!!
+            &&
+            $arSKUs[0]["SKU"]["PRODUCT"]["ID"]!=217570
+            */
+        ){
             //////////// Снимает баллы
             if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
@@ -545,6 +551,11 @@ class COrder extends \AGShop\CAGShop{
             if($bPointsSuccess)
                 $objSSAGAccount->update();
         }
+        /*
+        // !!!!!!!!!!!!!!!!!!!!!!
+        if($arSKUs[0]["SKU"]["PRODUCT"]["ID"]==217570)
+            $bPointsSuccess = true;
+        */
         
         // Если тойка провалилась - остатки возвращаем
         if($stoykaStatus == 2){
