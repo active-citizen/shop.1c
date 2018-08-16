@@ -2513,19 +2513,66 @@ input:checked + .ag-shop-card__places-item:before {
     border: none;
   }
 
-@media (max-width: 575px) {
+/*CSS slider-dowm*/
+.sliderdown{
+  margin-left: 5%;
+}
+.buttonsdown {
+  margin: 5px 10px;
+  
+}
+.buttondown {
+  font-size: 14px;
+  display: inline;
+  padding: 3px 6px;
+  border:none;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  margin: 20px 10px 0 0;
+}
+
+#carouselWrapperDown {
+  position: relative;
+  overflow: hidden;
+}
+#carouseldown {
+  position: absolute;
+  visibility: hidden;
+  display: inline-flex;
+}
+
+#nextdown, #prevdown {
+    font-size: 14px;
+    display: inline;
+    padding: 3px 0px;
+    border: none;
+    background: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+
+
+
+/*Media screen mini-slider*/ 
+
+@media (max-width: 576px) { 
+  .sliderdown{
+    margin-left: 7%;
+  }
+
   #carouselWrapperDown{
     width: 255px;
   }  
-}
-
-/*Small devices (landscape phones, 576px and up)*/ 
-@media (max-width: 576px) { 
-  .sliderdown{
-    margin-left: 15%;
-  }
  
 
+}
+
+@media (max-width: 768px) {
+  .slederdown{
+    margin-left: 30%;
+  }
 }
 
 @media (min-width: 990px) { 
@@ -2536,7 +2583,7 @@ input:checked + .ag-shop-card__places-item:before {
 
 }
 
-/* Medium devices (tablets, 768px and up)*/
+
 @media (max-width: 1279px) { 
   .sliderdown{
    display: inline-flex;
