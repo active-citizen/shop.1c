@@ -196,79 +196,226 @@ $(document).ready(function() {
     }
 
 
-    
     /**
      * Выбор конкретного предложения
     */
-    $('.ag-shop-card__sizes input').change(function(){
-        
-        var props = {};
-        var offerProps = {};
+    $('.ag-shop-card__sizes input').click(function(){
 
-        // Определяем набор
-        $('.ag-shop-card__sizes').each(function(){
-            props[$(this).find('input:checked').attr("name")] = $(this).find('input:checked').val();
+        ////// Определяем основные параметры свойства
+        // Включено/выключено
+        let switched = $(this).attr("switched"); 
+        // Другие свойства, с которыми текущее свойство в паре
+        let crossValues = $(this).attr('cross-values').split(',');
+        // Склады, на которых доступен товар с текущим свойством
+        let availStores = $(this).attr('stores').split(',');
+        // Предложения, в которые входит текущее свойство
+        let offers =  $(this).attr('offers').split(',');
+        // Картинки. на которых изображен товар с текущим свойством
+        let pics = $(this).attr('pics').split('|');
+        // Код текущего свойства
+        var propCode = $(this).attr("name");
+
+        // 
+        $(this).parent().parent().find('input').attr('switched','off');
+
+        // Включение-выключение свойств товаров
+        if(switched=='on'){
+            $(this).attr('switched','off');
+            $(this).prop('checked',false);
+            switched = false;
+        }
+        else{
+            $(this).attr('switched','on');
+            $(this).prop('checked',true);
+            switched = true;
+        }
+
+        // Если выбранный пункт оказывается включенным, то
+        // выключаем значения свойств, которых нет в паре с
+        // торговым предложением. И складов
+        if(switched){
+            $('.ag-shop-card__sizes input').each(function(){
+                if($(this).attr("name")==propCode)return true;
+                // Если это значение в паре со свойством - включем
+                if(crossValues.indexOf($(this).val())>=0)
+                    $(this).prop('disabled',false);
+                // Если не в паре - выключаем
+                else{
+                    $(this).prop('disabled',true);
+                    $(this).prop('checked',false);
+                }
+            });
+        }
+        else{
+            $('.ag-shop-card__sizes input').each(function(){
+                if($(this).attr("name")==propCode)return true;
+                $(this).prop('disabled',false);
+            });
+        }
+        
+        // Включаем/выключаем доступные склады для набора свойств
+        let stores = availStores;
+        $('.ag-shop-card__sizes input:checked').each(function(){
+            stores = Intersection(stores,$(this).attr('stores').split(','));
+        });
+        $('.ag-shop-card__places input').each(function(){
+            if(stores.indexOf($(this).val())>=0)
+                $(this).prop('disabled',false);
+            else{
+                $(this).prop('disabled',true);
+                if($(this).prop('checked')){
+                    $('.ag-shop-card__selected-place').addClass('hidden');
+                    $('.amounter').removeClass('amounter--on');
+                    $('.amounter').addClass('amounter--off');
+                    totalStoreId = 0;
+                }
+                $(this).prop('checked',false);
+            }
         });
         
-        var targetMatches = Object.keys(props).length
-        // Определяем какому предложению соответствует набор
-        for(offerId in arOffers){
-            // Если число свойств предложения не совпадает с числом выбранных свойств
-            if(Object.keys(arOffers[offerId]["1C_PROPS"]).length!=Object.keys(props).length)
-                continue;
-            // Составляем набор свойств предложения
-            offerProps = {}
-            for(prop in arOffers[offerId]["1C_PROPS"])
-                offerProps[prop] = arOffers[offerId]["1C_PROPS"][prop].ID;
-            
-            // Сравниваем выбранный набор свойст с набором предложения
-            targetMatches = Object.keys(props).length
-            for(prop in props)
-                if(arOffers[offerId]["1C_PROPS"][prop].ID==props[prop])
-                    targetMatches--;
-            // Если не все свойства совпали - значит НЕ нужное нам предложение
-            if(targetMatches==0)break;
+        // Активируем все склады, если не выбрано ни оlно свойство
+        if($('.ag-shop-card__sizes input:checked').length<=0){
+            $('.ag-shop-card__places input').prop("disabled",false);
         }
         
-        // Если выход по совпадению, значи предложение нашли
-        if(!targetMatches){
-            totalOfferId = offerId;
-            arOffers[offerId].PRICE;
-            $('.ag-shop-card__count-number').html(1);
-            $('#ag-shop-card__total-points').html(parseInt(arOffers[offerId].PRICE));
-            $('.ag-shop-card__submit-button strong').html(parseInt(arOffers[offerId].PRICE));
-            
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').remove();
-            for(i in arOffers[offerId].PICS){
-                $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
-                $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",arOffers[offerId].PICS[i]);
-                $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+arOffers[offerId].PICS[i]+");");
-                $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
-                    $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
-                    $(this).addClass('ag-shop-card__preview--active');
-                    $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
-                });
-            }
-            $('.ag-shop-card__image-container').css('background-image','url('+arOffers[offerId].PICS[0]+')');
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');
-            
-            $('.ag-shop-card__places').find('label').remove();
-            var count=0;
-            for(i in arOffers[offerId].STORAGES){
-                $('.ag-shop-card__places').append('<label><input onclick="return selectStorage('+arStorages[i].ID+
-                ');" type="radio" name="place" value="'+i
-                    +'" '+(count==0?'checked':'')+' ><div class="ag-shop-card__places-item">'+
-                arStorages[i].TITLE+'</div></label>');
-                if(!count)count = i;
-            }
-            selectStorage(arStorages[count].ID);
-            
+
+        // Если все свойства отключены - выводим картинки всех вариантов
+        if($('.ag-shop-card__sizes input:checked').length<=0){
+            pics = new Array();
+            $('.ag-shop-card__sizes input').each(function(){
+                pics = pics.concat($(this).attr('pics').split('|'))
+                    .filter( onlyUnique );
+            });
         }
+        
+        // Вычисляем изображения, которые надо показать
+        $('.ag-shop-card__sizes input:checked').each(function(){
+            pics = Intersection(pics,$(this).attr('pics').split('|'));
+        });
+
+        // Выводим картинки
+        $('.ag-shop-card__previews-container').html('');
+        
+        for(i in pics){
+            $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
+            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",pics[i]);
+            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
+            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
+                $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+                $(this).addClass('ag-shop-card__preview--active');
+                $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
+            });
+        }
+        $('.ag-shop-card__image-container').css('background-image','url('+pics[0]+')');
+        $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');        
     });
+
+    $('input[name="place"]').click(function(){
+    
+        let storageId = $(this).val();
+        let switched = $(this).attr("switched");
+        let offers =  $(this).attr('offers').split(',');
+        var propsVals = $(this).attr("propsvals").split(',');
+    
+        $(this).parent().parent().find('input').attr('switched','off');
+    
+        if(switched=='on'){
+            $(this).attr('switched','off');
+            $(this).prop('checked',false);
+            switched = false;
+        }
+        else{
+            $(this).attr('switched','on');
+            $(this).prop('checked',true);
+            switched = true;
+        }
+    
+        // Включаем/выключаем свойства, которых на этом складе нет
+        $('.ag-shop-card__sizes input').each(function(){
+            if(propsVals.indexOf($(this).val())>=0)
+                $(this).prop('disabled',false);
+            else{
+                $(this).prop('disabled',true);
+                if($(this).prop('checked')){
+                    $(this).prop('checked',false);
+                }
+                $(this).prop('checked',false);
+            }
+        });
+        
+    
+        //Если мы выбрали место, удаляем класс ошибки
+        $('.js-choose__place').removeClass('ag-shop-card__field--error');
+    
+    
+        $('.ag-shop-card__selected-place-table').html('');
+        var value= '';
+        if(value = arStorages[storageId].ADDRESS)$('.ag-shop-card__selected-place-table').append(getStorageRow('Адрес',value));
+        if(value = arStorages[storageId].PHONE)$('.ag-shop-card__selected-place-table').append(getStorageRow('Телефон',value));
+        if(value = arStorages[storageId].SCHEDULE)$('.ag-shop-card__selected-place-table').append(getStorageRow('Режим',value));
+        if(value = arStorages[storageId].EMAIL)
+            $('.ag-shop-card__selected-place-table').append(getStorageRow('Сайт','<a href="'+value+'" target="_blank">'+
+            arStorages[storageId].EMAIL_SHORT
+            +'</a>'));
+        $('.ag-shop-card__selected-place-station').html(arStorages[storageId].TITLE);
+        //$('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').css('display','none');
+        $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').each(function(){
+            if(
+                arOffers[totalOfferId]['STORAGES'][storageId]>=parseInt($(this).attr('fromAmmount'))  
+                &&
+                arOffers[totalOfferId]['STORAGES'][storageId]<=parseInt($(this).attr('toAmmount')) 
+            ){
+                $(this).css('display','inline-block');
+                // Если на складе меньше, чем уже набрали
+                if(arOffers[totalOfferId]['STORAGES'][storageId]<parseInt($('.ag-shop-card__count-number').html())){
+                    $('.ag-shop-card__count-number').html(arOffers[totalOfferId]['STORAGES'][storageId]);
+                    var count = parseInt($('.ag-shop-card__count-number').html());
+                    var price = parseInt($('.ag-shop-item-card__points-count').html());
+                    $('.ag-shop-card__count-number').html(count);
+                    $('#ag-shop-card__total-points').html(count*price);
+                    $('.ag-shop-card__submit-button strong').html(count*price);
+                }
+            }
+        });
+        updateCounter();
+        if(switched){
+            totalStoreId = storageId;
+            $('.ag-shop-card__selected-place').removeClass('hidden');
+            $('.amounter').removeClass('amounter--off');
+            $('.amounter').addClass('amounter--on');
+        }else{
+            totalStoreId = 0;
+            $('.ag-shop-card__selected-place').addClass('hidden');
+            $('.amounter').removeClass('amounter--on');
+            $('.amounter').addClass('amounter--off');
+        }
+    
+        loadComments();
+    });
+
 
     loadComments();
 
 });
+
+// Функция для вычисления пересечения массивов
+function Intersection(A,B){
+    var M=A.length, N=B.length, C=[];
+    for (var i=0; i<M; i++)
+     { var j=0, k=0;
+       while (B[j]!==A[i] && j<N) j++;
+       while (C[k]!==A[i] && k<C.length) k++;
+       if (j!=N && k==C.length) C[C.length]=A[i];
+     }
+   return C;
+}
+
+// Для фильтрации уникальных элементов массива
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+
 
 function input_variant_click(obj){
     var triggerTab = $('span[rel="'+obj.parent().parent().attr("id")+'"]');
@@ -285,49 +432,6 @@ function input_variant_click(obj){
     if(!triggerTab.html())triggerTab.html(triggerTab.attr('alltitle'));
 
     return true;
-}
-
-
-function selectStorage(storageId){
-    //Если мы выбрали место, удаляем класс ошибки
-    $('.js-choose__place').removeClass('ag-shop-card__field--error');
-
-    $('.ag-shop-card__selected-place').removeClass('hidden');
-
-    totalStoreId = storageId;
-    $('.ag-shop-card__selected-place-table').html('');
-    var value= '';
-    if(value = arStorages[storageId].ADDRESS)$('.ag-shop-card__selected-place-table').append(getStorageRow('Адрес',value));
-    if(value = arStorages[storageId].PHONE)$('.ag-shop-card__selected-place-table').append(getStorageRow('Телефон',value));
-    if(value = arStorages[storageId].SCHEDULE)$('.ag-shop-card__selected-place-table').append(getStorageRow('Режим',value));
-    if(value = arStorages[storageId].EMAIL)
-        $('.ag-shop-card__selected-place-table').append(getStorageRow('Сайт','<a href="'+value+'" target="_blank">'+
-        arStorages[storageId].EMAIL_SHORT
-        +'</a>'));
-    $('.ag-shop-card__selected-place-station').html(arStorages[storageId].TITLE);
-    //$('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').css('display','none');
-    $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').each(function(){
-        if(
-            arOffers[totalOfferId]['STORAGES'][storageId]>=parseInt($(this).attr('fromAmmount'))  
-            &&
-            arOffers[totalOfferId]['STORAGES'][storageId]<=parseInt($(this).attr('toAmmount')) 
-        ){
-            $(this).css('display','inline-block');
-            // Если на складе меньше, чем уже набрали
-            if(arOffers[totalOfferId]['STORAGES'][storageId]<parseInt($('.ag-shop-card__count-number').html())){
-                $('.ag-shop-card__count-number').html(arOffers[totalOfferId]['STORAGES'][storageId]);
-                var count = parseInt($('.ag-shop-card__count-number').html());
-                var price = parseInt($('.ag-shop-item-card__points-count').html());
-                $('.ag-shop-card__count-number').html(count);
-                $('#ag-shop-card__total-points').html(count*price);
-                $('.ag-shop-card__submit-button strong').html(count*price);
-            }
-        }
-    });
-    updateCounter();
-    $('.amounter').removeClass('amounter--off');
-    $('.amounter').addClass('amounter--on');
-    loadComments();
 }
 
 function updateCounter(){
@@ -404,11 +508,38 @@ function loadComments(){
 function productConfirm(){
     totalStoreId = $("input[name='place']:checked").val();
     // Не выбран склад
+
+    // Составляем массив выбранных характеристик
+    let properties = new Array();
+    $('.ag-shop-card__field .ag-shop-card__sizes input:checked').each(function(){
+        properties.push({
+            name: $(this).parent().parent().parent()
+                .find('.ag-shop-card__fieldname').last().html(),
+            value: $(this).parent().find('div').last().html(),
+            offers: $(this).attr("offers").split(',')
+        });
+    })
+    
+    if(properties.length<$('.product-character').length){
+        riseError('Все характеристики товара должны быть выбраны');
+        return false;
+    }
+
     if(!totalStoreId){
         riseError('Выберите склад получения');
         $('.js-choose__place').addClass('ag-shop-card__field--error');
         return false;
     }
+    
+    // Для выбранных характеристик вычисляем ID предложения
+    if(properties.length){
+        var crossOffers = properties[0].offers;
+        for(i in properties)
+            crossOffers = Intersection(crossOffers,properties[i].offers)
+        if(crossOffers.length)totalOfferId = crossOffers[0];
+    }
+    console.log(totalOfferId);
+        
     $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
@@ -419,6 +550,22 @@ function productConfirm(){
     $('#confirm-cost span').html($('#ag-shop-card__total-points').html());
     $('#confirm-store').html($('.ag-shop-card__selected-place-station').html());
     $('#confirm-store-id').html(totalStoreId);
+    
+    $('.ag-shop-modal__container .properties').html('');
+    for(i in properties){
+        $('.ag-shop-modal__container .properties').append(
+            '<div class="ag-shop-modal__row">'
+            +   '<div class="ag-shop-modal__label">'
+            +   properties[i].name
+            +   '</div>'
+            +   '<div class="ag-shop-modal__text ag-shop-modal__text--marked">'
+            +   properties[i].value
+            +   '</div>'
+            +'</div>'
+            
+        );
+    }
+    
     if(parseInt($('#confirm-amount').html())>1){
         $('#confirm-total-row').css('display','block');
         $('#confirm-total').html(
@@ -726,4 +873,116 @@ function riseError(message){
     $("#rise-error #rise-error-message").html(message);
     $("#rise-error").fadeIn();
 }
+
+/*Маленький боковой слайдер для вывода предпросмотра картинок в карточке товара*/
+var linkFont = document.createElement ("link");
+    linkFont.rel = "stylesheet";
+    linkFont.href = "https://use.fontawesome.com/releases/v5.2.0/css/all.css";
+var head = document.getElementsByTagName ("head")[0];
+    head.appendChild (linkFont);
+
+
+ var Carousel = {
+  width: 60,
+  height: 60,     // Images are forced into a width of this many pixels.
+  numVisible: 6,  // The number of images visible at once.
+  duration: 600,  // Animation duration in milliseconds.
+  padding: 2     // Vertical padding around each image, in pixels.
+};
+
+function rotateForward() {
+  var carousel = Carousel.carousel,
+      children = carousel.children,
+      firstChild = children[0],
+      lastChild = children[children.length - 1];
+  carousel.insertBefore(lastChild, firstChild);
+}
+function rotateBackward() {
+  var carousel = Carousel.carousel,
+      children = carousel.children,
+      firstChild = children[0],
+      lastChild = children[children.length - 1];
+  carousel.insertBefore(firstChild, lastChild.nextSibling);
+}
+
+function animate(begin, end, finalTask) {
+  var wrapper = Carousel.wrapper,
+      carousel = Carousel.carousel,
+      change = end - begin,
+      duration = Carousel.duration,
+      startTime = Date.now();
+  carousel.style.top = begin + 'px';
+  var animateInterval = window.setInterval(function () {
+    var t = Date.now() - startTime;
+    if (t >= duration) {
+      window.clearInterval(animateInterval);
+      finalTask();
+      return;
+    }
+    t /= (duration / 2);
+    var top = begin + (t < 1 ? change / 2 * Math.pow(t, 3) :
+                               change / 2 * (Math.pow(t - 2, 3) + 2));
+    carousel.style.top = top + 'px';
+  }, 1000 / 60);
+}
+
+window.onload = function () {
+  var carousel = Carousel.carousel = document.getElementById('carousel'),
+      images = carousel.getElementsByClassName('ag-shop-card__preview'),
+      numImages = images.length,
+      imageWidth = Carousel.width,
+      imageHeight = Carousel.height,
+     //aspectRatio = images[0].width / images[0].height,
+     //imageHeight = imageWidth / aspectRatio,
+      padding = Carousel.padding,
+      rowHeight = Carousel.rowHeight = imageHeight + 2 * padding;
+      carousel.style.width = imageWidth + 'px';
+  for (var i = 0; i < numImages; ++i) {
+    var image = images[i],
+        frame = document.createElement('div');
+    frame.className = 'pictureFrame';
+    var aspectRatio = image.offsetWidth / image.offsetHeight;
+    image.style.width = frame.style.width = imageWidth + 'px';
+    image.style.height = frame.style.height = imageHeight + 'px';
+    image.style.paddingTop = padding + 'px';
+    image.style.paddingBottom = padding + 'px';
+    image.style.paddingRight = padding + 'px';
+    image.style.paddingLeft = padding + 'px';
+    frame.style.height = rowHeight + 'px';
+    frame.style.width = rowHeight + 'px';
+    //frame.style.border = "1px solid rgba(0,122,108,1);";
+    frame.style.borderRadius = "3px";
+    frame.style.marginTop = padding + "px";
+    carousel.insertBefore(frame, image);
+    frame.appendChild(image);
+  }
+  Carousel.rowHeight = carousel.getElementsByTagName('div')[0].offsetHeight;
+  carousel.style.height = Carousel.numVisible * Carousel.rowHeight + 'px';
+  carousel.style.visibility = 'visible';
+  var wrapper = Carousel.wrapper = document.createElement('div');
+  wrapper.id = 'carouselWrapper';
+  wrapper.style.width = 10 + carousel.offsetWidth + 'px';
+  wrapper.style.height = 10 + carousel.offsetHeight + 'px';
+  carousel.parentNode.insertBefore(wrapper, carousel);
+  wrapper.appendChild(carousel);
+  var prevButton = document.getElementById('prev'),
+      nextButton = document.getElementById('next');
+  prevButton.onclick = function () {
+    prevButton.disabled = nextButton.disabled = true;
+    rotateForward();
+    animate(-Carousel.rowHeight, 0, function () {
+      carousel.style.top = '0';
+      prevButton.disabled = nextButton.disabled = false;
+    });
+  };
+  nextButton.onclick = function () {
+    prevButton.disabled = nextButton.disabled = true;
+    animate(0, -Carousel.rowHeight, function () {
+      rotateBackward();
+      carousel.style.top = '0';
+      prevButton.disabled = nextButton.disabled = false;
+    });
+  };
+};
+
 

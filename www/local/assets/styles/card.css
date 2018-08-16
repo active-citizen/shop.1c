@@ -2481,3 +2481,81 @@ input:checked + .ag-shop-card__places-item:before {
     max-width: 100%;
   }
 }
+
+
+/*Стили для малой карусели с лева */
+
+.buttons-carousel {
+    margin: 5px 0;
+    margin-left: 17px;
+  }
+  #next, #prev {
+    font-size: 14px;
+    display: inline;
+    padding: 3px 6px;
+    border: none;
+    background: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  #carouselWrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  #carousel {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .ag-shop-card__preview--active{
+    border: none;
+  }
+
+@media (max-width: 575px) {
+  #carouselWrapperDown{
+    width: 255px;
+  }  
+}
+
+/*Small devices (landscape phones, 576px and up)*/ 
+@media (max-width: 576px) { 
+  .sliderdown{
+    margin-left: 15%;
+  }
+ 
+
+}
+
+@media (min-width: 990px) { 
+  .sliderdown{
+    margin-left: 35%;
+  }
+ 
+
+}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (max-width: 1279px) { 
+  .sliderdown{
+   display: inline-flex;
+ }
+
+}
+
+@media (max-width: 1280px) { 
+
+  .slider{
+    display: none;
+  }
+}
+
+@media (min-width: 1280px)  {
+   .sliderdown{
+   display: none;
+ }
+
+}
+
+

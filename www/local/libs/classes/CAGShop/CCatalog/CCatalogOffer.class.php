@@ -380,10 +380,15 @@ class CCatalogOffer extends \AGShop\CAGShop{
                     $arProp["PROPERTY_TYPE"]=='F' 
                     && $arProp["FILE_PATH"] && $arProp["CODE"]=='MORE_PHOTO'
                 ) $arOfferJson["PICS"][] = $arProp["FILE_PATH"];
-                
-                if(preg_match("#PROP1C_(.*?)#",$arProp["CODE"])){
+               
+                if(
+                    preg_match("#PROP1C_(.*?)#",$arProp["CODE"])
+                    &&
+                    $arProp["VALUE"]
+                ){
                     $arOfferJson["1C_PROPS"][$arProp["CODE"]] = [
-                        "ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"]
+                        "ID"=>$arProp["VALUE"],"VALUE"=>$arProp["VALUE_ENUM"],
+                        "NAME"=>$arProp["NAME"]
                     ];
                     if(!isset($arResult["PROP1C"][$arProp["CODE"]]))
                         $arResult["PROP1C"][$arProp["CODE"]] = [
@@ -494,7 +499,92 @@ class CCatalogOffer extends \AGShop\CAGShop{
             $arResult["OFFERS"][] = $arOffer;
             $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
         };
+
+        // Индекс свойств
+        $arResult["OFFERS_PROPS"] = [];
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+            foreach($arOffer["1C_PROPS"] as $sPropCode=>$arProp){
+                if(!isset($arResult["OFFERS_PROPS"][$sPropCode]))
+                    $arResult["OFFERS_PROPS"][$sPropCode] = [
+                        "name"=>$arProp["NAME"],
+                        "values"=>[]
+                    ];
+
+                if(!isset($arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]))
+                    $arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]
+                        = [
+                            "value"=>$arProp["VALUE"],
+                            "crossed"=>[],
+                            "stores"=>$arOffer["STORAGES"],
+                            "pics"=>$arOffer["PICS"]
+                        ];
+                else{
+                    foreach($arOffer["STORAGES"] as $nKey=>$nAmount)
+                        $arResult["OFFERS_PROPS"][$sPropCode]["values"]
+                            [$arProp["ID"]]["stores"][$nKey] = $nAmount;
+
+                    foreach($arOffer["PICS"] as $sPic)
+                        if(!in_array(
+                            $sPic,
+                            $arResult["OFFERS_PROPS"][$sPropCode]["values"]
+                                [$arProp["ID"]]["pics"]
+                        ))
+                        $arResult["OFFERS_PROPS"][$sPropCode]["values"]
+                            [$arProp["ID"]]["pics"][] = $sPic;
+                }
+
+            }
+        }
         
+        
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+            foreach($arOffer["1C_PROPS"] as $sPropCode0=>$arProp0){
+                foreach($arOffer["1C_PROPS"] as $sPropCode1=>$arProp1){
+                    if($arProp0["ID"]==$arProp1["ID"])continue;
+                    if(!isset(
+                       $arResult["OFFERS_PROPS"][$sPropCode0]["values"]
+                        [$arProp0["ID"]]["crossed"][$arProp1["ID"]]
+                    ))
+                    $arResult["OFFERS_PROPS"][$sPropCode0]["values"]
+                        [$arProp0["ID"]]["crossed"][$arProp1["ID"]] = [
+                            "offerId"=>$nOfferId,
+                        ];
+                }
+            }
+        }
+
+        // Составляем индекс складов и свойств товаров, которые на них есть
+        $arResult["OFFERS_STORAGES"] = [];
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+            foreach($arOffer["STORAGES"] as $nStoreId=>$nAmount){
+                foreach($arOffer["1C_PROPS"] as $nPropCode=>$arCode){
+                    if(!isset($arResult["OFFERS_STORAGES"][$nStoreId]))
+                        $arResult["OFFERS_STORAGES"][$nStoreId] = [
+                            "offers"=>[],
+                            "propsVals"=>[]
+                        ];
+                    if(!in_array(
+                        $nOfferId,
+                        $arResult["OFFERS_STORAGES"][$nStoreId]["offers"]
+                    ))$arResult["OFFERS_STORAGES"][$nStoreId]["offers"][] = 
+                        $nOfferId;
+                    if(!in_array(
+                        $arCode["ID"],
+                        $arResult["OFFERS_STORAGES"][$nStoreId]["propsVals"]
+                    ))$arResult["OFFERS_STORAGES"][$nStoreId]["propsVals"][] = 
+                        $arCode["ID"];
+                }
+            }
+        }
+        // Список складов для товаров без свойств
+        if(!$arResult["OFFERS_STORAGES"]){
+            foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
+                foreach($arOffer["STORAGES"] as $nStoreId=>$nAmount){
+                    $arResult["OFFERS_STORAGES"][$nStoreId] = $nAmount;
+                }
+            }
+        }
+
         return $arResult;
     }
 
