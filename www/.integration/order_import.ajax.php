@@ -285,6 +285,8 @@
                 $existsOffer = $resOffer->Fetch();
                 // Если продукта нет - создаём его прототип
                 if(!$existsOffer){
+                    // Нет, не создаём
+                    continue;
                     $product["product_id"] = explode("-",$product["Ид"]);
                     $product["product_id"] = $product["product_id"][0];
                     $product["product_xml_id"] = explode("#",$product["Ид"]);
@@ -375,7 +377,13 @@
                     "price" => $product["ЦенаЗаЕдиницу"]
                 );
             }
-           
+          
+            // Если заказ не содержит товаров то пропускаем такой заказ
+            if(!$basketProducts){
+                // Отмечаем, что он был обработан
+                $nOrderCounter++;    
+                continue;
+            }
            
             // Считаем сумму заказа
             $sum = 0;
