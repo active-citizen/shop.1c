@@ -51,11 +51,42 @@ $(document).ready(function(){
     });
 
     $('#desktopProductsFilterSubmit').click(function(){
-        if(!$('.btn-catalog-header__icon--filter .mobile-header-filter-btn__icon-active').length)
+        if(checkReset())
+            $('.btn-catalog-header__icon--filter .mobile-header-filter-btn__icon-active').remove();
+        else
             $('.btn-catalog-header__icon--filter').append('<span class="mobile-header-filter-btn__icon-active"></span>');
     });
 });
 
+/**
+    Проверка находится ли фильтр в исходном состоянии
+    @return true/false
+*/
+function checkReset(){
+    // Проверяем находятся ли все секбоксы в исходном состоянии
+    // По умолчанию считаем, что форма в начельном состоянии и ищем
+    // несоответствия начальному состоянию
+    var isReset = true;    
+    
+    // Для каждого инпута в фильтре смотрим
+    $('.desktop-products-filter-item input').each(function(){
+        if(
+            (
+                $(this).prop("checked") && $(this).hasClass("defaultReset")
+            )
+            ||
+            (
+                !$(this).prop("checked") && $(this).hasClass("defaultCheck")
+            )
+            ||
+            (
+                $(this).val() && $(this).hasClass("defaultClear")
+
+            )
+        )isReset = false;
+    });
+    return isReset;
+}
 
 if(typeof(getdocWidth)!=='function'){
   function getdocWidth(){
