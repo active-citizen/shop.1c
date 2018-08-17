@@ -1050,7 +1050,7 @@ function animatedown(begin, end, finalTask) {
 window.onload = function () {
   
   var carousel = Carousel.carousel = document.getElementById('carouseldown'),
-      images = carousel.getElementsByClassName('ag-shop-carousel-down'),
+      images = carousel.getElementsByClassName('ag-shop-card__preview'),
       numImages = images.length,
       imageWidth = Carousel.width,
       imageHeight = Carousel.height,
@@ -1116,7 +1116,7 @@ window.onload = function () {
 
 };
 
-}
+};
 
 
 
