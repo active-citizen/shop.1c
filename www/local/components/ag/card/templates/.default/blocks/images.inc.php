@@ -64,7 +64,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
     ?>
    
 <!--Carousel from the left-->
-  <div class="slider">
+  <div class="slider" id="slider">
   <div class="buttons-carousel">
     <button id="prev"><i class="fas fa-angle-up"></i></button>
   </div>
@@ -101,7 +101,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
        
     <? endforeach ?>
 </div>
-<div class="buttonsdown">
+<div class="buttonsdown" id="buttonsdown">
   <button class="buttondown" id="nextdown"><i class="fas fa-angle-right"></i></button> 
 </div>
 </div>
