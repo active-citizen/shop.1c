@@ -934,7 +934,9 @@ function animate(begin, end, finalTask) {
 }
 
 window.onload = function () {
-  var carousel = Carousel.carousel = document.getElementById('carousel'),
+  var carousel = Carousel.carousel = document.getElementById('carousel');
+    if(!carousel)return false;
+
       images = carousel.getElementsByClassName('ag-shop-card__preview'),
       numImages = images.length,
       imageWidth = Carousel.width,
@@ -1049,7 +1051,9 @@ function animatedown(begin, end, finalTask) {
 
 window.onload = function () {
   
-  var carousel = Carousel.carousel = document.getElementById('carouseldown'),
+  var carousel = Carousel.carousel = document.getElementById('carouseldown');
+    if(!carousel)return false;
+  
       images = carousel.getElementsByClassName('ag-shop-card__preview'),
       numImages = images.length,
       imageWidth = Carousel.width,

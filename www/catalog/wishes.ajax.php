@@ -1,9 +1,11 @@
 <?
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
-//use Cache;
 
 define("NO_KEEP_STATISTIC", true); // Не собираем стату по действиям AJAX
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CCache/CCache.class.php");
+use Cache;
+
+
 $objCache = new
     Cache\CCache("wishes",md5($_SERVER["REQUEST_URI"]).$USER->GetID());
 if($sData = $objCache->get()){
@@ -71,5 +73,5 @@ while($arProduct = $res->Fetch())$arProducts[] = $arProduct["ID"];
 $objCache->set($arProducts);
 echo json_encode($arProducts);
 
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
 ?>

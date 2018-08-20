@@ -59,12 +59,14 @@
                     )
                   ): ?>inline-block;<? else:?>none;<? endif ?>"
                 >
+                    <!--
                   <span class="ag-shop-card__remaining-count-title">
                     осталось:
                   </span>
                   <span class="ag-shop-card__remaining-count-text">
                     <?= $arAmmount[2]?>
                   </span>
+                  -->
                 </div>
               <? endforeach ?>
           </div>
