@@ -34,6 +34,10 @@
                 <span>
                 <? if(count($arResult["OFFERS"][0]["STORAGES"])==1):?>
                 <?= $arResult["STORAGES"][$id]["TITLE"] ?>
+                <? 
+                    foreach($arResult["OFFERS"][0]["STORAGES"] as $k=>$v)
+                        $ammount = $v;
+                ?>
                 <? endif?>
                 </span>
             </div>
@@ -59,14 +63,12 @@
                     )
                   ): ?>inline-block;<? else:?>none;<? endif ?>"
                 >
-                    <!--
                   <span class="ag-shop-card__remaining-count-title">
                     осталось:
                   </span>
                   <span class="ag-shop-card__remaining-count-text">
                     <?= $arAmmount[2]?>
                   </span>
-                  -->
                 </div>
               <? endforeach ?>
           </div>
