@@ -203,15 +203,15 @@ $(document).ready(function() {
 
         ////// Определяем основные параметры свойства
         // Включено/выключено
-        let switched = $(this).attr("switched"); 
+        var switched = $(this).attr("switched"); 
         // Другие свойства, с которыми текущее свойство в паре
-        let crossValues = $(this).attr('cross-values').split(',');
+        var crossValues = $(this).attr('cross-values').split(',');
         // Склады, на которых доступен товар с текущим свойством
-        let availStores = $(this).attr('stores').split(',');
+        var availStores = $(this).attr('stores').split(',');
         // Предложения, в которые входит текущее свойство
-        let offers =  $(this).attr('offers').split(',');
+        var offers =  $(this).attr('offers').split(',');
         // Картинки. на которых изображен товар с текущим свойством
-        let pics = $(this).attr('pics').split('|');
+        var pics = $(this).attr('pics').split('|');
         // Код текущего свойства
         var propCode = $(this).attr("name");
 
@@ -254,7 +254,7 @@ $(document).ready(function() {
         }
         
         // Включаем/выключаем доступные склады для набора свойств
-        let stores = availStores;
+        var stores = availStores;
         $('.ag-shop-card__sizes input:checked').each(function(){
             stores = Intersection(stores,$(this).attr('stores').split(','));
         });
@@ -312,9 +312,9 @@ $(document).ready(function() {
 
     $('input[name="place"]').click(function(){
     
-        let storageId = $(this).val();
-        let switched = $(this).attr("switched");
-        let offers =  $(this).attr('offers').split(',');
+        var storageId = $(this).val();
+        var switched = $(this).attr("switched");
+        var offers =  $(this).attr('offers').split(',');
         var propsVals = $(this).attr("propsvals").split(',');
     
         $(this).parent().parent().find('input').attr('switched','off');
@@ -510,7 +510,7 @@ function productConfirm(){
     // Не выбран склад
 
     // Составляем массив выбранных характеристик
-    let properties = new Array();
+    var properties = new Array();
     $('.ag-shop-card__field .ag-shop-card__sizes input:checked').each(function(){
         properties.push({
             name: $(this).parent().parent().parent()
