@@ -3,6 +3,10 @@ if(
     $_SERVER["HTTP_HOST"]=='shop.ag.mos.ru'
     ||
     $_SERVER["HTTP_HOST"]=='dev.shop.ag.mos.ru'
+    ||
+    $_SERVER["HTTP_HOST"]=='10.89.79.59'
+    ||
+    $_SERVER["HTTP_HOST"]=='10.89.79.58'
 )include("logger.inc.php");
 
 /*
