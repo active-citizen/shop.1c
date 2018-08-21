@@ -10,7 +10,7 @@
     <div class="ag-shop-menu__items js-menu__list">
         <div class="ag-shop-menu__item">
             <a class="ag-shop-menu__link<? if(preg_match("#^".$section["SECTION_PAGE_URL"]."#",
-                $_SERVER["REQUEST_URI"])):?> ag-shop-menu__link--active<? endif?>" 
+                $_SERVER["REQUEST_URI"])):?> ag-shop-menu__link--active<? endif?>"
                 href="<?= $section["SECTION_PAGE_URL"];?>"
                 style="visibility: collapse;"
             >
@@ -21,5 +21,3 @@
   </div>
 </div>
 <!-- }}} Menu-->
-
-

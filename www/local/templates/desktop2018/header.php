@@ -56,7 +56,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
 	<!-- чтобы можно было править стили, на основе пользовательского смартфона -->
 	<script src="<?= SITE_TEMPLATE_PATH ?>/js/crossbrowser.min.js"></script>
     <?  $APPLICATION->ShowHead(); ?>
-    
+
     <meta name="format-detection" content="telephone=no"/>
     <meta name="format-detection" content="address=no"/>
     <meta name="msapplication-tap-highlight" content="no"/>
@@ -66,11 +66,13 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
 
   </head>
   <body>
+
+    
     <?  $APPLICATION->ShowPanel(); ?>
 
 <? if(
     // Заглушка
-    0 
+    0
     &&
     !$USER->IsAuthorized()
     &&
@@ -86,7 +88,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
     ):?>
         <? if(IS_MOBILE && $_SERVER["REQUEST_URI"]!='/catalog/'):?>
           <div class="ag-shop-mob-nav">
-            <a class="ag-shop-mob-back ag-shop-mob-nav" href="<? 
+            <a class="ag-shop-mob-back ag-shop-mob-nav" href="<?
     //            echo "/catalog/";
                 echo "#";
                 /*
@@ -111,7 +113,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                 }
                 */
             ?>" onclick="window.history.go(-1);">
-            <?  
+            <?
                 if(
                     $arPath = explode("/",$_SERVER["REQUEST_URI"])
                 ){
@@ -125,13 +127,13 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                         echo "Главная";
                     }
                     elseif(
-                        $arPath[1]=='catalog' 
-                        && 
-                        trim($arPath[2]) 
+                        $arPath[1]=='catalog'
+                        &&
+                        trim($arPath[2])
                         &&
                         trim($arPath[3])
                     ){
-                        /*    
+                        /*
                         $arCatalogMeta = CIBlockSection::GetList(
                             array(),
                             array(
@@ -144,14 +146,14 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                         )->GetNext();
 
                         if(
-                            isset($arCatalogMeta["NAME"]) 
-                            && 
+                            isset($arCatalogMeta["NAME"])
+                            &&
                             trim($arCatalogMeta["NAME"])
                         )
                         echo $arCatalogMeta["NAME"];
                         */
                         echo "Главная";
-                        
+
                         //echo "Назад";
                     }
                     else{
@@ -170,7 +172,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
         <div class="ag-shop__sidebar">
             <!-- Sidebar {{{-->
             <div class="ag-shop-sidebar">
-              <div class="ag-shop-sidebar__logo-container"><a 
+              <div class="ag-shop-sidebar__logo-container"><a
               class="ag-shop-sidebar__logo" href="http://ag.mos.ru/"></a></div>
               <div class="ag-shop-sidebar__social-container">
                 <div class="ag-shop-sidebar__social-link"><a target="_blank"
@@ -202,7 +204,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                 &&
                 !IS_MOBILE
             ):?>
-            <?$APPLICATION->IncludeComponent("ag:menu.top", "", array(
+            <?$APPLICATION->IncludeComponent("ag:menu.top", "desktop2018", array(
                     "CACHE_TIME"      =>  COMMON_CACHE_TIME
                 ),
                 false
@@ -211,13 +213,13 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
 
             <? if(IS_MOBILE):?>
                 <?
-                
+
                     $APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
                         "CACHE_TIME"      =>  COMMON_CACHE_TIME
                     ),
                     false
                 );
-                
+
                 ?>
 
             <? endif ?>
@@ -237,7 +239,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
             );?>
             <? endif ?>
 
-    <? 
+    <?
     require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationSetting.class.php");
        $objSettings = new \Integration\CIntegrationSettings;
        $objSettings->code = 'INFO';
@@ -262,9 +264,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
         <div class="close-pic" onclick="$(this).parent().fadeOut();document.cookie='<?= $sCookieName?>=1;expires=<?= $sHideDate ?>;path=/;';"></div>
         <i class="ag-shop-icon ag-shop-icon--attention"></i>
         <span><?= $arSettings["INFO_MESSAGE"]["VALUE"]?></span>
-    </div>    
+    </div>
     <? endif ?>
 
 <? endif ?>
-
-

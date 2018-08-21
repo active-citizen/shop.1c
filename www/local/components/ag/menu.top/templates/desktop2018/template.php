@@ -1,4 +1,4 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?> 
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?
     $this->createFrame()->begin("Загрузка");
 ?>
@@ -8,12 +8,12 @@
     <div class="grid grid--bleed">
       <div class="grid__col-auto grid__col-md-shrink">
         <a class="ag-shop-nav__link" href="/catalog/" style="padding-left: 0px;">
-        <div class="ag-shop-nav__link <? if(preg_match("#^/catalog/.*$#", $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>"><i class="ag-shop-nav__link-icon ag-shop-nav__link-icon--basket"></i>
+        <div id="ag-shop-nav__link--active" class="ag-shop-nav__link <? if(preg_match("#^/catalog/.*$#", $_SERVER["REQUEST_URI"])):?><? endif ?>">
           <div class="ag-shop-nav__link-caption">Магазин<span class="show-on-desktop">&nbsp;поощрений</span></div>
         </div>
         </a>
       </div>
-      <? if($USER->isAuthorized()):?>
+      <? //if($USER->isAuthorized()):?>
       <div class="grid__col-auto grid__col-md-shrink" id="profie-win">
           <a class="ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
               <div class="ag-shop-nav__profile-container">
@@ -26,7 +26,7 @@
               </div>
           </a>
       </div>
-      <? endif;?>
+      <? //endif;?>
       <div class="grid__col-auto grid__col-md-shrink" id="profie-win">
         <a class="ag-shop-nav__link <? if(preg_match("#^/rules/.*$#",
         $_SERVER["REQUEST_URI"])):?>ag-shop-nav__link--active<? endif ?>" href="/rules/hiw/">
@@ -37,7 +37,7 @@
           </a>
       </div>
       <!-- Можно выпилить целиком, если не нужно-->
-      <!--
+
       <div class="grid__col-auto grid__col-md-shrink ag-shop-nav__last-item">
         <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
           <div class="ag-shop-nav__link">
@@ -48,7 +48,6 @@
         </button>
       </div>
     </div>
-    -->
   </div>
 </nav>
 <!-- }}} Top Nav-->
