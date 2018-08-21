@@ -1,0 +1,62 @@
+.teaser-loading{
+    opacity: 0.5;
+}
+
+
+.desktop-product.notInStock .desktop-product-link {
+    cursor: pointer;
+    z-index: 1;
+}
+
+.desktop-product.notInStock .desktop-product-badge{
+    display: block;
+}
+
+
+    .ag-shop-footer{
+        display:none;
+    }
+
+.ag-shop-slider h3{
+    line-height: 1.2em;
+}
+
+.ag-shop-card__image-points{
+    line-height: 1.7em;
+}
+
+.ag-shop-catalog{
+    min-height: 100vh;
+}
+
+.filter-empty-alert{
+    font-size: 16px;
+    color: rgba(0,122,108,1);
+}
+
+.desktop-product-title__name{
+    font-size: 14px;
+}
+
+div.desktop-products-container--gridList{
+   padding-left: 10px;
+   padding-right: 10px;
+}
+
+
+
+.mobile-header-filter-btn__icon-active {
+    position: absolute;
+    top: 12px;
+    left: 22px;
+    width: 6px;
+    height: 6px;
+    -webkit-transform: translateX(12px);
+    -ms-transform: translateX(12px);
+    transform: translateX(12px);
+    background-repeat: no-repeat;
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-position: center;
+    background-image: url(/local/templates/agshop_mobile/css/../img/icon__filter-ok.png);
+}
