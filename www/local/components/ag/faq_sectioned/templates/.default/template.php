@@ -41,7 +41,7 @@
                               <div class="ag-shop-rules__content
                               ag-shop-rules__content--gaps js-spoiler__content"
                               id="faq-question-<?= $faq["ID"]?>">
-                                <p><?= str_replace("\n","<br>",$faq["~DETAIL_TEXT"]);?></p>
+                                <p><?= str_replace("\n","<br>",$faq["DETAIL_TEXT"]);?></p>
                               </div>                
                             <? endforeach?>
                         </div>
