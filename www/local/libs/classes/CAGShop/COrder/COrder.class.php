@@ -356,7 +356,12 @@ class COrder extends \AGShop\CAGShop{
         $objSSAGAccount = new \SSAG\CSSAGAccount('',\CUser::GetID());
         $objSSAGAccount->update();
         $arAccount = ["CURRENT_BUDGET"=>$objSSAGAccount->balance()];
-        if(!$sCustomNum && $arAccount["CURRENT_BUDGET"]<$nTotalSum){
+        if(
+            // Для безвозмездных на баланс не проверяем
+            $arProduct["IS_FREE"][0]["VALUE_ENUM"]!='да'
+            &&
+            !$sCustomNum && $arAccount["CURRENT_BUDGET"]<$nTotalSum
+        ){
             $this->addError("Недостаточно баллов на счёте");
             // Возвращаем всё что взяли на склад
             $this->returnToStore();
@@ -533,13 +538,11 @@ class COrder extends \AGShop\CAGShop{
         // Если инитеграция с инфотехом провалилась
         elseif($sInfotechStatus == 2){
         }
-        // Для админа баллы не снимаем, ибо юниттест
-        elseif($this->getParam("UserId")!=1
-            /*
-            // !!!!!!!!!!!!!!!!!!!!!!
+        // Для админа или безвозмездного товара баллы не снимаем, ибо юниттест
+        elseif(
+            $this->getParam("UserId")!=1
             &&
-            $arSKUs[0]["SKU"]["PRODUCT"]["ID"]!=217570
-            */
+            $arProduct["IS_FREE"][0]["VALUE_ENUM"]!='да'
         ){
             //////////// Снимает баллы
             if(!$bPointsSuccess = $objSSAGAccount->transaction(
@@ -551,11 +554,9 @@ class COrder extends \AGShop\CAGShop{
             if($bPointsSuccess)
                 $objSSAGAccount->update();
         }
-        /*
-        // !!!!!!!!!!!!!!!!!!!!!!
-        if($arSKUs[0]["SKU"]["PRODUCT"]["ID"]==217570)
+        // Для безвозмездного считаем, что с оплатой всё ок
+        if($arProduct["IS_FREE"][0]["VALUE_ENUM"]=='да')
             $bPointsSuccess = true;
-        */
         
         // Если тойка провалилась - остатки возвращаем
         if($stoykaStatus == 2){
