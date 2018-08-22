@@ -1,5 +1,4 @@
 <?php
-    
     // Загружаем XML
     $xmlImport = file_get_contents($uploadDir.$importFilename);
     $obImport = simplexml_load_string($xmlImport, "SimpleXMLElement" );
@@ -254,13 +253,14 @@
     // Составляем справочник флагов
     $ENUM = array();
     $res = CIBlockPropertyEnum::GetList(array(),array("IBLOCK_ID"=>CATALOG_IB_ID));
+
     while($data = $res->getNext()){
         $enum = CIBlockPropertyEnum::GetByID($data["ID"]);
         if(!isset($ENUM[$data["PROPERTY_CODE"]]))
             $ENUM[$data["PROPERTY_CODE"]] = array();
         $ENUM[$data["PROPERTY_CODE"]][$enum["VALUE"]] = $enum["ID"];
     }
-    
+     
     // Проходим по каждому товару в XML
     foreach($arProducts as $arProduct){
         $arProduct["Реквизиты"] = array();
@@ -520,6 +520,9 @@
         // Аукцион
         $arProperties["AUCTION_IS"] = 
             $arProduct["Аукцион"]=='Да'?$ENUM["AUCTION_IS"]["да"]:0;
+        // Безвозмездно
+        $arProperties["IS_FREE"] = 
+            $arProduct["Безвозмездно"]=='Да'?$ENUM["IS_FREE"]["да"]:0;
         // Дата начала аукциона
         if(trim($arProduct["АукционДатаНачала"])){
             $tmp2 = date_parse($arProduct["АукционДатаНачала"]);
