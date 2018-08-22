@@ -1,64 +1,60 @@
-.teaser-loading{
-    opacity: 0.5;
+.teaser-loading {
+  opacity: 0.5;
 }
-
 
 .desktop-product.notInStock .desktop-product-link {
-    cursor: pointer;
-    z-index: 1;
+  cursor: pointer;
+  z-index: 1;
 }
 
-.desktop-product.notInStock .desktop-product-badge{
-    display: block;
+.desktop-product.notInStock .desktop-product-badge {
+  display: block;
 }
 
-
-    .ag-shop-footer{
-        display:none;
-    }
-
-.ag-shop-slider h3{
-    line-height: 1.2em;
+.ag-shop-footer {
+  display: none;
 }
 
-.ag-shop-card__image-points{
-    line-height: 1.7em;
+.ag-shop-slider h3 {
+  line-height: 1.2em;
 }
 
-.ag-shop-catalog{
-    min-height: 100vh;
+.ag-shop-card__image-points {
+  line-height: 1.7em;
 }
 
-.filter-empty-alert{
-    font-size: 16px;
-    color: rgba(0,122,108,1);
+.ag-shop-catalog {
+  min-height: 100vh;
 }
 
-.desktop-product-title__name{
-    font-size: 14px;
+.filter-empty-alert {
+  font-size: 16px;
+  color: rgba(0, 122, 108, 1);
 }
 
-div.desktop-products-container--gridList{
-   padding-left: 10px;
-   padding-right: 10px;
+.desktop-product-title__name {
+  font-size: 14px;
 }
 
-
+div.desktop-products-container--gridList {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 .mobile-header-filter-btn__icon-active {
-    position: absolute;
-    top: 12px;
-    left: 22px;
-    width: 6px;
-    height: 6px;
-    -webkit-transform: translateX(12px);
-    -ms-transform: translateX(12px);
-    transform: translateX(12px);
-    background-repeat: no-repeat;
-    -webkit-background-size: contain;
-    background-size: contain;
-    background-position: center;
-    background-image: url(/local/templates/agshop_mobile/css/../img/icon__filter-ok.png);
+  position: absolute;
+  top: 12px;
+  left: 22px;
+  width: 6px;
+  height: 6px;
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+  background-repeat: no-repeat;
+  -webkit-background-size: contain;
+  background-size: contain;
+  background-position: center;
+  background-image: url(/local/templates/agshop_mobile/css/../img/icon__filter-ok.png);
 }
 
 /* new style*/
@@ -66,16 +62,86 @@ div.desktop-products-container--gridList{
 /*Header*/
 
 #ag-shop-nav__link--active {
-    background-color: none;
-    cursor: pointer;
-    color: black;
-    font-family: "SFUIText-Bold";
-    font-weight: 700;
-    font-size: 30px;
+  background-color: none;
+  cursor: pointer;
+  color: black;
+  font-family: "SFUIText-Bold";
+  font-weight: 700;
+  font-size: 30px;
+  padding: 0;
 }
 
-#profie-win{
+#profie-win {
   width: 356px;
   height: 121px;
-  background-color: #007a6c;
+  background-color: #009685;
+  padding-top: 0px;
+
+}
+
+#profie-win-top {
+  padding-top: 0;
+  width: 356px;
+  height: 121px;
+  margin-left: 102px;
+}
+
+.ag-shop {
+  padding-left: 189px;
+  padding-right: 189px;
+}
+
+.ag-shop-menu::after{
+  background: none;
+}
+
+.ag-shop-menu__item{
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+#logo-top-menu {
+  width: 129px;
+  height: 121px;
+  background-color: #009685;
+}
+
+#logo-profile{
+  margin-top: 45px;
+  margin-left: -35px;
+
+}
+
+#logo-balls{
+  /*font-family: "Open Sans", sans-serif;*/
+  font-weight: 900;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+#fio-logo{
+  color: #fff;
+}
+
+#fio-balls{
+  color:#ffc20e;
+  margin-left: 0;
+  margin-top: 5px;
+}
+
+#fa-angle{
+  position: absolute;
+    right: 20px;
+    top: 42px;
+    font-size: 25px;
+    color: #fff;
+}
+
+#shop-title{
+  font-size: 24px;
+  font-weight: 600;
+}
+
+#ag-menu-list{
+  background-color: #f1f0f0;
 }

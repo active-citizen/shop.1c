@@ -67,7 +67,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
   </head>
   <body>
 
-    
+
     <?  $APPLICATION->ShowPanel(); ?>
 
 <? if(
@@ -169,8 +169,11 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
             &#160;
           </div>
         <? endif ?>
-        <div class="ag-shop__sidebar">
-            <!-- Sidebar {{{-->
+
+        <!--Убрали сайдбар-->
+
+        <!--<div class="ag-shop__sidebar">
+             Sidebar {{{
             <div class="ag-shop-sidebar">
               <div class="ag-shop-sidebar__logo-container"><a
               class="ag-shop-sidebar__logo" href="http://ag.mos.ru/"></a></div>
@@ -193,8 +196,8 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
               </div>
               <button class="ag-shop-sidebar__up" type="button"></button>
             </div>
-            <!-- }}} Sidebar-->
-        </div>
+            }}} Sidebar
+        </div>-->
     <? endif ?>
 
 
