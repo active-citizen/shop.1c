@@ -235,7 +235,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                     preg_match("#^/search/#", $_SERVER["REQUEST_URI"])
                 )
             ):?>
-            <?$APPLICATION->IncludeComponent("ag:menu.catalog", "", array(
+            <?$APPLICATION->IncludeComponent("ag:menu.catalog", "desktop2018", array(
                     "CACHE_TIME"      =>  COMMON_CACHE_TIME
                 ),
                 false

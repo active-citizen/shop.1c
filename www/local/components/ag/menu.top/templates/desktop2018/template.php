@@ -111,16 +111,8 @@
         </div>
         </a>
       </div>
-      <!-- Можно выпилить целиком, если не нужно-->
-      <div class="grid__col-auto grid__col-md-shrink ag-shop-nav__last-item">
-        <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
-          <div class="ag-shop-nav__link">
-            <form action="/search/" class="searchform">
-              <input name="q" type="text" placeholder="Поиск" value="<?= htmlspecialchars(isset($_GET["q"])?$_GET["q"]:"") ?>" disabled>
-            </form>
-          </div>
-        </button>
-      </div>
+      <!-- Можно выпилить (search) целиком, если не нужно-->
+      <!--There was a search-->
     </div>
   </div>
 </nav>

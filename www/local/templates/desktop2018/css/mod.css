@@ -131,10 +131,10 @@ div.desktop-products-container--gridList {
 
 #fa-angle{
   position: absolute;
-    right: 20px;
-    top: 42px;
-    font-size: 25px;
-    color: #fff;
+  right: 20px;
+  top: 42px;
+  font-size: 25px;
+  color: #fff;
 }
 
 #shop-title{
@@ -144,4 +144,20 @@ div.desktop-products-container--gridList {
 
 #ag-menu-list{
   background-color: #f1f0f0;
+}
+
+#ag-input-search{
+  border: none;
+  background-color: #f1f0f0;
+  width: 50px;
+  margin-top: 20px;
+}
+
+.ag-wrap-balls{
+  padding: 30px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.ag-wrap-balls img{
+  margin-left: 15px;
 }
