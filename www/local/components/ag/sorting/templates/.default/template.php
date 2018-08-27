@@ -2,50 +2,50 @@
     $bButtonDisabled = true;
     if(
         (
-            isset($arParams["filter"]["not_exists"]) 
-            && 
+            isset($arParams["filter"]["not_exists"])
+            &&
             $arParams["filter"]["not_exists"]
         )
         ||
         (
-            isset($arParams["filter"]["sale"]) 
-            && 
+            isset($arParams["filter"]["sale"])
+            &&
             $arParams["filter"]["sale"]
         )
         ||
         (
-            isset($arParams["filter"]["new"]) 
-            && 
+            isset($arParams["filter"]["new"])
+            &&
             $arParams["filter"]["new"]
         )
         ||
         (
-            isset($arParams["filter"]["hit"]) 
-            && 
+            isset($arParams["filter"]["hit"])
+            &&
             $arParams["filter"]["hit"]
         )
         ||
         (
-            isset($arParams["filter"]["store"]) 
-            && 
+            isset($arParams["filter"]["store"])
+            &&
             $arParams["filter"]["store"]
         )
         ||
         (
-            isset($arParams["filter"]["price_min"]) 
-            && 
+            isset($arParams["filter"]["price_min"])
+            &&
             $arParams["filter"]["price_min"]
         )
         ||
         (
-            isset($arParams["filter"]["price_max"]) 
-            && 
+            isset($arParams["filter"]["price_max"])
+            &&
             $arParams["filter"]["price_max"]
         )
         ||
         (
-            isset($arParams["filter"]["interest"]) 
-            && 
+            isset($arParams["filter"]["interest"])
+            &&
             $arParams["filter"]["interest"]
         )
 
@@ -142,7 +142,7 @@
 							</ul>
 						</div>
 					</div>
-                     
+
 					<div class="dropdown-wrapper desktop-catalog-grid">
 						<button class="desktop-catalog-sort__btn" type="button" name="button">
 
@@ -196,8 +196,7 @@
 							</ul>
 						</div>
 					</div>
-                    
+
 				</div>
 			</div>
             <!--  Конец. Заголовок каталога (сортировать по и вид плиток)-->
-

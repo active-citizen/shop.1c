@@ -21,39 +21,20 @@
               <div class="ag-shop-menu__item" id="logo-top-menu">
                 <img src="/local/templates/desktop2018/img/logo-menu.png" alt="logo-menu">
               </div>
-              <div class="ag-shop-menu__item">
-            <a class="ag-shop-menu__link" href="/catalog/eksklyuziv/">
-                Голосования            </a>
-              </div>
-                <div class="ag-shop-menu__item">
-            <a class="ag-shop-menu__link" href="/catalog/suveniry/">
-                Городские новинки            </a>
-        </div>
-                <div class="ag-shop-menu__item">
-            <a class="ag-shop-menu__link" href="/catalog/muzei/">
-               Электронный дом            </a>
-        </div>
-                <div class="ag-shop-menu__item">
-            <a class="ag-shop-menu__link" href="/catalog/meropriyatiya/">
-                Результаты работы            </a>
-        </div>
-                <div class="ag-shop-menu__item">
-            <a class="ag-shop-menu__link ag-shop-menu__link--active" href="/catalog/elektronnyy-kontent/">
-                Магазин поощрений            </a>
-        </div>
-                <div class="ag-shop-menu__item item-articles">
-            <a class="ag-shop-menu__link" href="/catalog/transport/">
-                Проект в лицах            </a>
-              </div>
-
+              <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/poll/index">Голосования</a></div>
+                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/experiments">Городские новинки</a></div>
+                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/dom">Электронный дом</a></div>
+                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/results">Результаты работы</a></div>
+                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="/catalog/elektronnyy-kontent/">Магазин поощрений</a></div>
+                <div class="ag-shop-menu__item item-articles"><a class="ag-shop-menu__link" href="https://ag.mos.ru/photos">Проект в лицах</a></div>
                 <!--<div class="ag-shop-menu__item ag-menu-breaker"></div>-->
         <div class="ag-shop-menu__item item-articles">
-            <a class="ag-shop-menu__link" href="/profile/order/">
+            <a class="ag-shop-menu__link" href="https://ag.mos.ru/schedule">
             Афиша
             </a>
         </div>
         <div class="ag-shop-menu__item item-articles">
-            <a class="ag-shop-menu__link" href="/profile/wishes/">
+            <a class="ag-shop-menu__link" href="https://ag.mos.ru/blockchain">
             Blockchain
             </a>
         </div>

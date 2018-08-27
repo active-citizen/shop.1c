@@ -1,35 +1,39 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
-<? if(
-    !IS_MOBILE
-    &&
-    !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
+<? if( !IS_MOBILE && !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
     //isset($_COOKIE["EMPSESSION"])
 ):?>
 <!-- Не выводим футер для ЛК -->
 </div><!-- ag-shop -->
 </div><!-- ag-shop_main -->
-    <!-- Footer {{{-->
-    <footer class="ag-shop-footer">
-      <div class="ag-shop-footer__links">
-        <a class="ag-shop-footer__link" href="/rules/hiw/">О проекте</a>
-        <a class="ag-shop-footer__link" href="/rules/faq/">Часто задаваемые вопросы</a>
-        <!--
-        <a class="ag-shop-footer__link" href="#" onclick="return showCommonFeedbackForm();">Обратная связь</a>
-        -->
-      </div>
-      <div class="ag-shop-footer__copy"><small
-      class="ag-shop-footer__copy-text">&copy; <?= date("Y")?>, Активный
-      Гражданин. <br class="hide-on-desktop">Все права защищены. <a
-      target="_blank" href="https://ag.mos.ru/site/offer#content">Публичная оферта</a></small></div>
-    </footer>
-    <!-- }}} Footer-->
+
+
+
+<!--@ Was here footer @-->
+
+
 
 <? else: ?>
 </div><!-- ag-shop -->
 </div><!-- ag-shop_main -->
 <!-- Конец: не выводим футер для ЛК -->
 <? endif ?>
+
+
+<!--Condition template from header-->
+<? if(IS_MOBILE):?>
+    <?
+
+        $APPLICATION->IncludeComponent("ag:footer", "desktop2018", array(
+            "CACHE_TIME"      =>  COMMON_CACHE_TIME
+        ),
+        false
+    );
+
+    ?>
+
+<? endif ?>
+<!--endif@template from header@->
 
 
         <? if(1 || !CUser::IsAuthorized()):?>
@@ -43,10 +47,7 @@
                 !preg_match("#^/partners/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/servitor/#",$_SERVER["REQUEST_URI"])
                 && !preg_match("#^/local/.migrations/#",$_SERVER["REQUEST_URI"])
-                && (
-                    1
-                    &&
-                    !IS_MOBILE
+                && (1 && !IS_MOBILE
                     //!isset($_COOKIE["EMPSESSION"])
                     //||
                     //!$_COOKIE["EMPSESSION"]
@@ -89,7 +90,19 @@
                 </script>
             <? endif ?>
         <? endif?>
-
+        <!-- Footer {{{-->
+        <footer class="ag-shop-footer">
+          <div class="ag-shop-footer__links">
+            <a class="ag-shop-footer__link" href="/rules/hiw/">О проекте</a>
+            <a class="ag-shop-footer__link" href="/rules/faq/">Часто задаваемые вопросы</a>
+            <a class="ag-shop-footer__link" href="#" onclick="return showCommonFeedbackForm();">Обратная связь</a>
+          </div>
+          <div class="ag-shop-footer__copy"><small
+          class="ag-shop-footer__copy-text">&copy; <?= date("Y")?>, Активный
+          Гражданин. <br class="hide-on-desktop">Все права защищены. <a
+          target="_blank" href="https://ag.mos.ru/site/offer#content">Публичная оферта</a></small></div>
+        </footer>
+        <!-- }}} Footer-->
 
     <div class="ag-shop-modal-wrap" id="rise-error" style="display:none">
       <div class="ag-shop-modal pop_width_auto popup_center">

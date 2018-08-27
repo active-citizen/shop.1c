@@ -207,6 +207,7 @@ setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");
                 &&
                 !IS_MOBILE
             ):?>
+            <!--Тут же находится ag:menu.catalog-->
             <?$APPLICATION->IncludeComponent("ag:menu.top", "desktop2018", array(
                     "CACHE_TIME"      =>  COMMON_CACHE_TIME
                 ),

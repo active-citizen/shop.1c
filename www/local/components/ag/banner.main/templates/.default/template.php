@@ -1,28 +1,28 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?
     $this->createFrame()->begin("Загрузка");
-?>  
+?>
         <?if(count($arResult["BANNERS"])):?>
           <!-- Slider {{{-->
           <div class="ag-shop-slider" style="height:500px;margin-bottom: 5px;">
             <div class="js-content-slider">
-                
+
             <?foreach($arResult["BANNERS"] as $BANER):?>
                 <?if($BANER["CATALOG_LINK_DATA"]):?>
                 <div class="ag-shop-slider__item">
                     <button class="ag-shop-slider-card__likes" type="button">
                       <div class="ag-shop-slider-card__likes-icon<? if($BANER["CATALOG_LINK_DATA"]["MY_WISH"]){?> wish-on<? }else{?> wish-off<? }?>"
-                        productid="<?= $BANER["CATALOG_LINK_DATA"]["ID"]?>" 
+                        productid="<?= $BANER["CATALOG_LINK_DATA"]["ID"]?>"
                         onclick="return mywish(this);"></div>
                       <div class="ag-shop-slider-card__likes-count"
-                      id="wishid<?= $BANER["CATALOG_LINK_DATA"]["ID"]?>"><?= 
+                      id="wishid<?= $BANER["CATALOG_LINK_DATA"]["ID"]?>"><?=
                         $BANER["CATALOG_LINK_DATA"]["WISHES"]
                       ?></div>
                     </button>
                   <a class="ag-shop-slider-card" href="<?=
                   $BANER["CATALOG_LINK_DATA"]["URL"]?>"
                   style="background-image:url(<?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>)">
-                        <!-- 
+                        <!--
                             <img class="ag-shop-slider-card__image" src="<?=
                              $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>">
                          -->
@@ -42,13 +42,13 @@
                       <div class="ag-shop-slider-card__points-count">
                           <?= $BANER["CATALOG_LINK_DATA"]["PRICE"] ?>
                       </div>
-                      <div class="ag-shop-slider-card__points-text"><? 
+                      <div class="ag-shop-slider-card__points-text"><?
                         echo get_points($BANER["CATALOG_LINK_DATA"]["PRICE"]);
                       ?></div>
                     </div>
                     <div class="ag-shop-slider-card__info">
                       <p class="ag-shop-slider-card__category"><?= $BANER["CATALOG_LINK_DATA"]["SECTION_NAME"]?></p>
-                      <p class="ag-shop-slider-card__description"><?= 
+                      <p class="ag-shop-slider-card__description"><?=
                         mb_strlen($BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"])<64?
                         strip_tags($BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"]):
                         mb_substr(strip_tags($BANER["CATALOG_LINK_DATA"]["PREVIEW_TEXT"]),0,64)."..."
@@ -66,8 +66,8 @@
                   </div>
                   </a>
                 </div>
-                <? endif ?>  
-                  
+                <? endif ?>
+
                 <?if(!$BANER["CATALOG_LINK_DATA"]):?>
                 <div class="ag-shop-slider__item">
                   <a class="ag-shop-slider-card-dark" href="<?= $BANER["PROPERTIES"]["BANER_URL"]["VALUE"]?>" style="background-image:url(<?= $BANER["CATALOG_LINK_DATA"]["PREVIEW_PICTURE"]?>)">
@@ -84,13 +84,13 @@
                     <div style="position: absolute; bottom: 10px; color:  white;
                     z-index: 3; left: 20px; right: 20px; text-shadow: 0 0 3px
                     rgba(0,0,0,1); color: white !important;">
-                      <?= 
+                      <?=
                         $BANER["PROPERTIES"]["BANER_DESC"]["VALUE"]
                       ?>
                     </div>
 
                 </div>
-                <? endif ?>  
+                <? endif ?>
             <? endforeach?>
             </div>
             <div class="ag-shop-slider__buttons">
@@ -131,4 +131,3 @@
         </script>
 
         <? endif ?>
-

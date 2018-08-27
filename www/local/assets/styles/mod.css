@@ -63,7 +63,7 @@ input#ag-minPrice{
     font-size: 14px;
     font-size: 0.875rem;
     color: #0e2f4b;
-    
+
     padding: 7px 20px;
 }
 
@@ -81,7 +81,7 @@ input#ag-maxPrice{
     font-size: 14px;
     font-size: 0.875rem;
     color: #0e2f4b;
-    
+
     padding: 7px 20px;
 }
 
@@ -213,35 +213,35 @@ input.ag-balls[type="radio"]{
     background-size: 40% !important;
 }
 
-.ag-shop-nav__link--active, .ag-shop-footer__copy{
+/*.ag-shop-nav__link--active, .ag-shop-footer__copy{
     background-color: rgba(0,122,108,1) !important;
     cursor: pointer;
 }
 
 .ag-shop-footer__links{
     background-color: rgba(0,122,108,0.9) !important;
-}
+}*/
 
-.next-page, 
+.next-page,
 .ag-shop-catalog__more-button,
 .ag-shop-profile-order__points,
-.ag-shop-menu__link--active, 
+.ag-shop-menu__link--active,
 .ag-shop-item-card__name,
 .ag-shop-card__header-title,
 .ag-shop-card__total-points,
 .ag-shop-card__count-number,
 .ag-shop-modal__button--cancel
-.ag-shop-rules__spoiler-link, 
-.js-spoiler__link, 
+.ag-shop-rules__spoiler-link,
+.js-spoiler__link,
 .hash-navigation
 {
     color: rgba(0,122,108,1) !important;
 }
 
-.next-page, 
+.next-page,
 .ag-shop-catalog__more-button,
-.ag-shop-modal__button, 
-.ag-shop-card__review-form-button, 
+.ag-shop-modal__button,
+.ag-shop-card__review-form-button,
 .ag-shop-card__submit-button,
 .ag-shop-modal__button--cancel,
 .ag-shop-modal__container
@@ -253,7 +253,7 @@ input.ag-balls[type="radio"]{
     background-color: rgba(0,122,108,1) !important;
 }
 
-.next-page, 
+.next-page,
 .ag-shop-catalog__more-button,
 .ag-shop-modal__button--cancel{
     background-color: rgba(255,255,255,1) !important;
@@ -283,7 +283,7 @@ input.ag-balls[type="radio"]{
 
 h3.ag-shop-item-card__name{
     /* text-shadow: 1px .5px .5px #ffffff; */
-    text-shadow: 0 0 3px rgba(0,0,0,0.4); 
+    text-shadow: 0 0 3px rgba(0,0,0,0.4);
     color: white !important;
 }
 
@@ -491,13 +491,13 @@ div.ag-shop-mob-nav:before{
     top: 0px;
     width: 36px;
     background-image:linear-gradient(
-        90deg, 
-        rgba(12,142,130, 0), 
+        90deg,
+        rgba(12,142,130, 0),
         rgba(12,142,130,1)
     );
     float: right;
 }
- 
+
 .ag-shop-mob-back{
     position: absolute;
     left: 0px;
@@ -696,7 +696,7 @@ div.ag-shop-mob-title{
 
 .ag-shop-profile-order__mobile-controls .ag-shop-profile-order__control span{
     padding-left: 10px;
-    font-size: 14px;   
+    font-size: 14px;
 }
 
 
@@ -1033,4 +1033,3 @@ input:disabled + .ag-shop-card__places-item {
 .mobile-search-notfind{
     z-index:199 !important;
 }
-
