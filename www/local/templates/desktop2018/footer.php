@@ -3,6 +3,8 @@
 <? if( !IS_MOBILE && !preg_match("#^/partners/#", $_SERVER["REQUEST_URI"])
     //isset($_COOKIE["EMPSESSION"])
 ):?>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 <!-- Не выводим футер для ЛК -->
 </div><!-- ag-shop -->
 </div><!-- ag-shop_main -->
@@ -91,16 +93,34 @@
             <? endif ?>
         <? endif?>
         <!-- Footer {{{-->
+
+<style>
+
+</style>
+
         <footer class="ag-shop-footer">
           <div class="ag-shop-footer__links">
             <a class="ag-shop-footer__link" href="/rules/hiw/">О проекте</a>
             <a class="ag-shop-footer__link" href="/rules/faq/">Часто задаваемые вопросы</a>
             <a class="ag-shop-footer__link" href="#" onclick="return showCommonFeedbackForm();">Обратная связь</a>
+            <div class="soc-item">
+              <ul class="hr">
+                <li><a href="https://www.facebook.com/citizenmoscow" target="_blank"><i class="fab fa-facebook-f"></a></i></li>
+                <li><a href="https://ok.ru/citizenmoscow/" target="_blank"><i class="fab fa-odnoklassniki"></a></i></li>
+                <li><a href="https://twitter.com/citizenmoscow" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="https://vk.com/citizenmoscow" target="_blank"><i class="fab fa-vk"></i></a></li>
+                <li><a href="#"><i class="fab fa-telegram-plane"></i></a></li>
+                <li><a href="https://www.instagram.com/citizenmoscow/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+
+              </ul>
+            </div>
           </div>
-          <div class="ag-shop-footer__copy"><small
-          class="ag-shop-footer__copy-text">&copy; <?= date("Y")?>, Активный
-          Гражданин. <br class="hide-on-desktop">Все права защищены. <a
-          target="_blank" href="https://ag.mos.ru/site/offer#content">Публичная оферта</a></small></div>
+          <div class="ag-shop-footer__copy">
+            <small class="ag-shop-footer__copy-text">&copy; <?= date("Y")?>
+              , Активный Гражданин. <br class="hide-on-desktop">
+              Все права защищены. <a target="_blank" href="https://ag.mos.ru/site/offer#content">Публичная оферта</a></small>
+
+        </div>
         </footer>
         <!-- }}} Footer-->
 

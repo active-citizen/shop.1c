@@ -301,3 +301,32 @@ div.desktop-products-container--gridList {
 .ag-shop-footer__copy {
   text-align: left;
 }
+
+/*--@ Social button @--*/
+
+.hr {
+ margin: 0;
+ padding: 4px;
+}
+
+.hr li {
+ display: inline-block;
+ margin-right: 5px;
+ border: 1px solid #757574;
+ padding: 6px;
+ border-radius: 50%;
+ width: 30px;
+ height: 30px;
+}
+
+.hr a{
+  color: #757574;
+}
+
+
+.soc-item{
+  width: 17rem;
+  margin-left: 30rem;
+  margin-top: 1.5rem;
+  color: #757574;
+}
