@@ -2,7 +2,11 @@
     <form id="desktopCatalogFilterForm" class="desktop-products-filter-form"
     name="desktopCatalogFilterForm" action="#teasers">
         <input id="sorting" name="sorting" type="hidden" value="<?=
+        $arParams["sorting"]?htmlspecialchars($arParams["sorting"]):"fresh-desc"?>">
+        <!--
+        <input id="sorting" name="sorting" type="hidden" value="<?=
         $_REQUEST["sorting"]?htmlspecialchars($_REQUEST["sorting"]):"fresh-desc"?>">
+        -->
         <input id="smallicons" name="smallicons" type="hidden" value="<?=
         $_REQUEST["smallicons"]?htmlspecialchars($_REQUEST["smallicons"]):0?>">
         <input id="not_exists" name="not_exists" type="hidden" value="<?=
