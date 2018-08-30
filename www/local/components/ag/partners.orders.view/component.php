@@ -1,9 +1,19 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 CModule::IncludeModule('catalog');
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/classes/CAGShop/CIntegration/CIntegrationInfotech.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/order.lib.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CIntegration/CIntegrationTroyka.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CIntegration/CIntegrationInfotech.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogProperties.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php");
 use AGShop\Integration as Integration;
+use AGShop\Catalog as Catalog;
 
 $arParams["ORDER_ID"] = 
     isset($arParams["ORDER_ID"]) && intval($arParams["ORDER_ID"])
@@ -109,35 +119,28 @@ $resBasket = CSaleBasket::GetList(
 
 $arResult["ORDER"]["BASKET"] = array();
 
+$objOfferProps = new \Catalog\CCatalogProperties;
+$objProduct = new \Catalog\CCatalogProduct;
+$objSection = new \Catalog\CCatalogSection;
 while($arBasket = $resBasket->Fetch()){
-    $arOffer = CIBlockElement::GetList(
-        array(),
-        array(
-            "IBLOCK_ID"=>OFFER_IB_ID,
-            "ID"=>$arBasket["PRODUCT_ID"]
-        ),
-        false,
-        array("nTopCount"=>1),
-        array("PROPERTY_CML2_LINK")
-    )->Fetch();
 
-    $arProduct = CIBlockElement::GetList(
-        array(),
-        array(
-            "IBLOCK_ID"=>CATALOG_IB_ID,
-            "ID"=>$arOffer["PROPERTY_CML2_LINK_VALUE"]
-        ),
-        false,
-        array("nTopCount"=>1),
-        array(
-            "PROPERTY_SEND_CERT","ID","NAME","CODE","PREVIEW_PICTURE","DETAIL_TEXT"
-            ,"PROPERTY_MINIMUM_PRICE","IBLOCK_SECTION_ID","PROPERTY_QUANT"
-            ,"PROPERTY_RECEIVE_RULES","PROPERTY_CANCEL_RULES","TIMESTAMP_X"
+    $arProps = $objOfferProps->getById($arBasket["PRODUCT_ID"]);
 
-        )
-    //  array()
-    )->Fetch();
+    $arAttrs = [];
+    foreach($arProps as $sKey=>$sValue){
+        if(!preg_match("#^PROP1C_#",$sKey))continue;
+        $arAttr = $objOfferProps->getPropEnum($sKey,$sValue);
+        $arAttrs[$arAttr["NAME"]] = $arAttr["VALUE"];
+    }
 
+    $arProduct = $objProduct->get($arProps["CML2_LINK"]);
+    $arProductProperties = $objProduct->getProperties($arProduct["ID"]);
+    foreach($arProductProperties as $sKey=>$sValue)
+        $arProduct["PROPERTY_".$sKey."_VALUE"] = $sValue;
+
+    $arSection = $objSection->getById($arProduct["IBLOCK_SECTION_ID"]);
+
+/*
     $arSection = CIBlockSection::GetList(
         array(),
         array("ID"=>$arProduct["IBLOCK_SECTION_ID"]),
@@ -145,7 +148,7 @@ while($arBasket = $resBasket->Fetch()){
         array(),
         array("nTopCount"=>1)
     )->Fetch();
-
+*/
 
     $arProduct["IMAGE"] = CFile::GetPath(
         $arProduct["PREVIEW_PICTURE"]
@@ -153,7 +156,8 @@ while($arBasket = $resBasket->Fetch()){
     $arResult["ORDER"]["BASKET"][] = array(
         "BASKET_ITEM"   =>  $arBasket,
         "PRODUCT"       =>  $arProduct,
-        "SECTION"       =>  $arSection
+        "SECTION"       =>  $arSection,
+        "ATTRIBUTES"    =>  $arAttrs
     );
 }
 

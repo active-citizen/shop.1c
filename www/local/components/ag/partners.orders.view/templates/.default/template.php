@@ -489,6 +489,20 @@ href="/partners/orders/print.php?print=cancel&order=<?=
                 <!-- </a> -->
             </td>
         </tr>
+        <? if($arBasket["ATTRIBUTES"]):?>
+        <tr>
+            <td style="width:200px;">
+                Характеристики
+            </td>
+            <td>
+                <? foreach($arBasket["ATTRIBUTES"] as $sKey=>$sValue):?>
+                <?= $sKey?>
+                :
+                <b><?= $sValue ?></b><br/>
+                <? endforeach?>
+            </td>
+        </tr>
+        <? endif ?>
         <tr>
             <td style="width:200px;">
                 Единица измерения
