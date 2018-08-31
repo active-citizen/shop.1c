@@ -2,7 +2,9 @@
     <form id="desktopCatalogFilterForm" class="desktop-products-filter-form"
     name="desktopCatalogFilterForm" action="#teasers">
         <input id="sorting" name="sorting" type="hidden" value="<?=
-        $arParams["sorting"]?htmlspecialchars($arParams["sorting"]):"fresh-desc"?>">
+        $arParams["sorting"]?htmlspecialchars(
+            $arParams["sorting"]["param"]."-".$arParams["sorting"]["direction"]
+        ):"fresh-desc"?>">
         <!--
         <input id="sorting" name="sorting" type="hidden" value="<?=
         $_REQUEST["sorting"]?htmlspecialchars($_REQUEST["sorting"]):"fresh-desc"?>">
