@@ -211,6 +211,7 @@ class COrder extends \AGShop\CAGShop{
         $CDB = new \DB\CDB;
         // Получаем выбранные торговые предложения
         $arSKUs = $this->getSKUs();
+        $sPrefix = "Б-";
 
         // Проверяем возможность заказать исходя из группы товара и пользователя
         $objCCatalogProduct = new \Catalog\CCatalogProduct;
@@ -233,6 +234,7 @@ class COrder extends \AGShop\CAGShop{
             $this->addError("Ошибка доступа");
             return false;
         }
+        if($arProductUsercats)$sPrefix= 'Т-';
 
         // Проверяем количество на складе каждого предложения и блокируем, 
         // если надо (снимаем единицу)
@@ -396,7 +398,7 @@ class COrder extends \AGShop\CAGShop{
         }
         
         $this->setParam("Id",$nOrderId);
-        $this->setParam("Num",$sCustomNum?$sCustomNum:"Б-".$nOrderId);
+        $this->setParam("Num",$sCustomNum?$sCustomNum:$sPrefix.$nOrderId);
         $sOrderNum = $this->getParam("Num");
         $this->setParam("StatusId",$sInitialStatusId);
         // Сохраняем параметры заказа
@@ -547,7 +549,7 @@ class COrder extends \AGShop\CAGShop{
             //////////// Снимает баллы
             if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
-                 "Заказ Б-$nOrderId в магазине поощрений АГ"
+                 "Заказ $sPrefix"."$nOrderId в магазине поощрений АГ"
             ))$this->addError($objSSAGAccount->getErrors());
 
             ///////////
