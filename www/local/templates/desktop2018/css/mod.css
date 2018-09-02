@@ -292,7 +292,7 @@ div.desktop-products-container--gridList {
 .ag-shop-footer__link {
   margin: 24px 0 20px;
   margin-left: 90px;
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .ag-shop-footer__link:first-child{
@@ -329,4 +329,35 @@ div.desktop-products-container--gridList {
   margin-left: 30rem;
   margin-top: 1.5rem;
   color: #757574;
+}
+
+/*@--Intro and autorization @*/
+
+.ag-shop-intro img{
+  float: left;
+  margin-top: 0.5rem;
+}
+
+.ag-shop-intro p{
+  margin-left: 2rem;
+}
+
+.ag-shop-intro{
+  float: left;
+  padding: 1rem;
+}
+
+.ag-shop-user img{
+  float:left;
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+}
+
+.ag-shop-user p{
+  margin-left: 5rem;
+}
+
+.ag-shop-user{
+  float: left;
+  padding: 1rem;
 }

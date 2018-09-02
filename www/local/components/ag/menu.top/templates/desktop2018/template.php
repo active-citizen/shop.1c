@@ -54,9 +54,9 @@
             </a>
         </div>
 
-        <!--Карточка профиля-->
+        <!--Profile block-->
       <div id="profie-win-top">
-        <? //if($USER->isAuthorized()):?>
+        <? if($USER->isAuthorized()):?>
         <div id="profie-win">
             <a class="ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
 
@@ -68,7 +68,22 @@
             </a>
             <i id="fa-angle" class="fas fa-angle-down"></i>
         </div>
-        <? //endif;?>
+      <? else : ?>
+      <div class="profie-win">
+        <div class="no-autorized" style="padding: auto;">
+          <div class="ag-shop-intro">
+            <img src="/local/templates/desktop2018/img/img-user.png" alt="key">
+              <p>Вход</p>
+          </div>
+         <div class="ag-shop-user">
+           <img src="/local/templates/desktop2018/img/img-key.png" alt="user">
+             <p>Регистрация</p>
+         </div>
+
+        </div>
+      </div>
+
+        <? endif;?>
       </div>
       <!--End profile block-->
       </div>

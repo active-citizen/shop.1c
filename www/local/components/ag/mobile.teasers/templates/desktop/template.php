@@ -1,3 +1,16 @@
+<style>
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+</style>
+
 <? if(!$arParams["AJAX"]):?>
 <div id="productsWrapper" class="desktop-products-wrapper<?
 if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
@@ -6,14 +19,14 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
     <!-- Компонент фильтров -->
     <?
     $APPLICATION->IncludeComponent("ag:filter","desktop",$arParams,false);
-    ?> 
+    ?>
     <!-- Конец: Компонент фильтров -->
 
     <section class="catalog-inner">
-        <div class="desktop-products-container<? 
-        if($arParams["smallicons"]==1):?> desktop-products-container--gridSmall<? 
-        endif?><? 
-        if($arParams["smallicons"]==2):?> desktop-products-container--gridList<? 
+        <div class="desktop-products-container<?
+        if($arParams["smallicons"]==1):?> desktop-products-container--gridSmall<?
+        endif?><?
+        if($arParams["smallicons"]==2):?> desktop-products-container--gridList<?
         endif?>">
 <? endif ?>
         <? if(count($arResult["PRODUCTS"])):?>
@@ -30,10 +43,10 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                 </button>
                 <a class="desktop-product-link" href="/catalog/<?=
                     $arProduct["SECTION"]["CODE"]
-                ?>/<?= 
+                ?>/<?=
                     $arProduct["CODE"]
                 ?>/">
-                    <div class="desktop-product-inner" style="background-image: url('<?= 
+                    <div class="desktop-product-inner" style="background-image: url('<?=
                     $arProduct["IMAGE"]
                     ?>')">
                         <!-- ============= -->
@@ -121,22 +134,77 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
             </article>
             <!-- ================= -->
             <? endforeach ?>
+
+
             <input type="hidden" name="products" value="<?= implode(",",$arResult["PRODUCT_IDS"])?>">
             <? $nLastItem = ($arResult["PAGE"]-1)*$arResult["ONPAGE"]+count($arResult["PRODUCTS"]); ?>
             <? if($arResult["TOTAL"]>$nLastItem):?>
-            <? 
+            <?
                 $arResult["NEXT_PAGE_URL"] .= $arParams["filter"]["only_exists"]
                     ?
                     "&showProductsAll=111"
                     :
                     ""
             ?>
+
+            <style>
+            html {
+              font-family: 'Arial', sans-serif;
+              font-size: 18px;
+            }
+              .pagination{
+                margin-top: 100px;
+              }
+              .pagination a {
+                color: #3A3A39;
+                text-decoration: none;
+              }
+
+              .pagination a:nth-child(2){
+                border: 1px solid #D8D8D8;
+                border-radius: 10%;
+                padding: 0.3rem 0.4rem;
+
+              }
+
+              #angle-left{
+                margin-right: 3rem;
+              }
+
+              #angle-right{
+                margin-left: 3rem;
+              }
+            </style>
+
+            <!--@ Будущая пагинация @-->
+
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 offset-md-2">
+                <div class="pagination">
+                  <a class="catalog-inner-more__btn" href="#" id="angle-left"><i class="fas fa-angle-left"></i></a>
+                  <a class="catalog-inner-more__btn" href="#">1</a>
+                  <a class="catalog-inner-more__btn">из</a>
+                  <a class="catalog-inner-more__btn" href="#">2</a>
+                  <a class="catalog-inner-more__btn" href="#" id="angle-right"><i class="fas fa-angle-right"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--@ End @-->
+
+
             <div class="catalog-inner-more more-button">
-            <a href="#" onclick="return desktop_teasers_next_page('<?=
+            <!-- <a href="#" onclick="return desktop_teasers_next_page('<?=
             $arResult["NEXT_PAGE_URL"]?>',<?= $arResult["PAGE"]+1?>);"
             class="catalog-inner-more__btn">Ещё<?/*
-            <?= $arResult["TOTAL"]- $nLastItem?>*/?></a>
+            <?= $arResult["TOTAL"]- $nLastItem?>*/?>
+          </a> -->
             </div>
+
+
+
+
             <? endif ?>
         <? else:?>
             <div class="filter-empty-alert">
@@ -177,7 +245,7 @@ function teasersRewind(){
 
 function desktop_teasers_next_page(sUrl,nPageNum){
 
-    var startUrl = '<?= 
+    var startUrl = '<?=
         $arParams["filter"]["wishes_user"]
         ?
         "/profile/wishes/index.ajax.php?"
@@ -192,7 +260,7 @@ function desktop_teasers_next_page(sUrl,nPageNum){
         search = search.replace(/[&\?]page=\d+/,'');
         search = search.replace(re,"$1");
         console.log(search);
-        if(search=='') 
+        if(search=='')
             newsearch = search+'?page='+nPageNum+'/'
         else
             newsearch = search+'&page='+nPageNum+'/';
@@ -203,26 +271,27 @@ function desktop_teasers_next_page(sUrl,nPageNum){
         wishes_load();
         truncTitle();
     })
-    
+
     return false;
 }
 </script>
+
 
 <?
 
 
     /**
         Очиска текста товара от лишних cстилей для достижения единообразия
-        вёрстки 
+        вёрстки
     */
     function cardTextClear($text){
-        
+
 
         $text =  str_replace(
             "\n","",
-            $text 
+            $text
         );
-       
+
         $text =   preg_replace(
             "#\s+#"," ",
             $text
@@ -230,44 +299,44 @@ function desktop_teasers_next_page(sUrl,nPageNum){
 
         $text =   preg_replace(
             "#>\s+<#","><",
-            $text 
+            $text
         );
-          
+
         $text =   preg_replace(
             "/style=\".*?\"/i", "",
-            $text 
+            $text
         );
-        
-       
+
+
         $text =   preg_replace(
             "/<br.*?>/i", "",
-            $text 
+            $text
         );
 
         $text =   preg_replace(
             "#<p>\s+&nbsp;</p>#", "",
-            $text 
+            $text
         );
 
         $text =   preg_replace(
             "#>\s+#", ">",
-            $text 
+            $text
         );
 
         $text =   preg_replace(
             "#>\(#", "> (",
-            $text 
+            $text
         );
 
         $text =   preg_replace(
             "#<div> &nbsp;</div>#", "",
-            $text 
+            $text
         );
 
         $text = preg_replace(
             "#<a.*?>.*?</a>#", "", $text
         );
- 
+
         $text = preg_replace(
             "#<img.*?>#i", "", $text
         );

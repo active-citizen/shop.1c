@@ -17,12 +17,12 @@
     }
 
     if($bIsBack){
-        $arParams["pagination"]["original_page"] = 
+        $arParams["pagination"]["original_page"] =
             $arParams["pagination"]["page"];
-        $arParams["pagination"]["original_onpage"] = 
+        $arParams["pagination"]["original_onpage"] =
             $arParams["pagination"]["onpage"];
 
-        $arParams["pagination"]["onpage"] = 
+        $arParams["pagination"]["onpage"] =
             $arParams["pagination"]["page"]*$arParams["pagination"]["onpage"];
         $arParams["pagination"]["page"]=1;
     }
@@ -35,37 +35,37 @@
     );
     use AGShop\Catalog as Catalog;
     use AGShop\Utils as Utils;
-    
+
     $objProduct = new \Catalog\CCatalogProduct;
-    
+
     $arParams["user_id"] = $USER->GetID();
 
     // Получаем IDs продуктов, подходящих под условия
     $arProducts = $objProduct->getTeasers($arParams);$arResult["PRODUCTS"];
     $arResult["PRODUCTS"] = $arProducts["items"];
-    
+
     if($bIsBack){
 
-        $arParams["pagination"]["page"] = 
+        $arParams["pagination"]["page"] =
              $arParams["pagination"]["original_page"];
-        $arParams["pagination"]["onpage"] = 
+        $arParams["pagination"]["onpage"] =
              $arParams["pagination"]["original_onpage"];
 
     }
 
     $arResult["PRODUCT_IDS"] = [];
-    foreach($arResult["PRODUCTS"] as $arProduct)$arResult["PRODUCT_IDS"][] = 
+    foreach($arResult["PRODUCTS"] as $arProduct)$arResult["PRODUCT_IDS"][] =
         $arProduct["ID"];
     $arResult["TOTAL"] = $arProducts["total"];
     $arResult["PAGE"] = $arParams["pagination"]["page"];
     $arResult["ONPAGE"] = $arParams["pagination"]["onpage"];
-    
+
     if(
         isset($arParams["smallicons"])
         && intval($arParams["smallicons"])
     )$arResult["SMALL_TEASERS"] = 1;
-    
-    
+
+
     $sUrl = $_SERVER["QUERY_STRING"];
     $sUrl = preg_replace("#&page=\d+#","", $sUrl);
     $sUrl = preg_replace("#page=\d+#","", $sUrl);
