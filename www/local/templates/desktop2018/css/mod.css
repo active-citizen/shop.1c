@@ -361,3 +361,59 @@ div.desktop-products-container--gridList {
   float: left;
   padding: 1rem;
 }
+
+/*--@ Карточка товара @--*/
+
+.warning-border{
+  border: 1px solid #ee4c95;
+  border-radius: 0.5rem;
+  height: 87px;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.warning-border p{
+  margin-top: 2rem;
+}
+
+.warning-border i{
+  color: #ee4c95;
+  padding-right: 1rem;
+}
+
+.label-stock{
+  width: 88px;
+  height: 22px;
+  background-color: #ee4c95;
+  color: #fff;
+  text-align: center;
+}
+
+.label-new{
+  width: 88px;
+  height: 22px;
+  background-color: #00c0f3;
+  color: #fff;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.label-hot{
+  width: 88px;
+  height: 22px;
+  background-color: #ffc20e;
+  color: #fff;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.product-label{
+  margin-left: 1rem;
+  margin-top: 37px;
+}
+
+.product-img{
+  width: 885px;
+  height: 610px;
+  background-color: #f1f0f0;
+}

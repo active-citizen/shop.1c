@@ -15,7 +15,7 @@ $offerProps = array();
 while($arrProp = $res->GetNext())
     if(preg_match("#^PROP1C_.*#i", $arrProp["CODE"]))
         $offerProps[] = $arrProp["CODE"];
-    
+
 $product_code = '';
 $catalog_code = '';
 if(preg_match("#^/catalog/(.*?)/([^\?].*?)/.*#i", $_SERVER["REQUEST_URI"], $matches)){
@@ -54,7 +54,7 @@ if(
 <? else: ?>
 
     <?
-        
+
         $sProductTitle = '';
         if($product_code){
             $arProductMeta = CIBlockElement::GetList(
@@ -64,7 +64,7 @@ if(
                 ],false,["nTopCount"=>1],["NAME"]
             )->GetNext();
             if(isset($arProductMeta["NAME"]) && trim($arProductMeta["NAME"]))
-               $sProductTitle = $arProductMeta["NAME"]; 
+               $sProductTitle = $arProductMeta["NAME"];
         }
 
         if($catalog_code){
@@ -74,7 +74,7 @@ if(
                 ],false,["NAME","ID"],["nTopCount"=>1]
             )->GetNext();
             if(isset($arCatalogMeta["NAME"]) && trim($arCatalogMeta["NAME"]))
-               $sCatalogTitle = $arCatalogMeta["NAME"]; 
+               $sCatalogTitle = $arCatalogMeta["NAME"];
         }
 
 
@@ -97,26 +97,26 @@ if(
     <? if(!$product_code && $catalog_code && !(IS_MOBILE || IS_PHONE)){?>
             <? require("desktop.filter.params.php");?>
             <? include("filter.inc.php")?>
-            
+
             <? include("container.inc.php")?>
     <? }elseif(!$product_code && $catalog_code){ ?>
             <? require("mobile.filter.params.php");?>
-            
+
             <? include("container.inc.php")?>
     <?
     /*
     $APPLICATION->IncludeComponent(
-        "ag:mobile.teasers", 
-        "", 
+        "ag:mobile.teasers",
+        "",
         $arParams,
         false
     );
     */
     ?>
     <? }elseif($product_code){ ?>
-        <div class="ag-shop-content">
-            <div class="ag-shop-content__limited-container">
-            <?$APPLICATION->IncludeComponent("ag:card", "", array(
+        <!-- <div class="ag-shop-content">
+            <div class="ag-shop-content__limited-container"> -->
+            <?$APPLICATION->IncludeComponent("ag:card", "desktop2018", array(
                 "CATALOG_IBLOCK_ID" =>  $catalogIblockId,
                 "OFFER_IBLOCK_ID"   =>  $offerIblockId,
                 "PRODUCT_CODE"      =>  $product_code,
@@ -125,8 +125,8 @@ if(
                 ),
                 false
             );?>
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
     <? } ?>
 
 <? endif ?>
