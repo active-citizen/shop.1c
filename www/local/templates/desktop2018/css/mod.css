@@ -57,6 +57,13 @@ div.desktop-products-container--gridList {
 
 /*Header*/
 
+@media (min-width: 992px)
+{
+.ag-shop-menu__item {
+    padding: 0 22px;
+  }
+}
+
 #ag-shop-nav__link--active {
   background-color: none;
   cursor: pointer;

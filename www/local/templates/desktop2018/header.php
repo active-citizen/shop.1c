@@ -21,7 +21,7 @@ $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/faq.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/semantic.css");
-$APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap-grid.min.css");
+//$APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap-grid.min.css");
 
 //////////////////// CSS второй редакции ////////////////////////
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/desktop.min.css");
