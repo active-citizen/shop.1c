@@ -21,7 +21,9 @@ $APPLICATION->SetAdditionalCSS("/local/assets/styles/mod.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/troika.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/faq.css");
 $APPLICATION->SetAdditionalCSS("/local/assets/styles/semantic.css");
-//$APPLICATION->SetAdditionalCSS("/local/assets/bootstrap/css/bootstrap-grid.min.css");
+
+////////////////////Bootstrap для карточки товара///////////////////
+$APPLICATION->SetAdditionalCSS("/local/components/ag/card/templates/desktop2018/bootstrap-4.1.3/css/bootstrap.min.css");
 
 //////////////////// CSS второй редакции ////////////////////////
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/desktop.min.css");
@@ -41,6 +43,10 @@ $APPLICATION->AddHeadScript("/local/assets/scripts/common.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/troika.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/faq.js");
 $APPLICATION->AddHeadScript("/local/assets/scripts/auction.js");
+$APPLICATION->AddHeadScript("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
+$APPLICATION->AddHeadScript("/local/components/ag/card/templates/desktop2018/bootstrap-4.1.3/js/bootstrap.min.js");
+
+
 
 
 setcookie("LOGIN", CUser::GetLogin(),time()+600*24*60*60,"/");

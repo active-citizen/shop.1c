@@ -147,35 +147,6 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                     ""
             ?>
 
-            <style>
-            html {
-              font-family: 'Arial', sans-serif;
-              font-size: 18px;
-            }
-              .pagination{
-                margin-top: 100px;
-              }
-              .pagination a {
-                color: #3A3A39;
-                text-decoration: none;
-              }
-
-              .pagination a:nth-child(2){
-                border: 1px solid #D8D8D8;
-                border-radius: 10%;
-                padding: 0.3rem 0.4rem;
-
-              }
-
-              #angle-left{
-                margin-right: 3rem;
-              }
-
-              #angle-right{
-                margin-left: 3rem;
-              }
-            </style>
-
             <!--@ Будущая пагинация @-->
 
           <div class="container">

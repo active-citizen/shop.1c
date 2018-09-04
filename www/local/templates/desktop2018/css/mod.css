@@ -369,6 +369,33 @@ div.desktop-products-container--gridList {
   padding: 1rem;
 }
 
+/*--@Pagination@--*/
+
+.pagination{
+  margin-top: 100px;
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+}
+.pagination a {
+  color: #3A3A39;
+  text-decoration: none;
+}
+
+.pagination a:nth-child(2){
+  border: 1px solid #D8D8D8;
+  border-radius: 10%;
+  padding: 0.3rem 0.4rem;
+
+}
+
+#angle-left{
+  margin-right: 3rem;
+}
+
+#angle-right{
+  margin-left: 3rem;
+}
+
 /*--@ Карточка товара @--*/
 
 .warning-border{
@@ -423,4 +450,49 @@ div.desktop-products-container--gridList {
   width: 885px;
   height: 610px;
   background-color: #f1f0f0;
+}
+
+
+.product-description-btn .btn{
+    width: 360px;
+    height: 55px;
+    border-radius: 0px;
+    background-color: #007a6c;
+    border: none;
+}
+
+.product-description-btn i{
+    width: 55px;
+    height: 55px;
+    background-color: #f1f0f0;
+    text-align: center;
+    padding: 11px;
+    font-size: 2rem;
+    color: #007a6c;
+
+}
+
+#product-heart{
+  margin-left: 15px;
+}
+
+#product-share{
+  margin-left: -5px;
+}
+
+/*--@Accordion@--*/
+
+.product-accordion{
+  margin-top: 75px;
+}
+
+.product-accordion .btn-link{
+  color:#3a3a39;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-header{
+  padding:3.25rem 1.25rem;
 }
