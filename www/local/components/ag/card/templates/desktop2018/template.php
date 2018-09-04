@@ -119,7 +119,6 @@
               </button>
             </h5>
           </div>
-
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
               Силиконовый чехол для IPhone 4/4s с символикой проекта "Активный гражданин". Детали:отверстия для камеры, зарядного устройства и кнопки регулировки звука.
@@ -160,12 +159,12 @@
         <div class="card">
           <div class="card-header" id="headingThree">
             <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFor" aria-expanded="false" aria-controls="collapseThree">
                 Отзывы
               </button>
             </h5>
           </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+          <div id="collapseFor" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
             <div class="card-body">
               Силиконовый чехол для IPhone 4/4s с символикой проекта "Активный гражданин". Детали:отверстия для камеры, зарядного устройства и кнопки регулировки звука.
               <b>Внимание: срок действия вашего заказа 14 дней с момента оформления.</b>
@@ -175,12 +174,12 @@
         <div class="card">
           <div class="card-header" id="headingThree">
             <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree">
                 Вопросы и ответы
               </button>
             </h5>
           </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+          <div id="collapseFive" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
             <div class="card-body">
               Силиконовый чехол для IPhone 4/4s с символикой проекта "Активный гражданин". Детали:отверстия для камеры, зарядного устройства и кнопки регулировки звука.
               <b>Внимание: срок действия вашего заказа 14 дней с момента оформления.</b>
