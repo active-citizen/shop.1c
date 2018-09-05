@@ -1,15 +1,14 @@
 <div class="container-fluide">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
       <div class="warning-border">
         <p><i class="fas fa-exclamation-triangle"></i>Для заказа данного поощрения необходимо набрать 800 баллов</p>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-1">
+        <!--@Бляхи@-->
         <div class="product-label">
-          <!--@Бляхи@-->
-          <div class="label-title">
             <div class="label-stock">
               Акция
             </div>
@@ -19,74 +18,93 @@
             <div class="label-hot">
               Хит
             </div>
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="product-img">
+          <img class="center-block" src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="product-img">
+          <div class="blockquote-heart">
+            <i class="far fa-heart"></i>
+            <blockquote id="blockquote-heart">1634</blockquote>
           </div>
 
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="product-img">
-          <img class="center-block" src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="product-img">
-        </div>
-      </div>
-      <div class="col-md-4">
-        <!--@ Описание товара @-->
+
+      <!--@ Описание товара @-->
+      <div class="col-4">
         <div class="product-description">
             <div class="product-description-header">
-                <h1>Чехол для IPhone 4/4S с символикой проекта</h1>
+                <h2>Чехол для IPhone 4/4S с символикой проекта</h2>
                 <div class="row">
-                  <p>Использовать до: 27.05.2018</p>
-                  <p><abbr title="attribute">12 отзывов</abbr></p>
-                  <p><i class="fas fa-star"></i></p>
-                  <p><i class="fas fa-star"></i></p>
-                  <p><i class="fas fa-star"></i></p>
-                  <p><i class="fas fa-star"></i></p>
-                  <p><i class="far fa-star"></i></p>
+                  <div class="col-auto">
+                      <p id="product-date">Использовать до: 27.05.2018</p>
+                  </div>
+                  <div class="col">
+                      <p><abbr title="attribute">12 отзывов</abbr></p>
+                  </div>
+                  <div class="col">
+                    <p><i class="fas fa-star"></i></p>
+                    <p><i class="fas fa-star"></i></p>
+                    <p><i class="fas fa-star"></i></p>
+                    <p><i class="fas fa-star"></i></p>
+                    <p><i class="far fa-star"></i></p>
+                  </div>
                 </div>
             </div>
             <div class="product-description-main">
-              <p>Статус:<span>В наличии</span></p>
-              <p>Стоимость:<span>800 балов</span></p>
-              <p>Количество:<span>-1+</span></p>
-              <p style="display:inline">Цвет:</p>
-              <img src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="phone"
-              style="width:25px; height:50px;"
-              class="rounded">
-              <img src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="phone"
-              style="width:25px; height:50px;"
-              class="rounded">
-              <img src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="phone"
-              style="width:25px; height:50px;"
-              class="rounded">
-              <img src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="phone"
-              style="width:25px; height:50px;"
-              class="rounded">
-              <div class="row">
-              <p>Размер</p>
-                <div class="product-xs">XS</div>
-                <div class="product-s">S</div>
-                <div class="product-m">M</div>
-                <div class="product-l">L</div>
-                <div class="product-xl">XL</div>
-                <div class="product-xxs">XXS</div>
+              <div class="col">
+                  <p class="product-attr" >Статус:</p><span>В наличии</span>
               </div>
-              <div class="row">
-                <p>Где получить</p>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Выбрать район
-                    </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">МФЦ Красносельский</a>
-                      <a class="dropdown-item" href="#">МФЦ Красносельский_1</a>
-                      <a class="dropdown-item" href="#">МФЦ Красносельский_2</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">МФЦ Красносельский_3</a>
+              <div class="col">
+                  <p class="product-attr">Стоимость:</p><span>800 балов</span>
+              </div>
+              <div class="col">
+                  <p class="product-attr">Количество:</p><span>-1+</span>
+              </div>
+              <div class="col">
+                <p class="product-attr">Цвет:</p>
+                <div class="product-img-attr"></div>
+                    <div class="product-img-attr"></div>
+                    <div class="product-img-attr"></div>
+                    <div class="product-img-attr">
+                      <!-- <img  src="/local/components/ag/card/templates/desktop2018/image/small-phone-4.png" alt="phone"
+                        class="rounded"> -->
                     </div>
-                  </div>
               </div>
-              <p><i class="fas fa-map-marker-alt"></i><abbr title="attribute">Показать на карте</abbr></p>
-              <p>На складе: <span>Много</span></p>
+              <div class="col">
+              <p class="product-attr">Размер:</p>
+                <span class="border br-size">XS</span>
+                <span class="border br-size">S</span>
+                <span class="border br-size">M</span>
+                <span class="border br-size">L</span>
+                <span class="border br-size">XL</span>
+                <span class="border br-size">XXS</span>
+              </div>
 
+                <div class="col">
+                  <p class="product-attr">Где получить</p>
+                  <div class="btn-group">
+                      <button type="button" id="btn-map" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Выбрать район
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">МФЦ Красносельский</a>
+                        <a class="dropdown-item" href="#">МФЦ Красносельский_1</a>
+                        <a class="dropdown-item" href="#">МФЦ Красносельский_2</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">МФЦ Красносельский_3</a>
+                      </div>
+
+                    </div>
+              </div>
+              <div class="col">
+                <p id="product-attr-map"><i class="fas fa-map-marker-alt"></i><abbr title="attribute">Показать на карте</abbr></p>
+
+              </div>
+              <div class="col">
+                  <p class="product-attr">На складе:</p><span>Много</span>
+              </div>
               <div class="product-description-btn">
                 <div class="row">
                   <div class="col-8">
@@ -105,10 +123,11 @@
       </div>
     </div>
   </div>
+<!--@Аккордеон@-->
+<main class="ag-accordion">
   <div class="row">
     <div class="col-12">
 
-      <!--@Аккордеон@-->
       <div class="product-accordion">
         <div class="accordion" id="accordionExample">
         <div class="card">
@@ -183,11 +202,87 @@
             <div class="card-body">
               Силиконовый чехол для IPhone 4/4s с символикой проекта "Активный гражданин". Детали:отверстия для камеры, зарядного устройства и кнопки регулировки звука.
               <b>Внимание: срок действия вашего заказа 14 дней с момента оформления.</b>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
   </div>
+</main>
+
+<article class="product-recommended">
+  <h2>Рекомендуемые товары</h2>
+<div class="row">
+  <div class="product-main">
+    <div class="col-2">
+      <div class="product-header">
+        <h3>3499</h3>
+        <blockquote>Баллов</blockquote>
+        <p><i class="far fa-heart"></i>1674</p>
+        </div>
+        <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+        <div class="product-footer">
+            <p>Рюкзак зеленый</p>
+        </div>
+    </div>
+  </div>
+  <div class="product-main">
+    <div class="col-2">
+      <div class="product-header">
+        <h3>3499</h3>
+        <blockquote>Баллов</blockquote>
+        <p><i class="far fa-heart"></i>1674</p>
+        </div>
+        <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+        <div class="product-footer">
+            <p>Рюкзак зеленый</p>
+        </div>
+    </div>
+  </div>
+  <div class="product-main">
+    <div class="col-2">
+      <div class="product-header">
+        <h3>3499</h3>
+        <blockquote>Баллов</blockquote>
+        <p><i class="far fa-heart"></i>1674</p>
+        </div>
+        <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+        <div class="product-footer">
+            <p>Рюкзак зеленый</p>
+        </div>
+    </div>
+  </div>
+  <div class="product-main">
+    <div class="col-2">
+      <div class="product-header">
+        <h3>3499</h3>
+        <blockquote>Баллов</blockquote>
+        <p><i class="far fa-heart"></i>1674</p>
+        </div>
+        <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+        <div class="product-footer">
+            <p>Рюкзак зеленый</p>
+        </div>
+    </div>
+  </div>
+  <div class="product-main">
+    <div class="col-2">
+      <div class="product-header">
+        <h3>3499</h3>
+        <blockquote>Баллов</blockquote>
+        <p><i class="far fa-heart"></i>1674</p>
+        </div>
+        <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+        <div class="product-footer">
+            <p>Рюкзак зеленый</p>
+        </div>
+    </div>
+  </div>
+</div>
+
+</article>
+
+
+
 </div>
