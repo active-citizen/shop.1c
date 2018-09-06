@@ -460,10 +460,22 @@ div.desktop-products-container--gridList {
 }
 
 .product-img{
-  width: 885px;
-  height: 610px;
+  width: auto;
+  height: auto;
   background-color: #f1f0f0;
+  background-size: cover;
   text-align: center;
+}
+
+#attribute{
+  font-size: 0.8rem;
+}
+
+.mg-left{
+  margin-left: 1rem;
+  border-left: 1px solid #d4d4d4;
+  padding-left:1rem;
+  margin-bottom: 1rem;
 }
 
 .product-img img{
@@ -472,15 +484,17 @@ div.desktop-products-container--gridList {
 
 #btn-map{
   background: none;
-  width: 367px;
+  width: 20rem;
   height: 40px;
   border: 1px solid #d0d0d0;
   border-radius:0;
   text-align: left;
+  margin-top: 0.8rem;
+
 }
 
 .product-description-btn .btn{
-    width: 360px;
+    max-width: 100%;
     height: 55px;
     border-radius: 0px;
     background-color: #007a6c;
@@ -490,7 +504,7 @@ div.desktop-products-container--gridList {
 .product-description-btn i{
     width: 55px;
     height: 55px;
-    background-color: #f1f0f0;
+    background-color: #d0d0d0;
     text-align: center;
     padding: 11px;
     font-size: 2rem;
@@ -504,6 +518,7 @@ div.desktop-products-container--gridList {
 
 .product-description h2{
   font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .product-description-header i{
@@ -514,6 +529,14 @@ div.desktop-products-container--gridList {
 .product-description-header p{
   display: inline;
 }
+
+.product-description-main span{
+  display: block;
+  padding: 1rem;
+}
+
+
+
 
 #product-date{
   font-size: 0.8rem;
@@ -538,23 +561,32 @@ div.desktop-products-container--gridList {
   background-repeat: no-repeat;
 }
 
-.br-size{
-    padding: 10px;
-    min-height: 30px;
-}
+
 
 #product-attr-map{
   color: #007a6c;
+  margin-top: 1rem;
+  margin-left: -1rem;
 }
 
+.product-heart{
+  position: absolute;
+  right: 5%;
+  top: 5%;
+}
+
+.product-heart i{
+  font-size: 2rem;
+  color: #ee4c95;
+}
 
 
 #product-heart{
-  margin-left: 15px;
+  /* margin-left: 50%; */
 }
 
 #product-share{
-  margin-left: -5px;
+  /* margin-left: 20%; */
 }
 
 /*--@Accordion@--*/
@@ -582,4 +614,70 @@ div.desktop-products-container--gridList {
 .product-recommended h2{
   text-align: center;
   margin-bottom: 65px;
+}
+
+.product-slider{
+  margin-left: 1rem;
+  margin-top: 3rem;
+}
+
+.product-slider i{
+  margin-left: 2rem;
+  color: #c9c9c9;
+}
+
+.product-slider-img{
+  background-color: #f1f0f0;
+  background-image: url('/local/components/ag/card/templates/desktop2018/image/phone-slider_1.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 88px;
+  height: 88px;
+  margin-bottom: 1rem;
+}
+
+.product-slider-img:active{
+  border: 1px solid #007a6c;
+  border-radius: 10%;
+}
+
+.product-slider-img:hover{
+  border: 1px solid #007a6c;
+  border-radius: 10%;
+}
+
+.product-recommended-ball{
+  line-height: 0;
+}
+
+.product-recommended-heart{
+  text-align: right;
+  display: block;
+  margin-top: -2.5rem;
+}
+
+.product-recommended-item{
+  padding: 1rem;
+  border-left: 1px solid #ebeaea;
+  border-bottom: 1px solid #ebeaea;
+  border-right: 1px solid #ebeaea;
+}
+
+.product-header{
+  padding: 1rem;
+  border-left: 1px solid #ebeaea;
+  border-top: 1px solid #ebeaea;
+  border-right: 1px solid #ebeaea;
+}
+
+.product-description-size{
+  margin-top: 1rem;
+}
+
+
+.product-description-size span{
+    padding: 10px;
+    min-height: 30px;
+    display: inline;
+
 }
