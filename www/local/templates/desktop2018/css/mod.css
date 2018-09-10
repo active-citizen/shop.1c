@@ -90,8 +90,8 @@ div.desktop-products-container--gridList {
 }
 
 .ag-shop {
-  padding-left: 189px;
-  padding-right: 189px;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 .ag-shop-menu::after{
@@ -333,7 +333,7 @@ div.desktop-products-container--gridList {
 
 .soc-item{
   width: 17rem;
-  margin-left: 30rem;
+  margin-left: 38%;
   margin-top: 1.5rem;
   color: #757574;
 }
@@ -680,4 +680,31 @@ div.desktop-products-container--gridList {
     min-height: 30px;
     display: inline;
 
+}
+
+.product-recommended-img{
+  width: 100%;
+}
+
+/*@Media queries@*/
+
+
+@media (min-width: 992px) and (max-width: 1199.98px)
+{
+  .soc-item{
+    margin-left: 3rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px)
+{
+  .soc-item{
+    margin-left: 3%;
+  }
+
+}
+
+#center-block{
+  height: 29rem;
+  margin-bottom: 5rem;
 }

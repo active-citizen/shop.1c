@@ -8,7 +8,7 @@
 
 
 
-      <div class="col-auto">
+      <div class="col-3 col-xl-1">
         <!--@Бляхи@-->
         <div class="product-label">
             <div class="label-stock">
@@ -35,9 +35,9 @@
       </div>
 
 
-      <div class="col-6">
+      <div class="col-9 col-xl-7">
         <div class="product-img">
-          <img class="center-block" src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="product-img">
+          <img id="center-block" class="center-block" src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="product-img">
           <div class="product-heart">
             <i class="far fa-heart"></i>
             <p id="p-heart">1634</p>
@@ -173,13 +173,13 @@
 
               <div class="product-description-btn">
                 <div class="row">
-                  <div class="col-auto">
+                  <div class="col-8">
                     <button type="button" class="btn btn-primary btn-lg">Заказать за 800 баллов</button>
                   </div>
-                  <div class="col-auto col-sm-1">
+                  <div class="col-2 col-sm-auto">
                       <a href="#"><i id="product-heart" class="far fa-heart"></i></a>
                   </div>
-                  <div class="col-auto col-sm-1">
+                  <div class="col-2 col-sm-1">
                     <a href="#"><i id="product-share" class="fas fa-share-alt"></i></a>
                   </div>
                 </div>
@@ -284,58 +284,69 @@
   <div class="container-fluide">
     <h2>Рекомендуемые товары</h2>
       <div class="row">
-        <div class="col">
+        <div class="col-12 col-sm-6 col-xl-2">
           <div class="product-main">
             <div class="product-header">
               <h3>3499</h3>
               <p class="product-recommended-ball">Баллов</p>
               <p class="product-recommended-heart"><i class="far fa-heart"></i>1674</p>
             </div>
-              <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+              <img class="product-recommended-img" src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
               <p class="product-recommended-item">Рюкзак зеленый</p>
           </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-6 col-xl-2">
           <div class="product-main">
             <div class="product-header">
               <h3>3499</h3>
               <p class="product-recommended-ball">Баллов</p>
               <p class="product-recommended-heart"><i class="far fa-heart"></i>1674</p>
             </div>
-              <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+              <img class="product-recommended-img" src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
               <p class="product-recommended-item">Рюкзак зеленый</p>
           </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-6 col-xl-2">
           <div class="product-main">
             <div class="product-header">
               <h3>3499</h3>
               <p class="product-recommended-ball">Баллов</p>
               <p class="product-recommended-heart"><i class="far fa-heart"></i>1674</p>
             </div>
-              <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+              <img class="product-recommended-img" src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
               <p class="product-recommended-item">Рюкзак зеленый</p>
           </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-6 col-xl-2">
           <div class="product-main">
             <div class="product-header">
               <h3>3499</h3>
               <p class="product-recommended-ball">Баллов</p>
               <p class="product-recommended-heart"><i class="far fa-heart"></i>1674</p>
             </div>
-              <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+              <img class="product-recommended-img" src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
               <p class="product-recommended-item">Рюкзак зеленый</p>
           </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-6 col-xl-2">
           <div class="product-main">
             <div class="product-header">
               <h3>3499</h3>
               <p class="product-recommended-ball">Баллов</p>
               <p class="product-recommended-heart"><i class="far fa-heart"></i>1674</p>
             </div>
-              <img src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+              <img class="product-recommended-img" src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
+              <p class="product-recommended-item">Рюкзак зеленый</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-2">
+          <div class="product-main">
+            <div class="product-header">
+              <h3>3499</h3>
+              <p class="product-recommended-ball">Баллов</p>
+              <p class="product-recommended-heart"><i class="far fa-heart"></i>1674</p>
+            </div>
+              <img class="product-recommended-img" src="/local/components/ag/card/templates/desktop2018/image/recomend-product.png" alt="recommend-product">
               <p class="product-recommended-item">Рюкзак зеленый</p>
           </div>
         </div>
