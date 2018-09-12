@@ -538,6 +538,7 @@ div.desktop-products-container--gridList {
 
 
 
+
 #product-date{
   font-size: 0.8rem;
   color: #8c8c8c;
@@ -561,6 +562,10 @@ div.desktop-products-container--gridList {
   background-repeat: no-repeat;
 }
 
+
+.product-img-wrap{
+  padding-left: 1rem;
+}
 
 
 #product-attr-map{
@@ -672,6 +677,7 @@ div.desktop-products-container--gridList {
 
 .product-description-size{
   margin-top: 1rem;
+  margin-left: 1rem;
 }
 
 
