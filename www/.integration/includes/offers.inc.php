@@ -43,6 +43,29 @@
     */
     if(!isset($arOffers[0]))$arOffers = array($arOffers);
 
+    // Загружаем картинки и составляем их индекс
+    $arImages = [];
+    foreach($arOffers as $arOffer){
+        if(!isset($arOffer["Картинки"]["Картинка"]))continue;
+        if(
+            !isset($arOffer["Картинки"]["Картинка"][0]) 
+            && isset($arOffer["Картинки"]["Картинка"])
+        )$arOffer["Картинки"]["Картинка"] = [$arOffer["Картинки"]["Картинка"]];
+
+        foreach($arOffer["Картинки"]["Картинка"] as $arImage){
+            $sFilename =
+                $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$arImage["АдресФайла"];
+            if(!CFile::MakeFileArray($sFilename))continue;
+            $arImages[$arImage["АдресФайла"]] = 
+              CFile::SaveFile(    
+                  CFile::MakeFileArray($sFilename)
+                  ,"offers"
+                 ,true
+              )
+              ;
+        }
+    }
+
     foreach($arOffers as $arOffer){
        
         $XML_ID = explode("#", $arOffer["Ид"]);
@@ -209,7 +232,61 @@
         }
         
         ///////////////////////  Дополнительные изображения
-        if(count($productsIndexDetail[$XML_ID]["Картинка"])){
+
+        // Если у предложения указаны картинки
+        if(isset($arOffer["Картинки"]["Картинка"][0])){
+            // Удаляем все файлы предложения
+            $res = CIBlockElement::GetProperty(
+                $OFFERS_IBLOCK_ID, 
+                $offerId, array(),array("CODE"=>"MORE_PHOTO")
+            );
+            while($photoItem = $res->GetNext())
+                CFile::Delete($photoItem["VALUE"]);
+
+            //////////////////// Очень грязно и подло (при первой возможности рефакторить)
+            //// Это всё для того, чтобы одни и те же картинки не загружались в
+            // предложения как разные
+            // Удаляем значения свойства ЕЩЕ КАРТИНКИ у предложения
+            $sQuery = "
+                DELETE FROM 
+                    b_iblock_element_property
+                WHERE 
+                    IBLOCK_ELEMENT_ID=".$offerId."
+                    AND IBLOCK_PROPERTY_ID=".MORE_PHOTO_PROPERTY_ID."
+
+            ";
+            $DB->Query($sQuery);
+            // Вставляем замест них ID уже загруженных файлов
+            foreach($arOffer["Картинки"]["Картинка"] as $sImagePath){
+                $sQuery = "
+                    INSERT INTO
+                        b_iblock_element_property(
+                            ID,
+                            IBLOCK_PROPERTY_ID,
+                            IBLOCK_ELEMENT_ID,
+                            VALUE,
+                            VALUE_TYPE,
+                            VALUE_ENUM,
+                            VALUE_NUM,
+                            DESCRIPTION
+                        )
+                        VALUES(
+                            NULL,
+                            '".MORE_PHOTO_PROPERTY_ID."',
+                            '".$offerId."',
+                            '".$arImages[$sImagePath["АдресФайла"]]."',
+                            'text',
+                            '".$arImages[$sImagePath["АдресФайла"]]."',
+                            '".$arImages[$sImagePath["АдресФайла"]]."',
+                            NULL
+                        );
+                ";
+                $DB->Query($sQuery);
+            }
+            ////////////////////
+        }
+        // Если у предложения не указаны картинки - берём из товара
+        elseif(count($productsIndexDetail[$XML_ID]["Картинка"])){
 
             $arrFile = array();
             
@@ -265,7 +342,6 @@
                     array('MORE_PHOTO' => $arrFile)
                 );
             }
-            
         }
         
         ////////// Создаём несуществующие свойства спецпредложения ////////////
