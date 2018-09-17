@@ -33,6 +33,8 @@ $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH."/css/mod.css");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/desktop.min.js");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/mod.js");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/pagination.min.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/bootstrap.min.js");
+
 
 ///////////////// Скрипты второй десктопной версии ////////////////
 $APPLICATION->AddHeadScript("/local/assets/libs/jquery-ui.js");

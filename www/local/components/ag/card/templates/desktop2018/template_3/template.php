@@ -37,7 +37,7 @@
 
       <div class="col-9 col-xl-7">
         <div class="product-img">
-          <img id="center-block" class="center-block" src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="product-img">
+        <img id="center-block" class="center-block" src="/local/components/ag/card/templates/desktop2018/image/card_troyka.png" alt="product-img">
           <div class="product-heart">
             <i class="far fa-heart"></i>
             <p id="p-heart">1634</p>
@@ -82,49 +82,22 @@
                   <p class="product-attr">Стоимость:</p>
                   </div>
                   <div class="col-4">
-                  <span>800 балов</span>
+                  <span style="font-weight:600">1200 балов</span>
                   </div>
                 </div>
-                  <div class="row">
-                    <div class="col-2">
-                        <p class="product-attr">Количество:</p>
-                    </div>
-                    <div class="col-4">
-                        <span>-1+</span>
-                    </div>
+                <div class="row">
+                  <div class="col-4">
+                  <p class="product-attr">Номер карты:</p>
                   </div>
-                  <div class="row">
-                    <div class="col-2">
-                        <p class="product-attr">Цвет:</p>
-                    </div>
-                    <div class="col-8">
-                      <div class="product-img-wrap">
-                        <div class="product-img-attr"></div>
-                        <div class="product-img-attr"></div>
-                        <div class="product-img-attr"></div>
-                        <div class="product-img-attr"></div>
-                        <div class="product-img-attr">
-                          <!-- <img  src="/local/components/ag/card/templates/desktop2018/image/small-phone-4.png" alt="phone"
-                            class="rounded"> -->
-                        </div>
-                      </div>
-                    </div>
+                  <div class="col-8">
+                    <div class="form-group">
+                       <input type="text" class="form-control" placeholder="Введите номер карты">
+                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-2">
-                        <p class="product-attr">Размер:</p>
-                    </div>
-                    <div class="col-8">
-                      <div class="product-description-size">
-                        <span class="border br-size">XS</span>
-                        <span class="border br-size">S</span>
-                        <span class="border br-size">M</span>
-                        <span class="border br-size">L</span>
-                        <span class="border br-size">XL</span>
-                        <span class="border br-size">XXS</span>
-                      </div>
-                    </div>
+                </div>
+
                   </div>
+
               </div>
                 <div class="col-auto">
                   <div class="row">
@@ -133,21 +106,13 @@
                     </div>
                     <div class="col-6">
                       <div class="btn-group">
-                          <button type="button" id="btn-map" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Выбрать район
-                          </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">МФЦ Красносельский</a>
-                            <a class="dropdown-item" href="#">МФЦ Красносельский_1</a>
-                            <a class="dropdown-item" href="#">МФЦ Красносельский_2</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">МФЦ Красносельский_3</a>
-                          </div>
+                        <label>
+                           <input class="radio" type="radio" name="radio-test" checked>
+                           <span class="radio-custom"></span>
+                           <span class="label">На электронную почту</span>
+                         </label>
                         </div>
-                        <div class="col-auto">
-                          <p id="product-attr-map" data-toggle="modal" data-target="#modal-map"><i class="fas fa-map-marker-alt"></i><abbr title="attribute">Показать на карте</abbr></p>
 
-                        </div>
                     </div>
                   </div>
               </div>
@@ -157,7 +122,7 @@
                   <div class="col-3">
                       <p class="product-attr">На складе:</p>
                   </div>
-                  <div class="col-2">
+                  <div class="col-2" style="padding-top: 1rem">
                     <span>Много</span>
                   </div>
                 </div>
@@ -166,7 +131,7 @@
               <div class="product-description-btn">
                 <div class="row">
                   <div class="col-7">
-                    <button type="button" class="btn btn-primary btn-lg">Заказать за 800 баллов</button>
+                    <button type="button" class="btn btn-primary btn-lg">Заказать за 1200 баллов</button>
                   </div>
                   <div class="col-2 col-sm-auto">
                       <a href="#"><i id="product-heart" class="far fa-heart"></i></a>
@@ -345,51 +310,3 @@
       </div>
     </div>
 </article>
-
-
-<!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="modal-map" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="container-fluide">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      <div class="row">
-        <div class="col-8">
-          <div class="modal-gmap">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.9217315115766!2d37.618916819388566!3d55.75986182931396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a5b4c576dbf%3A0x93a829189a1d29f2!2z0JHQvtC70YzRiNC-0Lkg0YLQtdCw0YLRgA!5e0!3m2!1sru!2sua!4v1537199700784" width="485" height="645" frameborder="0" style="border:0" allowfullscreen></iframe>
-          </div>
-        </div>
-          <div class="col-4">
-              <div class="modal-body">
-                <h3>МФЦ Москворечье Сабурово</h3>
-                <blockquote>Подробнее</blockquote>
-                <p class="ag-lh">Адрес:</p>
-                <p>Москва, пролетарский просп. 18</p>
-                <p class="ag-lh">Станция метро:</p>
-                <p>Кантемировская</p>
-                <p class="ag-lh">Телефон:</p>
-                <p>+7(495)777-77-77</p>
-                <p class="ag-lh">Режим:</p>
-                <p>Ежедневно пн-вс 8:00-20:00</p>
-                <p class="ag-lh">Сайт:</p>
-                <p>md.mos.ru</p>
-                <p>В наличии:</p>
-                <ul>
-                  <li id="li-green">Зеленый(3 шт.)</li>
-                  <li id="li-rose">Розовый(5 шт.)</li>
-                  <li id="li-yellow">Желтый(1 шт.)</li>
-                  <li id="li-blue">Синий(7 шт.)</li>
-                </ul>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-lg btn-modal">Выбрать</button>
-              </div>
-          </div>
-        </div>
-      </div>
-
-      </div>
-    </div>
-  </div>

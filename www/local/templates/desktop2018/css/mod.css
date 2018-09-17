@@ -461,7 +461,7 @@ div.desktop-products-container--gridList {
 
 .product-img{
   width: auto;
-  height: auto;
+  height: 42rem;
   background-color: #f1f0f0;
   background-size: cover;
   text-align: center;
@@ -479,7 +479,7 @@ div.desktop-products-container--gridList {
 }
 
 .product-img img{
-  margin-top: 10%;
+  margin-top: 30%;
 }
 
 #btn-map{
@@ -491,6 +491,11 @@ div.desktop-products-container--gridList {
   text-align: left;
   margin-top: 0.8rem;
 
+}
+
+.form-control{
+  margin-top: 1rem;
+  border-radius: 0;
 }
 
 .product-description-btn .btn{
@@ -689,9 +694,134 @@ div.desktop-products-container--gridList {
 
 }
 
+.br-size{
+    padding: 10px;
+    min-height: 30px;
+    display: inline;
+    color: #3a3a39;
+    background-color: #fff;
+    border-color: #d0d0d0;
+    border-radius: 5px;
+
+}
+
+.br-size:hover{
+  color: #fff;
+  background-color: #007a6c;
+  border-color: #007a6c;
+  cursor: pointer;
+}
+
 .product-recommended-img{
   width: 100%;
 }
+
+.checkbox,
+.radio {
+	display: none;
+}
+.checkbox-custom,
+.radio-custom {
+	width: 20px;
+	height: 20px;
+	border: 2px solid #ccc;
+	border-radius: 3px;
+	position: relative;
+}
+.checkbox-custom,
+.radio-custom,
+.label {
+	display: inline-block;
+	vertical-align: middle;
+}
+.checkbox:checked + .checkbox-custom::before,
+.radio:checked + .radio-custom::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	bottom: 2px;
+	left: 2px;
+	background: #007a6c;
+	border-radius: 2px;
+}
+.radio-custom,
+.radio:checked + .radio-custom::before {
+	border-radius: 50%;
+}
+
+.btn-group{
+  margin-top: 1rem;
+}
+
+
+.product-btn-wrap{
+  margin-left: 0;
+  margin-top:1rem;
+}
+
+.ag-btn-date{
+    color:#3a3a39;
+    border-color: #007a6c;
+    margin-bottom: 0.5rem;
+}
+
+.ag-btn-date:hover{
+  color: #fff;
+  background-color: #007a6c;
+  border-color: #007a6c;
+}
+
+.btn-modal{
+    max-width: 100%;
+    height: 55px;
+    border-radius: 0px;
+    background-color: #007a6c;
+    border: none;
+}
+
+.ag-lh{
+  line-height: 0rem;
+  color: #8c8c8c;
+}
+
+
+
+.modal-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.modal-body li{
+  padding-left: 1.5em;
+  text-indent: -.7em;
+}
+
+
+#li-green::before {
+  content: "• ";
+  color: #007a6c; /* or whatever color you prefer */
+}
+
+#li-rose::before {
+  content: "• ";
+  color: #ef4d94; /* or whatever color you prefer */
+}
+
+#li-yellow::before {
+  content: "• ";
+  color: #ffc20e; /* or whatever color you prefer */
+}
+
+#li-blue::before {
+  content: "• ";
+  color: #01c0f4; /* or whatever color you prefer */
+}
+
+
+
+
 
 /*@Media queries@*/
 
@@ -709,9 +839,4 @@ div.desktop-products-container--gridList {
     margin-left: 3%;
   }
 
-}
-
-#center-block{
-  height: 29rem;
-  margin-bottom: 5rem;
 }
