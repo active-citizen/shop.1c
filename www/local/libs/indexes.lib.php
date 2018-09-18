@@ -115,6 +115,7 @@
         ";
         $arProduct = $DB->Query($sQuery)->Fetch();
 
+        if(!$arProduct["ID"])return true;
         $sQuery = "
             SELECT
                `man_link`.`VALUE_NUM` as `ID`

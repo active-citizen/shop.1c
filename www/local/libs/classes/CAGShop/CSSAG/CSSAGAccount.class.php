@@ -41,8 +41,11 @@
             $sRequest = json_encode($arRequest);
             
             $objCurl = new \Curl\CCurlSimple;
+            $t0 = microtime(true);
             $sResult = $objCurl->post($sUrl, $sRequest);
-            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);            
+            $t1 = microtime(true);
+            $sWaitMs = round(($t1-$t0)*1000);
+            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult, $sWaitMs);            
             if(!$arAnswer = $this->checkAnswer($sResult))
                 return false;
             
@@ -140,9 +143,12 @@
             $sRequest = json_encode($arRequest);
             
             $objCurl = new \Curl\CCurlSimple;
+            $t0 = microtime(true);
             $sResult = $objCurl->post($sUrl, $sRequest);
+            $t1 = microtime(true);
+            $sWaitMs = round(($t1-$t0)*1000);
 
-            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);            
+            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult, $sWaitMs);            
             if(!$arAnswer = $this->checkAnswer($sResult)){
                 \Log\CSSAGLog::addFailedPointsLog($sUrl, $sRequest, $sResult);
                 return false;

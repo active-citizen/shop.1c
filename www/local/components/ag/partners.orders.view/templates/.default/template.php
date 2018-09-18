@@ -52,11 +52,6 @@
     </li>
     <? endif ?>
 </ul>
-<!-- 
-<?
-    print_r($arResult);
-?>
--->
 
 <div class="partners-order-main" id="order-tickets" style="display:none">
     <h2>Повторная отправка билетов на почту покупателя</h2>
@@ -304,14 +299,14 @@ table.mails td{
                 Cертификат во вложении к уведомлениям   
             </td><td>
                 <?
-                if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']=='да'):?> 
+                if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']==$arResult["ENUMS"]['SEND_CERT']['да']):?> 
                 Да
                 <? else: ?>
                 Нет
                 <? endif ?>
             </td>
         </tr>
-        <? if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']=='да'):?> 
+        <? if($arResult["ORDER"]["BASKET"][0]["PRODUCT"]['PROPERTY_SEND_CERT_VALUE']==$arResult["ENUMS"]['SEND_CERT']['да']):?> 
         <? if(
             !in_array(PARTNERS_GROUP_ID, $USER->GetUserGroupArray())
             &&
