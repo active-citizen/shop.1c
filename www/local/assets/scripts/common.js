@@ -294,20 +294,29 @@ $(document).ready(function() {
         });
 
         // Выводим картинки
-        $('.ag-shop-card__previews-container').html('');
+        var carouselDiv = '';
+        if($('#carouseldown').length>0)
+            carouselDiv = 'down';
+
+        $('#carousel'+carouselDiv).html('');
         
         for(i in pics){
-            $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",pics[i]);
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
+            $('#carousel'+carouselDiv).append('<div class="ag-shop-card__preview"></div>');
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().attr("rel",pics[i]);
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().click(function(){
                 $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
                 $(this).addClass('ag-shop-card__preview--active');
                 $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
             });
         }
         $('.ag-shop-card__image-container').css('background-image','url('+pics[0]+')');
-        $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');        
+        $('#carousel'+carouselDiv+' .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');        
+
+            if(carouselDiv == 'down')
+                imagesSliderInitMobile();
+            else
+                imagesSliderInit();
     });
 
     $('input[name="place"]').click(function(){
@@ -933,7 +942,10 @@ function animate(begin, end, finalTask) {
   }, 1000 / 60);
 }
 
-window.onload = function () {
+window.onload = function(){imagesSliderInit();}
+
+
+function imagesSliderInit() {
   var carousel = Carousel.carousel = document.getElementById('carousel');
     if(!carousel)return false;
 
@@ -946,6 +958,7 @@ window.onload = function () {
       padding = Carousel.padding,
       rowHeight = Carousel.rowHeight = imageHeight + 2 * padding;
       carousel.style.width = imageWidth + 'px';
+      console.log(numImages);
   for (var i = 0; i < numImages; ++i) {
     var image = images[i],
         frame = document.createElement('div');
@@ -976,6 +989,7 @@ window.onload = function () {
   wrapper.appendChild(carousel);
   var prevButton = document.getElementById('prev'),
       nextButton = document.getElementById('next');
+
   prevButton.onclick = function () {
     prevButton.disabled = nextButton.disabled = true;
     rotateForward();
@@ -986,6 +1000,7 @@ window.onload = function () {
   };
   nextButton.onclick = function () {
     prevButton.disabled = nextButton.disabled = true;
+    console.log(Carousel);
     animate(0, -Carousel.rowHeight, function () {
       rotateBackward();
       carousel.style.top = '0';
@@ -993,10 +1008,15 @@ window.onload = function () {
     });
   };
 
-  if(document.getElementsByClassName('pictureFrame').length < 6 ){
+  if(prevButton && document.getElementsByClassName('pictureFrame').length < 6 ){
     prevButton.style.display = "none";
     nextButton.style.display = "none";
   }
+  else{
+    prevButton.style.display = "block";
+    nextButton.style.display = "block";
+  }
+
 };
 
 
@@ -1049,7 +1069,9 @@ function animatedown(begin, end, finalTask) {
   }, 1000 / 60);
 }
 
-window.onload = function () {
+window.onload = function(){imagesSliderInitMobile();}
+
+function imagesSliderInitMobile() {
   
   var carousel = Carousel.carousel = document.getElementById('carouseldown');
     if(!carousel)return false;
@@ -1063,6 +1085,7 @@ window.onload = function () {
       padding = Carousel.padding,
       rowHeight = Carousel.rowHeight = imageHeight + 2 * padding;
       carousel.style.width = imageWidth + 'px';
+      console.log(numImages);
   for (var i = 0; i < numImages; ++i) {
     var image = images[i],
         frame = document.createElement('div');
@@ -1116,6 +1139,10 @@ window.onload = function () {
   if(document.getElementsByClassName('pictureFrameDown').length < 4 ){
     prevButton.style.display = "none";
     nextButton.style.display = "none";
+  }
+  else{
+    prevButton.style.display = "block";
+    nextButton.style.display = "block";
   }
 
 };

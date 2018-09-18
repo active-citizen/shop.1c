@@ -60,9 +60,9 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
             foreach($arOffer["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto)
                 $arPics[] = $morePhoto["FILE_PATH"];
         $arPics = array_unique($arPics);
-        print_r($arPics);
     ?>
    
+<? if(!IS_PHONE && !IS_MOBILE):?>
 <!--Carousel from the left-->
   <div class="slider" id="slider">
   <div class="buttons-carousel">
@@ -76,11 +76,12 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
       
    <? endforeach ?>
    </div>
-    <div class="buttons-carousel">
+   <div class="buttons-carousel">
    <button id="next"><i class="fas fa-angle-down"></i></button> 
-     </div>
    </div>
-    <!--End carousel--> 
+   </div>
+<!--End carousel--> 
+<? endif ?>
      
      </div>
 
@@ -88,6 +89,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
   </div>
 </div>
 
+<? if(IS_PHONE || IS_MOBILE):?>
 <!--Carousel from the down-->
 <div class="sliderdown">
   <div class="buttonsdown">
@@ -105,8 +107,5 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
   <button class="buttondown" id="nextdown"><i class="fas fa-angle-right"></i></button> 
 </div>
 </div>
-
-
- 
-    
+<? endif ?>
 
