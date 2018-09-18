@@ -12,6 +12,8 @@ require_once($_SERVER["DOCUMENT_ROOT"]
     ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
 require_once($_SERVER["DOCUMENT_ROOT"]
     ."/local/libs/classes/CAGShop/CCatalog/CCatalogSection.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogEnums.class.php");
 use AGShop\Integration as Integration;
 use AGShop\Catalog as Catalog;
 
@@ -122,6 +124,8 @@ $arResult["ORDER"]["BASKET"] = array();
 $objOfferProps = new \Catalog\CCatalogProperties;
 $objProduct = new \Catalog\CCatalogProduct;
 $objSection = new \Catalog\CCatalogSection;
+$objEnum = new \Catalog\CCatalogEnums;
+$arResult["ENUMS"] = $objEnum->getAll();
 while($arBasket = $resBasket->Fetch()){
 
     $arProps = $objOfferProps->getById($arBasket["PRODUCT_ID"]);
@@ -139,6 +143,10 @@ while($arBasket = $resBasket->Fetch()){
         $arProduct["PROPERTY_".$sKey."_VALUE"] = $sValue;
 
     $arSection = $objSection->getById($arProduct["IBLOCK_SECTION_ID"]);
+    $arProduct["PROPERTY_CANCEL_RULES_VALUE"] =
+       unserialize($arProduct["PROPERTY_CANCEL_RULES_VALUE"]);
+    $arProduct["PROPERTY_RECEIVE_RULES_VALUE"] =
+       unserialize($arProduct["PROPERTY_RECEIVE_RULES_VALUE"]);
 
 /*
     $arSection = CIBlockSection::GetList(
