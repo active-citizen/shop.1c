@@ -107,7 +107,8 @@ $(document).ready(function() {
      * переключение предпросмотра картинок
      */
     $('.ag-shop-card__preview').click(function(){
-        $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+        if(!$(this).hasClass("picEnabled"))return false;
+        $('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
         $(this).addClass('ag-shop-card__preview--active');
         $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
     });
@@ -280,6 +281,7 @@ $(document).ready(function() {
         
 
         // Если все свойства отключены - выводим картинки всех вариантов
+        /*
         if($('.ag-shop-card__sizes input:checked').length<=0){
             pics = new Array();
             $('.ag-shop-card__sizes input').each(function(){
@@ -287,19 +289,43 @@ $(document).ready(function() {
                     .filter( onlyUnique );
             });
         }
-        
+        */
         // Вычисляем изображения, которые надо показать
         $('.ag-shop-card__sizes input:checked').each(function(){
-            pics = Intersection(pics,$(this).attr('pics').split('|'));
+            if(!switched)pics = $(this).attr('pics').split('|');
+            picsActive = Intersection(pics,$(this).attr('pics').split('|'));
         });
 
-        // Выводим картинки
         var carouselDiv = '';
         if($('#carouseldown').length>0)
             carouselDiv = 'down';
 
-        $('#carousel'+carouselDiv).html('');
+
+        // Если все свойства отключены, делаем активными все картинки
+        if($('.ag-shop-card__sizes input:checked').length<=0){
+            $('.ag-shop-card__preview').each(function(){
+                $(this).addClass("picEnabled");
+            });
+        }
+        else{
+            // Проходим по всем картинкам и определяем какие из них активны
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').each(function(){
+                var src = $(this).css('background-image');
+                if(!src)return false;
+                src = '/'+src.replace('url(','').replace(')','').replace(/\"/gi, "")
+                    .replace(/^http(s)?:\/\/.*?\//,"");
+                if(picsActive.indexOf(src)!=-1)
+                    $(this).addClass("picEnabled")
+                else
+                    $(this).removeClass("picEnabled")
+            });
+        }
+
         
+
+        /*
+        $('#carousel'+carouselDiv).html('');
+       
         for(i in pics){
             $('#carousel'+carouselDiv).append('<div class="ag-shop-card__preview"></div>');
             $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().attr("rel",pics[i]);
@@ -310,13 +336,22 @@ $(document).ready(function() {
                 $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
             });
         }
-        $('.ag-shop-card__image-container').css('background-image','url('+pics[0]+')');
-        $('#carousel'+carouselDiv+' .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');        
+        */
 
+        $('.ag-shop-card__image-container').css('background-image',
+            $('#carousel'+carouselDiv+' .picEnabled').css('background-image')
+            //url('+picsActive[0]+')'
+        );
+        $('#carousel'+carouselDiv+' .ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+        $('#carousel'+carouselDiv+' .picEnabled').first().addClass('ag-shop-card__preview--active');
+        
+
+        /*
             if(carouselDiv == 'down')
                 imagesSliderInitMobile();
             else
                 imagesSliderInit();
+        */
     });
 
     $('input[name="place"]').click(function(){

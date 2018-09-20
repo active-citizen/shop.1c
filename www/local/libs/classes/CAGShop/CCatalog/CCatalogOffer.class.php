@@ -503,6 +503,10 @@ class CCatalogOffer extends \AGShop\CAGShop{
             $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
         };
 
+        // Чистим предложения от предложений с пустыми остатками
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer)
+            if(!$arOffer["STORAGES"])unset($arResult["OFFERS_JSON"][$nOfferId]);
+
         // Индекс свойств
         $arResult["OFFERS_PROPS"] = [];
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
@@ -512,7 +516,6 @@ class CCatalogOffer extends \AGShop\CAGShop{
                         "name"=>$arProp["NAME"],
                         "values"=>[]
                     ];
-
                 if(!isset($arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]))
                     $arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]
                         = [

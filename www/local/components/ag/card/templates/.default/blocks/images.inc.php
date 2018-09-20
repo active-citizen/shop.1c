@@ -19,7 +19,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
     </div>
   
     <div class="ag-shop-card__image-container" style="background-image: url(<?= 
-        $arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"][0]["FILE_PATH"]
+        $arResult["ALL_PICS"][0]
       ?>)">
       <div class="ag-shop-card__map" style="display:none"></div>
       <div class="ag-shop-card__image"></div>
@@ -55,12 +55,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
     
     <div class="ag-shop-card__previews-container">    
     
-    <?$arPics = [];
-        foreach($arResult["OFFERS"] as $arOffer)
-            foreach($arOffer["PROPERTIES"]["MORE_PHOTO"] as $key=>$morePhoto)
-                $arPics[] = $morePhoto["FILE_PATH"];
-        $arPics = array_unique($arPics);
-    ?>
+    <?$arPics = $arResult["ALL_PICS"];?>
    
 <? if(!IS_PHONE && !IS_MOBILE):?>
 <!--Carousel from the left-->
@@ -72,7 +67,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
    <? foreach($arPics as $key=>$morePhoto):?>
     
    
-     <div class="ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
+     <div class="ag-shop-card__preview picEnabled<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
       
    <? endforeach ?>
    </div>

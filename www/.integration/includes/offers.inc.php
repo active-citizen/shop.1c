@@ -44,19 +44,33 @@
     if(!isset($arOffers[0]))$arOffers = array($arOffers);
 
     // Загружаем картинки и составляем их индекс
-    $arImages = [];
-    foreach($arOffers as $arOffer){
-        if(!isset($arOffer["Картинки"]["Картинка"]))continue;
+    foreach($arOffers as $nKey=>$arOffer){
         if(
-            !isset($arOffer["Картинки"]["Картинка"][0]) 
-            && isset($arOffer["Картинки"]["Картинка"])
-        )$arOffer["Картинки"]["Картинка"] = [$arOffer["Картинки"]["Картинка"]];
+            !isset($arOffer["КартинкиХарактеристики"])
+            ||
+            !$arOffer["КартинкиХарактеристики"]
+        )continue;
 
-        foreach($arOffer["Картинки"]["Картинка"] as $arImage){
+        if(
+            (
+                !isset($arOffer["КартинкиХарактеристики"][0]) 
+                ||
+                !$arOffer["КартинкиХарактеристики"][0]
+            )
+            && isset($arOffer["КартинкиХарактеристики"])
+        ){
+            $arOffers[$nKey]["КартинкиХарактеристики"] = 
+            $arOffer["КартинкиХарактеристики"] = 
+                [$arOffer["КартинкиХарактеристики"]];
+        }
+
+        foreach($arOffer["КартинкиХарактеристики"] as $arImage){
+            // Не загружаем уже добавленный
+            if(isset($arImage["@attributes"]["АдресФайла"]))continue;
             $sFilename =
-                $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$arImage["АдресФайла"];
+                $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$arImage["@attributes"]["АдресФайла"];
             if(!CFile::MakeFileArray($sFilename))continue;
-            $arImages[$arImage["АдресФайла"]] = 
+            $arImages[$arImage["@attributes"]["АдресФайла"]] = 
               CFile::SaveFile(    
                   CFile::MakeFileArray($sFilename)
                   ,"offers"
@@ -67,9 +81,10 @@
     }
 
     foreach($arOffers as $arOffer){
-       
         $XML_ID = explode("#", $arOffer["Ид"]);
         $XML_ID = $XML_ID[0];
+        // Если ID предложения равно ID товара - игнорировать (привет 1С)
+        if($XML_ID==$arOffer["Ид"])continue;
         
         // Если склад еданственный
         if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))
@@ -233,8 +248,29 @@
         
         ///////////////////////  Дополнительные изображения
 
+        // Если у предложения не указаны картинки - берём из товара
+        if(
+            (
+                !isset($arOffer["КартинкиХарактеристики"][0])
+                ||
+                !$arOffer["КартинкиХарактеристики"][0]
+            )
+            && 
+            count($productsIndexDetail[$XML_ID]["Картинка"])
+        ){
+            $arOffer["КартинкиХарактеристики"] = [];
+            foreach($productsIndexDetail[$XML_ID]["Картинка"] as $arOfferImage){
+                $arOffer["КартинкиХарактеристики"][] = [
+                    "@attributes"=>
+                    [
+                        "АдресФайла"=> $arOfferImage
+                    ]
+                ];
+            }
+        }
+
         // Если у предложения указаны картинки
-        if(isset($arOffer["Картинки"]["Картинка"][0])){
+        if(isset($arOffer["КартинкиХарактеристики"][0])){
             // Удаляем все файлы предложения
             $res = CIBlockElement::GetProperty(
                 $OFFERS_IBLOCK_ID, 
@@ -256,8 +292,16 @@
 
             ";
             $DB->Query($sQuery);
+
+            // Формируем список ID картинок
+            $arOfferImages = [];
+            foreach($arOffer["КартинкиХарактеристики"] as $sImagePath)
+                $arOfferImages[] =
+                $arImages[$sImagePath["@attributes"]["АдресФайла"]];
+            $arOfferImages = array_unique($arOfferImages);
+
             // Вставляем замест них ID уже загруженных файлов
-            foreach($arOffer["Картинки"]["Картинка"] as $sImagePath){
+            foreach($arOfferImages as $nImage){
                 $sQuery = "
                     INSERT INTO
                         b_iblock_element_property(
@@ -274,10 +318,10 @@
                             NULL,
                             '".MORE_PHOTO_PROPERTY_ID."',
                             '".$offerId."',
-                            '".$arImages[$sImagePath["АдресФайла"]]."',
+                            '".$nImage."',
                             'text',
-                            '".$arImages[$sImagePath["АдресФайла"]]."',
-                            '".$arImages[$sImagePath["АдресФайла"]]."',
+                            '".$nImage."',
+                            '".$nImage."',
                             NULL
                         );
                 ";
@@ -285,6 +329,7 @@
             }
             ////////////////////
         }
+        /*********************************
         // Если у предложения не указаны картинки - берём из товара
         elseif(count($productsIndexDetail[$XML_ID]["Картинка"])){
 
@@ -343,6 +388,7 @@
                 );
             }
         }
+        ***********************************/
         
         ////////// Создаём несуществующие свойства спецпредложения ////////////
         if(isset($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"])){
