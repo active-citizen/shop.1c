@@ -346,7 +346,7 @@
             ),
             false,
             array("nTopCount"=>1),            
-            array("ID","PROPERTY_CML2_LINK")
+            array("ID","PROPERTY_CML2_LINK","NAME")
         )->GetNext();
         
         $arCatalog = CIBlockElement::GetList(
