@@ -235,7 +235,6 @@ class COrder extends \AGShop\CAGShop{
             return false;
         }
         if($arProductUsercats)$sPrefix= 'Т-';
-
         // Проверяем количество на складе каждого предложения и блокируем, 
         // если надо (снимаем единицу)
         $objCCatalogStore = new \Catalog\CCatalogStore;
@@ -346,7 +345,6 @@ class COrder extends \AGShop\CAGShop{
             }
         }
 
-
         $res = \CSaleDelivery::GetList(array(),array("ACTIVE"=>"Y"));
         if(!$delivery = $res->GetNext()){
             $this->addError("Нет активных служб доставки");
@@ -408,7 +406,7 @@ class COrder extends \AGShop\CAGShop{
         
         // Обновляем свойства заказа из свойств товара (для поиска)
         $this->orderPropertiesUpdate();
-        
+       
         ///////////// Проводим работу по интеграции
         // Статус тройки
         // 0 - не заказывалась
@@ -486,6 +484,7 @@ class COrder extends \AGShop\CAGShop{
         // 0 - не заказывалась
         // 1 - Успешно
         // 2 - неудачно
+ 
         $sInfotechStatus = 0;
         if(
             $nPriceCategory = intval(
@@ -537,8 +536,7 @@ class COrder extends \AGShop\CAGShop{
                 $sInfotechStatus = 2;
             }
         }
-        
-        
+       
         // Если тройка провалилась - баллы не снимаем
         if($stoykaStatus == 2){
         }
@@ -609,7 +607,7 @@ class COrder extends \AGShop\CAGShop{
         $objCSync->syncUser($this->getParam("UserId"));
         $nOrderId = $this->getParam("Id");
         if($nOrderId)$objCSync->syncOrder($nOrderId);
-
+ 
         // Ставим статус заказ и отправляем соответствующее ЗНИ, в зависимости от результата заказа
         ///// Ставим в очередь на ЗНИ
         // Если тойка успешно заказалась - Выполнен

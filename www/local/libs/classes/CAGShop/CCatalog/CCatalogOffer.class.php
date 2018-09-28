@@ -466,7 +466,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
                         :
                         DEFAULT_STORE_LIMIT
                     );
-    
+   
                 // Пополняем справочник складов
                 if(!isset($arResult["STORAGES"][$arStorage["STORE_ID"]])){
                     $arStoreItem = \CCatalogStore::GetList([],
@@ -478,7 +478,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
                 }
                 foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)
                     $arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
-                
+               
             }
     
             // Обнуляем отрицательные остатки и считаем общие
@@ -490,7 +490,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
                 }
                 $arResult["TotalAmount"] += $arOffer["STORAGES"][$key];
             }
-            
+             
             $arOffer["RRICE_INFO"] = \CPrice::GetList([],[
                 "PRODUCT_ID"=>$arOffer["ID"]
             ],false,["nTopCount"=>1])->Fetch();
@@ -506,6 +506,8 @@ class CCatalogOffer extends \AGShop\CAGShop{
         // Чистим предложения от предложений с пустыми остатками
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer)
             if(!$arOffer["STORAGES"])unset($arResult["OFFERS_JSON"][$nOfferId]);
+        foreach($arResult["OFFERS"] as $nOfferId=>$arOffer)
+            if(!$arOffer["STORAGES"])unset($arResult["OFFERS"][$nOfferId]);
 
         // Индекс свойств
         $arResult["OFFERS_PROPS"] = [];
@@ -591,6 +593,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
             }
         }
 
+        sort($arResult["OFFERS"]);
         return $arResult;
     }
 
