@@ -546,7 +546,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
             foreach($arOffer["1C_PROPS"] as $sPropCode0=>$arProp0){
                 foreach($arOffer["1C_PROPS"] as $sPropCode1=>$arProp1){
-                    if($arProp0["ID"]==$arProp1["ID"])continue;
+//                    if($arProp0["ID"]==$arProp1["ID"])continue;
                     if(!isset(
                        $arResult["OFFERS_PROPS"][$sPropCode0]["values"]
                         [$arProp0["ID"]]["crossed"][$arProp1["ID"]]

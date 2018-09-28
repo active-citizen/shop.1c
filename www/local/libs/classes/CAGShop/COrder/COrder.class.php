@@ -487,9 +487,17 @@ class COrder extends \AGShop\CAGShop{
         // 1 - Успешно
         // 2 - неудачно
         $sInfotechStatus = 0;
-        if($nPriceCategory = intval(
-            $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"]
-        )){
+        if(
+            $nPriceCategory = intval(
+                $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"]
+            )
+            ||
+            (
+                intval($arSKU["SKU"]["PROPERTIES"]["INFOTECH_ACTION_ID"])
+                &&
+                intval($arSKU["SKU"]["PROPERTIES"]["INFOTECH_CITY_ID"])
+            )
+        ){
             foreach($arSKUs as $arSKU)break;
             
             $objCUser = new \User\CUser;

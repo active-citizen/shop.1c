@@ -94,7 +94,7 @@ $arResult["OFFERS"][0]["RRICE_INFO"]["PRICE"]
   <? foreach($arPics as $key=>$morePhoto):?>
      
     
-      <div class="ag-shop-carousel-down ag-shop-card__preview<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
+      <div class="ag-shop-carousel-down ag-shop-card__preview  picEnabled<?if(!$key):?> ag-shop-card__preview--active<? endif ?>" style="background-image: url(<?=$morePhoto?>);" rel="<?= $morePhoto;?>"></div>
        
     <? endforeach ?>
 </div>

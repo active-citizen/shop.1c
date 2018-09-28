@@ -80,11 +80,23 @@
         }
     }
 
+    // Составляем индекс товаров XML_ID=>количество предложений
+    $arProductsIDsIndex = [];
+    foreach($arOffers as $arOffer){
+        $XML_ID = explode("#", $arOffer["Ид"]);
+        $XML_ID = $XML_ID[0];
+        if(isset($arProductsIDsIndex[$XML_ID]))
+            $arProductsIDsIndex[$XML_ID]++;
+        else
+            $arProductsIDsIndex[$XML_ID] = 1;
+    }
+
+    // Проходим по всем предложениям
     foreach($arOffers as $arOffer){
         $XML_ID = explode("#", $arOffer["Ид"]);
         $XML_ID = $XML_ID[0];
         // Если ID предложения равно ID товара - игнорировать (привет 1С)
-        if($XML_ID==$arOffer["Ид"])continue;
+        if($XML_ID==$arOffer["Ид"] && $arProductsIDsIndex[$XML_ID]>1)continue;
         
         // Если склад еданственный
         if(isset($arOffer["Склад"]) && !isset($arOffer["Склад"][0]))
@@ -389,7 +401,20 @@
             }
         }
         ***********************************/
-        
+       
+
+        // Сбрасываем все 1С-характеристикитовара
+        $resParameters = CIBlockProperty::GetList([],[
+            "IBLOCK_ID"=>$OFFERS_IBLOCK_ID]
+        );
+        while($arParameter = $resParameters->Fetch()){
+            if(!preg_match("#^PROP1C_.*$#",$arParameter["CODE"]))continue;
+            CIBlockElement::SetPropertyValueCode(
+                $offerId,$arParameter["CODE"],
+                []
+            );
+        }
+
         ////////// Создаём несуществующие свойства спецпредложения ////////////
         if(isset($arOffer["ХарактеристикиТовара"]["ХарактеристикаТовара"])){
             foreach(
