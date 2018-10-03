@@ -2548,6 +2548,25 @@ input:checked + .ag-shop-card__places-item:before {
   position: relative;
   overflow: hidden;
 }
+
+@media (max-width: 575.98px) { 
+
+#carouselWrapperDown {
+  margin-right: 10px;
+}
+
+#buttonsdown {
+  margin: 5px -5px;
+}
+
+.ag-shop-card__colors-item {
+  margin-left: -9px;
+}
+
+}
+
+
+
 #carouseldown {
   position: absolute;
   visibility: hidden;
