@@ -353,7 +353,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         
         $arResult = [];
         // Торговые предложения
-        $resOffers = \CIBlockElement::GetList([],$arFilter = [
+        $resOffers = \CIBlockElement::GetList(["sort"=>"asc"],$arFilter = [
             "IBLOCK_ID"         =>  OFFER_IB_ID,
             "PROPERTY_CML2_LINK"=>  $nProductId
         ],false);
