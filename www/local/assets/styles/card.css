@@ -2563,6 +2563,12 @@ input:checked + .ag-shop-card__places-item:before {
   margin-left: -9px;
 }
 
+.ag-shop-card__sizes label {
+  display: inline-block;
+  margin-left: 16px;
+  margin-bottom: 5px;
+}
+
 }
 
 
