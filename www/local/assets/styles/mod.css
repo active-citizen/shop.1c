@@ -1009,15 +1009,20 @@ input:checked + .ag-shop-card__colors-item {
 
 input:disabled + .ag-shop-card__colors-item {
     border: 2px solid #EFEFEF;
-    margin: 0 -7px;
+    margin: 0 -1px;
     opacity: 0.5;
 }
 
 input:disabled + .ag-shop-card__sizes-item {
     border: 2px solid #EFEFEF;
-    margin: 0 -7px;
+    margin: 0 -1px;
     opacity: 0.5;
+    min-width: 20px;
 }
+
+.ag-shop-card__sizes-item label {
+    min-width: 20px;
+  }
 
 input:disabled + .ag-shop-card__places-item {
     opacity: 0.33;
