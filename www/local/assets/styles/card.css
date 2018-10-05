@@ -2603,6 +2603,7 @@ input:checked + .ag-shop-card__colors-item {
 @media (max-width: 576px) { 
   .sliderdown{
     margin-left: 7%;
+    display: -webkit-inline-box;
   }
 
   #carouselWrapperDown{
