@@ -1220,12 +1220,16 @@ input:checked + .ag-shop-card__colors-item {
   font-size: 0.75rem;
   color: #a1a4a9;
   text-align: center;
+  min-width: 20px;
 }
 input:checked + .ag-shop-card__sizes-item {
   border-color: rgba(0,122,108,1);
   color: rgba(0,122,108,1);
   font-weight: 700;
+  min-width: 20px;
 }
+
+
 .ag-shop-card__places-tabs {
   display: inline-block;
 }
@@ -2567,7 +2571,13 @@ input:checked + .ag-shop-card__places-item:before {
   display: inline-block;
   margin-left: 4px;
   margin-bottom: 5px;
+
+
 }
+
+.ag-shop-card__sizes-item {
+    
+  }
 
 
 .item_label
@@ -2582,7 +2592,7 @@ input:checked + .ag-shop-card__colors-item {
 #carouseldown {
   position: absolute;
   visibility: hidden;
-  display: inline-flex;
+  display:  -webkit-inline-box;
 }
 
 #nextdown, #prevdown {
@@ -2630,7 +2640,7 @@ input:checked + .ag-shop-card__colors-item {
 
 @media (max-width: 1279px) { 
   .sliderdown{
-   display: inline-flex;
+   display: -webkit-inline-box;
  }
 
 }
