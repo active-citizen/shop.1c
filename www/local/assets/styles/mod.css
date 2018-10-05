@@ -997,12 +997,13 @@ table.auction-winners .winner{
     height: 48px;
     border-radius: 5px;
     border: 1px solid #9c9c9c;
+    margin-left: 1px;
 }
 
 
 input:checked + .ag-shop-card__colors-item {
     border: 2px solid rgba(0,122,108,1);
-    margin: 0 -7px;
+    margin: 0 0px;
 }
 
 

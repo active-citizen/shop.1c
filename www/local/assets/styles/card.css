@@ -2565,8 +2565,14 @@ input:checked + .ag-shop-card__places-item:before {
 
 .ag-shop-card__sizes label {
   display: inline-block;
-  margin-left: 16px;
+  margin-left: 4px;
   margin-bottom: 5px;
+}
+
+
+.item_label
+input:checked + .ag-shop-card__colors-item {
+    margin: 0 0px;
 }
 
 }
@@ -2597,6 +2603,7 @@ input:checked + .ag-shop-card__places-item:before {
 @media (max-width: 576px) { 
   .sliderdown{
     margin-left: 7%;
+    display: -webkit-inline-box;
   }
 
   #carouselWrapperDown{
