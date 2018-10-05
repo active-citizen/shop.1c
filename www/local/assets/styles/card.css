@@ -2592,7 +2592,7 @@ input:checked + .ag-shop-card__colors-item {
 #carouseldown {
   position: absolute;
   visibility: hidden;
-  display: inline-flex;
+  display:  -webkit-inline-box;
 }
 
 #nextdown, #prevdown {
@@ -2640,7 +2640,7 @@ input:checked + .ag-shop-card__colors-item {
 
 @media (max-width: 1279px) { 
   .sliderdown{
-   display: inline-flex;
+   display: -webkit-inline-box;
  }
 
 }
