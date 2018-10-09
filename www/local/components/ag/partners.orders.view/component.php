@@ -183,7 +183,7 @@ $arResult["HISTORY_TYPES"] = array(
 
 $arResult["ORDER"]["HISTORY"] = array();
 $resHistory = CSaleOrderChange::GetList(
-    array("ID"=>"DESC"),
+    array("ID"=>"ASC"),
     array(
         "ORDER_ID"=>$arResult["ORDER"]["ID"]
     ),
