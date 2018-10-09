@@ -770,7 +770,7 @@ class COrder extends \AGShop\CAGShop{
             ),
             false,
             array("nTopCount"=>1),            
-            array("ID","PROPERTY_CML2_LINK")
+            array("ID","PROPERTY_CML2_LINK","NAME")
         )->GetNext();
     
         $arCatalog = \CIBlockElement::GetList(
@@ -799,7 +799,7 @@ class COrder extends \AGShop\CAGShop{
         $arOrder["PROPERTIES"]["PRODUCT_URL"]["PROPERTY_VALUE"] = 
             $arCatalog["DETAIL_PAGE_URL"];
         $arOrder["PROPERTIES"]["PRODUCT_NAME"]["PROPERTY_VALUE"] = 
-            $arCatalog["NAME"];
+            $arOffer["NAME"];
         $arOrder["PROPERTIES"]["SECTION_ID"]["PROPERTY_VALUE"] = 
             $arCatalog["IBLOCK_SECTION_ID"];
         $arOrder["PROPERTIES"]["MANUFACTURER_ID"]["PROPERTY_VALUE"] = 
