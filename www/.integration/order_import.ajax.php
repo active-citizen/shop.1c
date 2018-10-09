@@ -280,7 +280,7 @@
                     array(),
                     array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),
                     false,
-                    array("nTopCount"=>1),array("ID")
+                    array("nTopCount"=>1),array("ID","NAME")
                 );
                 $existsOffer = $resOffer->Fetch();
                 // Если продукта нет - создаём его прототип
@@ -373,7 +373,7 @@
                 // Запоминаем товар для добавления в корзину
                 $basketProducts[$existsOffer["ID"]] = array(
                     "count" => $product["Количество"],
-                    "name"  => $product["Наименование"],
+                    "name"  => $existsOffer["NAME"],
                     "price" => $product["ЦенаЗаЕдиницу"]
                 );
             }

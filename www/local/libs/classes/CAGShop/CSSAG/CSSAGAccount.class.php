@@ -112,6 +112,7 @@
             @return итоговое количество баллов
         */
         function transaction($nSum, $sComment){
+//            return $this->addError('Transaction error');
 
             $nSum = intval($nSum);
             if(!$nSum)return $this->addError(
