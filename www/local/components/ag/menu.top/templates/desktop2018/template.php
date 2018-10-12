@@ -25,7 +25,7 @@
                 <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/experiments">Городские новинки</a></div>
                 <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/dom">Электронный дом</a></div>
                 <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/results">Результаты работы</a></div>
-                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="/catalog/elektronnyy-kontent/">Магазин поощрений</a></div>
+                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="/catalog/">Магазин поощрений</a></div>
                 <div class="ag-shop-menu__item item-articles"><a class="ag-shop-menu__link" href="https://ag.mos.ru/photos">Проект в лицах</a></div>
                 <!--<div class="ag-shop-menu__item ag-menu-breaker"></div>-->
         <div class="ag-shop-menu__item item-articles">

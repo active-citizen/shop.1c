@@ -2,7 +2,7 @@
 namespace Catalog;
 require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CCache/CCache.class.php");
-require_once(realpath(__DIR__."/..")."/CCatalogWishesStatistic.class.php");
+require_once(realpath(__DIR__)."/CCatalogWishesStatistic.class.php");
 use AGPhop as AGPhop;
 use AGShop\CCache as CCache;
 
