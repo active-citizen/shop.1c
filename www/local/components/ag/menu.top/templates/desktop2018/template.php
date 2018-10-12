@@ -62,7 +62,8 @@
 
                 <img id="logo-profile" src="/local/templates/desktop2018/img/logo-profile.png" alt="logo-profile">
                   <div id="logo-balls" class="ag-shop-nav__link-caption">
-                    <span id="fio-logo" class="show-on-desktop"><?= $arResult['FIO'];?>Александр Алексеевский</span>
+                    <span id="fio-logo" class="show-on-desktop"><?=
+                    $arResult['FIO']?$arResult['FIO']:"";?></span>
                     <div id="fio-balls" class="ag-shop-nav__profile-points"><?= $arResult['myBalls'];?></div>
                   </div>
             </a>

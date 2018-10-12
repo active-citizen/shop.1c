@@ -178,6 +178,8 @@ class CCatalogOffer extends \AGShop\CAGShop{
 
     /**
         Проверка исчерпания месячного лимита на товар для пользователя
+        проверка исчерпания производится по всем торговым предложениям товара
+
         @param $nUserId - ID пользователя для которого проверям исчерпание месячного лимита
         @param $nOfferId - ID торгового предложения
         @param $nAmount - сколько собираемся купить
@@ -230,6 +232,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
 
     /**
         Определение скольок сегодня заказали товара
+        Количество определяется как сумма всех заказанных предложений товара
 
         @param $nProductId ID продукта (Элемента каталога, не предложения)
         @return количество заказанного сегодня продукта
@@ -306,7 +309,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         $sQuery = "
             SELECT
                 ROUND(SUM(`b`.`QUANTITY`)) as `count`,
-                DATE_FORMAT(DATE_ADD(`a`.`DATE_INSERT`, INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
+                DATE_FORMAT(DATE_ADD(MAX(`a`.`DATE_INSERT`), INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
                 -- ,`a`.`DATE_INSERT` as `order_date`
                 -- ,`c`.`VALUE_NUM` as `product_id`
                 -- ,`a`.`ID` as `order_id`
@@ -350,7 +353,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         
         $arResult = [];
         // Торговые предложения
-        $resOffers = \CIBlockElement::GetList([],$arFilter = [
+        $resOffers = \CIBlockElement::GetList(["sort"=>"asc"],$arFilter = [
             "IBLOCK_ID"         =>  OFFER_IB_ID,
             "PROPERTY_CML2_LINK"=>  $nProductId
         ],false);
@@ -463,7 +466,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
                         :
                         DEFAULT_STORE_LIMIT
                     );
-    
+   
                 // Пополняем справочник складов
                 if(!isset($arResult["STORAGES"][$arStorage["STORE_ID"]])){
                     $arStoreItem = \CCatalogStore::GetList([],
@@ -475,7 +478,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
                 }
                 foreach($arResult["STORAGES"][$arStorage["STORE_ID"]] as $key=>$val)
                     $arResult["STORAGES"][$arStorage["STORE_ID"]][$key] = trim($val);
-                
+               
             }
     
             // Обнуляем отрицательные остатки и считаем общие
@@ -487,7 +490,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
                 }
                 $arResult["TotalAmount"] += $arOffer["STORAGES"][$key];
             }
-            
+             
             $arOffer["RRICE_INFO"] = \CPrice::GetList([],[
                 "PRODUCT_ID"=>$arOffer["ID"]
             ],false,["nTopCount"=>1])->Fetch();
@@ -500,6 +503,12 @@ class CCatalogOffer extends \AGShop\CAGShop{
             $arResult["OFFERS_JSON"][$arOffer["ID"]] = $arOfferJson;
         };
 
+        // Чистим предложения от предложений с пустыми остатками
+        foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer)
+            if(!$arOffer["STORAGES"])unset($arResult["OFFERS_JSON"][$nOfferId]);
+        foreach($arResult["OFFERS"] as $nOfferId=>$arOffer)
+            if(!$arOffer["STORAGES"])unset($arResult["OFFERS"][$nOfferId]);
+
         // Индекс свойств
         $arResult["OFFERS_PROPS"] = [];
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
@@ -509,7 +518,6 @@ class CCatalogOffer extends \AGShop\CAGShop{
                         "name"=>$arProp["NAME"],
                         "values"=>[]
                     ];
-
                 if(!isset($arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]))
                     $arResult["OFFERS_PROPS"][$sPropCode]["values"][$arProp["ID"]]
                         = [
@@ -540,7 +548,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         foreach($arResult["OFFERS_JSON"] as $nOfferId=>$arOffer){
             foreach($arOffer["1C_PROPS"] as $sPropCode0=>$arProp0){
                 foreach($arOffer["1C_PROPS"] as $sPropCode1=>$arProp1){
-                    if($arProp0["ID"]==$arProp1["ID"])continue;
+//                    if($arProp0["ID"]==$arProp1["ID"])continue;
                     if(!isset(
                        $arResult["OFFERS_PROPS"][$sPropCode0]["values"]
                         [$arProp0["ID"]]["crossed"][$arProp1["ID"]]
@@ -585,6 +593,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
             }
         }
 
+        sort($arResult["OFFERS"]);
         return $arResult;
     }
 

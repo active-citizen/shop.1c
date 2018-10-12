@@ -84,7 +84,7 @@
                 WHERE
                     `ORDER_ID`=$nOrderId
                 ORDER BY
-                    `DATE_CREATE` DESC
+                    `DATE_CREATE` ASC
             ";
             $arMails = [];
             $res = $DB->Query($sQuery);

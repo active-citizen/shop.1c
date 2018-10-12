@@ -4,6 +4,7 @@ require_once(realpath(__DIR__."/..")."/CAGShop.class.php");
 require_once(realpath(__DIR__."/..")."/CDB/CDB.class.php");
 require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogOffer.class.php");
 require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogStore.class.php");
+require_once(realpath(__DIR__."/..")."/CCatalog/CCatalogProperties.class.php");
 require_once(realpath(__DIR__."/..")."/CUser/CUser.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
@@ -78,6 +79,7 @@ class COrderExportCML extends \AGShop\CAGShop{
         $objCOrderStatus = new \Order\COrderStatus;
         $objCCatalogOffer = new \Catalog\CCatalogOffer;
         $objCCatalogStore = new \Catalog\CCatalogStore;
+        $CCatalogProperties = new \Catalog\CCatalogProperties; 
         
         // Получаем информацию по каждому продукту заказа
         foreach($arOrdersZNI as $sKey=>$arOrderZNIItem){
@@ -173,9 +175,12 @@ class COrderExportCML extends \AGShop\CAGShop{
                         || 
                         !$sPropValue
                     )continue;
+                    $arCharHum = $CCatalogProperties->getPropEnum(
+                        $sPropCode,$sPropValue
+                    );
                     $arChars[] = [
-                        "Наименование"  =>  $sPropCode,
-                        "Значение"      =>  $sPropValue
+                        "Наименование"  =>  $arCharHum["NAME"],
+                        "Значение"      =>  $arCharHum["VALUE"]
                     ];
                 }
                 $arProduct["ХарактеристикиТовара"] = $arChars;

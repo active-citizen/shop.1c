@@ -1,7 +1,10 @@
 
 <script>
     // ID текущего торгового предложения
-    var totalOfferId = <?= $arResult["OFFERS"][0]["ID"]?>;
+    var totalOfferId = <? 
+        foreach($arResult["OFFERS"] as $arOffer)break;
+        echo $arOffer["ID"];
+    ?>;
     // Id текущего склада 
     var totalStoreId = <? 
         foreach($arResult["OFFERS_JSON"] as $offer){
@@ -29,7 +32,7 @@
     ?>;
     var arOffers=<?=json_encode($arResult["OFFERS_JSON"])?>;
     var arStorages = <?= json_encode($arResult["STORAGES"])?>;
-    var arOfferParameters = <?= json_encode($arResult["OFFER_PARAMETERS"])?>
+    var arOfferParameters = <?= json_encode($arResult["OFFER_PARAMETERS"])?>;
 
 </script>
 

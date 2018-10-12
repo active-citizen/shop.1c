@@ -59,4 +59,36 @@ class CCatalogProperties extends \AGShop\CAGShop{
         return $arProperties;
     }
 
+    /**
+        @return [
+            "NAME"=>"",
+            "VALUE"=>""
+        ]
+        or []
+    */
+    function getPropEnum($sCode,$nEnumId){
+        
+        $objCache = new \Cache\CCache(
+            "CCatalogEnum.getPropEnum", $sCode.".".$nEnumId, COMMON_CACHE_TIME
+        );
+
+        if($sCacheGroup && $sCacheData = $objCache->get()){
+            return $sCacheData;
+        }
+
+        $arResult = [];
+        if(!$arProperty = \CIBlockProperty::GetList(
+            [],["CODE"=>$sCode])->Fetch()
+        )$arResult = [];
+        $arResult["NAME"] = $arProperty["NAME"];
+
+        if(!$arEnum = \CIBlockPropertyEnum::GetList(
+            [],["ID"=>$nEnumId]
+        )->Fetch())$arResult = [];;
+        $arResult["VALUE"] = $arEnum["VALUE"];
+
+        if($sResult)$objCache->set($arResult);
+        return $arResult;
+    }
+
 }

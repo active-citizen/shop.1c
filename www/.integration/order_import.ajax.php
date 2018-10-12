@@ -38,10 +38,15 @@
         $_SERVER["DOCUMENT_ROOT"]
         ."/local/libs/classes/CAGShop/CSSAG/CSSAGAccount.class.php"
     );
+    require_once(
+        $_SERVER["DOCUMENT_ROOT"]
+        ."/local/libs/classes/CAGShop/COrder/COrderStatistic.class.php"
+    );
 
     use AGShop\Integration as Integration;
     use AGShop\Catalog as Catalog;
     use AGShop\SSAG as SSAG;
+    use AGShop\Order as Order;
 
 
     // Если блокировку поставили и она не протухла - отваливаемся
@@ -280,7 +285,7 @@
                     array(),
                     array("IBLOCK_ID"=>$OfferIblockId,"XML_ID"=>$XML_ID),
                     false,
-                    array("nTopCount"=>1),array("ID")
+                    array("nTopCount"=>1),array("ID","NAME")
                 );
                 $existsOffer = $resOffer->Fetch();
                 // Если продукта нет - создаём его прототип
@@ -373,7 +378,7 @@
                 // Запоминаем товар для добавления в корзину
                 $basketProducts[$existsOffer["ID"]] = array(
                     "count" => $product["Количество"],
-                    "name"  => $product["Наименование"],
+                    "name"  => $existsOffer["NAME"],
                     "price" => $product["ЦенаЗаЕдиницу"]
                 );
             }
@@ -825,6 +830,9 @@
                 if($orderId){
                     syncOrder($orderId);
                 }
+                // Сбрасываем кэш статистики заказов
+                $objOrderStatistic = new \Order\COrderStatistic($userId);
+                $objOrderStatistic->clear(); 
                 
                 /*
                 Без уведомления пользователей (потом прикрутим)

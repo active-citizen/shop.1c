@@ -33,6 +33,10 @@
     define("MONITORING_BACKKICK_TIME", 120);
     // Окно в которое фиксируется ошибка окончания денег на тройке
     define("MONITORING_IGOGO_TIME", 120);
+    // Окно времени, за которое проверяются ошибки отклонения
+    define("REJECT_WINDOW",3600);
+    // Количество подряд идущих отклонёных заказов
+    define("REJECT_COUNT",5);
 
     // Коды ошибок
     define("ERROR_NONE",0);
@@ -59,6 +63,12 @@
         ERROR_IGOGO_MONEY => [
             "MESSAGE"=>"На счету пополнения Троек закончились средства"
         ],
+        ERROR_TRANSPORT_REJECT => [
+            "MESSAGE"=>"Перманентные отклонения троек или парковок"
+        ],
+        ERROR_REJECT => [
+            "MESSAGE"=>"Отклонение заказа"
+        ],
     ];
     $arErrors = [];
 
@@ -70,6 +80,8 @@
         ."'");
 
     // Проверяем коды оплаты
+    /*
+    Тройка с контролем отклонений не нужна
     $sQuery = "
         SELECT
             `ctime` as `ALARM_TIME`,
@@ -101,6 +113,135 @@
             ];
         }
     }
+    */
+
+    // Получаем отклонённые заказы на прошедший час кроме тройки и парковки
+    $sQuery = "
+        SELECT
+            `order`.`ADDITIONAL_INFO` as `order_num`,
+            UNIX_TIMESTAMP(`order`.`DATE_INSERT`) as `ALARM_TIME`
+        FROM 
+            `index_order` as `order`
+                LEFT JOIN
+            `b_iblock_element_property` as `product`
+                ON 
+                    `product`.`IBLOCK_ELEMENT_ID`=`order`.`PRODUCT_ID`
+                    AND `product`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
+        WHERE
+            `order`.`STATUS_ID`='AF'
+            AND `order`.`DATE_INSERT`>='".
+                date("Y-m-d H:i:s",time()-REJECT_WINDOW)
+                ."'
+            AND (
+                `product`.`VALUE` NOT IN ('troyka','parking')
+                OR `product`.`VALUE` IS NULL
+            )
+        LIMIT
+            1
+    ";
+    $resAF = $DB->Query($sQuery);
+    if($arEvent = $resAF->Fetch()){
+        $arErrors[] = [
+            "code"      =>  ERROR_REJECT,
+            "message"   =>  $arErrorsMessages[ERROR_REJECT]["MESSAGE"]
+                ." ".$arEvent["order_num"],
+            "timeStamp" =>  $arEvent["ALARM_TIME"],
+            "dateTime"  =>  date("Y-m-d H:i:s", $arEvent["ALARM_TIME"]) 
+        ];
+    }
+
+    // Получаем последние заказов тройки за последний час
+    $sQuery = "
+        SELECT
+            `order`.`ADDITIONAL_INFO` as `order_num`,
+            `order`.`STATUS_ID` as `status`,
+            UNIX_TIMESTAMP(`order`.`DATE_INSERT`) as `ALARM_TIME`,
+            `product`.`VALUE` as `art`
+        FROM 
+            `index_order` as `order`
+                LEFT JOIN
+            `b_iblock_element_property` as `product`
+                ON 
+                    `product`.`IBLOCK_ELEMENT_ID`=`order`.`PRODUCT_ID`
+                    AND `product`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
+        WHERE
+            1
+            AND `order`.`DATE_INSERT`>='"
+                .date("Y-m-d H:i:s",time()-REJECT_WINDOW)
+            ."'
+            AND `product`.`VALUE` IN ('troyka')
+        ORDER BY 
+            `order`.`ID` DESC
+        LIMIT
+            1000
+    ";
+    $resAF = $DB->Query($sQuery);
+    $arTroykas = [];
+    while($arTroyka = $resAF->Fetch())$arTroykas[] = $arTroyka;
+
+    // Ищем 5 подряд идущих отклонённых заказов
+    $nRejected = 0;
+    foreach($arTroykas as $arEvent){
+        if($arEvent["status"]=='AF')$nRejected++;
+        if($nRejected>=REJECT_COUNT){
+            $arErrors[] = [
+                "code"      =>  ERROR_TRANSPORT_REJECT,
+                "message"   =>  $arErrorsMessages[ERROR_TRANSPORT_REJECT]["MESSAGE"]
+                    ." (".$arEvent["art"].")".$arEvent["order_num"],
+                "timeStamp" =>  $arEvent["ALARM_TIME"],
+                "dateTime"  =>  date("Y-m-d H:i:s", $arEvent["ALARM_TIME"]) 
+            ];
+            break;
+        }
+    }
+
+
+    // Получаем последние заказов парковки за последний час
+    $sQuery = "
+        SELECT
+            `order`.`ADDITIONAL_INFO` as `order_num`,
+            `order`.`STATUS_ID` as `status`,
+            UNIX_TIMESTAMP(`order`.`DATE_INSERT`) as `ALARM_TIME`,
+            `product`.`VALUE` as `art`
+        FROM 
+            `index_order` as `order`
+                LEFT JOIN
+            `b_iblock_element_property` as `product`
+                ON 
+                    `product`.`IBLOCK_ELEMENT_ID`=`order`.`PRODUCT_ID`
+                    AND `product`.`IBLOCK_PROPERTY_ID`=".ARTNUMBER_PROPERTY_ID."
+        WHERE
+            1
+            AND `order`.`DATE_INSERT`>='"
+                .date("Y-m-d H:i:s",time()-REJECT_WINDOW)
+            ."'
+            AND `product`.`VALUE` IN ('parking')
+        ORDER BY 
+            `order`.`ID` DESC
+        LIMIT
+            1000
+    ";
+    $resAF = $DB->Query($sQuery);
+    $arParkings = [];
+    while($arParking = $resAF->Fetch())$arParkings[] = $arParking;
+
+    // Ищем 5 подряд идущих отклонённых заказов
+    $nRejected = 0;
+    foreach($arParkings as $arEvent){
+        if($arEvent["status"]=='AF')$nRejected++;
+        if($nRejected>=REJECT_COUNT){
+            $arErrors[] = [
+                "code"      =>  ERROR_TRANSPORT_REJECT,
+                "message"   =>  $arErrorsMessages[ERROR_TRANSPORT_REJECT]["MESSAGE"]
+                    ." (".$arEvent["art"].")".$arEvent["order_num"],
+                "timeStamp" =>  $arEvent["ALARM_TIME"],
+                "dateTime"  =>  date("Y-m-d H:i:s", $arEvent["ALARM_TIME"]) 
+            ];
+            break;
+        }
+    }
+
+
 
     // Проверяем ошибку обратного толчка
     $sQuery = "
