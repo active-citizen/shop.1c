@@ -425,8 +425,8 @@ class COrder extends \AGShop\CAGShop{
             if($objTroyka->error)$this->addError($objTroyka->error);
 
             // Производим транзакцию в тройку
-            $objTroyka->payment($this->getParam('Num'));
-            if($objTroyka->errorNo){
+            $bIsOk = $objTroyka->payment($this->getParam('Num'));
+            if(!$bIsOk && $objTroyka->errorNo){
                 // Мапинг кодов ошибок шлюза в сообщения для посетителя
                 $arErrors = $objTroyka->errorMapping();
                 $this->addError(
@@ -437,6 +437,10 @@ class COrder extends \AGShop\CAGShop{
                     $objTroyka->error
                 );
                 // Сохраняем неуспешный статус
+                $stoykaStatus = 2;
+            }
+            elseif(!$bIsOk){
+                $this->addError("Ошибка транзакции");
                 $stoykaStatus = 2;
             }
             else{

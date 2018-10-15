@@ -332,9 +332,12 @@
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
+            $this->transact = false;
             // Сохраняем номер транзакции
             if(isset($arSoapResult["completedPayment"]["refnum"]))
                 $this->transact = $arSoapResult["completedPayment"]["refnum"];
+
+            if(!$this->transact)return false;
 
             if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult))
                 return false;
