@@ -75,7 +75,7 @@ div.desktop-products-container--gridList {
 }
 
 #profie-win {
-  width: 356px;
+  width: 435px;
   height: 121px;
   background-color: #009685;
   padding-top: 0px;
@@ -110,7 +110,7 @@ div.desktop-products-container--gridList {
 }
 
 #logo-profile{
-  margin-top: 45px;
+  margin-top: 35px;
   margin-left: -35px;
 
 }
@@ -120,6 +120,7 @@ div.desktop-products-container--gridList {
   font-weight: 900;
   font-size: 20px;
   margin-left: 15px;
+  margin-top:25px;
 }
 
 #fio-logo{
@@ -320,10 +321,10 @@ div.desktop-products-container--gridList {
  display: inline-block;
  margin-right: 5px;
  border: 1px solid #757574;
- padding: 6px;
  border-radius: 50%;
  width: 30px;
  height: 30px;
+ text-align: center;
 }
 
 .hr a{
@@ -336,6 +337,10 @@ div.desktop-products-container--gridList {
   margin-left: 38%;
   margin-top: 1.5rem;
   color: #757574;
+}
+
+.fab-pt {
+  padding-top: 6px;
 }
 
 /*@--Intro and autorization @*/

@@ -104,14 +104,13 @@
             <a class="ag-shop-footer__link" href="/rules/faq/">Часто задаваемые вопросы</a>
             <a class="ag-shop-footer__link" href="#" onclick="return showCommonFeedbackForm();">Обратная связь</a>
             <div class="soc-item">
-              <ul class="hr">
-                <li><a href="https://www.facebook.com/citizenmoscow" target="_blank"><i class="fab fa-facebook-f"></a></i></li>
-                <li><a href="https://ok.ru/citizenmoscow/" target="_blank"><i class="fab fa-odnoklassniki"></a></i></li>
-                <li><a href="https://twitter.com/citizenmoscow" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="https://vk.com/citizenmoscow" target="_blank"><i class="fab fa-vk"></i></a></li>
-                <li><a href="#"><i class="fab fa-telegram-plane"></i></a></li>
-                <li><a href="https://www.instagram.com/citizenmoscow/" target="_blank"><i class="fab fa-instagram"></i></a></li>
-
+            <ul class="hr">
+                <li><a href="https://www.facebook.com/citizenmoscow" target="_blank"><i class="fab-pt fab fa-facebook-f"></a></i></li>
+                <li><a href="https://ok.ru/citizenmoscow/" target="_blank"><i class="fab-pt fab fa-odnoklassniki"></a></i></li>
+                <li><a href="https://twitter.com/citizenmoscow" target="_blank"><i class="fab-pt fab fa-twitter"></i></a></li>
+                <li><a href="https://vk.com/citizenmoscow" target="_blank"><i class="fab-pt fab fa-vk"></i></a></li>
+                <li><a href="#"><i class="fab-pt fab fa-telegram-plane"></i></a></li>
+                <li><a href="https://www.instagram.com/citizenmoscow/" target="_blank"><i class="fab-pt fab fa-instagram"></i></a></li>
               </ul>
             </div>
           </div>
