@@ -16,14 +16,15 @@ class CSSAGLog extends \AGShop\CAGShop{
 
     /**
         Добавление лога
+        @param $sWaitMs - длительность запроса в милисекундах
     */
-    static function addLog($sUrl, $sInput, $sOutput){
+    static function addLog($sUrl, $sInput, $sOutput, $sWaitMs = 0){
         $sFilename = realpath($_SERVER["DOCUMENT_ROOT"]."/..")."/logs/agapi/"
             .date("Y-m-d").".log";
         $fd = fopen($sFilename,"a");
         $nUserId = \CUser::GetID();
         $nUserId = $nUserId?$nUserId:0;
-        fwrite($fd, "\n".date("Y-m-d H:i:s")." $nUserId $sUrl $sInput $sOutput");
+        fwrite($fd, "\n".date("Y-m-d H:i:s")." ".$sWaitMs."ms $nUserId $sUrl $sInput $sOutput");
         fclose($fd);
         return true;
     }

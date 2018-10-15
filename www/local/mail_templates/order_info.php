@@ -24,7 +24,7 @@ $html .='
                 <tr>
                     <td style="color:#08B0A8;font-weight:bold">'.(
                         /*Набор для записей с символикой проекта зеленый*/
-                        $orderInfo["CATALOG"]['NAME']
+                        $orderInfo["OFFER"]['NAME']
                     ).', '.(
                         $orderInfo["PROPERTIES"]['QUANT']['VALUE']
                     ).'</td>

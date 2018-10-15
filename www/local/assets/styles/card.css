@@ -967,7 +967,14 @@ body {
   overflow: hidden;
   background: #f8f8f8;
   cursor: pointer;
+  opacity: 0.5;
 }
+
+
+.picEnabled{
+    opacity: 1;
+}
+
 .ag-shop-card__preview--active {
   border: 1px solid rgba(0,122,108,1);
 }
@@ -1213,12 +1220,16 @@ input:checked + .ag-shop-card__colors-item {
   font-size: 0.75rem;
   color: #a1a4a9;
   text-align: center;
+  min-width: 20px;
 }
 input:checked + .ag-shop-card__sizes-item {
   border-color: rgba(0,122,108,1);
   color: rgba(0,122,108,1);
   font-weight: 700;
+  min-width: 20px;
 }
+
+
 .ag-shop-card__places-tabs {
   display: inline-block;
 }
@@ -2510,7 +2521,7 @@ input:checked + .ag-shop-card__places-item:before {
   }
 
   .ag-shop-card__preview--active{
-    border: none;
+/*    border: none; */
   }
 
 /*CSS slider-dowm*/
@@ -2541,10 +2552,47 @@ input:checked + .ag-shop-card__places-item:before {
   position: relative;
   overflow: hidden;
 }
+
+@media (max-width: 575.98px) { 
+
+#carouselWrapperDown {
+  margin-right: 10px;
+}
+
+#buttonsdown {
+  margin: 5px -5px;
+}
+
+.ag-shop-card__colors-item {
+  margin-left: -9px;
+}
+
+.ag-shop-card__sizes label {
+  display: inline-block;
+  margin-left: 4px;
+  margin-bottom: 5px;
+
+
+}
+
+.ag-shop-card__sizes-item {
+    
+  }
+
+
+.item_label
+input:checked + .ag-shop-card__colors-item {
+    margin: 0 0px;
+}
+
+}
+
+
+
 #carouseldown {
   position: absolute;
   visibility: hidden;
-  display: inline-flex;
+  display:  -webkit-inline-box;
 }
 
 #nextdown, #prevdown {
@@ -2565,6 +2613,7 @@ input:checked + .ag-shop-card__places-item:before {
 @media (max-width: 576px) { 
   .sliderdown{
     margin-left: 7%;
+    display: -webkit-inline-box;
   }
 
   #carouselWrapperDown{
@@ -2591,7 +2640,7 @@ input:checked + .ag-shop-card__places-item:before {
 
 @media (max-width: 1279px) { 
   .sliderdown{
-   display: inline-flex;
+   display: -webkit-inline-box;
  }
 
 }

@@ -107,7 +107,8 @@ $(document).ready(function() {
      * переключение предпросмотра картинок
      */
     $('.ag-shop-card__preview').click(function(){
-        $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+        if(!$(this).hasClass("picEnabled"))return false;
+        $('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
         $(this).addClass('ag-shop-card__preview--active');
         $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
     });
@@ -117,6 +118,7 @@ $(document).ready(function() {
      */
     $('.ag-shop-card__count-button').click(function(){
         
+        defineOfferId();
         var avaible = parseInt(arOffers[totalOfferId]['STORAGES'][$('input[name="place"]:checked').val()]);
         var mon_limit = parseInt($('#mon-limit').html());
         
@@ -230,6 +232,8 @@ $(document).ready(function() {
             switched = true;
         }
 
+        defineOfferId();
+
         // Если выбранный пункт оказывается включенным, то
         // выключаем значения свойств, которых нет в паре с
         // торговым предложением. И складов
@@ -258,8 +262,13 @@ $(document).ready(function() {
         $('.ag-shop-card__sizes input:checked').each(function(){
             stores = Intersection(stores,$(this).attr('stores').split(','));
         });
+
         $('.ag-shop-card__places input').each(function(){
-            if(stores.indexOf($(this).val())>=0)
+            if(
+                stores.indexOf($(this).val())>=0
+                &&
+                $(this).attr("offers").split(',').indexOf(totalOfferId)>=0
+            )
                 $(this).prop('disabled',false);
             else{
                 $(this).prop('disabled',true);
@@ -278,8 +287,15 @@ $(document).ready(function() {
             $('.ag-shop-card__places input').prop("disabled",false);
         }
         
+        defineOfferId();
+        defineStorageId();
+        
+        updateCounter();
+        updateAmounter(switched)
+        // Вычисляем сколько максимально поставить в крутилку единиц
 
         // Если все свойства отключены - выводим картинки всех вариантов
+        /*
         if($('.ag-shop-card__sizes input:checked').length<=0){
             pics = new Array();
             $('.ag-shop-card__sizes input').each(function(){
@@ -287,32 +303,75 @@ $(document).ready(function() {
                     .filter( onlyUnique );
             });
         }
-        
+        */
         // Вычисляем изображения, которые надо показать
         $('.ag-shop-card__sizes input:checked').each(function(){
-            pics = Intersection(pics,$(this).attr('pics').split('|'));
+            if(!switched)pics = $(this).attr('pics').split('|');
+            picsActive = Intersection(pics,$(this).attr('pics').split('|'));
         });
 
-        // Выводим картинки
-        $('.ag-shop-card__previews-container').html('');
+        var carouselDiv = '';
+        if($('#carouseldown').length>0)
+            carouselDiv = 'down';
+
+
+        // Если все свойства отключены, делаем активными все картинки
+        if($('.ag-shop-card__sizes input:checked').length<=0){
+            $('.ag-shop-card__preview').each(function(){
+                $(this).addClass("picEnabled");
+            });
+        }
+        else{
+            // Проходим по всем картинкам и определяем какие из них активны
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').each(function(){
+                var src = $(this).css('background-image');
+                if(!src)return false;
+                src = '/'+src.replace('url(','').replace(')','').replace(/\"/gi, "")
+                    .replace(/^http(s)?:\/\/.*?\//,"");
+                if(picsActive.indexOf(src)!=-1)
+                    $(this).addClass("picEnabled")
+                else
+                    $(this).removeClass("picEnabled")
+            });
+        }
+
         
+
+        /*
+        $('#carousel'+carouselDiv).html('');
+       
         for(i in pics){
-            $('.ag-shop-card__previews-container').append('<div class="ag-shop-card__preview"></div>');
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("rel",pics[i]);
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
-            $('.ag-shop-card__previews-container .ag-shop-card__preview').last().click(function(){
+            $('#carousel'+carouselDiv).append('<div class="ag-shop-card__preview"></div>');
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().attr("rel",pics[i]);
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().attr("style","background-image: url("+pics[i]+");");
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').last().click(function(){
                 $(this).parent().find('.ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
                 $(this).addClass('ag-shop-card__preview--active');
                 $('.ag-shop-card__image-container').css('background-image','url('+$(this).attr('rel')+')');
             });
         }
-        $('.ag-shop-card__image-container').css('background-image','url('+pics[0]+')');
-        $('.ag-shop-card__previews-container .ag-shop-card__preview').first().addClass('ag-shop-card__preview--active');        
+        */
+
+        $('.ag-shop-card__image-container').css('background-image',
+            $('#carousel'+carouselDiv+' .picEnabled').css('background-image')
+            //url('+picsActive[0]+')'
+        );
+        $('#carousel'+carouselDiv+' .ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+        $('#carousel'+carouselDiv+' .picEnabled').first().addClass('ag-shop-card__preview--active');
+        
+
+        /*
+            if(carouselDiv == 'down')
+                imagesSliderInitMobile();
+            else
+                imagesSliderInit();
+        */
     });
 
     $('input[name="place"]').click(function(){
-    
-        var storageId = $(this).val();
+        defineStorageId();    
+        defineOfferId();
+        var storageId = totalStoreId;;
         var switched = $(this).attr("switched");
         var offers =  $(this).attr('offers').split(',');
         var propsVals = $(this).attr("propsvals").split(',');
@@ -342,6 +401,7 @@ $(document).ready(function() {
                 $(this).prop('checked',false);
             }
         });
+
         
     
         //Если мы выбрали место, удаляем класс ошибки
@@ -359,25 +419,10 @@ $(document).ready(function() {
             +'</a>'));
         $('.ag-shop-card__selected-place-station').html(arStorages[storageId].TITLE);
         //$('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').css('display','none');
-        $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').each(function(){
-            if(
-                arOffers[totalOfferId]['STORAGES'][storageId]>=parseInt($(this).attr('fromAmmount'))  
-                &&
-                arOffers[totalOfferId]['STORAGES'][storageId]<=parseInt($(this).attr('toAmmount')) 
-            ){
-                $(this).css('display','inline-block');
-                // Если на складе меньше, чем уже набрали
-                if(arOffers[totalOfferId]['STORAGES'][storageId]<parseInt($('.ag-shop-card__count-number').html())){
-                    $('.ag-shop-card__count-number').html(arOffers[totalOfferId]['STORAGES'][storageId]);
-                    var count = parseInt($('.ag-shop-card__count-number').html());
-                    var price = parseInt($('.ag-shop-item-card__points-count').html());
-                    $('.ag-shop-card__count-number').html(count);
-                    $('#ag-shop-card__total-points').html(count*price);
-                    $('.ag-shop-card__submit-button strong').html(count*price);
-                }
-            }
-        });
+        // Включаем/отключаем крутилку, если выбраны склады
         updateCounter();
+        updateAmounter(switched);
+        /*
         if(switched){
             totalStoreId = storageId;
             $('.ag-shop-card__selected-place').removeClass('hidden');
@@ -389,6 +434,7 @@ $(document).ready(function() {
             $('.amounter').removeClass('amounter--on');
             $('.amounter').addClass('amounter--off');
         }
+        */
     
         loadComments();
     });
@@ -435,6 +481,28 @@ function input_variant_click(obj){
 }
 
 function updateCounter(){
+    var storageId=totalStoreId;
+    /*
+    $('.ag-shop-card__remaining-count .ag-shop-card__remaining-count-text').each(function(){
+        if(
+            storageId
+            &&
+            arOffers[totalOfferId]['STORAGES'][storageId]>=parseInt($(this).attr('fromAmmount'))  
+            &&
+            arOffers[totalOfferId]['STORAGES'][storageId]<=parseInt($(this).attr('toAmmount')) 
+        ){
+            $(this).css('display','inline-block');
+            // Если на складе меньше, чем уже набрали
+            
+            if(arOffers[totalOfferId]['STORAGES'][storageId]<parseInt($('.ag-shop-card__count-number').html())){
+                $('.ag-shop-card__count-number').html(arOffers[totalOfferId]['STORAGES'][storageId]);
+            }
+        }
+    });
+    */
+    if(typeof arOffers[totalOfferId]=='undefined')return false;
+
+
     var avail = arOffers[totalOfferId]['STORAGES'][$('input[name="place"]:checked').val()];
     if( parseInt($('.ag-shop-card__count-number').html()) > avail)
         $('.ag-shop-card__count-number').html(avail);
@@ -505,9 +573,72 @@ function loadComments(){
     $('.ag-shop-card__reviews').load("/local/components/ag/card/comments.ajax.php?productid="+productId);
 }
 
-function productConfirm(){
+/**
+    Определяем ID текущего предложения
+*/
+function defineOfferId(){
+    // Составляем массив выбранных характеристик
+    var properties = new Array();
+    $('.ag-shop-card__field .ag-shop-card__sizes input:checked').each(function(){
+        properties.push({
+            name: $(this).parent().parent().parent()
+                .find('.ag-shop-card__fieldname').last().html(),
+            value: $(this).parent().find('div').last().html(),
+            offers: $(this).attr("offers").split(',')
+        });
+    })
+    // Для выбранных характеристик вычисляем ID предложения
+    if(properties.length){
+        var crossOffers = properties[0].offers;
+        for(i in properties)
+            crossOffers = Intersection(crossOffers,properties[i].offers)
+        if(crossOffers.length)totalOfferId = crossOffers[0];
+    }
+
+}
+
+function defineStorageId(){
     totalStoreId = $("input[name='place']:checked").val();
+}
+
+// Включаем/отключаем крутилку, если выбраны склады и ве нужные
+// характеристики
+//
+function updateAmounter(switched){
+    $('.amounter').removeClass('amounter--on');
+    if(switched){
+        if(
+            (
+                $('.product-character input[switched="on"]').length
+                >=
+                $('.product-character').length
+            )
+            &&
+            totalStoreId
+        ){
+            $('.amounter').addClass('amounter--on');
+            $('.amounter').removeClass('amounter--off');
+            $('.ag-shop-card__selected-place').removeClass('hidden');
+        }
+    }
+    else{
+        $('.amounter').removeClass('amounter--on');
+        $('.amounter').addClass('amounter--off');
+        $('.ag-shop-card__selected-place').addClass('hidden');
+    }
+    var count = parseInt($('.ag-shop-card__count-number').html());
+    var price = parseInt($('.ag-shop-item-card__points-count').html());
+    $('.ag-shop-card__count-number').html(count);
+    $('#ag-shop-card__total-points').html(count*price);
+    if(count && price)
+        $('.ag-shop-card__submit-button strong').html(count*price);
+}
+
+
+function productConfirm(){
     // Не выбран склад
+    defineStorageId();
+    defineOfferId();
 
     // Составляем массив выбранных характеристик
     var properties = new Array();
@@ -530,16 +661,7 @@ function productConfirm(){
         $('.js-choose__place').addClass('ag-shop-card__field--error');
         return false;
     }
-    
-    // Для выбранных характеристик вычисляем ID предложения
-    if(properties.length){
-        var crossOffers = properties[0].offers;
-        for(i in properties)
-            crossOffers = Intersection(crossOffers,properties[i].offers)
-        if(crossOffers.length)totalOfferId = crossOffers[0];
-    }
-    console.log(totalOfferId);
-        
+
     $('#card-order-confirm').fadeIn();
     $('#confirm-name').html($('.ag-shop-card__header-title').html());
     $('#confirm-price span').html($('.ag-shop-item-card__points-count').html());
@@ -580,6 +702,8 @@ function productConfirm(){
 }
 
 function productConfirmNext(){
+    defineStorageId();
+    defineOfferId();
     
     var add_order_url = "/profile/order/order.ajax.php?add_order=1&id="
     +totalOfferId
@@ -589,7 +713,7 @@ function productConfirmNext(){
     $('#card-order-confirm-button').html('Обработка заказа...');
     $('#card-order-confirm-button').attr( "onclick" ,"return false;");
     $('#card-order-confirm-button').css("opacity","0.6");
-    
+
     $.get(
         add_order_url,
         function(data){
@@ -933,7 +1057,10 @@ function animate(begin, end, finalTask) {
   }, 1000 / 60);
 }
 
-window.onload = function () {
+window.onload = function(){imagesSliderInit();}
+
+
+function imagesSliderInit() {
   var carousel = Carousel.carousel = document.getElementById('carousel');
     if(!carousel)return false;
 
@@ -976,6 +1103,7 @@ window.onload = function () {
   wrapper.appendChild(carousel);
   var prevButton = document.getElementById('prev'),
       nextButton = document.getElementById('next');
+
   prevButton.onclick = function () {
     prevButton.disabled = nextButton.disabled = true;
     rotateForward();
@@ -993,10 +1121,15 @@ window.onload = function () {
     });
   };
 
-  if(document.getElementsByClassName('pictureFrame').length < 6 ){
+  if(prevButton && document.getElementsByClassName('pictureFrame').length < 6 ){
     prevButton.style.display = "none";
     nextButton.style.display = "none";
   }
+  else{
+    prevButton.style.display = "block";
+    nextButton.style.display = "block";
+  }
+
 };
 
 
@@ -1049,7 +1182,9 @@ function animatedown(begin, end, finalTask) {
   }, 1000 / 60);
 }
 
-window.onload = function () {
+window.onload = function(){imagesSliderInitMobile();}
+
+function imagesSliderInitMobile() {
   
   var carousel = Carousel.carousel = document.getElementById('carouseldown');
     if(!carousel)return false;
@@ -1116,6 +1251,10 @@ window.onload = function () {
   if(document.getElementsByClassName('pictureFrameDown').length < 4 ){
     prevButton.style.display = "none";
     nextButton.style.display = "none";
+  }
+  else{
+    prevButton.style.display = "block";
+    nextButton.style.display = "block";
   }
 
 };

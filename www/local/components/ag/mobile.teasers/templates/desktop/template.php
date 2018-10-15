@@ -147,6 +147,7 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
                     ""
             ?>
 
+<?/*
             <!--@ Будущая пагинация @-->
 
           <div class="container">
@@ -163,14 +164,14 @@ if(!$_SERVER["QUERY_STRING"]):?> hide-filter<? endif ?>">
             </div>
           </div>
           <!--@ End @-->
-
+*/?>
 
             <div class="catalog-inner-more more-button">
-            <!-- <a href="#" onclick="return desktop_teasers_next_page('<?=
+            <a href="#" onclick="return desktop_teasers_next_page('<?=
             $arResult["NEXT_PAGE_URL"]?>',<?= $arResult["PAGE"]+1?>);"
             class="catalog-inner-more__btn">Ещё<?/*
             <?= $arResult["TOTAL"]- $nLastItem?>*/?>
-          </a> -->
+            </a>
             </div>
 
 

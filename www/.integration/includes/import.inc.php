@@ -36,6 +36,9 @@
     // Импортируем хотелки и интересы и составляем индекс
     ////////////////////////////////////////////////////////////////////////
 
+    // Загружаем картинки и составляем их индекс
+    $arImages = [];
+
     // Составляем индекс уже существующих в битриксе хотелок
     $resPropertiesEnum = CIBlockElement::GetList(
         array(), array( "IBLOCK_ID"=>IWANT_IBLOCK_ID)
@@ -333,6 +336,7 @@
             $objIBlockElement->Update($existsElement["ID"], $arFields);
         }
         
+       
         // Если в XML у товара заполнен тег "Картинка"
         if($arProduct["Картинка"]){
             $arFields = array();
@@ -363,8 +367,8 @@
             else{
             }
         }
-
         $productsIndexDetail[$arProduct["Ид"]] = $arProduct;
+
 
         /////////////////// Устанавливаем свойства товара //////////////////////
         // Производитель
@@ -572,8 +576,67 @@
         foreach($arProperties as $propertyCode=>$propertyValue)
             CIBlockElement::SetPropertyValueCode($elementId,$propertyCode,$propertyValue);
         
-        
+        if(count($arProduct["Картинка"])){
+            foreach($arProduct["Картинка"] as $arImage){
+                $sFilename =
+                    $_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$arImage;
+                if(!CFile::MakeFileArray($sFilename))continue;
+                $arImages[$arImage] = 
+                  CFile::SaveFile(    
+                      CFile::MakeFileArray($sFilename)
+                      ,"offers"
+                     ,true
+                  )
+                  ;
+            }
+
+            // Дополнительные изображения
+            $sQuery = "
+                DELETE FROM 
+                    b_iblock_element_property
+                WHERE 
+                    IBLOCK_ELEMENT_ID=".$elementId."
+                    AND IBLOCK_PROPERTY_ID=".MORE_PHOTO_PRODUCT_PROPERTY_ID."
+
+            ";
+            $DB->Query($sQuery);
+
+            $arProductImages = [];
+            foreach($arProduct["Картинка"] as $sImagePath)
+                $arProductImages[] = $arImages[$sImagePath];
+            $arProductImages = array_unique($arProductImages); 
+
+            foreach($arProductImages as $nImage){
+                $sQuery = "
+                    INSERT INTO
+                        b_iblock_element_property(
+                            ID,
+                            IBLOCK_PROPERTY_ID,
+                            IBLOCK_ELEMENT_ID,
+                            VALUE,
+                            VALUE_TYPE,
+                            VALUE_ENUM,
+                            VALUE_NUM,
+                            DESCRIPTION
+                        )
+                        VALUES(
+                            NULL,
+                            '".MORE_PHOTO_PRODUCT_PROPERTY_ID."',
+                            '".$elementId."',
+                            '".$nImage."',
+                            'text',
+                            '".$nImage."',
+                            '".$nImage."',
+                            NULL
+                        );
+                ";
+                $DB->Query($sQuery);
+            }
+
+        }
+         
         // Дополнительные изображения
+        /*
         if(count($arProduct["Картинка"])){
 
             $arrFile = array();
@@ -622,6 +685,7 @@
 
             
         }
+        */
         
 
     }

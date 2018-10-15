@@ -1,4 +1,4 @@
-  <? if(
+ <? if(
     !$noAG  // В статусе активный гражданин?
     &&
     $arResult["CATALOG_ITEM"]["PROPERTIES"]["PROMOCODE"]
@@ -38,7 +38,9 @@
         !$arResult["AUCTION"]
     )
   ):?>
-  <div class="grid grid--bleed amounter amounter<? if(count($arResult["OFFERS"][0]["STORAGES"])==1):
+  <div class="grid grid--bleed amounter amounter<? if(
+    count($arResult["OFFERS"][0]["STORAGES"])==1 &&
+    count($arResult["OFFERS"])==1):
   ?>--on<? else: ?>--off<? endif ?>">
     <span id="mon-limit" style="display:none"><?=
         $arResult["CATALOG_ITEM"]["PROPERTIES"]["MON_LIMIT"][0]["VALUE"]

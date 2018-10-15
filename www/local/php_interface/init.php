@@ -108,6 +108,10 @@
         define("WISH_USER_PROPERTY_ID",getPropIDByCode(WISHES_IB_ID,"WISH_USER"));
         // Определяем ID свойства желаемый товар
         define("WISH_PRODUCT_PROPERTY_ID",getPropIDByCode(WISHES_IB_ID,"WISH_PRODUCT"));
+        // Определяем ID свойства дополнительные изображения предложения
+        define("MORE_PHOTO_PROPERTY_ID",getPropIDByCode(OFFER_IB_ID,"MORE_PHOTO"));
+        // Определяем ID свойства дополнительные изображения предложения
+        define("MORE_PHOTO_PRODUCT_PROPERTY_ID",getPropIDByCode(CATALOG_IB_ID,"MORE_PHOTO"));
 
         // Определяем ID групп Операторы МФЦ и Партнёры
         define("PARTNERS_GROUP_ID",9);

@@ -264,6 +264,16 @@ use AGShop\CAuction as Auction;
         $arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"] = 
             array_reverse($arResult["OFFERS"][0]["PROPERTIES"]["MORE_PHOTO"]);
 
+        $arResult["ALL_PICS"] = [];
+        foreach($arResult["CATALOG_ITEM"]["PROPERTIES"]["MORE_PHOTO"] as $arProductPic)
+            $arResult["ALL_PICS"][] = $arProductPic["FILE_PATH"];
+
+        foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp)
+            foreach($arProp['values'] as $nValId=>$arValue)
+                $arResult["ALL_PICS"] = array_merge($arResult["ALL_PICS"], $arValue["pics"]);
+        $arResult["ALL_PICS"] = array_unique($arResult["ALL_PICS"]);
+        
+
     // Проверка активности товара
     else:
         $arResult["CATALOG_ITEM"]["ACTIVE"]='N';

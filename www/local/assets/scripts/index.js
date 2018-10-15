@@ -70,7 +70,6 @@ $(document).ready(function() {
       var targetContent = target.next('.js-spoiler__content');
       var linkClass = 'ag-shop-rules__spoiler-link';
 
-      console.log($('.' + linkClass));
       if ( targetContent.is(':visible') ) {
         $('.' + linkClass).removeClass(linkClass + '--active');
         targetContent.slideUp(animationDelay);

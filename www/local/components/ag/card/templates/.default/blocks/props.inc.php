@@ -18,9 +18,8 @@
 */?>
 
 <?
-//new XPrint($arResult["OFFERS_PROPS"]);
+//new XPrint($arResult["OFFERS"]);
 ?>
-
 <? foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp): ?>
   <div class="ag-shop-card__field product-character">
     <div class="ag-shop-card__fieldname"><?= $arProp["name"]?>:</div>
@@ -46,7 +45,8 @@
             cross-values="<?= implode(",",$arCross)?>"
             offers="<?= implode(",",$arOfferIds)?>"
             stores="<?= implode(",",$arStores)?>"
-            switched="off"
+            switched="<?= count($arResult["OFFERS"])==1?"on":"off" ?>"
+            <? if(count($arResult["OFFERS"])==1):?>checked<? endif?>
         >
         <? if(mb_strtolower(trim($arProp["name"]))=='цвет'):?>
             <div class="ag-shop-card__colors-item"

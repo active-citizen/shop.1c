@@ -14,6 +14,7 @@ require_once(realpath(__DIR__."/..")."/CIntegration/CIntegrationInfotech.class.p
 require_once(realpath(__DIR__."/..")."/CSync/CSync.class.php");
 require_once(realpath(__DIR__)."/COrderStatus.class.php");
 require_once(realpath(__DIR__)."/COrderProperty.class.php");
+require_once(realpath(__DIR__)."/COrderStatistic.class.php");
 require_once(realpath(__DIR__."/..")."/CSSAG/CSSAGAccount.class.php");
 
 use AGShop;
@@ -201,6 +202,10 @@ class COrder extends \AGShop\CAGShop{
         $nOrderId = $this->getParam("Id");
         if($nOrderId)$objCSync->syncOrder($nOrderId);
 
+        // Сбрасываем кэш статистики заказов
+        $objOrderStatistic = new \Order\COrderStatistic($nUserId);
+        $objOrderStatistic->clear(); 
+
         $this->setZNI($arOptions["ZNI"],'AA');
         
         if(!$this->getErrors())return $nOrderId;
@@ -211,6 +216,7 @@ class COrder extends \AGShop\CAGShop{
         $CDB = new \DB\CDB;
         // Получаем выбранные торговые предложения
         $arSKUs = $this->getSKUs();
+        $sPrefix = "Б-";
 
         // Проверяем возможность заказать исходя из группы товара и пользователя
         $objCCatalogProduct = new \Catalog\CCatalogProduct;
@@ -233,7 +239,7 @@ class COrder extends \AGShop\CAGShop{
             $this->addError("Ошибка доступа");
             return false;
         }
-
+        if($arProductUsercats)$sPrefix= 'Т-';
         // Проверяем количество на складе каждого предложения и блокируем, 
         // если надо (снимаем единицу)
         $objCCatalogStore = new \Catalog\CCatalogStore;
@@ -344,7 +350,6 @@ class COrder extends \AGShop\CAGShop{
             }
         }
 
-
         $res = \CSaleDelivery::GetList(array(),array("ACTIVE"=>"Y"));
         if(!$delivery = $res->GetNext()){
             $this->addError("Нет активных служб доставки");
@@ -396,7 +401,7 @@ class COrder extends \AGShop\CAGShop{
         }
         
         $this->setParam("Id",$nOrderId);
-        $this->setParam("Num",$sCustomNum?$sCustomNum:"Б-".$nOrderId);
+        $this->setParam("Num",$sCustomNum?$sCustomNum:$sPrefix.$nOrderId);
         $sOrderNum = $this->getParam("Num");
         $this->setParam("StatusId",$sInitialStatusId);
         // Сохраняем параметры заказа
@@ -406,7 +411,7 @@ class COrder extends \AGShop\CAGShop{
         
         // Обновляем свойства заказа из свойств товара (для поиска)
         $this->orderPropertiesUpdate();
-        
+       
         ///////////// Проводим работу по интеграции
         // Статус тройки
         // 0 - не заказывалась
@@ -484,10 +489,19 @@ class COrder extends \AGShop\CAGShop{
         // 0 - не заказывалась
         // 1 - Успешно
         // 2 - неудачно
+ 
         $sInfotechStatus = 0;
-        if($nPriceCategory = intval(
-            $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"]
-        )){
+        if(
+            $nPriceCategory = intval(
+                $arSKU["SKU"]["PROPERTIES"]["INFOTECH_CATEGORY_PRICE_ID"]
+            )
+            ||
+            (
+                intval($arSKU["SKU"]["PROPERTIES"]["INFOTECH_ACTION_ID"])
+                &&
+                intval($arSKU["SKU"]["PROPERTIES"]["INFOTECH_CITY_ID"])
+            )
+        ){
             foreach($arSKUs as $arSKU)break;
             
             $objCUser = new \User\CUser;
@@ -527,8 +541,7 @@ class COrder extends \AGShop\CAGShop{
                 $sInfotechStatus = 2;
             }
         }
-        
-        
+       
         // Если тройка провалилась - баллы не снимаем
         if($stoykaStatus == 2){
         }
@@ -547,7 +560,7 @@ class COrder extends \AGShop\CAGShop{
             //////////// Снимает баллы
             if(!$bPointsSuccess = $objSSAGAccount->transaction(
                 -$nTotalSum,
-                 "Заказ Б-$nOrderId в магазине поощрений АГ"
+                 "Заказ $sPrefix"."$nOrderId в магазине поощрений АГ"
             ))$this->addError($objSSAGAccount->getErrors());
 
             ///////////
@@ -599,6 +612,11 @@ class COrder extends \AGShop\CAGShop{
         $objCSync->syncUser($this->getParam("UserId"));
         $nOrderId = $this->getParam("Id");
         if($nOrderId)$objCSync->syncOrder($nOrderId);
+ 
+        // Сбрасываем кэш статистики заказов
+        $objOrderStatistic = new
+            \Order\COrderStatistic($this->getParam("UserId"));
+        $objOrderStatistic->clear(); 
 
         // Ставим статус заказ и отправляем соответствующее ЗНИ, в зависимости от результата заказа
         ///// Ставим в очередь на ЗНИ

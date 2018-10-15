@@ -25,7 +25,7 @@
                 <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/experiments">Городские новинки</a></div>
                 <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/dom">Электронный дом</a></div>
                 <div class="ag-shop-menu__item"><a class="ag-shop-menu__link" href="https://ag.mos.ru/results">Результаты работы</a></div>
-                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="/catalog/elektronnyy-kontent/">Магазин поощрений</a></div>
+                <div class="ag-shop-menu__item"><a class="ag-shop-menu__link ag-shop-menu__link--active" href="/catalog/">Магазин поощрений</a></div>
                 <div class="ag-shop-menu__item item-articles"><a class="ag-shop-menu__link" href="https://ag.mos.ru/photos">Проект в лицах</a></div>
                 <!--<div class="ag-shop-menu__item ag-menu-breaker"></div>-->
         <div class="ag-shop-menu__item item-articles">
@@ -62,7 +62,8 @@
 
                 <img id="logo-profile" src="/local/templates/desktop2018/img/logo-profile.png" alt="logo-profile">
                   <div id="logo-balls" class="ag-shop-nav__link-caption">
-                    <span id="fio-logo" class="show-on-desktop"><?= $arResult['FIO'];?>Александр Алексеевский</span>
+                    <span id="fio-logo" class="show-on-desktop"><?=
+                    $arResult['FIO']?$arResult['FIO']:"";?></span>
                     <div id="fio-balls" class="ag-shop-nav__profile-points"><?= $arResult['myBalls'];?></div>
                   </div>
             </a>

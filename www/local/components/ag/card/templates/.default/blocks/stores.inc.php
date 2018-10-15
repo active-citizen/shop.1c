@@ -7,7 +7,11 @@
       foreach($arResult["OFFERS_STORAGES"] as $id=>$arStore): $count++;?>
       <label>
         <input type="radio" name="place" value="<?= $id ?>" <?
-        if (count($arResult["OFFERS"][0]["STORAGES"]) == 1) {
+        if (
+            count($arResult["OFFERS"][0]["STORAGES"]) == 1
+            && 
+            count($arResult["OFFERS"])==1
+        ) {
             $storageSelected = true;
             echo " checked ";
         }

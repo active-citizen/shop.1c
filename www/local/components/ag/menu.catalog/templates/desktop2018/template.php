@@ -132,19 +132,22 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
           <div class="ag-portmone-balls">
             <div class="ag-wrap-balls">
             <img src="/local/templates/desktop2018/img/portmone-balls.png" alt="portmone-balls">
-            <a class="ag-shop-menu__link" href="#">350 Б</a>
+            <a class="ag-shop-menu__link" href="#"><?= 
+                number_format(intval($arResult["BALANCE"]),0,""," ")
+            ?> Б</a>
             </div>
           </div>
           <div class="ag-heart">
             <div class="ag-wrap-balls">
             <img src="/local/templates/desktop2018/img/heart.png" alt="portmone-balls">
-            <a class="ag-shop-menu__link" href="#">0</a>
+            <a class="ag-shop-menu__link" href="#"><?=
+            $arResult["WISHES_COUNT"];?></a>
           </div>
           </div>
           <div class="ag-cart">
             <div class="ag-wrap-balls">
             <img src="/local/templates/desktop2018/img/cart.png" alt="portmone-balls">
-            <a class="ag-shop-menu__link" href="#">12</a>
+            <a class="ag-shop-menu__link" href="#"><?= $arResult["ORDERS_COUNT"]?></a>
           </div>
           </div>
     </div>

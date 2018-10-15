@@ -997,26 +997,32 @@ table.auction-winners .winner{
     height: 48px;
     border-radius: 5px;
     border: 1px solid #9c9c9c;
+    margin-left: 1px;
 }
 
 
 input:checked + .ag-shop-card__colors-item {
     border: 2px solid rgba(0,122,108,1);
-    margin: 0 -7px;
+    margin: 0 0px;
 }
 
 
 input:disabled + .ag-shop-card__colors-item {
     border: 2px solid #EFEFEF;
-    margin: 0 -7px;
+    margin: 0 -1px;
     opacity: 0.5;
 }
 
 input:disabled + .ag-shop-card__sizes-item {
     border: 2px solid #EFEFEF;
-    margin: 0 -7px;
+    margin: 0 -1px;
     opacity: 0.5;
+    min-width: 20px;
 }
+
+.ag-shop-card__sizes-item label {
+    min-width: 20px;
+  }
 
 input:disabled + .ag-shop-card__places-item {
     opacity: 0.33;
@@ -1033,3 +1039,16 @@ input:disabled + .ag-shop-card__places-item {
 .mobile-search-notfind{
     z-index:199 !important;
 }
+
+.ag-shop-card__header--mobile{
+    margin-bottom: 0px;
+}
+
+@media (max-width: 460px) {
+    .ag-shop-card__container .grid--justify-space-between{
+        display:none;
+    }
+
+}
+
+
