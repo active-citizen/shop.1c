@@ -905,6 +905,8 @@ body {
   transition: width 400ms, opacity 400ms, visibility 400ms, transform 400ms, -webkit-transform 400ms;
 }
 
+
+
 .catalog-inner {
   float: right;
   width: -webkit-calc(100% - 400px);

@@ -110,7 +110,7 @@ div.desktop-products-container--gridList {
 }
 
 #logo-profile{
-  margin-top: 35px;
+  /*margin-top: 35px;*/
   margin-left: -35px;
 
 }
@@ -139,6 +139,7 @@ div.desktop-products-container--gridList {
   top: 42px;
   font-size: 25px;
   color: #fff;
+  cursor: pointer;
 }
 
 #shop-title{
@@ -825,8 +826,44 @@ div.desktop-products-container--gridList {
   color: #01c0f4; /* or whatever color you prefer */
 }
 
+.ag-shop-profile {
+  height: 120px;
+}
+
+.ag-shop-dropdown-profile {
+  width: 434px;
+  height: 80px;
+  background-color: #018374;
+  color: #fff;
+  position: absolute;
+  
+}
+
+.ag-shop-dropdown-profile li {
+  list-style-type: none;
+  padding-top: 10px;
+}
+
+.ag-shop-dropdown-profile a {
+  color: #fff;
+  cursor: pointer;
+}
 
 
+/*======right filter=====*/
+/*.desktop-products-filter-form-wrapper{
+    right:0px;
+    left: unset;
+}
+
+.desktop-products-filter{
+    width: 100%;
+}
+
+.catalog-inner{
+    float: left;
+}*/
+/*======right filter=====*/
 
 
 /*@Media queries@*/

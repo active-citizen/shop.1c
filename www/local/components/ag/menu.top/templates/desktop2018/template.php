@@ -56,17 +56,23 @@
 
         <!--Profile block-->
       <div id="profie-win-top">
-        <? if(!$USER->isAuthorized()):?>
+        <? if($USER->isAuthorized()):?>
         <div id="profie-win">
-            <a class="ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
+            <a class="ag-shop-profile ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
 
                 <img id="logo-profile" src="/local/templates/desktop2018/img/logo-profile.png" alt="logo-profile">
                   <div id="logo-balls" class="ag-shop-nav__link-caption">
                     <span id="fio-logo" class="show-on-desktop"><?=$arResult['FIO']?$arResult['FIO']:"";?></span>
                     <div id="fio-balls" class="ag-shop-nav__profile-points"><?= $arResult['myBalls'];?></div>
-                  </div>
-            </a>
-            <i id="fa-angle" class="fas fa-angle-down"></i>
+                  </div>   
+                </a>
+            <button onclick="diplay_hide('.ag-shop-dropdown-profile');return false;"><i id="fa-angle" class="fas fa-angle-down"></i></button>    
+        </div>
+        <div style="display: none;" class="ag-shop-dropdown-profile">
+          <ul>
+            <li><a href="#">Мой профиль</a></li>
+            <li><a href="#">Выйти</a></li>
+          </ul>
         </div>
       <? else : ?>
       <div class="profie-win">
@@ -112,4 +118,19 @@
     </div>
   </div>
 </nav>
+
+<script type="text/javascript"> 
+
+function diplay_hide (profileBlock)
+{ 
+    if ($(profileBlock).css('display') == 'none') 
+        { 
+            $(profileBlock).animate({height: 'show'}, 500); 
+        } 
+    else 
+        {     
+            $(profileBlock).animate({height: 'hide'}, 500); 
+        }} 
+</script>
+
 <!-- }}} Top Nav-->
