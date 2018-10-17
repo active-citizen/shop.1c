@@ -70,10 +70,10 @@
         </div>
         <div style="display: none;" class="ag-shop-dropdown-profile">
           <ul>
-            <li><a href="/profile">Мой профиль</a></li>
-            <li><a href="/profile/points/">Мои баллы</a></li>
-            <li><a href="/profile/order/">Мои заказы</a></li>
-            <li><a href="/profile/wishes/">Мои желания</a></li>
+            <li><a href="https://ag.mos.ru/profile">Мой профиль</a></li>
+            <li><a href="https://ag.mos.ru/profile/points/">Мои баллы</a></li>
+            <li><a href="https://ag.mos.ru/profile/order/">Мои заказы</a></li>
+            <li><a href="https://ag.mos.ru/profile/wishes/">Мои желания</a></li>
           </ul>
         </div>
       <? else : ?>
