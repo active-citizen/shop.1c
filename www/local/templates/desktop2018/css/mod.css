@@ -79,7 +79,10 @@ div.desktop-products-container--gridList {
   height: 121px;
   background-color: #009685;
   padding-top: 0px;
+}
 
+#profie-win a {
+  text-decoration: none;
 }
 
 #profie-win-top {
@@ -145,6 +148,18 @@ div.desktop-products-container--gridList {
 #shop-title{
   font-size: 24px;
   font-weight: 600;
+}
+
+.ag-line-none a{
+  text-decoration: none;
+}
+
+.ag-wrap-balls a{
+  text-decoration: none;
+}
+
+.ag-catalog-icon {
+  margin-left: 14%;
 }
 
 #ag-menu-list{
@@ -828,21 +843,36 @@ div.desktop-products-container--gridList {
 
 .ag-shop-profile {
   height: 120px;
+  text-decoration: none;
 }
+
+
 
 .ag-shop-dropdown-profile {
   width: 434px;
-  height: 80px;
+  height: 195px;
   background-color: #018374;
   color: #fff;
   position: absolute;
+  z-index: 9999;
+
   
 }
 
 .ag-shop-dropdown-profile li {
   list-style-type: none;
   padding-top: 10px;
+  padding-bottom: 10px;
 }
+
+.ag-shop-dropdown-profile li:first-child {
+  padding-top: 20px;
+}
+
+.ag-shop-dropdown-profile li:last-child {
+  padding-bottom: 20px;
+}
+
 
 .ag-shop-dropdown-profile a {
   color: #fff;

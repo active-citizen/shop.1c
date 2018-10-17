@@ -56,9 +56,9 @@
 
         <!--Profile block-->
       <div id="profie-win-top">
-        <? if($USER->isAuthorized()):?>
+        <? if(!$USER->isAuthorized()):?>
         <div id="profie-win">
-            <a class="ag-shop-profile ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="/profile/">
+            <a class="ag-shop-profile ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="https://ag.mos.ru/profile">
 
                 <img id="logo-profile" src="/local/templates/desktop2018/img/logo-profile.png" alt="logo-profile">
                   <div id="logo-balls" class="ag-shop-nav__link-caption">
@@ -70,8 +70,10 @@
         </div>
         <div style="display: none;" class="ag-shop-dropdown-profile">
           <ul>
-            <li><a href="#">Мой профиль</a></li>
-            <li><a href="#">Выйти</a></li>
+            <li><a href="/profile">Мой профиль</a></li>
+            <li><a href="/profile/points/">Мои баллы</a></li>
+            <li><a href="/profile/order/">Мои заказы</a></li>
+            <li><a href="/profile/wishes/">Мои желания</a></li>
           </ul>
         </div>
       <? else : ?>
@@ -104,7 +106,7 @@
 <nav class="ag-shop-nav">
   <div class="ag-shop-nav__container">
     <div class="grid grid--bleed">
-      <div class="grid__col-auto grid__col-md-shrink">
+      <div class="ag-line-none grid__col-auto grid__col-md-shrink">
         <a class="ag-shop-nav__link" href="/catalog/" style="padding-left: 0px;">
         <div id="ag-shop-nav__link--active" class="ag-shop-nav__link
         <? if(preg_match("#^/catalog/.*$#", $_SERVER["REQUEST_URI"])):?>
@@ -123,14 +125,12 @@
 
 function diplay_hide (profileBlock)
 { 
-    if ($(profileBlock).css('display') == 'none') 
-        { 
-            $(profileBlock).animate({height: 'show'}, 500); 
-        } 
-    else 
-        {     
-            $(profileBlock).animate({height: 'hide'}, 500); 
-        }} 
+  if ($(profileBlock).css('display') == 'none') { 
+      $(profileBlock).animate({height: 'show'}, 500); 
+    } else {     
+        $(profileBlock).animate({height: 'hide'}, 500); 
+      }
+} 
 </script>
 
 <!-- }}} Top Nav-->
