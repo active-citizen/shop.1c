@@ -143,6 +143,8 @@ div.desktop-products-container--gridList {
   font-size: 25px;
   color: #fff;
   cursor: pointer;
+  width: 80px;
+  height: 70px;
 }
 
 #shop-title{
