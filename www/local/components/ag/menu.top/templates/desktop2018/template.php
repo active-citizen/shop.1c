@@ -56,7 +56,7 @@
 
         <!--Profile block-->
       <div id="profie-win-top">
-        <? if($USER->isAuthorized()):?>
+        <? if(!$USER->isAuthorized()):?>
         <div id="profie-win">
             <a class="ag-shop-profile ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="https://ag.mos.ru/profile">
 
@@ -71,9 +71,9 @@
         <div style="display: none;" class="ag-shop-dropdown-profile">
           <ul>
             <li><a href="https://ag.mos.ru/profile">Мой профиль</a></li>
-            <li><a href="https://ag.mos.ru/profile/points/">Мои баллы</a></li>
-            <li><a href="https://ag.mos.ru/profile/order/">Мои заказы</a></li>
-            <li><a href="https://ag.mos.ru/profile/wishes/">Мои желания</a></li>
+            <li><a href="/profile/points/">Мои баллы</a></li>
+            <li><a href="/profile/order/">Мои заказы</a></li>
+            <li><a href="/profile/wishes/">Мои желания</a></li>
           </ul>
         </div>
       <? else : ?>
