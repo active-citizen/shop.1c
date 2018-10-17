@@ -851,7 +851,7 @@ div.desktop-products-container--gridList {
 
 
 /*======right filter=====*/
-/*.desktop-products-filter-form-wrapper{
+.desktop-products-filter-form-wrapper{
     right:0px;
     left: unset;
 }
@@ -862,7 +862,7 @@ div.desktop-products-container--gridList {
 
 .catalog-inner{
     float: left;
-}*/
+}
 /*======right filter=====*/
 
 
