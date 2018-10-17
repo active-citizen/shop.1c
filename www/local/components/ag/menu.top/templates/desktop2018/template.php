@@ -56,7 +56,7 @@
 
         <!--Profile block-->
       <div id="profie-win-top">
-        <? if(!$USER->isAuthorized()):?>
+        <? if($USER->isAuthorized()):?>
         <div id="profie-win">
             <a class="ag-shop-profile ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="https://ag.mos.ru/profile">
 
