@@ -2,8 +2,10 @@
     $conf = [
         "username"=>"",
         "password"=>"",
-        "from_day"=>-1,
-        "to_day"=>-1,
+        "fromDay"=>-1,
+        "toDay"=>-1,
         "project"=>"AG",
-        "component"=>"shop"
+        "component"=>"shop",
+        "jiraSearchUrl"=>"https://jira.altarix.ru/rest/api/2/search",
+        "toStatus"=>"Waiting for QA"
     ];
