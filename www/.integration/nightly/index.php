@@ -20,15 +20,21 @@
         print_r($objReport->getErrors());
         echo "</pre>";
     }
-
     if(!$sData = $objReport->render()){
         echo "<pre>";
         print_r($objReport->getErrors());
         echo "</pre>";
     }
 
-    $objReport->addRecepient("inutcin@yandex.ru"); 
-    $objReport->addCC("andrey.inyutsin@altarix.ru"); 
-    $objReport->setMailSublect("AG Nightly - shop");
+    $objReport->setMailSubject("AG Nightly - shop");
+
+    $objReport->addRecepient("SklyarovDV@mos.ru"); 
     $objReport->send();
+
+    $objReport->addRecepient("petrovvv@em.mos.ru"); 
+    $objReport->send();
+
+    $objReport->addRecepient("andrey.inyutsin@altarix.ru"); 
+    $objReport->send();
+
     echo $sData;

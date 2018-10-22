@@ -24,7 +24,7 @@ class CJiraReport extends CReportType{
             ." AND issuetype in (".implode(",",$this->arTypes).")"
             ." AND status changed to \"".$this->getParam("toStatus")
                 ."\" during (startOfDay(".$this->getParam("fromDay")
-                ."), startOfDay(".$this->getParam("toDay").")) ");
+                ."), endOfDay(".$this->getParam("toDay").")) ");
 
 
         $sData =  $objCurl->get(

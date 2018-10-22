@@ -14,7 +14,6 @@ class CReport extends \AGShop\CAGShop{
     private $sReportBody = '';
     private $sSubject = '';
     private $sTo = '';
-    private $sCC = '';
 
     function __construct(){
         
@@ -43,6 +42,20 @@ class CReport extends \AGShop\CAGShop{
         <html>
             <meta charset="utf-8"/>
             <title>AG Nightly - shop</title>
+            <style>
+                table{
+                    border: 1px #AAA solid;
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th{
+                    background-color: #EEE;
+                }
+                td{
+                    padding: 5px;
+                    border: 1px #aaa solid;
+                }
+            </style>
         </html>
         <body>';
         $sBody .= $this->sReportBody;
@@ -51,11 +64,8 @@ class CReport extends \AGShop\CAGShop{
         return $sBody;
     }
 
-    function setTemplate($sFilename){
-        
-    }
 
-    function setMailSublect($sSubject){
+    function setMailSubject($sSubject){
         $this->sSubject = $sSubject;
     }
     
@@ -63,21 +73,18 @@ class CReport extends \AGShop\CAGShop{
         $this->sTo = $sEmail;
     }
 
-    function addCC($sEmail){
-        $this->sCC = $sEmail;
-    }
 
     function getResult(){
     }
 
     function send(){
-        require($_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/common.php");
+        require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/mail/common.php");
         custom_mail(
             $this->sTo,
             $this->sSubject,
             $this->sReportBody,
-            "Content-type: text/html; charset=utf-8\r\n"
-            ."CC: ".$this->sCC."\r\n"
+            "Content-type: text/html; charset=utf-8\r\n",
+            ''
         );
     }
 
