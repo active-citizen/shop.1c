@@ -125,6 +125,7 @@ www/local/assets/libs/images/
 *.backup
 *.pem
 *.lock
+*.conf.php
 
 # связи троек с номерами телефонов 
 www/local/.migrations/migs/data/troika.csv
