@@ -1,0 +1,9 @@
+<?php
+    $conf = [
+        "username"=>"",
+        "password"=>"",
+        "from_day"=>-1,
+        "to_day"=>-1,
+        "project"=>"AG",
+        "component"=>"shop"
+    ];
