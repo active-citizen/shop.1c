@@ -194,8 +194,12 @@
                         <? } ?>
                     <? } ?>
 
-
                 </div>
+                <? if($arOrder["PROPERTIES"]["PROMOCODES"]["VALUE"]):?>
+                <div class="ag-shop-profile-order__place">
+                    <? print_r($arOrder["PROPERTIES"]["PROMOCODES"]["VALUE"]);?>
+                </div>
+                <? endif ?>
               </div>
               <div class="grid__col-shrink">
                 <div class="ag-shop-profile-order__count order_visible"><span>количество: <?= $arProduct["QUANTITY"]?>; <?= number_format($arProduct["PRICE"],0,',',' ')?> <?= get_points(round($arProduct["PRICE"])) ?></span></div>
