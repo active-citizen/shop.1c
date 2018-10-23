@@ -228,10 +228,6 @@ function get_pages_list(
     $perpage=10,        //!< число записей на страницу
     $blocksize = 10     //!< размер блока сраниц
 ){
-    // Временно подкостылим
-    $perpage=20;
-    $blocksize = 100;
-    // end: временно подкостылим
     if(!intval($perpage))$perpage = 10;
     
     $page = floor($offset/$perpage)+1;
