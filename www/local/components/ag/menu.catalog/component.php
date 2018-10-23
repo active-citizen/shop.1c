@@ -18,7 +18,9 @@
     use AGShop\Catalog as Catalog;
     use AGShop\User as User;
     use AGShop\Order as Order;
-    
+
+
+
     $objSection = new \Catalog\CCatalogSection;
     $arSections = $objSection->get([
         "ACTIVE"=>"Y",

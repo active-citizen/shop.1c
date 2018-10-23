@@ -122,14 +122,28 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
             FAQ
             </a>
         </div>
-          <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
+         
+        <!--Старый Блок с поиском -->
+          
+          <!-- <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
             <div class="ag-shop-nav__link">
-              <form action="/search/" class="searchform">
+                <form action="/search/" class="searchform">
                 <input id="ag-input-search" name="q" type="text" value="<?= htmlspecialchars(isset($_GET["q"])?$_GET["q"]:"") ?>" disabled>
               </form>
             </div>
           </button>
+ -->
+
           <div class="ag-catalog-icon row">
+             <div class="mobile-header-search">
+                    <form id="mobileHeaderSearchForm" class="searchform">
+                        <div id="multiple-datasets" class="mobile-header-search__input">
+                            <input  class="typeahead" type="text" id="mobileHeaderSearchInput" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
+                            <button class="mobile-header-search__clear" type="button" name="clearTypeahead"></button>
+                        </div>
+                    </form>
+                </div>
+
             <div class="ag-portmone-balls">
             <div class="ag-wrap-balls">
             <a class="ag-shop-menu__link" href="/profile/points">
@@ -209,3 +223,5 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
 <!-- }}} Menu-->
 
 </td></tr></table>
+
+

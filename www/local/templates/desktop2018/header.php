@@ -34,6 +34,10 @@ $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/desktop.min.js");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/mod.js");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/pagination.min.js");
 $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/bootstrap.min.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/scripts.min.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/backend.js");
+$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH."/js/customSearch.js");
+
 
 
 ///////////////// Скрипты второй десктопной версии ////////////////
