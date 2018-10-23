@@ -123,7 +123,7 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
             </a>
         </div>
          
-        <!--Старый Блок с поиском -->
+        <!--Старый Блок  поиска -->
           
           <!-- <button class="ag-shop-nav__link" type="button" style="padding:0;/*safari/firefox*/">
             <div class="ag-shop-nav__link">
