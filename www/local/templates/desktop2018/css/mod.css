@@ -53,6 +53,10 @@ div.desktop-products-container--gridList {
   background-image: url(/local/templates/agshop_mobile/css/../img/icon__filter-ok.png);
 }
 
+.ag-shop-menu__block {
+  /*margin-right: -5%;*/
+}
+
 /* new style*/
 
 /*Header*/
@@ -60,7 +64,7 @@ div.desktop-products-container--gridList {
 @media (min-width: 992px)
 {
 .ag-shop-menu__item {
-    padding: 0 22px;
+    padding: 0 18px;
   }
 }
 
@@ -89,7 +93,7 @@ div.desktop-products-container--gridList {
   padding-top: 0;
   width: 356px;
   height: 121px;
-  margin-left: 102px;
+  margin-left: 10%;
 }
 
 .ag-shop {
@@ -162,7 +166,7 @@ div.desktop-products-container--gridList {
 
 .ag-catalog-icon {
   /*margin-left: 10%;*/
-  width: 100%;
+  width: 50%;
 }
 
 #ag-menu-list{
@@ -177,12 +181,12 @@ div.desktop-products-container--gridList {
 }
 
 .ag-wrap-balls{
-  padding: 30px;
+  padding: 25px;
   border-left: 1px solid #e0e0e0;
 }
 
 .ag-wrap-balls img{
-  margin-left: 15px;
+  /*margin-left: 15px;*/
 }
 
 /*-- Slider --*/
@@ -913,7 +917,7 @@ div.desktop-products-container--gridList {
 
 .searchform{
   position: absolute;
-  width: 25%;
+  width: 23%;
 }
 
 
@@ -934,7 +938,7 @@ div.desktop-products-container--gridList {
   display: block;
   width: 1px;
   height: 23px;
-  background-color: #dddddd;
+  
 }
 
 .mobile-header-search__input input {
@@ -1080,6 +1084,7 @@ div.desktop-products-container--gridList {
 
 .tt-menu{
   background-color: #F1F0F0;
+  font-size: 12px;
 }
 
 .mobile-search-status.tt-empty {
@@ -1190,7 +1195,7 @@ div.desktop-products-container--gridList {
   line-height: 20px;
   color: #939393;
   text-transform: uppercase;
-  margin: 0 0 5px 0;
+  margin: 10px 0 10px 10px;
 }
 
 .tt-dataset {

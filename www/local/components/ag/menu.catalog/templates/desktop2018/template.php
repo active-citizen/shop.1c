@@ -75,17 +75,19 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
         */?>
 
         <!--!!! Here begins menu.catalog !!!-->
-
+        <div class="ag-shop-menu__block row col-7">
         <?php foreach($arResult["SECTIONS"] as $section):?>
-        <div class="ag-shop-menu__item">
-            <a class="ag-shop-menu__link<? if($section["CURRENT"]):
+            
+                <div class="ag-shop-menu__item">
+                    <a class="ag-shop-menu__link<? if($section["CURRENT"]):
             ?> ag-shop-menu__link--active<? endif?>"
                 href="/catalog/<?= $section["CODE"];?>/"
             >
                 <?= $section["NAME"];?>
             </a>
-        </div>
+        </div>        
         <?endforeach?>
+        </div>
         <!--<div class="ag-shop-menu__item ag-menu-breaker"></div>--->
         <div class="ag-shop-menu__item item-articles">
             <a class="ag-shop-menu__link<?
@@ -134,7 +136,7 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
           </button>
  -->
 
-          <div class="ag-catalog-icon row">
+          
              <div class="mobile-header-search">
                     <form id="mobileHeaderSearchForm" class="searchform">
                         <div id="multiple-datasets" class="mobile-header-search__input">
@@ -143,7 +145,7 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
                         </div>
                     </form>
                 </div>
-
+            <div class="ag-catalog-icon row">
             <div class="ag-portmone-balls">
             <div class="ag-wrap-balls">
             <a class="ag-shop-menu__link" href="/profile/points">
