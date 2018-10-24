@@ -1085,10 +1085,9 @@ div.desktop-products-container--gridList {
 .tt-menu{
   background-color: #fff;
   border: 1px solid #F1F0F0;
-  border-radius: 5%;  
   font-size: 12px;
-  margin-left:15px;
   cursor: pointer;
+  width: 100%;
 }
 .tt-selectable:hover{
   background-color: #f1f0f0;
@@ -1114,6 +1113,20 @@ div.desktop-products-container--gridList {
 
 .mobile-search-query:after {
   content: '”';
+}
+
+.twitter-typeahead {
+  width: 100%;
+}
+
+.tt-suggestion {
+  padding: 8px 8px 8px 15px;
+  color: #343434;
+}
+
+.tt-highlight {
+  font-weight: normal;
+  color: #2c9c90;
 }
 
 .mobile-search-notfind {
