@@ -987,8 +987,8 @@ div.desktop-products-container--gridList {
 
 .mobile-header-search__clear {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 7px;
+  right: 25px;
   display: block;
   padding: 0;
   margin: 0;
@@ -1006,7 +1006,7 @@ div.desktop-products-container--gridList {
 }
 
 .mobile-header-search__clear.show-clear {
-  top: 0;
+  top: 3px;
   visibility: visible;
   opacity: 1;
   -webkit-transition: visibility 300ms, opacity 300ms;
@@ -1020,7 +1020,7 @@ div.desktop-products-container--gridList {
   top: 50%;
   right: 50%;
   display: block;
-  /*width: 12px;*/
+  width: 12px;
   height: 12px;
   -webkit-transform: translate(50%, -50%);
   -ms-transform: translate(50%, -50%);
