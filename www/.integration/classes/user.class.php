@@ -258,7 +258,7 @@
          * @return ID сессии или ничего
          * 
          */
-        function getEMPSessionId($login=''){
+        function getEMPSessionId($login='',$nExpires=86400){
             global $DB;
             global $USER;
             if(!$login)
@@ -267,7 +267,9 @@
             
             // Смотрим последнюю сессию у этого пльзователя
             $res = $DB->Query($query = "SELECT `session_id` FROM
-            `int_profile_import` WHERE `login`='".$login."' ORDER BY `id` DESC
+            `int_profile_import` WHERE `login`='".$login."' AND 
+            last_update>".(time()-$nExpires)."
+            ORDER BY `id` DESC
             LIMIT 1");
             if(!$result = $res->GetNext()){return false;}
             if(!isset($result["session_id"])){return false;}
@@ -432,6 +434,7 @@
                 $this->getEMPSessionId(
                 );
 
+            $objSSAGAccount = new \SSAG\CSSAGAccount($profile["session_id"]);
             if(
                 isset($profile["result"]) 
                 && $profile["result"] 
@@ -448,6 +451,7 @@
                     $answer["errors"][] = $this->error;
                 }
                 else{
+                    $objSSAGAccount->updateProfile($profile['session_id'],$USER->GetID());
                     /*
                     require_once("classes/point.class.php");
                     $objPoints = new bxPoint;
@@ -480,7 +484,6 @@
                     return $answer;
                 }
             }
-            $objSSAGAccount = new \SSAG\CSSAGAccount($profile["session_id"]);
             $objSSAGAccount->update();
            
             if(CUser::isAuthorized()){
