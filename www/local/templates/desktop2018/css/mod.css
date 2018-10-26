@@ -856,7 +856,7 @@ div.desktop-products-container--gridList {
 
 
 .ag-shop-dropdown-profile {
-  width: 434px;
+  width: 424px;
   height: 195px;
   background-color: #018374;
   color: #fff;
@@ -920,10 +920,59 @@ div.desktop-products-container--gridList {
   width: 23%;
 }
 
+/*---Style Search dynamic*/
+
+.ag-shop-container-search{
+    width: 0px;
+    height: 50px;
+    background: #ffffff;
+    text-align: center;
+    line-height: 45px;
+    padding-right: 50px;
+    transition: all 0.5s ease;
+    border-radius: 5px;
+    position: relative;
+}
+
+.ag-shop-input{
+    border: 0px;
+    border-bottom: 2px solid #41484a;
+    background: transparent;
+    width: 0%;
+    padding: 5px 0;
+    outline: none;
+    color: ##41484a;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.ag-shop-container-search .fa{
+    color: #6c6c6c;
+    position: absolute;
+    right: 210px;
+    top: 15px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.ag-shop-container-search.ag-shop-search-active{
+    width: 250px;
+    padding-left: 25px;
+    transition: all 0.5s ease;
+}
+
+.ag-shop-input.ag-shop-search-active{
+    width: 98%;
+    padding-left: 5px;
+    transition: all 0.5s 0.8s ease;
+}
+
+
+/*---@@---*/
 
 
 .mobile-header-search__input {
-  padding-left: 8px;
+/*  padding-left: 8px;
   padding-right: 24px;
   position: relative;
   display: block;
@@ -987,7 +1036,7 @@ div.desktop-products-container--gridList {
 
 .mobile-header-search__clear {
   position: absolute;
-  top: 7px;
+  top: 15px;
   right: 25px;
   display: block;
   padding: 0;
@@ -1003,10 +1052,11 @@ div.desktop-products-container--gridList {
   -webkit-transition: visibility 300ms, opacity 300ms;
   -o-transition: visibility 300ms, opacity 300ms;
   transition: visibility 300ms, opacity 300ms;
+  /*visibility: hidden;*/
 }
 
 .mobile-header-search__clear.show-clear {
-  top: 3px;
+  top: 7px;
   visibility: visible;
   opacity: 1;
   -webkit-transition: visibility 300ms, opacity 300ms;
