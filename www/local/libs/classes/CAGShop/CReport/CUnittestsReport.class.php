@@ -36,11 +36,24 @@ class CUnittestsReport extends CReportType{
     function render(){
 
         $arData = $this->getResult();
+        $nTotalTests = 0;
+        if(preg_match("#\((\d+) tests\,#",$arData["result_text"],$m)){
+            $nTotalTests = $m[1];
+        }
+        elseif(preg_match("#tests:\s*(\d+)#i",$arData["result_text"],$m)){
+            $nTotalTests = $m[1];
+        }
 
-        $sData ='<h1>Unit-тесты</h1>';
-        $sData .= '<pre>'.$arData["result_text"]."\n";
-        $sData .= 'Покрытие тестами: '.$arData["coverage"]."%";
-        $sData .= '</pre>';
+        $nFailedTests = 0;
+        if(preg_match("#Failures:\s+(\d+)#i",$arData["result_text"],$m)){
+             $nFailedTests = $m[1];
+        }
+
+        $sData ='Unit-тесты:<br/>';
+        $sData .= 'Всего тестов '.$nTotalTests.'<br/>';
+        $sData .= 'Не пройдено тестов '.$nFailedTests.'<br/>';
+        $sData .= 'Покрытие  '.$arData["coverage"]."%<br/>";
+        $sData .= '<br/>';
 
         return $sData;
     }

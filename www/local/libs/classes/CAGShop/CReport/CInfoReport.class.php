@@ -28,9 +28,9 @@ class CInfoReport extends CReportType{
 
         $arData = $this->getResult();
 
-        $sData ='<h1>Дополнительная информация</h1>';
-        $sData .= '<div>Git-ветка: '.$arData["branch"].'</div>';
-        $sData .= '<div>Время: '.date("d.m.Y H:i:s").'</div>';
+        $sData ='Дополнительная информация<br/>';
+        $sData .= 'Git-ветка: '.$arData["branch"].'<br/>';
+        $sData .= 'Время: '.date("d.m.Y H:i:s").'<br/>';
 
         return $sData;
     }

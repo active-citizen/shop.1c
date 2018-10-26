@@ -27,16 +27,16 @@ class CBuildReport extends CReportType{
         $sBaseUrl = $arParse["scheme"]."://".$arParse["host"]."/browse/";
 
         $arData = $this->getResult();
-        $sData = '<h1>Билд</h1>';
+        $sData = '';
         $sData .= $arData["is_success"]
             ?
-            '<div style="color:green">Успешен</div>'
+            'Билд успешен'
             :
-            '<div style="color:red">Неуспешен</div>'
+            'Билд не успешен'
         ;
 
         $sUrl = $_SERVER["REQUEST_SCHEME"].'://'.$_SERVER["HTTP_HOST"];
-        $sData .= '<a href="'.$sUrl.'">'.$sUrl.'</a>';
+        $sData .= '<br/><a href="'.$sUrl.'">'.$sUrl.'</a><br/><br/>';
 
         return $sData;
     }

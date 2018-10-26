@@ -47,28 +47,22 @@ class CJiraReport extends CReportType{
         $sBaseUrl = $arParse["scheme"]."://".$arParse["host"]."/browse/";
 
         $arData = $this->getResult();
-        $sData = '<h1>Выполненные задачи за предыдущий день</h1>';
-        $sData .= '
-            <table>
-                <tr>
-                    <th>Ссылка</th>
-                    <th>Название</th>
-                    <th>Тип</th>
-                    <th>Статус</th>
-                </tr>
-        ';
-        foreach($arData["issues"] as $arIssue){
-            $sData .= '
-                <tr>
-                    <td><a href="'.$sBaseUrl.$arIssue["key"].'">'.$arIssue["key"].'</a></td>
-                    <td>'.$arIssue["fields"]["summary"].'</td>
-                    <td>'.$arIssue["fields"]["issuetype"]["name"].'</td>
-                    <td>'.$arIssue["fields"]["status"]["name"].'</td>
-                </tr>
-            ';    
+        if(!$arData['issues']){
+            $sData = 'Новых выполненных задач нет';
+        }
+        else{
+            $sData = 'Выполненные задачи:';
+            foreach($arData["issues"] as $arIssue){
+                $sData .= '<br/>'
+                    .$arIssue["key"]
+                    .' '.$arIssue["fields"]["summary"]
+                    .' (<a href="'.$sBaseUrl.$arIssue["key"].'">'
+                        .$sBaseUrl.$arIssue["key"]
+                    .'</a>)';
+            }
         }
         $sData .= '
-            </table>
+            <br/><br/>
         '; 
 
         return $sData;
