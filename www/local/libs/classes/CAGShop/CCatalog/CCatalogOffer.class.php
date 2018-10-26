@@ -309,7 +309,7 @@ class CCatalogOffer extends \AGShop\CAGShop{
         $sQuery = "
             SELECT
                 ROUND(SUM(`b`.`QUANTITY`)) as `count`,
-                DATE_FORMAT(DATE_ADD(MAX(`a`.`DATE_INSERT`), INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
+                DATE_FORMAT(DATE_ADD(MIN(`a`.`DATE_INSERT`), INTERVAL 1 MONTH),'%d.%m.%Y %H:%i:%s') as `next`
                 -- ,`a`.`DATE_INSERT` as `order_date`
                 -- ,`c`.`VALUE_NUM` as `product_id`
                 -- ,`a`.`ID` as `order_id`

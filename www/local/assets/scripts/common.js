@@ -352,13 +352,16 @@ $(document).ready(function() {
         }
         */
 
-        $('.ag-shop-card__image-container').css('background-image',
-            $('#carousel'+carouselDiv+' .picEnabled').css('background-image')
-            //url('+picsActive[0]+')'
-        );
-        $('#carousel'+carouselDiv+' .ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
-        $('#carousel'+carouselDiv+' .picEnabled').first().addClass('ag-shop-card__preview--active');
-        
+
+        if($(this).attr("name")=='PROP1C_TSVET'){
+            $('.ag-shop-card__image-container').css('background-image',
+                $('#carousel'+carouselDiv+' .picEnabled').css('background-image')
+                //url('+picsActive[0]+')'
+            );
+            $('#carousel'+carouselDiv+' .ag-shop-card__preview').removeClass('ag-shop-card__preview--active');
+            $('#carousel'+carouselDiv+' .picEnabled').first().addClass('ag-shop-card__preview--active');
+        }
+        $('#carousel'+carouselDiv+' .ag-shop-card__preview').addClass("picEnabled");
 
         /*
             if(carouselDiv == 'down')

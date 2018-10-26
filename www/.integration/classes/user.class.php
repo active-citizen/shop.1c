@@ -336,6 +336,30 @@
             // Проверяем корректност email
             $sOriginalEmail = "";
             if(
+                isset($profile["result"]["personal"]["email"])
+                && 
+                (
+                preg_match(
+                    "#^[\d\w\-\.\_]+@[\d\w\-\.\_]+\.[\d\w\-\.\_]{0,1}$#",
+                    $profile["result"]["personal"]["email"]
+                )
+                ||
+                preg_match(
+                    "#^[\d\w\-\.\_]+@[\d\w\-\_]+$#",
+                    $profile["result"]["personal"]["email"]
+                )
+                )
+            ){
+                return ["errors"=>[], 
+                    "alerts"=>["В магазине не может быть создана "
+                    ."учётная запись с электронной почтой ".
+                    htmlspecialchars($profile["result"]["personal"]["email"])
+                    .". Измените адрес электронной почты в профиле АГ и зайдите "
+                    ."в магазин снова."
+                ]]
+                ;
+            }
+            elseif(
                 !isset(
                     $profile["result"]["personal"]["email"]
                 ) 
@@ -344,7 +368,10 @@
                     "#^[\d\w\-\.\_]+@[\d\w\-\.\_]+$#",
                     $profile["result"]["personal"]["email"]
                 )
-            )$email = "u".$login."@shop.ag.mos.ru";
+            ){
+                $email = "u".$login."@shop.ag.mos.ru";
+            }
+
 
             if(isset($profile['result']['personal']['phone']))
                 $args["login"] = $profile['result']['personal']['phone'];

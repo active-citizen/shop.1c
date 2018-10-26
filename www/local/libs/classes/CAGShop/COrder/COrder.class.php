@@ -430,8 +430,8 @@ class COrder extends \AGShop\CAGShop{
             if($objTroyka->error)$this->addError($objTroyka->error);
 
             // Производим транзакцию в тройку
-            $objTroyka->payment($this->getParam('Num'));
-            if($objTroyka->errorNo){
+            $bIsOk = $objTroyka->payment($this->getParam('Num'));
+            if(!$bIsOk && $objTroyka->errorNo){
                 // Мапинг кодов ошибок шлюза в сообщения для посетителя
                 $arErrors = $objTroyka->errorMapping();
                 $this->addError(
@@ -442,6 +442,10 @@ class COrder extends \AGShop\CAGShop{
                     $objTroyka->error
                 );
                 // Сохраняем неуспешный статус
+                $stoykaStatus = 2;
+            }
+            elseif(!$bIsOk){
+                $this->addError("Ошибка транзакции: ".$objTroyka->errorMessage);
                 $stoykaStatus = 2;
             }
             else{
@@ -780,7 +784,7 @@ class COrder extends \AGShop\CAGShop{
             ),
             false,
             array("nTopCount"=>1),            
-            array("ID","PROPERTY_CML2_LINK")
+            array("ID","PROPERTY_CML2_LINK","NAME")
         )->GetNext();
     
         $arCatalog = \CIBlockElement::GetList(
@@ -809,7 +813,7 @@ class COrder extends \AGShop\CAGShop{
         $arOrder["PROPERTIES"]["PRODUCT_URL"]["PROPERTY_VALUE"] = 
             $arCatalog["DETAIL_PAGE_URL"];
         $arOrder["PROPERTIES"]["PRODUCT_NAME"]["PROPERTY_VALUE"] = 
-            $arCatalog["NAME"];
+            $arOffer["NAME"];
         $arOrder["PROPERTIES"]["SECTION_ID"]["PROPERTY_VALUE"] = 
             $arCatalog["IBLOCK_SECTION_ID"];
         $arOrder["PROPERTIES"]["MANUFACTURER_ID"]["PROPERTY_VALUE"] = 

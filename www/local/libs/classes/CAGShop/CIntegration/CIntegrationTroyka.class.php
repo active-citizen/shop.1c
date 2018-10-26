@@ -21,9 +21,11 @@
         var $currency = '';     //!< Код валюты
         var $serviceId = '';    //!< Уникальный идентификатор поставщика
         var $ip = '';           //!< IP-адрес инициатора запроса 
+        var $connection_timeout = 1;
 
         function __construct($sNum='',$sPhone=''){
             parent::__construct();
+            if(function_exists('xdebug_disable')){ xdebug_disable(); };
 
             if(!$sNum)$sNum = $this->settings["TROYKA_CARD"]["VALUE"];
             if(!$sPhone)$sPhone = $this->settings["TROYKA_PHONE"]["VALUE"];
@@ -62,15 +64,24 @@
         function getBindings(
             $sOrderNum=''  //!< Номер заказа в рамках которого идет запрос
         ){
-            if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new \SoapClient(
-                $this->url,
-                array(
-                    'trace'=>1,
-                    'local_cert'=>$this->pemPath,
-                    'connection_timeout'=>60
-                )
-            );
+            if($this->emulation!='success' && $this->emulation!='failed'){
+                try{
+                    $objSoap = new \SoapClient(
+                        $this->url,
+                        array(
+                            'trace'=>1,
+                            'local_cert'=>$this->pemPath,
+                            'connection_timeout'=>$this->connection_timeout,
+                            'exceptions'=>true
+                        )
+                    );
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, "testcard", $arSoapRequest, $e->getMessage());
+                    return false;
+                }
+            }
 
             $arSoapRequest =  array(
                 "getBindings"=>array(
@@ -86,7 +97,14 @@
                 $arSoapResult = json_decode('');
             }
             else{
-                $arSoapResult = $objSoap->__soapCall("getBindings",$arSoapRequest);
+                try{
+                    $arSoapResult = $objSoap->__soapCall("getBindings",$arSoapRequest);
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, "testcard", $arSoapRequest, $arSoapResult);
+                    return false;
+                }
             }
             
             $arSoapResult = json_decode(json_encode((array)$arSoapResult), TRUE);
@@ -124,15 +142,24 @@
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
 
-            if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new \SoapClient(
-                $this->url,
-                array(
-                    'trace'=>1,
-                    'local_cert'=>$this->pemPath,
-                    'connection_timeout'=>60
-                )
-            );
+            if($this->emulation!='success' && $this->emulation!='failed'){
+                try{
+                    $objSoap = new \SoapClient(
+                        $this->url,
+                        array(
+                            'trace'=>1,
+                            'local_cert'=>$this->pemPath,
+                            'connection_timeout'=>$this->connection_timeout,
+                            'exceptions'=>true
+                        )
+                    );
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, "testcard", $arSoapRequest, $e->getMessage());
+                    return false;
+                }
+            }
 
             $arSoapRequest =  array(
                 "checkProviders"=>array(
@@ -149,8 +176,15 @@
             elseif($this->emulation=='failed'){
             }
             else{
+                try{
                 $arSoapResult = 
                     $objSoap->__soapCall("checkProviders",$arSoapRequest);
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $e->getMessage());
+                    return false;
+                }
             }
             
 
@@ -174,15 +208,23 @@
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
 
-            if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new \SoapClient(
-                $this->url,
-                array(
-                    'trace'=>1,
-                    'local_cert'=>$this->pemPath,
-                    'connection_timeout'=>60
-                )
-            );
+            if($this->emulation!='success' && $this->emulation!='failed'){
+                try{
+                $objSoap = new \SoapClient(
+                    $this->url,
+                    array(
+                        'trace'=>1,
+                        'local_cert'=>$this->pemPath,
+                        'connection_timeout'=>$this->connection_timeout
+                    )
+                );
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, "testcard", $arSoapRequest, $e->getMessage());
+                    return false;
+                }
+            }
             $arSoapRequest =  array(
                 "getProviders"=>array(
                     "phone"         =>$this->phone,
@@ -220,15 +262,24 @@
         ){
             if(!$this->checkOrderNum($sOrderNum))return false;
 
-            if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new \SoapClient(
-                $this->url,
-                array(
-                    'trace'=>1,
-                    'local_cert'=>$this->pemPath,
-                    'connection_timeout'=>60
-                )
-            );
+            if($this->emulation!='success' && $this->emulation!='failed'){
+                try{
+                $objSoap = new \SoapClient(
+                    $this->url,
+                    array(
+                        'trace'=>1,
+                        'local_cert'=>$this->pemPath,
+                        'connection_timeout'=>$this->connection_timeout,
+                        'exceptions'=>true
+                    )
+                );
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, "testcard", $arSoapRequest, $e->getMessage());
+                    return false;
+                }
+            }
 
             include_once(
                 _SERVER["DOCUMENT_ROOT"]."/local/php_interface/settings.inc.php"
@@ -263,10 +314,17 @@
                 json_decode('{"simulation":1,"errorCode":0,"bindings":{"mdOrder":"32584575278936","bindingId":"2D638F3D30644943846128793A942291","mnemonic":"ACTIVE CITIZEN 3","maskedPan":"251944******2462","cardType":1,"userSelected":true,"cvcRequired":true,"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
             }
             else{
-                $arSoapResult = $objSoap->__soapCall(
-                    "getPaymentCapabilities",
-                    $arSoapRequest
-                );
+                try{
+                    $arSoapResult = $objSoap->__soapCall(
+                       "getPaymentCapabilities",
+                       $arSoapRequest
+                   );
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $e->getMessage());
+                    return false;
+                }
             }
 
   
@@ -291,21 +349,29 @@
             if(
                 !$this->simpleMode
             ){
-                $this->getBindings($sOrderNum);
-                $this->checkProviders($sOrderNum);
-                $this->getProviders($sOrderNum);
+                if(!$this->getBindings($sOrderNum))return false;
+                if(!$this->checkProviders($sOrderNum))return false;
+                if(!$this->getProviders($sOrderNum))return false;
             }
             $this->getPaymentCapabilities($sOrderNum);
 
-            if($this->emulation!='success' && $this->emulation!='failed')
-            $objSoap = new \SoapClient(
-                $this->url,
-                array(
-                    'trace'=>1,
-                    'local_cert'=>$this->pemPath,
-                    'connection_timeout'=>60
-                )
-            );
+            if($this->emulation!='success' && $this->emulation!='failed'){
+                try{
+                $objSoap = new \SoapClient(
+                    $this->url,
+                    array(
+                        'local_cert'=>$this->pemPath,
+                        'connection_timeout'=>$this->connection_timeout,
+                        'exceptions'=>true
+                    )
+                );
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $e->getMessage());
+                    return false;
+                }
+            }
 
             $arSoapRequest =  array(
                 "payment"=>array(
@@ -324,7 +390,14 @@
                 json_decode('{"simulation":1,"errorCode":24,"errorDesc":"5","mdOrder":"21234535734580","completedPayment":{"date":"2017-07-20T10:49:47.065+03:00","refnum":"456366724866","approvalCode":"000000","currency":643,"bindingId":"1D337F3D3267424782C1881937646598","maskedPan":"121532******1312","cardType":1,"serviceId":"322","serviceParams":{"name":"Ticket","value":"7363455345"},"transactionAmount":{"base":"175.00","total":"175.00","fee":"0.00","currency":643}}}');
             }
             else{
-                $arSoapResult = $objSoap->__soapCall( "payment",$arSoapRequest);
+                try{
+                   $arSoapResult = $objSoap->__soapCall( "payment",$arSoapRequest);
+                }
+                catch(\Exception $e){
+                    $this->errorMessage = htmlspecialchars($e->getMessage());
+                    $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $e->getMessage());
+                    return false;            
+                }
             }
 
             
@@ -332,9 +405,12 @@
 
             $this->curlLog( $this->url, $sOrderNum, $arSoapRequest, $arSoapResult);
 
+            $this->transact = false;
             // Сохраняем номер транзакции
             if(isset($arSoapResult["completedPayment"]["refnum"]))
                 $this->transact = $arSoapResult["completedPayment"]["refnum"];
+
+            if(!$this->transact)return false;
 
             if($arErrorInfo = $this->getWsdlErrorInfo($arSoapResult))
                 return false;
