@@ -67,7 +67,10 @@
                 $arAnswer['result']['avatar'] = 
                     $this->sDomain.":".$this->sPort
                     .$arAnswer['result']['avatar'];
-                $arFile = \CFile::MakeFileArray($arAnswer['result']['avatar']);
+                $sFilename = $arAnswer['result']['avatar'];
+                if(!preg_match("#^(http|https)://#",$sFilename))
+                    $sFilename = "http://".$sFilename;
+                $arFile = \CFile::MakeFileArray($sFilename);
                 if(isset($arFile["size"]) && intval($arFile["size"])>0)
                     $arFile["del"] = 'Y';
                 else
