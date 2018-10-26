@@ -258,7 +258,7 @@
          * @return ID сессии или ничего
          * 
          */
-        function getEMPSessionId($login=''){
+        function getEMPSessionId($login='',$nExpires=86400){
             global $DB;
             global $USER;
             if(!$login)
@@ -267,7 +267,9 @@
             
             // Смотрим последнюю сессию у этого пльзователя
             $res = $DB->Query($query = "SELECT `session_id` FROM
-            `int_profile_import` WHERE `login`='".$login."' ORDER BY `id` DESC
+            `int_profile_import` WHERE `login`='".$login."' AND 
+            last_update>".(time()-$nExpires)."
+            ORDER BY `id` DESC
             LIMIT 1");
             if(!$result = $res->GetNext()){return false;}
             if(!isset($result["session_id"])){return false;}
@@ -336,6 +338,30 @@
             // Проверяем корректност email
             $sOriginalEmail = "";
             if(
+                isset($profile["result"]["personal"]["email"])
+                && 
+                (
+                preg_match(
+                    "#^[\d\w\-\.\_]+@[\d\w\-\.\_]+\.[\d\w\-\.\_]{0,1}$#",
+                    $profile["result"]["personal"]["email"]
+                )
+                ||
+                preg_match(
+                    "#^[\d\w\-\.\_]+@[\d\w\-\_]+$#",
+                    $profile["result"]["personal"]["email"]
+                )
+                )
+            ){
+                return ["errors"=>[], 
+                    "alerts"=>["В магазине не может быть создана "
+                    ."учётная запись с электронной почтой ".
+                    htmlspecialchars($profile["result"]["personal"]["email"])
+                    .". Измените адрес электронной почты в профиле АГ и зайдите "
+                    ."в магазин снова."
+                ]]
+                ;
+            }
+            elseif(
                 !isset(
                     $profile["result"]["personal"]["email"]
                 ) 
@@ -344,7 +370,10 @@
                     "#^[\d\w\-\.\_]+@[\d\w\-\.\_]+$#",
                     $profile["result"]["personal"]["email"]
                 )
-            )$email = "u".$login."@shop.ag.mos.ru";
+            ){
+                $email = "u".$login."@shop.ag.mos.ru";
+            }
+
 
             if(isset($profile['result']['personal']['phone']))
                 $args["login"] = $profile['result']['personal']['phone'];
@@ -405,6 +434,7 @@
                 $this->getEMPSessionId(
                 );
 
+            $objSSAGAccount = new \SSAG\CSSAGAccount($profile["session_id"]);
             if(
                 isset($profile["result"]) 
                 && $profile["result"] 
@@ -421,6 +451,7 @@
                     $answer["errors"][] = $this->error;
                 }
                 else{
+                    $objSSAGAccount->updateProfile($profile['session_id'],$USER->GetID());
                     /*
                     require_once("classes/point.class.php");
                     $objPoints = new bxPoint;
@@ -453,7 +484,6 @@
                     return $answer;
                 }
             }
-            $objSSAGAccount = new \SSAG\CSSAGAccount($profile["session_id"]);
             $objSSAGAccount->update();
            
             if(CUser::isAuthorized()){

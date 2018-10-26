@@ -681,7 +681,7 @@ function agauth(encsession){
             return true;
 	    }
 
-	    else if(!answer.errors.length){
+	    else if(!answer.errors.length && typeof answer.profile=='object'){
             if(!$('#profie-win .ag-shop-nav__profile-points').html())
             $("#profie-win").html('<a class="ag-shop-nav__link" href="/profile/">'
               +'<div class="ag-shop-nav__profile-container">'
@@ -702,7 +702,12 @@ function agauth(encsession){
 
 	    // Формируем блок ошибок
 	    for(i in answer.errors){
-            //alert(answer.errors[i]);
+            console.log(answer.errors[i]);
+	    }
+
+        if(typeof answer.alerts!='undefined')
+	    for(i in answer.alerts){
+            alert(answer.alerts[i]);
 	    }
 	}
     );

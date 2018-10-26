@@ -1,0 +1,11 @@
+<?php
+    $conf = [
+        "username"=>"",
+        "password"=>"",
+        "fromDay"=>-1,
+        "toDay"=>-1,
+        "project"=>"AG",
+        "component"=>"shop",
+        "jiraSearchUrl"=>"https://jira.altarix.ru/rest/api/2/search",
+        "toStatus"=>"Waiting for QA"
+    ];

@@ -54,6 +54,62 @@
             return true;
         }
 
+        function updateProfile($sSessionId,$nUserId){
+
+            global $USER;
+
+            $arAnswer = $this->getProfile($sSessionId);
+            include($_SERVER["DOCUMENT_ROOT"]."/local/php_interface/settings.inc.php");
+            $arUrl = parse_url($sCrossDomainAuthURL);
+            $sBaseUrl = $arUrl["scheme"]."://".$arUrl['host'];
+            $arFile = [];
+            if(isset($arAnswer['result']['avatar'])){
+                $arAnswer['result']['avatar'] = 
+                    $this->sDomain.":".$this->sPort
+                    .$arAnswer['result']['avatar'];
+                $sFilename = $arAnswer['result']['avatar'];
+                if(!preg_match("#^(http|https)://#",$sFilename))
+                    $sFilename = "http://".$sFilename;
+                $arFile = \CFile::MakeFileArray($sFilename);
+                if(isset($arFile["size"]) && intval($arFile["size"])>0)
+                    $arFile["del"] = 'Y';
+                else
+                    $arFile = [];
+            }
+            $arFields = [];
+            if($arFile)$arFields["PERSONAL_PHOTO"] = $arFile;
+
+            if($arAnswer['result']['email'])$arFields["EMAIL"] =
+                $arAnswer['result']['email'];
+            if($arAnswer['result']['firstname'])$arFields["NAME"] =
+                $arAnswer['result']['firstname'];
+            if($arAnswer['result']['surname'])$arFields["LAST_NAME"] =
+                $arAnswer['result']['surname'];
+            if($arAnswer['result']['middlename'])$arFields["SECOND_NAME"] =
+                $arAnswer['result']['middlename'];
+            if($arAnswer['result']['ag_id'])$arFields["UF_USER_AGID"] =
+                $arAnswer['result']['ag_id'];
+
+            $USER->Update($nUserId, $arFields);
+        }
+
+        function getProfile($sSessionId){
+            $arSign = $this->getSignature($sSessionId);
+            $sUrl = $this->sDomain.":".$this->sPort.$this->sProfileMethod;
+            $sRequest = json_encode([
+                "session_id"=>  $sSessionId,
+                "nonce"     =>  $arSign["nonce"],
+                "signature" =>  $arSign["signature"]
+            ]);
+            $objCurl = new \Curl\CCurlSimple;
+            $sResult = $objCurl->post($sUrl, $sRequest);
+            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);           
+           
+            if(!$arAnswer = $this->checkAnswer($sResult))return false;
+            
+            return $arAnswer;
+        }
+
         
         private function __getAGIDFromBitrixUser($nUserId = 0){
             if(!$nUserId)$nUserId = \CUser::GetID();
@@ -91,17 +147,7 @@
         */
         private function __getAGIDFromAGProfile($sSessionId){
             
-            $arSign = $this->getSignature($sSessionId);
-            $sUrl = $this->sDomain.":".$this->sPort.$this->sProfileMethod;
-            $sRequest = json_encode([
-                "session_id"=>  $sSessionId,
-                "nonce"     =>  $arSign["nonce"],
-                "signature" =>  $arSign["signature"]
-            ]);
-            $objCurl = new \Curl\CCurlSimple;
-            $sResult = $objCurl->post($sUrl, $sRequest);
-            \Log\CSSAGLog::addLog($sUrl, $sRequest, $sResult);            
-            
+            $arAnswer = $this->getProfile($sSessionId);
             if(!$arAnswer = $this->checkAnswer($sResult))return false;
             if(
                 !isset($arAnswer["result"]["ag_id"])

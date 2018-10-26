@@ -22,7 +22,8 @@
     $arResult['FIO'] =
         $arResult['arUserInfo']["NAME"]
             ."<br/>".$arResult['arUserInfo']["LAST_NAME"];
-
+    $arResult["AVATAR"] =
+    \CFile::GetPath($arResult["arUserInfo"]["PERSONAL_PHOTO"]);
 
     $this->IncludeComponentTemplate();
 //}

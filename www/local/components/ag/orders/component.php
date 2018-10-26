@@ -1,7 +1,12 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/local/libs/order.lib.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogOffer.class.php");
+require_once($_SERVER["DOCUMENT_ROOT"]
+    ."/local/libs/classes/CAGShop/CCatalog/CCatalogProduct.class.php");
 
+use AGShop\Catalog as Catalog;
 
 $RU = $_SERVER["REQUEST_URI"];
 if(CUser::isAuthorized()):
@@ -32,8 +37,10 @@ if(CUser::isAuthorized()):
     CModule::IncludeModule("catalog");
     $arResult = array("ORDERS"=>array(),"STATUSES"=>array(),"PAGES"=>array());
 
+    $objProduct = new \Catalog\CCatalogProduct;
+    $objOffer = new \Catalog\CCatalogOffer;
 
-    /////////////////////////// Справочник статусов ///////////////////////////////
+    ///////////////////////// Справочник статусов /////////////////////////////
     $resStatuses = CSaleStatus::GetList();
     while($arStatus = $resStatuses->GetNext())
         $arResult["STATUSES"][$arStatus["ID"]] = $arStatus;
@@ -109,7 +116,9 @@ if(CUser::isAuthorized()):
         $order["PRODUCTS"] = array();
         $resProduct = CSaleBasket::GetList(array(),array("ORDER_ID"=>$arOrder["ID"]));
         while($arProduct = $resProduct->GetNext()){
-            
+           
+            /*
+            зарефакторено
             $arOffer = CIblockElement::GetList(array(),array(
                 "IBLOCK_ID"=>$arParams["OFFER_IBLOCK_ID"],"ID"=>$arProduct["PRODUCT_ID"]
             ),false,array("nTopCount"=>1),array("PROPERTY_CML2_LINK"))->GetNext();
@@ -121,10 +130,14 @@ if(CUser::isAuthorized()):
                 "PROPERTY_USE_BEFORE_DATE",
                 "PROPERTY_SEND_CERT"
             ))->GetNext();
-            
+            */
+            $arOffer = $objOffer->getById($arProduct["PRODUCT_ID"]);
+            $arCatalogItem = $arOffer["PRODUCT"];
 
             // Картинка продукта
             /////////////////
+            /*
+            зарефакторено
             $arProp =
             CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"CML2_LINK"))->GetNext();
             $catalogElementId = $arProp["VALUE"];
@@ -135,19 +148,32 @@ if(CUser::isAuthorized()):
             /////////
             $arProp =
             CIBlockElement::GetProperty($arParams["OFFER_IBLOCK_ID"],$arProduct["PRODUCT_ID"],array(),array("CODE"=>"MORE_PHOTO"))->GetNext();
-
             $arProduct["PIC_PATH"] = CFile::GetPath($arProp["VALUE"]);
             $arProduct["CATALOG_URL"] = $arCatalogItem["DETAIL_PAGE_URL"];
+            */
+            $arProduct["PIC_PATH"] = CFile::GetPath(
+                $arOffer["PROPERTIES"]["MORE_PHOTO"]
+            );
+            $arProduct["CATALOG_URL"] = $arCatalog["DETAIL_PAGE_URL"];
             
             // Возможность отмены
+            /*
+            зарефакторено
             $arProp = CIBlockElement::GetProperty($arParams["CATALOG_IBLOCK_ID"],$catalogElementId,array(),array("CODE"=>"CANCEL_ABILITY"))->GetNExt();
-            $arProduct["CANCEL_ABILITY"] = $arProp["VALUE_ENUM"];
+            */
+            $arProduct["CANCEL_ABILITY"] = 
+                $arOffer["PRODUCT_PROPERTIES"]["CANCEL_ABILITY"];
+
+            $arProduct["NAME"] = $arOffer["MAIN"]["NAME"];
             
             $order["PRODUCTS"][] = $arProduct;
         }
-        $order["SEND_CERT"] = $arCatalog["PROPERTY_SEND_CERT_VALUE"];
-        $order["EXPIRES"] = $arCatalog["PROPERTY_DAYS_TO_EXPIRE_VALUE"];
-        $order["USE_BEFORE"] = $arCatalog["PROPERTY_USE_BEFORE_DATE"];
+        $order["SEND_CERT"] = 
+            $arOffer["PRODUCT_PROPERTIES"]["SEND_CERT"];
+        $order["EXPIRES"] = 
+            $arOffer["PRODUCT_PROPERTIES"]["DAYS_TO_EXPIRE"];
+        $order["USE_BEFORE"] = 
+            $arOffer["PRODUCT_PROPERTIES"]["USE_BEFORE_DATE"];
         
         $tmp_0  = date_parse($arOrder["DATE_INSERT"]);
         $tmp_1  = date_parse($order["USE_BEFORE"]);
@@ -202,10 +228,6 @@ function get_pages_list(
     $perpage=10,        //!< число записей на страницу
     $blocksize = 10     //!< размер блока сраниц
 ){
-    // Временно подкостылим
-    $perpage=20;
-    $blocksize = 100;
-    // end: временно подкостылим
     if(!intval($perpage))$perpage = 10;
     
     $page = floor($offset/$perpage)+1;

@@ -60,7 +60,7 @@
         <div id="profie-win">
             <a class="ag-shop-profile ag-shop-nav__link<? if(preg_match("#^/profile/.*$#", $_SERVER["REQUEST_URI"])):?> ag-shop-nav__link--active<? endif ?>" href="https://ag.mos.ru/profile">
 
-                <img id="logo-profile" src="/local/templates/desktop2018/img/logo-profile.png" alt="logo-profile">
+                <img id="logo-profile" src="<?= $arResult["AVATAR"]?>" alt="logo-profile">
                   <div id="logo-balls" class="ag-shop-nav__link-caption">
                     <span id="fio-logo" class="show-on-desktop"><?=$arResult['FIO']?$arResult['FIO']:"";?></span>
                     <div id="fio-balls" class="ag-shop-nav__profile-points"><?= $arResult['myBalls'];?></div>

@@ -7,16 +7,18 @@
     class CCurlSimple extends \AGShop\CAGShop{
         var $timeout = 20;
         
-        function get($url){
+        function get($url, $headers = []){
             $ch = curl_init();
             curl_setopt ($ch, CURLOPT_URL, $url);
             curl_setopt ($ch, CURLOPT_TIMEOUT, $this->timeout);
+            if($headers)
+               curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_REFERER, $_SERVER["HTTP_HOST"]);
             curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
             return curl_exec ($ch);
-        }
+            }
 
-        function head($url){
+        function head($url,$headers){
             $tmpfilename = tempnam(sys_get_temp_dir(),'curl_');
             $ch = curl_init();
             curl_setopt ($ch, CURLOPT_TIMEOUT, $this->timeout);
@@ -24,6 +26,8 @@
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
             curl_setopt($ch, CURLOPT_NOBODY, true );
             curl_setopt($ch, CURLOPT_REFERER, $_SERVER["HTTP_HOST"]);
+            if($headers)
+               curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
             $hd = fopen($tmpfilename,"w");
             curl_setopt ($ch, CURLOPT_WRITEHEADER, $hd);
             $result = curl_exec ($ch);

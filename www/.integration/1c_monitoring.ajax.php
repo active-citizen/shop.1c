@@ -182,7 +182,10 @@
     // Ищем 5 подряд идущих отклонённых заказов
     $nRejected = 0;
     foreach($arTroykas as $arEvent){
-        if($arEvent["status"]=='AF')$nRejected++;
+        if($arEvent["status"]=='AF')
+            $nRejected++;
+        else
+            $nRejected = 0;
         if($nRejected>=REJECT_COUNT){
             $arErrors[] = [
                 "code"      =>  ERROR_TRANSPORT_REJECT,
@@ -228,7 +231,10 @@
     // Ищем 5 подряд идущих отклонённых заказов
     $nRejected = 0;
     foreach($arParkings as $arEvent){
-        if($arEvent["status"]=='AF')$nRejected++;
+        if($arEvent["status"]=='AF')
+            $nRejected++;
+        else
+            $nRejected = 0;
         if($nRejected>=REJECT_COUNT){
             $arErrors[] = [
                 "code"      =>  ERROR_TRANSPORT_REJECT,
