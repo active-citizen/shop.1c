@@ -440,7 +440,7 @@ class COrder extends \AGShop\CAGShop{
                 $stoykaStatus = 2;
             }
             elseif(!$bIsOk){
-                $this->addError("Ошибка транзакции");
+                $this->addError("Ошибка транзакции: ".$objTroyka->errorMessage);
                 $stoykaStatus = 2;
             }
             else{
