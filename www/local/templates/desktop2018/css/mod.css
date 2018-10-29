@@ -909,34 +909,46 @@ div.desktop-products-container--gridList {
   display: inline-block;
   vertical-align: top;
   width: 50%;
-  /*width: -webkit-calc(100% - 114px);*/
-  /*width: calc(100% - 114px);*/
+  
   margin-top: 25px;
 
 }
 
 .searchform{
   position: absolute;
-  width: 23%;
+  width: 3%;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
+
+.opensearch{
+  width:23%;
+  background:#fff;
+  
+}
+
+
 
 /*---Style Search dynamic*/
 
 .ag-shop-container-search{
     width: 0px;
     height: 50px;
-    background: #ffffff;
     text-align: center;
     line-height: 45px;
     padding-right: 50px;
     transition: all 0.5s ease;
     border-radius: 5px;
     position: relative;
+    /*box-shadow: 0 0 10px rgba(0,0,0,0.5);*/
+    /*border: 2px solid #41484a;*/
 }
 
 .ag-shop-input{
     border: 0px;
-    border-bottom: 2px solid #41484a;
+    /*border-bottom: 2px solid #41484a;*/
     background: transparent;
     width: 0%;
     padding: 5px 0;
@@ -947,9 +959,9 @@ div.desktop-products-container--gridList {
 }
 
 .ag-shop-container-search .fa{
-    color: #6c6c6c;
+    color: #8e8e8e;
     position: absolute;
-    right: 210px;
+    right: 15px;
     top: 15px;
     font-size: 22px;
     cursor: pointer;
@@ -959,6 +971,7 @@ div.desktop-products-container--gridList {
     width: 250px;
     padding-left: 25px;
     transition: all 0.5s ease;
+    background: #ffffff;
 }
 
 .ag-shop-input.ag-shop-search-active{
@@ -967,7 +980,9 @@ div.desktop-products-container--gridList {
     transition: all 0.5s 0.8s ease;
 }
 
-
+input::placeholder {
+    color: ##41484a;
+}
 /*---@@---*/
 
 
@@ -1036,8 +1051,8 @@ div.desktop-products-container--gridList {
 
 .mobile-header-search__clear {
   position: absolute;
-  top: 15px;
-  right: 25px;
+  top: 5px;
+  right: 15px;
   display: block;
   padding: 0;
   margin: 0;
@@ -1052,11 +1067,12 @@ div.desktop-products-container--gridList {
   -webkit-transition: visibility 300ms, opacity 300ms;
   -o-transition: visibility 300ms, opacity 300ms;
   transition: visibility 300ms, opacity 300ms;
-  /*visibility: hidden;*/
+  
 }
 
+
 .mobile-header-search__clear.show-clear {
-  top: 7px;
+  top: 5px;
   visibility: visible;
   opacity: 1;
   -webkit-transition: visibility 300ms, opacity 300ms;

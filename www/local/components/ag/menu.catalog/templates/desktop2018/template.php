@@ -136,23 +136,17 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
           </button>
  -->
 
-          
-             <div class="mobile-header-search">
+            <div class="ag-catalog-icon row">
+                <div class="mobile-header-search">
                     <form id="mobileHeaderSearchForm" class="searchform">
-                        <div id="multiple-datasets" class="mobile-header-search__input ag-shop-container-search">
-                            <input  class="typeahead ag-shop-input" type="text" id="mobileHeaderSearchInput" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
+                        <div id="multiple-datasets" class="mobile-header-search__input">
+                            <input  class="typeahead" type="text" id="mobileHeaderSearchInput" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
                             <button class="mobile-header-search__clear" type="button" name="clearTypeahead"></button>
                         </div>
-                    </form>
-                </div>
-                
-                <!-- <div class="ag-shop-container-search">
-                    <input type="text" class="ag-shop-input" placeholder="Search">
-                         <i class="fa fa-search" aria-hidden="true"></i>
-                </div>
- -->
 
-            <div class="ag-catalog-icon row">
+                    </form>
+
+                </div>
             <div class="ag-portmone-balls">
             <div class="ag-wrap-balls">
             <a class="ag-shop-menu__link" href="/profile/points">
@@ -233,17 +227,4 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
 
 </td></tr></table>
 
-<script>
-    $(document).ready(function(){
-        $(".searchform").click(function(){
-            $(".ag-shop-container-search, .ag-shop-input").toggleClass("ag-shop-search-active");
-                $(".ag-shop-input").focus();
-                // if ($(".mobile-header-search__clear").css("visibility")=="hidden") {
-                //     $(".mobile-header-search__clear").css("visibility", "visible");
-                // } else {
-                //     $(".mobile-header-search__clear").css("visibility", "hidden");
-                // }    
-        });
-    });    
 
-</script>

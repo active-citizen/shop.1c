@@ -94,14 +94,14 @@ input.ag-balls[type="radio"]{
 }
 
 .searchform input[type="text"]{
-    background-color: #fff;
+    /*background-color: #fff;*/
     background-image: url(../images/icon__search.svg);
     background-repeat: no-repeat;
     background-position: 10px 5px;
     padding-left: 48px;
     height: 40px;
     font-size: 0.8125rem;
-    /*border: 1px #888 solid;*/
+    /*<button type="submit"><span class="fa fa-search"></span></button>*/
     border-radius: 5px;
 }
 

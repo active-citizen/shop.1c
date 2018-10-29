@@ -71,5 +71,26 @@ $(function() {
     }
   });
 
+  // Выдвижение поиска
+
+$('.searchform').hover(function(){
+        $(this).addClass('opensearch');
+    }, function(){
+        if ( $(this).find('input').val() == '' && ! $(this).find('input').is(":focus") ) {
+            $(this).removeClass('opensearch');
+        }
+    });
+    if ( $('.searchform').val() != '' ) {
+        $('.searchform').addClass('opensearch');
+    }
+    $('.searchform').on('blur', 'input', function(){
+        if ( $(this).val() == '' ) {
+            $(this).removeClass('opensearch');
+        } else {
+            $(this).addClass('opensearch');
+        }
+    });
+    
 
 });
+
