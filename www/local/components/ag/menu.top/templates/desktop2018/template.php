@@ -126,11 +126,15 @@
 function diplay_hide (profileBlock)
 { 
   if ($(profileBlock).css('display') == 'none') { 
-      $(profileBlock).animate({height: 'show'}, 500); 
+      $(profileBlock).animate({
+        height: 'show'
+      }, 500); 
     } else {     
-        $(profileBlock).animate({height: 'hide'}, 500); 
+        $(profileBlock).animate({
+          height: 'hide'
+        }, 500); 
       }
-} 
+};
 </script>
 
 <!-- }}} Top Nav-->

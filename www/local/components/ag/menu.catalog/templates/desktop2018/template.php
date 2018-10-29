@@ -143,10 +143,20 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
                             <input  class="typeahead" type="text" id="mobileHeaderSearchInput" name="mobileHeaderSearchInput" placeholder="Что вы ищете?" autocorrect="off" autocomplete="off">
                             <button class="mobile-header-search__clear" type="button" name="clearTypeahead"></button>
                         </div>
-
                     </form>
-
-                </div>
+            </div>
+            <div class="section-burger">
+                <a href="#" class="menu-btn-burger" onclick="diplay_hide('.ag-shop-dropdown-menu');return false;">
+                    <span></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <?/* endif */?>
+  </div>
+</div>
+<div style="display: none;" class="ag-shop-dropdown-menu row">
+         
             <div class="ag-portmone-balls">
             <div class="ag-wrap-balls">
             <a class="ag-shop-menu__link" href="/profile/points">
@@ -168,14 +178,12 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
             <a class="ag-shop-menu__link" href="/profile/order">
                 <img src="/local/templates/desktop2018/img/cart.png" alt="portmone-balls">
                 <?= $arResult["ORDERS_COUNT"]?>
-            </a>
-          </div>    
+                </a>
+            </div>    
           </div>
-        </div>
-    </div>
-    <?/* endif */?>
-  </div>
-</div>
+      </div>
+      
+        
 <!-- }}} Menu-->
 </td><td>
 
@@ -226,5 +234,26 @@ if($arResult["INTERESTS"] && IS_MOBILE):?>55%;<? else:?>100%<? endif ?>">
 <!-- }}} Menu-->
 
 </td></tr></table>
+
+<script>
+    function diplay_hide (profileBlock)
+{ 
+  if ($(profileBlock).css('display') == 'none') { 
+      $(profileBlock).animate({
+        height: 'show'
+      }, 500); 
+    } else {     
+        $(profileBlock).animate({
+          height: 'hide'
+        }, 500); 
+      }
+};
+
+$('.menu-btn-burger').on('click', function(e) {      
+        e.preventDefault;
+        $(this).toggleClass('menu-btn_active');
+    });
+
+</script>
 
 
