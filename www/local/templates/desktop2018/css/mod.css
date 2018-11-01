@@ -176,7 +176,7 @@ div.desktop-products-container--gridList {
 }
 
 .ag-catalog-icon {
-  /*margin-left: 10%;*/
+  padding-left: 15%;
   width: 50%;
 }
 
@@ -201,7 +201,11 @@ div.desktop-products-container--gridList {
 }
 
 .ag-shop-dropdown-menu{
-  padding-left: 84%;
+ width: 20%;
+ margin-left: 59.7%;
+ background-color: #f1f0f0;
+ z-index: 111;
+ position: absolute;
 }
 
 /*-- Slider --*/
