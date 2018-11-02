@@ -93,7 +93,7 @@ div.desktop-products-container--gridList {
   padding-top: 0;
   width: 356px;
   height: 121px;
-  margin-left: 10%;
+  margin-left: 8%;
 }
 
 .ag-shop {
@@ -143,22 +143,24 @@ div.desktop-products-container--gridList {
 #fa-angle{
   position: absolute;
   right: 20px;
-  top: 42px;
+  top: 30px;
   font-size: 25px;
   color: #fff;
   cursor: pointer;
   width: 80px;
   height: 70px;
+  padding-top: 25px;
 }
 
 .ag-shop-profile-circle{
   height: 75px;
   width: 75px;
   background-color: #ffffff;
-  /*background-image: url('<?= $arResult["AVATAR"]?>');*/
-  background-position: center;
   border-radius: 50%;
+  background-size: contain;
+  background-position: 50% 50%;
   margin-left: -50%;
+
 
 }
 
@@ -875,12 +877,13 @@ div.desktop-products-container--gridList {
 
 
 .ag-shop-dropdown-profile {
-  width: 424px;
+  width: 435px;
   height: 195px;
   background-color: #018374;
   color: #fff;
   position: absolute;
   z-index: 9999;
+  top: 120px;
 
   
 }
@@ -927,9 +930,10 @@ div.desktop-products-container--gridList {
 .mobile-header-search {
   display: inline-block;
   vertical-align: top;
-  width: 50%;
-  
+  width: 10%;
   margin-top: 25px;
+  margin-left: 30%;
+  margin-right: 40%;
 
 }
 
@@ -943,8 +947,9 @@ div.desktop-products-container--gridList {
 }
 
 .opensearch{
-  width:23%;
+  width:15%;
   background:#fff;
+  /*right: 10%;*/
   
 }
 /*---@@---*/
@@ -952,10 +957,11 @@ div.desktop-products-container--gridList {
 /*Burger menu*/
 
 .section-burger {
-    display: flex;
+    /*display: flex;*/
     justify-content: center;
     align-items: center;
-    margin-left: 35%;
+    /*margin-left: 30%;*/
+    margin-top: 20px;
 }
 .menu-btn-burger {
     display: block;
