@@ -1,6 +1,7 @@
   <div class="col-9 col-xl-7">
-    <div class="product-img">
-      <img id="center-block" class="center-block" src="/local/components/ag/card/templates/desktop2018/image/phone.png" alt="product-img">
+    <div class="product-img"
+        style="background-image:url(<?= $arResult["ALL_PICS"][0]?>)"
+    >
       <? include("wishes.inc.php")?>
     </div>
   </div>

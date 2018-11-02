@@ -1,0 +1,58 @@
+.products-attrs input[type="radio"]{
+    display:none;
+}
+
+.products-attrs label{
+}
+    
+
+.product-img-attr{
+    border: 1px #DDD solid;
+    background-position: 50% 50%;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+    margin:3px;
+    cursor:pointer;
+}
+
+.products-attrs input:checked + .product-img-attr{
+    border: 1px solid #007a6c !important;
+}
+
+.product-img-wrap{
+    border-spacing: 3px;
+}
+
+.product-slider-img{
+    background-position: 50% 50%;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.product-img{
+    background-color: transparent;
+    background-position: 50% 50%;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.products-attrs .col-2{
+    flex: none;
+    max-width: 20%;
+}
+
+.products-attrs .col-8{
+    flex: none;
+    max-width: 80%;
+}
+
+.dropdown-toggle::after{
+    float: right;
+    margin-top: 10px;
+}

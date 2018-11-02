@@ -1,3 +1,4 @@
+
 <div class="row">
   <div class="col-2">
     <p class="product-attr">Статус:</p>
@@ -6,4 +7,5 @@
     <span>В наличии</span>
   </div>
 </div>
+
 

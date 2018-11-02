@@ -1,33 +1,52 @@
-  <div class="row">
+ <? foreach($arResult["OFFERS_PROPS"] as $sPropCode=>$arProp): ?>
+  <div class="row products-attrs">
     <div class="col-2">
-        <p class="product-attr">Цвет:</p>
+        <p class="product-attr"><?= $arProp["name"]?>:</p>
     </div>
     <div class="col-8">
       <div class="product-img-wrap">
-        <div class="product-img-attr"></div>
-        <div class="product-img-attr"></div>
-        <div class="product-img-attr"></div>
-        <div class="product-img-attr"></div>
-        <div class="product-img-attr">
-          <!-- <img  src="/local/components/ag/card/templates/desktop2018/image/small-phone-4.png" alt="phone"
-            class="rounded"> -->
-        </div>
+      <? foreach($arProp['values'] as $nValId=>$arValue):?>
+          <? $arPics = $arValue["pics"]; ?>
+          <? 
+            $arCross = [];$arOfferIds=[];$arStores = [];
+            foreach($arValue["crossed"] as $nValIdCross=>$arCrossValue){
+                $arCross[]= $nValIdCross;
+                $arOfferIds[] = $arCrossValue["offerId"];
+            }
+            $arStores = [];
+            foreach($arValue["stores"] as $nStoreId=>$nAmount)
+                $arStores[] = $nStoreId;
+            $arCross = array_unique($arCross);
+            $arOfferIds = array_unique($arOfferIds);
+          ?>
+
+        <?  $isColor = mb_strtolower(trim($arProp["name"]))=='цвет'?true:false; ?>
+        <label>
+            <input type="radio" name="<?= $sPropCode ?>" value="<?= $nValId ?>"
+                pics="<?= implode("|",$arPics)?>"
+                rel="<?= $nValId?>"
+                cross-values="<?= implode(",",$arCross)?>"
+                offers="<?= implode(",",$arOfferIds)?>"
+                stores="<?= implode(",",$arStores)?>"
+                switched="<?= count($arResult["OFFERS"])==1?"on":"off" ?>"
+                <? if(count($arResult["OFFERS"])==1):?>checked<? endif?>
+            >
+            <div class="product-img-attr"
+                <? if($isColor):?>
+                style="background-image:url(<?= $arPics[0]?>)"
+                <? endif ?>
+            >
+               <? if(!$isColor):?>
+                   <?= $arValue['value']?>
+               <? endif ?>
+            </div>
+        </label>
+      <? endforeach ?>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-2">
-        <p class="product-attr">Размер:</p>
-    </div>
-    <div class="col-8">
-      <div class="product-description-size">
-        <span class="border br-size">XS</span>
-        <span class="border br-size">S</span>
-        <span class="border br-size">M</span>
-        <span class="border br-size">L</span>
-        <span class="border br-size">XL</span>
-        <span class="border br-size">XXS</span>
-      </div>
-    </div>
-  </div>
+ <? endforeach ?>
+
+
+ 
 

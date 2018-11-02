@@ -9,11 +9,17 @@
                 Выбрать район
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">МФЦ Красносельский</a>
-                    <a class="dropdown-item" href="#">МФЦ Красносельский_1</a>
-                    <a class="dropdown-item" href="#">МФЦ Красносельский_2</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">МФЦ Красносельский_3</a>
+                  <? $count=0;
+                  $storageSelected = false;
+                  if(!$stopDailyLimit)
+                  foreach($arResult["OFFERS_STORAGES"] as $id=>$arStore): 
+                  $count++;?>
+                    <a class="dropdown-item" href="#"
+                        offers="<?= implode(",", $arStore["offers"])?>"
+                        propsvals="<?= implode(",", $arStore["propsVals"])?>"
+                        switched="off"
+                    ><?= $arResult["STORAGES"][$id]["TITLE"] ?></a>
+                  <? endforeach ?>
                 </div>
             </div>
             <div class="col-auto">
