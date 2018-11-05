@@ -1200,9 +1200,11 @@ input:checked + .ag-shop-card__colors-item {
 }
 .ag-shop-card__sizes label {
   display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 5px;
 }
 .ag-shop-card__sizes * + label {
-  margin-left: 16px;
+  /*margin-left: 16px;*/
 }
 .ag-shop-card__sizes-item {
   cursor: pointer;
