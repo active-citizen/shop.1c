@@ -145,7 +145,7 @@
         private function __getAGIDFromAGProfile($sSessionId){
             
             $arAnswer = $this->getProfile($sSessionId);
-            if(!$arAnswer = $this->checkAnswer($sResult))return false;
+            //if(!$arAnswer = $this->checkAnswer($sResult))return false;
             if(
                 !isset($arAnswer["result"]["ag_id"])
                 ||

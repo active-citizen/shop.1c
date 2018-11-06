@@ -58,6 +58,7 @@ class CCatalogSorting extends \AGShop\CAGShop{
         */
                 
         if(!$arSorting)$arSorting = ["TIMESTAMP_X"=>"desc"];
+        $arSorting["ID"] = "desc";
         
         return $arSorting;
     }

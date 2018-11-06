@@ -36,7 +36,11 @@
                 )
             );
            
+            mkdir($_SERVER["DOCUMENT_ROOT"]."/../logs/mobile_emp/",0755,1);
+            $fd = fopen($_SERVER["DOCUMENT_ROOT"]."/../logs/mobile_emp/".date("Y-m-d").".txt","a");
+            fwrite($fd,"\n".date("Y-m-d H:i:s")." https://emp.mos.ru/v2.0.0/agprofile/getProfile");
             $data = json_encode($data);
+            fwrite($fd," ".$data);
             $curl = new curlTool;
             $data = $curl->post(
                 "https://emp.mos.ru/v2.0.0/agprofile/getProfile",
@@ -45,6 +49,8 @@
                     "Content-Type: application/json"
                 )
             );
+            fwrite($fd," ".$data);
+            fclose($fd);
             return $data;
         }
     }

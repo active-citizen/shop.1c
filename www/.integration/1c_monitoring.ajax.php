@@ -36,7 +36,7 @@
     // Окно времени, за которое проверяются ошибки отклонения
     define("REJECT_WINDOW",3600);
     // Количество подряд идущих отклонёных заказов
-    define("REJECT_COUNT",5);
+    define("REJECT_COUNT",10);
 
     // Коды ошибок
     define("ERROR_NONE",0);
