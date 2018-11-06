@@ -1,0 +1,15 @@
+<?php
+require_once(realpath(__DIR__."/..")."/CCurlLogger.class.php");
+use AGPhop\Log as Log;
+
+class CSSAGLog_removeByOrderNum_Test extends PHPUnit_Framework_TestCase{
+    function __construct(){
+    }
+    
+    function testGetById(){
+        $objLog = new \Log\CCurlLogger;
+        $this->assertTrue(boolval($objLog));
+        
+        $objLog->removeByOrderNum(0);
+    }
+}
