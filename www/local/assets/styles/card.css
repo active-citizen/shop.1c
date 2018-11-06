@@ -1204,7 +1204,7 @@ input:checked + .ag-shop-card__colors-item {
   margin-bottom: 5px;
 }
 .ag-shop-card__sizes * + label {
-  /*margin-left: 16px;*/
+  
 }
 .ag-shop-card__sizes-item {
   cursor: pointer;
